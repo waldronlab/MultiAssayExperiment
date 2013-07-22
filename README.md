@@ -1,5 +1,5 @@
-biocExperimentHub
-=================
+biocMultiAssay
+==============
 
 This repo is intended to start the Bioconductor special interest group
 on mergeable experiment collections like TCGA.  Our objective is to use R/Bioconductor
