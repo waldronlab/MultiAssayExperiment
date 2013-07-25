@@ -1,0 +1,10 @@
+Package: biocMultiAssay
+Title: classes and functions for managing multiple assays on set of samples
+Version: 0.0.0
+Author: multiAssay SIG
+Description: classes and functions for managing multiple assays on set of samples
+Suggests: BiocStyle
+Depends: R (>= 3.0.1), Biobase (>= 2.21.5), GenomicRanges (>= 1.13.35)
+Maintainer: VJ Carey <stvjc@channing.harvard.edu>
+License: Artistic-2.0
+LazyLoad: yes
