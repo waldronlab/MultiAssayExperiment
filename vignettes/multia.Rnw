@@ -1,0 +1,42 @@
+
+\documentclass{article}
+
+<<style, eval=TRUE, echo=FALSE, results=tex>>=
+BiocStyle::latex()
+@
+
+\begin{document}
+
+\title{biocMultiAssay: exploratory work on managing
+multiple assays on a group of samples}
+\author{Bioconductor MultiAssay SIG}
+\maketitle
+
+\tableofcontents
+
+\section{Introduction}
+
+An increasingly common use case involves a set of
+samples or patients who provide measurements on
+multiple data types, such as gene expression,
+genotype, miRNA abundance.  It will frequently
+be the case that not all samples will contribute to
+all assays, so some sparsity in the
+set of 
+samples $\times$ assays is expected.
+
+\section{Basic demonstrative resources}
+
+<<lookDataCode>>=
+library(biocMultiAssay)
+dir(system.file("extdata/tcga_ov", package="biocMultiAssay"))
+getClass("TTMergedDataSet") # from Tim Triche 25 July 2013
+@
+
+\section{Session information}
+
+<<sessi>>=
+toLatex(sessionInfo())
+@
+
+\end{document}
