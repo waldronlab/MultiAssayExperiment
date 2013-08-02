@@ -1,7 +1,8 @@
 exs2se = function(x, 
      assayname="exprs",
      fngetter = 
-          function(z) fData(z)$probeset, 
+           function(z) rownames(exprs(z)),
+#          function(z) fData(z)$probeset, 
      chipDbGetter = 
           function(z) { 
               clnanno = sub(".db", "", annotation(z))
