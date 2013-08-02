@@ -1,1 +1,6 @@
 exportPattern("..*")
+
+importClassesFrom("Biobase", "ExpressionSet")
+importClassesFrom("GenomicRanges", "GRanges", "SummarizedExperiment")
+
+exportMethods("coerce")
