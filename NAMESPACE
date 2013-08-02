@@ -4,3 +4,5 @@ importClassesFrom("Biobase", "ExpressionSet")
 importClassesFrom("GenomicRanges", "GRanges", "SummarizedExperiment")
 
 exportMethods("coerce")
+
+export("exs2se")
