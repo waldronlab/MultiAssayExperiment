@@ -18,7 +18,7 @@ Additional arguments that can be supplied are
      assayname = "exprs",    # for naming SimpleList element in SummarizedExperiment
      fngetter = 
            function(z) rownames(exprs(z)),   # extract usable feature names
-     chipDbGetter = 
+     annDbGetter = 
           function(z) { 
               clnanno = sub(".db", "", annotation(z)) 
               stopifnot(require(paste0(annotation(z), ".db"), character.only=TRUE) ) 
