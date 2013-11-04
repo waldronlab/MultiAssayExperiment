@@ -133,12 +133,4 @@ mut.meth.shifts <- lapply(sm.methpc.tt, function(x){
 })
 names(mut.meth.shifts) <- paste("PC", 1:length(mut.meth.shifts), sep="")
 mut.meth.shifts <- mut.meth.shifts[sapply(mut.meth.shifts, function(x) nrow(x) > 0)]
-mut.meth.shifts  ##EGFR and TTN only - PC6, 7, 9.
-
-
-hist(sm.meth.cor, breaks="FD")
-interesting.genes <- c("EGFR", "PDGFRA", "NF1", "CDKN2A")
-abline(v=sm.meth.cor[interesting.genes], col="red")
-
-head(sort(sm.meth.cor), 15)
-sm.meth.cor[interesting.genes]
+mut.meth.shifts  ##EGFR and TTN only - PC6, 7, 9.  TTN is the long muscle gene.
