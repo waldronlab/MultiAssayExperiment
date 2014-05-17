@@ -1,0 +1,55 @@
+
+
+Translation Modeling for Cancer
+
+
+
+General purpose is to model translational control of gene expression in the 
+NCI60 panel that profile gene expression at mRNA and protein levels. 
+Translational control is expected to uncouple mRNA from protein levels.
+
+
+
+---------------
+Rda files in branch 'tcm.NCI60' in biocMultiAssay:
+---------------
+'data.rda' contains initial data: 'biomart' has Ensembl BioMart v75 genomic 
+coordinates , 'rna' and 'prot' has NCI60 RNA and protein  processed data. 
+'annotation.rda' contains the assignment of genomic coordinates to genes 
+profiled in NCI60 either by RNA or protein level.
+'summarizedExperiment.rda' contains NCI60 expression data at either level.
+
+
+--------------
+Scripts in branch 'tcm.NCI60' in biocMultiAssay:
+--------------
+
+Explore data:
+- 'annotation.R' returns 'annotation.rda'
+- 'init.data.R' returns 'gRanges.rna.rda'
+- 'summarizedExperiment.R' returns 'gRanges.prot.rda'
+- 'nci60prot.R' returns proteins with log(Intensity,10)>=4 in >=5 cell lines
+
+
+
+Model construction:
+- fit.repeated.5fold.cv.knn.R returns summary of extra-samples 
+  prediction error estimates by repeated cross-validation (RCV).
+  Missing data are imputed by the package impute 
+
+- extra.sample.predict.analyze.R returns histograms of prediction
+  error estimates by using: 1) root mean squared prediction error (RMSPE),
+  2) correlation between predicted and observed values in testing subsets
+
+- fit_functions.R contains several functions including for RCV
+
+- fit_functions_trim.R differs by fit_functions.R for the addition of
+  predictors trimming to RCV according to the resolution of linear
+  dependencies among predictors (caret package)
+
+
+
+
+
+
+
