@@ -1,6 +1,6 @@
 Package: biocMultiAssay
 Title: classes and functions for managing multiple assays on set of samples
-Version: 0.0.2
+Version: 0.0.3
 Author: multiAssay SIG
 Description: classes and functions for managing multiple assays on set of samples
 Suggests: BiocStyle
