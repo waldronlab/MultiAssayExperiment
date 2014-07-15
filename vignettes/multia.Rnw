@@ -33,6 +33,27 @@ dir(system.file("extdata/tcga_ov", package="biocMultiAssay"))
 getClass("TTMergedDataSet") # from Tim Triche 25 July 2013
 @
 
+Here are some very simple manipulations with
+TCGA ovarian cancer data.  The data sizes are manageable
+enough that the loadHub function is used to deserialize
+all relevant data.
+
+<<chk,cache=TRUE>>=
+ov = dir(system.file("extdata/tcga_ov", package="biocMultiAssay"), full=TRUE)
+tags = c("ov RNA-seq", "ov agilent", "ov mirna", "ov affy", "ov CNV gistic",
+  "ov methy 450k")
+elist = lapply(1:length(ov), function(x) new("expt", 
+     serType="RData", assayPath=ov[x], tag=tags[x], sampleDataPath=ov[x]))
+ovhub = new("eHub", hub=elist)
+lo = loadHub(ovhub)
+@
+<<reset>>=
+ovhub@allids = as.character(unique(lapply(lo, sampleNames)))
+ovhub
+sapply(lo, function(x) dim(pData(x)))
+@
+
+
 \section{Session information}
 
 <<sessi>>=
