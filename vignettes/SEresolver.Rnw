@@ -1,0 +1,297 @@
+
+\VignetteIndexEntry{SummExp resolvers}
+%\VignetteDepends{GenomicRanges, GenomicFeatures, Homo.sapiens,
+    TxDb.Hsapiens.UCSC.hg19.knownGene, hgu95av2.db, ALL}
+%\VignetteKeywords{annotation}
+%\VignettePackage{GenomicRanges}
+
+\documentclass{article}
+
+\usepackage[authoryear,round]{natbib}
+
+<<style, eval=TRUE, echo=FALSE, results=tex>>=
+BiocStyle::latex(use.unsrturl=FALSE) 
+@
+
+\title{Heuristic resolution 
+of feature and sample requests in SummarizedExperiment instances}
+\author{VJ Carey}
+\date{Edited: July 2014; Compiled: \today}
+
+\begin{document} 
+
+\maketitle
+
+\tableofcontents
+
+<<options, echo=FALSE>>=  
+options(width=72)
+options("showHeadLines" = 3)
+options("showTailLines" = 3) 
+@
+
+\section{Introduction}
+
+We discuss the definition of instance-level
+annotation resolution facilities for SummarizedExperiment
+instances.  
+
+Our objective is to expand the functionality of
+the bracket notation so that the
+X[G,S] idiom can work with various approaches
+to specifying G and S.
+
+The basic idea is that we have greater capacity for
+generic feature query resolution because our features
+are anchored in a uniform way to genomic coordinates.
+It will be essential that genome build metadata is
+properly recorded and used.  We also benefit from
+new seqlevelStyle facilities.
+
+We'll use the ALL data.
+
+
+\section{A SummarizedExperiment for ALL}
+
+<<getall>>=
+library(ALL)
+if (!exists("ALL")) data(ALL)
+@
+We have defined a converter from properly
+annotated ExpressionSet instances to SummarizedExperiment
+instances.
+
+<<conv,echo=FALSE,results=hide>>=
+exs2se = function (x, assayname = "exprs", 
+    fngetter = function(z) rownames(exprs(z)), 
+    chipDbGetter = function(z) {
+        clnanno = sub(".db", "", annotation(z))
+        stopifnot(require(paste0(annotation(z), ".db"), character.only = TRUE))
+        get(paste0(annotation(z), ".db"))
+    }, probekeytype = "PROBEID", duphandler = function(z) {
+        if (any(isd <- duplicated(z[, "PROBEID"]))) 
+            return(z[!isd, , drop = FALSE])
+        z
+    }, signIsStrand = TRUE, ucsdChrnames = TRUE) 
+{
+    stopifnot(is(annopk <- chipDbGetter(x), "ChipDb"))
+    fn = fngetter(x)
+    locd = duphandler(fulls <- select(annopk, keytype = probekeytype, 
+        keys = fn, columns = c("CHR", "CHRLOC", "CHRLOCEND")))
+    nfulls = na.omit(fulls)
+    nmultiaddr = nrow(nfulls) - length(fn)
+    rownames(locd) = locd[, probekeytype]
+    locd = na.omit(locd)
+    dropped = setdiff(fn, rownames(locd))
+    if (length(dropped) > 0) 
+        warning(paste("there were", length(dropped), "addresses dropped owing to missing address information in bioc annotation"))
+    locd = locd[intersect(rownames(locd), fn), ]
+    strand = rep("*", nrow(locd))
+    if (signIsStrand) 
+        strand = ifelse(locd[, "CHRLOC"] > 0, "+", "-")
+    chpref = ""
+    if (ucsdChrnames) 
+        chpref = "chr"
+    rowd = GRanges(paste0(chpref, locd[, "CHR"]), IRanges(abs(locd[, 
+        "CHRLOC"]), abs(locd[, "CHRLOCEND"])), strand = strand)
+    names(rowd) = rownames(locd)
+    metadata(rowd)$dropped = dropped
+    metadata(rowd)$nmultiaddr = nmultiaddr
+    hasrowd = match(names(rowd), fn, nomatch = 0)
+    ex = x[hasrowd, ]
+    stopifnot(nrow(exprs(ex)) == length(rowd))
+    ed = SimpleList(initExptData = experimentData(ex))
+    SummarizedExperiment(assays = SimpleList(exprs = exprs(ex)), 
+        rowData = rowd, colData = DataFrame(pData(ex)), exptData = ed)
+}
+genemodel = function (sym, genome = "hg19", force = FALSE) 
+{
+    stopifnot(genome == "hg19")
+    if (!exists("txdb") || force) 
+        txlib()
+    require(org.Hs.eg.db)
+    num = get(sym, revmap(org.Hs.egSYMBOL))
+    exonsBy(txdb, by = "gene")[[num]]
+}
+txlib = function () 
+{
+    library(TxDb.Hsapiens.UCSC.hg19.knownGene)
+    txdb <<- TxDb.Hsapiens.UCSC.hg19.knownGene
+    message("txdb assigned")
+    invisible(NULL)
+}
+
+rangeFromToksViaEntrez = function (toks, genome = "hg19", force = FALSE,
+   takeRange=TRUE, orgDb=Homo.sapiens, typesToTry=c("SYMBOL", "GOID", "PATH",
+   "TERM"), routeSink=TRUE) 
+{
+#
+# convert tokens to GRanges after translation to Entrez ids
+# takeRange if true reduces answer to 'range' of exons
+# open question whether we also want to cache specific models
+#
+    require(stashR)
+    stopifnot(genome == "hg19")
+#
+# cache exonsBy of TxDb
+#
+    require(deparse(substitute(orgDb)), character.only=TRUE)
+    modcon = new("localDB", dir="~/.SEresolvers", name="rowResolvers")
+    if (!dbExists(modcon, "hg19.exbygene")) {
+        message("one time cache creation for TxDb...")
+        txlib()  # special function to create txdb in .GlobalEnv
+        dbInsert( modcon, "hg19.exbygene", exonsBy(txdb, by="gene") )
+        }
+    allex = dbFetch(modcon, "hg19.exbygene")
+    tf = file(tempfile(), open="wt")
+    if (routeSink) message("resolving row selection tokens... (messages diverted)")
+    if (routeSink) sink(tf, type="message")
+    for (curty in typesToTry) {
+      num = try(select(orgDb, keytype=curty,
+          keys=toks, columns="ENTREZID")[,"ENTREZID"])
+      if (!inherits(num, "try-error")) break
+      }
+    if (routeSink) sink(NULL, type="message")
+    if (routeSink) message("messages restored")
+    if (inherits(num, "try-error")) stop("can't resolve toks")
+    inds = match(num, names(allex))
+    filt = force
+    if (takeRange) filt = range
+    ans = do.call(c, lapply(1:length(inds), function(x) try({
+      tmp = filt(allex[[inds[x]]])
+      tmp$ENTREZID=num[x]
+      tmp})))
+    syms = select(Homo.sapiens, keys=ans$ENTREZID, keytype="ENTREZID",
+            columns="SYMBOL")
+    if (length(unique(syms[,1]))==nrow(syms)) ans$SYMBOL = syms[,2]
+    else { 
+      ssyms = split(syms[,2], syms[,1])[ syms[,1] ] # retain order
+      s1 = sapply(ssyms, "[", 1)
+      ans$SYMBOL = s1
+      }
+    ans
+}
+@
+<<doconv>>=
+library(GenomicRanges)
+ALLse = exs2se(ALL)
+ALLse
+seqlevelsStyle(ALLse)
+@
+
+Here the ranges are derived from Bioconductor's UCSC-based CHRLOC, CHRLOCEND
+elements for Entrez genes to which Affy U95Av2 probe sets are matched.
+However,
+
+\section{Heuristic feature filtering}
+\subsection{A resolver for gene symbols and other tokens}
+
+We have defined a high-level function that can
+generate GRanges for gene models based on symbols or other
+annotation tokens that can be expressed as gene lists.
+An idiosyncratic approach to caching the exonsBy
+applied to TxDb.Hsapiens.UCSC.hg19.knownGene is employed.
+We may want finer-grained
+annotation caching, but this seems to work for this application.
+<<mym>>=
+mk3mod = rangeFromToksViaEntrez(c("MAPK3", "CPNE1"))
+mk3mod
+oxmod = rangeFromToksViaEntrez(c("oxidative phosphorylation"))
+oxmod
+@
+
+How can we use this so that 
+<<dono,eval=FALSE>>=
+ALLse[ c("MAPK3", "BRCA2"), ]
+@
+succeeds in returning the subset of the SummarizedExperiment
+corresponding to MAPK3 and BRCA2 assay measures?  
+
+
+\subsection{Registering row resolver precedence}
+
+A row resolver hook can be added to exptData.
+It should perform tasks required for operation of
+rangeFromToksViaEntrez, and return the vector
+of row selection token types to be traversed in order.
+<<dohook>>=
+exptData(ALLse)$rowResolverHook = function() {
+ require(Homo.sapiens)
+ c("SYMBOL", "PATH", "GOID", "TERM")
+}
+@
+
+\subsection{Coding the bracket operator}
+
+Now we need to code the bracket operator suitably.
+We don't want to have to disclose type of the request.
+A finite number of attempts at decoding will be made using the
+resolver token types registered for the SE.
+
+Some additional infrastructure:
+<<moreco>>=
+hasRowResolver = function(x) !is.null(exptData(x)$rowResolverHook)
+getRowResolverTypes = function(x) exptData(x)$rowResolverHook()
+tryRowResolution = function(x,i) {
+  ress = getRowResolverTypes(x)
+  rngs = rangeFromToksViaEntrez(toks=i, typesToTry=ress)
+  ov = findOverlaps( rowData(x), rngs )
+  queryHits(ov)
+}
+@
+
+We hide the recoding of the bracket operator.
+<<cobrack,echo=FALSE,results=hide>>=
+# based on devel 1.17.26 GRanges 1.17.26
+setMethod("[", c("SummarizedExperiment",
+  "ANY", "ANY", "ANY"), function (x, i, j, ..., drop = TRUE) 
+{
+    clone = GenomicRanges:::clone
+    .SummarizedExperiment.charbound = GenomicRanges:::.SummarizedExperiment.charbound
+    .SummarizedExperiment.assays.subset = GenomicRanges:::.SummarizedExperiment.assays.subset
+    if (1L != length(drop) || (!missing(drop) && drop)) 
+        warning("'drop' ignored '[,", class(x), ",ANY,ANY-method'")
+    if (missing(i) && missing(j)) 
+        return(x)
+    if (!missing(i) && is.character(i)) {
+        if (hasRowResolver(x)) i = tryRowResolution(x, i)  # will be vector of integers
+        else {
+          fmt <- paste0("<", class(x), ">[i,] index out of bounds: %s")
+          i <- .SummarizedExperiment.charbound(i, rownames(x), 
+            fmt)
+          }
+    }
+    if (!missing(j) && is.character(j)) {
+        fmt <- paste0("<", class(x), ">[,j] index out of bounds: %s")
+        j <- .SummarizedExperiment.charbound(j, colnames(x), 
+            fmt)
+    }
+    if (!missing(i) && !missing(j)) {
+        ii <- as.vector(i)
+        jj <- as.vector(j)
+        x <- clone(x, ..., rowData = rowData(x)[i], colData = colData(x)[j, 
+            , drop = FALSE], assays = .SummarizedExperiment.assays.subset(x, 
+            ii, jj))
+    }
+    else if (missing(i)) {
+        jj <- as.vector(j)
+        x <- clone(x, ..., colData = colData(x)[j, , drop = FALSE], 
+            assays = .SummarizedExperiment.assays.subset(x, j = jj))
+    }
+    else {
+        ii <- as.vector(i)
+        x <- clone(x, ..., rowData = rowData(x)[i], assays = .SummarizedExperiment.assays.subset(x, 
+            ii))
+    }
+    x
+})
+@
+
+But demonstrate it here:
+<<dodemo>>=
+ALLse[ c("MAPK3", "BRCA2"), ]
+ALLse[ "oxidative phosphorylation", ]
+@
+
+
+\end{document}
