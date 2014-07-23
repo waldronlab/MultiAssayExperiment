@@ -1,5 +1,5 @@
 
-\VignetteIndexEntry{SummExp resolvers}
+%\VignetteIndexEntry{SummExp resolvers}
 %\VignetteDepends{GenomicRanges, GenomicFeatures, Homo.sapiens,
     TxDb.Hsapiens.UCSC.hg19.knownGene, hgu95av2.db, ALL}
 %\VignetteKeywords{annotation}
