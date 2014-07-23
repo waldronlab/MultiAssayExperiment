@@ -40,17 +40,22 @@ all relevant data.
 
 <<chk,cache=TRUE>>=
 ov = dir(system.file("extdata/tcga_ov", package="biocMultiAssay"), full=TRUE)
+drop = grep("pheno", ov)
+if (length(drop)>0) {
+  pdpath=ov[drop]
+  ov=ov[-drop]
+  }
 tags = c("ov RNA-seq", "ov agilent", "ov mirna", "ov affy", "ov CNV gistic",
   "ov methy 450k")
 elist = lapply(1:length(ov), function(x) new("expt", 
      serType="RData", assayPath=ov[x], tag=tags[x], sampleDataPath=ov[x]))
-ovhub = new("eHub", hub=elist)
+ovhub = new("eHub", hub=elist, masterSampleData = get(load(pdpath)))
 lo = loadHub(ovhub)
 @
 <<reset>>=
-ovhub@allids = as.character(unique(lapply(lo, sampleNames)))
+ovhub@allids = as.character(unique(unlist(lapply(lo@elist, sampleNames))))
 ovhub
-sapply(lo, function(x) dim(pData(x)))
+sapply(lo@elist, function(x) dim(pData(x)))
 @
 
 
