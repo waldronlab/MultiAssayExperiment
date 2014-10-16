@@ -8,9 +8,19 @@ setClass("expt", representation(tag="character", serType="character",
 
 setClass("eHub", representation(hub="list", metadata="ANY", allids="character",
   masterSampleData="data.frame"))
+setMethod("phenoData", "eHub", function(object)
+  object@masterSampleData)
 
-setMethod("show", "eHub", function(object) cat("eHub with",
-  length(object@hub), "experiments.\n"))
+setMethod("show", "eHub", function(object) {
+  cat("eHub with", length(object@hub), 
+       "experiments.  User-defined tags:\n")
+  tags = sapply(object@hub, slot, "tag")
+  for (i in 1:length(tags)) {
+    cat("\t", tags[i], "\n")
+  }
+  pd = phenoData(object)
+  cat("Sample level data is ", nrow(pd), " x ", ncol(pd), ".\n", sep="")
+})
 
 setGeneric("loadHub", function(hub)standardGeneric("loadHub"))
 setMethod("loadHub", "eHub", function(hub) {
@@ -21,8 +31,12 @@ setMethod("loadHub", "eHub", function(hub) {
 
 setClass("loadedHub", representation(basehub="eHub", elist="list"))
 setMethod("show", "loadedHub", function(object) {
- cat("loadedHub instance with experiments having tags:\n")
- cat(paste(names(object@elist), sep=", "))
- print(sapply(object@elist, dim))
+ cat("loadedHub instance.\n")
+ dimmat = t(sapply(object@elist, dim))
+ featExemplars = lapply(object@elist, function(x) head(featureNames(x),3))
+ featExemplars = sapply(featExemplars, paste, collapse=", ")
+ featExemplars = substr(featExemplars, 1, 25)
+ featExemplars = paste(featExemplars, "...")
+ dimmat = data.frame(dimmat, feats.=featExemplars)
+ print(dimmat)
 })
-# lapply(object@elist, show) })

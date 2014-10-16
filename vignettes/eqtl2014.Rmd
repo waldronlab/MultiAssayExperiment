@@ -1,0 +1,198 @@
+
+<script type="text/javascript"
+  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<!--
+%\VignetteEngine{knitr::knitr}
+%\VignetteIndexEntry{eQTL tutorial, Bioc 2014}
+-->
+
+<h1>eQTL tutorial, Bioc 2014</h1>
+VJ Carey stvjc at channing dot harvard dot edu
+
+```{r extracode,echo=FALSE}
+exs2se = function (x, assayname = "exprs", 
+    fngetter = function(z) rownames(exprs(z)), 
+    annoDb,
+    probekeytype = "PROBEID", duphandler = function(z) {
+        if (any(isd <- duplicated(z[, "ENTREZID"]))) 
+            return(z[!isd, , drop = FALSE])
+        z
+    }, signIsStrand = TRUE, ucsdChrnames = TRUE) 
+{
+    annopk = annoDb
+    stopifnot(is(annopk, "ChipDb") | is(annopk, "OrgDb"))
+    fn = fngetter(x)
+    locd = duphandler(fulls <- select(annopk, keytype = probekeytype, 
+        keys = fn, columns = c("CHR", "CHRLOC", "CHRLOCEND")))
+    nfulls = na.omit(fulls)
+    nmultiaddr = nrow(nfulls) - length(fn)
+    rownames(locd) = locd[, probekeytype]
+    locd = na.omit(locd)
+    dropped = setdiff(fn, rownames(locd))
+    if (length(dropped) > 0) 
+        warning(paste("there were", length(dropped), "addresses dropped owing to missing address information in bioc annotation"))
+    locd = locd[intersect(rownames(locd), fn), ]
+    strand = rep("*", nrow(locd))
+    if (signIsStrand) 
+        strand = ifelse(locd[, "CHRLOC"] > 0, "+", "-")
+    chpref = ""
+    if (ucsdChrnames) 
+        chpref = "chr"
+    rowd = GRanges(paste0(chpref, locd[, "CHR"]), IRanges(abs(locd[, 
+        "CHRLOC"]), abs(locd[, "CHRLOCEND"])), strand = strand)
+    names(rowd) = rownames(locd)
+    metadata(rowd)$dropped = dropped
+    metadata(rowd)$nmultiaddr = nmultiaddr
+    hasrowd = match(names(rowd), fn, nomatch = 0)
+    ex = x[hasrowd, ]
+    stopifnot(nrow(exprs(ex)) == length(rowd))
+    ed = SimpleList(initExptData = experimentData(ex))
+    SummarizedExperiment(assays = SimpleList(exprs = exprs(ex)), 
+        rowData = rowd, colData = DataFrame(pData(ex)), exptData = ed)
+}
+genemodel = function (sym, genome = "hg19", force = FALSE) 
+{
+    stopifnot(genome == "hg19")
+    if (!exists("txdb") || force) 
+        txlib()
+    require(org.Hs.eg.db)
+    num = get(sym, revmap(org.Hs.egSYMBOL))
+    exonsBy(txdb, by = "gene")[[num]]
+}
+txlib = function () 
+{
+    library(TxDb.Hsapiens.UCSC.hg19.knownGene)
+    txdb <<- TxDb.Hsapiens.UCSC.hg19.knownGene
+    message("txdb assigned")
+    invisible(NULL)
+}
+
+rangeFromToksViaEntrez = function (toks, genome = "hg19", force = FALSE,
+   takeRange=TRUE, orgDb=Homo.sapiens, typesToTry=c("SYMBOL", "GOID", "PATH",
+   "TERM"), routeSink=TRUE) 
+{
+#
+# convert tokens to GRanges after translation to Entrez ids
+# takeRange if true reduces answer to 'range' of exons
+# open question whether we also want to cache specific models
+#
+    require(stashR)
+    stopifnot(genome == "hg19")
+#
+# cache exonsBy of TxDb
+#
+    require(deparse(substitute(orgDb)), character.only=TRUE)
+    modcon = new("localDB", dir="~/.SEresolvers", name="rowResolvers")
+    if (!dbExists(modcon, "hg19.exbygene")) {
+        message("one time cache creation for TxDb...")
+        txlib()  # special function to create txdb in .GlobalEnv
+        dbInsert( modcon, "hg19.exbygene", exonsBy(txdb, by="gene") )
+        }
+    allex = dbFetch(modcon, "hg19.exbygene")
+    tf = file(tempfile(), open="wt")
+    if (routeSink) message("resolving row selection tokens... (messages diverted)")
+    if (routeSink) sink(tf, type="message")
+    for (curty in typesToTry) {
+      num = try(select(orgDb, keytype=curty,
+          keys=toks, columns="ENTREZID")[,"ENTREZID"])
+      if (!inherits(num, "try-error")) break
+      }
+    if (routeSink) sink(NULL, type="message")
+    if (routeSink) message("messages restored")
+    if (inherits(num, "try-error")) stop("can't resolve toks")
+    inds = match(num, names(allex))
+    filt = force
+    if (takeRange) filt = range
+    ans = do.call(c, lapply(1:length(inds), function(x) try({
+      tmp = filt(allex[[inds[x]]])
+      tmp$ENTREZID=num[x]
+      tmp})))
+    syms = select(Homo.sapiens, keys=ans$ENTREZID, keytype="ENTREZID",
+            columns="SYMBOL")
+    if (length(unique(syms[,1]))==nrow(syms)) ans$SYMBOL = syms[,2]
+    else { 
+      ssyms = split(syms[,2], syms[,1])[ syms[,1] ] # retain order
+      s1 = sapply(ssyms, "[", 1)
+      ans$SYMBOL = s1
+      }
+    ans
+}
+hasRowResolver = function(x) !is.null(exptData(x)$rowResolverHook)
+getRowResolverTypes = function(x) exptData(x)$rowResolverHook()
+tryRowResolution = function(x,i) {
+  ress = getRowResolverTypes(x)
+  rngs = rangeFromToksViaEntrez(toks=i, typesToTry=ress)
+  ov = findOverlaps( rowData(x), rngs )
+  queryHits(ov)
+}
+# based on devel 1.17.26 GRanges 1.17.26
+setMethod("[", c("SummarizedExperiment",
+  "ANY", "ANY", "ANY"), function (x, i, j, ..., drop = TRUE) 
+{
+    clone = GenomicRanges:::clone
+    .SummarizedExperiment.charbound = GenomicRanges:::.SummarizedExperiment.charbound
+    .SummarizedExperiment.assays.subset = GenomicRanges:::.SummarizedExperiment.assays.subset
+    if (1L != length(drop) || (!missing(drop) && drop)) 
+        warning("'drop' ignored '[,", class(x), ",ANY,ANY-method'")
+    if (missing(i) && missing(j)) 
+        return(x)
+    if (!missing(i) && is.character(i)) {
+        if (hasRowResolver(x)) i = tryRowResolution(x, i)  # will be vector of integers
+        else {
+          fmt <- paste0("<", class(x), ">[i,] index out of bounds: %s")
+          i <- .SummarizedExperiment.charbound(i, rownames(x), 
+            fmt)
+          }
+    }
+    if (!missing(j) && is.character(j)) {
+        fmt <- paste0("<", class(x), ">[,j] index out of bounds: %s")
+        j <- .SummarizedExperiment.charbound(j, colnames(x), 
+            fmt)
+    }
+    if (!missing(i) && !missing(j)) {
+        ii <- as.vector(i)
+        jj <- as.vector(j)
+        x <- clone(x, ..., rowData = rowData(x)[i], colData = colData(x)[j, 
+            , drop = FALSE], assays = .SummarizedExperiment.assays.subset(x, 
+            ii, jj))
+    }
+    else if (missing(i)) {
+        jj <- as.vector(j)
+        x <- clone(x, ..., colData = colData(x)[j, , drop = FALSE], 
+            assays = .SummarizedExperiment.assays.subset(x, j = jj))
+    }
+    else {
+        ii <- as.vector(i)
+        x <- clone(x, ..., rowData = rowData(x)[i], assays = .SummarizedExperiment.assays.subset(x, 
+            ii))
+    }
+    x
+})
+library(knitcitations)
+library(bibtex)
+allbib = read.bibtex("eq.bib")
+
+```
+
+We will use transcript profiles obtained through RNA-seq applied
+to HapMap cell lines
+
+```{r trans1}
+library(Biobase)
+load("/data/eQTL2014/montpick_eset.RData")
+mp = montpick.eset
+annotation(mp) = "org.Hs.eg.db"
+tmp = select(org.Hs.eg.db, keytype="ENSEMBL", columns="ENTREZID",
+  keys=featureNames(mp))
+ezs = split(tmp[,2], tmp[,1])
+ezs = sapply(ezs, "[", 1)
+drop = which(duplicated(ezs) | is.na(ezs))
+if (length(drop)>0) ezs = ezs[-drop]
+mp = mp[names(ezs)]
+featureNames(mp) = as.character(ezs[featureNames(mp)])
+mpSE = exs2se(mp, annoDb = org.Hs.eg.db, probekeytype="ENTREZID")
+```
+

@@ -31,8 +31,11 @@ TCGA ovarian cancer data.  The data sizes are manageable
 enough that the loadHub function is used to deserialize
 all relevant data.
 
-```{r chk,cache=TRUE}
-library(biocMultiAssay)
+```{r chk,cache=FALSE}
+suppressPackageStartupMessages(library(biocMultiAssay))
+#
+# crude way of enumerating RDA files planted in extdata
+#
 ov = dir(system.file("extdata/tcga_ov", 
    package="biocMultiAssay"), full=TRUE)
 drop = grep("pheno", ov)
@@ -54,4 +57,42 @@ elist = lapply(1:length(ov), function(x) new("expt",
 # populate an eHub, witha master phenotype data frame
 #
 ovhub = new("eHub", hub=elist, masterSampleData = get(load(pdpath)))
+ovhub
 ```
+
+This is a lightweight representation of the scope of data
+identified to an eHub.  We have as well a class that
+includes materializations of all the experimental data.
+Constructing it is currently slow.
+
+```{r doload, cache=TRUE}
+lovhub = loadHub(ovhub)
+```
+```{r lkloaded}
+lovhub
+object.size(lovhub)
+```
+
+This is a heavy representation but manageable at this level
+of data reduction.
+
+We can determine the set of common identifiers.
+```{r getcomm}
+allid = lapply(lovhub@elist, sampleNames)
+commids = allid[[1]]
+for (i in 2:length(allid))
+ commids = intersect(commids, allid[[i]])
+length(commids)
+```
+
+We can now generate the loadedHub instance with only the
+common samples.
+```{r docomm}
+locomm = lovhub
+locomm@elist = lapply(locomm@elist, function(x) x[,commids])
+locomm
+```
+
+Where to put these abstractions for both the light and
+heavy representations is a point of discussion.
+
