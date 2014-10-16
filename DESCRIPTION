@@ -1,10 +1,11 @@
 Package: biocMultiAssay
 Title: classes and functions for managing multiple assays on set of samples
-Version: 0.0.6
+Version: 0.0.7
 Author: multiAssay SIG
 Description: classes and functions for managing multiple assays on set of samples
 Suggests: BiocStyle, Homo.sapiens, stashR, hgu95av2.db, ALL
-Depends: R (>= 3.0.1), Biobase (>= 2.21.5), GenomicRanges (>= 1.13.35)
+Depends: R (>= 3.0.1), Biobase (>= 2.21.5), GenomicRanges (>= 1.13.35), dplyr
+Imports: Biobase
 Maintainer: VJ Carey <stvjc@channing.harvard.edu>
 License: Artistic-2.0
 LazyLoad: yes
