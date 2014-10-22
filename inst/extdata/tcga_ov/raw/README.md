@@ -1,8 +1,9 @@
 # Copy number by GISTIC2
 
 ## Relevant files:
-    + **all_lesions.conf_99.txt** - data file with ranges
-    + **SNP6 Copy number analysis (GISTIC2).pdf** - full GISTIC2 documentation output
+
+*  **all_lesions.conf_99.txt** - data file with ranges
+*  **SNP6 Copy number analysis (GISTIC2).pdf** - full GISTIC2 documentation output
 
 ## Methods Install [firehose_get command-line tool from the
 broad](https://confluence.broadinstitute.org/display/GDAC/Download),
@@ -29,10 +30,12 @@ significant regions as follows:
 # Default mRNA
 
 ## Relevant files
-    + **OV.medianexp.txt** - One row per gene symbol
-    + [Download link](https://dl.dropboxusercontent.com/u/15152544/TCGA/OV.medianexp.txt)
+
+*  **OV.medianexp.txt** - One row per gene symbol
+*  [Download link](https://dl.dropboxusercontent.com/u/15152544/TCGA/OV.medianexp.txt)
 
 ## Methods
+
     firehose_get -tasks mrna stddata latest ov
     tar xvfz stddata__2014_09_02/OV/20140902/gdac.broadinstitute.org_OV.mRNA_Preprocess_Median.Level_3.2014090200.0.0.tar.gz
     cp stddata__2014_09_02/OV/20140902/gdac.broadinstitute.org_OV.mRNA_Preprocess_Median.Level_3.2014090200.0.0/OV.medianexp.txt .
@@ -45,12 +48,12 @@ significant regions as follows:
     ELMO2   6.94072114738553        6.9554576454791
     RPS11   12.112295206898 11.6037710967151
 
-
 # Methylation 27K data
 
 ## Relevant files:
-    + OV.methylation__humanmethylation27__jhu_usc_edu__Level_3__within_bioassay_data_set_function__data.data.txt
-    + [Download link](https://dl.dropboxusercontent.com/u/15152544/TCGA/OV.methylation__humanmethylation27__jhu_usc_edu__Level_3__within_bioassay_data_set_function__data.data.txt)
+
+*  OV.methylation__humanmethylation27__jhu_usc_edu__Level_3__within_bioassay_data_set_function__data.data.txt
+*  [Download link](https://dl.dropboxusercontent.com/u/15152544/TCGA/OV.methylation__humanmethylation27__jhu_usc_edu__Level_3__within_bioassay_data_set_function__data.data.txt)
 
 ## Methods
     firehose_get -tasks methylation stddata latest ov
@@ -68,11 +71,12 @@ significant regions as follows:
 # Custom Affy for OVC
 
 ## Relevant files: 
-    + **TCGA_eset.rda** - RMA-processed ExpressionSet with phenoData
+
+*  **TCGA_eset.rda** - RMA-processed ExpressionSet with phenoData
       from HT-HG_U133A CEL files.  Just going to put this here because
       it's necessary for the known sample mix-ups, but I don't think in
       general we'll be processing CEL files.
-    + [Download link](https://dl.dropboxusercontent.com/u/15152544/TCGA/TCGA_eset.rda)
+*  [Download link](https://dl.dropboxusercontent.com/u/15152544/TCGA/TCGA_eset.rda)
 
 # Multiple assays by RTCGAToolbox
 
@@ -81,8 +85,8 @@ miRNASeq_Gene, which generated an error and is reported to the
 developer).
 
 ## Relevant files:
-    + **ovres.rda** - object of class "FirehoseData"
-    + [Download link](https://dl.dropboxusercontent.com/u/15152544/TCGA/ovres.rda)
+*  **ovres.rda** - object of class "FirehoseData"
+*  [Download link](https://dl.dropboxusercontent.com/u/15152544/TCGA/ovres.rda)
 
 ## Methods
 
