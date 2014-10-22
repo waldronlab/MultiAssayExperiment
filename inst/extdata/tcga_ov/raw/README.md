@@ -25,3 +25,21 @@ significant regions as follows:
 7. Residual Q values: The Q value of the peak region after removing ('peeling off') amplifications or deletions that overlap other, more significant peak regions in the same chromosome.
 8. Broad or Focal: Identifies whether the region reaches significance due primarily to broad events (called 'broad'), focal events (called 'focal'), or independently significant broad and focal events (called 'both').
 9. Amplitude Threshold: Key giving the meaning of values in the subsequent columns associated with each sample.
+
+# Default mRNA
+
+* Relevant files:
+    + **OV.medianexp.txt** - One row per gene symbol
+
+## Methods
+    firehose_get -tasks mrna stddata latest ov
+    tar xvfz stddata__2014_09_02/OV/20140902/gdac.broadinstitute.org_OV.mRNA_Preprocess_Median.Level_3.2014090200.0.0.tar.gz
+    cp stddata__2014_09_02/OV/20140902/gdac.broadinstitute.org_OV.mRNA_Preprocess_Median.Level_3.2014090200.0.0/OV.medianexp.txt .
+
+# Custom Affy for OVC
+
+* Relevant files: 
+    + **TCGA_eset.rda** - fRMA-processed ExpressionSet
+      from HT-HG_U133A CEL files.  Just going to put this here because
+      it's necessary for the known sample mix-ups, but I don't think in
+      general we'll be processing CEL files.
