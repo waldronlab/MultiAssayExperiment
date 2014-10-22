@@ -30,6 +30,8 @@ significant regions as follows:
 
 * Relevant files:
     + **OV.medianexp.txt** - One row per gene symbol
+    + Available from: https://dl.dropboxusercontent.com/u/15152544/TCGA/OV.medianexp.txt
+    + R: download.file("https://dl.dropboxusercontent.com/u/15152544/TCGA/OV.medianexp.txt", destfile="OV.medianexp.txt", method="wget")
 
 ## Methods
     firehose_get -tasks mrna stddata latest ov
@@ -43,3 +45,5 @@ significant regions as follows:
       from HT-HG_U133A CEL files.  Just going to put this here because
       it's necessary for the known sample mix-ups, but I don't think in
       general we'll be processing CEL files.
+    + Available from: https://dl.dropboxusercontent.com/u/15152544/TCGA/TCGA_eset.rda
+    + R: download.file("https://dl.dropboxusercontent.com/u/15152544/TCGA/TCGA_eset.rda", destfile="TCGA_eset.rda", method="wget")
