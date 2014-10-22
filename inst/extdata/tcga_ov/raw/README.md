@@ -1,6 +1,6 @@
 # Copy number by GISTIC2
 
-* Relevant files:
+## Relevant files:
     + **all_lesions.conf_99.txt** - data file with ranges
     + **SNP6 Copy number analysis (GISTIC2).pdf** - full GISTIC2 documentation output
 
@@ -28,7 +28,7 @@ significant regions as follows:
 
 # Default mRNA
 
-* Relevant files:
+## Relevant files
     + **OV.medianexp.txt** - One row per gene symbol
     + Available from: https://dl.dropboxusercontent.com/u/15152544/TCGA/OV.medianexp.txt
     + R: download.file("https://dl.dropboxusercontent.com/u/15152544/TCGA/OV.medianexp.txt", destfile="OV.medianexp.txt", method="wget")
@@ -38,12 +38,25 @@ significant regions as follows:
     tar xvfz stddata__2014_09_02/OV/20140902/gdac.broadinstitute.org_OV.mRNA_Preprocess_Median.Level_3.2014090200.0.0.tar.gz
     cp stddata__2014_09_02/OV/20140902/gdac.broadinstitute.org_OV.mRNA_Preprocess_Median.Level_3.2014090200.0.0/OV.medianexp.txt .
 
+# Methylation 27K data
+
+## Relevant files:
+    + OV.methylation__humanmethylation27__jhu_usc_edu__Level_3__within_bioassay_data_set_function__data.data.txt
+    + [Dropbox link](https://dl.dropboxusercontent.com/u/15152544/TCGA/OV.methylation__humanmethylation27__jhu_usc_edu__Level_3__within_bioassay_data_set_function__data.data.txt)
+    + R: download.file("https://dl.dropboxusercontent.com/u/15152544/TCGA/OV.methylation__humanmethylation27__jhu_usc_edu__Level_3__within_bioassay_data_set_function__data.data.txt", destfile="OV.methylation__humanmethylation27__jhu_usc_edu__Level_3__within_bioassay_data_set_function__data.data.txt", method="wget")
+
+## Methods
+    firehose_get -tasks methylation stddata latest ov
+    tar xfz stddata__2014_09_02/OV/20140902/gdac.broadinstitute.org_OV.Methylation_Preprocess.Level_3.2014090200.0.0.tar.gz
+    cp stddata__2014_09_02/OV/20140902/gdac.broadinstitute.org_OV.Merge_methylation__humanmethylation27__jhu_usc_edu__Level_3__within_bioassay_data_set_function__data.Level_3.2014090200.0.0/OV.methylation__humanmethylation27__jhu_usc_edu__Level_3__within_bioassay_data_set_function__data.data.txt .
+    
 # Custom Affy for OVC
 
-* Relevant files: 
-    + **TCGA_eset.rda** - fRMA-processed ExpressionSet
+## Relevant files: 
+    + **TCGA_eset.rda** - RMA-processed ExpressionSet with phenoData
       from HT-HG_U133A CEL files.  Just going to put this here because
       it's necessary for the known sample mix-ups, but I don't think in
       general we'll be processing CEL files.
     + Available from: https://dl.dropboxusercontent.com/u/15152544/TCGA/TCGA_eset.rda
     + R: download.file("https://dl.dropboxusercontent.com/u/15152544/TCGA/TCGA_eset.rda", destfile="TCGA_eset.rda", method="wget")
+
