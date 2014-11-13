@@ -1,8 +1,8 @@
 \name{coerce-methods}
 \docType{methods}
 \alias{coerce}
-\alias{SummarizedExperiment,ExpressionSet-method}
-\alias{coerce,ExpressionSet,SummarizedExperiment-method}
+\alias{exs2se,ExpressionSet-method}
+\alias{coerce,ExpressionSet,exs2se-method}
 \title{ convert ExpressionSet to SummarizedExperiment }
 \description{
 convert ExpressionSet to SummarizedExperiment
@@ -40,6 +40,6 @@ Additional arguments that can be supplied are
 \examples{
 library(Biobase)
 data(sample.ExpressionSet)
-SummarizedExperiment(sample.ExpressionSet)
+exs2se(sample.ExpressionSet)
 }
 \keyword{methods}

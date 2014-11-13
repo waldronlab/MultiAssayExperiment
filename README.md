@@ -11,4 +11,5 @@ Please take a look look at the [API
 Discussion](https://github.com/vjcitn/biocMultiAssay/issues/7), and
 consider joining the [biocMultiAssay Google
 Group](https://groups.google.com/forum/#!forum/biocmultiassay) to get
-involved.
+involved.  
+Here is a [calendar](https://www.google.com/calendar/embed?src=9ar0qc8mpkv6b9intgmdcdf0ss%40group.calendar.google.com&ctz=America/New_York) of upcoming meetings.
