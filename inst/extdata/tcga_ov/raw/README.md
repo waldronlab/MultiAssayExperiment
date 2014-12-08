@@ -2,8 +2,16 @@
 
 ## Relevant files:
 
-*  **all_lesions.conf_99.txt** - data file with ranges
+*  **all_lesions.conf_99.txt** - data file with ranges and
+gain/loss/amplification calls (0/-1/1/2) - this file is in biocMultiAssay.
 *  **SNP6 Copy number analysis (GISTIC2).pdf** - full GISTIC2 documentation output
+
+Additional large files put in Dropbox:
+*  [focal_input.seg.txt.gz](https://dl.dropboxusercontent.com/u/15152544/TCGA/focal_input.seg.txt.gz) - 
+data file with raw copy number numeric
+values per range of peaks
+* [all_data_by_genes.txt.gz](https://dl.dropboxusercontent.com/u/15152544/TCGA/all_data_by_genes.txt.gz) - 
+data file with raw copy number numeric values per gene
 
 ## Methods Install [firehose_get command-line tool from the
 broad](https://confluence.broadinstitute.org/display/GDAC/Download),
@@ -11,6 +19,8 @@ then:
 
     firehose_get -tasks gistic analyses latest ov
     cp analyses__2014_07_15/OV/20140715/gdac.broadinstitute.org_OV-TP.CopyNumber_Gistic2.Level_4.2014071500.0.0/all_lesions.conf_99.txt .
+    cp analyses__2014_07_15/OV/20140715/gdac.broadinstitute.org_OV-TP.CopyNumber_Gistic2.Level_4.2014071500.0.0/focal_input.seg.txt ~/Dropbox/Public/TCGA
+    cp analyses__2014_07_15/OV/20140715/gdac.broadinstitute.org_OV-TP.CopyNumber_Gistic2.Level_4.2014071500.0.0/all_data_by_genes.txt ~/Dropbox/Public/TCGA
 
 ## Notes from GISTIC output
 
@@ -32,7 +42,7 @@ significant regions as follows:
 ## Relevant files
 
 *  **OV.medianexp.txt** - One row per gene symbol
-*  [Download link](https://dl.dropboxusercontent.com/u/15152544/TCGA/OV.medianexp.txt)
+*  [Download link](https://dl.dropboxusercontent.com/u/15152544/TCGA/OV.medianexp.txt.gz)
 
 ## Methods
 
@@ -53,7 +63,7 @@ significant regions as follows:
 ## Relevant files:
 
 *  OV.methylation__humanmethylation27__jhu_usc_edu__Level_3__within_bioassay_data_set_function__data.data.txt
-*  [Download link](https://dl.dropboxusercontent.com/u/15152544/TCGA/OV.methylation__humanmethylation27__jhu_usc_edu__Level_3__within_bioassay_data_set_function__data.data.txt)
+*  [Download link](https://dl.dropboxusercontent.com/u/15152544/TCGA/OV.methylation__humanmethylation27__jhu_usc_edu__Level_3__within_bioassay_data_set_function__data.data.txt.gz)
 
 ## Methods
     firehose_get -tasks methylation stddata latest ov
