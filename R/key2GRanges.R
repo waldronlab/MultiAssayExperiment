@@ -18,6 +18,7 @@ duphandler=function(z) {
 ### If TRUE, use chr1 etc.
 ){
   ## acquire chr, start and end
+  library(package=db, character.only=TRUE)
   locd = duphandler(fulls <- select(get(db), keytype=keytype, keys=x,
                                     columns=c("CHR", "CHRLOC", "CHRLOCEND")))
   nfulls = na.omit(fulls)
