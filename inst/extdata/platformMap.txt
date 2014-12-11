@@ -1,0 +1,75 @@
+"title"	"gpl"	"bioc_package"	"manufacturer"	"organism"	"data_row_count"
+"Illumina Sentrix Array Matrix (SAM) - GoldenGate Methylation Cancer Panel I"	"GPL15380"	"GGHumanMethCancerPanelv1"	"Illumina"	"Homo sapiens"	1536
+"Illumina HumanMethylation27 BeadChip (HumanMethylation27_270596_v.1.2)"	"GPL8490"	"IlluminaHumanMethylation27k"	"Illumina, Inc."	"Homo sapiens"	27578
+"Illumina HumanMethylation450 BeadChip (HumanMethylation450_15017482)"	"GPL13534"	"IlluminaHumanMethylation450k"	"Illumina, Inc."	"Homo sapiens"	485577
+"GE Healthcare/Amersham Biosciences CodeLink™   ADME Rat 16-Assay Bioarray"	"GPL2898"	"adme16cod"	"GE Healthcare"	"Rattus norvegicus"	1280
+"[AG] Affymetrix Arabidopsis Genome Array"	"GPL71"	"ag"	"Affymetrix"	"Arabidopsis thaliana"	8297
+"[ATH1-121501] Affymetrix Arabidopsis ATH1 Genome Array"	"GPL198"	"ath1121501"	"Affymetrix"	"Arabidopsis thaliana"	22810
+"[Bovine] Affymetrix Bovine Genome Array"	"GPL2112"	"bovine"	"Affymetrix"	"Bos taurus"	24128
+"[Canine] Affymetrix Canine Genome 1.0 Array"	"GPL3979"	"canine"	"Affymetrix"	"Canis lupus familiaris"	23913
+"[Canine_2] Affymetrix Canine Genome 2.0 Array"	"GPL3738"	"canine2"	"Affymetrix"	"Canis lupus familiaris"	43035
+"[Celegans] Affymetrix C. elegans Genome Array"	"GPL200"	"celegans"	"Affymetrix"	"Caenorhabditis elegans"	22625
+"[Chicken] Affymetrix Chicken Genome Array"	"GPL3213"	"chicken"	"Affymetrix"	"Gallus gallus"	38535
+"[DrosGenome1] Affymetrix Drosophila Genome Array"	"GPL72"	"drosgenome1"	"Affymetrix"	"Drosophila melanogaster"	14010
+"[Drosophila_2] Affymetrix Drosophila Genome 2.0 Array"	"GPL1322"	"drosophila2"	"Affymetrix"	"Drosophila melanogaster"	18952
+"[Ecoli_ASv2] Affymetrix E. coli Antisense Genome Array"	"GPL199"	"ecoli2"	"Affymetrix"	"Escherichia coli K-12"	7312
+"CodeLink UniSet Human I Bioarray"	"GPL4191"	"h10kcod"	"GE Healthcare"	"Homo sapiens"	10458
+"GE Healthcare/Amersham Biosciences CodeLink™   UniSet Human 20K I Bioarray"	"GPL2891"	"h20kcod"	"GE Healthcare"	"Homo sapiens"	23572
+"[HC_G110] Affymetrix Human Cancer Array"	"GPL74"	"hcg110"	"Affymetrix"	"Homo sapiens"	2059
+"[HG-Focus] Affymetrix Human HG-Focus Target Array"	"GPL201"	"hgfocus"	"Affymetrix"	"Homo sapiens"	8793
+"[HG-U133A] Affymetrix Human Genome U133A Array"	"GPL96"	"hgu133a"	"Affymetrix"	"Homo sapiens"	22283
+"[HG-U133A_2] Affymetrix Human Genome U133A 2.0 Array"	"GPL571"	"hgu133a2"	"Affymetrix"	"Homo sapiens"	22277
+"[HG-U133B] Affymetrix Human Genome U133B Array"	"GPL97"	"hgu133b"	"Affymetrix"	"Homo sapiens"	22645
+"[HG-U133_Plus_2] Affymetrix Human Genome U133 Plus 2.0 Array"	"GPL570"	"hgu133plus2"	"Affymetrix"	"Homo sapiens"	54675
+"[HG-U219] Affymetrix Human Genome U219 Array"	"GPL13667"	"hgu219"	"Affymetrix"	"Homo sapiens"	49386
+"[HG_U95A] Affymetrix Human Genome U95A Array"	"GPL91"	"hgu95av2"	"Affymetrix"	"Homo sapiens"	12626
+"[HG_U95Av2] Affymetrix Human Genome U95 Version 2 Array"	"GPL8300"	"hgu95av2"	"Affymetrix"	"Homo sapiens"	12625
+"[HG_U95B] Affymetrix Human Genome U95B Array"	"GPL92"	"hgu95b"	"Affymetrix"	"Homo sapiens"	12620
+"[HG_U95C] Affymetrix Human Genome U95C Array"	"GPL93"	"hgu95c"	"Affymetrix"	"Homo sapiens"	12646
+"[HG_U95D] Affymetrix Human Genome U95D Array"	"GPL94"	"hgu95d"	"Affymetrix"	"Homo sapiens"	12644
+"[HG_U95E] Affymetrix Human Genome U95E Array"	"GPL95"	"hgu95e"	"Affymetrix"	"Homo sapiens"	12639
+"Agilent Human 1 cDNA Microarray (G4100A) [layout C]"	"GPL5689"	"hgug4100a"	"Agilent Technologies"	"Homo sapiens"	16281
+"Agilent-012097 Human 1A Microarray (V2) G4110B (Feature Number version)"	"GPL887"	"hgug4110b"	"Agilent Technologies"	"Homo sapiens"	22575
+"Agilent-011871 Human 1B Microarray G4111A (Feature Number version)"	"GPL886"	"hgug4111a"	"Agilent Technologies"	"Homo sapiens"	22575
+"Agilent-012391 Whole Human Genome Oligo Microarray G4112A (Feature Number version)"	"GPL1708"	"hgug4112a"	"Agilent Technologies"	"Homo sapiens"	44290
+"[HT_HG-U133A] Affymetrix Human Genome U133A Array (custom CDF: HTHGU133A_Hs_ENTREZG.cdf version 17.0.0)"	"GPL17897"	"hthgu133a"	"Affymetrix"	"Homo sapiens"	12092
+"[HT_HG-U133B] Affymetrix HT Human Genome U133B Array [custom CDF: ENTREZ brainarray v. 14]"	"GPL15396"	"hthgu133b"	"Affymetrix"	"Homo sapiens"	7906
+"[Hu35KsubA] Affymetrix Human 35K SubA Array"	"GPL98"	"hu35ksuba"	"Affymetrix"	"Homo sapiens"	8934
+"[Hu35KsubB] Affymetrix Human 35K SubB Array"	"GPL99"	"hu35ksubb"	"Affymetrix"	"Homo sapiens"	8924
+"[Hu35KsubC] Affymetrix Human 35K SubC Array"	"GPL100"	"hu35ksubc"	"Affymetrix"	"Homo sapiens"	8928
+"[Hu35KsubD] Affymetrix Human 35K SubD Array"	"GPL101"	"hu35ksubd"	"Affymetrix"	"Homo sapiens"	8928
+"[Hu6800] Affymetrix Human Full Length HuGeneFL Array"	"GPL80"	"hu6800"	"Affymetrix"	"Homo sapiens"	7129
+"[HuGene-1_0-st] Affymetrix Human Gene 1.0 ST Array [transcript (gene) version]"	"GPL6244"	"hugene10sttranscriptcluster"	"Affymetrix"	"Homo sapiens"	33297
+"[HuGene-1_1-st] Affymetrix Human Gene 1.1 ST Array [transcript (gene) version]"	"GPL11532"	"hugene11sttranscriptcluster"	"Affymetrix"	"Homo sapiens"	33297
+"Illumina human-6 v1.0 expression beadchip"	"GPL6097"	"illuminaHumanv1"	"Illumina Inc."	"Homo sapiens"	47296
+"Illumina human-6 v2.0 expression beadchip"	"GPL6102"	"illuminaHumanv2"	"Illumina Inc."	"Homo sapiens"	48702
+"Illumina HumanHT-12 V3.0 expression beadchip"	"GPL6947"	"illuminaHumanv3"	"Illumina Inc."	"Homo sapiens"	49576
+"Illumina HumanHT-12 V4.0 expression beadchip"	"GPL10558"	"illuminaHumanv4"	"Illumina Inc."	"Homo sapiens"	47323
+"[MG_U74A] Affymetrix Murine Genome U74A Array"	"GPL32"	"mgu74a"	"Affymetrix"	"Mus musculus"	12654
+"[MG_U74Av2] Affymetrix Murine Genome U74A Version 2 Array"	"GPL81"	"mgu74av2"	"Affymetrix"	"Mus musculus"	12488
+"[MG_U74B] Affymetrix Murine Genome U74B Array"	"GPL33"	"mgu74b"	"Affymetrix"	"Mus musculus"	12636
+"[MG_U74Bv2] Affymetrix Murine Genome U74B Version 2 Array"	"GPL82"	"mgu74bv2"	"Affymetrix"	"Mus musculus"	12477
+"[MG_U74C] Affymetrix Murine Genome U74C Array"	"GPL34"	"mgu74c"	"Affymetrix"	"Mus musculus"	12728
+"[MG_U74Cv2] Affymetrix Murine Genome U74 Version 2 Array"	"GPL83"	"mgu74cv2"	"Affymetrix"	"Mus musculus"	11934
+"[Maize] Affymetrix Maize Genome Array"	"GPL4032"	"moe430a"	"Affymetrix"	"Zea mays"	17734
+"[MOE430A] Affymetrix Mouse Expression 430A Array"	"GPL339"	"moe430b"	"Affymetrix"	"Mus musculus"	22690
+"[MOE430B] Affymetrix Mouse Expression 430B Array"	"GPL340"	"mouse4302"	"Affymetrix"	"Mus musculus"	22575
+"[Mouse430_2] Affymetrix Mouse Genome 430 2.0 Array"	"GPL1261"	"mouse430a2"	"Affymetrix"	"Mus musculus"	45101
+"[Mu11KsubA] Affymetrix Murine 11K SubA Array"	"GPL75"	"mu11ksuba"	"Affymetrix"	"Mus musculus"	6584
+"[Mu11KsubB] Affymetrix Murine 11K SubB Array"	"GPL76"	"mu11ksubb"	"Affymetrix"	"Mus musculus"	6595
+"[Mu19KsubA] Affymetrix Murine 19K SubA Array"	"GPL77"	"mu19ksuba"	"Affymetrix"	"Mus musculus"	7045
+"[Mu19KsubB] Affymetrix Murine 19K SubB Array"	"GPL78"	"mu19ksubb"	"Affymetrix"	"Mus musculus"	7054
+"[Mu19KsubC] Affymetrix Murine 19K SubC Array"	"GPL79"	"mu19ksubc"	"Affymetrix"	"Mus musculus"	7047
+"[RAE230A] Affymetrix Rat Expression 230A Array"	"GPL341"	"rae230a"	"Affymetrix"	"Rattus norvegicus"	15923
+"[RAE230B] Affymetrix Rat Expression 230B Array"	"GPL342"	"rae230b"	"Affymetrix"	"Rattus norvegicus"	15333
+"[Rat230_2] Affymetrix Rat Genome 230 2.0 Array"	"GPL1355"	"rat2302"	"Affymetrix"	"Rattus norvegicus"	31099
+"[RG_U34A] Affymetrix Rat Genome U34 Array"	"GPL85"	"rgu34a"	"Affymetrix"	"Rattus norvegicus"	8799
+"[RG_U34B] Affymetrix Rat Genome U34 Array"	"GPL86"	"rgu34b"	"Affymetrix"	"Rattus norvegicus"	8791
+"[RG_U34C] Affymetrix Rat Genome U34 Array"	"GPL87"	"rgu34c"	"Affymetrix"	"Rattus norvegicus"	8789
+"[RN_U34] Affymetrix Rat Neurobiology U34 Array"	"GPL88"	"rnu34"	"Affymetrix"	"Rattus norvegicus"	1322
+"[RT_U34] Affymetrix Rat Toxicology U34 Array"	"GPL89"	"rtu34"	"Affymetrix"	"Rattus norvegicus"	1031
+"[U133_X3P] Affymetrix Human X3P Array"	"GPL1352"	"u133x3p"	"Affymetrix"	"Homo sapiens"	61359
+"[Xenopus_laevis] Affymetrix Xenopus laevis Genome Array"	"GPL1318"	"xenopuslaevis"	"Affymetrix"	"Xenopus laevis"	15611
+"[Yeast_2] Affymetrix Yeast Genome 2.0 Array"	"GPL2529"	"yeast2"	"Affymetrix"	"Schizosaccharomyces pombe;	Saccharomyces cerevisiae"	10928
+"[YG_S98] Affymetrix Yeast Genome S98 Array"	"GPL90"	"ygs98"	"Affymetrix"	"Saccharomyces cerevisiae"	9335
+"[Zebrafish] Affymetrix Zebrafish Genome Array"	"GPL1319"	"zebrafish"	"Affymetrix"	"Danio rerio"	15617
