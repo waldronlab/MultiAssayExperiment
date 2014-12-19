@@ -29,11 +29,16 @@ setMethod("loadHub", "eHub", function(hub) {
   new("loadedHub", basehub=hub, elist=obj)
 })
 
+setGeneric("featExtractor", function(x) standardGeneric("featExtractor"))
+setMethod("featExtractor", "ExpressionSet", function(x) featureNames(x))
+setMethod("featExtractor", "SummarizedExperiment", function(x) rownames(x))
+
 setClass("loadedHub", representation(basehub="eHub", elist="list"))
 setMethod("show", "loadedHub", function(object) {
  cat("loadedHub instance.\n")
  dimmat = t(sapply(object@elist, dim))
- featExemplars = lapply(object@elist, function(x) head(featureNames(x),3))
+ colnames(dimmat) = c("Features", "Samples") # dim for eSet nicer than for SE!
+ featExemplars = lapply(object@elist, function(x) head(featExtractor(x),3))
  featExemplars = sapply(featExemplars, paste, collapse=", ")
  featExemplars = substr(featExemplars, 1, 25)
  featExemplars = paste(featExemplars, "...")
