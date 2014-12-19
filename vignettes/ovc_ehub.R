@@ -1,40 +1,19 @@
----
-title: "Creating an eHub for TCGA ovarian cancer dataset"
-author: "Levi Waldron"
-date: "December 7, 2014"
-output: html_document
----
 
-```{r, echo=FALSE, message=FALSE}
+## ----, echo=FALSE, message=FALSE-----------------------------------------
 library(biocMultiAssay)
-```
 
-# GISTIC copy number
 
-## GISTIC centered CN estimates in an ExpressionSet
-
-This yields `eset.cn` in working environment.
-```{r loadg}
-load(system.file("extdata/tcga_ov/ovc_eset_copynumber_gistic_2013_01_16.rda",
-   package="biocMultiAssay"))
-```
-
-## Called loss/gain/amplification as SummarizedExperiment
-
-Read data:
-```{r}
+## ------------------------------------------------------------------------
 cn <- read.table(system.file("extdata/tcga_ov/raw", "all_lesions.conf_99.txt", package="biocMultiAssay"), 
                  row.names=1, header=TRUE, sep="\t", as.is=TRUE)
-```
 
-Extract copy number ranges, using region limits. First the chromosomes:
-```{r}
+
+## ------------------------------------------------------------------------
 chr <- sub(":.+", "", cn$Region.Limits)
 head(chr)
-```
 
-Then the ranges:
-```{r}
+
+## ------------------------------------------------------------------------
 head(cn$Region.Limits, 1)
 ranges <- sub(".+?:", "", cn$Region.Limits)
 head(ranges, 1)
@@ -45,20 +24,18 @@ ranges[, 1] <- as.integer(ranges[, 1])
 ranges[, 2] <- as.integer(ranges[, 2])
 colnames(ranges) <- c("start", "end")
 head(ranges, 1)
-```
 
-Construct a GRanges object:
-```{r, message=FALSE}
+
+## ----, message=FALSE-----------------------------------------------------
 library(GenomicRanges)
 gr <- GRanges(seqnames=Rle(chr),
         ranges=IRanges(start=ranges$start, end=ranges$end),
         q.values=cn$q.values)
 genome(gr) <- "hg19"
 gr
-```
 
-Create a matrix of peak calls, with the patient component of the barcode as column names:
-```{r}
+
+## ------------------------------------------------------------------------
 cna.dat <- cn[, -1:-8]
 colnames(cna.dat) <- sub("\\.[0-9]*[ABCD].+", "", colnames(cna.dat))
 cna.dat$X <- NULL
@@ -67,29 +44,23 @@ cna.dat <- as.matrix(cna.dat)
 class(cna.dat)
 dim(cna.dat)
 cna.dat[1:3, 1:3]
-```
 
-And finally create a SummarizedExperiment with the copy number data:
-```{r}
+
+## ------------------------------------------------------------------------
 gistic.calls <- SummarizedExperiment(assays=SimpleList(cna.dat), 
                                   rowData=gr)
 colnames(gistic.calls) <- colnames(cna.dat)
 gistic.calls
-```
 
-## Raw copy number as GRangesList
 
-This section creates a GRangesList object containing raw copy number numeric (non-integer) values.  _Levi: I am unsure what class to use when there is a different set of GRanges for each patient, with copy number data associated with each of those ranges_.  In this section I create a GRangesList, even though I don't imagine that is the correct solution.
-
-```{r}
+## ------------------------------------------------------------------------
 cn <- read.table(system.file("extdata/tcga_ov/raw", "focal_input.seg.txt", 
                              package="biocMultiAssay"),
                  header=TRUE, sep="\t", as.is=TRUE)
 cn$id <- make.names(sub("\\-[0-9]*[ABCD].+", "", cn[, 1]))
-```
 
-Make a GRangesList, one element per patient.  
-```{r}
+
+## ------------------------------------------------------------------------
 grl <- lapply(unique(cn$id), function(x){
   cn1 <- cn[cn$id==x, ]
   gr <- GRanges(seqnames=Rle(paste0("chr", cn1$Chromosome)),
@@ -101,13 +72,9 @@ grl <- lapply(unique(cn$id), function(x){
 })
 names(grl) <- unique(cn$id)
 grl <- GRangesList(grl)
-```
 
-## Raw copy number as SummarizedExperiment
 
-For methods to obtain the file `all_data_by_genes.txt`, see the inst/extdata/raw directory of biocMultiAssay.
-
-```{r}
+## ------------------------------------------------------------------------
 if (!file.exists("all_data_by_genes.txt.gz")) {
 download.file("https://dl.dropboxusercontent.com/u/15152544/TCGA/all_data_by_genes.txt.gz",
               destfile="all_data_by_genes.txt.gz", method="wget")
@@ -115,10 +82,9 @@ download.file("https://dl.dropboxusercontent.com/u/15152544/TCGA/all_data_by_gen
 cn <- read.table(gzfile("all_data_by_genes.txt.gz"), as.is=TRUE, row.names=1, sep="\t", header=TRUE)
 colnames(cn) <- sub("\\.[0-9]*[ABCD].+", "", colnames(cn))
 cn <- cn[, -1:-2]
-```
 
-Get ranges for each gene:
-```{r}
+
+## ------------------------------------------------------------------------
 rowd <- key2GRanges(rownames(cn))
 hasrowd = match(names(rowd), rownames(cn), nomatch=0)
 ex = as.matrix(cn[hasrowd,])
@@ -127,31 +93,16 @@ gistic.cn <- SummarizedExperiment(assays=SimpleList(ex),
                                   rowData=rowd)
 colnames(gistic.cn) <- colnames(ex)
 gistic.cn
-```
 
-# Gene Expression
 
-## As ExpressionSet
-
-```{r}
+## ------------------------------------------------------------------------
 load(system.file("extdata/tcga_ov","TCGA_eset.rda",package="biocMultiAssay"))
 TCGA_eset
-```
 
-## As SummarizedExperiment
 
-```{r}
+## ------------------------------------------------------------------------
 tmp <- TCGA_eset
 featureNames(tmp) <- as.character(featureData(tmp)$probeset)
 tmp@annotation <- "hgu133a"
 TCGA_se <- exs2se(tmp)
-```
 
-tags = c("ov affy", "ov CNV gistic")
-# construct expt instances from ExpressionSets
-#
-elist = lapply(1:length(tags), function(x) new("expt",
-serType="RData", assayPath="", tag=tags[x], sampleDataPath="")) #
-# populate an eHub, witha master phenotype data frame
-#
-ovhub2 = new("eHub", hub=elist, masterSampleData = phenoData(TCGA_eset))
