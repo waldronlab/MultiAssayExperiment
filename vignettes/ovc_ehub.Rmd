@@ -18,6 +18,14 @@ library(biocMultiAssay)
 
 # GISTIC copy number
 
+## GISTIC centered CN estimates in an ExpressionSet
+
+This yields `eset.cn` in working environment.
+```{r loadg}
+load(system.file("extdata/tcga_ov/ovc_eset_copynumber_gistic_2013_01_16.rda",
+   package="biocMultiAssay"))
+```
+
 ## Called loss/gain/amplification as SummarizedExperiment
 
 Read data:
@@ -109,8 +117,10 @@ save(cna.grl, file="cna.grl.rda")
 For methods to obtain the file `all_data_by_genes.txt`, see the inst/extdata/raw directory of biocMultiAssay.
 
 ```{r}
+if (!file.exists("all_data_by_genes.txt.gz")) {
 download.file("https://dl.dropboxusercontent.com/u/15152544/TCGA/all_data_by_genes.txt.gz",
               destfile="all_data_by_genes.txt.gz", method="wget")
+}
 cn <- read.table(gzfile("all_data_by_genes.txt.gz"), as.is=TRUE, row.names=1, sep="\t", header=TRUE)
 colnames(cn) <- sub("\\.[0-9]*[ABCD].+", "", colnames(cn))
 cn <- cn[, -1:-2]
@@ -150,3 +160,12 @@ expr.eset@annotation <- "hgu133a"
 expr.se <- exs2se(expr.eset)
 save(expr.se, file="expr.se.rda")
 ```
+
+tags = c("ov affy", "ov CNV gistic")
+# construct expt instances from ExpressionSets
+#
+elist = lapply(1:length(tags), function(x) new("expt",
+serType="RData", assayPath="", tag=tags[x], sampleDataPath="")) #
+# populate an eHub, witha master phenotype data frame
+#
+ovhub2 = new("eHub", hub=elist, masterSampleData = phenoData(TCGA_eset))
