@@ -17,6 +17,7 @@ duphandler=function(z) {
   ucsdChrnames = TRUE
 ### If TRUE, use chr1 etc.
 ){
+  library(db, character.only=TRUE)
   ## acquire chr, start and end
   library(package=db, character.only=TRUE)
   locd = duphandler(fulls <- select(get(db), keytype=keytype, keys=x,
