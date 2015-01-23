@@ -7,14 +7,14 @@ gain/loss/amplification calls (0/-1/1/2) - this file is in biocMultiAssay.
 *  **SNP6 Copy number analysis (GISTIC2).pdf** - full GISTIC2 documentation output
 
 Additional large files put in Dropbox:
+
 *  [focal_input.seg.txt.gz](https://dl.dropboxusercontent.com/u/15152544/TCGA/focal_input.seg.txt.gz) - 
 data file with raw copy number numeric
 values per range of peaks
 * [all_data_by_genes.txt.gz](https://dl.dropboxusercontent.com/u/15152544/TCGA/all_data_by_genes.txt.gz) - 
 data file with raw copy number numeric values per gene
 
-## Methods Install [firehose_get command-line tool from the
-broad](https://confluence.broadinstitute.org/display/GDAC/Download),
+## Methods Install firehose_get command-line tool [here](https://confluence.broadinstitute.org/display/GDAC/Download)
 then:
 
     firehose_get -tasks gistic analyses latest ov
@@ -119,3 +119,26 @@ developer).
         [5] "miRNASeqGene"    "CNASNP"          "CNVSNP"          "CNAseq"         
         [9] "CNACGH"          "Methylation"     "mRNAArray"       "miRNAArray"     
        [13] "RPPAArray"       "Mutations"       "GISTIC"         
+
+# Multiple assays using TCGA-Assembler
+
+Register and download the code from the [website](http://www.compgenome.org/TCGA-Assembler/)
+
+Make sure dependencies are installed in R: 
+
+    install.packages(c("HGNChelper", "RCurl", "httr", "stringr", "digest", "bitops"), dependencies=TRUE)
+        
+Unzip the package, create a folder (you can change the directory to where you downloaded and extracted your files) and source the modules
+
+    unzip("~/Downloads/TCGA-Assembler.1.0.3.zip", exdir="~/foo")
+    setwd("~/foo")
+    source("Module_A.r")
+    source("Module_B.r")
+
+Module A is for retrieving data and Module B is for processing and integrating the data. 
+
+Here the raw data is downloaded: 
+
+    RNASeqRawOV <- DownloadRNASeqData(traverseResultFile = "/DirectoryTraverseResult_Jul-08-2014.rda", saveFolderName = "/QuickStartGuide_Results/RawData/", cancerType = "OV", assayPlatform = "RNASeqV2", dataType = "gene.quantification", inputPatientIDs = c("TCGA-09-0366-01", "TCGA-09-0367-01", "TCGA-09-0369-01"), outputFileName = "OVExample")
+
+
