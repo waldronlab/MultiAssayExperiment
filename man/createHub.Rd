@@ -54,7 +54,7 @@ multiassay SIG
 \examples{
 if(interactive()){
 ov = dir(system.file("extdata/tcga_ov",
-   package="biocMultiAssay"), full=TRUE, pattern="\\.rda$")
+   package="biocMultiAssay"), full=TRUE, pattern="\\\\.rda$")
 drop = grep("pheno", ov)
 if (length(drop)>0) {
   pdpath=ov[drop]
