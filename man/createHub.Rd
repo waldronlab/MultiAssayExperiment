@@ -63,8 +63,7 @@ if (length(drop)>0) {
 #
 # informal labels for constituents
 #
-tags = c("ov RNA-seq", "ov agilent", "ov mirna", "ov affy", "ov CNV gistic",
-  "ov methy 450k")
+tags = c("ov CNV gistic", "ov methy 450k", "ov affy", "ov agilent", "ov mirna", "ov RNA-seq")
 ovlist <- lapply(ov, function(x) get(load(x)))
 names(ovlist) <- tags
 lovhub2 <- createHub(masterpheno=pData(ovlist[[2]]), objlist=ovlist, drop=TRUE)
