@@ -21,7 +21,7 @@ multiple data types, such as gene expression,
 genotype, miRNA abundance.  It will frequently
 be the case that not all samples will contribute to
 all assays, so some sparsity in the
-set of 
+set of
 samples $\times$ assays is expected.
 
 # Basic demonstrative resources
@@ -36,8 +36,8 @@ suppressPackageStartupMessages(library(biocMultiAssay))
 #
 # crude way of enumerating RDA files planted in extdata
 #
-ov = dir(system.file("extdata/tcga_ov", 
-   package="biocMultiAssay"), full=TRUE)
+ov = dir(system.file("extdata/tcga_ov",
+   package="biocMultiAssay"), full=TRUE, pattern="\\.rda$")
 drop = grep("pheno", ov)
 if (length(drop)>0) {
   pdpath=ov[drop]
@@ -51,12 +51,12 @@ tags = c("ov RNA-seq", "ov agilent", "ov mirna", "ov affy", "ov CNV gistic",
 #
 # construct expt instances from ExpressionSets
 #
-elist = lapply(1:length(ov), function(x) new("expt", 
-     serType="RData", assayPath=ov[x], tag=tags[x], sampleDataPath=ov[x]))
+exptlist = lapply(1:length(ov), function(x) new("expt",
+     serType="RData", assayPath=ov[x], tag=tags[x]))
 #
 # populate an eHub, witha master phenotype data frame
 #
-ovhub = new("eHub", hub=elist, masterSampleData = get(load(pdpath)))
+ovhub = new("eHub", hub=exptlist, masterSampleData = get(load(pdpath)))
 ovhub
 ```
 
@@ -96,3 +96,13 @@ locomm
 Where to put these abstractions for both the light and
 heavy representations is a point of discussion.
 
+# createHub shortcut function for creating a loadedHub
+
+```{r createHub}
+ovlist <- lapply(ov, function(x) get(load(x)))
+names(ovlist) <- tags
+
+lovhub2 <- createHub(masterpheno=pData(ovlist[[2]]), objlist=ovlist, drop=TRUE)
+lovhub2
+object.size(lovhub2)
+```

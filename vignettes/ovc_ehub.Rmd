@@ -1,13 +1,20 @@
 ---
 title: "Creating an eHub for TCGA ovarian cancer dataset"
 author: "Levi Waldron"
-date: "December 7, 2014"
-output: html_document
+date: "December 10, 2014"
+output:
+  html_document:
+    number_sections: yes
+    toc: yes
 ---
 
 ```{r, echo=FALSE, message=FALSE}
 library(biocMultiAssay)
 ```
+
+# Links
+* Compiled html vignette from [Rpubs](http://rpubs.com/lwaldron/ovc_ehub).  
+* .rda files from [Dropbox](https://www.dropbox.com/sh/po98a41h779j6mv/AACMbyHQgc2Yd0oi8XJL5iNIa?dl=0).
 
 # GISTIC copy number
 
@@ -71,10 +78,11 @@ cna.dat[1:3, 1:3]
 
 And finally create a SummarizedExperiment with the copy number data:
 ```{r}
-gistic.calls <- SummarizedExperiment(assays=SimpleList(cna.dat), 
+cna01.se <- SummarizedExperiment(assays=SimpleList(cna.dat), 
                                   rowData=gr)
-colnames(gistic.calls) <- colnames(cna.dat)
-gistic.calls
+colnames(cna01.se) <- colnames(cna.dat)
+save(cna01.se, file="cna01.se.rda")
+cna01.se
 ```
 
 ## Raw copy number as GRangesList
@@ -100,7 +108,8 @@ grl <- lapply(unique(cn$id), function(x){
   gr
 })
 names(grl) <- unique(cn$id)
-grl <- GRangesList(grl)
+cna.grl <- GRangesList(grl)
+save(cna.grl, file="cna.grl.rda")
 ```
 
 ## Raw copy number as SummarizedExperiment
@@ -118,15 +127,16 @@ cn <- cn[, -1:-2]
 ```
 
 Get ranges for each gene:
-```{r}
+```{r, message=FALSE, warning=FALSE}
 rowd <- key2GRanges(rownames(cn))
 hasrowd = match(names(rowd), rownames(cn), nomatch=0)
 ex = as.matrix(cn[hasrowd,])
 stopifnot(identical(names(rowd), rownames(ex)))
-gistic.cn <- SummarizedExperiment(assays=SimpleList(ex), 
+cna.se <- SummarizedExperiment(assays=SimpleList(ex), 
                                   rowData=rowd)
-colnames(gistic.cn) <- colnames(ex)
-gistic.cn
+colnames(cna.se) <- colnames(ex)
+save(cna.se, file="cna.se.rda")
+cna.se
 ```
 
 # Gene Expression
@@ -134,17 +144,21 @@ gistic.cn
 ## As ExpressionSet
 
 ```{r}
+library(affy)
 load(system.file("extdata/tcga_ov","TCGA_eset.rda",package="biocMultiAssay"))
-TCGA_eset
+expr.eset <- TCGA_eset
+pdata <- pData(TCGA_eset)
+save(expr.eset, file="expr.eset.rda")
+save(pdata, file="pdata.rda")
 ```
 
 ## As SummarizedExperiment
 
-```{r}
-tmp <- TCGA_eset
-featureNames(tmp) <- as.character(featureData(tmp)$probeset)
-tmp@annotation <- "hgu133a"
-TCGA_se <- exs2se(tmp)
+```{r, warning=FALSE, message=FALSE}
+featureNames(expr.eset) <- as.character(featureData(expr.eset)$probeset)
+expr.eset@annotation <- "hgu133a"
+expr.se <- exs2se(expr.eset)
+save(expr.se, file="expr.se.rda")
 ```
 
 tags = c("ov affy", "ov CNV gistic")
