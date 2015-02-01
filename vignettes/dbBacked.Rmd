@@ -1,0 +1,79 @@
+
+---
+title: "dbBacked experiment hub: a demonstration with SQLite"
+author: "Vincent J. Carey, stvjc at channing.harvard.edu"
+date: "Feb 2015"
+output:
+  BiocStyle::pdf_document:
+    toc: yes
+    number_sections: yes
+  BiocStyle::html_document:
+    highlight: pygments
+    number_sections: yes
+    theme: united
+    toc: yes
+---
+
+<!--
+%\VignetteEngine{knitr::rmarkdown}
+%\VignetteIndexEntry{dbBacked experiment hub: Ovarian cancer TCGA demo}
+-->
+
+```{r style, echo = FALSE, results = 'asis'}
+BiocStyle::markdown()
+```
+
+# Introduction
+
+```{r setup,echo=FALSE,results="hide"}
+suppressPackageStartupMessages({
+library(biocMultiAssay)
+library(dplyr)
+if (!exists("lovhub2")) example(createHub)
+})
+```
+We have an example "loaded experiment hub" based on
+TCGA ovarian tumor data.  It can be created using
+```{r lkex,eval=FALSE}
+library(biocMultiAssay)
+example(createHub)
+```
+```{r lk2}
+lovhub2
+```
+We don't have a great deal of infrastructure for working with
+this.  This document considers a long thin database representation
+(not quite triples) of the information.
+
+# Creating and indexing a SQLite representation
+
+A few tools have been coded to facilitate creation of
+a SQLite database with the information in `lovhub2`.
+
+```{r lkco}
+args(.db_create_long)
+args(.db_index)
+```
+
+On a modest-size linux machine, these can generate an indexed SQLite
+database in a few minutes.
+
+```{r lkco2,eval=FALSE}
+d1 = .db_create_long("OvarDB.sqlite", lovhub2, "OvarLong")
+d1 = .db_index(d1)
+```
+
+# Some simple queries
+
+Once we have the sqlite generated, we set an
+environment variable so that it can be found by R.
+
+```{r sete, eval=FALSE}
+Sys.setenv(OVARLONG_PATH="./OvarDB.sqlite")
+OvarHub()
+OvMasterPheno = function() tbl(OvarHub(), "masterPheno")
+OvarLong = function() tbl(OvarHub(), "OvarLong")
+tabulateSamples() # will give columns from show(lovhub2)
+tabulateFeatures()
+```
+
