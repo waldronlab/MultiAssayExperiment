@@ -60,7 +60,7 @@ database in a few minutes.
 
 ```{r lkco2,eval=FALSE}
 d1 = .db_create_long("OvarDB.sqlite", lovhub2, "OvarLong")
-d1 = .db_index(d1)
+d1 = .db_index(d1, "OvarLong")
 ```
 
 # Some simple queries
