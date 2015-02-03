@@ -93,7 +93,7 @@ tabulateSamples = function(tgen=OvarLong,
   featureToCheck="A2M") {  # how to get an exemplar?
   stopifnot(is(featureToCheck,"character"))
   stopifnot(length(featureToCheck)==1)
-  tgen() %>% select(sampleID, assaytype) %>% 
+  tgen() %>% dplyr::select(sampleID, assaytype) %>% 
          filter(feature==featureToCheck) %>% 
          group_by(assaytype) %>% summarize(n=n())
 }
@@ -102,7 +102,7 @@ tabulateFeatures = function(tgen=OvarLong,
    sampleToCheck="TCGA.04.1331") {
   stopifnot(is(sampleToCheck,"character"))
   stopifnot(length(sampleToCheck)==1)
-  tgen() %>% select(sampleID, assaytype) %>% 
+  tgen() %>% dplyr::select(sampleID, assaytype) %>% 
           filter(sampleID==sampleToCheck) %>% 
           group_by(assaytype) %>% summarize(n=n())
 }
