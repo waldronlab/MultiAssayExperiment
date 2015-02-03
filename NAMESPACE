@@ -2,6 +2,7 @@ exportPattern("..*")
 
 importClassesFrom("Biobase", "ExpressionSet")
 importClassesFrom("GenomicRanges", "GRanges", "SummarizedExperiment")
+importClassesFrom("GenomicFiles", "GenomicFiles")
 
 importMethodsFrom("Biobase", "phenoData")
 

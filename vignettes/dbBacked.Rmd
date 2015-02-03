@@ -59,7 +59,8 @@ On a modest-size linux machine, these can generate an indexed SQLite
 database in a few minutes.
 
 ```{r lkco2,eval=FALSE}
-d1 = .db_create_long("OvarDB.sqlite", lovhub2, "OvarLong")
+newhub = .createOvarianHub()
+d1 = .db_create_long("OvarDB.sqlite", newhub, "OvarLong")
 d1 = .db_index(d1, "OvarLong")
 ```
 
@@ -70,6 +71,8 @@ environment variable so that it can be found by R.
 
 ```{r sete, eval=FALSE}
 Sys.setenv(OVARLONG_PATH="./OvarDB.sqlite")
+```
+```{r lkinfra}
 OvarHub()
 OvMasterPheno = function() tbl(OvarHub(), "masterPheno")
 OvarLong = function() tbl(OvarHub(), "OvarLong")
@@ -77,3 +80,48 @@ tabulateSamples() # will give columns from show(lovhub2)
 tabulateFeatures()
 ```
 
+# A round trip: Creating an ExpressionSet from the database
+
+We use \CRANpkg{tidyr}::spread(), which seems to require data.frame
+input at this time.
+
+```{r getes,cache=TRUE}
+library(tidyr)
+cnv <- OvarLong() %>% filter(assaytype=="OvarCnvGistic")
+explain(cnv)
+cnvdf = cnv %>% as.data.frame(n=-1)  # not pleasant
+cnvByFeat <- cnvdf %>% spread(sampleID, value) 
+cnvByFeat[1:5,1:5]
+dm = data.matrix(cnvByFeat[,-c(1:3)])
+rownames(dm) = cnvByFeat$feature
+pd = OvMasterPheno() %>% as.data.frame()
+rownames(pd) = pd[,1]
+pd = AnnotatedDataFrame( pd[colnames(dm), ] )
+OvCnvEs = ExpressionSet( dm, pd )
+OvCnvEs
+```
+
+# An approach to addressing features in genomic coordinates
+
+We will use the
+\Biocpkg{AnnotationDbi} and TxDb infrastructure
+in an ad hoc way.  We'll bind gene addresses to the ExpressionSet
+instance.
+
+```{r getaddrs}
+library(org.Hs.eg.db)
+allsym = select(org.Hs.eg.db, keys=keys(org.Hs.eg.db),
+   columns="SYMBOL")
+mapS2E = allsym$ENTREZID
+names(mapS2E) = allsym$SYMBOL
+mapS2E = mapS2E[ featureNames(OvCnvEs) ]
+library(TxDb.Hsapiens.UCSC.hg19.knownGene)
+gnaddrs = genes(TxDb.Hsapiens.UCSC.hg19.knownGene)
+mapS2EwAddr = mapS2E[ which(mapS2E %in% names(gnaddrs)) ]
+addrd = as.data.frame( gnaddrs[ as.character(mapS2EwAddr) ] )
+OvCnvEs = OvCnvEs[ names(mapS2EwAddr), ]
+rownames(addrd) = featureNames(OvCnvEs)
+fData(OvCnvEs) = addrd
+OvCnvEs
+fData(OvCnvEs)[1:3,]
+```
