@@ -139,6 +139,13 @@ Module A is for retrieving data and Module B is for processing and integrating t
 
 Here the raw data is downloaded: 
 
-    RNASeqRawOV <- DownloadRNASeqData(traverseResultFile = "/DirectoryTraverseResult_Jul-08-2014.rda", saveFolderName = "/QuickStartGuide_Results/RawData/", cancerType = "OV", assayPlatform = "RNASeqV2", dataType = "gene.quantification", inputPatientIDs = c("TCGA-09-0366-01", "TCGA-09-0367-01", "TCGA-09-0369-01"), outputFileName = "OVExample")
+    RNASeqRawData <- DownloadRNASeqData(traverseResultFile = "./DirectoryTraverseResult_Jul-08-2014.rda", 
+        saveFolderName = "./QuickStartGuide_Results/RawData/", cancerType = "READ", 
+        assayPlatform = "RNASeqV1", dataType = "gene.quantification", 
+        inputPatientIDs = c("TCGA-AG-A036-01", "TCGA-AG-3605-01", "TCGA-AG-A032-01", "TCGA-AG-A00Y-01"), 
+        outputFileName = "2minuteExample")
+
+*Note*: This download function uses a "DirectoryTraverseResult" file for download. When running your own data download in the future, this file will have to be created as per the documentation's instructions [here](http://www.compgenome.org/TCGA-Assembler/documents/TCGA-Assembler%20Quick%20Start%20Guide.pdf) (section 5.1) which may take about an hour to complete depending on your internet connection.
+
 
 
