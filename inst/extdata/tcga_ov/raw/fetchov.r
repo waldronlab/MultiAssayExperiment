@@ -50,6 +50,7 @@ AllGenes[[3]][(nrow(AllGenes)-2):nrow(AllGenes)] <- NA
 # Code for renaming columns from TCGA barcode to n()
 setnames(AllGenes, colnames(AllGenes)[grep("[0-9]", colnames(AllGenes))], as.character(seq(4:(length(AllGenes)))))
 
+sum(is.na(AllGenes))
 
 # Read Methylation File
 Methyl <- fread("~/../../scratch/OV-Methylation-1.txt", stringsAsFactors=FALSE)
@@ -60,17 +61,26 @@ for (i in 1:3){
 
 Methyl[[1]][(nrow(Methyl)-2):nrow(Methyl)] <- c("colsite", "tss", "partID")
 
+sum(is.na(Methyl))
+
 # setnames(Methyl, colnames(Methyl)[grep("TCGA", colnames(Methyl))], as.character(seq(2:(length(Methyl)))))
 
-library(reshape2)
-melt(Methyl, id.vars = "Hybridization REF")
-setnames(Methyl, colnames(Methyl), Methyl[1,])
+###
+# Duplicate Barcodes do not allow easy merging #
+###
+# library(reshape2)
+# melt(Methyl, id.vars = "Hybridization REF")
+# setnames(Methyl, colnames(Methyl)[-1], Methyl[1, 2:length(Methyl), with=FALSE])
 
-subset(Methyl, duplicated(colnames(Methyl)[grep("TCGA", colnames(Methyl))]) ) 
-
+# Data with fist duplicates
 Methyl[, seq(1, 2445, 4), with=FALSE]
 
 gg <- 1:2449  
 gg <- gg[-c(seq(1,2445, 4))]
 
+# Data with remaining duplicates
 Methyl[, gg, with=FALSE]
+
+# Load OV RNAseqGene 
+
+ovgist <- fread("~/../../scratch/OV-RNAseqGene.txt", stringsAsFactors=FALSE)
