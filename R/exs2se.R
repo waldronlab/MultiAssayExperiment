@@ -58,8 +58,3 @@ exs2se = function(x,
        )
 }
 
-setAs("ExpressionSet", "SummarizedExperiment",
-   function(from) {
-# coerce
-     exs2se(from)
-   })
