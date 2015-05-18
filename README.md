@@ -32,7 +32,7 @@ religion.
 Examples of unacceptable behavior by participants include the use of
 sexual language or imagery, derogatory comments or personal attacks,
 trolling, public or private harassment, insults, or other
-unprofessional conduct.
+disrespectful conduct.
 
 Project maintainers have the right and responsibility to remove, edit,
 or reject comments, commits, code, wiki edits, issues, and other
