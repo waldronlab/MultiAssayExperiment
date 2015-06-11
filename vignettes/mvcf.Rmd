@@ -47,7 +47,6 @@ library(GenomicFiles)
 library(geuvPack)
 library(Matrix)
 library(snpStats)
-fns = dir(patt="vcf.gz$")
 })
 
 # eventually this code may migrate to gQTLBase or biocMultiAssay
@@ -113,7 +112,7 @@ We have defined a container that lightly wraps GenomicFiles.
 ```{r doli}
 library(VariantAnnotation)
 library(Rsamtools)
-fns = dir(patt="vcf.gz$")
+fns = dir(system.file("extdata/vcf", package="biocMultiAssay"), full=TRUE, patt="gz$")
 thev = VcfsByChrom(fns)
 thev
 ```
