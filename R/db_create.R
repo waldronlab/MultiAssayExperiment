@@ -28,11 +28,11 @@
  #
  # informal labels for constituents, CamelCase
  #
- tags = c("OvarCnvGistic", "OvarMethy450k", "OvarAffyExpr", 
+ tags = c("OvarCnvGistic", "OvarMethy450k", "OvarAffyExpr",
     "OvarAgilent", "OvarMiRna", "OvarRNASeq")
  ovlist <- lapply(ov, function(x) get(load(x)))
  names(ovlist) <- tags
- createHub(masterpheno=pData(ovlist[[2]]), objlist=ovlist, drop=TRUE)
+ createMA(masterpheno=pData(ovlist[[2]]), objlist=ovlist, drop=TRUE)
 }
 
 .eset2longdf <- function(es, tumortype="ovarian", assaytype, ...) {
@@ -45,10 +45,10 @@
          tumortype=tumortype, assaytype=assaytype, stringsAsFactors=FALSE)
 }
 
-.db_create_long <- 
+.db_create_long <-
   function(dbname, hub, tablename, masterInd=2) # dbname is filename of SQLite database
 {
-  stopifnot(is(hub, "loadedHub"))  # could weaken
+  stopifnot(is(hub, "MultiAssayExperiment"))  # could weaken
   library(RSQLite)
   db <- dbConnect(dbDriver("SQLite"), dbname)
   nass <- length(hub@elist)
@@ -93,8 +93,8 @@ tabulateSamples = function(tgen=OvarLong,
   featureToCheck="A2M") {  # how to get an exemplar?
   stopifnot(is(featureToCheck,"character"))
   stopifnot(length(featureToCheck)==1)
-  tgen() %>% dplyr::select(sampleID, assaytype) %>% 
-         filter(feature==featureToCheck) %>% 
+  tgen() %>% dplyr::select(sampleID, assaytype) %>%
+         filter(feature==featureToCheck) %>%
          group_by(assaytype) %>% summarize(n=n())
 }
 
@@ -102,8 +102,8 @@ tabulateFeatures = function(tgen=OvarLong,
    sampleToCheck="TCGA.04.1331") {
   stopifnot(is(sampleToCheck,"character"))
   stopifnot(length(sampleToCheck)==1)
-  tgen() %>% dplyr::select(sampleID, assaytype) %>% 
-          filter(sampleID==sampleToCheck) %>% 
+  tgen() %>% dplyr::select(sampleID, assaytype) %>%
+          filter(sampleID==sampleToCheck) %>%
           group_by(assaytype) %>% summarize(n=n())
 }
 

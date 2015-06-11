@@ -1,14 +1,14 @@
-\name{createHub}
-\alias{createHub}
+\name{createMA}
+\alias{createMA}
 \title{
-Create a loadedHub from objects in memory.
+Create a MultiAssayExperiment from objects in memory.
 }
 \description{
 As simple a function as possible for converting omic data objects in
-memory (e.g. ExpressionSet and SummarizedExperiment) to a loadedHub object.
+memory (e.g. ExpressionSet and SummarizedExperiment) to a MultiAssayExperiment object.
 }
 \usage{
-createHub(masterpheno, objlist, drop = FALSE, samplemaps = NULL)
+createMA(masterpheno, objlist, drop = FALSE, samplemaps = NULL)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -31,10 +31,10 @@ for each assay.
 }
 }
 \details{
-A helpful function for creating loadedHub objects.
+A helpful function for creating MultiAssayExperiment objects.
 }
 \value{
-An object of class loadedHub.
+An object of class MultiAssayExperiment.
 }
 \references{
 %% ~put references to the literature/web site here ~
@@ -66,7 +66,7 @@ if (length(drop)>0) {
 tags = c("ov CNV gistic", "ov methy 450k", "ov affy", "ov agilent", "ov mirna", "ov RNA-seq")
 ovlist <- lapply(ov, function(x) get(load(x)))
 names(ovlist) <- tags
-lovhub2 <- createHub(masterpheno=pData(ovlist[[2]]), objlist=ovlist, drop=TRUE)
+lovhub2 <- createMA(masterpheno=pData(ovlist[[2]]), objlist=ovlist, drop=TRUE)
 lovhub2
 object.size(lovhub2)
 }

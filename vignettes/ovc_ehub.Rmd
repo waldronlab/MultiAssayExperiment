@@ -139,7 +139,7 @@ save(cna.se, file="cna.se.rda")
 cna.se
 ```
 
-# Gene Expression
+# Load Gene Expression Data
 
 ## As ExpressionSet
 
@@ -161,11 +161,16 @@ expr.se <- exs2se(expr.eset)
 save(expr.se, file="expr.se.rda")
 ```
 
-tags = c("ov affy", "ov CNV gistic")
 # construct expt instances from ExpressionSets
-#
+```{r}
+tags = c("ov affy", "ov CNV gistic")
 elist = lapply(1:length(tags), function(x) new("expt",
-serType="RData", assayPath="", tag=tags[x], sampleDataPath="")) #
-# populate an eHub, witha master phenotype data frame
-#
-ovhub2 = new("eHub", hub=elist, masterSampleData = phenoData(TCGA_eset))
+        serType="RData", assayPath="", tag=tags[x], sampleDataPath=""))
+```
+
+# populate an eHub, with a master phenotype data frame 
+
+```{r}
+ovhub2 = new("eHub", hub=elist, masterSampleData = pData(TCGA_eset))
+```
+
