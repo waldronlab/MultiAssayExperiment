@@ -1,0 +1,231 @@
+---
+title: "multivcf computing"
+author: "Vincent J. Carey, stvjc at channing.harvard.edu"
+date: "February 2015"
+output:
+  BiocStyle::pdf_document:
+    toc: yes
+    number_sections: yes
+  BiocStyle::html_document:
+    highlight: pygments
+    number_sections: yes
+    theme: united
+    toc: yes
+---
+
+<!--
+%\VignetteEngine{knitr::rmarkdown}
+%\VignetteIndexEntry{xyz}
+-->
+
+```{r style, echo = FALSE, results = 'asis'}
+BiocStyle::markdown()
+```
+
+# Introduction
+
+The 1000 genomes project collects variants in
+chromosome-specific VCF.  This document creates
+code to help
+traverse or filter variants without explicit bookkeeping
+on chromosome of residence.
+
+A basic use case is eQTL identification.  We will
+work with GEUVADIS expression data and 1000 genomes
+variants.
+
+# Working with some filtered VCF
+
+## Container and basic queries
+
+```{r lkv,echo=FALSE,results="hide"}
+suppressPackageStartupMessages({
+library(VariantAnnotation)
+library(gQTLstats)
+library(Rsamtools)
+library(GenomicFiles)
+library(geuvPack)
+library(Matrix)
+library(snpStats)
+})
+
+# eventually this code may migrate to gQTLBase or biocMultiAssay
+
+setClass("VcfsByChrom", representation(shortnames="character"),
+   contains="GenomicFiles")
+
+VcfsByChrom = function(files, ...) {
+ cd = DataFrame(fn=files)
+ new("VcfsByChrom", rowRanges=GRanges(), files=files, colData=cd, ...)
+}
+
+setGeneric("shortnames", function(x) standardGeneric("shortnames"))
+setMethod("shortnames", "VcfsByChrom", function(x) x@shortnames)
+setGeneric("shortnames<-", function(x, ..., value) standardGeneric("shortnames<-"))
+setMethod("shortnames<-", "VcfsByChrom", function(x, ..., value) {
+   stopifnot(length(files(x))==length(value))
+   stopifnot(is.character(value))
+   x@shortnames = value
+   x
+})
+
+setGeneric("allHeaders", function(x) standardGeneric("allHeaders"))
+setMethod("allHeaders", "VcfsByChrom", function(x)
+ lapply(files(x), scanVcfHeader))
+setGeneric("allSampleIDs", function(x) standardGeneric("allSampleIDs"))
+setMethod("allSampleIDs", "VcfsByChrom", function(x)
+ lapply(allHeaders(x), vcfSamples))
+setGeneric("commonSamples", function(x) standardGeneric("commonSamples"))
+setMethod("commonSamples", "VcfsByChrom", function(x) {
+ allids = allSampleIDs(x)
+ ans = allids[[1]]
+ for (i in 2:length(allids))
+    ans = intersect(ans, allids[[i]])
+ ans
+})
+
+sketchVcf = function(fn, which=NULL) {
+ hd = scanVcfHeader(fn)
+ s1 = samples(hd)[1]
+ par = ScanVcfParam(fixed=NA, geno=NA, info=NA)
+ vcfSamples(par) = s1
+ if (!is.null(which)) vcfWhich(par) = which
+ tmp = scanVcf(fn, param=par)[[1]]
+ tmp$rowRanges
+}
+
+featsInCis.hits = function( featGR, vcf, radius=50000, checkStyle=TRUE ) {
+   fixup = force
+   if (checkStyle) {
+     fixup = function(x) {
+         seqlevelsStyle(x) = seqlevelsStyle(featGR)
+         x
+         }
+     }
+  findOverlaps( featGR, fixup((sketchVcf(vcf)+radius)) )
+}
+```
+To illustrate the multivcf computing tools, we have made
+some small excerpts from a few 1000 genomes VCFs.
+
+We have defined a container that lightly wraps GenomicFiles.
+```{r doli}
+library(VariantAnnotation)
+library(Rsamtools)
+fns = dir(system.file("extdata/vcf", package="biocMultiAssay"), full=TRUE, patt="gz$")
+thev = VcfsByChrom(fns)
+thev
+```
+A `sketch` obtains a GRanges for the variants in a file.
+This can be confined to a prespecified range using the
+`which` parameter.
+```{r dosk}
+sketchVcf(files(thev)[1])
+```
+The `sketch` operation does not retrieve genetic content
+from the VCF.
+
+The set of sample identifiers common to all elements of the
+VCF collection can be obtained.
+```{r docom}
+length(commonSamples(thev))
+```
+
+## Linking to other features by address
+
+The `featsInCis.hits` function works with a single VCF and
+a GRanges giving addresses of features to which the variants
+will be checked for physical proximity.
+
+Here we obtain the names of genes that are in cis to at least
+one variant in each of the VCF.
+```{r lklink}
+library(geuvPack)
+data(geuFPKM)
+geur = rowRanges(geuFPKM)
+gn = geur$gene_name  # gene names
+somecis = lapply( files(thev), function(x) featsInCis.hits( geur, x ) )
+gincis = lapply( somecis, function(x) gn[ unique(queryHits(x)) ] )
+gincis
+```
+
+The feature:variant pairs are computed in an elaborate GRangesList.
+```{r biglink,echo=FALSE,results="hide"}
+bindPairs = function(sket, featgr, hits) {
+  ans = sket[ subjectHits( hits ) ]
+  fgr = featgr[ queryHits( hits ) ]
+  mcols(ans) = mcols(fgr)
+  mcols(ans)$start_f = start(fgr)
+  mcols(ans)$end_f = end(fgr)
+  mcols(ans)$strand_f = as.character(strand(fgr))
+  ans
+}
+
+cisPairs = function( featsGR, vcfbc, slstyle="UCSC", genome=NULL,
+   radius=50000, checkStyle=TRUE ) {
+  somecis = bplapply( files(vcfbc),
+        function(x) featsInCis.hits( featsGR, x, radius=radius,
+             checkStyle=checkStyle ) )
+  nf = length(files(vcfbc))
+  sks = lapply(files(vcfbc), function(x) sketchVcf(x) )
+#  ans = vector("list", nf)
+#  for (i in 1:length(files(vcfbc) )) {
+  ans = bplapply( 
+   1:length(files(vcfbc) ), function(i)
+           bindPairs( sks[[i]], featsGR, somecis[[i]] ) )
+  ans = unlist(GRangesList(ans))
+  seqlevelsStyle(ans) = slstyle
+  if (!is.null(genome)) genome(ans) = genome
+  ans
+}
+```
+```{r lkp}
+cp = cisPairs( rowRanges(geuFPKM), thev, genome="hg19")
+cp2 = cisPairs( rowRanges(geuFPKM), thev, genome="hg19", radius=100000)
+head(cp)[,c(2,5,7,9)]
+```
+
+## Extracting variant content
+
+The `r Biocpkg("gQTLstats")` package includes `queryVCF` that supports
+targeted queries, returning concise `r Biocpkg("snpStats")` `SnpMatrix` instances.
+
+```{r lkq}
+library(gQTLstats)
+cplk = cp[1:5]
+seqlevelsStyle(cplk) = "NCBI"
+q1 = queryVCF( cplk, TabixFile(files(thev)[1]) )
+#apply(as(q1$sm[[1]], "character"), 2, table)
+# number of B alleles
+apply(as(q1$sm[[1]], "numeric"), 2, table)
+```
+
+We use `fullSMs` to obtain byte-coded matrix representations of
+genotypes of SNP lying within the enclosing range of chromosome-specific
+GRanges derived from `cisp`.
+```{r dosmco,echo=FALSE,results="hide"}
+fullSMs = function( vcfbc, cisp, vcfstyle="NCBI" ) {
+#
+# obtain SnpMatrix instances from VCFs bounded by ranges in cisp
+# ultimately cisp would be generated through a tiling/cis filter
+#
+  seqlevelsStyle(cisp) = vcfstyle
+  bplapply( files(vcfbc), function(x) {
+     tx = TabixFile(x)
+     ht = headerTabix(tx)
+     sn = ht$seqnames
+     rng2use = sort(unique(cisp[ which(as.character(seqnames(cisp)) %in% sn) ]))
+     #as( queryVCF( rng2use, tx )$sm[[1]], "numeric" ) 
+     queryVCF( range(rng2use), tx )$sm[[1]]
+  } ) 
+}
+```
+```{r doful}
+allcis = fullSMs( thev, cp )
+sapply(allcis,dim)
+```
+
+
+
+
+
