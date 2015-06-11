@@ -39,7 +39,7 @@ setGeneric("loadHub", function(hub)standardGeneric("loadHub"))
 setMethod("loadHub", "eHub", function(hub) {
   obj = lapply(hub@hub, function(x) get(load(x@assayPath)))
   names(obj) = sapply(hub@hub, function(x) x@tag)
-  new("loadedHub", basehub=hub, elist=obj)
+  new("MultiAssayExperiment", basehub=hub, elist=obj)
 })
 
 
@@ -47,9 +47,9 @@ setGeneric("featExtractor", function(x) standardGeneric("featExtractor"))
 setMethod("featExtractor", "ExpressionSet", function(x) featureNames(x))
 setMethod("featExtractor", "SummarizedExperiment", function(x) rownames(x))
 
-setClass("loadedHub", representation(basehub="eHub", elist="list"))
-setMethod("show", "loadedHub", function(object) {
- cat("loadedHub instance.\n")
+setClass("MultiAssayExperiment", representation(basehub="eHub", elist="list"))
+setMethod("show", "MultiAssayExperiment", function(object) {
+ cat("MultiAssayExperiment instance.\n")
  dimmat = t(sapply(object@elist, dim))
  colnames(dimmat) = c("Features", "Samples") # dim for eSet nicer than for SE!
  featExemplars = lapply(object@elist, function(x) head(featExtractor(x),3))
@@ -60,7 +60,7 @@ setMethod("show", "loadedHub", function(object) {
  print(dimmat)
 })
 
-createHub <- function(masterpheno, objlist, drop=FALSE, samplemaps=NULL){
+createMA <- function(masterpheno, objlist, drop=FALSE, samplemaps=NULL){
   ## samplemaps will be maps that rename samples in object list to names used in masterpheno.
   if(!is(masterpheno, "data.frame"))
      stop("masterpheno should be a data.frame of metadata for all samples")
@@ -90,5 +90,5 @@ createHub <- function(masterpheno, objlist, drop=FALSE, samplemaps=NULL){
   exptlist <- lapply(1:length(objlist), function(i) new("expt",
      serType="in-memory", assayPath="", tag=names(objlist)[i]))
   hub <- new("eHub", hub=exptlist, masterSampleData=masterpheno)
-  res <- new("loadedHub", basehub=hub, elist=objlist)
+  res <- new("MultiAssayExperiment", basehub=hub, elist=objlist)
 }
