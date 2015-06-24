@@ -85,7 +85,7 @@ for (i in 2:length(allid))
 length(commids)
 ```
 
-We can now generate the loadedHub instance with only the
+We can now generate the MultiAssayExperiment instance with only the
 common samples.
 ```{r docomm}
 locomm = lovhub
@@ -96,13 +96,13 @@ locomm
 Where to put these abstractions for both the light and
 heavy representations is a point of discussion.
 
-# createHub shortcut function for creating a loadedHub
+# createMA shortcut function for creating a MultiAssayExperiment
 
-```{r createHub}
+```{r createMA}
 ovlist <- lapply(ov, function(x) get(load(x)))
 names(ovlist) <- tags
 
-lovhub2 <- createHub(masterpheno=pData(ovlist[[2]]), objlist=ovlist, drop=TRUE)
+lovhub2 <- createMA(masterpheno=pData(ovlist[[2]]), objlist=ovlist, drop=TRUE)
 lovhub2
 object.size(lovhub2)
 ```
