@@ -1,146 +1,53 @@
 
-R version 3.1.2 (2014-10-31) -- "Pumpkin Helmet"
-Copyright (C) 2014 The R Foundation for Statistical Computing
-Platform: x86_64-apple-darwin13.4.0 (64-bit)
+# Last updated on 10/12/2014
 
-R is free software and comes with ABSOLUTELY NO WARRANTY.
-You are welcome to redistribute it under certain conditions.
-Type 'license()' or 'licence()' for distribution details.
 
-  Natural language support but running in an English locale
+require(affy)
+require(biocMultiAssay)
+require(data.table)
 
-R is a collaborative project with many contributors.
-Type 'contributors()' for more information and
-'citation()' on how to cite R or R packages in publications.
 
-Type 'demo()' for some demos, 'help()' for on-line help, or
-'help.start()' for an HTML browser interface to help.
-Type 'q()' to quit R.
+##Recipe for preparing NCI60 text file
 
-> 
-> ##Retrieve NCI-60 MS-based protein data summarized by gene in CSV file 
-> ##from http://129.187.44.58:7070/NCI60/main/download
-> ##Three data types were available and are returned separately in CSV files:
-> ##proteomes, deep proteomes and kinomes
-> 
-> 
-> require(affy)
-Loading required package: affy
-Loading required package: BiocGenerics
-Loading required package: parallel
+file.name <- "nci60_Protein__Lysate_Array_log2.txt.zip"
+outfile.name <- "nci60_prot_RPLA_log2.csv"
 
-Attaching package: ‘BiocGenerics’
+url <- paste("http://discover.nci.nih.gov/cellminerdata/normalizedArchives/", file.name, sep="")
+zipfile.name <- tempfile()
+temp.dir <- tempdir()
 
-The following objects are masked from ‘package:parallel’:
+download.file(url, destfile=zipfile.name)
+unzip(zipfile.name, exdir=temp.dir)
 
-    clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,
-    clusterExport, clusterMap, parApply, parCapply, parLapply,
-    parLapplyLB, parRapply, parSapply, parSapplyLB
+##input filename:
+textfile.name <- file.path(temp.dir, sub("\\.zip", "", file.name))
 
-The following object is masked from ‘package:stats’:
+##column 1 is all identical entries, 3 and 4 are gene symbols and entrez IDs, so drop them.
+affydat <- fread(textfile.name)
+rpladat <- fread(textfile.name, drop=c(1, 3, 4), na.strings="-")
+##one column of all NAs:
+keep.cols <- sapply(rpladat, function(x) sum(!is.na(x))) > 0
+rpladat <- rpladat[, keep.cols, with=FALSE]
+setkey(rpladat, V2)
+##average rows with identical probeset IDs:
+rpladat <- rpladat[, lapply(.SD, mean), by=V2]
 
-    xtabs
+##now set column names, which fread misses:
+cnames <- readLines(textfile.name, n=1)
+cnames <- c("V2", strsplit(cnames, split="\t")[[1]][-1:-4])
+cnames <- cnames[keep.cols]
+cnames[cnames=="V2"] <- "id"
+setnames(rpladat, colnames(rpladat), cnames)
 
-The following objects are masked from ‘package:base’:
+##Create SummarizedExperiment
+library(affy)
+eset <- ExpressionSet(assayData=as.matrix(rpladat))
+featureNames(eset) <- rpladat$id
+annotation(eset) <- "hgu133plus2"
+#library(biocMultiAssay)
+#nci60.expr.se <- exs2se(eset)
 
-    anyDuplicated, append, as.data.frame, as.vector, cbind, colnames,
-    do.call, duplicated, eval, evalq, Filter, Find, get, intersect,
-    is.unsorted, lapply, Map, mapply, match, mget, order, paste, pmax,
-    pmax.int, pmin, pmin.int, Position, rank, rbind, Reduce, rep.int,
-    rownames, sapply, setdiff, sort, table, tapply, union, unique,
-    unlist, unsplit
+##Write matrix and SE to file
+write.csv(rpladat, row.names=FALSE, file=outfile.name)
+#save(nci60.expr.se, file="nci60.expr.se.rda")
 
-Loading required package: Biobase
-Welcome to Bioconductor
-
-    Vignettes contain introductory material; view with
-    'browseVignettes()'. To cite Bioconductor, see
-    'citation("Biobase")', and for packages 'citation("pkgname")'.
-
-> require(biocMultiAssay)
-Loading required package: biocMultiAssay
-Loading required package: GenomicRanges
-Loading required package: S4Vectors
-Loading required package: stats4
-Loading required package: IRanges
-Loading required package: GenomeInfoDb
-Loading required package: dplyr
-
-Attaching package: ‘dplyr’
-
-The following objects are masked from ‘package:GenomicRanges’:
-
-    intersect, setdiff, union
-
-The following object is masked from ‘package:GenomeInfoDb’:
-
-    intersect
-
-The following objects are masked from ‘package:IRanges’:
-
-    collapse, desc, intersect, setdiff, slice, union
-
-The following object is masked from ‘package:S4Vectors’:
-
-    rename
-
-The following objects are masked from ‘package:BiocGenerics’:
-
-    intersect, setdiff, union
-
-The following object is masked from ‘package:stats’:
-
-    filter
-
-The following objects are masked from ‘package:base’:
-
-    intersect, setdiff, setequal, union
-
-> require(data.table)
-Loading required package: data.table
-Warning message:
-In library(package, lib.loc = lib.loc, character.only = TRUE, logical.return = TRUE,  :
-  there is no package called ‘data.table’
-> 
-> 
-> ##input NCI-60 MS-based protein data
-> load("nci60_prot_MS_log10.rda")
-> 
-> summarize <- function(x,y,z){
-+  cnames <- y
-+  dat <- x
-+  outfile.name <- z
-+ ##select protein data quantified by iBAQ approach
-+ cnames <- gsub(" ",".",cnames)
-+ keep.cols <- c("Fasta.headers",cnames[grepl("iBAQ",cnames)==T])
-+ dat <- dat[, match(keep.cols,cnames)]
-+ 
-+ ids <- unlist(lapply(dat[,1],
-+  function(x)(strsplit(strsplit(x,"Gene_Symbol=")[[1]][2]," ")[[1]][1])))
-+ dat[,1] <- ids
-+ 
-+ ##remove entries without valid HGNC symbols 
-+ dat <- dat[is.na(dat[,1])==F,]
-+ dat <- dat[is.na(match(dat[,1],"-"))==T,]
-+ ##null values correspond to undetected proteins 
-+ dat[dat==0] <- NA
-+ 
-+ dat <- data.table(dat)
-+ setkey(dat, "Fasta.headers")
-+ ##average rows with identical HGNC symbols:
-+ dat <- dat[, lapply(.SD, mean), by="Fasta.headers"]
-+ 
-+ setnames(dat, colnames(dat), gsub("Fasta.headers","id",keep.cols))
-+ 
-+ ##Create ExpressionSet
-+ eset <- ExpressionSet(assayData=as.matrix(dat))
-+ featureNames(eset) <- dat$id
-+ 
-+ ##Write matrix 
-+ write.csv(dat, row.names=FALSE, file=outfile.name)
-+ }
-> 
-> summarize(dat,cnames,"nci60_prot_MS_log10.csv")
-Error in summarize(dat, cnames, "nci60_prot_MS_log10.csv") : 
-  could not find function "data.table"
-Execution halted
