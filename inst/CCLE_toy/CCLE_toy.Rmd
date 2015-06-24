@@ -1,0 +1,122 @@
+---
+title: "CCLE_data"
+author: "Lavanya Kannan"
+date: "May 29, 2015"
+output: html_document
+---
+# Introduction 
+The CCLE project has data about 1036 cellines covering various cancer types. In this vignette, we will see how we can download a toy dataset, define containers and finally to integrate the toy example based on common genes and or disease types. Here we describe the toy dataset of 10 cellines that includes pharmacological dataset of 5 compounds on each of the cellines and expression dataset of the same set of 500 genes. Also included is the copy number variation data. 
+
+# Copy Number Variation
+Both segmental average values and by gene values are available in the CCLE page. Note the gene level data can be derived from the segmental values and hence we load the segmental dataset and convert it to a GRanges object as follows:  
+
+```{r}
+datadir <- "."
+datadir <- "/Users/lavanyakannan/Dropbox/shared_levi_lavanya/CCLE_toy"
+seg = read.delim(file.path(datadir, "CCLE_copynumber_2013-12-03.seg.txt"))
+library(GenomicRanges)
+ccleCNSeg = GRanges(paste("chr", seg$Chromosome, sep=""), IRanges(seg$Start, seg$End)) 
+mcols(ccleCNSeg) = seg[,-c(2,3,4)]
+ccleCNSeg$CCLE_name = as.character(ccleCNSeg$CCLE_name)
+```
+
+# Expression Sets
+The expression and the corresponding pdata can be loaded as follows:
+
+```{r}
+# expr.dat_toy <- read.table(system.file("CCLE_toy//expr.dat_toy.csv",package="biocMultiAssay"), skip=0, sep=",", as.is=TRUE,header = TRUE, check.names=FALSE)
+expr.dat_toy <- read.table(file.path(datadir, "expr.dat_toy.csv"), skip=0, sep=",", as.is=TRUE,header = TRUE, check.names=FALSE)
+esif_toy <- read.table(file.path(datadir,"esif_toy.csv"), skip=0, sep=",", as.is=TRUE,header = TRUE, check.names=FALSE)
+```
+With the ExpressionSet function in the Biobase package, these data can be converted to an expression set.
+```{r}
+library(Biobase)
+ccleEx = ExpressionSet(as.matrix(expr.dat_toy))
+pData(ccleEx) = esif_toy
+annotation(ccleEx) = "hgu133plus2hsentrezg.db"
+```
+
+# Pharmacological Dataset
+The pharmacological data can be loaded as below.
+
+```{r}
+ddata = read.csv(file.path(datadir, "pharma_toy.csv"), stringsAsFactors=FALSE)
+```
+
+```{r}
+ nstring2vec = function(x, sep=",") {
+    as.numeric(strsplit(x, sep)[[1]])
+    }
+dosemat = sapply(ddata[,5], nstring2vec)
+activityMeds = sapply(ddata[,"Activity.Data..median."], nstring2vec)
+activitySDs = sapply(ddata[,"Activity.SD"], nstring2vec)
+lines = sub("_", ",", ddata[,1])
+lineName = sapply(strsplit(lines, ","), "[", 1)
+lineOrg = sapply(strsplit(lines, ","), "[", 2)
+df = read.csv(file.path(datadir, "pharma_toy.csv"), h=TRUE, stringsAsFactors=FALSE, skipnul = TRUE) # df same as ddata?
+nr = nrow(df)
+```
+
+```{r}
+setClass("ccleExpt", representation(line="character", organ="character",
+ compound="character", target="character", doses_uM="numeric",
+ activityMedian="numeric", activitySD="numeric", fitType="character",
+ EC50_uM="numeric", IC50_uM="numeric", Amax="numeric", ActArea="numeric"))
+
+setMethod("show", "ccleExpt", function(object) {
+ cat("Cancer Cell Line Encyclopedia experiment data for line ", object@line, 
+    "\n organ ", object@organ, 
+    "\n compound ",object@compound, 
+    "\n target ",object@target, 
+    "\n", sep="")
+ })
+
+setClass("ccleSet", representation(expts="list",
+    dateCreated="character", csvname="character",
+    csvhash.md5="character"))
+
+setMethod("show", "ccleSet", function(object) {
+ cat("Broad/Novartis Cancer Cell Line Encyclopedia data.\n")
+ cat("There are ", length(object@expts), " lines/experiments represented.\n")
+ cat("Use '[', organ(), compound(), ... to obtain more information.\n")
+})
+
+csvname="CCLE_NP24.2009_Drug_data_2012.02.20.csv"
+csvhash.md5="b64295ef99912d1d4bead76461d0e2a1"
+
+parseCCLEline = function(dfline, validateNames=FALSE) {
+ # parse a row of ccle CSV import
+ if (nrow(dfline)!=1 || !is.data.frame(dfline)) 
+    stop("input must be 1line data.frame")
+ if(!identical(colnames(dfline)[1], "CCLE.Cell.Line.Name"))
+  stop("First column name in dfline should be CCLE.Cell.Line.Name")
+ jan2013names = c("CCLE.Cell.Line.Name", "Primary.Cell.Line.Name", "Compound", 
+"Target", "Doses..uM.", "Activity.Data..median.", "Activity.SD", 
+"Num.Data", "FitType", "EC50..uM.", "IC50..uM.", "Amax", "ActArea"
+)
+ if (validateNames && !isTRUE(all.equal(names(dfline), jan2013names)))
+     warning("it appears the names of the input data.frame do not agree with expectation")
+ getOrgan = function(x) {x = sub("_", "@@", x); gsub(".*@@", "", x) }
+ nstring2vec = function(x, sep=",") {
+    as.numeric(strsplit(x, sep)[[1]])
+    }
+ cvec = as.character(dfline)
+ new("ccleExpt",
+      organ=getOrgan(cvec[1]),
+      line=cvec[2], compound=cvec[3],
+      target = cvec[4], doses_uM=nstring2vec(cvec[5]),
+      activityMedian=nstring2vec(cvec[6]),
+      activitySD=nstring2vec(cvec[7]),
+      fitType=cvec[9],
+      EC50_uM = as.numeric(cvec[10]),
+      IC50_uM = as.numeric(cvec[11]),
+      Amax = as.numeric(cvec[12]),
+      ActArea = as.numeric(cvec[13]))
+}
+```
+
+```{r}
+recs = lapply(1:nr, function(x) parseCCLEline(df[x,]))
+ccleRx = new("ccleSet", expts=recs, dateCreated=date(),
+  csvname=csvname, csvhash.md5=csvhash.md5)
+```
