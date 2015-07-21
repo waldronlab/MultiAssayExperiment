@@ -49,9 +49,9 @@ Formal class 'SummarizedExperiment' [package "GenomicRanges"] with 4 slots \cr
   .. .. .. .. ..@ elementMetadata: NULL \cr
   .. .. .. .. ..@ metadata       : list() \cr
   .. .. ..@ ranges         :Formal class 'IRanges' [package "IRanges"] with 6 slots \cr
-  .. .. .. .. ..@ start          : int [1:12791] 52559169 9220304 43088127 137842560 53701240 125549925 151531861 67493367 69685127 219128852 ... \cr
-  .. .. .. .. ..@ width          : int [1:12791] 86267 48255 28750 8670 14173 77947 14416 53708 185851 6042 ... \cr
-  .. .. .. .. ..@ NAMES          : chr [1:12791] "220951_s_at" "217757_at" "219488_at" "221131_at" ... \cr
+  .. .. .. .. ..@ start          : int [1:100] 52559169 9220304 43088127 137842560 53701240 125549925 151531861 67493367 69685127 219128852 ... \cr
+  .. .. .. .. ..@ width          : int [1:100] 86267 48255 28750 8670 14173 77947 14416 53708 185851 6042 ... \cr
+  .. .. .. .. ..@ NAMES          : chr [1:100] "220951_s_at" "217757_at" "219488_at" "221131_at" ... \cr
   .. .. .. .. ..@ elementType    : chr "integer" \cr
   .. .. .. .. ..@ elementMetadata: NULL \cr
   .. .. .. .. ..@ metadata       : list() \cr
@@ -62,7 +62,7 @@ Formal class 'SummarizedExperiment' [package "GenomicRanges"] with 4 slots \cr
   .. .. .. .. ..@ metadata       : list() \cr
   .. .. ..@ elementMetadata:Formal class 'DataFrame' [package "IRanges"] with 6 slots \cr
   .. .. .. .. ..@ rownames       : NULL \cr
-  .. .. .. .. ..@ nrows          : int 12791 \cr
+  .. .. .. .. ..@ nrows          : int 100 \cr
   .. .. .. .. ..@ listData       : Named list() \cr
   .. .. .. .. ..@ elementType    : chr "ANY" \cr
   .. .. .. .. ..@ elementMetadata: NULL \cr
@@ -114,7 +114,7 @@ Formal class 'SummarizedExperiment' [package "GenomicRanges"] with 4 slots \cr
   ..@ assays  :Reference class 'ShallowSimpleListAssays' [package "GenomicRanges"] with 1 fields \cr
   .. ..$ data:Formal class 'SimpleList' [package "IRanges"] with 4 slots \cr
   .. .. .. ..@ listData       :List of 1 \cr
-  .. .. .. .. ..$ exprs: num [1:12791, 1:578] 2.92 10.35 4.21 3.32 4.61 ... \cr
+  .. .. .. .. ..$ exprs: num [1:100, 1:578] 2.92 10.35 4.21 3.32 4.61 ... \cr
   .. .. .. ..@ elementType    : chr "ANY" \cr
   .. .. .. ..@ elementMetadata: NULL \cr
   .. .. .. ..@ metadata       : list() \cr
