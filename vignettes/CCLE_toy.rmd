@@ -1,0 +1,50 @@
+
+
+---
+title: "CCLE_data"
+author: "Lavanya Kannan"
+date: "2015-06-19"
+output: html_document
+---
+# Introduction 
+The CCLE project has data about 1036 cellines covering various cancer types. In this vignette, we will see how we can download a toy dataset, define containers and finally to integrate the toy example based on common genes and or disease types. Here we describe the toy dataset of 10 cellines that includes pharmacological dataset of 5 compounds on each of the cellines and expression dataset of the same set of 500 genes. Also included is the copy number variation data. 
+
+# Copy Number Variation
+Both segmental average values and by gene values are available in the CCLE page. Note the gene level data can be derived from the segmental values and hence we load the segmental dataset and convert it to a GRanges object as follows:  
+
+
+```r
+library(biocMultiAssay)
+seg = read.delim(system.file("CCLE_toy/CCLE_copynumber_2013-12-03.seg.txt", package="biocMultiAssay"))
+library(GenomicRanges)
+ccleCNSeg = GRanges(paste("chr", seg$Chromosome, sep=""), IRanges(seg$Start, seg$End)) 
+mcols(ccleCNSeg) = seg[,-c(2,3,4)]
+ccleCNSeg$CCLE_name = as.character(ccleCNSeg$CCLE_name)
+```
+
+# Expression Sets
+The expression and the corresponding pdata can be loaded as follows:
+
+
+```r
+expr.dat_toy <- read.table(system.file("CCLE_toy/expr.dat_toy.csv",package="biocMultiAssay"), skip=0, sep=",", as.is=TRUE,header = TRUE, check.names=FALSE)
+
+esif_toy <- read.table(system.file("CCLE_toy/esif_toy.csv",package="biocMultiAssay"), skip=0, sep=",", as.is=TRUE,header = TRUE, check.names=FALSE)
+```
+With the ExpressionSet function in the Biobase package, these data can be converted to an expression set.
+
+```r
+library(Biobase)
+ccleEx = ExpressionSet(as.matrix(expr.dat_toy))
+pData(ccleEx) = esif_toy
+annotation(ccleEx) = "hgu133plus2hsentrezg.db"
+```
+
+# Pharmacological Dataset
+The pharmacological data can be loaded as below.
+
+
+```r
+ddata = read.csv(system.file("CCLE_toy/pharma_toy.csv",package="biocMultiAssay"), stringsAsFactors=FALSE)
+```
+
