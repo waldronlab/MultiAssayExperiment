@@ -1,5 +1,4 @@
 # Script for downloading Ovarian Cancer ("OV") TCGA data using RTCGAToolbox
-# setwd("~/../../scratch/")
 # setwd("~/Documents/biocMultiAssay/inst/extdata/tcga_ov/raw/")
 if( !require(RTCGAToolbox) ){
   library(devtools)
@@ -17,8 +16,10 @@ if( !require(RTCGAToolbox) ){
 #                          Mutation=TRUE, mRNA_Array=TRUE, miRNA_Array=TRUE, RPPA=TRUE)
 # OVmirna <- getFirehoseData("OV", runDate=gsub("-", "", dates$run[nrow(dates)]), miRNASeq_Gene=TRUE)
 
-grep("OV", dir("~/../../scratch"), ignore.case=TRUE, value=TRUE)
 library(data.table)
+
+grep("OV", dir("~/../../scratch"), ignore.case=TRUE, value=TRUE)
+
 
 Clin <- fread("~/../../scratch/OV-Clinical.txt", stringsAsFactors=FALSE)
 
@@ -81,6 +82,12 @@ gg <- gg[-c(seq(1,2445, 4))]
 # Data with remaining duplicates
 Methyl[, gg, with=FALSE]
 
+# example
+ext <- Methyl[1:10, 1:10, with=FALSE]
+save(ext, file="~/../../scratch/methylEX.rda")
+
 # Load OV RNAseqGene 
 
 ovgist <- fread("~/../../scratch/OV-RNAseqGene.txt", stringsAsFactors=FALSE)
+
+
