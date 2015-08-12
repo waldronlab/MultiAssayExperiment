@@ -13,10 +13,10 @@ library(RTCGAToolbox)
 # dates <- data.frame(run = tail(all.dates, 5), analyze = tail(an.dates, 5), 
 #    checked = as.character(rep(Sys.Date(),5)), stringsAsFactors = FALSE)
 
-load("~/Documents/biocMultiAssay/inst/extdata/tcga_ov/raw/rundates/rundates.rda")
+load("rundates.rda")
 if(dates$checked[nrow(dates)] != as.character(Sys.Date())) {
   dates <- rbind(dates, c(fdate(getFirehoseRunningDates(last = 1)), 
                  fdate(getFirehoseAnalyzeDates(last = 1)), as.character(Sys.Date())) )
-  save(dates, file = "~/Documents/biocMultiAssay/inst/extdata/tcga_ov/raw/rundates/rundates.rda")
+  save(dates, file = "rundates.rda")
 }
 
