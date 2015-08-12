@@ -1,5 +1,4 @@
 # Script for downloading Ovarian Cancer ("OV") TCGA data using RTCGAToolbox
-# setwd("~/Documents/biocMultiAssay/inst/extdata/tcga_ov/raw/")
 if( !require(RTCGAToolbox) ){
   BiocInstaller::biocLite("LiNk-NY/RTCGAToolbox")
   library(RTCGAToolbox)
@@ -16,7 +15,7 @@ ovres <- getFirehoseData("OV", runDate=recentrun, gistic2_Date=recentgist,
                           RNAseq_Gene=TRUE, Clinic=TRUE,
                           RNAseq2_Gene_Norm=TRUE, CNA_SNP=TRUE, CNV_SNP=TRUE, 
                           CNA_Seq=TRUE, CNA_CGH=TRUE,  Methylation=TRUE, 
-                          Mutation=TRUE, mRNA_Array=TRUE, miRNA_Array=TRUE, RPPA=TRUE, destdir = "/scratch")
+                          Mutation=TRUE, mRNA_Array=TRUE, miRNA_Array=TRUE, RPPA=TRUE, destdir = mydir)
 
 OVmirna <- getFirehoseData("OV", runDate=recentrun, miRNASeq_Gene=TRUE)
 
@@ -25,7 +24,7 @@ library(data.table)
 grep("OV", dir(mydir), ignore.case=TRUE, value=TRUE)
 
 
-Clin <- fread(file.path(mydir, "OV-Clinical.txt"), stringsAsFactors=FALSE)
+Clin <- fread(file.path(mydir, paste0(recentrun, "-OV-Clinical.txt")), stringsAsFactors=FALSE)
 
 for (i in 1:3) {
   Clin <- rbindlist(list(Clin, lapply(strsplit(colnames(Clin), "-"), "[", i)))
@@ -42,7 +41,7 @@ setnames(Clin, 2:length(Clin), as.character(seq(1:(length(Clin)-1))))
 sum(is.na(Clin))
 
 # Read in OV All Thresholded by Genes File
-AllGenes <- fread(file.path(mydir, "OV-all_thresholded.by_genes.txt"), stringsAsFactors=FALSE)
+AllGenes <- fread(file.path(mydir, paste0(recentgist, "-OV-all_thresholded.by_genes.txt")), stringsAsFactors=FALSE)
 
 for (i in 1:3) {
   AllGenes <- rbindlist(list(AllGenes, lapply(strsplit(colnames(AllGenes), "-"), "[", i)))
@@ -58,7 +57,7 @@ setnames(AllGenes, colnames(AllGenes)[grep("[0-9]", colnames(AllGenes))], as.cha
 sum(is.na(AllGenes))
 
 # Read Methylation File
-Methyl <- fread(file.path(mydir, "OV-Methylation-1.txt"), stringsAsFactors=FALSE)
+Methyl <- fread(file.path(mydir, paste0(recentrun, "-OV-Methylation-1.txt")), stringsAsFactors=FALSE)
 
 for (i in 1:3){
   Methyl <- rbindlist(list(Methyl, lapply(strsplit(colnames(Methyl), "-") , "[", i)))
@@ -92,6 +91,6 @@ save(ext, file=file.path(mydir, "methylEX.rda"))
 
 # Load OV RNAseqGene 
 
-ovgist <- fread(file.path(mydir, "OV-RNAseqGene.txt"), stringsAsFactors=FALSE)
+ovgist <- fread(file.path(mydir, paste0(recentrun, "-OV-RNAseqGene.txt")), stringsAsFactors=FALSE)
 
 
