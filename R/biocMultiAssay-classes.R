@@ -1,3 +1,23 @@
+.assertExperiment <- function(object) {
+    if(!is(object, "SerializedExperiment") && !is(object, "LoadedExperiment"))
+        stop("'object' needs to be of classes 'LoadedExperiment' or 'SerializedExperiment'")
+}
+
+.assertMultiAssayExperiment <- function(object) {
+    if(!is(object, "MultiAssayExperiment"))
+        stop("'object' needs to be of class 'MultiAssayExperiment'")
+}
+
+.assertScalar <- function(x) {
+    if(!is.vector(x) && length(x) == 1 && !is.list(x))
+        stop("'x' needs to be a scalar")
+}
+
+getExperiments <- function(object) {
+    .assertMultiAssayExperiment(object)
+    object@elist
+}
+
 #' An S4 class for storing experiment data
 #' 
 #' @slot tag Informal labels for constituents
@@ -75,9 +95,8 @@ setMethod("featExtractor", "SummarizedExperiment", function(x) rownames(x))
 #' 
 #' @param object A \code{\linkS4class{MultiAssayExperiment}} 
 #' @return Returns a list of contents for the MultiAssayExperiment
-setClass("MultiAssayExperiment", representation(basehub="eHub", elist="list"))
+setClass("MultiAssayExperiment", representation(basehub="eHub", elist="list", sampleData = "DataFrame"))
 setMethod("show", "MultiAssayExperiment", function(object) {
- cat("MultiAssayExperiment instance.\n")
  dimmat = t(sapply(object@elist, dim))
  colnames(dimmat) = c("Features", "Samples") # dim for eSet nicer than for SE!
  featExemplars = lapply(object@elist, function(x) head(featExtractor(x),3))
@@ -88,10 +107,35 @@ setMethod("show", "MultiAssayExperiment", function(object) {
  print(dimmat)
 })
 
+setMethod("getTag", "MultiAssayExperiment", function(object, i) {
+	  if(missing(i)){
+	      sapply(object@basehub@hub, FUN = function(x) {getElement(x, "tag")})
+	  } else { object@basehub@hub[[i]]@tag }
+})
+
 #' Subset method for MultiAssayExperiment class
 #' 
-#' @param object A \code{\linkS4class{MultiAssayExperiment}} class object
 #' @return Returns a subset of the \code{\linkS4class{MultiAssayExperiment}} object
-setMethod("[", "MultiAssayExperiment", function(object) {
-  lapply(object@elist, FUN = function(x) { })
+setMethod("subset", "MultiAssayExperiment", function(object, samples=NULL, exps = NULL, drop = FALSE) {
+    .assertMultiAssayExperiment(object)
+if(!is.null(samples)){
+    if(is.numeric(samples)) {
+        samples <- sampleNames(object@elist)[samples]
+    } else { 
+    object@elist <- lapply(object@elist, function(oo) {
+        jj <- samples[samples %in% sampleNames(oo)]
+        oo <- oo[,jj,drop = drop]
+        oo
+    }) 
+}
+    object@basehub@masterSampleData <- object@basehub@masterSampleData[samples,]
+    object
+}
+if(!is.null(exps)){
+    if(is.character(exps)){
+	exps <- match(exps, sapply(object@basehub@hub,FUN = function(x) { getElement(x, "tag") }))
+    } 
+}
+new("MultiAssayExperiment", basehub = getExperiments(object)[oo], elist = getExperiments(object)[exps], sampleData = object@basehub@masterSampleData)
 })
+
