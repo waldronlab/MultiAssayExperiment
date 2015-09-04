@@ -33,21 +33,29 @@ all relevant data.
 
 ```{r chk,cache=FALSE}
 suppressPackageStartupMessages(library(biocMultiAssay))
-#
-# crude way of enumerating RDA files planted in extdata
-#
-ov = dir(system.file("extdata/tcga_ov",
-   package="biocMultiAssay"), full=TRUE, pattern="\\.rda$")
+```
+
+Data are now downloaded from Amazon S3 bucket:
+
+```{r download}
+datadir <- "downloads"
+downloadData(datadir)
+```
+
+Crude way of enumerating RDA files planted in the datadir:
+
+```{r}
+ov <- dir(file.path(datadir, "tcga_ov"), full.names = TRUE)
 drop = grep("pheno", ov)
 if (length(drop)>0) {
   pdpath=ov[drop]
-  ov=ov[-drop]
-  }
+  ov=grep("\\.rda$", ov[-drop], value=TRUE)
+}
 #
 # informal labels for constituents
 #
-tags = c("ov RNA-seq", "ov agilent", "ov mirna", "ov affy", "ov CNV gistic",
-  "ov methy 450k")
+ov
+tags = c("ov CNV gistic", "ov methy 450k", "ov affy", "ov agilent", "ov mirna", "ov RNA-seq")
 #
 # construct expt instances from ExpressionSets
 #
@@ -101,7 +109,7 @@ heavy representations is a point of discussion.
 ```{r createMA}
 ovlist <- lapply(ov, function(x) get(load(x)))
 names(ovlist) <- tags
-
+## use the "ov agilent" for masterpheno phenotype data:
 lovhub2 <- createMA(masterpheno=pData(ovlist[[2]]), objlist=ovlist, drop=TRUE)
 lovhub2
 object.size(lovhub2)
