@@ -12,6 +12,11 @@ output:
 library(biocMultiAssay)
 ```
 
+Data are now downloaded from Amazon S3 bucket:
+```{r download}
+downloadData(datadir="downloads")
+```
+
 # Links
 * Compiled html vignette from [Rpubs](http://rpubs.com/lwaldron/ovc_ehub).  
 * .rda files from [Dropbox](https://www.dropbox.com/sh/po98a41h779j6mv/AACMbyHQgc2Yd0oi8XJL5iNIa?dl=0).
@@ -22,15 +27,14 @@ library(biocMultiAssay)
 
 This yields `eset.cn` in working environment.
 ```{r loadg}
-load(system.file("extdata/tcga_ov/ovc_eset_copynumber_gistic_2013_01_16.rda",
-   package="biocMultiAssay"))
+load("downloads/tcga_ov/ovc_eset_copynumber_gistic_2013_01_16.rda")
 ```
 
 ## Called loss/gain/amplification as SummarizedExperiment
 
 Read data:
 ```{r}
-cn <- read.table(system.file("extdata/tcga_ov/raw", "all_lesions.conf_99.txt", package="biocMultiAssay"), 
+cn <- read.table("downloads/tcga_ov/raw/all_lesions.conf_99.txt", 
                  row.names=1, header=TRUE, sep="\t", as.is=TRUE)
 ```
 
@@ -90,8 +94,7 @@ cna01.se
 This section creates a GRangesList object containing raw copy number numeric (non-integer) values.  _Levi: I am unsure what class to use when there is a different set of GRanges for each patient, with copy number data associated with each of those ranges_.  In this section I create a GRangesList, even though I don't imagine that is the correct solution.
 
 ```{r}
-cn <- read.table(system.file("extdata/tcga_ov/raw", "focal_input.seg.txt", 
-                             package="biocMultiAssay"),
+cn <- read.table("downloads/tcga_ov/raw/focal_input.seg.txt",
                  header=TRUE, sep="\t", as.is=TRUE)
 cn$id <- make.names(sub("\\-[0-9]*[ABCD].+", "", cn[, 1]))
 ```
@@ -114,11 +117,11 @@ save(cna.grl, file="cna.grl.rda")
 
 ## Raw copy number as SummarizedExperiment
 
-For methods to obtain the file `all_data_by_genes.txt`, see the inst/extdata/raw directory of biocMultiAssay.
+For methods to obtain the file `all_data_by_genes.txt`, see the downloads/raw directory.
 
 ```{r}
 if (!file.exists("all_data_by_genes.txt.gz")) {
-download.file("https://dl.dropboxusercontent.com/u/15152544/TCGA/all_data_by_genes.txt.gz",
+download.file("http://s3.amazonaws.com/cancerhub/all_data_by_genes.txt.gz",
               destfile="all_data_by_genes.txt.gz", method="wget")
 }
 cn <- read.table(gzfile("all_data_by_genes.txt.gz"), as.is=TRUE, row.names=1, sep="\t", header=TRUE)
@@ -145,7 +148,7 @@ cna.se
 
 ```{r}
 library(affy)
-load(system.file("extdata/tcga_ov","TCGA_eset.rda",package="biocMultiAssay"))
+load("downloads/tcga_ov/TCGA_eset.rda")
 expr.eset <- TCGA_eset
 pdata <- pData(TCGA_eset)
 save(expr.eset, file="expr.eset.rda")
