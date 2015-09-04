@@ -9,13 +9,33 @@
 #' @return A \code{MultiAssayExperiment} data object that stores experiment and phenotype data.
 createMA <- function(masterpheno, objlist, drop=FALSE, samplemaps=NULL){
     ## samplemaps will be maps that rename samples in object list to names used in masterpheno.
-    if(!is(masterpheno, "data.frame"))
-	stop("masterpheno should be a data.frame of metadata for all samples")
-    if(!is(objlist, "list"))
-	stop("objlist should be a named list of data objects")
-    ##-----------------------
-    ##TODO: sample names mapping if samplemaps provided
-    ##-----------------------
+	if(!is(masterpheno, "data.frame")){
+		stop("masterpheno should be a data frame of metadata for all samples")
+	}
+	if(!is(objlist, "list")){
+		stop("objlist should be a named list of data objects")
+	}
+
+	if(!is.null(samplemaps)){
+		if(!any(c(is(samplemaps, "data.frame"), is(samplemaps, "list")))){
+		stop("samplemaps should either be a list or a data frame!")
+		} else if(is(samplemaps, "list")){
+			if(!all(grepl("[A-Z]{4}.[0-9]{2}.[0-9]{4}", unlist(samplemaps)))){
+			stop("All sample names in the object list must have a specific alphanumeric format!")
+			}
+		} else if(is(samplemaps, "data.frame")){
+			availableIDs <-	samplemaps[which(!is.na(samplemaps))]
+			if(!all(grepl("[A-Z]{4}.[0-9]{2}.[0-9]{4}", availableIDs))){
+			stop("All available sample names in the data frame must have a specific alphanumeric format!")
+			}
+		}
+	} else { warning("No sample maps provided!") } 
+if(is(samplemaps, "list")){
+inpheno <- lapply(samplemaps, function(exptmap) rownames(exptmap) %in% rownames(masterpheno))
+}else if(is(samplemaps, "data.frame")){
+inpheno <- apply(samplemaps, 2, FUN = function(expt) { expt %in% rownames(masterpheno) } )
+}	
+
     ##Sample names checking:
     has.pheno <- lapply(objlist, function(x) colnames(x) %in% rownames(masterpheno))
     if(!drop){
