@@ -105,6 +105,13 @@ featsInCis.hits = function( featGR, vcf, radius=50000, checkStyle=TRUE ) {
   findOverlaps( featGR, fixup((sketchVcf(vcf)+radius)) )
 }
 ```
+
+Data are now downloaded from Amazon S3 bucket:
+```{r download}
+datadir <- "downloads"
+downloadData(datadir)
+```
+
 To illustrate the multivcf computing tools, we have made
 some small excerpts from a few 1000 genomes VCFs.
 
@@ -112,7 +119,7 @@ We have defined a container that lightly wraps GenomicFiles.
 ```{r doli}
 library(VariantAnnotation)
 library(Rsamtools)
-fns = dir(system.file("extdata/vcf", package="biocMultiAssay"), full=TRUE, patt="gz$")
+fns = dir("downloads/vcf", full=TRUE, patt="gz$")
 thev = VcfsByChrom(fns)
 thev
 ```
