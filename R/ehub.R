@@ -71,8 +71,7 @@ setMethod("show", "MultiAssayExperiment", function(object) {
 				  print(valr)
 			  }
 		}
-}
-)
+})
 
 createMA <- function(masterpheno, objlist, drop=FALSE, samplemaps=NULL){
   ## samplemaps will be maps that rename samples in object list to names used in masterpheno.
