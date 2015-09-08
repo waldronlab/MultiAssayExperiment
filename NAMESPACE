@@ -1,4 +1,4 @@
-exportPattern("..*")
+exportPattern("^[[:alpha:]]+")
 
 importClassesFrom("Biobase", "ExpressionSet")
 importClassesFrom("GenomicRanges", "GRanges", "SummarizedExperiment")

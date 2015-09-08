@@ -29,7 +29,8 @@ samples $\times$ assays is expected.
 
 <<lookDataCode>>=
 library(biocMultiAssay)
-dir(system.file("extdata/tcga_ov", package="biocMultiAssay"))
+downloadData(datadir="downloads")
+dir("downloads/tcga_ov")
 getClass("TTMergedDataSet") # from Tim Triche 25 July 2013
 @
 
@@ -39,7 +40,7 @@ enough that the loadHub function is used to deserialize
 all relevant data.
 
 <<chk,cache=TRUE>>=
-ov = dir(system.file("extdata/tcga_ov", package="biocMultiAssay"), pattern="\\.rda$", full=TRUE)
+ov = dir("downloads/tcga_ov", pattern="\\.rda$", full=TRUE)
 drop = grep("pheno", ov)
 if (length(drop)>0) {
   pdpath=ov[drop]
