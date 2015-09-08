@@ -53,3 +53,26 @@ And the following map matches masterpheno sample names to microdat sample names.
                         assay = c("micro1", "micro2", "micro3")))
 ```
 
+Let's include a GRangesList:  
+
+```{r}
+library(GenomicRanges)
+rangedat <- lapply(1:5, FUN = function(x){ 
+data.frame( seqnames = rep("chr1", 5), 
+	ranges = IRanges(floor(runif(5, 0, 100)), floor(runif(5, 80, 180))),
+	strand = rep("+", 5), score = floor(runif(5, 1, 5)) ) })
+
+rangelist <- GRangesList(lapply(rangedat,FUN = function(x) {
+	GRanges(seqnames = x$seqnames, ranges = IRanges(x$ranges.start, x$ranges.end), strand = x$strand, score = x$score) } ))
+
+names(rangelist) <- c("range1", "range3", "range4", "range2", "range2")
+mcols(rangelist) <- data.frame(row.names = c("Jack", "Bob", "Barbara", "Jill1", "Jill2"), 
+					tss = rep("lung", 5), ptid = c("1221", "1321", "1322", "1222", "1222"))
+```
+The following data.frame matches masterpheno sample to the GRangesList: 
+
+```{r}
+(rangemap <- data.frame(master = c("Jack", "Bob", "Barbara", "Jill", "Jill"), 
+						ranged = c("range1", "range3", "range4", "range2", "range2")))
+```
+
