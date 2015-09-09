@@ -107,35 +107,35 @@ setMethod("show", "MultiAssayExperiment", function(object) {
  print(dimmat)
 })
 
-setMethod("getTag", "MultiAssayExperiment", function(object, i) {
-	  if(missing(i)){
-	      sapply(object@basehub@hub, FUN = function(x) {getElement(x, "tag")})
-	  } else { object@basehub@hub[[i]]@tag }
-})
+#' setMethod("getTag", "MultiAssayExperiment", function(object, i) {
+#' 	  if(missing(i)){
+#' 	      sapply(object@basehub@hub, FUN = function(x) {getElement(x, "tag")})
+#' 	  } else { object@basehub@hub[[i]]@tag }
+#' })
 
 #' Subset method for MultiAssayExperiment class
 #' 
 #' @return Returns a subset of the \code{\linkS4class{MultiAssayExperiment}} object
-setMethod("subset", "MultiAssayExperiment", function(object, samples=NULL, exps = NULL, drop = FALSE) {
-    .assertMultiAssayExperiment(object)
-if(!is.null(samples)){
-    if(is.numeric(samples)) {
-        samples <- sampleNames(object@elist)[samples]
-    } else { 
-    object@elist <- lapply(object@elist, function(oo) {
-        jj <- samples[samples %in% sampleNames(oo)]
-        oo <- oo[,jj,drop = drop]
-        oo
-    }) 
-}
-    object@basehub@masterSampleData <- object@basehub@masterSampleData[samples,]
-    object
-}
-if(!is.null(exps)){
-    if(is.character(exps)){
-	exps <- match(exps, sapply(object@basehub@hub,FUN = function(x) { getElement(x, "tag") }))
-    } 
-}
-new("MultiAssayExperiment", basehub = getExperiments(object)[oo], elist = getExperiments(object)[exps], sampleData = object@basehub@masterSampleData)
-})
+#' setMethod("subset", "MultiAssayExperiment", function(object, samples=NULL, exps = NULL, drop = FALSE) {
+#'     .assertMultiAssayExperiment(object)
+#' if(!is.null(samples)){
+#'     if(is.numeric(samples)) {
+#'         samples <- sampleNames(object@elist)[samples]
+#'     } else { 
+#'     object@elist <- lapply(object@elist, function(oo) {
+#'         jj <- samples[samples %in% sampleNames(oo)]
+#'         oo <- oo[,jj,drop = drop]
+#'         oo
+#'     }) 
+#' }
+#'     object@basehub@masterSampleData <- object@basehub@masterSampleData[samples,]
+#'     object
+#' }
+#' if(!is.null(exps)){
+#'     if(is.character(exps)){
+#' 	exps <- match(exps, sapply(object@basehub@hub,FUN = function(x) { getElement(x, "tag") }))
+#'     } 
+#' }
+#' new("MultiAssayExperiment", basehub = getExperiments(object)[oo], elist = getExperiments(object)[exps], sampleData = object@basehub@masterSampleData)
+#' })
 
