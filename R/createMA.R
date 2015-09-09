@@ -18,18 +18,26 @@ createMA <- function(masterpheno, objlist, drop=FALSE, samplemaps=NULL){
 
 	if(!is.null(samplemaps)){
 		if(!any(c(is(samplemaps, "data.frame"), is(samplemaps, "list")))){
-		stop("samplemaps should either be a list or a data frame!")
+			stop("samplemaps should either be a list or a data frame!")
 		} else if(is(samplemaps, "list")){
-			if(!all(grepl("[A-Z]{4}.[0-9]{2}.[0-9]{4}", unlist(samplemaps)))){
-			stop("All sample names in the object list must have a specific alphanumeric format!")
+			# if(!all(grepl("[A-Z]{4}.[0-9]{2}.[0-9]{4}", unlist(samplemaps))))
+			if(all(unique(as.character(unname(unlist(sapply(samplemaps, "[", 1)))))) %in% rownames(masterpheno)){
+				message("All unique IDs matched to the masterpheno data frame!")
+			} else {
+				warning("All IDs not present in the masterpheno!")
 			}
 		} else if(is(samplemaps, "data.frame")){
-			availableIDs <-	samplemaps[which(!is.na(samplemaps))]
-			if(!all(grepl("[A-Z]{4}.[0-9]{2}.[0-9]{4}", availableIDs))){
-			stop("All available sample names in the data frame must have a specific alphanumeric format!")
+			if(all(unique(as.character(samplemaps[,1])) %in% rownames(masterpheno))){
+				message("All unique IDs matched to the masterpheno data frame!")
+			} else {
+				message("All IDs not present in the masterpheno!")
 			}
+			#' 			availableIDs <-	samplemaps[which(!is.na(samplemaps))]
+			#' 			if(!all(grepl("[A-Z]{4}.[0-9]{2}.[0-9]{4}", availableIDs))){
+			#' 				stop("All available sample names in the data frame must have a specific alphanumeric format!")}
 		}
 	} else { warning("No sample maps provided!") } 
+
 if(is(samplemaps, "list")){
 inpheno <- lapply(samplemaps, function(exptmap) rownames(exptmap) %in% rownames(masterpheno))
 }else if(is(samplemaps, "data.frame")){

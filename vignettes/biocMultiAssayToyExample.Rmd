@@ -65,14 +65,74 @@ data.frame( seqnames = rep("chr1", 5),
 rangelist <- GRangesList(lapply(rangedat,FUN = function(x) {
 	GRanges(seqnames = x$seqnames, ranges = IRanges(x$ranges.start, x$ranges.end), strand = x$strand, score = x$score) } ))
 
-names(rangelist) <- c("range1", "range3", "range4", "range2", "range2")
-mcols(rangelist) <- data.frame(row.names = c("Jack", "Bob", "Barbara", "Jill1", "Jill2"), 
-					tss = rep("lung", 5), ptid = c("1221", "1321", "1322", "1222", "1222"))
+names(rangelist) <- c("snparray1", "snparray3", "snparray4", "snparray2", "snparray2")
+# mcols(rangelist)  <- data.frame(row.names = c("Jack", "Bob", "Barbara", "Jill1", "Jill2"),  
+#		tss = rep("lung", 5), ptid = c("1221", "1321", "1322", "1222", "1222")) 
 ```
+
 The following data.frame matches masterpheno sample to the GRangesList: 
 
 ```{r}
 (rangemap <- data.frame(master = c("Jack", "Bob", "Barbara", "Jill", "Jill"), 
-						ranged = c("range1", "range3", "range4", "range2", "range2")))
+						assay = c("range1", "range3", "range4", "range20", "range21")))
 ```
 
+Create an ID map for all available experiments
+
+```{r}
+idmap <- list(exprmap, methylmap, micromap, rangemap)
+names(idmap) <- c("expr", "methyl", "micro", "range")
+idmap
+```
+
+ID map check for validity
+
+```{r}
+checkMap <- function(object){
+	if(is(object, "list")){
+		if(all(!duplicated(	as.character(unname(unlist(sapply(object, FUN = "[", 2))))))){
+			message("All samples unique!") 
+		} else {
+			stop("Some samples have the same identifier across experiments!")
+		}
+	} else if(is(object, "data.frame")){
+		if(length(object) == 2){
+			if(all(!duplicated(as.character(object[, 2])))){
+				message("All samples are unique!")
+			} else {
+				stop("Some samples in the data are not unique!") 
+			} 
+		} else if(length(object) > 2) {
+			object <- object[, -1]
+			if(all(!duplicated(as.character(unname(unlist(object)))))){
+				message("All samples in the ID map are unique!")
+			} else {
+				stop("Some samples in the data are not unique!")
+			}
+		} else {
+			stop("Data.frame is empty!")
+		}
+	} else {
+		stop("ID map must be either a data.frame or a list!")
+	}
+}
+
+checkMap(idmap)
+```
+
+Check for all IDs present in the masterpheno!
+
+```{r}
+if(all(unique(as.character(unname(unlist(sapply(idmap, "[", 1))))) %in% rownames(masterpheno))){
+	print("All Here!")
+	} else { message("Check the masterpheno for missing participants!")
+}
+```
+
+Subsetting by Sample
+
+```{r}
+subsetBySample <- function(object, j, drop = FALSE){
+if(
+}
+```
