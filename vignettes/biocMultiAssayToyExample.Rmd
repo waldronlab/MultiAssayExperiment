@@ -85,54 +85,62 @@ names(idmap) <- c("expr", "methyl", "micro", "range")
 idmap
 ```
 
-ID map check for validity
+ID map check for validity (all IDs present and all samples unique)
 
 ```{r}
 checkMap <- function(object){
-	if(is(object, "list")){
-		if(all(!duplicated(	as.character(unname(unlist(sapply(object, FUN = "[", 2))))))){
-			message("All samples unique!") 
-		} else {
-			stop("Some samples have the same identifier across experiments!")
-		}
-	} else if(is(object, "data.frame")){
-		if(length(object) == 2){
-			if(all(!duplicated(as.character(object[, 2])))){
-				message("All samples are unique!")
-			} else {
-				stop("Some samples in the data are not unique!") 
-			} 
-		} else if(length(object) > 2) {
-			object <- object[, -1]
-			if(all(!duplicated(as.character(unname(unlist(object)))))){
-				message("All samples in the ID map are unique!")
-			} else {
-				stop("Some samples in the data are not unique!")
-			}
-		} else {
-			stop("Data.frame is empty!")
+
+	if(is(object, "list")) {
+		phenos <- ifelse(all(unique(as.character(unname(unlist(sapply(object, FUN = "[", 1))))) %in% rownames(masterpheno)), TRUE, FALSE)
+		sampes <- ifelse(all(!duplicated(as.character(unname(unlist(sapply(object, FUN = "[", 2)))))), TRUE, FALSE)
+		if(sampes & phenos){
+			message("ID Map checks passed!")
+		} else if(!sampes){
+			message("Samples are not unique across experiments!")
+		} else if (!phenos) {
+			message("There are missing cases in the master phenodata!")
 		}
 	} else {
-		stop("ID map must be either a data.frame or a list!")
+		stop("The ID map needs to be a list of 2 column dataframes!")
 	}
 }
 
 checkMap(idmap)
 ```
 
-Check for all IDs present in the masterpheno!
+Allowing for the possibility of ID maps entered as dataframes, convert to conventional list: 
 
 ```{r}
-if(all(unique(as.character(unname(unlist(sapply(idmap, "[", 1))))) %in% rownames(masterpheno))){
-	print("All Here!")
-	} else { message("Check the masterpheno for missing participants!")
+library(reshape2) # reshape2 used for example only
+dfmap <- melt(idmap, id.var = c("master", "assay"))
+
+toListMap <- function(dfmap){
+	newlist <- lapply(seq_along(dfmap)[-1], FUN = function(col, mydf) { 
+					  cbind(mydf[1], mydf[col]) }, mydf = dfmap)
+	names(newlist) <- names(dfmap)[-1]
+	return(newlist)
 }
+
+toListMap(dfmap)
 ```
 
 Subsetting by Sample
 
 ```{r}
-subsetBySample <- function(object, j, drop = FALSE){
-if(
+subsetBySample <- function(MAobject, j, drop = FALSE){
+	if(!is.numeric(j)){
+		stop("Row index must be an integer!")
+		# Enter alternate subsetting by Samples method here!
+	} else {
+		if(all(j %in% seq_along(nrow(MAobject@masterpheno)))){
+			masterpsub <- MAobject@masterpheno[j, ]	
+			MAobject@masterpheno <- masterpsub
+		# use subesetted rownames with ID map to subset the objlist (experiments)
+			return(MAobject)
+		} else { 
+			stop("Row numbers outside of masterpheno row range!")
+		}
+	}
 }
 ```
+
