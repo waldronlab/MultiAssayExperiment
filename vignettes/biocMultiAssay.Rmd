@@ -78,7 +78,7 @@ lovhub = loadHub(ovhub)
 ```
 ```{r lkloaded}
 lovhub
-object.size(lovhub)
+format(object.size(lovhub), units = "Mb")
 ```
 
 This is a heavy representation but manageable at this level

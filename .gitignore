@@ -1,0 +1,5 @@
+# Ignore files
+*~
+*.swp
+*.Rproj
+*.Rhistory
