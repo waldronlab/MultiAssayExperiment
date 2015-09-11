@@ -133,6 +133,5 @@ Subsetting by Sample
 
 ```{r}
 subsetBySample <- function(object, j, drop = FALSE){
-if(
 }
 ```
