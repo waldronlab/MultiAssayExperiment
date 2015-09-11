@@ -6,7 +6,7 @@ setClass("expt", representation(tag="character", serType="character",
 # to the path by which the assay data is stored, and to
 # the path of the sample data
 
-setClass("eHub", representation(hub="list", metadata="ANY", allids="character",
+setClass("eHub", representation(hub="list", metadata="ANY", 
   masterSampleData="data.frame"))
 setMethod("phenoData", "eHub", function(object)
   object@masterSampleData)
@@ -47,17 +47,30 @@ setGeneric("featExtractor", function(x) standardGeneric("featExtractor"))
 setMethod("featExtractor", "ExpressionSet", function(x) featureNames(x))
 setMethod("featExtractor", "SummarizedExperiment", function(x) rownames(x))
 
-setClass("MultiAssayExperiment", representation(basehub="eHub", elist="list"))
+setClass("MultiAssayExperiment", representation(basehub="eHub", elist="list", idmap = "ANY"))
 setMethod("show", "MultiAssayExperiment", function(object) {
- cat("MultiAssayExperiment instance.\n")
- dimmat = t(sapply(object@elist, dim))
- colnames(dimmat) = c("Features", "Samples") # dim for eSet nicer than for SE!
- featExemplars = lapply(object@elist, function(x) head(featExtractor(x),3))
- featExemplars = sapply(featExemplars, paste, collapse=", ")
- featExemplars = substr(featExemplars, 1, 25)
- featExemplars = paste(featExemplars, "...")
- dimmat = data.frame(dimmat, feats.=featExemplars)
- print(dimmat)
+		  cat("MultiAssayExperiment instance.\n")
+		  dimmat = t(sapply(object@elist, dim))
+		  colnames(dimmat) = c("Features", "Samples") # dim for eSet nicer than for SE!
+		  featExemplars = lapply(object@elist, function(x) head(featExtractor(x),3))
+		  featExemplars = sapply(featExemplars, paste, collapse=", ")
+		  featExemplars = substr(featExemplars, 1, 25)
+		  featExemplars = paste(featExemplars, "...")
+		  dimmat = data.frame(dimmat, feats.=featExemplars)
+		  print(dimmat)
+		  if(exists("idmap")){
+			  if(is(idmap, "list")){
+				  out <- sapply(idmap, function(expt) dim(na.omit(expt)))
+				  rownames(out) <- c("matched IDs", "columns")
+				  print(out)
+			  }
+			  if(is(idmap, "data.frame")){
+				  valr <- t(as.matrix(apply(idmap, 2, function(expt) length(na.omit(expt)))))
+				  colnames(valr) <- colnames(idmap)
+				  rownames(valr) <- c("matched IDs")
+				  print(valr)
+			  }
+		}
 })
 
 createMA <- function(masterpheno, objlist, drop=FALSE, samplemaps=NULL){
