@@ -57,15 +57,15 @@ Let's include a GRangesList:
 
 ```{r}
 library(GenomicRanges)
-rangedat <- lapply(1:5, FUN = function(x){ 
+rangeprep <- lapply(1:5, FUN = function(x){ 
 data.frame( seqnames = rep("chr1", 5), 
 	ranges = IRanges(floor(runif(5, 0, 100)), floor(runif(5, 80, 180))),
 	strand = rep("+", 5), score = floor(runif(5, 1, 5)) ) })
 
-rangelist <- GRangesList(lapply(rangedat,FUN = function(x) {
+rangelistdat <- GRangesList(lapply(rangeprep, FUN = function(x) {
 	GRanges(seqnames = x$seqnames, ranges = IRanges(x$ranges.start, x$ranges.end), strand = x$strand, score = x$score) } ))
 
-names(rangelist) <- c("snparray1", "snparray3", "snparray4", "snparray2", "snparray2")
+names(rangelistdat) <- c("snparray1", "snparray3", "snparray4", "snparray2", "snparray2")
 # mcols(rangelist)  <- data.frame(row.names = c("Jack", "Bob", "Barbara", "Jill1", "Jill2"),  
 #		tss = rep("lung", 5), ptid = c("1221", "1321", "1322", "1222", "1222")) 
 ```
@@ -74,7 +74,7 @@ The following data.frame matches masterpheno sample to the GRangesList:
 
 ```{r}
 (rangemap <- data.frame(master = c("Jack", "Bob", "Barbara", "Jill", "Jill"), 
-						assay = c("range1", "range3", "range4", "range20", "range21")))
+						assay = c("snparray1", "snparray3", "snparray4", "snparray20", "snparray21")))
 ```
 
 Create an ID map for all available experiments
@@ -127,7 +127,7 @@ toListMap(dfmap)
 Create an (unnamed) list of experiments `objlist` for the createMA function
 
 ```{r}
-objlist <- list(arraydat, exprdat, methyldat, microdat, rangedat)
+objlist <- list(arraydat, exprdat, methyldat, microdat, rangelistdat)
 ```
 
 Create a toy multiAssayExperiment class object
@@ -142,7 +142,7 @@ createMA <- function(masterpheno, objlist, drop=FALSE, samplemaps=NULL){
 	}
 
 	if(!is.null(samplemaps)){
-		if(any(!sapply(samplemaps, checkMap)){
+		if(any(!sapply(samplemaps, checkMap))){
 			stop("The sample maps are not passing the required checks!")
 		}
 	} else {
@@ -152,6 +152,8 @@ createMA <- function(masterpheno, objlist, drop=FALSE, samplemaps=NULL){
 newMAE <- new("MultiAssayExperiment", elist = objlist, masterPheno = masterpheno, sampleMap = samplemaps)
 return(newMAE)
 }
+
+MAE <- createMA(masterpheno, objlist, samplemaps = idmap)
 ```
 
 
@@ -160,15 +162,22 @@ Subsetting by Sample
 ```{r}
 subsetBySample <- function(MAobject, j, drop = FALSE){
 
-	if(isS4(MAobject){
+	if(isS4(MAobject) & is(MAobject, "MultiAssayExperiment")){
 	   if(!is.numeric(j)){
-		   stop("Row index must be an integer!")
+		   stop("Row index must be an integer vector!")
 		   # Enter alternate subsetting by Samples method here!
 	   } else {
-		   if(all(j %in% seq_along(nrow(masterpheno)))){
-			   masterpsub <- masterpheno[j, ]	
+		   if(all(j %in% seq(nrow(MAobject@masterPheno)))){
+	    masterpsub <- MAobject@masterPheno[j, ]	
 			   # use subesetted rownames with ID map to subset the objlist (experiments)
-			   return(masterpsub)
+		subPheno <- MAobject@masterPheno[match(rownames(masterpsub), rownames(MAobject@masterPheno)),]
+		subMap <- lapply(MAobject@sampleMap, FUN = function(minimap) { na.omit(minimap[minimap[,1] %in% rownames(subPheno), ]) } ) 
+	browser()	
+subElist <- lapply(MAobject@elist, FUN = function(expt) { 
+#====
+#TODO: Create subsetting function across experiments using subMap
+#====
+ } ) 
 		   } else { 
 			   stop("Row numbers outside of masterpheno row range!")
 		   }
@@ -177,4 +186,5 @@ subsetBySample <- function(MAobject, j, drop = FALSE){
 
 }
 
+subsetBySample(MAE, 1:2)
 ```
