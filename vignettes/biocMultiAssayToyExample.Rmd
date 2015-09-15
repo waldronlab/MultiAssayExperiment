@@ -88,24 +88,24 @@ idmap
 ID map check for validity (all IDs present and all samples unique)
 
 ```{r}
-checkMap <- function(object){
+checkMap <- function(exptchunk){
 
-	if(is(object, "list")) {
-		phenos <- ifelse(all(unique(as.character(unname(unlist(sapply(object, FUN = "[", 1))))) %in% rownames(masterpheno)), TRUE, FALSE)
-		sampes <- ifelse(all(!duplicated(as.character(unname(unlist(sapply(object, FUN = "[", 2)))))), TRUE, FALSE)
-		if(sampes & phenos){
-			message("ID Map checks passed!")
-		} else if(!sampes){
-			message("Samples are not unique across experiments!")
-		} else if (!phenos) {
-			message("There are missing cases in the master phenodata!")
-		}
-	} else {
-		stop("The ID map needs to be a list of 2 column dataframes!")
+	allphenos <- ifelse(all(unique(exptchunk[,1]) %in% rownames(masterpheno)), TRUE, FALSE)
+	uniqss <- ifelse(all(!duplicated(exptchunk[,2])), TRUE, FALSE)
+
+	if(uniqss & allphenos){
+		message("All ID Map checks passed!") 
+		return(TRUE)
+	} else if(!sampes){
+		message("Samples are not unique!")
+		return(FALSE)
+	} else if (!phenos) {
+		message("There are missing cases in the master phenodata!")
+		return(FALSE)
 	}
 }
 
-checkMap(idmap)
+sapply(idmap, checkMap)
 ```
 
 Allowing for the possibility of ID maps entered as dataframes, convert to conventional list: 
@@ -124,23 +124,57 @@ toListMap <- function(dfmap){
 toListMap(dfmap)
 ```
 
+Create an (unnamed) list of experiments `objlist` for the createMA function
+
+```{r}
+objlist <- list(arraydat, exprdat, methyldat, microdat, rangedat)
+```
+
+Create a toy multiAssayExperiment class object
+
+```{r}
+createMA <- function(masterpheno, objlist, drop=FALSE, samplemaps=NULL){
+	if(!is(masterpheno, "data.frame")){
+		stop("masterpheno should be a data frame of metadata for all samples")
+	}
+	if(!is(objlist, "list")){
+		stop("objlist should be a named list of data objects")
+	}
+
+	if(!is.null(samplemaps)){
+		if(any(!sapply(samplemaps, checkMap)){
+			stop("The sample maps are not passing the required checks!")
+		}
+	} else {
+	warning("No sample maps provided!")
+}
+
+newMAE <- new("MultiAssayExperiment", elist = objlist, masterPheno = masterpheno, sampleMap = samplemaps)
+return(newMAE)
+}
+```
+
+
 Subsetting by Sample
 
 ```{r}
 subsetBySample <- function(MAobject, j, drop = FALSE){
-	if(!is.numeric(j)){
-		stop("Row index must be an integer!")
-		# Enter alternate subsetting by Samples method here!
-	} else {
-		if(all(j %in% seq_along(nrow(MAobject@masterpheno)))){
-			masterpsub <- MAobject@masterpheno[j, ]	
-			MAobject@masterpheno <- masterpsub
-		# use subesetted rownames with ID map to subset the objlist (experiments)
-			return(MAobject)
-		} else { 
-			stop("Row numbers outside of masterpheno row range!")
-		}
-	}
-}
-```
 
+	if(isS4(MAobject){
+	   if(!is.numeric(j)){
+		   stop("Row index must be an integer!")
+		   # Enter alternate subsetting by Samples method here!
+	   } else {
+		   if(all(j %in% seq_along(nrow(masterpheno)))){
+			   masterpsub <- masterpheno[j, ]	
+			   # use subesetted rownames with ID map to subset the objlist (experiments)
+			   return(masterpsub)
+		   } else { 
+			   stop("Row numbers outside of masterpheno row range!")
+		   }
+	   }
+					  }
+
+}
+
+```
