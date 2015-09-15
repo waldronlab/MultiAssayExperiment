@@ -29,18 +29,18 @@ setClass("expt", representation(tag = "character", serType = "character",
 
 #' An S4 class for storing multiple experiment objects
 #' 
-#' @slot hub A list of experiment objects 
-#' @slot metadata Slot for storing data
-#' @slot allids A character vector for patient IDs
-#' @slot masterSampleData A data frame for storing clinical data
-setClass("eHub", representation(hub = "list", metadata = "ANY", allids = "character", 
-	masterSampleData = "data.frame"))
+#' @slot hub a list of experiment objects 
+#' @slot metadata slot for storing data
+#' @slot allids a character vector for patient ids
+#' @slot mastersampledata a data frame for storing clinical data
+setclass("ehub", representation(hub = "list", metadata = "any", allids = "character", 
+	mastersampledata = "data.frame"))
 
-#' Get phenotype data method for eHub class
+#' get phenotype data method for ehub class
 #' 
-#' @param object An \code{\linkS4class{eHub}} class object
-setMethod("phenoData", "eHub", function(object) object@masterSampleData)
-# setValidity("eHub", function(object){
+#' @param object an \code{\links4class{ehub}} class object
+setmethod("phenodata", "ehub", function(object) object@mastersampledata)
+# setvalidity("ehub", function(object){
 #   ## Note - requiring existence of local files too restrictive,
 #   ## should we allow off-site files e.g. through AnnotationHub
 #   ## or other remote file services?
@@ -70,6 +70,15 @@ setMethod("show", "eHub", function(object){
   cat("Sample level data is ", nrow(pd), " x ", ncol(pd), ".\n", sep="")
 })
 
+#' An integrative MultiAssay class for experiment data
+#' 
+#' @slot elist A list of data across different types of assays 
+#' @slot masterPheno A data.frame of all clinical data available across experiments
+#' @slot sampleMap A list of translatable identifiers of samples and participants
+#' @slot metadata Additional data describing the \code{\linkS4class{MultiAssayExperiment}} class 
+setClass("MultiAssayExperiment", representation(elist="list", masterPheno = "data.frame",
+	sampleMap = "list", metadata = "ANY")
+
 #' Load method for eHub to MultiAssayExperiment class
 #' 
 #' @param hub An \code{\linkS4class{eHub}} class object
@@ -95,7 +104,6 @@ setMethod("featExtractor", "SummarizedExperiment", function(x) rownames(x))
 #' 
 #' @param object A \code{\linkS4class{MultiAssayExperiment}} 
 #' @return Returns a list of contents for the MultiAssayExperiment
-setClass("MultiAssayExperiment", representation(basehub="eHub", elist="list", sampleData = "DataFrame"))
 setMethod("show", "MultiAssayExperiment", function(object) {
  dimmat = t(sapply(object@elist, dim))
  colnames(dimmat) = c("Features", "Samples") # dim for eSet nicer than for SE!
