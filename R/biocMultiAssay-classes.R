@@ -77,7 +77,7 @@ setMethod("show", "eHub", function(object){
 #' @slot sampleMap A list of translatable identifiers of samples and participants
 #' @slot metadata Additional data describing the \code{\linkS4class{MultiAssayExperiment}} class 
 setClass("MultiAssayExperiment", representation(elist="list", masterPheno = "data.frame",
-	sampleMap = "list", metadata = "ANY")
+	sampleMap = "list", metadata = "ANY"))
 
 #' Load method for eHub to MultiAssayExperiment class
 #' 
