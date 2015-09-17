@@ -66,7 +66,8 @@ rangelistdat <- GRangesList(lapply(rangeprep, FUN = function(x) {
 	GRanges(seqnames = x$seqnames, ranges = IRanges(x$ranges.start, x$ranges.end), strand = x$strand, score = x$score) } ))
 
 names(rangelistdat) <- c("snparray1", "snparray3", "snparray4", "snparray2", "snparray2")
-# mcols(rangelist)  <- data.frame(row.names = c("Jack", "Bob", "Barbara", "Jill1", "Jill2"),  
+# mcols is using DataFrame instead of data.frame
+# mcols(rangelistdat) <- data.frame(row.names = c("Jack", "Bob", "Barbara", "Jill1", "Jill2"),  
 #		tss = rep("lung", 5), ptid = c("1221", "1321", "1322", "1222", "1222")) 
 ```
 
@@ -127,7 +128,7 @@ toListMap(dfmap)
 Create an (unnamed) list of experiments `objlist` for the createMA function
 
 ```{r}
-objlist <- list(arraydat, exprdat, methyldat, microdat, rangelistdat)
+objlist <- list(exprdat, methyldat, microdat, rangelistdat)
 ```
 
 Create a toy multiAssayExperiment class object
@@ -142,20 +143,38 @@ createMA <- function(masterpheno, objlist, drop=FALSE, samplemaps=NULL){
 	}
 
 	if(!is.null(samplemaps)){
+
 		if(any(!sapply(samplemaps, checkMap))){
 			stop("The sample maps are not passing the required checks!")
 		}
+		if(length(objlist) != length(samplemaps)){
+			stop("objlist must be the same length as samplemaps!")
+		}
 	} else {
-	warning("No sample maps provided!")
-}
+		warning("No sample maps provided!")
+	}
 
-newMAE <- new("MultiAssayExperiment", elist = objlist, masterPheno = masterpheno, sampleMap = samplemaps)
-return(newMAE)
+	newMAE <- new("MultiAssayExperiment", elist = objlist, masterPheno = masterpheno, sampleMap = samplemaps)
+	return(newMAE)
 }
 
 MAE <- createMA(masterpheno, objlist, samplemaps = idmap)
 ```
 
+Create a function that subsets depending on the input given
+
+```{r}
+subsetUnit <- function(exptChunk, chop){
+	if(any(is(exptChunk, "data.frame"), is(exptChunk, "matrix"))){
+		subUnit <- exptChunk[, chop]
+	} else if(is(exptChunk, "GRangesList")){
+		subUnit <- exptChunk[chop]
+	}else if(is(exptChunk, "ExpressionSet")){
+		subUnit <- exptChunk[, chop %in% sampleNames(exptChunk)] 
+	}
+	return(subUnit)
+} 
+```
 
 Subsetting by Sample
 
@@ -172,12 +191,11 @@ subsetBySample <- function(MAobject, j, drop = FALSE){
 			   # use subesetted rownames with ID map to subset the objlist (experiments)
 		subPheno <- MAobject@masterPheno[match(rownames(masterpsub), rownames(MAobject@masterPheno)),]
 		subMap <- lapply(MAobject@sampleMap, FUN = function(minimap) { na.omit(minimap[minimap[,1] %in% rownames(subPheno), ]) } ) 
-	browser()	
-subElist <- lapply(MAobject@elist, FUN = function(expt) { 
-#====
-#TODO: Create subsetting function across experiments using subMap
-#====
- } ) 
+chopper <- lapply(subMap, FUN = "[", 2)
+browser()
+subElist <- lapply(MAobject@elist, FUN = function(expt, i = seq_along(chopper), map) { 
+ subsetUnit(expt, map[[i]])
+ }, map = chopper ) 
 		   } else { 
 			   stop("Row numbers outside of masterpheno row range!")
 		   }
