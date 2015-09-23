@@ -7,34 +7,36 @@ output: html_document
 
 In this example we have 4 patients, and a bit of metadata on them:
 ```{r}
-masterpheno <- data.frame(sex=c("M", "F", "M", "F"),
-                          age=38:41,
-                          row.names=c("Jack", "Jill", "Bob", "Barbara"))
-masterpheno
+masterPheno <- data.frame(sex=c("M", "F", "M", "F"),
+						  age=38:41,
+						  row.names=c("Jack", "Jill", "Bob", "Barbara"))
+masterPheno
 ```
 
 We have three matrix-like datasets.  First let's say expression data:
 
 ```{r, message=FALSE}
 library(affy)
-(arraydat <- matrix(seq(101, 108), ncol=4, dimnames=list(c("TP53", "EGFR"), c("array1", "array2", "array3", "array4"))))
+(arraydat <- matrix(seq(101, 108), ncol=4, dimnames=list(c("ENST00000294241", "ENST00000355076"), c("array1", "array2", "array3", "array4"))))
 arraypdat <- as(data.frame(slope53=rnorm(4), row.names=c("array1", "array2", "array3", "array4")), "AnnotatedDataFrame")
 exprdat <- ExpressionSet(assayData=arraydat, phenoData=arraypdat)
 exprdat
 ```
 
-The following map matches masterpheno sample names to exprdata sample names.  Note that row orders aren't initially matched up.
+The following map matches masterPheno sample names to exprdata sample names.  Note that row orders aren't initially matched up.
 ```{r}
-(exprmap <- data.frame(master=rownames(masterpheno)[c(1, 2, 4, 3)], assay=c("array1", "array2", "array3", "array4")))
+(exprmap <- data.frame(master=rownames(masterPheno)[c(1, 2, 4, 3)], assay=c("array1", "array2", "array3", "array4")))
 ```
 
 Now methylation data.  It uses gene identifiers also, but measures a partially overlapping set of genes.  For fun, let's store this as a simple matrix. Also, it contains a replicate for one of the patients.
 
 ```{r}
-(methyldat <- matrix(1:10, ncol=5, dimnames=list(c("TP53", "CXCL12"), c("methyl1", "methyl2", "methyl3", "methyl4", "methyl5"))))
+(methyldat <- matrix(1:10, ncol=5, 
+                     dimnames=list(c("ENST00000355076", "ENST00000383706"),
+                                   c("methyl1", "methyl2", "methyl3", "methyl4", "methyl5"))))
 ```
 
-The following map matches masterpheno sample names to methyldat sample names.
+The following map matches masterPheno sample names to methyldat sample names.
 
 ```{r}
 (methylmap <- data.frame(master = c("Jack", "Jack", "Jill", "Barbara", "Bob"),
@@ -44,10 +46,12 @@ The following map matches masterpheno sample names to methyldat sample names.
 Now we have a microRNA platform, which has no common identifiers.  It is also missing data for Jill.  Just for fun, let's use the same sample naming convention as we did for arrays.
 
 ```{r}
-(microdat <- matrix(201:212, ncol=3, dimnames=list(c("miR1", "miR2", "miR3", "miR4"), c("array1", "array2", "array3"))))
+(microdat <- matrix(201:212, ncol=3, 
+                    dimnames=list(c("hsa-miR-21", "hsa-miR-191", "hsa-miR-148a", "hsa-miR148b"), 
+                                  c("array1", "array2", "array3"))))
 ```
 
-And the following map matches masterpheno sample names to microdat sample names.
+And the following map matches masterPheno sample names to microdat sample names.
 ```{r}
 (micromap <- data.frame(master = c("Jack", "Barbara", "Bob"),
                         assay = c("micro1", "micro2", "micro3")))
@@ -57,28 +61,30 @@ Let's include a GRangesList:
 
 ```{r}
 library(GenomicRanges)
-rangeprep <- lapply(1:5, FUN = function(x){ 
-data.frame( seqnames = rep("chr1", 5), 
-	ranges = IRanges(floor(runif(5, 0, 100)), floor(runif(5, 80, 180))),
-	strand = rep("+", 5), score = floor(runif(5, 1, 5)) ) })
-
-rangelistdat <- GRangesList(lapply(rangeprep, FUN = function(x) {
-	GRanges(seqnames = x$seqnames, ranges = IRanges(x$ranges.start, x$ranges.end), strand = x$strand, score = x$score) } ))
-
-names(rangelistdat) <- c("snparray1", "snparray3", "snparray4", "snparray2", "snparray2")
-# mcols is using DataFrame instead of data.frame
-# mcols(rangelistdat) <- data.frame(row.names = c("Jack", "Bob", "Barbara", "Jill1", "Jill2"),  
-#		tss = rep("lung", 5), ptid = c("1221", "1321", "1322", "1222", "1222")) 
+gr1 <-
+  GRanges(seqnames = "chr3", ranges = IRanges(58000000, 59502360), #completely encompasses ENST00000355076
+          strand = "+", score = 5L, GC = 0.45)
+gr2 <-
+  GRanges(seqnames = c("chr3", "chr3"),
+          ranges = IRanges(c(58493000, 3), width=9000), #first is within ENST0000035076
+          strand = c("+", "-"), score = 3:4, GC = c(0.3, 0.5))
+gr3 <-
+  GRanges(seqnames = c("chr1", "chr2"),
+          ranges = IRanges(c(1, 4), c(3, 9)),
+          strand = c("-", "-"), score = c(6L, 2L), GC = c(0.4, 0.1))
+grl <- GRangesList("gr1" = gr1, "gr2" = gr2, "gr3" = gr3)
+names(grl) <- c("snparray1", "snparray2", "snparray3")
+grl
 ```
 
-The following data.frame matches masterpheno sample to the GRangesList: 
+The following data.frame matches masterPheno sample to the GRangesList: 
 
 ```{r}
-(rangemap <- data.frame(master = c("Jack", "Bob", "Barbara", "Jill", "Jill"), 
-						assay = c("snparray1", "snparray3", "snparray4", "snparray20", "snparray21")))
+(rangemap <- data.frame(master = c("Jack", "Jill", "Jill"), 
+						assay = c("snparray1", "snparray2", "snparray3")))
 ```
 
-Create an ID map for all available experiments
+Create an ID map for all available experiments.  Names optional?
 
 ```{r}
 idmap <- list(exprmap, methylmap, micromap, rangemap)
@@ -89,10 +95,10 @@ idmap
 ID map check for validity (all IDs present and all samples unique)
 
 ```{r}
-checkMap <- function(exptchunk){
+checkMap <- function(exptChunk){
 
-	allphenos <- ifelse(all(unique(exptchunk[,1]) %in% rownames(masterpheno)), TRUE, FALSE)
-	uniqss <- ifelse(all(!duplicated(exptchunk[,2])), TRUE, FALSE)
+	allphenos <- ifelse(all(unique(exptChunk[,1]) %in% rownames(masterPheno)), TRUE, FALSE)
+	uniqss <- ifelse(all(!duplicated(exptChunk[,2])), TRUE, FALSE)
 
 	if(uniqss & allphenos){
 		message("All ID Map checks passed!") 
@@ -128,59 +134,21 @@ toListMap(dfmap)
 Create an (unnamed) list of experiments `objlist` for the createMA function
 
 ```{r}
-objlist <- list(exprdat, methyldat, microdat, rangelistdat)
+objlist <- list("Affy" = exprdat, "Methyl 450k" = methyldat, "Mirna" = microdat, "CNV gistic" = grl)
 ```
 
 Create a toy multiAssayExperiment class object
 
 ```{r}
-createMA <- function(masterpheno, objlist, drop=FALSE, samplemaps=NULL){
-	if(!is(masterpheno, "data.frame")){
-		stop("masterpheno should be a data frame of metadata for all samples")
-	}
-	if(!is(objlist, "list")){
-		stop("objlist should be a named list of data objects")
-	}
-
-	if(!is.null(samplemaps)){
-
-		if(any(!sapply(samplemaps, checkMap))){
-			stop("The sample maps are not passing the required checks!")
-		}
-		if(length(objlist) != length(samplemaps)){
-			stop("objlist must be the same length as samplemaps!")
-		}
-	} else {
-		warning("No sample maps provided!")
-	}
-
-	newMAE <- new("MultiAssayExperiment", elist = objlist, masterPheno = masterpheno, sampleMap = samplemaps)
-	return(newMAE)
-}
-
-MAE <- createMA(masterpheno, objlist, samplemaps = idmap)
-```
-
-Create a function that subsets depending on the input given
-
-```{r}
-subsetUnit <- function(exptChunk, chop){
-	if(any(is(exptChunk, "data.frame"), is(exptChunk, "matrix"))){
-		subUnit <- exptChunk[, chop]
-	} else if(is(exptChunk, "GRangesList")){
-		subUnit <- exptChunk[chop]
-	}else if(is(exptChunk, "ExpressionSet")){
-		subUnit <- exptChunk[, chop %in% sampleNames(exptChunk)] 
-	}
-	return(subUnit)
-} 
+source("../R/createMA.R")
+source("../R/biocMultiAssay-classes.R")
+MAE <- createMA(objlist, masterPheno, sampleMap = idmap)
 ```
 
 Subsetting by Sample
 
 ```{r}
 subsetBySample <- function(MAobject, j, drop = FALSE){
-
 	if(isS4(MAobject) & is(MAobject, "MultiAssayExperiment")){
 	   if(!is.numeric(j)){
 		   stop("Row index must be an integer vector!")
@@ -191,18 +159,21 @@ subsetBySample <- function(MAobject, j, drop = FALSE){
 			   # use subesetted rownames with ID map to subset the objlist (experiments)
 		subPheno <- MAobject@masterPheno[match(rownames(masterpsub), rownames(MAobject@masterPheno)),]
 		subMap <- lapply(MAobject@sampleMap, FUN = function(minimap) { na.omit(minimap[minimap[,1] %in% rownames(subPheno), ]) } ) 
-chopper <- lapply(subMap, FUN = "[", 2)
+chopper <- sapply(subMap, FUN = "[", 2)
 browser()
-subElist <- lapply(MAobject@elist, FUN = function(expt, i = seq_along(chopper), map) { 
- subsetUnit(expt, map[[i]])
- }, map = chopper ) 
+subElist <- list()
+for (i in 1:length(MAobject@elist)){
+subElist[i] <- subsetSample(MAobject@elist[[i]], chopper[[i]])
+}
+return(subElist)
 		   } else { 
-			   stop("Row numbers outside of masterpheno row range!")
+			   stop("Row numbers outside of masterPheno row range!")
 		   }
 	   }
 					  }
 
 }
 
-subsetBySample(MAE, 1:2)
+mysub <- subsetBySample(MAE, 1:2)
 ```
+

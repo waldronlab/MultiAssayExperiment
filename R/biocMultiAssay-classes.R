@@ -18,57 +18,39 @@ getExperiments <- function(object) {
     object@elist
 }
 
-#' An S4 class for storing experiment data
-#' 
-#' @slot tag Informal labels for constituents
-#' @slot serType Data file type
-#' @slot assayPath Assay data location path 
-#' @slot sampleDataPath
-setClass("expt", representation(tag = "character", serType = "character", 
-	assayPath = "character", sampleDataPath = "character")) 
+checkMap <- function(exptChunk){
+	allphenos <- ifelse(all(unique(exptChunk[,1]) %in% rownames(masterPheno)), TRUE, FALSE)
+	uniqss <- ifelse(all(!duplicated(exptChunk[,2])), TRUE, FALSE)
+	if(uniqss & allphenos){
+		return(TRUE)
+	} else if(!sampes){
+		return(FALSE)
+	} else if (!phenos) {
+		return(FALSE)
+	}
+}
 
-#' An S4 class for storing multiple experiment objects
-#' 
-#' @slot hub a list of experiment objects 
-#' @slot metadata slot for storing data
-#' @slot allids a character vector for patient ids
-#' @slot mastersampledata a data frame for storing clinical data
-setclass("ehub", representation(hub = "list", metadata = "any", allids = "character", 
-	mastersampledata = "data.frame"))
-
-#' get phenotype data method for ehub class
-#' 
-#' @param object an \code{\links4class{ehub}} class object
-setmethod("phenodata", "ehub", function(object) object@mastersampledata)
-# setvalidity("ehub", function(object){
-#   ## Note - requiring existence of local files too restrictive,
-#   ## should we allow off-site files e.g. through AnnotationHub
-#   ## or other remote file services?
-#    all.files <- sapply(object@hub, function(x) x@assayPath)
-#     if(!all(file.exists(all.files))){
-#       msg <- paste("The following files are not found:",
-#                    all.files[!file.exists(all.files)], collapse=", ")
-#     }else{
-#       return(TRUE)
-#     }
-#   }
-# )
-
-#' Show method for eHub class
-#' 
-#' @param object An \code{\linkS4class{eHub}} class object
-#' @return Returns a list of contents for the eHub class
-#' 
-setMethod("show", "eHub", function(object){
-  cat("eHub with", length(object@hub),
-       "experiments.  User-defined tags:\n")
-  tags = sapply(object@hub, slot, "tag")
-  for (i in 1:length(tags)) {
-    cat("\t", tags[i], "\n")
-  }
-  pd = phenoData(object)
-  cat("Sample level data is ", nrow(pd), " x ", ncol(pd), ".\n", sep="")
-})
+checkMAE <- function(object){
+	errors <- character()
+	if(!is(object@masterPheno, "data.frame")){
+		msg <- paste("masterPheno should be a data frame of metadata for all samples")
+		errors <- c(errors, msg)
+	}
+	if(!is(object@elist, "list")){
+		msg <- paste("objlist should be a named list of data objects!")
+		errors <- c(errors, msg)
+	}
+	if(!is.null(object@sampleMap)){
+		if(any(!sapply(object@sampleMap,checkMap))){
+			msg <- paste("The sample maps are not passing the required checks!")
+			errors <- c(errors, msg)
+		}
+		if(length(object@elist) != length(object@sampleMap)){
+			msg <- paste("objlist must be the same length as the sampleMap") 
+		}
+	}
+	if(length(errors) == 0) TRUE else errors
+}
 
 #' An integrative MultiAssay class for experiment data
 #' 
@@ -77,73 +59,60 @@ setMethod("show", "eHub", function(object){
 #' @slot sampleMap A list of translatable identifiers of samples and participants
 #' @slot metadata Additional data describing the \code{\linkS4class{MultiAssayExperiment}} class 
 setClass("MultiAssayExperiment", representation(elist="list", masterPheno = "data.frame",
-	sampleMap = "list", metadata = "ANY"))
-
-#' Load method for eHub to MultiAssayExperiment class
-#' 
-#' @param hub An \code{\linkS4class{eHub}} class object
-#' @rdname eHub
-#' @aliases loadHub, eHub, eHub-method
-#' @return Returns a \code{\linkS4class{MultiAssayExperiment}} class object 
-setGeneric("loadHub", function(hub)standardGeneric("loadHub"))
-setMethod("loadHub", "eHub", function(hub) {
-  obj = lapply(hub@hub, function(x) get(load(x@assayPath)))
-  names(obj) = sapply(hub@hub, function(x) x@tag)
-  new("MultiAssayExperiment", basehub=hub, elist=obj)
-})
-
-#' Feature extractor for eSet and SummarizedExperiment
-#' 
-#' @param x Either an \code{\linkS4class{ExpressionSet}} or \code{\linkS4class{SummarizedExperiment}} class object
-#' @return Returns either rownames or featureNames
-setGeneric("featExtractor", function(x) standardGeneric("featExtractor"))
-setMethod("featExtractor", "ExpressionSet", function(x) featureNames(x))
-setMethod("featExtractor", "SummarizedExperiment", function(x) rownames(x))
+	sampleMap = "list", metadata = "ANY"), validity = checkMAE)
 
 #' Show method for MultiAssayExperiment class
 #' 
 #' @param object A \code{\linkS4class{MultiAssayExperiment}} 
 #' @return Returns a list of contents for the MultiAssayExperiment
-setMethod("show", "MultiAssayExperiment", function(object) {
- dimmat = t(sapply(object@elist, dim))
- colnames(dimmat) = c("Features", "Samples") # dim for eSet nicer than for SE!
- featExemplars = lapply(object@elist, function(x) head(featExtractor(x),3))
- featExemplars = sapply(featExemplars, paste, collapse=", ")
- featExemplars = substr(featExemplars, 1, 25)
- featExemplars = paste(featExemplars, "...")
- dimmat = data.frame(dimmat, feats.=featExemplars)
- print(dimmat)
-})
+# setMethod("show", "MultiAssayExperiment", function(object) {
+# 		  objdim <- lapply(seq_along(object@elist), FUN = function(j, expt) {	
+# 						   dd <- matrix(NA, nrow = length(expt), ncol = 2)
+# 						   if(any(is(expt[j], "data.frame"), is(expt[j], "matrix"))){
+# 							   dimmat <- matrix(c(dim(expt[j])[1], dim(expt[j])[2]), ncol = 2)
+# 							   colnames(dimmat) <- c("Features", "Samples")
+# 							   dd <- rbind(dd, dimmat)
+# 						   }
+# 	} , expt = object@elist)
+# print(objdim)
+# })
 
-#' setMethod("getTag", "MultiAssayExperiment", function(object, i) {
-#' 	  if(missing(i)){
-#' 	      sapply(object@basehub@hub, FUN = function(x) {getElement(x, "tag")})
-#' 	  } else { object@basehub@hub[[i]]@tag }
-#' })
 
-#' Subset method for MultiAssayExperiment class
+#' Feature extractor for eSet, SummarizedExperiment, matrix, and GRangesList
 #' 
-#' @return Returns a subset of the \code{\linkS4class{MultiAssayExperiment}} object
-#' setMethod("subset", "MultiAssayExperiment", function(object, samples=NULL, exps = NULL, drop = FALSE) {
-#'     .assertMultiAssayExperiment(object)
-#' if(!is.null(samples)){
-#'     if(is.numeric(samples)) {
-#'         samples <- sampleNames(object@elist)[samples]
-#'     } else { 
-#'     object@elist <- lapply(object@elist, function(oo) {
-#'         jj <- samples[samples %in% sampleNames(oo)]
-#'         oo <- oo[,jj,drop = drop]
-#'         oo
-#'     }) 
-#' }
-#'     object@basehub@masterSampleData <- object@basehub@masterSampleData[samples,]
-#'     object
-#' }
-#' if(!is.null(exps)){
-#'     if(is.character(exps)){
-#' 	exps <- match(exps, sapply(object@basehub@hub,FUN = function(x) { getElement(x, "tag") }))
-#'     } 
-#' }
-#' new("MultiAssayExperiment", basehub = getExperiments(object)[oo], elist = getExperiments(object)[exps], sampleData = object@basehub@masterSampleData)
-#' })
+#' @param x Either an \code{\linkS4class{ExpressionSet}}, \code{\linkS4class{GRangesList}}, \code{\linkS4class{SummarizedExperiment}} or \code{matrix} class object
+#' @return Returns either rownames or featureNames
+setGeneric("featExtractor", function(x) standardGeneric("featExtractor"))
+setMethod("featExtractor", "ExpressionSet", function(x) featureNames(x))
+setMethod("featExtractor", signature("SummarizedExperiment", "matrix"), function(x) rownames(x))
+setMethod("featExtractor", "GRangesList", function(x) ranges(x))
+
+#' Sample extractor for eSet, SummarizedExperiment, matrix, and GRangesList
+#' 
+#' @param x Either an \code{\linkS4class{ExpressionSet}}, \code{\linkS4class{GRangesList}}, \code{\linkS4class{SummarizedExperiment}} or \code{matrix} class object
+#' @return Returns an object of the same class  
+setGeneric("sampleExtractor", function(x) standardGeneric("sampleExtractor"))
+setMethod("sampleExtractor", "ExpressionSet", function(x) sampleNames(x)) 
+setMethod("sampleExtractor", signature("SummarizedExperiment", "matrix"), function(x) colnames(x))
+setMethod("sampleExtractor", "GRangesList", function(x) names(x)) # if from RTCGAToolbox extract
+
+
+#' Subset by Sample method for eSet, SummarizedExperiment, matrix, and GRangesList
+#'
+#' @param x Either an \code{\linkS4class{ExpressionSet}}, \code{\linkS4class{GRangesList}}, \code{\linkS4class{SummarizedExperiment}} or \code{matrix} class object
+#' @return Returns a subsetted \code{\linkS4class{MultiAssayExperiment}} object
+setGeneric("subsetSample", function(x, j, ...) standardGeneric("subsetSample"))
+setMethod("subsetSample", "matrix", function(x, j) x[, j, drop = FALSE])
+setMethod("subsetSample", signature("ExpressionSet", "SummarizedExperiment"), function(x, j) x[, j])
+setMethod("subsetSample", "GRangesList", function(x, j) x[j]) 
+
+#' Subset by Feature method for eSet, SummarizedExperiment, matrix, and GRangesList
+#'
+#' @param x Either an \code{\linkS4class{ExpressionSet}}, \code{\linkS4class{GRangesList}}, \code{\linkS4class{SummarizedExperiment}} or \code{matrix} class object
+#' @return Returnss a subsetted \code{\linkS4class{MultiAssayExperiment}} object
+setGeneric("subsetFeature", function(x, j, ...) standardGeneric("subsetFeature"))
+setMethod("subsetFeature", "matrix", function(x, j) x[j, , drop = FALSE])
+setMethod("subsetFeature", signature("ExpressionSet", "SummarizedExperiment"), function(x, j) x[j, ])
+setMethod("subsetFeature", "GRangesList", function(x, j) )
+
 
