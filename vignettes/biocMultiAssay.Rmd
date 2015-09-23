@@ -110,7 +110,7 @@ heavy representations is a point of discussion.
 ovlist <- lapply(ov, function(x) get(load(x)))
 names(ovlist) <- tags
 ## use the "ov agilent" for masterpheno phenotype data:
-lovhub2 <- createMA(masterpheno=pData(ovlist[[2]]), objlist=ovlist, drop=TRUE)
+lovhub2 <- createMA(masterPheno=pData(ovlist[[2]]), objlist=ovlist, drop=TRUE)
 lovhub2
-object.size(lovhub2)
+format(object.size(lovhub2), units = "Mb")
 ```
