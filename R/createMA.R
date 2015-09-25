@@ -8,25 +8,6 @@
 #' @param drop Logical (default FALSE) parameter for dropping samples with unmatched phenotype data.   
 #' @return A \code{MultiAssayExperiment} data object that stores experiment and phenotype data.
 createMA <- function(objlist, masterPheno, sampleMap = NULL, drop=FALSE){
-	if(!is(masterPheno, "data.frame")){
-		stop("masterPheno should be a data frame of metadata for all samples")
-	}
-	if(!is(objlist, "list")){
-		stop("objlist should be a named list of data objects")
-	}
-
-	if(!is.null(sampleMap)){
-
-		if(any(!sapply(sampleMap, checkMap))){
-			stop("The sample maps are not passing the required checks!")
-		}
-		if(length(objlist) != length(sampleMap)){
-			stop("objlist must be the same length as sampleMap!")
-		}
-	} else {
-		warning("No sample maps provided!")
-	}
-
 	newMAE <- new("MultiAssayExperiment", elist = objlist, masterPheno = masterPheno, sampleMap = sampleMap)
 	return(newMAE)
 }
