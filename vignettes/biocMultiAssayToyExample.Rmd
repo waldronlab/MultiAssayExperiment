@@ -142,35 +142,15 @@ Create a toy multiAssayExperiment class object
 ```{r}
 source("../R/createMA.R")
 source("../R/biocMultiAssay-classes.R")
+source("../R/multiAssayExperiment-class.R")
 MAE <- createMA(objlist, masterPheno, sampleMap = idmap)
 ```
 
 Subsetting by Sample
 
 ```{r}
-subsetBySample <- function(MAobject, j, drop = FALSE){
-	if(isS4(MAobject) & is(MAobject, "MultiAssayExperiment")){
-	   if(!is.numeric(j)){
-		   stop("Row index must be an integer vector!")
-		   # Enter alternate subsetting by Samples method here!
-	   } else {
-		   if(all(j %in% seq(nrow(MAobject@masterPheno)))){
-	    masterpsub <- MAobject@masterPheno[j, ]	
-			   # use subesetted rownames with ID map to subset the objlist (experiments)
-		subPheno <- MAobject@masterPheno[match(rownames(masterpsub), rownames(MAobject@masterPheno)),]
-		subMap <- lapply(MAobject@sampleMap, FUN = function(minimap) { na.omit(minimap[minimap[,1] %in% rownames(subPheno), ]) } ) 
-chopper <- sapply(subMap, FUN = "[", 2)
-browser()
-subElist <- list()
-for (i in 1:length(MAobject@elist)){
-subElist[i] <- subsetSample(MAobject@elist[[i]], chopper[[i]])
-}
-return(subElist)
-		   } else { 
-			   stop("Row numbers outside of masterPheno row range!")
-		   }
-	   }
-					  }
+subsetBySample <- function(MAobject, j){
+ids <- .getIDs(MAobject@masterPheno, j)
 
 }
 
