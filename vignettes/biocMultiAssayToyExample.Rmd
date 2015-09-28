@@ -142,7 +142,7 @@ Create a toy multiAssayExperiment class object
 ```{r}
 source("../R/createMA.R")
 source("../R/biocMultiAssay-classes.R")
-source("../R/multiAssayExperiment-class.R")
+source("../R/MultiAssayExperiment-class.R")
 MAE <- createMA(objlist, masterPheno, sampleMap = idmap)
 ```
 
