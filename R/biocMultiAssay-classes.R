@@ -60,25 +60,6 @@ getExperiments <- function(object) {
 	NULL
 }
 
-
-#' An integrative MultiAssay class for experiment data
-#' 
-#' @slot elist A list of data across different types of assays 
-#' @slot masterPheno A data.frame of all clinical data available across experiments
-#' @slot sampleMap A list of translatable identifiers of samples and participants
-#' @slot metadata Additional data describing the \code{\linkS4class{MultiAssayExperiment}} class 
-setClass("MultiAssayExperiment", representation(elist="list", masterPheno = "data.frame",
-	sampleMap = "list", metadata = "ANY"))
-
-.validMultiAssayExperiment <- function(object){
-c(.checkMasterPheno(object), 
-.checkSampleMap(object),
-.checkElist(object))
-}
-
-setValidity2("MultiAssayExperiment", .validMultiAssayExperiment)
-
-
 .getIDs <- function(masterPheno, j){
 	return(rownames(masterPheno[j, ]))
 }
@@ -90,22 +71,6 @@ setValidity2("MultiAssayExperiment", .validMultiAssayExperiment)
 	}
 	return(sampCols)
 }
-
-#' Show method for MultiAssayExperiment class
-#' 
-#' @param object A \code{\linkS4class{MultiAssayExperiment}} 
-#' @return Returns a list of contents for the MultiAssayExperiment
-# setMethod("show", "MultiAssayExperiment", function(object) {
-# 		  objdim <- lapply(seq_along(object@elist), FUN = function(j, expt) {	
-# 						   dd <- matrix(NA, nrow = length(expt), ncol = 2)
-# 						   if(any(is(expt[j], "data.frame"), is(expt[j], "matrix"))){
-# 							   dimmat <- matrix(c(dim(expt[j])[1], dim(expt[j])[2]), ncol = 2)
-# 							   colnames(dimmat) <- c("Features", "Samples")
-# 							   dd <- rbind(dd, dimmat)
-# 						   }
-# 	} , expt = object@elist)
-# print(objdim)
-# })
 
 
 #' Feature extractor for eSet, SummarizedExperiment, matrix, and GRangesList
@@ -126,7 +91,7 @@ setGeneric("sampleExtractor", function(x) standardGeneric("sampleExtractor"))
 setMethod("sampleExtractor", "ExpressionSet", function(x) sampleNames(x)) 
 setMethod("sampleExtractor", "SummarizedExperiment", function(x) colnames(x))
 setMethod("sampleExtractor", "matrix", function(x) colnames(x))
-setMethod("sampleExtractor", "GRangesList", function(x) names(x)) # if from RTCGAToolbox extract
+setMethod("sampleExtractor", "GRangesList", function(x) names(x)) 
 
 
 #' Subset by Sample method for eSet, SummarizedExperiment, matrix, and GRangesList
