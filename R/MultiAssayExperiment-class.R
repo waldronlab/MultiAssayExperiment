@@ -2,7 +2,6 @@
 ### multiAssayExperiment object
 ### ----------------------------------------------
 
-
 #' An integrative MultiAssay class for experiment data
 #' 
 #' @slot elist A list of data across different types of assays 
@@ -10,14 +9,56 @@
 #' @slot sampleMap A list of translatable identifiers of samples and participants
 #' @slot metadata Additional data describing the \code{\linkS4class{MultiAssayExperiment}} class 
 setClass("MultiAssayExperiment", representation(
-												elist="Assays", 
+												elist="SimpleList", 
 												masterPheno = "data.frame",
 												sampleMap = "list", 
-												metadata = "ANY"), 
-		 prototype(
-				   elist = SummarizedExperiment::Assays()
-				   )
-		 )
+												metadata = "ANY") 
+)
+
+##
+## Validity ---------------------------------
+##
+## Unique samples & phenos all present 
+.checkMap <- function(exptChunk, masterPheno){
+	allphenos <- all(exptChunk[,1] %in% rownames(masterPheno))
+	uniqss <- all(!duplicated(exptChunk[,2]))
+    return(allphenos & uniqss)
+}
+
+## masterPheno should always be a data.frame
+.checkMasterPheno <- function(object){
+	if(!is(object@masterPheno, "data.frame")){
+		return("masterPheno should be a data frame of metadata for all samples!")
+	}
+	NULL
+}
+
+## SampleMap should be a list of 2 column data.frames
+.checkSampleMap <- function(object){
+	errors <- character()
+	if(!all(sapply(object@sampleMap, is.data.frame))){ 
+		msg <- paste("sampleMap must be a list of data.frames!")
+		errors <- c(errors, msg)
+	}
+	if(!all(sapply(object@sampleMap, length)==2)){
+		msg <- paste("All data.frames in sampleMap must be of length 2!")
+		errors <- c(errors, msg)
+	}
+	if(!all(sapply(object@sampleMap, .checkMap, object@masterPheno))){
+		msg <- paste("sampleMap is not passing all checks!")
+		errors <- c(errors, msg)
+	}
+	if(length(errors) == 0) NULL else errors
+}
+
+## Experiment list must be the same length as the sampleMaps list.
+.checkElist <- function(object){
+	if(length(object@elist) != length(object@sampleMap)){
+	return("elist must be the same length as the sampleMap!")
+	}
+	NULL
+}
+
 
 .validMultiAssayExperiment <- function(object){
 c(.checkMasterPheno(object), 
@@ -25,7 +66,11 @@ c(.checkMasterPheno(object),
 .checkElist(object))
 }
 
-setValidity2("MultiAssayExperiment", .validMultiAssayExperiment)
+S4Vectors::setValidity2("MultiAssayExperiment", .validMultiAssayExperiment)
+
+.subPheno <- function(object, j){
+	return(object@masterPheno[j, ])
+}
 
 #' Show method for MultiAssayExperiment class
 #' 
@@ -58,5 +103,4 @@ getElement(x, "elist"))
 setGeneric("masterPheno", function(x) standardGeneric("masterPheno"))
 setMethod("masterPheno", "MultiAssayExperiment", function(x)
 getElement(x, "masterPheno"))
-
 
