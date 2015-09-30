@@ -7,10 +7,10 @@ output: html_document
 
 In this example we have 4 patients, and a bit of metadata on them:
 ```{r}
-masterPheno <- data.frame(sex=c("M", "F", "M", "F"),
+masPheno <- data.frame(sex=c("M", "F", "M", "F"),
 						  age=38:41,
 						  row.names=c("Jack", "Jill", "Bob", "Barbara"))
-masterPheno
+masPheno
 ```
 
 We have three matrix-like datasets.  First let's say expression data:
@@ -25,7 +25,7 @@ exprdat
 
 The following map matches masterPheno sample names to exprdata sample names.  Note that row orders aren't initially matched up.
 ```{r}
-(exprmap <- data.frame(master=rownames(masterPheno)[c(1, 2, 4, 3)], assay=c("array1", "array2", "array3", "array4")))
+(exprmap <- data.frame(master=rownames(masPheno)[c(1, 2, 4, 3)], assay=c("array1", "array2", "array3", "array4")))
 ```
 
 Now methylation data.  It uses gene identifiers also, but measures a partially overlapping set of genes.  For fun, let's store this as a simple matrix. Also, it contains a replicate for one of the patients.
@@ -75,6 +75,9 @@ gr3 <-
 grl <- GRangesList("gr1" = gr1, "gr2" = gr2, "gr3" = gr3)
 names(grl) <- c("snparray1", "snparray2", "snparray3")
 grl
+# Specified row.names not preserved by mcols
+mcols(grl) <- DataFrame(row.names = c("Jack", "Bob", "Barbara"),
+	tss = rep("lung", 3), ptid = c("1221", "1321", "1322"))
 ```
 
 The following data.frame matches masterPheno sample to the GRangesList: 
@@ -92,46 +95,16 @@ names(idmap) <- c("expr", "methyl", "micro", "range")
 idmap
 ```
 
-ID map check for validity (all IDs present and all samples unique)
-
-```{r}
-checkMap <- function(exptChunk){
-
-	allphenos <- ifelse(all(unique(exptChunk[,1]) %in% rownames(masterPheno)), TRUE, FALSE)
-	uniqss <- ifelse(all(!duplicated(exptChunk[,2])), TRUE, FALSE)
-
-	if(uniqss & allphenos){
-		message("All ID Map checks passed!") 
-		return(TRUE)
-	} else if(!sampes){
-		message("Samples are not unique!")
-		return(FALSE)
-	} else if (!phenos) {
-		message("There are missing cases in the master phenodata!")
-		return(FALSE)
-	}
-}
-
-sapply(idmap, checkMap)
-```
-
 Allowing for the possibility of ID maps entered as dataframes, convert to conventional list: 
 
 ```{r}
 library(reshape2) # reshape2 used for example only
 dfmap <- melt(idmap, id.var = c("master", "assay"))
 
-toListMap <- function(dfmap){
-	newlist <- lapply(seq_along(dfmap)[-1], FUN = function(col, mydf) { 
-					  cbind(mydf[1], mydf[col]) }, mydf = dfmap)
-	names(newlist) <- names(dfmap)[-1]
-	return(newlist)
-}
-
 toListMap(dfmap)
 ```
 
-Create an (unnamed) list of experiments `objlist` for the createMA function
+Create an named list of experiments `objlist` for the createMA function
 
 ```{r}
 objlist <- list("Affy" = exprdat, "Methyl 450k" = methyldat, "Mirna" = microdat, "CNV gistic" = grl)
@@ -140,19 +113,30 @@ objlist <- list("Affy" = exprdat, "Methyl 450k" = methyldat, "Mirna" = microdat,
 Create a toy multiAssayExperiment class object
 
 ```{r}
-source("../R/createMA.R")
-source("../R/biocMultiAssay-classes.R")
-source("../R/MultiAssayExperiment-class.R")
-MAE <- createMA(objlist, masterPheno, sampleMap = idmap)
+MAE <- createMA(objlist, masPheno, idmap)
 ```
 
 Subsetting by Sample
 
 ```{r}
-subsetBySample <- function(MAobject, j){
-ids <- .getIDs(MAobject@masterPheno, j)
+ids <- identifyBySample(MAE, 1:2)
 
+subsetBySample <- function(MAobject, idlist){
+# Propose solution for rowIndex argument
+	newPheno <- .subPheno(MAobject, rowIndex)
+	newMap <- Map(subset, MAobject@sampleMap, idlist)
+	newSubset <- Map(subsetSample, MAobject@elist, sapply(newMap, "[", 2))
+	# Clone and replace slot? 
+	MAobject@sampleMap <- newMap
+	MAobject@elist <- S4Vectors::SimpleList(newSubset)
+	MAobject@masterPheno <- newPheno
+return(MAobject)
 }
+
+## -------
+## TODO: Use Features to Subset MAE
+## -------
+## identifyByFeature <- function(MAobject, ){}
 
 mysub <- subsetBySample(MAE, 1:2)
 ```

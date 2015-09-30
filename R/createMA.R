@@ -3,12 +3,16 @@
 #'
 #' This function combines multiple data sources specific to one disease by matching samples. 
 #' 
+#' @param explist A list of all combined experiments
 #' @param masterPheno A data frame of the phenotype data for all participants.
-#' @param objlist A list of all combined experiments
+#' @param sampleMap A list object of identifiers and sample names for each experiment
 #' @param drop Logical (default FALSE) parameter for dropping samples with unmatched phenotype data.   
 #' @return A \code{MultiAssayExperiment} data object that stores experiment and phenotype data.
-createMA <- function(objlist, masterPheno, sampleMap = NULL, drop=FALSE){
-	newMAE <- new("MultiAssayExperiment", elist = objlist, masterPheno = masterPheno, sampleMap = sampleMap)
+createMA <- function(explist, masterPheno, sampleMap = NULL, drop=FALSE){
+	if(is(explist, "list")){
+	explist <- S4Vectors::SimpleList(explist)
+	}
+	newMAE <- new("MultiAssayExperiment", elist = explist, masterPheno = masterPheno, sampleMap = sampleMap)
 	return(newMAE)
 }
 
