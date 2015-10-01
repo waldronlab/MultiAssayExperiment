@@ -75,9 +75,6 @@ gr3 <-
 grl <- GRangesList("gr1" = gr1, "gr2" = gr2, "gr3" = gr3)
 names(grl) <- c("snparray1", "snparray2", "snparray3")
 grl
-# Specified row.names not preserved by mcols
-mcols(grl) <- DataFrame(row.names = c("Jack", "Bob", "Barbara"),
-	tss = rep("lung", 3), ptid = c("1221", "1321", "1322"))
 ```
 
 The following data.frame matches masterPheno sample to the GRangesList: 
@@ -119,25 +116,13 @@ MAE <- createMA(objlist, masPheno, idmap)
 Subsetting by Sample
 
 ```{r}
-ids <- identifyBySample(MAE, 1:2)
+logicID <- identifyBySample(MAE, 1:2)
 
-subsetBySample <- function(MAobject, idlist){
-# Propose solution for rowIndex argument
-	newPheno <- .subPheno(MAobject, rowIndex)
-	newMap <- Map(subset, MAobject@sampleMap, idlist)
-	newSubset <- Map(subsetSample, MAobject@elist, sapply(newMap, "[", 2))
-	# Clone and replace slot? 
-	MAobject@sampleMap <- newMap
-	MAobject@elist <- S4Vectors::SimpleList(newSubset)
-	MAobject@masterPheno <- newPheno
-return(MAobject)
-}
+subMAE <- subsetBySample(MAE, logicID)
 
 ## -------
 ## TODO: Use Features to Subset MAE
 ## -------
 ## identifyByFeature <- function(MAobject, ){}
-
-mysub <- subsetBySample(MAE, 1:2)
 ```
 
