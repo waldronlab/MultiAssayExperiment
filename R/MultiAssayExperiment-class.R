@@ -68,10 +68,6 @@ c(.checkMasterPheno(object),
 
 S4Vectors::setValidity2("MultiAssayExperiment", .validMultiAssayExperiment)
 
-.subPheno <- function(object, j){
-	return(object@masterPheno[j, ])
-}
-
 #' Show method for MultiAssayExperiment class
 #' 
 #' @param object A \code{\linkS4class{MultiAssayExperiment}} 
