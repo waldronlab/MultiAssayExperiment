@@ -10,12 +10,12 @@ An integrative MultiAssay class for experiment data
 \section{Slots}{
 
 \describe{
-\item{\code{elist}}{A list of data across different types of assays}
+\item{\code{elist}}{A \code{\linkS4class{"SimpleList"}} of data across different types of assays.}
 
-\item{\code{masterPheno}}{A data.frame of all clinical data available across experiments}
+\item{\code{masterPheno}}{A \code{"data.frame"} of all clinical data available across experiments.}
 
-\item{\code{sampleMap}}{A list of translatable identifiers of samples and participants}
+\item{\code{sampleMap}}{A \code{"list"} of translatable identifiers of samples and participants.}
 
-\item{\code{metadata}}{Additional data describing the \code{\linkS4class{MultiAssayExperiment}} class}
+\item{\code{metadata}}{Additional data describing the \code{\linkS4class{MultiAssayExperiment}} object.}
 }}
 

@@ -27,10 +27,11 @@ BiocStyle::markdown()
 
 ```{r setup,echo=FALSE,results="hide"}
 suppressPackageStartupMessages({
-library(biocMultiAssay)
-library(dplyr)
-if (!exists("lovhub2")) example(createMA)
+  library(biocMultiAssay)
+  library(dplyr)
+  if (!exists("lovhub2")) example(createMA)
 })
+
 ```
 We have an example "loaded experiment hub" based on
 TCGA ovarian tumor data.  It can be created using
@@ -38,6 +39,7 @@ TCGA ovarian tumor data.  It can be created using
 library(biocMultiAssay)
 example(createMA)
 ```
+
 ```{r lk2}
 lovhub2
 ```
@@ -115,7 +117,7 @@ allsym = select(org.Hs.eg.db, keys=keys(org.Hs.eg.db),
 mapS2E = allsym$ENTREZID
 names(mapS2E) = allsym$SYMBOL
 mapS2E = mapS2E[ featureNames(OvCnvEs) ]
-library(TxDb.Hsapiens.UCSC.hg19.knownGene)
+
 gnaddrs = genes(TxDb.Hsapiens.UCSC.hg19.knownGene)
 mapS2EwAddr = mapS2E[ which(mapS2E %in% names(gnaddrs)) ]
 addrd = as.data.frame( gnaddrs[ as.character(mapS2EwAddr) ] )

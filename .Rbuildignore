@@ -6,3 +6,5 @@ aux$
 log$
 out$
 sqlite$
+^.*\.Rproj$
+^\.Rproj\.user$

@@ -4,10 +4,11 @@
 
 #' An integrative MultiAssay class for experiment data
 #' 
-#' @slot elist A list of data across different types of assays 
-#' @slot masterPheno A data.frame of all clinical data available across experiments
-#' @slot sampleMap A list of translatable identifiers of samples and participants
-#' @slot metadata Additional data describing the \code{\linkS4class{MultiAssayExperiment}} class 
+#' @slot elist A \code{\linkS4class{"SimpleList"}} of data across different types of assays. 
+#' @slot masterPheno A \code{"data.frame"} of all clinical data available across experiments.
+#' @slot sampleMap A \code{"list"} of translatable identifiers of samples and participants.
+#' @slot metadata Additional data describing the \code{\linkS4class{MultiAssayExperiment}} object. 
+#' @exportClass "MultiAssayExperiment"
 setClass("MultiAssayExperiment", representation(
 												elist="SimpleList", 
 												masterPheno = "data.frame",
@@ -70,9 +71,10 @@ S4Vectors::setValidity2("MultiAssayExperiment", .validMultiAssayExperiment)
 
 #' Show method for MultiAssayExperiment class
 #' 
-#' @param object A \code{\linkS4class{MultiAssayExperiment}} 
-#' @return Returns a list of contents for the MultiAssayExperiment
-# setMethod("show", "MultiAssayExperiment", function(object) {
+#' param object A \code{\linkS4class{MultiAssayExperiment}} object.
+#' return Returns a summary of contents for the \code{\linkS4class{MultiAssayExperiment}} class. 
+#' exportMethod "show"
+# setMethod("show", "MultiAssayExperiment", function(object){
 # 		  objdim <- lapply(seq_along(object@elist), FUN = function(j, expt) {	
 # 						   dd <- matrix(NA, nrow = length(expt), ncol = 2)
 # 						   if(any(is(expt[j], "data.frame"), is(expt[j], "matrix"))){
@@ -88,14 +90,29 @@ S4Vectors::setValidity2("MultiAssayExperiment", .validMultiAssayExperiment)
 ### - - - - - - - - - - - - - - - - - - - - - - -
 ### Accessor methods
 ###
+#' Generic Accessor Functions
+#' @param x A \code{\linkS4class{MultiAssayExperiment}} object.
+#' @return A \code{"list"} object. 
+#' @export "sampleMap"
+#' @exportMethod "sampleMap"
 setGeneric("sampleMap", function(x) standardGeneric("sampleMap"))
 setMethod("sampleMap", "MultiAssayExperiment", function(x)
 getElement(x, "sampleMap"))
 
+#' Generic Accessor Functions
+#' @param x A \code{\linkS4class{MultiAssayExperiment}} object.
+#' @return A \code{\linkS4class{"SimpleList"}} object.
+#' @export "elist"
+#' @exportMethod "elist"
 setGeneric("elist", function(x) standardGeneric("elist"))
 setMethod("elist", "MultiAssayExperiment", function(x)
 getElement(x, "elist"))
 
+#' Generic Accessor Functions
+#' @param x A \code{\linkS4class{MultiAssayExperiment}} object.
+#' @return A \code{"data.frame"} object.
+#' @export "masterPheno"
+#' @exportMethod "masterPheno"
 setGeneric("masterPheno", function(x) standardGeneric("masterPheno"))
 setMethod("masterPheno", "MultiAssayExperiment", function(x)
 getElement(x, "masterPheno"))

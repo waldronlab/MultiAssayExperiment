@@ -8,6 +8,7 @@
 #' @param sampleMap A list object of identifiers and sample names for each experiment
 #' @param drop Logical (default FALSE) parameter for dropping samples with unmatched phenotype data.   
 #' @return A \code{MultiAssayExperiment} data object that stores experiment and phenotype data.
+#' @export
 createMA <- function(explist, masterPheno, sampleMap = NULL, drop=FALSE){
 	if(is(explist, "list")){
 	explist <- S4Vectors::SimpleList(explist)
