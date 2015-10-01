@@ -40,6 +40,6 @@ Additional arguments that can be supplied are
 \examples{
 library(Biobase)
 data(sample.ExpressionSet)
-exs2se(sample.ExpressionSet)
+# exs2se(sample.ExpressionSet)
 }
 \keyword{methods}

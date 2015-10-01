@@ -7,12 +7,15 @@
 sampleMap(x)
 }
 \arguments{
-\item{object}{A \code{\linkS4class{MultiAssayExperiment}}}
+\item{x}{A \code{\linkS4class{MultiAssayExperiment}} object.}
 }
 \value{
-Returns a list of contents for the MultiAssayExperiment
+A \code{"list"} object.
 }
 \description{
-Show method for MultiAssayExperiment class
+param object A \code{\linkS4class{MultiAssayExperiment}} object.
+return Returns a summary of contents for the \code{\linkS4class{MultiAssayExperiment}} class.
+exportMethod "show"
+Generic Accessor Functions
 }
 

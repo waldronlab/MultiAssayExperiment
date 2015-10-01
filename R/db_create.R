@@ -17,7 +17,6 @@
 }
 
 .createOvarianHub = function() {
- library(biocMultiAssay)
  ov = dir(system.file("extdata/tcga_ov",
    package="biocMultiAssay"), full=TRUE, pattern="\\.rda$")
  drop = grep("pheno", ov)
@@ -49,8 +48,7 @@
   function(dbname, hub, tablename, masterInd=2) # dbname is filename of SQLite database
 {
   stopifnot(is(hub, "MultiAssayExperiment"))  # could weaken
-  library(RSQLite)
-  db <- dbConnect(dbDriver("SQLite"), dbname)
+  db <- RSQLite::dbConnect(dbDriver("SQLite"), dbname)
   nass <- length(hub@elist)
   alldf = lapply(1:nass, function(x) .eset2longdf(hub@elist[[x]],
       assaytype=names(hub@elist)[x]))
@@ -66,23 +64,19 @@
 #OvarCon <- .db_index(OvarCon, "OvarLong")
 
 OvarHub = function() {
-   library(RSQLite)
-   library(dplyr)
-   con <- dbConnect(dbDriver("SQLite"), Sys.getenv("OVARLONG_PATH"))
-   src_sql("sqlite", con, path=Sys.getenv("OVARLONG_PATH"),
+   con <- RSQLite::dbConnect(dbDriver("SQLite"), Sys.getenv("OVARLONG_PATH"))
+   dplyr::src_sql("sqlite", con, path=Sys.getenv("OVARLONG_PATH"),
          info = dbGetInfo(con))
 }
 
 OvarHub = function() {
-   library(RSQLite)
-   library(dplyr)
    # need to prevent reconnecting
    if (!exists(".ovarHubCon")) {
    .ovarHubCon <<-
-        dbConnect(dbDriver("SQLite"), Sys.getenv("OVARLONG_PATH"))
+     RSQLite::dbConnect(dbDriver("SQLite"), Sys.getenv("OVARLONG_PATH"))
    message("global instance of .ovarHubCon created")
    }
-   src_sql("sqlite", .ovarHubCon, path=Sys.getenv("OVARLONG_PATH"),
+   dplyr::src_sql("sqlite", .ovarHubCon, path=Sys.getenv("OVARLONG_PATH"),
          info = dbGetInfo(.ovarHubCon))
 }
 

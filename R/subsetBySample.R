@@ -3,6 +3,7 @@
 #'
 #' @param MultiAssay A \code{\linkS4class{MultiAssayExperiment}} object 
 #' @param logicID A list of logical indicators to be used for subsetting
+#' @export
 subsetBySample <- function(MultiAssay, logicID){
   newPheno <- .subPheno(MultiAssay, .getIndexLogical(MultiAssay, idlist))
   newMap <- Map(subset, MultiAssay@sampleMap, idlist)

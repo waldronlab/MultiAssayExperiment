@@ -7,6 +7,7 @@ setClass("expt", representation(tag="character", serType="character",
 
 setClass("eHub", representation(hub="list", metadata="ANY", 
   masterSampleData="data.frame"))
+setGeneric("phenoData", function(object) standardGeneric("phenoData"))
 setMethod("phenoData", "eHub", function(object)
   object@masterSampleData)
 # setValidity("eHub", function(object){

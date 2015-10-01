@@ -8,6 +8,10 @@ subsetSample(x, j, ...)
 }
 \arguments{
 \item{x}{Either an \code{\linkS4class{ExpressionSet}}, \code{\linkS4class{GRangesList}}, \code{\linkS4class{SummarizedExperiment}} or \code{matrix} class object}
+
+\item{j}{Either a \code{"numeric"} or \code{"character"} vector class for subsetting}
+
+\item{...}{Additional arguments to pass}
 }
 \value{
 Returns a subsetted \code{\linkS4class{MultiAssayExperiment}} object
