@@ -1,4 +1,15 @@
-# I guess eventually this won't be exported, but need it just for now.
+#' Download all the data from Amazon s3 bucket
+#'
+#' @description Creates directories and downloads respective files
+#' 
+#' @author Levi Waldron
+#' @param datadir The directory to where the S3 bucket will be dumped
+#' @return none 
+#' 
+#' @examples 
+#' \dontrun{
+#' downloadData("downloads")
+#' }
 downloadData <- function(datadir){
   s3url <- "http://s3.amazonaws.com/cancerhub/"
   con=url(paste0(s3url, "filelist.txt"))
@@ -10,5 +21,6 @@ downloadData <- function(datadir){
     if(!file.exists(filedests[i])){
       dir.create(dirname(filedests[i]), showWarnings=FALSE)
       download.file(url=fileurls[i], destfile=filedests[i])
-    }}
+    }
+  }
 }

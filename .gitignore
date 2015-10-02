@@ -3,3 +3,7 @@
 *.swp
 *.Rproj
 *.Rhistory
+*.swo
+.Rproj.user
+.Rhistory
+.RData
