@@ -1,22 +1,22 @@
-#' @title Convert identifier to a GRanges object
-#' @description \code{key2GRanges} converts an identifier verctor to a GRanges object using a Bioconductor annotation database (.db)
-#' @param x A character vector of keys to convert
-#' @param db The name of the Bioconductor .db annotation package to use
-#' @param keytype Must be a vaild key type for the .db package, e.g. see keytypes(org.Hs.eg.db)
-#' @param duphanlder A function for handling multiple ranges returned for one key
-#' @param singIsStrand logical If TRUE, negative values are annotated as being on the - strand. 
-#' @param ucsdChrnames logical If TRUE, use chr1 etc.
+#' title Convert identifier to a GRanges object
+#' description \code{key2GRanges} converts an identifier verctor to a GRanges object using a Bioconductor annotation database (.db)
+#' param x A character vector of keys to convert
+#' param db The name of the Bioconductor .db annotation package to use
+#' param keytype Must be a vaild key type for the .db package, e.g. see keytypes(org.Hs.eg.db)
+#' param duphanlder A function for handling multiple ranges returned for one key
+#' param singIsStrand logical If TRUE, negative values are annotated as being on the - strand. 
+#' param ucsdChrnames logical If TRUE, use chr1 etc.
 #' 
-#' @return Returns a \code{\linkS4class{GenomicRanges}} object
+#' return Returns a \code{\linkS4class{GenomicRanges}} object
 #' 
-#' @usage 
+#' usage 
 #' key2GRanges(x, db = "org.Hs.eg.db", keytype = "SYMBOL", duphandler = function(z) {
 #' if (any(isd <- duplicated(z[, keytype]))) 
 #' return(z[!isd, , drop = FALSE])
 #' z}
 #' signIsStrand = TRUE, ucsdChrnames = TRUE)
 #' 
-#' @examples
+#' examples
 #' \dontrun{
 #' key2GRanges(c("TP53", "BRCA1"))
 #' key2GRanges(c("1", "10"), keytype="ENTREZID")
