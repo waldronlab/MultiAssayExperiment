@@ -7,10 +7,10 @@ output: html_document
 
 In this example we have 4 patients, and a bit of metadata on them:
 ```{r}
-masterpheno <- data.frame(sex=c("M", "F", "M", "F"),
-                          age=38:41,
-                          row.names=c("Jack", "Jill", "Bob", "Barbara"))
-masterpheno
+masPheno <- data.frame(sex=c("M", "F", "M", "F"),
+						  age=38:41,
+						  row.names=c("Jack", "Jill", "Bob", "Barbara"))
+masPheno
 ```
 
 We have three matrix-like datasets.  First let's say expression data:
@@ -23,9 +23,9 @@ exprdat <- ExpressionSet(assayData=arraydat, phenoData=arraypdat)
 exprdat
 ```
 
-The following map matches masterpheno sample names to exprdata sample names.  Note that row orders aren't initially matched up.
+The following map matches masterPheno sample names to exprdata sample names.  Note that row orders aren't initially matched up.
 ```{r}
-(exprmap <- data.frame(master=rownames(masterpheno)[c(1, 2, 4, 3)], assay=c("array1", "array2", "array3", "array4")))
+(exprmap <- data.frame(master=rownames(masPheno)[c(1, 2, 4, 3)], assay=c("array1", "array2", "array3", "array4")))
 ```
 
 Now methylation data.  It uses gene identifiers also, but measures a partially overlapping set of genes.  For fun, let's store this as a simple matrix. Also, it contains a replicate for one of the patients.
@@ -36,7 +36,7 @@ Now methylation data.  It uses gene identifiers also, but measures a partially o
                                    c("methyl1", "methyl2", "methyl3", "methyl4", "methyl5"))))
 ```
 
-The following map matches masterpheno sample names to methyldat sample names.
+The following map matches masterPheno sample names to methyldat sample names.
 
 ```{r}
 (methylmap <- data.frame(master = c("Jack", "Jack", "Jill", "Barbara", "Bob"),
@@ -51,7 +51,7 @@ Now we have a microRNA platform, which has no common identifiers.  It is also mi
                                   c("array1", "array2", "array3"))))
 ```
 
-And the following map matches masterpheno sample names to microdat sample names.
+And the following map matches masterPheno sample names to microdat sample names.
 ```{r}
 (micromap <- data.frame(master = c("Jack", "Barbara", "Bob"),
                         assay = c("micro1", "micro2", "micro3")))
@@ -77,7 +77,7 @@ names(grl) <- c("snparray1", "snparray2", "snparray3")
 grl
 ```
 
-The following data.frame matches masterpheno sample to the GRangesList: 
+The following data.frame matches masterPheno sample to the GRangesList: 
 
 ```{r}
 (rangemap <- data.frame(master = c("Jack", "Jill", "Jill"), 
@@ -92,10 +92,37 @@ names(idmap) <- c("expr", "methyl", "micro", "range")
 idmap
 ```
 
-Eventually will create a miR - gene map, but maybe after creating the MultiAssayExperiment object (not evaluated):
+Allowing for the possibility of ID maps entered as dataframes, convert to conventional list: 
 
-```{r, eval=FALSE}
-library(microRNA)
-data(hsTargets)
+```{r}
+library(reshape2) # reshape2 used for example only
+dfmap <- melt(idmap, id.var = c("master", "assay"))
+
+toListMap(dfmap)
+```
+
+Create an named list of experiments `objlist` for the MultiAssay function
+
+```{r}
+objlist <- list("Affy" = exprdat, "Methyl 450k" = methyldat, "Mirna" = microdat, "CNV gistic" = grl)
+```
+
+Create a toy multiAssayExperiment class object
+
+```{r}
+myMultiAssay <- MultiAssay(objlist, masPheno, idmap)
+```
+
+Subsetting by Sample
+
+```{r}
+logicID <- identifyBySample(myMultiAssay, 1:2)
+
+subMultiAssay <- subsetBySample(myMultiAssay, logicID)
+
+## -------
+## TODO: Use Features to Subset myMultiAssay
+## -------
+## identifyByFeature <- function(MAobject, ){}
 ```
 
