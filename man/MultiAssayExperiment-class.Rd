@@ -10,7 +10,7 @@ An integrative MultiAssay class for experiment data
 \section{Slots}{
 
 \describe{
-\item{\code{elist}}{A \code{\linkS4class{"SimpleList"}} of data across different types of assays.}
+\item{\code{elist}}{A \code{\link[S4Vectors]{SimpleList-class}} of data across different types of assays.}
 
 \item{\code{masterPheno}}{A \code{"data.frame"} of all clinical data available across experiments.}
 

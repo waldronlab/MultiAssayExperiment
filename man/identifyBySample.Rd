@@ -5,10 +5,10 @@
 \title{Identify samples corresponding to row index in masterPheno
 \code{identifyBySample} returns a \code{logical}}
 \usage{
-identifyBySample(MAobject, j)
+identifyBySample(MultiAssay, j)
 }
 \arguments{
-\item{MAobject}{A \code{\linkS4class{MultiAssayExperiment}}}
+\item{MultiAssay}{A \code{\linkS4class{MultiAssayExperiment}}}
 
 \item{j}{A numeric vector referencing masterPheno data.frame row numbers}
 }

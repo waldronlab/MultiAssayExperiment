@@ -23,10 +23,10 @@ return(rownames(object@masterPheno)[match(usedNames, rownames(object@masterPheno
 #' 
 #' This function uses row indices of the masterPheno to return a logical list
 #' 
-#' @param MAobject A \code{\linkS4class{MultiAssayExperiment}}
+#' @param MultiAssay A \code{\linkS4class{MultiAssayExperiment}}
 #' @param j A numeric vector referencing masterPheno data.frame row numbers
 #' @export
-identifyBySample <- function(MAobject, j){
-	iders <- rownames(.subPheno(MAobject, j))
-	return(.getLogicalNames(MAobject, iders))
+identifyBySample <- function(MultiAssay, j){
+	iders <- rownames(.subPheno(MultiAssay, j))
+	return(.getLogicalNames(MultiAssay, iders))
 }
