@@ -117,7 +117,7 @@ allsym = select(org.Hs.eg.db, keys=keys(org.Hs.eg.db),
 mapS2E = allsym$ENTREZID
 names(mapS2E) = allsym$SYMBOL
 mapS2E = mapS2E[ featureNames(OvCnvEs) ]
-
+library(TxDb.Hsapiens.UCSC.hg19.knownGene)
 gnaddrs = genes(TxDb.Hsapiens.UCSC.hg19.knownGene)
 mapS2EwAddr = mapS2E[ which(mapS2E %in% names(gnaddrs)) ]
 addrd = as.data.frame( gnaddrs[ as.character(mapS2EwAddr) ] )
