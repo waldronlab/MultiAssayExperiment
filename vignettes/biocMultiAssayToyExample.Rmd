@@ -101,7 +101,7 @@ dfmap <- melt(idmap, id.var = c("master", "assay"))
 toListMap(dfmap)
 ```
 
-Create an named list of experiments `objlist` for the createMA function
+Create an named list of experiments `objlist` for the MultiAssay function
 
 ```{r}
 objlist <- list("Affy" = exprdat, "Methyl 450k" = methyldat, "Mirna" = microdat, "CNV gistic" = grl)
@@ -110,18 +110,18 @@ objlist <- list("Affy" = exprdat, "Methyl 450k" = methyldat, "Mirna" = microdat,
 Create a toy multiAssayExperiment class object
 
 ```{r}
-MAE <- createMA(objlist, masPheno, idmap)
+myMultiAssay <- MultiAssay(objlist, masPheno, idmap)
 ```
 
 Subsetting by Sample
 
 ```{r}
-logicID <- identifyBySample(MAE, 1:2)
+logicID <- identifyBySample(myMultiAssay, 1:2)
 
-subMAE <- subsetBySample(MAE, logicID)
+subMultiAssay <- subsetBySample(myMultiAssay, logicID)
 
 ## -------
-## TODO: Use Features to Subset MAE
+## TODO: Use Features to Subset myMultiAssay
 ## -------
 ## identifyByFeature <- function(MAobject, ){}
 ```

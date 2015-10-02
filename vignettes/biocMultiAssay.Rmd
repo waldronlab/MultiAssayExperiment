@@ -39,7 +39,7 @@ Data are now downloaded from Amazon S3 bucket:
 
 ```{r download}
 datadir <- "downloads"
-downloadData(datadir)
+downloadData(datadir = datadir)
 ```
 
 Crude way of enumerating RDA files planted in the datadir:

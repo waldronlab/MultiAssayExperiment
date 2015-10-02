@@ -4,11 +4,11 @@
 
 #' An integrative MultiAssay class for experiment data
 #' 
-#' @slot elist A \code{\linkS4class{"SimpleList"}} of data across different types of assays. 
+#' @slot elist A \code{\link[S4Vectors]{SimpleList-class}} of data across different types of assays. 
 #' @slot masterPheno A \code{"data.frame"} of all clinical data available across experiments.
 #' @slot sampleMap A \code{"list"} of translatable identifiers of samples and participants.
 #' @slot metadata Additional data describing the \code{\linkS4class{MultiAssayExperiment}} object. 
-#' @exportClass "MultiAssayExperiment"
+#' @exportClass MultiAssayExperiment
 setClass("MultiAssayExperiment", representation(
 												elist="SimpleList", 
 												masterPheno = "data.frame",
@@ -36,35 +36,35 @@ setClass("MultiAssayExperiment", representation(
 
 ## SampleMap should be a list of 2 column data.frames
 .checkSampleMap <- function(object){
-	errors <- character()
-	if(!all(sapply(object@sampleMap, is.data.frame))){ 
-		msg <- paste("sampleMap must be a list of data.frames!")
-		errors <- c(errors, msg)
-	}
-	if(!all(sapply(object@sampleMap, length)==2)){
-		msg <- paste("All data.frames in sampleMap must be of length 2!")
-		errors <- c(errors, msg)
-	}
-	if(!all(sapply(object@sampleMap, .checkMap, object@masterPheno))){
-		msg <- paste("sampleMap is not passing all checks!")
-		errors <- c(errors, msg)
-	}
-	if(length(errors) == 0) NULL else errors
+  errors <- character()
+  if(!all(sapply(object@sampleMap, is.data.frame))){ 
+    msg <- paste("sampleMap must be a list of data.frames!")
+    errors <- c(errors, msg)
+  }
+  if(!all(sapply(object@sampleMap, length)==2)){
+    msg <- paste("All data.frames in sampleMap must be of length 2!")
+    errors <- c(errors, msg)
+  }
+  if(!all(sapply(object@sampleMap, .checkMap, object@masterPheno))){
+    msg <- paste("sampleMap is not passing all checks!")
+    errors <- c(errors, msg)
+  }
+  if(length(errors) == 0) NULL else errors
 }
 
 ## Experiment list must be the same length as the sampleMaps list.
 .checkElist <- function(object){
-	if(length(object@elist) != length(object@sampleMap)){
-	return("elist must be the same length as the sampleMap!")
-	}
-	NULL
+  if(length(object@elist) != length(object@sampleMap)){
+    return("elist must be the same length as the sampleMap!")
+  }
+  NULL
 }
 
 
 .validMultiAssayExperiment <- function(object){
-c(.checkMasterPheno(object), 
-.checkSampleMap(object),
-.checkElist(object))
+  c(.checkMasterPheno(object), 
+    .checkSampleMap(object),
+    .checkElist(object))
 }
 
 S4Vectors::setValidity2("MultiAssayExperiment", .validMultiAssayExperiment)
@@ -93,27 +93,27 @@ S4Vectors::setValidity2("MultiAssayExperiment", .validMultiAssayExperiment)
 #' Generic Accessor Functions
 #' @param x A \code{\linkS4class{MultiAssayExperiment}} object.
 #' @return A \code{"list"} object. 
-#' @export "sampleMap"
-#' @exportMethod "sampleMap"
+#' @exportMethod sampleMap
 setGeneric("sampleMap", function(x) standardGeneric("sampleMap"))
+#' @describeIn sampleMap
 setMethod("sampleMap", "MultiAssayExperiment", function(x)
 getElement(x, "sampleMap"))
 
 #' Generic Accessor Functions
 #' @param x A \code{\linkS4class{MultiAssayExperiment}} object.
-#' @return A \code{\linkS4class{"SimpleList"}} object.
-#' @export "elist"
-#' @exportMethod "elist"
+#' @return A \code{\link[S4Vectors]{SimpleList-class}} object.
+#' @exportMethod elist
 setGeneric("elist", function(x) standardGeneric("elist"))
+#' @describeIn elist
 setMethod("elist", "MultiAssayExperiment", function(x)
 getElement(x, "elist"))
 
 #' Generic Accessor Functions
 #' @param x A \code{\linkS4class{MultiAssayExperiment}} object.
 #' @return A \code{"data.frame"} object.
-#' @export "masterPheno"
-#' @exportMethod "masterPheno"
+#' @exportMethod masterPheno
 setGeneric("masterPheno", function(x) standardGeneric("masterPheno"))
+#' @describeIn masterPheno
 setMethod("masterPheno", "MultiAssayExperiment", function(x)
 getElement(x, "masterPheno"))
 
