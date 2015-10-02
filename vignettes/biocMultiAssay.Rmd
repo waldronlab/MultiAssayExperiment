@@ -104,13 +104,13 @@ locomm
 Where to put these abstractions for both the light and
 heavy representations is a point of discussion.
 
-# createMA shortcut function for creating a MultiAssayExperiment
+# MultiAssay shortcut function for creating a MultiAssayExperiment
 
-```{r createMA}
+```{r MultiAssay}
 ovlist <- lapply(ov, function(x) get(load(x)))
 names(ovlist) <- tags
 ## use the "ov agilent" for masterpheno phenotype data:
-lovhub2 <- createMA(masterPheno=pData(ovlist[[2]]), objlist=ovlist, drop=TRUE)
+lovhub2 <- MultiAssay(masterPheno=pData(ovlist[[2]]), elist=ovlist) # drop=TRUE broken
 lovhub2
 format(object.size(lovhub2), units = "Mb")
 ```

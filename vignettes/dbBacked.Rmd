@@ -29,7 +29,7 @@ BiocStyle::markdown()
 suppressPackageStartupMessages({
   library(biocMultiAssay)
   library(dplyr)
-  if (!exists("lovhub2")) example(createMA)
+  if (!exists("lovhub2")) example(MultiAssay)
 })
 
 ```
@@ -37,7 +37,7 @@ We have an example "loaded experiment hub" based on
 TCGA ovarian tumor data.  It can be created using
 ```{r lkex,eval=FALSE}
 library(biocMultiAssay)
-example(createMA)
+example(MultiAssay)
 ```
 
 ```{r lk2}
