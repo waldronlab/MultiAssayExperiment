@@ -26,7 +26,7 @@ setMethod("featExtractor", "SummarizedExperiment", function(x) rownames(x))
 #' @describeIn featExtractor
 setMethod("featExtractor", "matrix", function(x) rownames(x))
 #' @describeIn featExtractor
-setMethod("featExtractor", "GRangesList", function(x) ranges(x))
+setMethod("featExtractor", "GRangesList", function(x) GenomicRanges::ranges(x))
 
 #' Sample extractor generic
 #' 

@@ -126,9 +126,6 @@ Expression data from TCGA level 3
 \source{
 NCI TCGA
 }
-%\references{
-%%%  ~~ possibly secondary sources and usages ~~
-%}
 \examples{
 data(TCGA_ov_affyex)
 }

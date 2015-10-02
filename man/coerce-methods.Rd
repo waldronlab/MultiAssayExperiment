@@ -3,7 +3,7 @@
 \alias{coerce}
 \alias{exs2se,ExpressionSet-method}
 \alias{coerce,ExpressionSet,exs2se-method}
-\title{ convert ExpressionSet to SummarizedExperiment }
+\title{convert ExpressionSet to SummarizedExperiment}
 \description{
 convert ExpressionSet to SummarizedExperiment
 }
