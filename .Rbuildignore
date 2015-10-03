@@ -1,10 +1,13 @@
 inst/vignettes/downloads
 inst/vignettes/all_data_by_genes.txt.gz
-inst/vignettes/cache
-inst/vignettes/biocMultiAssay_cache
 aux$
 log$
 out$
 sqlite$
 ^.*\.Rproj$
 ^\.Rproj\.user$
+vignettes/OvarDB
+vignettes/OvarDB.sqlite
+txt$
+gz$
+cache$
