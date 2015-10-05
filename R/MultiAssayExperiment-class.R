@@ -7,7 +7,7 @@
 #' @slot elist A \code{\link[S4Vectors]{SimpleList-class}} of data across different types of assays. 
 #' @slot masterPheno A \code{"data.frame"} of all clinical data available across experiments.
 #' @slot sampleMap A \code{"list"} of translatable identifiers of samples and participants.
-#' @slot metadata Additional data describing the \code{\linkS4class{MultiAssayExperiment}} object. 
+#' @slot metadata Additional data describing the \code{\link{MultiAssayExperiment}} object. 
 #' @exportClass MultiAssayExperiment
 setClass("MultiAssayExperiment",
 		 representation(
@@ -81,8 +81,8 @@ S4Vectors::setValidity2("MultiAssayExperiment", .validMultiAssayExperiment)
 
 #' Show method for MultiAssayExperiment class
 #' 
-#' param object A \code{\linkS4class{MultiAssayExperiment}} object.
-#' return Returns a summary of contents for the \code{\linkS4class{MultiAssayExperiment}} class. 
+#' param object A \code{\link{MultiAssayExperiment}} object.
+#' return Returns a summary of contents for the \code{\link{MultiAssayExperiment}} class. 
 #' exportMethod "show"
 # setMethod("show", "MultiAssayExperiment", function(object){
 # 		  objdim <- lapply(seq_along(object@elist), FUN = function(j, expt) {	

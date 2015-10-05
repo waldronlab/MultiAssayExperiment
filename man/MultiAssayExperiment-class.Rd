@@ -43,6 +43,6 @@ Names of Experiments
 
 \item{\code{sampleMap}}{A \code{"list"} of translatable identifiers of samples and participants.}
 
-\item{\code{metadata}}{Additional data describing the \code{\linkS4class{MultiAssayExperiment}} object.}
+\item{\code{metadata}}{Additional data describing the \code{\link{MultiAssayExperiment}} object.}
 }}
 
