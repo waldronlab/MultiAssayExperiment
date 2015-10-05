@@ -94,7 +94,7 @@ Create an ID map for all available experiments.  Names required, and must be ide
 
 ```{r}
 idmap <- list(exprmap, methylmap, micromap, rangemap)
-names(idmap) <- c("expr", "methyl", "micro", "range")
+names(idmap) <- c("Affy", "Methyl 450k", "Mirna", "CNV gistic")
 idmap
 ```
 
@@ -129,16 +129,16 @@ subMultiAssay <- subsetBySample(myMultiAssay, logicID)
 subMultiAssay
 ```
 
-# TODO - subset myMultiAssay by assays
-
 Endogenous operation, returns a MultiAssay object containing elist of length 1, map of length 1, and masterPheno for only Jack, Barbara, and Bob.  The "micro" argument is used to index the elist object using `[`, so could also be integer or logical:
+
 ```{r, eval=FALSE}
-subsetByAssay(myMultiAssay, "micro", drop=FALSE)
+subsetByAssay(myMultiAssay, "Mirna", drop=FALSE)
 ```
 
-Not endogenous, returns just the matrix contained in elist$micro:
+Not endogenous, returns just the matrix contained in `elist$micro`
+
 ```{r, eval=FALSE}
-subsetByAssay(myMultiAssay, "micro", drop=TRUE)
+subsetByAssay(myMultiAssay, "Mirna", drop=TRUE)
 ```
 
 # TODO - subset myMultiAssay by features
@@ -170,3 +170,5 @@ After these are implemented, let's think about subsetting by range...  Will need
 * "contains": subsetting range must contain the assay range completely
 * "containedby": subsetting range must be contained completely by assay range
 * "partial": any overlap between subsetting range and assay range
+
+

@@ -16,6 +16,18 @@ Group](https://groups.google.com/forum/#!forum/biocmultiassay) to get
 involved.  
 Here is a [calendar](https://www.google.com/calendar/embed?src=9ar0qc8mpkv6b9intgmdcdf0ss%40group.calendar.google.com&ctz=America/New_York) of upcoming meetings.
 
+# Toy Example - Proof of concept
+
+A vignette describing the creation of the `MultiAssayExperiment` object
+and subsetting can be found in the *vignettes* directory under the name
+*biocMultiAssayToyExample.Rmd*. 
+
+# Object documentation & Manual Generation
+
+For convenience, the Roxygen2 package functions are used for documenting
+and generating R objects and manual pages for this package. More information
+can be found at [R Packages](http://r-pkgs.had.co.nz/man.html)
+
 # Contributor Code of Conduct
 
 As contributors and maintainers of this project, we pledge to respect

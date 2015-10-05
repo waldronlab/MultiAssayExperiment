@@ -3,10 +3,37 @@
 \docType{class}
 \name{MultiAssayExperiment-class}
 \alias{MultiAssayExperiment-class}
+\alias{length,MultiAssayExperiment-method}
+\alias{names,MultiAssayExperiment-method}
 \title{An integrative MultiAssay class for experiment data}
+\usage{
+\S4method{length}{MultiAssayExperiment}(x)
+
+\S4method{names}{MultiAssayExperiment}(x)
+}
+\arguments{
+\item{x}{A \code{\link{MultiAssayExperiment}} object}
+
+\item{x}{A \code{\link{MultiAssayExperiment}} object}
+}
+\value{
+An \code{integer}
+
+A character vector of experiment names
+}
 \description{
 An integrative MultiAssay class for experiment data
+
+Length of Experiment List
+
+Names of Experiments
 }
+\section{Methods (by generic)}{
+\itemize{
+\item \code{length}: 
+
+\item \code{names}: 
+}}
 \section{Slots}{
 
 \describe{

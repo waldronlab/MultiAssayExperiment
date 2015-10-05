@@ -1,9 +1,9 @@
 #' Subset MultiAssayExperiment object
 #' \code{subsetBySample} returns a subsetted \code{\linkS4class{MultiAssayExperiment}} object
 #'
-#' @param MultiAssay A \code{\linkS4class{MultiAssayExperiment}} object 
+#' @param MultiAssay A \code{\link{MultiAssayExperiment}} object 
 #' @param logicID A list of logical indicators to be used for subsetting
-#' @export
+#' @export subsetBySample
 subsetBySample <- function(MultiAssay, logicID){
   newPheno <- .subPheno(MultiAssay, .getIndexLogical(MultiAssay, logicID))
   newMap <- Map(subset, MultiAssay@sampleMap, logicID)
