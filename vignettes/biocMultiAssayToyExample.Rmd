@@ -141,34 +141,34 @@ Not endogenous, returns just the matrix contained in `elist$micro`
 subsetByAssay(myMultiAssay, "Mirna", drop=TRUE)
 ```
 
-# TODO - subset myMultiAssay by features
+# TODO - subset myMultiAssay by matrix-like features
 
-This operation should always return a MultiAssayExperiment class, with any elist element not containing the feature dropped.  Return error if the feature is not found in any assay.
+This operation should always return a MultiAssayExperiment class, with any elist element not containing the feature having zero rows.
 
 Until we make subsetting by a gene ID work on ranges, the following will return c(TRUE, TRUE, FALSE, FALSE). When we implement subsetting by ranges, it should return c(TRUE, TRUE, FALSE, TRUE). 
 
+Returns c(TRUE, TRUE, FALSE, FALSE):
 ```{r, eval=FALSE}
-identifyByFeature(myMultiAssay, "ENST0000035076")  #returns c(TRUE, TRUE, FALSE, FALSE)
-subsetByFeature(myMultiAssay, "ENST0000035076")  #returns ENST0000035076 row for `expr` and `methyl`
+identifyByFeature(myMultiAssay, "ENST0000035076")  
 ```
 
-In the following, `expr` ExpressionSet keeps both rows but with their order reversed, and `methyl` keeps only its second row. The above used the default requireall=FALSE.
+Returns MultiAssayExperiment where `Affy` and `Methyl 450k` contain only ENST0000035076 row, and "Mirna" and "CNV gistic" have zero rows:
+```{r, eval=FALSE}
+subsetByFeature(myMultiAssay, "ENST0000035076")  
+```
+
+In the following, `Affy` ExpressionSet keeps both rows but with their order reversed, and `Methyl 450k` keeps only its second row.
+```{r, eval=FALSE}
+subsetByFeature(myMultiAssay, c("ENST00000355076", "ENST00000294241"))
+```
+
+## Identify assays that contain any / all of a vector of features
+
+Note that the output of this function could be used as the input for subsetByAssay.
 ```{r, eval=FALSE}
 identifyByFeature(myMultiAssay, c("ENST00000355076", "ENST00000294241"), requireall=FALSE)  #returns c(TRUE, TRUE, FALSE, FALSE)
-subsetByFeature(myMultiAssay, c("ENST00000355076", "ENST00000294241"), requireall=FALSE)
-```
-
-In the following, `expr` ExpressionSet keeps both rows but with their order reversed, all other elist elements are dropped.
-```{r, eval=FALSE}
 identifyByFeature(myMultiAssay, c("ENST00000355076", "ENST00000294241"), requireall=TRUE)  #returns c(TRUE, FALSE, FALSE, FALSE)
-subsetByFeature(myMultiAssay, c("ENST00000355076", "ENST00000294241"), requireall=TRUE)
 ```
 
 # TODO later - subset by ranges
-After these are implemented, let's think about subsetting by range...  Will need some options for what constitutes a match for ranges, e.g.: 
-* "exact": must match exactly
-* "contains": subsetting range must contain the assay range completely
-* "containedby": subsetting range must be contained completely by assay range
-* "partial": any overlap between subsetting range and assay range
-
-
+Use GenomicRanges::subsetByOverlaps, passing its arguments to allow flexible types of subsetting. 
