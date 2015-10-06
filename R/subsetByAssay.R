@@ -6,6 +6,7 @@
 #' @param MultiAssay A \code{\link{MultiAssayExperiment}} object
 #' @param assayName Either a numeric or logical vector indicating what assay(s) to select  
 #' @param drop logical Indicates whether to drop the unmatched assays from the object
+#' @return A \code{\link{MultiAssayExperiment}} object or other if drop paramater is set to TRUE
 #' @export subsetByAssay
 subsetByAssay <- function(MultiAssay, assayName, drop = FALSE){
 	lengthNames <- c(seq(length(MultiAssay)), names(MultiAssay))

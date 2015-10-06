@@ -25,7 +25,8 @@ return(rownames(object@masterPheno)[match(usedNames, rownames(object@masterPheno
 #' 
 #' @param MultiAssay A \code{\linkS4class{MultiAssayExperiment}}
 #' @param j A numeric vector referencing masterPheno data.frame row numbers
-#' @export
+#' @return A logical list of matched sample references
+#' @export identifyBySample
 identifyBySample <- function(MultiAssay, j){
 	iders <- rownames(.subPheno(MultiAssay, j))
 	return(.getLogicalNames(MultiAssay, iders))
