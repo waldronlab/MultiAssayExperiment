@@ -22,7 +22,7 @@ setGeneric("featExtractor", function(x) standardGeneric("featExtractor"))
 #' @describeIn featExtractor
 setMethod("featExtractor", "ExpressionSet", function(x) affy::featureNames(x))
 #' @describeIn featExtractor
-setMethod("featExtractor", "SummarizedExperiment", function(x) rownames(x))
+setMethod("featExtractor", "SummarizedExperiment", function(x) SummarizedExperiment::rowRanges(x))
 #' @describeIn featExtractor
 setMethod("featExtractor", "matrix", function(x) rownames(x))
 #' @describeIn featExtractor
@@ -63,16 +63,46 @@ setMethod("subsetSample", "GRangesList", function(x, j) x[j])
 #' Subset by Feature method
 #'
 #' @param x Either an \code{\linkS4class{ExpressionSet}}, \code{\linkS4class{GRangesList}}, \code{\linkS4class{SummarizedExperiment}} or \code{matrix} class object
-#' @param j Either a \code{"numeric"} or \code{"character"} vector class for subsetting
+#' @param j Either a \code{"numeric"}, \code{"character"}, or \code{logical} vector class for subsetting
 #' @param ... Additional arguments to pass
 #' @return Returnss a subsetted \code{\linkS4class{MultiAssayExperiment}} object
 #' @export subsetFeature
 setGeneric("subsetFeature", function(x, j, ...) standardGeneric("subsetFeature"))
 #' @describeIn subsetFeature
-setMethod("subsetFeature", "matrix", function(x, j) x[j, , drop = FALSE])
+setMethod("subsetFeature", "matrix", function(x, j) {
+		  if(any(rownames(x) %in% j)){
+			  j <- rownames(x)[which(rownames(x) == j)]
+			  x <- x[j, , drop = FALSE]
+			  return(x)
+		  } else { 
+			  return(colnames(x))
+		  }
+})
 #' @describeIn subsetFeature
-setMethod("subsetFeature", "ExpressionSet", function(x, j) x[j, ])
+setMethod("subsetFeature", "ExpressionSet", function(x, j){
+		  found <- featureNames(x) %in% j
+		  if(any(found)){
+			  j <- featureNames(x)[found]
+			  x <- x[j, ]
+			  return(x)
+		  } else {
+			  return(x[0,])
+		  }
+})
 #' @describeIn subsetFeature
-setMethod("subsetFeature", "SummarizedExperiment", function(x, j) x[j, ])
-# setMethod("subsetFeature", "GRangesList", function(x, j) )
+setMethod("subsetFeature", signature("SummarizedExperiment", "GenomicRanges"), function(x, j){
+		  x <- subsetByOverlaps(x, j)
+})
+#' @describeIn subsetFeature
+setMethod("subsetFeature", signature("SummarizedExperiment", "ANY"), function(x, j){
+		  x[0, ]
+})
+#' @describeIn subsetFeature
+setMethod("subsetFeature", signature("GRangesList", "GenomicRanges"), function(x, j){
+		  x <-lapply(x, FUN = function(GR) { subsetByOverlaps(GR, j) }) 
+})
+#' @describeIn subsetFeature
+setMethod("subsetFeature", signature("GRangesList", "ANY"), function(x, j){ 
+		  x <- lapply(x, FUN = function(GR) { x[0, ] })
+})
 

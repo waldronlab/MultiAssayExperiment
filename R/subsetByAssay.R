@@ -20,8 +20,8 @@ subsetByAssay <- function(MultiAssay, assayName, drop = FALSE){
 	if(all(assayName %in% lengthNames)){
 		newMap <- MultiAssay@sampleMap[assayName]
 		newSubset <- MultiAssay@elist[assayName]
-		if(length(assayName)==1 & drop){
-			return(as.list(newSubset))
+		if(drop){
+				return(as.list(newSubset))
 		} else {
 			MultiAssay@sampleMap <- newMap
 			MultiAssay@elist <- newSubset

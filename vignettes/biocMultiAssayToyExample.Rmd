@@ -86,7 +86,7 @@ The following data.frame matches masterPheno sample to the GRangesList:
 						assay = c("snparray1", "snparray2", "snparray3")))
 ```
 
-#Setup for creating MultiAssayExperiment
+# Setup for creating MultiAssayExperiment
 Create an ID map for all available experiments.  Names required, and must be identical to names of elist (TODO: add to validity check).
 
 ```{r}
@@ -117,7 +117,7 @@ myMultiAssay <- MultiAssay(objlist, masPheno, idmap)
 myMultiAssay
 ```
 
-# Subsetting by Sample
+## Subsetting by Sample
 
 ```{r}
 logicID <- identifyBySample(myMultiAssay, 1:2)
@@ -132,15 +132,15 @@ Endogenous operation, returns a MultiAssay object containing elist of length 1, 
 subsetByAssay(myMultiAssay, "Mirna", drop=FALSE)
 ```
 
-Not endogenous, returns just the matrix contained in `elist$micro`
+Not endogenous, returns just the matrix contained in `elist$Mirna`
 
 ```{r, eval=FALSE}
 subsetByAssay(myMultiAssay, "Mirna", drop=TRUE)
 ```
 
-# TODO - subset myMultiAssay by matrix-like features
+## Subsetting by Feature 
 
-This operation should always return a MultiAssayExperiment class, with any elist element not containing the feature having zero rows.
+This operation returns a MultiAssayExperiment class, with any elist element not containing the feature having zero rows.
 
 Until we make subsetting by a gene ID work on ranges, the following will return c(TRUE, TRUE, FALSE, FALSE). When we implement subsetting by ranges, it should return c(TRUE, TRUE, FALSE, TRUE). 
 
@@ -150,11 +150,13 @@ identifyByFeature(myMultiAssay, "ENST00000355076")
 ```
 
 Returns MultiAssayExperiment where `Affy` and `Methyl 450k` contain only ENST0000035076 row, and "Mirna" and "CNV gistic" have zero rows:
+
 ```{r, eval=FALSE}
 subsetByFeature(myMultiAssay, "ENST00000355076")  
 ```
 
 In the following, `Affy` ExpressionSet keeps both rows but with their order reversed, and `Methyl 450k` keeps only its second row.
+
 ```{r, eval=FALSE}
 subsetByFeature(myMultiAssay, c("ENST00000355076", "ENST00000294241"))
 ```
@@ -169,3 +171,4 @@ identifyByFeature(myMultiAssay, c("ENST00000355076", "ENST00000294241"), require
 
 # TODO later - subset by ranges
 Use GenomicRanges::subsetByOverlaps, passing its arguments to allow flexible types of subsetting. 
+
