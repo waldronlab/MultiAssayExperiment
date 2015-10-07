@@ -9,6 +9,6 @@
 subsetByFeature <- function(MultiAssay, feature){
 	subsetLogic <- identifyByFeature(MultiAssay, feature)  
 	MultiAssay <- subsetByAssay(MultiAssay, subsetLogic, drop = FALSE)
-	MultiAssay@elist <- SimpleList(lapply(MultiAssay@elist, subsetFeature, feature))
+	MultiAssay@elist <- endoapply(MultiAssay@elist, subsetFeature, feature)
 	return(MultiAssay)
 }
