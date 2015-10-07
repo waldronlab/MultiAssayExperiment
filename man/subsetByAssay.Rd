@@ -9,9 +9,12 @@ subsetByAssay(MultiAssay, assayName, drop = FALSE)
 \arguments{
 \item{MultiAssay}{A \code{\link{MultiAssayExperiment}} object}
 
-\item{assayName}{Either a numeric or logical vector indicating what assay(s) to select}
+\item{assayName}{Either a numeric, character or logical vector indicating what assay(s) to select}
 
 \item{drop}{logical Indicates whether to drop the unmatched assays from the object}
+}
+\value{
+A \code{\link{MultiAssayExperiment}} object or other if drop paramater is set to TRUE
 }
 \description{
 Select which assay(s) to obtain from available datasets,

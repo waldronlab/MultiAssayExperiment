@@ -4,17 +4,19 @@
 #' fuzzy matching is possible but exact names recommended
 #' 
 #' @param MultiAssay A \code{\link{MultiAssayExperiment}} object
-#' @param assayName Either a numeric or logical vector indicating what assay(s) to select  
+#' @param assayName Either a numeric, character or logical vector indicating what assay(s) to select  
 #' @param drop logical Indicates whether to drop the unmatched assays from the object
 #' @return A \code{\link{MultiAssayExperiment}} object or other if drop paramater is set to TRUE
 #' @export subsetByAssay
 subsetByAssay <- function(MultiAssay, assayName, drop = FALSE){
 	lengthNames <- c(seq(length(MultiAssay)), names(MultiAssay))
-if(!is.numeric(assayName)){
-assayName <- vapply(as.character(assayName),
-	FUN = function(x){ grep(x, lengthNames, ignore.case = TRUE, value = TRUE) },
-	FUN.VALUE = character(1))
-}
+	if(is.logical(assayName)){
+		assayName <- names(MultiAssay)[assayName]
+	} else if(!is.numeric(assayName)){
+		assayName <- vapply(X = as.character(assayName),
+							FUN = function(x){ grep(x, lengthNames, ignore.case = TRUE, value = TRUE) },
+							FUN.VALUE = character(1))
+	} 
 	if(all(assayName %in% lengthNames)){
 		newMap <- MultiAssay@sampleMap[assayName]
 		newSubset <- MultiAssay@elist[assayName]

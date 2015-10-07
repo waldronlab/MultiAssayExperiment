@@ -1,11 +1,8 @@
 ---
 title: "biocMultiAssayToyExample"
 author: "Marcel Ramos, Levi Waldron"
-date: "October 3, 2015"
-output: 
-  html_document: 
-    number_sections: yes
-    toc: yes
+date: "September 4, 2015"
+output: html_document
 ---
 
 # Generate toy data
@@ -149,12 +146,12 @@ Until we make subsetting by a gene ID work on ranges, the following will return 
 
 Returns c(TRUE, TRUE, FALSE, FALSE):
 ```{r, eval=FALSE}
-identifyByFeature(myMultiAssay, "ENST0000035076")  
+identifyByFeature(myMultiAssay, "ENST00000355076")  
 ```
 
 Returns MultiAssayExperiment where `Affy` and `Methyl 450k` contain only ENST0000035076 row, and "Mirna" and "CNV gistic" have zero rows:
 ```{r, eval=FALSE}
-subsetByFeature(myMultiAssay, "ENST0000035076")  
+subsetByFeature(myMultiAssay, "ENST00000355076")  
 ```
 
 In the following, `Affy` ExpressionSet keeps both rows but with their order reversed, and `Methyl 450k` keeps only its second row.
