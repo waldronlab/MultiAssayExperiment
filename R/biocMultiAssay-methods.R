@@ -60,6 +60,8 @@ setMethod("subsetSample", "RangedSummarizedExperiment", function(x, j) x[, j])
 #' @describeIn subsetSample
 setMethod("subsetSample", "GRangesList", function(x, j) x[j]) 
 
+setClassUnion("MatrixExpSet", c("matrix", "ExpressionSet"))
+
 #' Subset by Feature method
 #'
 #' @param x Either an \code{\linkS4class{ExpressionSet}}, \code{\linkS4class{GRangesList}}, \code{\linkS4class{RangedSummarizedExperiment}} or \code{matrix} class object
@@ -69,9 +71,10 @@ setMethod("subsetSample", "GRangesList", function(x, j) x[j])
 #' @export subsetFeature
 setGeneric("subsetFeature", function(x, j, ...) standardGeneric("subsetFeature"))
 #' @describeIn subsetFeature
-setMethod("subsetFeature", signature("matrix", "GenomicRanges"), function(x, j){
+setMethod("subsetFeature", signature("MatrixExpSet", "GenomicRanges"), function(x, j){
 		  return(x[0, ])
 })
+#' @describeIn subsetFeature
 setMethod("subsetFeature", signature("matrix", "ANY"), function(x, j){
 		  if(any(rownames(x) %in% j)){
 			  j <- rownames(x)[which(rownames(x) == j)]
@@ -82,9 +85,6 @@ setMethod("subsetFeature", signature("matrix", "ANY"), function(x, j){
 		  }
 })
 #' @describeIn subsetFeature
-setMethod("subsetFeature", signature("ExpressionSet", "GenomicRanges"), function(x, j){
-		  return(x[0, ])
-})
 setMethod("subsetFeature", signature("ExpressionSet", "ANY"), function(x, j){
 		  found <- featureNames(x) %in% j
 		  if(any(found)){
