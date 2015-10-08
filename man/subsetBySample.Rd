@@ -8,7 +8,7 @@
 subsetBySample(MultiAssay, logicID)
 }
 \arguments{
-\item{MultiAssay}{A \code{\linkS4class{MultiAssayExperiment}} object}
+\item{MultiAssay}{A \code{\link{MultiAssayExperiment}} object}
 
 \item{logicID}{A list of logical indicators to be used for subsetting}
 }

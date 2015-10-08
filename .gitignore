@@ -7,3 +7,5 @@
 .Rproj.user
 .Rhistory
 .RData
+*.orig
+*.md

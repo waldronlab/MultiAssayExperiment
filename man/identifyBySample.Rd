@@ -12,6 +12,9 @@ identifyBySample(MultiAssay, j)
 
 \item{j}{A numeric vector referencing masterPheno data.frame row numbers}
 }
+\value{
+A logical list of matched sample references
+}
 \description{
 This function uses row indices of the masterPheno to return a logical list
 }

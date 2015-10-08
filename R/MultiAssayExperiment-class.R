@@ -7,14 +7,16 @@
 #' @slot elist A \code{\link[S4Vectors]{SimpleList-class}} of data across different types of assays. 
 #' @slot masterPheno A \code{"data.frame"} of all clinical data available across experiments.
 #' @slot sampleMap A \code{"list"} of translatable identifiers of samples and participants.
-#' @slot metadata Additional data describing the \code{\linkS4class{MultiAssayExperiment}} object. 
+#' @slot metadata Additional data describing the \code{\link{MultiAssayExperiment}} object. 
 #' @exportClass MultiAssayExperiment
-setClass("MultiAssayExperiment", representation(
-												elist="SimpleList", 
-												masterPheno = "data.frame",
-												sampleMap = "list", 
-												metadata = "ANY") 
-)
+setClass("MultiAssayExperiment",
+		 representation(
+						elist="SimpleList",
+						masterPheno = "data.frame",
+						sampleMap = "list", 
+						metadata = "ANY"
+						) 
+		 )
 
 ##
 ## Validity ---------------------------------
@@ -54,25 +56,33 @@ setClass("MultiAssayExperiment", representation(
 
 ## Experiment list must be the same length as the sampleMaps list.
 .checkElist <- function(object){
-  if(length(object@elist) != length(object@sampleMap)){
-    return("elist must be the same length as the sampleMap!")
-  }
-  NULL
+	if(length(object@elist) != length(object@sampleMap)){
+		return("elist must be the same length as the sampleMap!")
+	}
+	NULL
+}
+
+.checkNames <- function(object){
+	if(!identical(names(object@elist), names(object@sampleMap))){
+		return("Experiment names must match in both elist and sampleMap!")
+	}
+	NULL
 }
 
 
 .validMultiAssayExperiment <- function(object){
   c(.checkMasterPheno(object), 
     .checkSampleMap(object),
-    .checkElist(object))
+    .checkElist(object), 
+	.checkNames(object))
 }
 
 S4Vectors::setValidity2("MultiAssayExperiment", .validMultiAssayExperiment)
 
 #' Show method for MultiAssayExperiment class
 #' 
-#' param object A \code{\linkS4class{MultiAssayExperiment}} object.
-#' return Returns a summary of contents for the \code{\linkS4class{MultiAssayExperiment}} class. 
+#' param object A \code{\link{MultiAssayExperiment}} object.
+#' return Returns a summary of contents for the \code{\link{MultiAssayExperiment}} class. 
 #' exportMethod "show"
 # setMethod("show", "MultiAssayExperiment", function(object){
 # 		  objdim <- lapply(seq_along(object@elist), FUN = function(j, expt) {	
@@ -91,7 +101,7 @@ S4Vectors::setValidity2("MultiAssayExperiment", .validMultiAssayExperiment)
 ### Accessor methods
 ###
 #' Generic Accessor Functions
-#' @param x A \code{\linkS4class{MultiAssayExperiment}} object.
+#' @param x A \code{\link{MultiAssayExperiment}} object.
 #' @return A \code{"list"} object. 
 #' @exportMethod sampleMap
 setGeneric("sampleMap", function(x) standardGeneric("sampleMap"))
@@ -100,7 +110,7 @@ setMethod("sampleMap", "MultiAssayExperiment", function(x)
 getElement(x, "sampleMap"))
 
 #' Generic Accessor Functions
-#' @param x A \code{\linkS4class{MultiAssayExperiment}} object.
+#' @param x A \code{\link{MultiAssayExperiment}} object.
 #' @return A \code{\link[S4Vectors]{SimpleList-class}} object.
 #' @exportMethod elist
 setGeneric("elist", function(x) standardGeneric("elist"))
@@ -109,11 +119,33 @@ setMethod("elist", "MultiAssayExperiment", function(x)
 getElement(x, "elist"))
 
 #' Generic Accessor Functions
-#' @param x A \code{\linkS4class{MultiAssayExperiment}} object.
-#' @return A \code{"data.frame"} object.
+#' @param x A \code{\link{MultiAssayExperiment}} object
+#' @return A \code{data.frame} object
 #' @exportMethod masterPheno
 setGeneric("masterPheno", function(x) standardGeneric("masterPheno"))
 #' @describeIn masterPheno
 setMethod("masterPheno", "MultiAssayExperiment", function(x)
 getElement(x, "masterPheno"))
 
+
+### - - - - - - - - - - - - - - - - - - - - - - - -
+### Getters
+###
+
+#' Length of Experiment List
+#' @param x A \code{\link{MultiAssayExperiment}} object
+#' @return An \code{integer} 
+#' @exportMethod length
+#' @describeIn MultiAssayExperiment
+setMethod("length", "MultiAssayExperiment", 
+	function(x) length(getElement(x, "elist"))
+)
+
+#' Names of Experiments 
+#' @param x A \code{\link{MultiAssayExperiment}} object
+#' @return A character vector of experiment names
+#' @exportMethod names
+#' @describeIn MultiAssayExperiment
+setMethod("names", "MultiAssayExperiment", 
+	function(x) names(getElement(x, "elist"))
+)

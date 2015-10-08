@@ -11,10 +11,10 @@ masterPheno(x)
 \S4method{masterPheno}{MultiAssayExperiment}(x)
 }
 \arguments{
-\item{x}{A \code{\linkS4class{MultiAssayExperiment}} object.}
+\item{x}{A \code{\link{MultiAssayExperiment}} object}
 }
 \value{
-A \code{"data.frame"} object.
+A \code{data.frame} object
 }
 \description{
 Generic Accessor Functions

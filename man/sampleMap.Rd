@@ -11,14 +11,14 @@ sampleMap(x)
 \S4method{sampleMap}{MultiAssayExperiment}(x)
 }
 \arguments{
-\item{x}{A \code{\linkS4class{MultiAssayExperiment}} object.}
+\item{x}{A \code{\link{MultiAssayExperiment}} object.}
 }
 \value{
 A \code{"list"} object.
 }
 \description{
-param object A \code{\linkS4class{MultiAssayExperiment}} object.
-return Returns a summary of contents for the \code{\linkS4class{MultiAssayExperiment}} class.
+param object A \code{\link{MultiAssayExperiment}} object.
+return Returns a summary of contents for the \code{\link{MultiAssayExperiment}} class.
 exportMethod "show"
 Generic Accessor Functions
 }

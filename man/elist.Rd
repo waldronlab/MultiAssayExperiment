@@ -11,7 +11,7 @@ elist(x)
 \S4method{elist}{MultiAssayExperiment}(x)
 }
 \arguments{
-\item{x}{A \code{\linkS4class{MultiAssayExperiment}} object.}
+\item{x}{A \code{\link{MultiAssayExperiment}} object.}
 }
 \value{
 A \code{\link[S4Vectors]{SimpleList-class}} object.
