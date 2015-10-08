@@ -15,14 +15,14 @@
 
 #' Feature extractor method
 #' 
-#' @param x Either an \code{\linkS4class{ExpressionSet}}, \code{\linkS4class{GRangesList}}, \code{\linkS4class{SummarizedExperiment}} or \code{matrix} class object
+#' @param x Either an \code{\linkS4class{ExpressionSet}}, \code{\linkS4class{GRangesList}}, \code{\linkS4class{RangedSummarizedExperiment}} or \code{matrix} class object
 #' @return Returns either rownames or featureNames
 #' @exportMethod featExtractor
 setGeneric("featExtractor", function(x) standardGeneric("featExtractor"))
 #' @describeIn featExtractor
 setMethod("featExtractor", "ExpressionSet", function(x) affy::featureNames(x))
 #' @describeIn featExtractor
-setMethod("featExtractor", "SummarizedExperiment", function(x) SummarizedExperiment::rowRanges(x))
+setMethod("featExtractor", "RangedSummarizedExperiment", function(x) SummarizedExperiment::rowRanges(x))
 #' @describeIn featExtractor
 setMethod("featExtractor", "matrix", function(x) rownames(x))
 #' @describeIn featExtractor
@@ -30,14 +30,14 @@ setMethod("featExtractor", "GRangesList", function(x) GenomicRanges::ranges(x))
 
 #' Sample extractor generic
 #' 
-#' @param x Either an \code{\linkS4class{ExpressionSet}}, \code{\linkS4class{GRangesList}}, \code{\linkS4class{SummarizedExperiment}} or \code{matrix} class object
+#' @param x Either an \code{\linkS4class{ExpressionSet}}, \code{\linkS4class{GRangesList}}, \code{\linkS4class{RangedSummarizedExperiment}} or \code{matrix} class object
 #' @return Returns an object of the same class  
 #' @exportMethod sampleExtractor
 setGeneric("sampleExtractor", function(x) standardGeneric("sampleExtractor"))
 #' @describeIn sampleExtractor 
 setMethod("sampleExtractor", "ExpressionSet", function(x) affy::sampleNames(x)) 
 #' @describeIn sampleExtractor 
-setMethod("sampleExtractor", "SummarizedExperiment", function(x) colnames(x))
+setMethod("sampleExtractor", "RangedSummarizedExperiment", function(x) colnames(x))
 #' @describeIn sampleExtractor 
 setMethod("sampleExtractor", "matrix", function(x) colnames(x))
 #' @describeIn sampleExtractor 
@@ -45,7 +45,7 @@ setMethod("sampleExtractor", "GRangesList", function(x) names(x))
 
 #' Subset by Sample generic 
 #'
-#' @param x Either an \code{\linkS4class{ExpressionSet}}, \code{\linkS4class{GRangesList}}, \code{\linkS4class{SummarizedExperiment}} or \code{matrix} class object
+#' @param x Either an \code{\linkS4class{ExpressionSet}}, \code{\linkS4class{GRangesList}}, \code{\linkS4class{RangedSummarizedExperiment}} or \code{matrix} class object
 #' @param j Either a \code{"numeric"} or \code{"character"} vector class for subsetting
 #' @param ... Additional arguments to pass
 #' @return Returns a subsetted \code{\linkS4class{MultiAssayExperiment}} object
@@ -56,20 +56,23 @@ setMethod("subsetSample", "matrix", function(x, j) x[, j, drop = FALSE])
 #' @describeIn subsetSample
 setMethod("subsetSample", "ExpressionSet", function(x, j) x[, j])
 #' @describeIn subsetSample
-setMethod("subsetSample", "SummarizedExperiment", function(x, j) x[, j])
+setMethod("subsetSample", "RangedSummarizedExperiment", function(x, j) x[, j])
 #' @describeIn subsetSample
 setMethod("subsetSample", "GRangesList", function(x, j) x[j]) 
 
 #' Subset by Feature method
 #'
-#' @param x Either an \code{\linkS4class{ExpressionSet}}, \code{\linkS4class{GRangesList}}, \code{\linkS4class{SummarizedExperiment}} or \code{matrix} class object
+#' @param x Either an \code{\linkS4class{ExpressionSet}}, \code{\linkS4class{GRangesList}}, \code{\linkS4class{RangedSummarizedExperiment}} or \code{matrix} class object
 #' @param j Either a \code{"numeric"}, \code{"character"}, or \code{logical} vector class for subsetting
 #' @param ... Additional arguments to pass
 #' @return Returnss a subsetted \code{\linkS4class{MultiAssayExperiment}} object
 #' @export subsetFeature
 setGeneric("subsetFeature", function(x, j, ...) standardGeneric("subsetFeature"))
 #' @describeIn subsetFeature
-setMethod("subsetFeature", "matrix", function(x, j) {
+setMethod("subsetFeature", signature("matrix", "GenomicRanges"), function(x, j){
+		  return(x[0, ])
+})
+setMethod("subsetFeature", signature("matrix", "ANY"), function(x, j){
 		  if(any(rownames(x) %in% j)){
 			  j <- rownames(x)[which(rownames(x) == j)]
 			  x <- x[j, , drop = FALSE]
@@ -79,7 +82,10 @@ setMethod("subsetFeature", "matrix", function(x, j) {
 		  }
 })
 #' @describeIn subsetFeature
-setMethod("subsetFeature", "ExpressionSet", function(x, j){
+setMethod("subsetFeature", signature("ExpressionSet", "GenomicRanges"), function(x, j){
+		  return(x[0, ])
+})
+setMethod("subsetFeature", signature("ExpressionSet", "ANY"), function(x, j){
 		  found <- featureNames(x) %in% j
 		  if(any(found)){
 			  j <- featureNames(x)[found]
@@ -90,19 +96,19 @@ setMethod("subsetFeature", "ExpressionSet", function(x, j){
 		  }
 })
 #' @describeIn subsetFeature
-setMethod("subsetFeature", signature("SummarizedExperiment", "GenomicRanges"), function(x, j){
-		  x <- subsetByOverlaps(x, j)
+setMethod("subsetFeature", signature("RangedSummarizedExperiment", "GenomicRanges"), function(x, j){
+		  return(subsetByOverlaps(x, j))
 })
 #' @describeIn subsetFeature
-setMethod("subsetFeature", signature("SummarizedExperiment", "ANY"), function(x, j){
-		  x[0, ]
+setMethod("subsetFeature", signature("RangedSummarizedExperiment", "ANY"), function(x, j){
+		  return(x[0, ])
 })
 #' @describeIn subsetFeature
 setMethod("subsetFeature", signature("GRangesList", "GenomicRanges"), function(x, j){
-		  x <-lapply(x, FUN = function(GR) { subsetByOverlaps(GR, j) }) 
+		  return(lapply(x, FUN = function(GR) { subsetByOverlaps(GR, j) })) 
 })
 #' @describeIn subsetFeature
 setMethod("subsetFeature", signature("GRangesList", "ANY"), function(x, j){ 
-		  x <- lapply(x, FUN = function(GR) { x[0, ] })
+		  return(lapply(x, FUN = function(GR) { x[0, ] }))
 })
 
