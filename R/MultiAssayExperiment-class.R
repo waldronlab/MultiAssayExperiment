@@ -79,6 +79,16 @@ setClass("MultiAssayExperiment",
 
 S4Vectors::setValidity2("MultiAssayExperiment", .validMultiAssayExperiment)
 
+showMultiAssayExperiment <- function(x){
+	x_class <- class(x)
+	x_len <- length(x)
+	x_names <- names(x)
+	cat("A", x_class, "object with", x_len, 
+		"\n listed", ifelse(x_len == 1L, "experiment", "experiments"), 
+		"and the user-defined", ifelse(length(x_names)==1L, "name:", "names:"), 
+		sprintf("\n   %s", x_names), "\n")
+}
+
 #' Show method for MultiAssayExperiment class
 #' 
 #' param object A \code{\link{MultiAssayExperiment}} object.

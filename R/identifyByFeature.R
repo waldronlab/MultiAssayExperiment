@@ -11,10 +11,10 @@ identifyByFeature <- function(MultiAssay, feature, requireall = FALSE){
 	if(!is.vector(logicMatrix)){
 		if(requireall){
 			return(apply(logicMatrix, 2, all))
-		}else{
+		} else {
 			return(apply(logicMatrix, 2, any))
 		}
-	}else{
+	} else {
 		return(logicMatrix)
 	}
 }

@@ -46,7 +46,7 @@ setMethod("sampleExtractor", "GRangesList", function(x) names(x))
 #' Subset by Sample generic 
 #'
 #' @param x Either an \code{\linkS4class{ExpressionSet}}, \code{\linkS4class{GRangesList}}, \code{\linkS4class{RangedSummarizedExperiment}} or \code{matrix} class object
-#' @param j Either a \code{"numeric"} or \code{"character"} vector class for subsetting
+#' @param j Either a \code{numeric}, \code{character}, or \code{logical} vector class for subsetting
 #' @param ... Additional arguments to pass
 #' @return Returns a subsetted \code{\linkS4class{MultiAssayExperiment}} object
 #' @exportMethod subsetSample
@@ -56,11 +56,9 @@ setMethod("subsetSample", "matrix", function(x, j) x[, j, drop = FALSE])
 #' @describeIn subsetSample
 setMethod("subsetSample", "ExpressionSet", function(x, j) x[, j])
 #' @describeIn subsetSample
-setMethod("subsetSample", "RangedSummarizedExperiment", function(x, j) x[, j])
+setMethod("subsetSample", "RangedSummarizedExperiment", function(x, j) x[j,])
 #' @describeIn subsetSample
-setMethod("subsetSample", "GRangesList", function(x, j) x[j]) 
-
-setClassUnion("MatrixExpSet", c("matrix", "ExpressionSet"))
+setMethod("subsetSample", "GRangesList", function(x, j) x[i=j]) 
 
 #' Subset by Feature method
 #'
@@ -71,7 +69,7 @@ setClassUnion("MatrixExpSet", c("matrix", "ExpressionSet"))
 #' @export subsetFeature
 setGeneric("subsetFeature", function(x, j, ...) standardGeneric("subsetFeature"))
 #' @describeIn subsetFeature
-setMethod("subsetFeature", signature("MatrixExpSet", "GenomicRanges"), function(x, j){
+setMethod("subsetFeature", signature("ANY", "GenomicRanges"), function(x, j){
 		  return(x[0, ])
 })
 #' @describeIn subsetFeature
@@ -85,6 +83,10 @@ setMethod("subsetFeature", signature("matrix", "ANY"), function(x, j){
 		  }
 })
 #' @describeIn subsetFeature
+setMethod("subsetFeature", signature("matrix", "GenomicRanges"), function(x, j){
+		  return(x[0, ])
+})
+#' @describeIn subsetFeature
 setMethod("subsetFeature", signature("ExpressionSet", "ANY"), function(x, j){
 		  found <- featureNames(x) %in% j
 		  if(any(found)){
@@ -94,6 +96,10 @@ setMethod("subsetFeature", signature("ExpressionSet", "ANY"), function(x, j){
 		  } else {
 			  return(x[0,])
 		  }
+})
+#' @describeIn subsetFeature
+setMethod("subsetFeature", signature("ExpressionSet", "GenomicRanges"), function(x, j){
+		  return(x[0, ])
 })
 #' @describeIn subsetFeature
 setMethod("subsetFeature", signature("RangedSummarizedExperiment", "GenomicRanges"), function(x, j){
