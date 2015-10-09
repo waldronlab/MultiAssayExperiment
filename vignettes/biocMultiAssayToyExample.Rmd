@@ -59,7 +59,7 @@ And the following map matches masterPheno sample names to microdat sample names.
                         assay = c("micro1", "micro2", "micro3")))
 ```
 
-Let's include a GRangesList:  
+Let's include a `GRangesList`:  
 
 ```{r}
 library(GenomicRanges)
@@ -86,12 +86,52 @@ The following `data.frame` matches masterPheno sample to the `GRangesList`:
 						assay = c("snparray1", "snparray2", "snparray3")))
 ```
 
+Adding the new `RangedSummarizedExperiment` class:
+
+Create a `GenomicRangesList` object for the `RangedSummarizedExperiment`:
+
+```{r}
+gg1 <-
+  GRanges(seqnames = "chr2", ranges = IRanges(48000000, 49502360),
+          strand = "-", score = 8L, GC = 0.95)
+gg2 <-
+  GRanges(seqnames = c("chr1", "chr2"),
+          ranges = IRanges(c(48493000, 30000), width=9000),
+          strand = c("-", "+"), score = 6:7, GC = c(0.8, 1.0))
+gg3 <-
+  GRanges(seqnames = c("chr1", "chr2"),
+          ranges = IRanges(c(1, 4), c(3, 9)),
+          strand = c("+", "+"), score = c(8L, 4L), GC = c(1.4, 1.1))
+gg4 <- 
+  GRanges(seqnames = c("chr1", "chr2"), 
+          ranges = IRanges(c(1, 6), c(3, 9)),
+          strand = c("+", "-"), score = 2.8, GC = c(0.3, 0.5))
+grl2 <- GRangesList("grange1" = gg1, "grange2" = gg2, "grange3" = gg3, "grange4" = gg4)
+names(grl2) <- c("mysnparray1", "mysnparray2", "mysnparray3", "mysnparray4")
+```
+
+```{r}
+library(SummarizedExperiment)
+nrows <- 4
+ncols <- 4
+counts <- matrix(runif(nrows * ncols, 1, 1e4), nrows)
+colData <- DataFrame(Treatment=rep(c("ChIP", "Input"), 2),
+                     row.names=c("Jack", "Jill", "Bob", "Barbara"))
+rse <- SummarizedExperiment(assays=SimpleList(counts=counts),
+                            rowRanges=grl2, colData=colData)
+```
+
+```{r}
+(rangemap2 <- data.frame(master = c("Jack", "Jill", "Bob", "Barbara"), 
+                        assay = c("mysnparray1", "mysnparray2", "mysnparray3", "mysnparray4")))
+```
+
 # Setup for creating the `MultiAssayExperiment` object
 Create an ID map for all available experiments.  Names required, and must be identical to names of `elist`.
 
 ```{r}
-idmap <- list(exprmap, methylmap, micromap, rangemap)
-names(idmap) <- c("Affy", "Methyl 450k", "Mirna", "CNV gistic")
+idmap <- list(exprmap, methylmap, micromap, rangemap, rangemap2)
+names(idmap) <- c("Affy", "Methyl 450k", "Mirna", "CNV gistic", "CNV gistic2")
 idmap
 ```
 
@@ -107,7 +147,7 @@ toListMap(dfmap)
 Create an named list of experiments `objlist` for the MultiAssay function
 
 ```{r}
-objlist <- list("Affy" = exprdat, "Methyl 450k" = methyldat, "Mirna" = microdat, "CNV gistic" = grl)
+objlist <- list("Affy" = exprdat, "Methyl 450k" = methyldat, "Mirna" = microdat, "CNV gistic" = grl, "CNV gistic2" = rse)
 ```
 
 # Create a `multiAssayExperiment` class object
@@ -185,3 +225,6 @@ subsetted <- subsetByFeature(myMultiAssay, rangeSubset)
 as.list(elist(subsetted))
 ```
 
+TODO: Pass more arguments to `subsetByOverlaps`
+
+ 
