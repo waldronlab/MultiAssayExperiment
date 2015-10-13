@@ -69,7 +69,7 @@ setMethod("subsetSample", "GRangesList", function(x, j) x[i=j])
 #' @export subsetFeature
 setGeneric("subsetFeature", function(x, j, ...) standardGeneric("subsetFeature"))
 #' @describeIn subsetFeature
-setMethod("subsetFeature", signature("ANY", "GenomicRanges"), function(x, j){
+setMethod("subsetFeature", signature("ANY", "GRanges"), function(x, j){
 		  return(x[0, ])
 })
 #' @describeIn subsetFeature
@@ -83,7 +83,7 @@ setMethod("subsetFeature", signature("matrix", "ANY"), function(x, j){
 		  }
 })
 #' @describeIn subsetFeature
-setMethod("subsetFeature", signature("matrix", "GenomicRanges"), function(x, j){
+setMethod("subsetFeature", signature("matrix", "GRanges"), function(x, j){
 		  return(x[0, ])
 })
 #' @describeIn subsetFeature
@@ -98,11 +98,11 @@ setMethod("subsetFeature", signature("ExpressionSet", "ANY"), function(x, j){
 		  }
 })
 #' @describeIn subsetFeature
-setMethod("subsetFeature", signature("ExpressionSet", "GenomicRanges"), function(x, j){
+setMethod("subsetFeature", signature("ExpressionSet", "GRanges"), function(x, j){
 		  return(x[0, ])
 })
 #' @describeIn subsetFeature
-setMethod("subsetFeature", signature("RangedSummarizedExperiment", "GenomicRanges"), function(x, j){
+setMethod("subsetFeature", signature("RangedSummarizedExperiment", "GRanges"), function(x, j){
 		  return(subsetByOverlaps(x, j))
 })
 #' @describeIn subsetFeature
@@ -110,7 +110,7 @@ setMethod("subsetFeature", signature("RangedSummarizedExperiment", "ANY"), funct
 		  return(x[0, ])
 })
 #' @describeIn subsetFeature
-setMethod("subsetFeature", signature("GRangesList", "GenomicRanges"), function(x, j){
+setMethod("subsetFeature", signature("GRangesList", "GRanges"), function(x, j){
 		  return(lapply(x, FUN = function(GR) { subsetByOverlaps(GR, j) })) 
 })
 #' @describeIn subsetFeature
