@@ -81,20 +81,26 @@ S4Vectors::setValidity2("MultiAssayExperiment", .validMultiAssayExperiment)
 
 #' Show method for MultiAssayExperiment class
 #' 
-#' param object A \code{\link{MultiAssayExperiment}} object.
-#' return Returns a summary of contents for the \code{\link{MultiAssayExperiment}} class. 
-#' exportMethod "show"
-# setMethod("show", "MultiAssayExperiment", function(object){
-# 		  objdim <- lapply(seq_along(object@elist), FUN = function(j, expt) {	
-# 						   dd <- matrix(NA, nrow = length(expt), ncol = 2)
-# 						   if(any(is(expt[j], "data.frame"), is(expt[j], "matrix"))){
-# 							   dimmat <- matrix(c(dim(expt[j])[1], dim(expt[j])[2]), ncol = 2)
-# 							   colnames(dimmat) <- c("Features", "Samples")
-# 							   dd <- rbind(dd, dimmat)
-# 						   }
-# 	} , expt = object@elist)
-# print(objdim)
-# })
+#' @param object A \code{\link{MultiAssayExperiment}} object.
+#' @return Returns a summary of contents for the \code{\link{MultiAssayExperiment}} class. 
+#' @exportMethod "show"
+setMethod("show", "MultiAssayExperiment", function(object){
+    o_class <- class(object)
+    o_len <- length(object)
+    o_names <- names(object)
+    cat("A", o_class, "object with", o_len, 
+	"\n listed", ifelse(o_len == 1L, "experiment", "experiments"), 
+	"and their user-defined", ifelse(length(o_names)==1L, "name:", "names:"), 
+	sprintf("\n   %s", o_names), "\n")
+    cat("A", '"masterPheno"', "slot:\n")
+    print(object@masterPheno)
+    cat("A", '"sampleMap"', "slot:\n")
+    print(object@sampleMap)
+    cat("An", '"elist"', "slot:\n")
+    print(as.list(object@elist))
+    cat("A", '"metadata"', "slot:\n")
+    print(object@metadata)
+})
 
 
 ### - - - - - - - - - - - - - - - - - - - - - - -

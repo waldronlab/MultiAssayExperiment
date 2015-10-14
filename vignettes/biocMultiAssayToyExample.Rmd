@@ -50,7 +50,7 @@ Now we have a microRNA platform, which has no common identifiers.  It is also mi
 ```{r}
 (microdat <- matrix(201:212, ncol=3, 
                     dimnames=list(c("hsa-miR-21", "hsa-miR-191", "hsa-miR-148a", "hsa-miR148b"), 
-                                  c("array1", "array2", "array3"))))
+                                  c("micro1", "micro2", "micro3"))))
 ```
 
 And the following map matches masterPheno sample names to microdat sample names.
@@ -227,4 +227,3 @@ as.list(elist(subsetted))
 
 TODO: Pass more arguments to `subsetByOverlaps`
 
- 

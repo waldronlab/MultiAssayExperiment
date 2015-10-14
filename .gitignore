@@ -9,3 +9,4 @@
 .RData
 *.orig
 *.md
+/vignettes/cache/
