@@ -83,24 +83,22 @@ S4Vectors::setValidity2("MultiAssayExperiment", .validMultiAssayExperiment)
 #' 
 #' @param object A \code{\link{MultiAssayExperiment}} object.
 #' @return Returns a summary of contents for the \code{\link{MultiAssayExperiment}} class. 
-#' @exportMethod "show"
+#' @exportMethod show
 setMethod("show", "MultiAssayExperiment", function(object){
-    o_class <- class(object)
-    o_len <- length(object)
-    o_names <- names(object)
-    cat("A", o_class, "object with", o_len, 
-	"\n listed", ifelse(o_len == 1L, "experiment", "experiments"), 
-	"and their user-defined", ifelse(length(o_names)==1L, "name:", "names:"), 
-	sprintf("\n   %s", o_names), "\n")
-    cat("A", '"masterPheno"', "slot:\n")
-    print(object@masterPheno)
-    cat("A", '"sampleMap"', "slot:\n")
-    print(object@sampleMap)
-    cat("An", '"elist"', "slot:\n")
-    print(as.list(object@elist))
-    cat("A", '"metadata"', "slot:\n")
-    print(object@metadata)
-})
+		  o_class <- class(object)
+		  o_len <- length(object)
+		  o_names <- names(object)
+		  classes <- vapply(elist(object), FUN = class, FUN.VALUE = character(1))
+		  cat(sprintf('A "%s"', o_class),
+			  "object with", o_len, 
+			  "\n listed", ifelse(o_len == 1L, "experiment", "experiments"), 
+			  "and user-defined", ifelse(length(o_names)==1L, "name", "names"),
+			  "and respective", ifelse(length(o_names)==1L, "class:", "classes:"), 
+			  sprintf('\n [%i] %s - "%s"', seq(length(o_names)), o_names, classes), "\n")
+		  cat("Use: \n elist() - to obtain the list of experiment instances", 
+			  "\n masterPheno() - for the phenotype data frame", 
+			  "\n sampleMap() - for the sample availability list\n")
+	})
 
 
 ### - - - - - - - - - - - - - - - - - - - - - - -
