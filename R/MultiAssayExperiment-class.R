@@ -83,24 +83,27 @@ S4Vectors::setValidity2("MultiAssayExperiment", .validMultiAssayExperiment)
 #' 
 #' @param object A \code{\link{MultiAssayExperiment}} object.
 #' @return Returns a summary of contents for the \code{\link{MultiAssayExperiment}} class. 
-#' @exportMethod "show"
+#' @exportMethod show
 setMethod("show", "MultiAssayExperiment", function(object){
-    o_class <- class(object)
-    o_len <- length(object)
-    o_names <- names(object)
-    cat("A", o_class, "object with", o_len, 
-	"\n listed", ifelse(o_len == 1L, "experiment", "experiments"), 
-	"and their user-defined", ifelse(length(o_names)==1L, "name:", "names:"), 
-	sprintf("\n   %s", o_names), "\n")
-    cat("A", '"masterPheno"', "slot:\n")
-    print(object@masterPheno)
-    cat("A", '"sampleMap"', "slot:\n")
-    print(object@sampleMap)
-    cat("An", '"elist"', "slot:\n")
-    print(as.list(object@elist))
-    cat("A", '"metadata"', "slot:\n")
-    print(object@metadata)
-})
+		  o_class <- class(object)
+		  o_len <- length(object)
+		  o_names <- names(object)
+		  classes <- vapply(elist(object), class, character(1))
+		  c_elist <- class(object@elist)
+		  c_mp <- class(object@masterPheno)
+		  c_sm <- class(object@sampleMap)
+		  cat(sprintf('A "%s"', o_class),
+			  "object containing", o_len, 
+			  "\n listed", ifelse(o_len == 1L, "experiment", "experiments"), 
+			  "with", ifelse(length(o_names) == 1L, "a user-defined", "user-defined"), ifelse(length(o_names) == 1L, "name", "names"),
+			  "and", ifelse(length(o_names) == 1L, "its respective class:", "their respective classes:"), 
+			  sprintf('\n [%i] %s - "%s"', seq(length(o_names)), o_names, classes), "\n")
+		  cat("To access slots use: \n elist() - to obtain the", sprintf('"%s"', c_elist), 
+			  "of experiment instances", 
+			  "\n masterPheno() - for the phenotype", sprintf('"%s"', c_mp), 
+			  "\n sampleMap() - for the sample availability", sprintf('"%s"', c_sm), 
+			  "\nSee also: subsetByAssasy(), subsetByFeature(), subsetBySample()\n")
+	})
 
 
 ### - - - - - - - - - - - - - - - - - - - - - - -
@@ -113,7 +116,7 @@ setMethod("show", "MultiAssayExperiment", function(object){
 setGeneric("sampleMap", function(x) standardGeneric("sampleMap"))
 #' @describeIn sampleMap
 setMethod("sampleMap", "MultiAssayExperiment", function(x)
-getElement(x, "sampleMap"))
+		  getElement(x, "sampleMap"))
 
 #' Generic Accessor Functions
 #' @param x A \code{\link{MultiAssayExperiment}} object.
@@ -122,7 +125,7 @@ getElement(x, "sampleMap"))
 setGeneric("elist", function(x) standardGeneric("elist"))
 #' @describeIn elist
 setMethod("elist", "MultiAssayExperiment", function(x)
-getElement(x, "elist"))
+		  getElement(x, "elist"))
 
 #' Generic Accessor Functions
 #' @param x A \code{\link{MultiAssayExperiment}} object
@@ -131,7 +134,7 @@ getElement(x, "elist"))
 setGeneric("masterPheno", function(x) standardGeneric("masterPheno"))
 #' @describeIn masterPheno
 setMethod("masterPheno", "MultiAssayExperiment", function(x)
-getElement(x, "masterPheno"))
+		  getElement(x, "masterPheno"))
 
 
 ### - - - - - - - - - - - - - - - - - - - - - - - -
@@ -144,8 +147,8 @@ getElement(x, "masterPheno"))
 #' @exportMethod length
 #' @describeIn MultiAssayExperiment
 setMethod("length", "MultiAssayExperiment", 
-	function(x) length(getElement(x, "elist"))
-)
+		  function(x) length(getElement(x, "elist"))
+		  )
 
 #' Names of Experiments 
 #' @param x A \code{\link{MultiAssayExperiment}} object
@@ -153,5 +156,5 @@ setMethod("length", "MultiAssayExperiment",
 #' @exportMethod names
 #' @describeIn MultiAssayExperiment
 setMethod("names", "MultiAssayExperiment", 
-	function(x) names(getElement(x, "elist"))
-)
+		  function(x) names(getElement(x, "elist"))
+		  )
