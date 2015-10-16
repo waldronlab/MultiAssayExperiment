@@ -6,7 +6,6 @@ Description: Develop an integrative environment where multiple assays are manage
 Suggests: BiocStyle, Homo.sapiens, stashR, hgu95av2.db, ALL, GenomicFeatures, TxDb.Hsapiens.UCSC.hg19.knownGene, data.table, hgu133a.db, reshape2
 Depends: R (>= 3.0.1), Biobase, dplyr 
 Imports:
-  affy,
   DBI, 
   methods, 
   RSQLite,
