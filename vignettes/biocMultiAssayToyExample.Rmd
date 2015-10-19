@@ -153,7 +153,7 @@ objlist <- list("Affy" = exprdat, "Methyl 450k" = methyldat, "Mirna" = microdat,
 # Create a `multiAssayExperiment` class object
 
 ```{r}
-myMultiAssay <- MultiAssay(objlist, masPheno, idmap)
+myMultiAssay <- MultiAssayExperiment(objlist, masPheno, idmap)
 myMultiAssay
 ```
 

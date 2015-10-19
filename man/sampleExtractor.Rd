@@ -5,7 +5,7 @@
 \alias{sampleExtractor}
 \alias{sampleExtractor,ExpressionSet-method}
 \alias{sampleExtractor,GRangesList-method}
-\alias{sampleExtractor,SummarizedExperiment-method}
+\alias{sampleExtractor,RangedSummarizedExperiment-method}
 \alias{sampleExtractor,matrix-method}
 \title{Sample extractor generic}
 \usage{
@@ -13,14 +13,14 @@ sampleExtractor(x)
 
 \S4method{sampleExtractor}{ExpressionSet}(x)
 
-\S4method{sampleExtractor}{SummarizedExperiment}(x)
+\S4method{sampleExtractor}{RangedSummarizedExperiment}(x)
 
 \S4method{sampleExtractor}{matrix}(x)
 
 \S4method{sampleExtractor}{GRangesList}(x)
 }
 \arguments{
-\item{x}{Either an \code{\linkS4class{ExpressionSet}}, \code{\linkS4class{GRangesList}}, \code{\linkS4class{SummarizedExperiment}} or \code{matrix} class object}
+\item{x}{Either an \code{\linkS4class{ExpressionSet}}, \code{\linkS4class{GRangesList}}, \code{\linkS4class{RangedSummarizedExperiment}} or \code{matrix} class object}
 }
 \value{
 Returns an object of the same class
@@ -32,7 +32,7 @@ Sample extractor generic
 \itemize{
 \item \code{ExpressionSet}: 
 
-\item \code{SummarizedExperiment}: 
+\item \code{RangedSummarizedExperiment}: 
 
 \item \code{matrix}: 
 

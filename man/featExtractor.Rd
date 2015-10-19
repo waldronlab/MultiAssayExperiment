@@ -5,7 +5,7 @@
 \alias{featExtractor}
 \alias{featExtractor,ExpressionSet-method}
 \alias{featExtractor,GRangesList-method}
-\alias{featExtractor,SummarizedExperiment-method}
+\alias{featExtractor,RangedSummarizedExperiment-method}
 \alias{featExtractor,matrix-method}
 \title{Feature extractor method}
 \usage{
@@ -13,14 +13,14 @@ featExtractor(x)
 
 \S4method{featExtractor}{ExpressionSet}(x)
 
-\S4method{featExtractor}{SummarizedExperiment}(x)
+\S4method{featExtractor}{RangedSummarizedExperiment}(x)
 
 \S4method{featExtractor}{matrix}(x)
 
 \S4method{featExtractor}{GRangesList}(x)
 }
 \arguments{
-\item{x}{Either an \code{\linkS4class{ExpressionSet}}, \code{\linkS4class{GRangesList}}, \code{\linkS4class{SummarizedExperiment}} or \code{matrix} class object}
+\item{x}{Either an \code{\linkS4class{ExpressionSet}}, \code{\linkS4class{GRangesList}}, \code{\linkS4class{RangedSummarizedExperiment}} or \code{matrix} class object}
 }
 \value{
 Returns either rownames or featureNames
@@ -32,7 +32,7 @@ Feature extractor method
 \itemize{
 \item \code{ExpressionSet}: 
 
-\item \code{SummarizedExperiment}: 
+\item \code{RangedSummarizedExperiment}: 
 
 \item \code{matrix}: 
 

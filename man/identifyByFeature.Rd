@@ -4,7 +4,7 @@
 \alias{identifyByFeature}
 \title{Identify by feature}
 \usage{
-identifyByFeature(MultiAssay, feature)
+identifyByFeature(MultiAssay, feature, requireall = FALSE)
 }
 \arguments{
 \item{MultiAssay}{A \code{\link{MultiAssayExperiment}} object}
