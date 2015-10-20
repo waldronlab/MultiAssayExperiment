@@ -22,7 +22,7 @@ setGeneric("featExtractor", function(x) standardGeneric("featExtractor"))
 #' @describeIn featExtractor
 setMethod("featExtractor", "ExpressionSet", function(x) affy::featureNames(x))
 #' @describeIn featExtractor
-setMethod("featExtractor", "RangedSummarizedExperiment", function(x) SummarizedExperiment::rowRanges(x))
+setMethod("featExtractor", "RangedSummarizedExperiment", function(x) SummarizedExperiment::ranges(x))
 #' @describeIn featExtractor
 setMethod("featExtractor", "matrix", function(x) rownames(x))
 #' @describeIn featExtractor
@@ -102,16 +102,16 @@ setMethod("subsetFeature", signature("ExpressionSet", "GRanges"), function(x, j)
 		  return(x[0, ])
 })
 #' @describeIn subsetFeature
-setMethod("subsetFeature", signature("RangedSummarizedExperiment", "GRanges"), function(x, j){
-		  return(subsetByOverlaps(x, j))
+setMethod("subsetFeature", signature("RangedSummarizedExperiment", "GRanges"), function(x, j, ...){
+		  return(subsetByOverlaps(x, j, ...))
 })
 #' @describeIn subsetFeature
 setMethod("subsetFeature", signature("RangedSummarizedExperiment", "ANY"), function(x, j){
 		  return(x[0, ])
 })
 #' @describeIn subsetFeature
-setMethod("subsetFeature", signature("GRangesList", "GRanges"), function(x, j){
-		  return(lapply(x, FUN = function(GR) { subsetByOverlaps(GR, j) })) 
+setMethod("subsetFeature", signature("GRangesList", "GRanges"), function(x, j, ...){
+		  return(lapply(x, FUN = function(GR) { subsetByOverlaps(GR, j, ...) })) 
 })
 #' @describeIn subsetFeature
 setMethod("subsetFeature", signature("GRangesList", "ANY"), function(x, j){ 
