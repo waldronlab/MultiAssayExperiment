@@ -26,11 +26,11 @@ subsetFeature(x, j, ...)
 
 \S4method{subsetFeature}{ExpressionSet,GRanges}(x, j)
 
-\S4method{subsetFeature}{RangedSummarizedExperiment,GRanges}(x, j)
+\S4method{subsetFeature}{RangedSummarizedExperiment,GRanges}(x, j, ...)
 
 \S4method{subsetFeature}{RangedSummarizedExperiment,ANY}(x, j)
 
-\S4method{subsetFeature}{GRangesList,GRanges}(x, j)
+\S4method{subsetFeature}{GRangesList,GRanges}(x, j, ...)
 
 \S4method{subsetFeature}{GRangesList,ANY}(x, j)
 }
