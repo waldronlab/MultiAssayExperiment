@@ -5,7 +5,7 @@
 \alias{subsetSample}
 \alias{subsetSample,ExpressionSet-method}
 \alias{subsetSample,GRangesList-method}
-\alias{subsetSample,SummarizedExperiment-method}
+\alias{subsetSample,RangedSummarizedExperiment-method}
 \alias{subsetSample,matrix-method}
 \title{Subset by Sample generic}
 \usage{
@@ -15,14 +15,14 @@ subsetSample(x, j, ...)
 
 \S4method{subsetSample}{ExpressionSet}(x, j)
 
-\S4method{subsetSample}{SummarizedExperiment}(x, j)
+\S4method{subsetSample}{RangedSummarizedExperiment}(x, j)
 
 \S4method{subsetSample}{GRangesList}(x, j)
 }
 \arguments{
-\item{x}{Either an \code{\linkS4class{ExpressionSet}}, \code{\linkS4class{GRangesList}}, \code{\linkS4class{SummarizedExperiment}} or \code{matrix} class object}
+\item{x}{Either an \code{\linkS4class{ExpressionSet}}, \code{\linkS4class{GRangesList}}, \code{\linkS4class{RangedSummarizedExperiment}} or \code{matrix} class object}
 
-\item{j}{Either a \code{"numeric"} or \code{"character"} vector class for subsetting}
+\item{j}{Either a \code{numeric}, \code{character}, or \code{logical} vector class for subsetting}
 
 \item{...}{Additional arguments to pass}
 }
@@ -38,7 +38,7 @@ Subset by Sample generic
 
 \item \code{ExpressionSet}: 
 
-\item \code{SummarizedExperiment}: 
+\item \code{RangedSummarizedExperiment}: 
 
 \item \code{GRangesList}: 
 }}

@@ -4,7 +4,7 @@
 \alias{subsetByFeature}
 \title{Subset MultiAssayExperiment object by Feature}
 \usage{
-subsetByFeature(MultiAssay, feature)
+subsetByFeature(MultiAssay, feature, ...)
 }
 \arguments{
 \item{MultiAssay}{A \code{\link{MultiAssayExperiment}} object}

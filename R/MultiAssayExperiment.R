@@ -1,5 +1,5 @@
 #' Create a MultiAssayExperiment object 
-#' \code{MultiAssay} returns a \code{\linkS4class{MultiAssayExperiment}} object 
+#' \code{MultiAssayExperiment} returns a \code{\linkS4class{MultiAssayExperiment}} object 
 #'
 #' This function combines multiple data sources specific to one disease by matching samples. 
 #' 
@@ -8,12 +8,15 @@
 #' @param sampleMap A list object of identifiers and sample names for each experiment
 #' @param drop Logical (default FALSE) parameter for dropping samples with unmatched phenotype data.   
 #' @return A \code{MultiAssayExperiment} data object that stores experiment and phenotype data.
-#' @export
-MultiAssay <- function(explist, masterPheno, sampleMap = NULL, drop=FALSE){
+#' @export MultiAssayExperiment
+MultiAssayExperiment <- function(explist = list(), masterPheno = data.frame(), sampleMap = list(), drop=FALSE){
 	if(is(explist, "list")){
-	explist <- S4Vectors::SimpleList(explist)
+		explist <- S4Vectors::SimpleList(explist)
 	}
-	newMultiAssay <- new("MultiAssayExperiment", elist = explist, masterPheno = masterPheno, sampleMap = sampleMap)
+	newMultiAssay <- new("MultiAssayExperiment",
+						 elist = explist,
+						 masterPheno = masterPheno,
+						 sampleMap = sampleMap)
 	return(newMultiAssay)
 }
 

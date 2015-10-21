@@ -3,23 +3,41 @@
 \docType{methods}
 \name{subsetFeature}
 \alias{subsetFeature}
-\alias{subsetFeature,ExpressionSet-method}
-\alias{subsetFeature,SummarizedExperiment-method}
-\alias{subsetFeature,matrix-method}
+\alias{subsetFeature,ANY,GRanges-method}
+\alias{subsetFeature,ExpressionSet,ANY-method}
+\alias{subsetFeature,ExpressionSet,GRanges-method}
+\alias{subsetFeature,GRangesList,ANY-method}
+\alias{subsetFeature,GRangesList,GRanges-method}
+\alias{subsetFeature,RangedSummarizedExperiment,ANY-method}
+\alias{subsetFeature,RangedSummarizedExperiment,GRanges-method}
+\alias{subsetFeature,matrix,ANY-method}
+\alias{subsetFeature,matrix,GRanges-method}
 \title{Subset by Feature method}
 \usage{
 subsetFeature(x, j, ...)
 
-\S4method{subsetFeature}{matrix}(x, j)
+\S4method{subsetFeature}{ANY,GRanges}(x, j)
 
-\S4method{subsetFeature}{ExpressionSet}(x, j)
+\S4method{subsetFeature}{matrix,ANY}(x, j)
 
-\S4method{subsetFeature}{SummarizedExperiment}(x, j)
+\S4method{subsetFeature}{matrix,GRanges}(x, j)
+
+\S4method{subsetFeature}{ExpressionSet,ANY}(x, j)
+
+\S4method{subsetFeature}{ExpressionSet,GRanges}(x, j)
+
+\S4method{subsetFeature}{RangedSummarizedExperiment,GRanges}(x, j, ...)
+
+\S4method{subsetFeature}{RangedSummarizedExperiment,ANY}(x, j)
+
+\S4method{subsetFeature}{GRangesList,GRanges}(x, j, ...)
+
+\S4method{subsetFeature}{GRangesList,ANY}(x, j)
 }
 \arguments{
-\item{x}{Either an \code{\linkS4class{ExpressionSet}}, \code{\linkS4class{GRangesList}}, \code{\linkS4class{SummarizedExperiment}} or \code{matrix} class object}
+\item{x}{Either an \code{\linkS4class{ExpressionSet}}, \code{\linkS4class{GRangesList}}, \code{\linkS4class{RangedSummarizedExperiment}} or \code{matrix} class object}
 
-\item{j}{Either a \code{"numeric"} or \code{"character"} vector class for subsetting}
+\item{j}{Either a \code{"numeric"}, \code{"character"}, or \code{logical} vector class for subsetting}
 
 \item{...}{Additional arguments to pass}
 }
@@ -31,10 +49,22 @@ Subset by Feature method
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{matrix}: 
+\item \code{x = ANY,j = GRanges}: 
 
-\item \code{ExpressionSet}: 
+\item \code{x = matrix,j = ANY}: 
 
-\item \code{SummarizedExperiment}: 
+\item \code{x = matrix,j = GRanges}: 
+
+\item \code{x = ExpressionSet,j = ANY}: 
+
+\item \code{x = ExpressionSet,j = GRanges}: 
+
+\item \code{x = RangedSummarizedExperiment,j = GRanges}: 
+
+\item \code{x = RangedSummarizedExperiment,j = ANY}: 
+
+\item \code{x = GRangesList,j = GRanges}: 
+
+\item \code{x = GRangesList,j = ANY}: 
 }}
 

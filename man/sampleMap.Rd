@@ -4,7 +4,7 @@
 \name{sampleMap}
 \alias{sampleMap}
 \alias{sampleMap,MultiAssayExperiment-method}
-\title{Show method for MultiAssayExperiment class}
+\title{Generic Accessor Functions}
 \usage{
 sampleMap(x)
 
@@ -17,9 +17,6 @@ sampleMap(x)
 A \code{"list"} object.
 }
 \description{
-param object A \code{\link{MultiAssayExperiment}} object.
-return Returns a summary of contents for the \code{\link{MultiAssayExperiment}} class.
-exportMethod "show"
 Generic Accessor Functions
 }
 \section{Methods (by class)}{

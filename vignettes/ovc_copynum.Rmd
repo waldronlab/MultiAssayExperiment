@@ -17,15 +17,15 @@ library(impute)
 
 Data are now downloaded from Amazon S3 bucket:
 ```{r download}
-datadir <- "downloads"
+datadir <- "downloads" 
 downloadData(datadir)
 ```
 
 First, load TCGA ovarian cancer ExpressionSets from the biocMultiAssay package:
 ```{r}
-load("downloads/tcga_ov/ovc_eset_copynumber_gistic_2013_01_16.rda")
-load("downloads/tcga_ov/TCGA_eset.rda")
-load("downloads/tcga_ov/TCGA.agilent_eset.rda")
+load(file.path(datadir, "/tcga_ov/ovc_eset_copynumber_gistic_2013_01_16.rda"))
+load(file.path(datadir, "/tcga_ov/TCGA_eset.rda"))
+load(file.path(datadir, "/tcga_ov/TCGA.agilent_eset.rda"))
 ```
 
 These ExpressionSets have HGNC symbols as featureNames, and some have featureData.
@@ -154,7 +154,7 @@ overall a strong negative correlation between expression and
 methylation (mean cor ~ -0.35)
 
 ```{r}
-load("downloads/tcga_ov/ovc_eset_methylation.rda")
+load(file.path(datadir, "/tcga_ov/ovc_eset_methylation.rda"))
 ```
 
 Drop features with too many missing values, then impute:

@@ -19,7 +19,7 @@ downloadData <- function(datadir){
   fileurls <- paste0(s3url, fileurls)
   for (i in 1:length(fileurls)){
     if(!file.exists(filedests[i])){
-      dir.create(dirname(filedests[i]), showWarnings=FALSE)
+      dir.create(dirname(filedests[i]), recursive = TRUE, showWarnings=FALSE)
       download.file(url=fileurls[i], destfile=filedests[i])
     }
   }

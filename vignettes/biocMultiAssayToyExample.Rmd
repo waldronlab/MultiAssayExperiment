@@ -153,7 +153,7 @@ objlist <- list("Affy" = exprdat, "Methyl 450k" = methyldat, "Mirna" = microdat,
 # Create a `multiAssayExperiment` class object
 
 ```{r}
-myMultiAssay <- MultiAssay(objlist, masPheno, idmap)
+myMultiAssay <- MultiAssayExperiment(objlist, masPheno, idmap)
 myMultiAssay
 ```
 
@@ -221,9 +221,7 @@ Use `GenomicRanges::subsetByOverlaps`, passing its arguments to allow flexible t
 
 ```{r}
 rangeSubset <- GRanges(seqnames = c("chr1"), strand = c("-", "+", "-"), ranges = IRanges(start = c(1, 4, 6), width = 3))
-subsetted <- subsetByFeature(myMultiAssay, rangeSubset)
+subsetted <- subsetByFeature(myMultiAssay, rangeSubset, maxgap = 2L, type = "within")
 as.list(elist(subsetted))
 ```
-
-TODO: Pass more arguments to `subsetByOverlaps`
 
