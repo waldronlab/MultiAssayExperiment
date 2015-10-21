@@ -52,7 +52,15 @@ setMethod("sampleExtractor", "GRangesList", function(x) names(x))
 #' @exportMethod subsetSample
 setGeneric("subsetSample", function(x, j, ...) standardGeneric("subsetSample"))
 #' @describeIn subsetSample
-setMethod("subsetSample", "matrix", function(x, j) x[, j, drop = FALSE])
+setMethod("subsetSample", "matrix", function(x, j) {
+		  mat <- cbind(x[, j, drop = FALSE],
+					   matrix(nrow = nrow(x),
+							  ncol = sum(!j),
+							  dimnames = list(character(0),
+											  colnames(x)[!j])
+							  ))
+		  return(mat[,order(colnames(mat))])
+})
 #' @describeIn subsetSample
 setMethod("subsetSample", "ExpressionSet", function(x, j) x[, j])
 #' @describeIn subsetSample
