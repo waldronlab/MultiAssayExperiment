@@ -206,6 +206,12 @@ In the following, `Affy` ExpressionSet keeps both rows but with their order reve
 featSubsetted <- subsetByFeature(myMultiAssay, c("ENST00000355076", "ENST00000294241"))
 as.list(elist(featSubsetted))
 ```
+Reversed order:
+
+```{r}
+orderedSubset <- subsetByFeature(myMultiAssay, feature = c("ENST00000383706", "ENST00000355076", "ENST0000089383"))
+elist(orderedSubset)[[2]]
+```
 
 ## Identify assays that contain any / all of a vector of features
 

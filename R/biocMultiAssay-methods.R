@@ -22,11 +22,11 @@ setGeneric("featExtractor", function(x) standardGeneric("featExtractor"))
 #' @describeIn featExtractor
 setMethod("featExtractor", "ExpressionSet", function(x) affy::featureNames(x))
 #' @describeIn featExtractor
-setMethod("featExtractor", "RangedSummarizedExperiment", function(x) SummarizedExperiment::ranges(x))
+setMethod("featExtractor", "RangedSummarizedExperiment", function(x) SummarizedExperiment::rowRanges(x))
 #' @describeIn featExtractor
 setMethod("featExtractor", "matrix", function(x) rownames(x))
 #' @describeIn featExtractor
-setMethod("featExtractor", "GRangesList", function(x) GenomicRanges::ranges(x))
+setMethod("featExtractor", "GRangesList", function(x) x)
 
 #' Sample extractor generic
 #' 
@@ -35,7 +35,7 @@ setMethod("featExtractor", "GRangesList", function(x) GenomicRanges::ranges(x))
 #' @exportMethod sampleExtractor
 setGeneric("sampleExtractor", function(x) standardGeneric("sampleExtractor"))
 #' @describeIn sampleExtractor 
-setMethod("sampleExtractor", "ExpressionSet", function(x) affy::sampleNames(x)) 
+setMethod("sampleExtractor", "ExpressionSet", function(x) Biobase::sampleNames(x)) 
 #' @describeIn sampleExtractor 
 setMethod("sampleExtractor", "RangedSummarizedExperiment", function(x) colnames(x))
 #' @describeIn sampleExtractor 
@@ -52,15 +52,7 @@ setMethod("sampleExtractor", "GRangesList", function(x) names(x))
 #' @exportMethod subsetSample
 setGeneric("subsetSample", function(x, j, ...) standardGeneric("subsetSample"))
 #' @describeIn subsetSample
-setMethod("subsetSample", "matrix", function(x, j) {
-		  mat <- cbind(x[, j, drop = FALSE],
-					   matrix(nrow = nrow(x),
-							  ncol = sum(!j),
-							  dimnames = list(character(0),
-											  colnames(x)[!j])
-							  ))
-		  return(mat[,order(colnames(mat))])
-})
+setMethod("subsetSample", "matrix", function(x, j) x[, j, drop = FALSE])
 #' @describeIn subsetSample
 setMethod("subsetSample", "ExpressionSet", function(x, j) x[, j])
 #' @describeIn subsetSample
@@ -83,8 +75,7 @@ setMethod("subsetFeature", signature("ANY", "GRanges"), function(x, j){
 #' @describeIn subsetFeature
 setMethod("subsetFeature", signature("matrix", "ANY"), function(x, j){
 		  if(any(rownames(x) %in% j)){
-			  j <- rownames(x)[which(rownames(x) == j)]
-			  x <- x[j, , drop = FALSE]
+			  x <- x[intersect(j, rownames(x)), , drop = FALSE]
 			  return(x)
 		  } else { 
 			  return(colnames(x))
