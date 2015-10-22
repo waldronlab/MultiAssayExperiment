@@ -6,9 +6,12 @@ output:
   html_document: 
     number_sections: yes
     toc: yes
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
 ---
 
-This vignette is the current working document for developing the MultiAssayExperiment class and methods. See a built html version at http://rpubs.com/lwaldron/biocmultiassaytoyexample .
+This vignette is the current working document for developing the
+MultiAssayExperiment class and methods. See a built [html][] version.
 
 Here is an overview of the design:
 
@@ -17,19 +20,21 @@ suppressPackageStartupMessages(library(biocMultiAssay))
 empty <- MultiAssayExperiment()
 empty
 slotNames(empty)
-class(empty@elist)       #SimpleList
-class(empty@masterPheno) #data.frame
-class(empty@sampleMap)   #list
-class(empty@metadata)    #NULL (class "ANY")
+class(elist(empty))       #SimpleList
+class(masterPheno(empty)) #data.frame
+class(sampleMap(empty))   #list
+## class(metadata(empty))    #NULL (class "ANY")
 methods(class="MultiAssayExperiment")
 ```
 
-Subsetting of samples and features is harmonized through some generic functions:
+Subsetting of samples and features is harmonized through some generic
+functions:
+
 ```{r}
-showMethods("featExtractor")
-showMethods("sampleExtractor")
-showMethods("subsetSample")
-showMethods("subsetFeature")
+methods("featExtractor")
+methods("sampleExtractor")
+methods("subsetSample")
+methods("subsetFeature")
 ```
 
 # Generate toy data
@@ -52,12 +57,16 @@ exprdat <- ExpressionSet(assayData=arraydat, phenoData=arraypdat)
 exprdat
 ```
 
-The following map matches masterPheno sample names to exprdata sample names.  Note that row orders aren't initially matched up.
+The following map matches masterPheno sample names to exprdata sample
+names.  Note that row orders aren't initially matched up.
+
 ```{r}
 (exprmap <- data.frame(master=rownames(masPheno)[c(1, 2, 4, 3)], assay=c("array1", "array2", "array3", "array4")))
 ```
 
-Now methylation data.  It uses gene identifiers also, but measures a partially overlapping set of genes.  For fun, let's store this as a simple matrix. Also, it contains a replicate for one of the patients.
+Now methylation data.  It uses gene identifiers also, but measures a
+partially overlapping set of genes.  For fun, let's store this as a
+simple matrix. Also, it contains a replicate for one of the patients.
 
 ```{r}
 (methyldat <- matrix(1:10, ncol=5, 
@@ -65,14 +74,17 @@ Now methylation data.  It uses gene identifiers also, but measures a partially o
                                    c("methyl1", "methyl2", "methyl3", "methyl4", "methyl5"))))
 ```
 
-The following map matches masterPheno sample names to methyldat sample names.
+The following map matches masterPheno sample names to methyldat sample
+names.
 
 ```{r}
 (methylmap <- data.frame(master = c("Jack", "Jack", "Jill", "Barbara", "Bob"),
                         assay = c("methyl1", "methyl2", "methyl3", "methyl4", "methyl5")))
 ```
 
-Now we have a microRNA platform, which has no common identifiers.  It is also missing data for Jill.  Just for fun, let's use the same sample naming convention as we did for arrays.
+Now we have a microRNA platform, which has no common identifiers.  It
+is also missing data for Jill.  Just for fun, let's use the same
+sample naming convention as we did for arrays.
 
 ```{r}
 (microdat <- matrix(201:212, ncol=3, 
@@ -80,7 +92,9 @@ Now we have a microRNA platform, which has no common identifiers.  It is also mi
                                   c("micro1", "micro2", "micro3"))))
 ```
 
-And the following map matches masterPheno sample names to microdat sample names.
+And the following map matches masterPheno sample names to microdat
+sample names.
+
 ```{r}
 (micromap <- data.frame(master = c("Jack", "Barbara", "Bob"),
                         assay = c("micro1", "micro2", "micro3")))
@@ -106,7 +120,8 @@ names(grl) <- c("snparray1", "snparray2", "snparray3")
 grl
 ```
 
-The following `data.frame` matches masterPheno sample to the `GRangesList`: 
+The following `data.frame` matches masterPheno sample to the
+`GRangesList`:
 
 ```{r}
 (rangemap <- data.frame(master = c("Jack", "Jill", "Jill"), 
@@ -115,7 +130,8 @@ The following `data.frame` matches masterPheno sample to the `GRangesList`:
 
 Adding the new `RangedSummarizedExperiment` class:
 
-Create a `GenomicRangesList` object for the `RangedSummarizedExperiment`:
+Create a `GenomicRangesList` object for the
+`RangedSummarizedExperiment`:
 
 ```{r}
 gg1 <-
@@ -162,7 +178,8 @@ names(idmap) <- c("Affy", "Methyl 450k", "Mirna", "CNV gistic", "CNV gistic2")
 idmap
 ```
 
-Allowing for the possibility of ID maps entered as dataframes, convert to conventional list: 
+Allowing for the possibility of ID maps entered as dataframes, convert
+to conventional list:
 
 ```{r, message = FALSE}
 library(reshape2) # reshape2 used for example only
@@ -186,7 +203,8 @@ myMultiAssay
 
 ## Subsetting by Sample
 
-Temporarily not evaluated due to bug ([Issue 53](https://github.com/vjcitn/biocMultiAssay/issues/53)):
+Temporarily not evaluated due to bug ([Issue 53][]):
+
 ```{r, eval=FALSE}
 logicID <- identifyBySample(myMultiAssay, 1:2)
 logicID
@@ -196,7 +214,10 @@ subsetByAssay(subMultiAssay, c(TRUE, FALSE, FALSE, FALSE), drop = TRUE)[[1]] %>%
 subMultiAssay
 ```
 
-Endogenous operation, returns a MultiAssay object containing elist of length 1, map of length 1, and masterPheno for only Jack, Barbara, and Bob.  The "Mirna" argument is used to index the `elist` object using `[`, so could also be `integer` or `logical`:
+Endogenous operation, returns a MultiAssay object containing elist of
+length 1, map of length 1, and masterPheno for only Jack, Barbara, and
+Bob.  The "Mirna" argument is used to index the `elist` object using
+`[`, so could also be `integer` or `logical`:
 
 ```{r}
 subsetByAssay(myMultiAssay, "Mirna", drop=FALSE)
@@ -210,16 +231,21 @@ subsetByAssay(myMultiAssay, "Mirna", drop=TRUE)
 
 ## Subsetting by Feature 
 
-This operation returns a `MultiAssayExperiment` class, with any `elist` element not containing the feature having zero rows.
+This operation returns a `MultiAssayExperiment` class, with any
+`elist` element not containing the feature having zero rows.
 
-Until we make subsetting by a gene ID work on ranges, the following will return c(TRUE, TRUE, FALSE, FALSE). When we implement subsetting by ranges, it should return c(TRUE, TRUE, FALSE, TRUE). 
+Until we make subsetting by a gene ID work on ranges, the following
+will return `c(TRUE, TRUE, FALSE, FALSE)`. When we implement
+subsetting by ranges, it should return `c(TRUE, TRUE, FALSE, TRUE)`.
 
-Returns c(TRUE, TRUE, FALSE, FALSE):
+Returns `c(TRUE, TRUE, FALSE, FALSE)`:
+
 ```{r}
 identifyByFeature(myMultiAssay, "ENST00000355076")  
 ```
 
-Returns MultiAssayExperiment where `Affy` and `Methyl 450k` contain only ENST0000035076 row, and "Mirna" and "CNV gistic" have zero rows:
+Returns MultiAssayExperiment where `Affy` and `Methyl 450k` contain
+only ENST0000035076 row, and "Mirna" and "CNV gistic" have zero rows:
 
 ```{r}
 featSubsetted0 <- subsetByFeature(myMultiAssay, "ENST00000355076")
@@ -228,7 +254,8 @@ class(elist(featSubsetted0))
 as.list(elist(featSubsetted0))
 ```
 
-In the following, `Affy` ExpressionSet keeps both rows but with their order reversed, and `Methyl 450k` keeps only its second row.
+In the following, `Affy` ExpressionSet keeps both rows but with their
+order reversed, and `Methyl 450k` keeps only its second row.
 
 ```{r}
 featSubsetted <- subsetByFeature(myMultiAssay, c("ENST00000355076", "ENST00000294241"))
@@ -243,7 +270,9 @@ elist(orderedSubset)[[2]]
 
 ## Identify assays that contain any / all of a vector of features
 
-Note that the output of this function could be used as the input for `subsetByAssay`.
+Note that the output of this function could be used as the input for
+`subsetByAssay`.
+
 ```{r}
 identifyByFeature(myMultiAssay, c("ENST00000355076", "ENST00000294241"), requireall=FALSE) 
 identifyByFeature(myMultiAssay, c("ENST00000355076", "ENST00000294241"), requireall=TRUE) 
@@ -251,7 +280,9 @@ identifyByFeature(myMultiAssay, c("ENST00000355076", "ENST00000294241"), require
 
 ## Feature extraction by Ranges
 
-See arguments to `GenomicRanges::subsetByOverlaps` for flexible types of subsetting. The first two arguments are for subsetByFeature, the rest passed on through "...":
+See arguments to `GenomicRanges::subsetByOverlaps` for flexible types
+of subsetting. The first two arguments are for subsetByFeature, the
+rest passed on through "...":
 
 ```{r}
 rangeSubset <- GRanges(seqnames = c("chr1"), strand = c("-", "+", "-"), ranges = IRanges(start = c(1, 4, 6), width = 3))
@@ -272,3 +303,6 @@ as.list(elist(subsetted))
     + e.g. c(myMultiAssay, neweset)
     + require that sample names in the new object match masterPheno sample names
     + require that sample names in the new object already exist in masterPheno
+
+[html]: http://rpubs.com/lwaldron/biocmultiassaytoyexample
+[Issue 53]: https://github.com/vjcitn/biocMultiAssay/issues/53
