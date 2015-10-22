@@ -1,10 +1,3 @@
----
-title: "MultiAssayExperiment toy example"
-author: "Marcel Ramos, Levi Waldron"
-date: "Oct 22, 2015"
-output: html_document
----
-
 This vignette is the current working document for developing the MultiAssayExperiment class and methods. See a built html version at http://rpubs.com/lwaldron/biocmultiassaytoyexample .
 
 Here is an overview of the design:
@@ -123,12 +116,20 @@ showMethods("subsetFeature")
 ## Function: subsetFeature (package biocMultiAssay)
 ## x="ANY", j="GRanges"
 ## x="ExpressionSet", j="ANY"
+## x="ExpressionSet", j="character"
+##     (inherited from: x="ExpressionSet", j="ANY")
 ## x="ExpressionSet", j="GRanges"
 ## x="GRangesList", j="ANY"
+## x="GRangesList", j="character"
+##     (inherited from: x="GRangesList", j="ANY")
 ## x="GRangesList", j="GRanges"
 ## x="matrix", j="ANY"
+## x="matrix", j="character"
+##     (inherited from: x="matrix", j="ANY")
 ## x="matrix", j="GRanges"
 ## x="RangedSummarizedExperiment", j="ANY"
+## x="RangedSummarizedExperiment", j="character"
+##     (inherited from: x="RangedSummarizedExperiment", j="ANY")
 ## x="RangedSummarizedExperiment", j="GRanges"
 ```
 
@@ -905,7 +906,7 @@ identifyByFeature(myMultiAssay, c("ENST00000355076", "ENST00000294241"), require
 ## [2]     6   9     4
 ```
 
-### Feature extraction by Ranges
+## Feature extraction by Ranges
 
 See arguments to `GenomicRanges::subsetByOverlaps` for flexible types of subsetting. The first two arguments are for subsetByFeature, the rest passed on through "...":
 
@@ -971,3 +972,16 @@ as.list(elist(subsetted))
 ## colData names(1): Treatment
 ```
 
+# Very next steps
+* `subsetByFeature()` should re-arrange rows in the given order
+* "fill" function to fill missing columns in all assays with NA
+* "mergeDups" function to merge duplicate samples in any assay
+    + For matrix-like objects, it is clear how to do this. Default would be simple mean of the columns, but could allow user-specified functions.
+    + For GRangesList, it's not obvious how to merge duplicates.  Just concatenate?
+
+# Wishlist
+
+* `c()` function for adding new assays to existing `MultiAssayExperiment`
+    + e.g. c(myMultiAssay, neweset)
+    + require that sample names in the new object match masterPheno sample names
+    + require that sample names in the new object already exist in masterPheno
