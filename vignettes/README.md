@@ -1,11 +1,137 @@
----
-title: "biocMultiAssayToyExample"
-author: "Marcel Ramos, Levi Waldron"
-date: "September 4, 2015"
-output: html_document
----
+This vignette is the current working document for developing the MultiAssayExperiment class and methods. See a built html version at http://rpubs.com/lwaldron/biocmultiassaytoyexample .
 
-NOTE: This README.md is a compiled version of the biocMultiAssayToyExample.Rmd vignette.
+Here is an overview of the design:
+
+
+```r
+suppressPackageStartupMessages(library(biocMultiAssay))
+empty <- MultiAssayExperiment()
+empty
+```
+
+```
+## A "MultiAssayExperiment" object containing 0 
+##  listed experiments with user-defined names and their respective classes:  
+## To access slots use: 
+##  elist() - to obtain the "SimpleList" of experiment instances 
+##  masterPheno() - for the phenotype "data.frame" 
+##  sampleMap() - for the sample availability "list" 
+## See also: subsetByAssasy(), subsetByFeature(), subsetBySample()
+```
+
+```r
+slotNames(empty)
+```
+
+```
+## [1] "elist"       "masterPheno" "sampleMap"   "metadata"
+```
+
+```r
+class(empty@elist)       #SimpleList
+```
+
+```
+## [1] "SimpleList"
+## attr(,"package")
+## [1] "S4Vectors"
+```
+
+```r
+class(empty@masterPheno) #data.frame
+```
+
+```
+## [1] "data.frame"
+```
+
+```r
+class(empty@sampleMap)   #list
+```
+
+```
+## [1] "list"
+```
+
+```r
+class(empty@metadata)    #NULL (class "ANY")
+```
+
+```
+## [1] "NULL"
+```
+
+```r
+methods(class="MultiAssayExperiment")
+```
+
+```
+## [1] elist       length      masterPheno names       sampleMap   show       
+## see '?methods' for accessing help and source code
+```
+
+Subsetting of samples and features is harmonized through some generic functions:
+
+```r
+showMethods("featExtractor")
+```
+
+```
+## Function: featExtractor (package biocMultiAssay)
+## x="ExpressionSet"
+## x="GRangesList"
+## x="matrix"
+## x="RangedSummarizedExperiment"
+```
+
+```r
+showMethods("sampleExtractor")
+```
+
+```
+## Function: sampleExtractor (package biocMultiAssay)
+## x="ExpressionSet"
+## x="GRangesList"
+## x="matrix"
+## x="RangedSummarizedExperiment"
+```
+
+```r
+showMethods("subsetSample")
+```
+
+```
+## Function: subsetSample (package biocMultiAssay)
+## x="ExpressionSet"
+## x="GRangesList"
+## x="matrix"
+## x="RangedSummarizedExperiment"
+```
+
+```r
+showMethods("subsetFeature")
+```
+
+```
+## Function: subsetFeature (package biocMultiAssay)
+## x="ANY", j="GRanges"
+## x="ExpressionSet", j="ANY"
+## x="ExpressionSet", j="character"
+##     (inherited from: x="ExpressionSet", j="ANY")
+## x="ExpressionSet", j="GRanges"
+## x="GRangesList", j="ANY"
+## x="GRangesList", j="character"
+##     (inherited from: x="GRangesList", j="ANY")
+## x="GRangesList", j="GRanges"
+## x="matrix", j="ANY"
+## x="matrix", j="character"
+##     (inherited from: x="matrix", j="ANY")
+## x="matrix", j="GRanges"
+## x="RangedSummarizedExperiment", j="ANY"
+## x="RangedSummarizedExperiment", j="character"
+##     (inherited from: x="RangedSummarizedExperiment", j="ANY")
+## x="RangedSummarizedExperiment", j="GRanges"
+```
 
 # Generate toy data
 
@@ -361,323 +487,36 @@ objlist <- list("Affy" = exprdat, "Methyl 450k" = methyldat, "Mirna" = microdat,
 
 
 ```r
-myMultiAssay <- MultiAssay(objlist, masPheno, idmap)
+myMultiAssay <- MultiAssayExperiment(objlist, masPheno, idmap)
 myMultiAssay
 ```
 
 ```
-## A MultiAssayExperiment object with 5 
-##  listed experiments and their user-defined names: 
-##    Affy 
-##    Methyl 450k 
-##    Mirna 
-##    CNV gistic 
-##    CNV gistic2 
-## A "masterPheno" slot:
-##         sex age
-## Jack      M  38
-## Jill      F  39
-## Bob       M  40
-## Barbara   F  41
-## A "sampleMap" slot:
-## $Affy
-##    master  assay
-## 1    Jack array1
-## 2    Jill array2
-## 3 Barbara array3
-## 4     Bob array4
-## 
-## $`Methyl 450k`
-##    master   assay
-## 1    Jack methyl1
-## 2    Jack methyl2
-## 3    Jill methyl3
-## 4 Barbara methyl4
-## 5     Bob methyl5
-## 
-## $Mirna
-##    master  assay
-## 1    Jack micro1
-## 2 Barbara micro2
-## 3     Bob micro3
-## 
-## $`CNV gistic`
-##   master     assay
-## 1   Jack snparray1
-## 2   Jill snparray2
-## 3   Jill snparray3
-## 
-## $`CNV gistic2`
-##    master       assay
-## 1    Jack mysnparray1
-## 2    Jill mysnparray2
-## 3     Bob mysnparray3
-## 4 Barbara mysnparray4
-## 
-## An "elist" slot:
-## $Affy
-## ExpressionSet (storageMode: lockedEnvironment)
-## assayData: 2 features, 4 samples 
-##   element names: exprs 
-## protocolData: none
-## phenoData
-##   sampleNames: array1 array2 array3 array4
-##   varLabels: slope53
-##   varMetadata: labelDescription
-## featureData: none
-## experimentData: use 'experimentData(object)'
-## Annotation:  
-## 
-## $`Methyl 450k`
-##                 methyl1 methyl2 methyl3 methyl4 methyl5
-## ENST00000355076       1       3       5       7       9
-## ENST00000383706       2       4       6       8      10
-## 
-## $Mirna
-##              micro1 micro2 micro3
-## hsa-miR-21      201    205    209
-## hsa-miR-191     202    206    210
-## hsa-miR-148a    203    207    211
-## hsa-miR148b     204    208    212
-## 
-## $`CNV gistic`
-## GRangesList object of length 3:
-## $snparray1 
-## GRanges object with 1 range and 2 metadata columns:
-##       seqnames               ranges strand |     score        GC
-##          <Rle>            <IRanges>  <Rle> | <integer> <numeric>
-##   [1]     chr3 [58000000, 59502360]      + |         5      0.45
-## 
-## $snparray2 
-## GRanges object with 2 ranges and 2 metadata columns:
-##       seqnames               ranges strand | score  GC
-##   [1]     chr3 [58493000, 58501999]      + |     3 0.3
-##   [2]     chr3 [       3,     9002]      - |     4 0.5
-## 
-## $snparray3 
-## GRanges object with 2 ranges and 2 metadata columns:
-##       seqnames ranges strand | score  GC
-##   [1]     chr1 [1, 3]      - |     6 0.4
-##   [2]     chr2 [4, 9]      - |     2 0.1
-## 
-## -------
-## seqinfo: 3 sequences from an unspecified genome; no seqlengths
-## 
-## $`CNV gistic2`
-## class: RangedSummarizedExperiment 
-## dim: 4 4 
-## metadata(0):
-## assays(1): counts
-## rownames(4): mysnparray1 mysnparray2 mysnparray3 mysnparray4
-## rowRanges metadata column names(0):
-## colnames(4): Jack Jill Bob Barbara
-## colData names(1): Treatment
-## 
-## A "metadata" slot:
-## NULL
+## A "MultiAssayExperiment" object containing 5 
+##  listed experiments with user-defined names and their respective classes: 
+##  [1] Affy - "ExpressionSet" 
+##  [2] Methyl 450k - "matrix" 
+##  [3] Mirna - "matrix" 
+##  [4] CNV gistic - "GRangesList" 
+##  [5] CNV gistic2 - "RangedSummarizedExperiment" 
+## To access slots use: 
+##  elist() - to obtain the "SimpleList" of experiment instances 
+##  masterPheno() - for the phenotype "data.frame" 
+##  sampleMap() - for the sample availability "list" 
+## See also: subsetByAssasy(), subsetByFeature(), subsetBySample()
 ```
 
 ## Subsetting by Sample
 
+Temporarily not evaluated due to bug ([Issue 53](https://github.com/vjcitn/biocMultiAssay/issues/53)):
 
 ```r
 logicID <- identifyBySample(myMultiAssay, 1:2)
 logicID
-```
-
-```
-## $Affy
-## [1]  TRUE  TRUE FALSE FALSE
-## 
-## $`Methyl 450k`
-## [1]  TRUE  TRUE  TRUE FALSE FALSE
-## 
-## $Mirna
-## [1]  TRUE FALSE FALSE
-## 
-## $`CNV gistic`
-## [1] TRUE TRUE TRUE
-## 
-## $`CNV gistic2`
-## [1]  TRUE  TRUE FALSE FALSE
-```
-
-```r
 subMultiAssay <- subsetBySample(myMultiAssay, logicID)
-```
-
-```
-## Warning in methods:::.selectDotsMethod(classes, .MTable, .AllMTable):
-## multiple direct matches: "SimpleList", "list"; using the first of these
-```
-
-```r
 as.list(elist(subMultiAssay))
-```
-
-```
-## $Affy
-## ExpressionSet (storageMode: lockedEnvironment)
-## assayData: 2 features, 2 samples 
-##   element names: exprs 
-## protocolData: none
-## phenoData
-##   sampleNames: array1 array2
-##   varLabels: slope53
-##   varMetadata: labelDescription
-## featureData: none
-## experimentData: use 'experimentData(object)'
-## Annotation:  
-## 
-## $`Methyl 450k`
-##                 methyl1 methyl2 methyl3
-## ENST00000355076       1       3       5
-## ENST00000383706       2       4       6
-## 
-## $Mirna
-##              micro1
-## hsa-miR-21      201
-## hsa-miR-191     202
-## hsa-miR-148a    203
-## hsa-miR148b     204
-## 
-## $`CNV gistic`
-## GRangesList object of length 3:
-## $snparray1 
-## GRanges object with 1 range and 2 metadata columns:
-##       seqnames               ranges strand |     score        GC
-##          <Rle>            <IRanges>  <Rle> | <integer> <numeric>
-##   [1]     chr3 [58000000, 59502360]      + |         5      0.45
-## 
-## $snparray2 
-## GRanges object with 2 ranges and 2 metadata columns:
-##       seqnames               ranges strand | score  GC
-##   [1]     chr3 [58493000, 58501999]      + |     3 0.3
-##   [2]     chr3 [       3,     9002]      - |     4 0.5
-## 
-## $snparray3 
-## GRanges object with 2 ranges and 2 metadata columns:
-##       seqnames ranges strand | score  GC
-##   [1]     chr1 [1, 3]      - |     6 0.4
-##   [2]     chr2 [4, 9]      - |     2 0.1
-## 
-## -------
-## seqinfo: 3 sequences from an unspecified genome; no seqlengths
-## 
-## $`CNV gistic2`
-## class: RangedSummarizedExperiment 
-## dim: 2 4 
-## metadata(0):
-## assays(1): counts
-## rownames(2): mysnparray1 mysnparray2
-## rowRanges metadata column names(0):
-## colnames(4): Jack Jill Bob Barbara
-## colData names(1): Treatment
-```
-
-```r
 subsetByAssay(subMultiAssay, c(TRUE, FALSE, FALSE, FALSE), drop = TRUE)[[1]] %>% exprs 
-```
-
-```
-##                 array1 array2
-## ENST00000294241    101    103
-## ENST00000355076    102    104
-```
-
-```r
 subMultiAssay
-```
-
-```
-## A MultiAssayExperiment object with 5 
-##  listed experiments and their user-defined names: 
-##    Affy 
-##    Methyl 450k 
-##    Mirna 
-##    CNV gistic 
-##    CNV gistic2 
-## A "masterPheno" slot:
-##      sex age
-## Jack   M  38
-## Jill   F  39
-## A "sampleMap" slot:
-## $Affy
-## [1] "array1" "array2"
-## 
-## $`Methyl 450k`
-## [1] "methyl1" "methyl2" "methyl3"
-## 
-## $Mirna
-## [1] "micro1"
-## 
-## $`CNV gistic`
-## [1] "snparray1" "snparray2" "snparray3"
-## 
-## $`CNV gistic2`
-## [1] "mysnparray1" "mysnparray2"
-## 
-## An "elist" slot:
-## $Affy
-## ExpressionSet (storageMode: lockedEnvironment)
-## assayData: 2 features, 2 samples 
-##   element names: exprs 
-## protocolData: none
-## phenoData
-##   sampleNames: array1 array2
-##   varLabels: slope53
-##   varMetadata: labelDescription
-## featureData: none
-## experimentData: use 'experimentData(object)'
-## Annotation:  
-## 
-## $`Methyl 450k`
-##                 methyl1 methyl2 methyl3
-## ENST00000355076       1       3       5
-## ENST00000383706       2       4       6
-## 
-## $Mirna
-##              micro1
-## hsa-miR-21      201
-## hsa-miR-191     202
-## hsa-miR-148a    203
-## hsa-miR148b     204
-## 
-## $`CNV gistic`
-## GRangesList object of length 3:
-## $snparray1 
-## GRanges object with 1 range and 2 metadata columns:
-##       seqnames               ranges strand |     score        GC
-##          <Rle>            <IRanges>  <Rle> | <integer> <numeric>
-##   [1]     chr3 [58000000, 59502360]      + |         5      0.45
-## 
-## $snparray2 
-## GRanges object with 2 ranges and 2 metadata columns:
-##       seqnames               ranges strand | score  GC
-##   [1]     chr3 [58493000, 58501999]      + |     3 0.3
-##   [2]     chr3 [       3,     9002]      - |     4 0.5
-## 
-## $snparray3 
-## GRanges object with 2 ranges and 2 metadata columns:
-##       seqnames ranges strand | score  GC
-##   [1]     chr1 [1, 3]      - |     6 0.4
-##   [2]     chr2 [4, 9]      - |     2 0.1
-## 
-## -------
-## seqinfo: 3 sequences from an unspecified genome; no seqlengths
-## 
-## $`CNV gistic2`
-## class: RangedSummarizedExperiment 
-## dim: 2 4 
-## metadata(0):
-## assays(1): counts
-## rownames(2): mysnparray1 mysnparray2
-## rowRanges metadata column names(0):
-## colnames(4): Jack Jill Bob Barbara
-## colData names(1): Treatment
-## 
-## A "metadata" slot:
-## NULL
 ```
 
 Endogenous operation, returns a MultiAssay object containing elist of length 1, map of length 1, and masterPheno for only Jack, Barbara, and Bob.  The "Mirna" argument is used to index the `elist` object using `[`, so could also be `integer` or `logical`:
@@ -688,32 +527,14 @@ subsetByAssay(myMultiAssay, "Mirna", drop=FALSE)
 ```
 
 ```
-## A MultiAssayExperiment object with 1 
-##  listed experiment and their user-defined name: 
-##    Mirna 
-## A "masterPheno" slot:
-##         sex age
-## Jack      M  38
-## Jill      F  39
-## Bob       M  40
-## Barbara   F  41
-## A "sampleMap" slot:
-## $Mirna
-##    master  assay
-## 1    Jack micro1
-## 2 Barbara micro2
-## 3     Bob micro3
-## 
-## An "elist" slot:
-## $Mirna
-##              micro1 micro2 micro3
-## hsa-miR-21      201    205    209
-## hsa-miR-191     202    206    210
-## hsa-miR-148a    203    207    211
-## hsa-miR148b     204    208    212
-## 
-## A "metadata" slot:
-## NULL
+## A "MultiAssayExperiment" object containing 1 
+##  listed experiment with a user-defined name and its respective class: 
+##  [1] Mirna - "matrix" 
+## To access slots use: 
+##  elist() - to obtain the "SimpleList" of experiment instances 
+##  masterPheno() - for the phenotype "data.frame" 
+##  sampleMap() - for the sample availability "list" 
+## See also: subsetByAssasy(), subsetByFeature(), subsetBySample()
 ```
 
 Not endogenous, returns just the matrix contained in `elist$Mirna`
@@ -745,7 +566,64 @@ identifyByFeature(myMultiAssay, "ENST00000355076")
 ```
 
 ```
+## An object of class "Identify"
+## Slot "logreturn":
 ## [1]  TRUE  TRUE FALSE FALSE FALSE
+## 
+## Slot "drops":
+## $Affy
+## [1] "ENST00000294241"
+## 
+## $`Methyl 450k`
+## [1] "ENST00000383706"
+## 
+## $Mirna
+## [1] "hsa-miR-21"   "hsa-miR-191"  "hsa-miR-148a" "hsa-miR148b" 
+## 
+## $`CNV gistic`
+## IRangesList of length 3
+## $snparray1
+## IRanges of length 1
+##        start      end   width
+## [1] 58000000 59502360 1502361
+## 
+## $snparray2
+## IRanges of length 2
+##        start      end width
+## [1] 58493000 58501999  9000
+## [2]        3     9002  9000
+## 
+## $snparray3
+## IRanges of length 2
+##     start end width
+## [1]     1   3     3
+## [2]     4   9     6
+## 
+## 
+## $`CNV gistic2`
+## IRangesList of length 4
+## $mysnparray1
+## IRanges of length 1
+##        start      end   width
+## [1] 48000000 49502360 1502361
+## 
+## $mysnparray2
+## IRanges of length 2
+##        start      end width
+## [1] 48493000 48501999  9000
+## [2]    30000    38999  9000
+## 
+## $mysnparray3
+## IRanges of length 2
+##     start end width
+## [1]     1   3     3
+## [2]     4   9     6
+## 
+## $mysnparray4
+## IRanges of length 2
+##     start end width
+## [1]     1   3     3
+## [2]     6   9     4
 ```
 
 Returns MultiAssayExperiment where `Affy` and `Methyl 450k` contain only ENST0000035076 row, and "Mirna" and "CNV gistic" have zero rows:
@@ -903,7 +781,64 @@ identifyByFeature(myMultiAssay, c("ENST00000355076", "ENST00000294241"), require
 ```
 
 ```
+## An object of class "Identify"
+## Slot "logreturn":
 ## [1]  TRUE  TRUE FALSE FALSE FALSE
+## 
+## Slot "drops":
+## $Affy
+## character(0)
+## 
+## $`Methyl 450k`
+## [1] "ENST00000383706"
+## 
+## $Mirna
+## [1] "hsa-miR-21"   "hsa-miR-191"  "hsa-miR-148a" "hsa-miR148b" 
+## 
+## $`CNV gistic`
+## IRangesList of length 3
+## $snparray1
+## IRanges of length 1
+##        start      end   width
+## [1] 58000000 59502360 1502361
+## 
+## $snparray2
+## IRanges of length 2
+##        start      end width
+## [1] 58493000 58501999  9000
+## [2]        3     9002  9000
+## 
+## $snparray3
+## IRanges of length 2
+##     start end width
+## [1]     1   3     3
+## [2]     4   9     6
+## 
+## 
+## $`CNV gistic2`
+## IRangesList of length 4
+## $mysnparray1
+## IRanges of length 1
+##        start      end   width
+## [1] 48000000 49502360 1502361
+## 
+## $mysnparray2
+## IRanges of length 2
+##        start      end width
+## [1] 48493000 48501999  9000
+## [2]    30000    38999  9000
+## 
+## $mysnparray3
+## IRanges of length 2
+##     start end width
+## [1]     1   3     3
+## [2]     4   9     6
+## 
+## $mysnparray4
+## IRanges of length 2
+##     start end width
+## [1]     1   3     3
+## [2]     6   9     4
 ```
 
 ```r
@@ -911,17 +846,74 @@ identifyByFeature(myMultiAssay, c("ENST00000355076", "ENST00000294241"), require
 ```
 
 ```
+## An object of class "Identify"
+## Slot "logreturn":
 ## [1]  TRUE FALSE FALSE FALSE FALSE
+## 
+## Slot "drops":
+## $Affy
+## character(0)
+## 
+## $`Methyl 450k`
+## [1] "ENST00000383706"
+## 
+## $Mirna
+## [1] "hsa-miR-21"   "hsa-miR-191"  "hsa-miR-148a" "hsa-miR148b" 
+## 
+## $`CNV gistic`
+## IRangesList of length 3
+## $snparray1
+## IRanges of length 1
+##        start      end   width
+## [1] 58000000 59502360 1502361
+## 
+## $snparray2
+## IRanges of length 2
+##        start      end width
+## [1] 58493000 58501999  9000
+## [2]        3     9002  9000
+## 
+## $snparray3
+## IRanges of length 2
+##     start end width
+## [1]     1   3     3
+## [2]     4   9     6
+## 
+## 
+## $`CNV gistic2`
+## IRangesList of length 4
+## $mysnparray1
+## IRanges of length 1
+##        start      end   width
+## [1] 48000000 49502360 1502361
+## 
+## $mysnparray2
+## IRanges of length 2
+##        start      end width
+## [1] 48493000 48501999  9000
+## [2]    30000    38999  9000
+## 
+## $mysnparray3
+## IRanges of length 2
+##     start end width
+## [1]     1   3     3
+## [2]     4   9     6
+## 
+## $mysnparray4
+## IRanges of length 2
+##     start end width
+## [1]     1   3     3
+## [2]     6   9     4
 ```
 
-### Feature extraction by Ranges
+## Feature extraction by Ranges
 
-Use `GenomicRanges::subsetByOverlaps`, passing its arguments to allow flexible types of subsetting. 
+See arguments to `GenomicRanges::subsetByOverlaps` for flexible types of subsetting. The first two arguments are for subsetByFeature, the rest passed on through "...":
 
 
 ```r
 rangeSubset <- GRanges(seqnames = c("chr1"), strand = c("-", "+", "-"), ranges = IRanges(start = c(1, 4, 6), width = 3))
-subsetted <- subsetByFeature(myMultiAssay, rangeSubset)
+subsetted <- subsetByFeature(myMultiAssay, rangeSubset, maxgap = 2L, type = "within")
 as.list(elist(subsetted))
 ```
 
@@ -980,5 +972,16 @@ as.list(elist(subsetted))
 ## colData names(1): Treatment
 ```
 
-TODO: Pass more arguments to `subsetByOverlaps`
+# Very next steps
+* `subsetByFeature()` should re-arrange rows in the given order
+* "fill" function to fill missing columns in all assays with NA
+* "mergeDups" function to merge duplicate samples in any assay
+    + For matrix-like objects, it is clear how to do this. Default would be simple mean of the columns, but could allow user-specified functions.
+    + For GRangesList, it's not obvious how to merge duplicates.  Just concatenate?
 
+# Wishlist
+
+* `c()` function for adding new assays to existing `MultiAssayExperiment`
+    + e.g. c(myMultiAssay, neweset)
+    + require that sample names in the new object match masterPheno sample names
+    + require that sample names in the new object already exist in masterPheno

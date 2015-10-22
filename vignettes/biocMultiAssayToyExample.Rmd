@@ -1,9 +1,36 @@
 ---
-title: "biocMultiAssayToyExample"
+title: "MultiAssayExperiment toy example"
 author: "Marcel Ramos, Levi Waldron"
-date: "September 4, 2015"
-output: html_document
+date: "Oct 22, 2015"
+output: 
+  html_document: 
+    number_sections: yes
+    toc: yes
 ---
+
+This vignette is the current working document for developing the MultiAssayExperiment class and methods. See a built html version at http://rpubs.com/lwaldron/biocmultiassaytoyexample .
+
+Here is an overview of the design:
+
+```{r}
+suppressPackageStartupMessages(library(biocMultiAssay))
+empty <- MultiAssayExperiment()
+empty
+slotNames(empty)
+class(empty@elist)       #SimpleList
+class(empty@masterPheno) #data.frame
+class(empty@sampleMap)   #list
+class(empty@metadata)    #NULL (class "ANY")
+methods(class="MultiAssayExperiment")
+```
+
+Subsetting of samples and features is harmonized through some generic functions:
+```{r}
+showMethods("featExtractor")
+showMethods("sampleExtractor")
+showMethods("subsetSample")
+showMethods("subsetFeature")
+```
 
 # Generate toy data
 
@@ -159,7 +186,8 @@ myMultiAssay
 
 ## Subsetting by Sample
 
-```{r}
+Temporarily not evaluated due to bug ([Issue 53](https://github.com/vjcitn/biocMultiAssay/issues/53)):
+```{r, eval=FALSE}
 logicID <- identifyBySample(myMultiAssay, 1:2)
 logicID
 subMultiAssay <- subsetBySample(myMultiAssay, logicID)
@@ -221,9 +249,9 @@ identifyByFeature(myMultiAssay, c("ENST00000355076", "ENST00000294241"), require
 identifyByFeature(myMultiAssay, c("ENST00000355076", "ENST00000294241"), requireall=TRUE) 
 ```
 
-### Feature extraction by Ranges
+## Feature extraction by Ranges
 
-Use `GenomicRanges::subsetByOverlaps`, passing its arguments to allow flexible types of subsetting. 
+See arguments to `GenomicRanges::subsetByOverlaps` for flexible types of subsetting. The first two arguments are for subsetByFeature, the rest passed on through "...":
 
 ```{r}
 rangeSubset <- GRanges(seqnames = c("chr1"), strand = c("-", "+", "-"), ranges = IRanges(start = c(1, 4, 6), width = 3))
@@ -231,3 +259,16 @@ subsetted <- subsetByFeature(myMultiAssay, rangeSubset, maxgap = 2L, type = "wit
 as.list(elist(subsetted))
 ```
 
+# Very next steps
+* `subsetByFeature()` should re-arrange rows in the given order
+* "fill" function to fill missing columns in all assays with NA
+* "mergeDups" function to merge duplicate samples in any assay
+    + For matrix-like objects, it is clear how to do this. Default would be simple mean of the columns, but could allow user-specified functions.
+    + For GRangesList, it's not obvious how to merge duplicates.  Just concatenate?
+
+# Wishlist
+
+* `c()` function for adding new assays to existing `MultiAssayExperiment`
+    + e.g. c(myMultiAssay, neweset)
+    + require that sample names in the new object match masterPheno sample names
+    + require that sample names in the new object already exist in masterPheno
