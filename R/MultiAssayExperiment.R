@@ -9,10 +9,21 @@
 #' @param drop Logical (default FALSE) parameter for dropping samples with unmatched phenotype data.   
 #' @return A \code{MultiAssayExperiment} data object that stores experiment and phenotype data.
 #' @export MultiAssayExperiment
-MultiAssayExperiment <- function(explist = list(), masterPheno = data.frame(), sampleMap = list(), drop=FALSE){
+MultiAssayExperiment <- function(explist = list(), masterPheno = data.frame(), sampleMap = list(), fill = FALSE, drop=FALSE){
+	if(length(sampleMap) == 0L){
+		##
+		## TODO: create auto sampleMap function here
+		## 
+	}
+
 	if(is(explist, "list")){
 		explist <- S4Vectors::SimpleList(explist)
 	}
+if(fill){
+##
+## TODO: add columns where missing data present
+##
+}
 	newMultiAssay <- new("MultiAssayExperiment",
 						 elist = explist,
 						 masterPheno = masterPheno,

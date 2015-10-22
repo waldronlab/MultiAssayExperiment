@@ -5,10 +5,12 @@
 \title{Convert data.frame map to list map
 \code{toListMap} returns a \code{list}}
 \usage{
-toListMap(dfmap)
+toListMap(dfmap, assayCol = NULL)
 }
 \arguments{
 \item{dfmap}{A data frame object with identifiers in the first column}
+
+\item{assayCol}{A character vector of length one indicating the assay names column}
 }
 \description{
 Convert data.frame map to list map

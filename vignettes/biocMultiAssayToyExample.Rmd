@@ -185,7 +185,7 @@ to conventional list:
 library(reshape2) # reshape2 used for example only
 dfmap <- melt(idmap, id.var = c("master", "assay"))
 library(biocMultiAssay)
-toListMap(dfmap)
+toListMap(dfmap, "L1")
 ```
 
 Create an named list of experiments `objlist` for the MultiAssay function

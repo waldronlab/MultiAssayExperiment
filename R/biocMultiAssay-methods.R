@@ -37,7 +37,7 @@ setGeneric("sampleExtractor", function(x) standardGeneric("sampleExtractor"))
 #' @describeIn sampleExtractor 
 setMethod("sampleExtractor", "ExpressionSet", function(x) Biobase::sampleNames(x)) 
 #' @describeIn sampleExtractor 
-setMethod("sampleExtractor", "RangedSummarizedExperiment", function(x) colnames(x))
+setMethod("sampleExtractor", "RangedSummarizedExperiment", function(x) names(x))
 #' @describeIn sampleExtractor 
 setMethod("sampleExtractor", "matrix", function(x) colnames(x))
 #' @describeIn sampleExtractor 

@@ -63,7 +63,7 @@ setClass("MultiAssayExperiment",
 }
 
 .checkNames <- function(object){
-	if(!identical(names(object@elist), names(object@sampleMap))){
+	if(!all(names(object@elist) %in% names(object@sampleMap))){
 		return("Experiment names must match in both elist and sampleMap!")
 	}
 	NULL
@@ -92,17 +92,22 @@ setMethod("show", "MultiAssayExperiment", function(object){
 		  c_elist <- class(object@elist)
 		  c_mp <- class(object@masterPheno)
 		  c_sm <- class(object@sampleMap)
+		  c_md <- class(object@metadata)
 		  cat(sprintf('A "%s"', o_class),
 			  "object containing", o_len, 
 			  "\n listed", ifelse(o_len == 1L, "experiment", "experiments"), 
-			  "with", ifelse(length(o_names) == 1L, "a user-defined", "user-defined"), ifelse(length(o_names) == 1L, "name", "names"),
-			  "and", ifelse(length(o_names) == 1L, "its respective class:", "their respective classes:"), 
+			  "with", ifelse(length(o_names) == 0L, "no user-defined names",
+							 ifelse(length(o_names) == 1L, "a user-defined name", "user-defined names")),
+			  ifelse(length(o_names) == 0L, "or", "and"),
+			  ifelse(length(o_names) == 0L, "classes.",
+					 ifelse(length(o_names) == 1L, "its respective class:", "their respective classes:")), 
 			  sprintf('\n [%i] %s - "%s"', seq(length(o_names)), o_names, classes), "\n")
 		  cat("To access slots use: \n elist() - to obtain the", sprintf('"%s"', c_elist), 
 			  "of experiment instances", 
 			  "\n masterPheno() - for the phenotype", sprintf('"%s"', c_mp), 
 			  "\n sampleMap() - for the sample availability", sprintf('"%s"', c_sm), 
-			  "\nSee also: subsetByAssasy(), subsetByFeature(), subsetBySample()\n")
+			  "\n metadata() - for the metadata object of 'ANY' class",
+			  "\nSee also: subsetByAssay(), subsetByFeature(), subsetBySample()\n")
 	})
 
 
@@ -136,6 +141,14 @@ setGeneric("masterPheno", function(x) standardGeneric("masterPheno"))
 setMethod("masterPheno", "MultiAssayExperiment", function(x)
 		  getElement(x, "masterPheno"))
 
+#' Generic Acessor Functions 
+#' @param x A \code{\link{MultiAssayExperiment}} object
+#' @return Any type of object describing the metadata
+#' @exportMethod metadata
+setGeneric("metadata", function(x) standardGeneric("metadata"))
+#' @describeIn metadata
+setMethod("metadata", "MultiAssayExperiment", function(x)
+		  getElement(x, "metadata"))
 
 ### - - - - - - - - - - - - - - - - - - - - - - - -
 ### Getters
