@@ -11,7 +11,7 @@
 #' @export MultiAssayExperiment
 MultiAssayExperiment <- function(explist = list(), masterPheno = data.frame(), sampleMap = list(), fill = FALSE, drop=FALSE){
 	if(length(sampleMap) == 0L){
-		##
+		## use only explist and masterPheno
 		## TODO: create auto sampleMap function here
 		## 
 	}
@@ -19,11 +19,11 @@ MultiAssayExperiment <- function(explist = list(), masterPheno = data.frame(), s
 	if(is(explist, "list")){
 		explist <- S4Vectors::SimpleList(explist)
 	}
-if(fill){
-##
-## TODO: add columns where missing data present
-##
-}
+	if(fill){
+		##
+		## TODO: add columns where missing data present
+		##
+	}
 	newMultiAssay <- new("MultiAssayExperiment",
 						 elist = explist,
 						 masterPheno = masterPheno,

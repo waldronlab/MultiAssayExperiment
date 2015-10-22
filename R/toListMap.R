@@ -5,11 +5,11 @@
 #' @param assayCol A character vector of length one indicating the assay names column 
 #' @export
 toListMap <- function(dfmap, assayCol = NULL){
-	if(!assayCol %in% colnames(dfmap)){
-		stop("Assay names column not found in dataframe!")
-	}
 	if(is.null(assayCol)){
 		stop("Provide the name of the column for assay names!")
+	}
+	if(!assayCol %in% colnames(dfmap)){
+		stop("Assay names column not found in dataframe!")
 	}
 	if(!is.character(assayCol) | length(assayCol) != 1L){
 		stop("Assay name must be a string!")
