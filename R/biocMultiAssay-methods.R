@@ -22,11 +22,11 @@ setGeneric("featExtractor", function(x) standardGeneric("featExtractor"))
 #' @describeIn featExtractor
 setMethod("featExtractor", "ExpressionSet", function(x) affy::featureNames(x))
 #' @describeIn featExtractor
-setMethod("featExtractor", "RangedSummarizedExperiment", function(x) SummarizedExperiment::rowRanges(x))
+setMethod("featExtractor", "RangedSummarizedExperiment", function(x) unlist(SummarizedExperiment::rowRanges(x)))
 #' @describeIn featExtractor
 setMethod("featExtractor", "matrix", function(x) rownames(x))
 #' @describeIn featExtractor
-setMethod("featExtractor", "GRangesList", function(x) x)
+setMethod("featExtractor", "GRangesList", function(x) unlist(x))
 
 #' Sample extractor generic
 #' 
@@ -87,10 +87,8 @@ setMethod("subsetFeature", signature("matrix", "GRanges"), function(x, j){
 })
 #' @describeIn subsetFeature
 setMethod("subsetFeature", signature("ExpressionSet", "ANY"), function(x, j){
-		  found <- featureNames(x) %in% j
-		  if(any(found)){
-			  j <- featureNames(x)[found]
-			  x <- x[j, ]
+		  if(any(featureNames(x) %in% j)){
+			  x <- x[intersect(j, featureNames(x)), ]
 			  return(x)
 		  } else {
 			  return(x[0,])
@@ -117,3 +115,31 @@ setMethod("subsetFeature", signature("GRangesList", "ANY"), function(x, j){
 		  return(lapply(x, FUN = function(GR) { x[0, ] }))
 })
 
+# setgeneric("fill", function(x, y) standardGeneric("fill"))
+# setmethod("fill", signature("matrix", "data.frame"), function(x, y){
+# 		  if(!all(y[,2] %in% colnames(x))){
+# 			  missingcols <- y[,2][!(y[,2] %in% colnames(x))]
+# 			  return(cbind(x,
+# 						   matrix(rep(NA, nrow(x)),
+# 								  ncol = 1,
+# 								  dimnames = list(NULL, missingcols))))
+# 		  } else {
+# 			  return(x)
+# 		  }
+# })
+# setmethod("fill", signature("ExpressionSet" , "data.frame"), function(x, y){
+# 		  if(!all(y[ ,2] %in% sampleNames(x))){
+# 			  missingcols <- y[,2][!(y[,2] %in% sampleNames(x))]
+# 			  return(cbind(exprs(x),
+# 						   matrix(rep(NA, nrow(exprs(x))), 
+# 								  ncol = 1, 
+# 								  dimnames = list(NULL, missingcols))))
+# 		  } else {
+# 			  return(x)
+# 		  }
+# })
+# 
+# setMethod("fill", signature("RangedSummarizedExperiment", "data.frame"), function(x, y){
+# 
+# 
+# })

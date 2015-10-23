@@ -1,3 +1,17 @@
+.fillMap <- function(mapsection, phenonames){
+	if(all(phenonames %in% unique(mapsection[,1]))){
+		return(mapsection)
+	} else {
+		newrows <- phenonames[!(phenonames %in% unique(mapsection[,1]))]
+		newmapsec <- rbind(mapsection,
+						   matrix(c(newrows, newrows),
+								  ncol = 2,
+								  dimnames = list(NULL, colnames(mapsection))))
+		return(newmapsec)
+	}
+}
+
+
 #' Create a MultiAssayExperiment object 
 #' \code{MultiAssayExperiment} returns a \code{\linkS4class{MultiAssayExperiment}} object 
 #'
@@ -20,8 +34,8 @@ MultiAssayExperiment <- function(explist = list(), masterPheno = data.frame(), s
 		explist <- S4Vectors::SimpleList(explist)
 	}
 	if(fill){
-		##
-		## TODO: add columns where missing data present
+		sampleMap <- lapply(sampleMap, .fillMap, rownames(masterPheno))
+		## TODO: add columns where missing data present in elist
 		##
 	}
 	newMultiAssay <- new("MultiAssayExperiment",
