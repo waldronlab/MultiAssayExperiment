@@ -155,9 +155,9 @@ names(grl2) <- c("mysnparray1", "mysnparray2", "mysnparray3", "mysnparray4")
 
 ```{r}
 library(SummarizedExperiment)
-nrows <- 4
-ncols <- 4
-counts <- matrix(runif(nrows * ncols, 1, 1e4), nrows)
+numrows <- 4
+numcols <- 4
+counts <- matrix(runif(numrows * numcols, 1, 1e4), numrows)
 colData <- DataFrame(Treatment=rep(c("ChIP", "Input"), 2),
                      row.names=c("Jack", "Jill", "Bob", "Barbara"))
 rse <- SummarizedExperiment(assays=SimpleList(counts=counts),
@@ -288,7 +288,7 @@ as.list(elist(subsetted))
 ### Auto-create sampleMap slot from data
 
 ```{r}
-matrix1 <- matrix(rnorm(16), ncol = 4,
+exprss1 <- matrix(rnorm(16), ncol = 4,
 				 dimnames = list(sprintf("ENST00000%i", sample(288754:290000, 4)),
 								 c("Jack", "Jill", "Bob", "Bobby")))
 ```

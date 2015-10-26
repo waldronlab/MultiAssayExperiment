@@ -11,6 +11,12 @@
 	}
 }
 
+.generateMap <- function(masterPheno, exprsdat){
+	master <- union(colnames(exprsdat), rownames(masterPheno))
+	genMap <- matrix(cbind(master, ifelse(master %in% colnames(exprsdat), master, NA)), 
+					 nrow = length(master), dimnames = list(seq_along(master), c("master", "assay")))
+	return(data.frame(genMap))
+}
 
 #' Create a MultiAssayExperiment object 
 #' \code{MultiAssayExperiment} returns a \code{\linkS4class{MultiAssayExperiment}} object 
