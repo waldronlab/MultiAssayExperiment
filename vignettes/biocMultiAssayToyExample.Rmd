@@ -305,8 +305,6 @@ sampleMap(MultiAssayExperiment(doubleExp, masPheno))
 ```
 
 # Very next steps
-* `subsetByFeature()` should re-arrange rows in the given order
-* "fill" function to fill missing columns in all assays with NA
 * "mergeDups" function to merge duplicate samples in any assay
     + For matrix-like objects, it is clear how to do this. Default would be simple mean of the columns, but could allow user-specified functions.
     + For GRangesList, it's not obvious how to merge duplicates.  Just concatenate?

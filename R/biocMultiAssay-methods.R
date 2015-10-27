@@ -20,7 +20,7 @@
 #' @exportMethod featExtractor
 setGeneric("featExtractor", function(x) standardGeneric("featExtractor"))
 #' @describeIn featExtractor
-setMethod("featExtractor", "ExpressionSet", function(x) affy::featureNames(x))
+setMethod("featExtractor", "ExpressionSet", function(x) Biobase::featureNames(x))
 #' @describeIn featExtractor
 setMethod("featExtractor", "RangedSummarizedExperiment", function(x) unlist(SummarizedExperiment::rowRanges(x)))
 #' @describeIn featExtractor

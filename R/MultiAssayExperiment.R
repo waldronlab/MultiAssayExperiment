@@ -32,7 +32,10 @@
 #' @return A \code{MultiAssayExperiment} data object that stores experiment and phenotype data.
 #' @export MultiAssayExperiment
 MultiAssayExperiment <- function(explist = list(), masterPheno = data.frame(), sampleMap = list(), drop=FALSE){
-	if(length(sampleMap) == 0L){
+	if((length(sampleMap) == 0L) & (length(masterPheno) == 0L)){
+		allsamps <- lapply(explist, sampleExtractor)
+		sampleMap <- lapply(allsamps, function(map) { data.frame(master = map, stringsAsFactors = FALSE) })
+	} else if((length(sampleMap) == 0L) & !(length(masterPheno) == 0L)){
 		warning("sampleMap not provided! Map will be created from data provided.")
 		sampleMap <- .generateMap(masterPheno, explist)
 		notFound <- lapply(sampleMap, FUN = function(x) { x[!(x[,1] %in% rownames(masterPheno)), 1] } )
