@@ -3,7 +3,10 @@
 }
 
 .getLogicalNames <- function(object, ids){
-return(lapply(object@sampleMap, function(map) { map[, 1] %in% ids}))
+logn <- lapply(object@sampleMap, function(map) { 
+   completemap <- map[!is.na(map[, 2]),]
+   completemap[, 1] %in% ids })
+return(logn)
 }
 
 .getNamesLogical <- function(object, logiID){

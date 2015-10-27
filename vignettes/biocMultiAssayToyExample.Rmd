@@ -61,7 +61,8 @@ The following map matches masterPheno sample names to exprdata sample
 names.  Note that row orders aren't initially matched up.
 
 ```{r}
-(exprmap <- data.frame(master=rownames(masPheno)[c(1, 2, 4, 3)], assay=c("array1", "array2", "array3", "array4")))
+(exprmap <- data.frame(master=rownames(masPheno)[c(1, 2, 4, 3)],
+					   assay=c("array1", "array2", "array3", "array4"), stringsAsFactors = FALSE))
 ```
 
 Now methylation data.  It uses gene identifiers also, but measures a
@@ -79,7 +80,7 @@ names.
 
 ```{r}
 (methylmap <- data.frame(master = c("Jack", "Jack", "Jill", "Barbara", "Bob"),
-                        assay = c("methyl1", "methyl2", "methyl3", "methyl4", "methyl5")))
+                        assay = c("methyl1", "methyl2", "methyl3", "methyl4", "methyl5"), stringsAsFactors = FALSE))
 ```
 
 Now we have a microRNA platform, which has no common identifiers.  It
@@ -97,7 +98,7 @@ sample names.
 
 ```{r}
 (micromap <- data.frame(master = c("Jack", "Barbara", "Bob"),
-                        assay = c("micro1", "micro2", "micro3")))
+                        assay = c("micro1", "micro2", "micro3"), stringsAsFactors = FALSE))
 ```
 
 Let's include a `GRangesList`:  
@@ -125,7 +126,7 @@ The following `data.frame` matches masterPheno sample to the
 
 ```{r}
 (rangemap <- data.frame(master = c("Jack", "Jill", "Jill"), 
-						assay = c("snparray1", "snparray2", "snparray3")))
+						assay = c("snparray1", "snparray2", "snparray3"), stringsAsFactors = FALSE))
 ```
 
 Adding the new `RangedSummarizedExperiment` class:
@@ -166,7 +167,7 @@ rse <- SummarizedExperiment(assays=SimpleList(counts=counts),
 
 ```{r}
 (rangemap2 <- data.frame(master = c("Jack", "Jill", "Bob", "Barbara"), 
-                        assay = c("mysnparray1", "mysnparray2", "mysnparray3", "mysnparray4")))
+                        assay = c("mysnparray1", "mysnparray2", "mysnparray3", "mysnparray4"), stringsAsFactors = FALSE))
 ```
 
 # Setup for creating the `MultiAssayExperiment` object
@@ -291,6 +292,16 @@ as.list(elist(subsetted))
 exprss1 <- matrix(rnorm(16), ncol = 4,
 				 dimnames = list(sprintf("ENST00000%i", sample(288754:290000, 4)),
 								 c("Jack", "Jill", "Bob", "Bobby")))
+exprss2 <- matrix(rnorm(16), ncol = 4, 
+				 dimnames = list(sprintf("ENST00000%i", sample(288754:290000, 4)),
+								 c("Jack", "Jane", "Bob", "Bobby")))
+doubleExp <- list("methyl 2k"  = exprss1, "methyl 3k" = exprss2)
+(genMapMA <- MultiAssayExperiment(doubleExp, masPheno))
+```
+For now, fill the map with all observed samples: 
+
+```{r}
+sampleMap(MultiAssayExperiment(doubleExp, masPheno))
 ```
 
 # Very next steps

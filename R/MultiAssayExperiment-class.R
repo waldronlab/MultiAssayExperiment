@@ -22,10 +22,11 @@ setClass("MultiAssayExperiment",
 ## Validity ---------------------------------
 ##
 ## Unique samples & phenos all present 
-.checkMap <- function(exptChunk, masterPheno){
-	allphenos <- all(exptChunk[,1] %in% rownames(masterPheno))
-	uniqss <- all(!duplicated(exptChunk[,2]))
-    return(allphenos & uniqss)
+.checkMap <- function(mappeddf, masterPheno){
+	allmapped <- all(mappeddf[,1] %in% rownames(masterPheno))
+	allphenos <- all(rownames(masterPheno) %in% mappeddf[,1])
+	uniqss <- all(!duplicated(na.omit(mappeddf[,2])))
+	return(allmapped & allphenos & uniqss)
 }
 
 ## masterPheno should always be a data.frame
@@ -38,20 +39,20 @@ setClass("MultiAssayExperiment",
 
 ## SampleMap should be a list of 2 column data.frames
 .checkSampleMap <- function(object){
-  errors <- character()
-  if(!all(sapply(object@sampleMap, is.data.frame))){ 
-    msg <- paste("sampleMap must be a list of data.frames!")
-    errors <- c(errors, msg)
-  }
-  if(!all(sapply(object@sampleMap, length)==2)){
-    msg <- paste("All data.frames in sampleMap must be of length 2!")
-    errors <- c(errors, msg)
-  }
-  if(!all(sapply(object@sampleMap, .checkMap, object@masterPheno))){
-    msg <- paste("sampleMap is not passing all checks!")
-    errors <- c(errors, msg)
-  }
-  if(length(errors) == 0) NULL else errors
+	errors <- character()
+	if(!all(sapply(object@sampleMap, is.data.frame))){ 
+		msg <- paste("sampleMap must be a list of data.frames!")
+		errors <- c(errors, msg)
+	}
+	if(!all(sapply(object@sampleMap, length)==2)){
+		msg <- paste("All data.frames in sampleMap must be of length 2!")
+		errors <- c(errors, msg)
+	}
+	if(!all(sapply(object@sampleMap, .checkMap, object@masterPheno))){
+		msg <- paste("sampleMap is not passing all checks!")
+		errors <- c(errors, msg)
+	}
+	if(length(errors) == 0) NULL else errors
 }
 
 ## Experiment list must be the same length as the sampleMaps list.
@@ -60,6 +61,12 @@ setClass("MultiAssayExperiment",
 		return("elist must be the same length as the sampleMap!")
 	}
 	NULL
+}
+
+.checkSampleNames <- function(object){
+	Map(all.equal,
+		lapply(object@elist, sampleExtractor),
+		lapply(object@sampleMap, FUN = function(map) {na.omit(map)[,2]}))
 }
 
 .checkNames <- function(object){
@@ -71,10 +78,10 @@ setClass("MultiAssayExperiment",
 
 
 .validMultiAssayExperiment <- function(object){
-  c(.checkMasterPheno(object), 
-    .checkSampleMap(object),
-    .checkElist(object), 
-	.checkNames(object))
+	c(.checkMasterPheno(object), 
+	  .checkSampleMap(object),
+	  .checkElist(object), 
+	  .checkNames(object))
 }
 
 S4Vectors::setValidity2("MultiAssayExperiment", .validMultiAssayExperiment)

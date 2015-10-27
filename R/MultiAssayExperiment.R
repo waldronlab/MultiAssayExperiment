@@ -4,18 +4,20 @@
 	} else {
 		newrows <- phenonames[!(phenonames %in% unique(mapsection[,1]))]
 		newmapsec <- rbind(mapsection,
-						   matrix(c(newrows, newrows),
+						   matrix(c(newrows, rep(NA, length(newrows))),
 								  ncol = 2,
 								  dimnames = list(NULL, colnames(mapsection))))
 		return(newmapsec)
 	}
 }
 
-.generateMap <- function(masterPheno, exprsdat){
-	master <- union(colnames(exprsdat), rownames(masterPheno))
-	genMap <- matrix(cbind(master, ifelse(master %in% colnames(exprsdat), master, NA)), 
-					 nrow = length(master), dimnames = list(seq_along(master), c("master", "assay")))
-	return(data.frame(genMap))
+.generateMap <- function(masterPheno, exlist){
+	samps <- lapply(exlist, sampleExtractor)
+	masterlist <- lapply(samps, FUN = function(x) { union(x, rownames(masterPheno)) })
+	genMap <- Map(function(x, y) { data.frame(matrix(cbind(x, ifelse(x %in% y, x, NA)),
+														nrow = length(x),
+														dimnames = list(seq_along(x), c("master", "assay"))), stringsAsFactors = FALSE)}, 
+				  masterlist, samps)
 }
 
 #' Create a MultiAssayExperiment object 
@@ -29,20 +31,20 @@
 #' @param drop Logical (default FALSE) parameter for dropping samples with unmatched phenotype data.   
 #' @return A \code{MultiAssayExperiment} data object that stores experiment and phenotype data.
 #' @export MultiAssayExperiment
-MultiAssayExperiment <- function(explist = list(), masterPheno = data.frame(), sampleMap = list(), fill = FALSE, drop=FALSE){
+MultiAssayExperiment <- function(explist = list(), masterPheno = data.frame(), sampleMap = list(), drop=FALSE){
 	if(length(sampleMap) == 0L){
-		## use only explist and masterPheno
-		## TODO: create auto sampleMap function here
-		## 
+		warning("sampleMap not provided! Map will be created from data provided.")
+		sampleMap <- .generateMap(masterPheno, explist)
+		notFound <- lapply(sampleMap, FUN = function(x) { x[!(x[,1] %in% rownames(masterPheno)), 1] } )
+		notFound <- Reduce(union, notFound)
+		masterPheno <- rbind(masterPheno, matrix(NA,
+												 nrow = length(notFound), ncol = length(masterPheno),
+												 dimnames = list(notFound, names(masterPheno))
+												 ))
 	}
-
+	sampleMap <- lapply(sampleMap, .fillMap, rownames(masterPheno))
 	if(is(explist, "list")){
 		explist <- S4Vectors::SimpleList(explist)
-	}
-	if(fill){
-		sampleMap <- lapply(sampleMap, .fillMap, rownames(masterPheno))
-		## TODO: add columns where missing data present in elist
-		##
 	}
 	newMultiAssay <- new("MultiAssayExperiment",
 						 elist = explist,
