@@ -62,15 +62,24 @@ setClass("MultiAssayExperiment",
 		msg <- paste("elist must be the same length as the sampleMap!")
 		errors <- c(errors, msg)
 	}
-	classes <- sapply(lapply(object@elist, FUN = function(explist) {try(features(explist), silent = TRUE)}), class) 
-	logerrors <- classes == "try-error"
-	if(any(logerrors)){
-		classes <- classes[logerrors]
-		index <- which(classes == "try-error")
-		msgs <- sapply(index, function(x) { paste0("Element [", x, "] of class '", classes[x], "' in the elist must have a features method!") } )
+	objcl <- sapply(object@elist, class)
+	featclasses <- sapply(lapply(object@elist, FUN = function(explist) {try(features(explist), silent = TRUE)}), class) 
+	featerrors <- featclasses == "try-error"
+	sampclasses <- sapply(lapply(object@elist, FUN = function(explist) {try(samples(explist), silent = TRUE)}), class) 
+	samperrors <- sampclasses == "try-error" 
+	if(any(featerrors)){
+		index <- which(featclasses == "try-error")
+		unsupport <- objcl[featerrors]
+		msgs <- sapply(seq_along(index), function(x, i) { paste0("Element [", x[i], "] of class '", unsupport[i], "' in the elist must have a features method!") }, x = index)
 		errors <- c(errors, unname(msgs))
 	}
-	NULL
+	if(any(samperrors)){
+		index <- which(sampclasses == "try-error")
+		unsupport <- objcl[samperrors]
+		msgs <- sapply(seq_along(index), function(x, i) { paste0("Element [", x[i], "] of class '", unsupport[i], "' in the elist must have a samples method!") }, x = index)
+		errors <- c(errors, unname(msgs))
+	}
+	if(length(errors) == 0) NULL else errors
 }
 
 .checkSampleNames <- function(object){
