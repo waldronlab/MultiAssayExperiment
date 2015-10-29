@@ -17,31 +17,30 @@
 #' 
 #' @param x Either an \code{\linkS4class{ExpressionSet}}, \code{\linkS4class{GRangesList}}, \code{\linkS4class{RangedSummarizedExperiment}} or \code{matrix} class object
 #' @return Returns either rownames or featureNames
-#' @exportMethod featExtractor
-setGeneric("featExtractor", function(x) standardGeneric("featExtractor"))
-#' @describeIn featExtractor
-setMethod("featExtractor", "ExpressionSet", function(x) Biobase::featureNames(x))
-#' @describeIn featExtractor
-setMethod("featExtractor", "RangedSummarizedExperiment", function(x) unlist(SummarizedExperiment::rowRanges(x)))
-#' @describeIn featExtractor
-setMethod("featExtractor", "matrix", function(x) rownames(x))
-#' @describeIn featExtractor
-setMethod("featExtractor", "GRangesList", function(x) unlist(x))
+#' @exportMethod features
+setGeneric("features", function(x) standardGeneric("features"))
+#' @describeIn features
+setMethod("features", "ExpressionSet", function(x) Biobase::featureNames(x))
+#' @describeIn features
+setMethod("features", "RangedSummarizedExperiment", function(x) BiocGenerics::unlist(GenomicRanges::rowRanges(x)))
+#' @describeIn features
+setMethod("features", "matrix", function(x) rownames(x))
+#' @describeIn features
+setMethod("features", "GRangesList", function(x) BiocGenerics::unlist(x))
 
 #' Sample extractor generic
 #' 
 #' @param x Either an \code{\linkS4class{ExpressionSet}}, \code{\linkS4class{GRangesList}}, \code{\linkS4class{RangedSummarizedExperiment}} or \code{matrix} class object
 #' @return Returns an object of the same class  
-#' @exportMethod sampleExtractor
-setGeneric("sampleExtractor", function(x) standardGeneric("sampleExtractor"))
-#' @describeIn sampleExtractor 
-setMethod("sampleExtractor", "ExpressionSet", function(x) Biobase::sampleNames(x)) 
-#' @describeIn sampleExtractor 
-setMethod("sampleExtractor", "RangedSummarizedExperiment", function(x) names(x))
-#' @describeIn sampleExtractor 
-setMethod("sampleExtractor", "matrix", function(x) colnames(x))
-#' @describeIn sampleExtractor 
-setMethod("sampleExtractor", "GRangesList", function(x) names(x)) 
+#' @exportMethod samples
+#' @describeIn samples 
+setMethod("samples", "ExpressionSet", function(object) Biobase::sampleNames(object)) 
+#' @describeIn samples 
+setMethod("samples", "RangedSummarizedExperiment", function(object) names(object))
+#' @describeIn samples 
+setMethod("samples", "matrix", function(object) colnames(object))
+#' @describeIn samples 
+setMethod("samples", "GRangesList", function(object) names(object)) 
 
 #' Subset by Sample generic 
 #'

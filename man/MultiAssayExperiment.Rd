@@ -6,7 +6,7 @@
 \code{MultiAssayExperiment} returns a \code{\linkS4class{MultiAssayExperiment}} object}
 \usage{
 MultiAssayExperiment(explist = list(), masterPheno = data.frame(),
-  sampleMap = list(), fill = FALSE, drop = FALSE)
+  sampleMap = list(), drop = FALSE)
 }
 \arguments{
 \item{explist}{A list of all combined experiments}

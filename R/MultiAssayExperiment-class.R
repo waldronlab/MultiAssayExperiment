@@ -57,15 +57,25 @@ setClass("MultiAssayExperiment",
 
 ## Experiment list must be the same length as the sampleMaps list.
 .checkElist <- function(object){
+	errors <- character()
 	if(length(object@elist) != length(object@sampleMap)){
-		return("elist must be the same length as the sampleMap!")
+		msg <- paste("elist must be the same length as the sampleMap!")
+		errors <- c(errors, msg)
+	}
+	classes <- sapply(lapply(object@elist, FUN = function(explist) {try(features(explist), silent = TRUE)}), class) 
+	logerrors <- classes == "try-error"
+	if(any(logerrors)){
+		classes <- classes[logerrors]
+		index <- which(classes == "try-error")
+		msgs <- sapply(index, function(x) { paste0("Element [", x, "] of class '", classes[x], "' in the elist must have a features method!") } )
+		errors <- c(errors, unname(msgs))
 	}
 	NULL
 }
 
 .checkSampleNames <- function(object){
 	Map(all.equal,
-		lapply(object@elist, sampleExtractor),
+		lapply(object@elist, samples),
 		lapply(object@sampleMap, FUN = function(map) {na.omit(map)[,2]}))
 }
 

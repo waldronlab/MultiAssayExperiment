@@ -31,8 +31,8 @@ Subsetting of samples and features is harmonized through some generic
 functions:
 
 ```{r}
-methods("featExtractor")
-methods("sampleExtractor")
+methods("features")
+methods("samples")
 methods("subsetSample")
 methods("subsetFeature")
 ```

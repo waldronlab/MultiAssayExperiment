@@ -5,7 +5,7 @@
 #' @return A logical list of matched assays
 #' @export identifyByFeature
 identifyByFeature <- function(MultiAssay, feature, requireall = FALSE){
-	featResults <- lapply(MultiAssay@elist, featExtractor)
+	featResults <- lapply(MultiAssay@elist, features)
 	logicresult <- sapply(seq(length(MultiAssay)),
 						  function(i, feats) {feats %in% unlist(featResults[i]) }, feats = feature)
 	if(!is.vector(logicresult)){

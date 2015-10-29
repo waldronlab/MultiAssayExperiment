@@ -73,11 +73,11 @@ methods(class="MultiAssayExperiment")
 Subsetting of samples and features is harmonized through some generic functions:
 
 ```r
-showMethods("featExtractor")
+showMethods("features")
 ```
 
 ```
-## Function: featExtractor (package biocMultiAssay)
+## Function: features (package biocMultiAssay)
 ## x="ExpressionSet"
 ## x="GRangesList"
 ## x="matrix"
@@ -85,11 +85,11 @@ showMethods("featExtractor")
 ```
 
 ```r
-showMethods("sampleExtractor")
+showMethods("samples")
 ```
 
 ```
-## Function: sampleExtractor (package biocMultiAssay)
+## Function: samples (package biocMultiAssay)
 ## x="ExpressionSet"
 ## x="GRangesList"
 ## x="matrix"

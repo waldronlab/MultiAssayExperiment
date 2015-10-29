@@ -12,7 +12,7 @@
 }
 
 .generateMap <- function(masterPheno, exlist){
-	samps <- lapply(exlist, sampleExtractor)
+	samps <- lapply(exlist, samples)
 	masterlist <- lapply(samps, FUN = function(x) { union(x, rownames(masterPheno)) })
 	genMap <- Map(function(x, y) { data.frame(matrix(cbind(x, ifelse(x %in% y, x, NA)),
 														nrow = length(x),
@@ -33,7 +33,7 @@
 #' @export MultiAssayExperiment
 MultiAssayExperiment <- function(explist = list(), masterPheno = data.frame(), sampleMap = list(), drop=FALSE){
 	if((length(sampleMap) == 0L) & (length(masterPheno) == 0L)){
-		allsamps <- lapply(explist, sampleExtractor)
+		allsamps <- lapply(explist, samples)
 		sampleMap <- lapply(allsamps, function(map) { data.frame(master = map, stringsAsFactors = FALSE) })
 	} else if((length(sampleMap) == 0L) & !(length(masterPheno) == 0L)){
 		warning("sampleMap not provided! Map will be created from data provided.")

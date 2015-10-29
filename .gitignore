@@ -1,5 +1,6 @@
 # Ignore files
 *~
+*.bak
 *.swp
 *.Rproj
 *.Rhistory
