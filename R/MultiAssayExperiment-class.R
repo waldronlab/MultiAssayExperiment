@@ -44,7 +44,7 @@ setClass("MultiAssayExperiment",
 		msg <- paste("sampleMap must be a list of data.frames!")
 		errors <- c(errors, msg)
 	}
-	if(!all(sapply(object@sampleMap, length)==2)){
+	if(!all(sapply(object@sampleMap, length) == 2)){
 		msg <- paste("All data.frames in sampleMap must be of length 2!")
 		errors <- c(errors, msg)
 	}

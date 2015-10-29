@@ -1,8 +1,3 @@
-.assertExperiment <- function(object) {
-    if(!is(object, "SerializedExperiment") && !is(object, "LoadedExperiment"))
-        stop("'object' needs to be of classes 'LoadedExperiment' or 'SerializedExperiment'")
-}
-
 .assertMultiAssayExperiment <- function(object) {
     if(!is(object, "MultiAssayExperiment"))
         stop("'object' needs to be of class 'MultiAssayExperiment'")
@@ -27,6 +22,9 @@ setMethod("features", "RangedSummarizedExperiment", function(x) BiocGenerics::un
 setMethod("features", "matrix", function(x) rownames(x))
 #' @describeIn features
 setMethod("features", "GRangesList", function(x) BiocGenerics::unlist(x))
+#' @describeIn features
+setMethod("features", "MultiAssayExperiment", function(x) lapply(x@elist, features))
+
 
 #' Sample extractor generic
 #' 
@@ -41,6 +39,8 @@ setMethod("samples", "RangedSummarizedExperiment", function(object) names(object
 setMethod("samples", "matrix", function(object) colnames(object))
 #' @describeIn samples 
 setMethod("samples", "GRangesList", function(object) names(object)) 
+#' @describeIn samples 
+setMethod("samples", "MultiAssayExperiment", function(object) lapply(object@elist, samples))
 
 #' Subset by Sample generic 
 #'

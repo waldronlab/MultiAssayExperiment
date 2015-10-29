@@ -33,8 +33,9 @@
 #' @export MultiAssayExperiment
 MultiAssayExperiment <- function(explist = list(), masterPheno = data.frame(), sampleMap = list(), drop=FALSE){
 	if((length(sampleMap) == 0L) & (length(masterPheno) == 0L)){
-		allsamps <- lapply(explist, samples)
-		sampleMap <- lapply(allsamps, function(map) { data.frame(master = map, stringsAsFactors = FALSE) })
+		allsamps <- unique(unlist(lapply(explist, samples)))
+		masterPheno <- data.frame(pheno1 = rep(NA, length(allsamps)), row.names = allsamps, stringsAsFactors = FALSE)
+		sampleMap <- .generateMap(masterPheno, explist)
 	} else if((length(sampleMap) == 0L) & !(length(masterPheno) == 0L)){
 		warning("sampleMap not provided! Map will be created from data provided.")
 		sampleMap <- .generateMap(masterPheno, explist)
