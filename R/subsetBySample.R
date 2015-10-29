@@ -6,7 +6,7 @@
 #' @export subsetBySample
 subsetBySample <- function(MultiAssay, logicID){
   newPheno <- .subPheno(MultiAssay, .getIndexLogical(MultiAssay, logicID))
-  newMap <- Map(subset, MultiAssay@sampleMap, logicID)
+  newMap <- Map(subset, lapply(MultiAssay@sampleMap, .cutMap), logicID)
   newMap <- lapply(newMap, function(x) as.character(unlist(x[2])))
   newSubset <- S4Vectors::mendoapply(subsetSample, MultiAssay@elist, newMap) 
   # Clone or replace method for slot??

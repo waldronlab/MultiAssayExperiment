@@ -2,23 +2,29 @@
 	return(object@masterPheno[j, ])
 }
 
+.cutMap <- function(map, lid){
+	compdf <- map[!is.na(map[, 2]), ]
+	return(compdf)
+}
+
 .getLogicalNames <- function(object, ids){
-logn <- lapply(object@sampleMap, function(map) { 
-   completemap <- map[!is.na(map[, 2]),]
-   completemap[, 1] %in% ids })
-return(logn)
+	trimMap <- lapply(object@sampleMap, .cutMap)
+	logn <- lapply(trimMap, function(map) { map[, 1] %in% ids } )
+	return(logn)
 }
 
 .getNamesLogical <- function(object, logiID){
-subList <- Map(subset, object@sampleMap, logiID)
-usedNames <- Reduce(union, sapply(subList, "[", 1))
-return(rownames(object@masterPheno)[match(usedNames, rownames(object@masterPheno))])
+	trimMap <- lapply(object@sampleMap, .cutMap)
+	subList <- Map(subset, trimMap, logiID)
+	usedNames <- Reduce(union, sapply(subList, "[", 1))
+	return(rownames(object@masterPheno)[match(usedNames, rownames(object@masterPheno))])
 }
 
 .getIndexLogical <- function(object, logiID){
-  subList <- Map(subset, object@sampleMap, logiID)
-  usedNames <- Reduce(union, sapply(subList, "[", 1))
-  return(match(usedNames, rownames(object@masterPheno)))
+	trimMap <- lapply(object@sampleMap, .cutMap)
+	subList <- Map(subset, trimMap, logiID)
+	usedNames <- Reduce(union, sapply(subList, "[", 1))
+	return(match(usedNames, rownames(object@masterPheno)))
 }
 
 #' Identify samples corresponding to row index in masterPheno
