@@ -104,7 +104,7 @@ sample names.
 Let's include a `GRangesList`:  
 
 ```{r}
-library(GenomicRanges)
+suppressPackageStartupMessages(library(GenomicRanges))
 gr1 <-
   GRanges(seqnames = "chr3", ranges = IRanges(58000000, 59502360), #completely encompasses ENST00000355076
           strand = "+", score = 5L, GC = 0.45)
@@ -200,6 +200,10 @@ objlist <- list("Affy" = exprdat, "Methyl 450k" = methyldat, "Mirna" = microdat,
 ```{r}
 myMultiAssay <- MultiAssayExperiment(objlist, masPheno, idmap)
 myMultiAssay
+elist(myMultiAssay)
+masterPheno(myMultiAssay)
+sampleMap(myMultiAssay)
+# metadata(myMultiAssay)  #needs to be implemented
 ```
 
 ## Subsetting by Sample
@@ -304,10 +308,26 @@ For now, fill the map with all observed samples:
 sampleMap(MultiAssayExperiment(doubleExp, masPheno))
 ```
 
+# Validity checking of data classes
+
+Any data classes in the elist object must support the following methods:
+
+* `samples()`
+* `features()`
+
+(*TODO*: add checks on square bracket subsetting)
+
+Here is what happens if one of the methods doesn't:
+```{r}
+objlist2 <- objlist
+objlist2[[2]] <- data.frame(objlist2[[2]])
+invalid.obj <- try(MultiAssayExperiment(objlist2, masPheno, idmap))
+invalid.obj
+```
+
 # Very next steps
-* "mergeDups" function to merge duplicate samples in any assay
-    + For matrix-like objects, it is clear how to do this. Default would be simple mean of the columns, but could allow user-specified functions.
-    + For GRangesList, it's not obvious how to merge duplicates.  Just concatenate?
+* Figure out how to support a "long-and-skinny" SQL database
+* implement `metadata(myMultiAssay)`
 
 # Wishlist
 
@@ -315,6 +335,9 @@ sampleMap(MultiAssayExperiment(doubleExp, masPheno))
     + e.g. c(myMultiAssay, neweset)
     + require that sample names in the new object match masterPheno sample names
     + require that sample names in the new object already exist in masterPheno
+* "mergeDups" function to merge duplicate samples in any assay
+    + For matrix-like objects, it is clear how to do this. Default would be simple mean of the columns, but could allow user-specified functions.
+    + For GRangesList, it's not obvious how to merge duplicates.  Just concatenate?
 
 [html]: http://rpubs.com/lwaldron/biocmultiassaytoyexample
 [Issue 53]: https://github.com/vjcitn/biocMultiAssay/issues/53
