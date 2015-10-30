@@ -114,6 +114,7 @@ setMethod("show", "MultiAssayExperiment", function(object){
 		  o_class <- class(object)
 		  o_len <- length(object)
 		  o_names <- names(object)
+		  if(length(o_names)==0L){ o_names <- "none" }
 		  classes <- vapply(elist(object), class, character(1))
 		  c_elist <- class(object@elist)
 		  c_mp <- class(object@masterPheno)
@@ -122,19 +123,20 @@ setMethod("show", "MultiAssayExperiment", function(object){
 		  cat(sprintf('A "%s"', o_class),
 			  "object containing", o_len, 
 			  "\n listed", ifelse(o_len == 1L, "experiment", "experiments"), 
-			  "with", ifelse(length(o_names) == 0L, "no user-defined names",
+			  "with", ifelse(all(o_names == "none"), "no user-defined names",
 							 ifelse(length(o_names) == 1L, "a user-defined name", "user-defined names")),
-			  ifelse(length(o_names) == 0L, "or", "and"),
-			  ifelse(length(o_names) == 0L, "classes.",
-					 ifelse(length(o_names) == 1L, "its respective class:", "their respective classes:")), 
-			  sprintf('\n [%i] %s - "%s"', seq(length(o_names)), o_names, classes), "\n")
+			  ifelse(length(o_len) == 0L, "or", "and"),
+			  ifelse(length(o_len) == 0L, "classes.",
+					 ifelse(length(classes) == 1L, "its respective class:", "their respective classes:")), 
+			  sprintf('\n [%i] %s - "%s"', seq(o_len), o_names, classes)
+			  , "\n")
 		  cat("To access slots use: \n elist() - to obtain the", sprintf('"%s"', c_elist), 
 			  "of experiment instances", 
 			  "\n masterPheno() - for the phenotype", sprintf('"%s"', c_mp), 
 			  "\n sampleMap() - for the sample availability", sprintf('"%s"', c_sm), 
 			  "\n metadata() - for the metadata object of 'ANY' class",
 			  "\nSee also: subsetByAssay(), subsetByFeature(), subsetBySample()\n")
-	})
+	  })
 
 
 ### - - - - - - - - - - - - - - - - - - - - - - -

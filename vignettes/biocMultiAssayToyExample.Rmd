@@ -1,7 +1,7 @@
 ---
 title: "MultiAssayExperiment toy example"
 author: "Marcel Ramos, Levi Waldron"
-date: "Oct 22, 2015"
+date: `r format(Sys.time(), '%B %d, %Y')`
 output: 
   html_document: 
     number_sections: yes
@@ -135,34 +135,17 @@ Create a `GenomicRangesList` object for the
 `RangedSummarizedExperiment`:
 
 ```{r}
-gg1 <-
-  GRanges(seqnames = "chr2", ranges = IRanges(48000000, 49502360),
-          strand = "-", score = 8L, GC = 0.95)
-gg2 <-
-  GRanges(seqnames = c("chr1", "chr2"),
-          ranges = IRanges(c(48493000, 30000), width=9000),
-          strand = c("-", "+"), score = 6:7, GC = c(0.8, 1.0))
-gg3 <-
-  GRanges(seqnames = c("chr1", "chr2"),
-          ranges = IRanges(c(1, 4), c(3, 9)),
-          strand = c("+", "+"), score = c(8L, 4L), GC = c(1.4, 1.1))
-gg4 <- 
-  GRanges(seqnames = c("chr1", "chr2"), 
-          ranges = IRanges(c(1, 6), c(3, 9)),
-          strand = c("+", "-"), score = 2.8, GC = c(0.3, 0.5))
-grl2 <- GRangesList("grange1" = gg1, "grange2" = gg2, "grange3" = gg3, "grange4" = gg4)
-names(grl2) <- c("mysnparray1", "mysnparray2", "mysnparray3", "mysnparray4")
-```
-
-```{r}
 library(SummarizedExperiment)
-numrows <- 4
-numcols <- 4
-counts <- matrix(runif(numrows * numcols, 1, 1e4), numrows)
+nrows <- 5; ncols <- 4
+counts <- matrix(runif(nrows * ncols, 1, 1e4), nrows)
+rowRanges <- GRanges(rep(c("chr1", "chr2"), c(2, nrows - 2)),
+                     IRanges(floor(runif(nrows, 1e5, 1e6)), width=100),
+                     strand=sample(c("+", "-"), nrows, TRUE),
+                     feature_id=sprintf("ID\\%03d", 1:nrows))
 colData <- DataFrame(Treatment=rep(c("ChIP", "Input"), 2),
-                     row.names=c("Jack", "Jill", "Bob", "Barbara"))
+                     row.names= c("mysnparray1", "mysnparray2", "mysnparray3", "mysnparray4"))
 rse <- SummarizedExperiment(assays=SimpleList(counts=counts),
-                            rowRanges=grl2, colData=colData)
+                            rowRanges=rowRanges, colData=colData)
 ```
 
 ```{r}
@@ -184,9 +167,9 @@ to conventional list:
 
 ```{r, message = FALSE}
 library(reshape2) # reshape2 used for example only
-dfmap <- melt(idmap, id.var = c("master", "assay"))
+dfmap <- melt(idmap, id.var = c("master", "assay"), value.name = "assayname")
 library(biocMultiAssay)
-toListMap(dfmap, "L1")
+toListMap(dfmap, "assayname")
 ```
 
 Create an named list of experiments `objlist` for the MultiAssay function
@@ -207,7 +190,7 @@ myMultiAssay
 Temporarily not evaluated due to bug ([Issue 53][]):
 
 ```{r, eval=FALSE}
-logicID <- identifyBySample(myMultiAssay, 1:2)
+logicID <- identifyBySample(myMultiAssay, 2:1)
 logicID
 subMultiAssay <- subsetBySample(myMultiAssay, logicID)
 as.list(elist(subMultiAssay))

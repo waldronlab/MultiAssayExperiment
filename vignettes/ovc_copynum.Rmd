@@ -18,7 +18,7 @@ library(impute)
 Data are now downloaded from Amazon S3 bucket:
 ```{r download}
 datadir <- "downloads" 
-downloadData(datadir)
+biocMultiAssay:::downloadData(datadir)
 ```
 
 First, load TCGA ovarian cancer ExpressionSets from the biocMultiAssay package:
