@@ -167,7 +167,8 @@ to conventional list:
 
 ```{r, message = FALSE}
 library(reshape2) # reshape2 used for example only
-dfmap <- melt(idmap, id.var = c("master", "assay"), value.name = "assayname")
+dfmap <- melt(idmap, id.var = c("master", "assay"))
+names(dfmap)[3] <- "assayname"
 library(biocMultiAssay)
 toListMap(dfmap, "assayname")
 ```

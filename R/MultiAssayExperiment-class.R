@@ -67,6 +67,8 @@ setClass("MultiAssayExperiment",
 	featerrors <- featclasses == "try-error"
 	sampclasses <- sapply(lapply(object@elist, FUN = function(explist) {try(samples(explist), silent = TRUE)}), class) 
 	samperrors <- sampclasses == "try-error" 
+	brackcl <- sapply(lapply(object@elist, FUN = function(explist) {try(explist[1], silent = TRUE)}), class)
+	brackerr <- brackcl == "try-error"
 	if(any(featerrors)){
 		index <- which(featclasses == "try-error")
 		unsupport <- objcl[featerrors]
@@ -77,6 +79,12 @@ setClass("MultiAssayExperiment",
 		index <- which(sampclasses == "try-error")
 		unsupport <- objcl[samperrors]
 		msgs <- sapply(seq_along(index), function(x, i) { paste0("Element [", x[i], "] of class '", unsupport[i], "' in the elist must have a samples method!") }, x = index)
+		errors <- c(errors, unname(msgs))
+	}
+	if(any(brackerr)){
+		index <- which(brackcl == "try-error")
+		unsupport <- objcl[brackerr]
+		msgs <- sapply(seq_along(index), function(x, i) { paste0("Element [", x[i], "] of class '", unsupport[i], "' in the elist must have a bracket '[' method!") }, x = index)
 		errors <- c(errors, unname(msgs))
 	}
 	if(length(errors) == 0) NULL else errors
