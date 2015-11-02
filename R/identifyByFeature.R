@@ -20,7 +20,8 @@ identifyByFeature <- function(MultiAssay, feature, requireall = FALSE){
 	dropped <- Map("[", featResults, logiclist)
 
 	newIdentify <- new("Identify", 
-					   logreturn = logicvector,
+					   inassay = logicvector,
+					   identifier = feature, 
 					   drops = dropped)
 	return(newIdentify)
 }

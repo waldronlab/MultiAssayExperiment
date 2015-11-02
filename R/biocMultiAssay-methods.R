@@ -34,7 +34,7 @@ setMethod("features", "MultiAssayExperiment", function(x) lapply(x@elist, featur
 #' @describeIn samples 
 setMethod("samples", "ExpressionSet", function(object) Biobase::sampleNames(object)) 
 #' @describeIn samples 
-setMethod("samples", "RangedSummarizedExperiment", function(object) names(object))
+setMethod("samples", "RangedSummarizedExperiment", function(object) BiocGenerics::colnames(object))
 #' @describeIn samples 
 setMethod("samples", "matrix", function(object) colnames(object))
 #' @describeIn samples 
@@ -55,7 +55,7 @@ setMethod("subsetSample", "matrix", function(x, j) x[, j, drop = FALSE])
 #' @describeIn subsetSample
 setMethod("subsetSample", "ExpressionSet", function(x, j) x[, j])
 #' @describeIn subsetSample
-setMethod("subsetSample", "RangedSummarizedExperiment", function(x, j) x[j,])
+setMethod("subsetSample", "RangedSummarizedExperiment", function(x, j) x[,j = j])
 #' @describeIn subsetSample
 setMethod("subsetSample", "GRangesList", function(x, j) x[i=j]) 
 

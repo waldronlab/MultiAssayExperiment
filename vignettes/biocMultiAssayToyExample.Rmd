@@ -311,7 +311,10 @@ invalid.obj
 
 # Very next steps
 * Figure out how to support a "long-and-skinny" SQL database
-* implement `metadata(myMultiAssay)`
+* "mergeDups" function to merge duplicate samples in any assay
+    + For matrix-like objects, it is clear how to do this. Default would be simple mean of the columns, but could allow user-specified functions.
+    + For GRangesList, it's not obvious how to merge duplicates.  Just concatenate?
+
 
 # Wishlist
 
@@ -319,9 +322,6 @@ invalid.obj
     + e.g. c(myMultiAssay, neweset)
     + require that sample names in the new object match masterPheno sample names
     + require that sample names in the new object already exist in masterPheno
-* "mergeDups" function to merge duplicate samples in any assay
-    + For matrix-like objects, it is clear how to do this. Default would be simple mean of the columns, but could allow user-specified functions.
-    + For GRangesList, it's not obvious how to merge duplicates.  Just concatenate?
 
 [html]: http://rpubs.com/lwaldron/biocmultiassaytoyexample
 [Issue 53]: https://github.com/vjcitn/biocMultiAssay/issues/53

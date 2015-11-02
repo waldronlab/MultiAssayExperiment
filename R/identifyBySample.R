@@ -37,6 +37,15 @@
 #' @return A logical list of matched sample references
 #' @export identifyBySample
 identifyBySample <- function(MultiAssay, j){
+	sampResults <- lapply(MultiAssay@elist, samples)
 	iders <- rownames(.subPheno(MultiAssay, j))
-	return(.getLogicalNames(MultiAssay, iders))
+	logiclist <- .getLogicalNames(MultiAssay, iders)
+	revlogResult <- lapply(logiclist, "!")
+	dropped <- Map("[", sampResults, revlogResult)
+browser()
+	newIdentify <- new("Identify",
+					   indim = logiclist, 
+					   identifier = iders, 
+					   drops = dropped)
+	return(newIdentify)
 }
