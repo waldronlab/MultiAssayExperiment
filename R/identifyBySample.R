@@ -42,7 +42,6 @@ identifyBySample <- function(MultiAssay, j){
 	logiclist <- .getLogicalNames(MultiAssay, iders)
 	revlogResult <- lapply(logiclist, "!")
 	dropped <- Map("[", sampResults, revlogResult)
-browser()
 	newIdentify <- new("Identify",
 					   indim = logiclist, 
 					   identifier = iders, 
