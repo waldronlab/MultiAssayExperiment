@@ -39,9 +39,9 @@ Names of Experiments
 \describe{
 \item{\code{elist}}{A \code{\link[S4Vectors]{SimpleList-class}} of data across different types of assays.}
 
-\item{\code{masterPheno}}{A \code{"data.frame"} of all clinical data available across experiments.}
+\item{\code{masterPheno}}{A \code{data.frame} of all clinical data available across experiments.}
 
-\item{\code{sampleMap}}{A \code{"list"} of translatable identifiers of samples and participants.}
+\item{\code{sampleMap}}{A \code{data.frame} of translatable identifiers of samples and participants.}
 
 \item{\code{metadata}}{Additional data describing the \code{\link{MultiAssayExperiment}} object.}
 }}

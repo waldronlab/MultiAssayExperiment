@@ -6,14 +6,14 @@
 \code{MultiAssayExperiment} returns a \code{\linkS4class{MultiAssayExperiment}} object}
 \usage{
 MultiAssayExperiment(explist = list(), masterPheno = data.frame(),
-  sampleMap = list(), drop = FALSE)
+  sampleMap = list(), drops = list())
 }
 \arguments{
-\item{explist}{A list of all combined experiments}
+\item{explist}{A \code{list} of all combined experiments}
 
-\item{masterPheno}{A data frame of the phenotype data for all participants.}
+\item{masterPheno}{A \code{data.frame} of the phenotype data for all participants.}
 
-\item{sampleMap}{A list object of identifiers and sample names for each experiment}
+\item{sampleMap}{A \code{data.frame} of sample identifiers, assay samples, and assay names.}
 
 \item{drop}{Logical (default FALSE) parameter for dropping samples with unmatched phenotype data.}
 }

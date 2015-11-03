@@ -10,19 +10,11 @@
 #' @slot drops A \code{list} of excluded information due to subsetting
 setClass("Identify", 
 		 representation(
-						inassay = "logical",
-						indim = "list",
-						identifier = "ANY",
-						drops = "list"
+						 keeps = "list",
+						drops  = "list", 
+						type = "character"
 						)
 		 )
-
-.checkLogreturn <- function(object){
-	if(!is.logical(object@inassay)){
-		return("logreturn must be a logical vector!")
-	}
-	NULL
-}
 
 .checkDrops <- function(object){
 	errors <- character()
@@ -42,8 +34,7 @@ setClass("Identify",
 }
 
 .validIdentify <- function(object){
-	c(.checkLogreturn(object), 
-	  .checkDrops(object))
+	c(.checkDrops(object))
 }
 
 S4Vectors::setValidity2("Identify", .validIdentify)

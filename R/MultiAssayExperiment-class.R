@@ -5,61 +5,62 @@
 #' An integrative MultiAssay class for experiment data
 #' 
 #' @slot elist A \code{\link[S4Vectors]{SimpleList-class}} of data across different types of assays. 
-#' @slot masterPheno A \code{"data.frame"} of all clinical data available across experiments.
-#' @slot sampleMap A \code{"list"} of translatable identifiers of samples and participants.
+#' @slot masterPheno A \code{data.frame} of all clinical data available across experiments.
+#' @slot sampleMap A \code{data.frame} of translatable identifiers of samples and participants.
 #' @slot metadata Additional data describing the \code{\link{MultiAssayExperiment}} object. 
 #' @exportClass MultiAssayExperiment
 setClass("MultiAssayExperiment",
 		 representation(
 						elist="SimpleList",
 						masterPheno = "data.frame",
-						sampleMap = "list", 
-						metadata = "ANY"
+						sampleMap = "data.frame", 
+						metadata = "ANY", 
+						drops = "list"
 						) 
 		 )
 
 ##
 ## Validity ---------------------------------
 ##
-## Unique samples & phenos all present 
-.checkMap <- function(mappeddf, masterPheno){
-	allmapped <- all(mappeddf[,1] %in% rownames(masterPheno))
-	allphenos <- all(rownames(masterPheno) %in% mappeddf[,1])
-	uniqss <- all(!duplicated(na.omit(mappeddf[,2])))
-	return(allmapped & allphenos & uniqss)
-}
 
 ## masterPheno should always be a data.frame
 .checkMasterPheno <- function(object){
+	errors <- character()
 	if(!is(object@masterPheno, "data.frame")){
-		return("masterPheno should be a data frame of metadata for all samples!")
+		msg <- paste("masterPheno should be a data frame of metadata for all samples!")
+		errors <- c(errors, msg)
 	}
-	NULL
+	if(!(rownames(object@masterPheno) %in% unique(object@sampleMap[, "master"]))){
+		msg <- paste("All masterPheno rownames must be in the sampleMap!")
+		errors <- c(errors, msg)
+	}
+	if(length(errors) == 0)	NULL else errors
 }
 
-## SampleMap should be a list of 2 column data.frames
+## sampleMap is a data.frame with unique sampleNames across assay
 .checkSampleMap <- function(object){
 	errors <- character()
-	if(!all(sapply(object@sampleMap, is.data.frame))){ 
-		msg <- paste("sampleMap must be a list of data.frames!")
+	if(!all(unique(object@sampleMap[, "master"]) %in% rownames(object@masterPheno))){
+		msg <- paste("All samples in the sampleMap must be in the masterPheno!")
 		errors <- c(errors, msg)
 	}
-	if(!all(sapply(object@sampleMap, length) == 2)){
-		msg <- paste("All data.frames in sampleMap must be of length 2!")
+	if(!length(object@elist) == length(names(split(object@sampleMap, object@sampleMap[, "assayname"])))){
+		msg <- paste("assaynames must be of the same length as the elist!")
 		errors <- c(errors, msg)
 	}
-	if(!all(sapply(object@sampleMap, .checkMap, object@masterPheno))){
-		msg <- paste("sampleMap is not passing all checks!")
+	if(all(!duplicated(object@sampleMap[, "assay"]))){
+		msg <- paste("All sample identifiers in the assays must be unique!")
 		errors <- c(errors, msg)
 	}
-	if(length(errors) == 0) NULL else errors
+	if(length(errors) == 0) NULL else errors 
 }
 
-## Experiment list must be the same length as the sampleMaps list.
+## Experiment list must be the same length as the unique sampleMap assaynames 
 .checkElist <- function(object){
 	errors <- character()
-	if(length(object@elist) != length(object@sampleMap)){
-		msg <- paste("elist must be the same length as the sampleMap!")
+	assaynames <- unique(object@sampleMap[, "assayname"])
+	if(length(object@elist) != length(assaynames)){
+		msg <- paste("elist must be the same length as the sampleMap assaynames!")
 		errors <- c(errors, msg)
 	}
 	objcl <- sapply(object@elist, class)
@@ -91,13 +92,15 @@ setClass("MultiAssayExperiment",
 }
 
 .checkSampleNames <- function(object){
-	Map(all.equal,
-		lapply(object@elist, samples),
-		lapply(object@sampleMap, FUN = function(map) {na.omit(map)[,2]}))
+	if(!all.equal(unname(unlist(lapply(object@elist, samples))), 
+				  object@sampleMap[, "assay"])){
+		return("samples in the elist are not the same as samples in the sampleMap!")
+	}
+	NULL
 }
 
 .checkNames <- function(object){
-	if(!all(names(object@elist) %in% names(object@sampleMap))){
+	if(!all(names(object@elist) %in% unique(object@sampleMap[, "assayname"]))){
 		return("Experiment names must match in both elist and sampleMap!")
 	}
 	NULL
@@ -107,6 +110,7 @@ setClass("MultiAssayExperiment",
 .validMultiAssayExperiment <- function(object){
 	c(.checkMasterPheno(object), 
 	  .checkSampleMap(object),
+	  .checkSampleNames(object),
 	  .checkElist(object), 
 	  .checkNames(object))
 }

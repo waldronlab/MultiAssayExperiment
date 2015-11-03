@@ -10,7 +10,11 @@ An identifier class used for subsetting
 \section{Slots}{
 
 \describe{
-\item{\code{logreturn}}{A \code{logical} vector for subsetting}
+\item{\code{inassay}}{A \code{logical} indicator for a match by assay}
+
+\item{\code{indim}}{A \code{list} indicating valid matches in each assay}
+
+\item{\code{identifier}}{\code{ANY} object that in used to find matches}
 
 \item{\code{drops}}{A \code{list} of excluded information due to subsetting}
 }}

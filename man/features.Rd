@@ -5,6 +5,7 @@
 \alias{features}
 \alias{features,ExpressionSet-method}
 \alias{features,GRangesList-method}
+\alias{features,MultiAssayExperiment-method}
 \alias{features,RangedSummarizedExperiment-method}
 \alias{features,matrix-method}
 \title{Feature extractor method}
@@ -18,6 +19,8 @@ features(x)
 \S4method{features}{matrix}(x)
 
 \S4method{features}{GRangesList}(x)
+
+\S4method{features}{MultiAssayExperiment}(x)
 }
 \arguments{
 \item{x}{Either an \code{\linkS4class{ExpressionSet}}, \code{\linkS4class{GRangesList}}, \code{\linkS4class{RangedSummarizedExperiment}} or \code{matrix} class object}
@@ -37,5 +40,7 @@ Feature extractor method
 \item \code{matrix}: 
 
 \item \code{GRangesList}: 
+
+\item \code{MultiAssayExperiment}: 
 }}
 

@@ -4,6 +4,7 @@
 \name{samples,ExpressionSet-method}
 \alias{samples,ExpressionSet-method}
 \alias{samples,GRangesList-method}
+\alias{samples,MultiAssayExperiment-method}
 \alias{samples,RangedSummarizedExperiment-method}
 \alias{samples,matrix-method}
 \title{Sample extractor generic}
@@ -15,6 +16,8 @@
 \S4method{samples}{matrix}(object)
 
 \S4method{samples}{GRangesList}(object)
+
+\S4method{samples}{MultiAssayExperiment}(object)
 }
 \arguments{
 \item{x}{Either an \code{\linkS4class{ExpressionSet}}, \code{\linkS4class{GRangesList}}, \code{\linkS4class{RangedSummarizedExperiment}} or \code{matrix} class object}
@@ -34,5 +37,7 @@ Sample extractor generic
 \item \code{matrix}: 
 
 \item \code{GRangesList}: 
+
+\item \code{MultiAssayExperiment}: 
 }}
 

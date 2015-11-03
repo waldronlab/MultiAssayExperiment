@@ -157,9 +157,9 @@ rse <- SummarizedExperiment(assays=SimpleList(counts=counts),
 Create an ID map for all available experiments.  Names required, and must be identical to names of `elist`.
 
 ```{r}
-idmap <- list(exprmap, methylmap, micromap, rangemap, rangemap2)
-names(idmap) <- c("Affy", "Methyl 450k", "Mirna", "CNV gistic", "CNV gistic2")
-idmap
+listmap <- list(exprmap, methylmap, micromap, rangemap, rangemap2)
+names(listmap) <- c("Affy", "Methyl 450k", "Mirna", "CNV gistic", "CNV gistic2")
+listmap
 ```
 
 Allowing for the possibility of ID maps entered as dataframes, convert
@@ -167,7 +167,7 @@ to conventional list:
 
 ```{r, message = FALSE}
 library(reshape2) # reshape2 used for example only
-dfmap <- melt(idmap, id.var = c("master", "assay"))
+dfmap <- melt(listmap, id.var = c("master", "assay"))
 names(dfmap)[3] <- "assayname"
 library(biocMultiAssay)
 toListMap(dfmap, "assayname")
@@ -182,7 +182,7 @@ objlist <- list("Affy" = exprdat, "Methyl 450k" = methyldat, "Mirna" = microdat,
 # Create a `multiAssayExperiment` class object
 
 ```{r}
-myMultiAssay <- MultiAssayExperiment(objlist, masPheno, idmap)
+myMultiAssay <- MultiAssayExperiment(objlist, masPheno, dfmap)
 myMultiAssay
 elist(myMultiAssay)
 masterPheno(myMultiAssay)
@@ -195,9 +195,9 @@ sampleMap(myMultiAssay)
 Temporarily not evaluated due to bug ([Issue 53][]):
 
 ```{r, eval=FALSE}
-logicID <- identifyBySample(myMultiAssay, 2:1)
-logicID
-subMultiAssay <- subsetBySample(myMultiAssay, logicID)
+logic_class <- identifyBySample(myMultiAssay, 2:1)
+logic_class
+subMultiAssay <- subsetBySample(myMultiAssay, logic_class)
 as.list(elist(subMultiAssay))
 subsetByAssay(subMultiAssay, c(TRUE, FALSE, FALSE, FALSE), drop = TRUE)[[1]] %>% exprs 
 subMultiAssay
