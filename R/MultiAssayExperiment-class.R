@@ -27,14 +27,9 @@ setClass("MultiAssayExperiment",
 .checkMasterPheno <- function(object){
 	errors <- character()
 	if(!is(object@masterPheno, "data.frame")){
-		msg <- paste("masterPheno should be a data frame of metadata for all samples!")
-		errors <- c(errors, msg)
+		return("masterPheno should be a data frame of metadata for all samples!")
 	}
-	if(!(rownames(object@masterPheno) %in% unique(object@sampleMap[, "master"]))){
-		msg <- paste("All masterPheno rownames must be in the sampleMap!")
-		errors <- c(errors, msg)
-	}
-	if(length(errors) == 0)	NULL else errors
+	NULL
 }
 
 ## sampleMap is a data.frame with unique sampleNames across assay
@@ -48,7 +43,9 @@ setClass("MultiAssayExperiment",
 		msg <- paste("assaynames must be of the same length as the elist!")
 		errors <- c(errors, msg)
 	}
-	if(all(!duplicated(object@sampleMap[, "assay"]))){
+	lcheckdups <- split(object@sampleMap[["assay"]], object@sampleMap$assayname)
+	logchecks <- any(vapply(lcheckdups, function(x) any(duplicated(x)), logical(1)))
+	if(logchecks){
 		msg <- paste("All sample identifiers in the assays must be unique!")
 		errors <- c(errors, msg)
 	}
@@ -108,12 +105,13 @@ setClass("MultiAssayExperiment",
 
 
 .validMultiAssayExperiment <- function(object){
-	c(.checkMasterPheno(object), 
-	  .checkSampleMap(object),
-	  .checkSampleNames(object),
-	  .checkElist(object), 
-	  .checkNames(object))
-}
+	if(!(length(object@elist) == 0L)){
+		c(.checkElist(object), 
+		  .checkMasterPheno(object), 
+		  .checkSampleMap(object),
+		  .checkSampleNames(object),
+		  .checkNames(object))
+}}
 
 S4Vectors::setValidity2("MultiAssayExperiment", .validMultiAssayExperiment)
 
@@ -156,7 +154,7 @@ setMethod("show", "MultiAssayExperiment", function(object){
 ###
 #' Generic Accessor Functions
 #' @param x A \code{\link{MultiAssayExperiment}} object.
-#' @return A \code{"list"} object. 
+#' @return A \code{list} object. 
 #' @exportMethod sampleMap
 setGeneric("sampleMap", function(x) standardGeneric("sampleMap"))
 #' @describeIn sampleMap
@@ -184,9 +182,8 @@ setMethod("masterPheno", "MultiAssayExperiment", function(x)
 #' Generic Acessor Functions 
 #' @param x A \code{\link{MultiAssayExperiment}} object
 #' @return Any type of object describing the metadata
-#' @exportMethod metadata
-setGeneric("metadata", function(x) standardGeneric("metadata"))
 #' @describeIn metadata
+#' @exportMethod metadata
 setMethod("metadata", "MultiAssayExperiment", function(x)
 		  getElement(x, "metadata"))
 

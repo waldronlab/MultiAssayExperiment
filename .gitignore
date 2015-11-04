@@ -11,3 +11,5 @@
 *.orig
 *.md
 /vignettes/cache/
+*.vim
+

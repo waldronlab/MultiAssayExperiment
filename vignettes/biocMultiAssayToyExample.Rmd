@@ -22,8 +22,8 @@ empty
 slotNames(empty)
 class(elist(empty))       #SimpleList
 class(masterPheno(empty)) #data.frame
-class(sampleMap(empty))   #list
-## class(metadata(empty))    #NULL (class "ANY")
+class(sampleMap(empty))   #data.frame
+class(metadata(empty))    #NULL (class "ANY")
 methods(class="MultiAssayExperiment")
 ```
 
@@ -166,10 +166,7 @@ Allowing for the possibility of ID maps entered as dataframes, convert
 to conventional list:
 
 ```{r, message = FALSE}
-library(reshape2) # reshape2 used for example only
-dfmap <- melt(listmap, id.var = c("master", "assay"))
-names(dfmap)[3] <- "assayname"
-library(biocMultiAssay)
+dfmap <- biocMultiAssay:::.ldmap(listmap)
 toListMap(dfmap, "assayname")
 ```
 
@@ -187,7 +184,7 @@ myMultiAssay
 elist(myMultiAssay)
 masterPheno(myMultiAssay)
 sampleMap(myMultiAssay)
-# metadata(myMultiAssay)  #needs to be implemented
+metadata(myMultiAssay) 
 ```
 
 ## Subsetting by Sample
@@ -298,14 +295,13 @@ Any data classes in the elist object must support the following methods:
 
 * `samples()`
 * `features()`
-
-(*TODO*: add checks on square bracket subsetting)
+* `[`
 
 Here is what happens if one of the methods doesn't:
 ```{r}
 objlist2 <- objlist
 objlist2[[2]] <- data.frame(objlist2[[2]])
-invalid.obj <- try(MultiAssayExperiment(objlist2, masPheno, idmap))
+invalid.obj <- try(MultiAssayExperiment(objlist2, masPheno, dfmap))
 invalid.obj
 ```
 

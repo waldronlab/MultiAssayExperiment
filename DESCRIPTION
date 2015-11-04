@@ -4,12 +4,11 @@ Version: 0.1.3
 Author: MultiAssay SIG
 Description: Develop an integrative environment where multiple assays are managed and preprocessed for genomic data analysis.
 Suggests: BiocStyle, Homo.sapiens, stashR, hgu95av2.db, ALL, GenomicFeatures, TxDb.Hsapiens.UCSC.hg19.knownGene, data.table, hgu133a.db, reshape2
-Depends: R (>= 3.0.1), Biobase, dplyr
+Depends: R (>= 3.0.1), Biobase, dplyr, S4Vectors
 Imports:
   DBI, 
   methods, 
   RSQLite,
-  S4Vectors, 
   GenomicRanges,
   BiocGenerics, 
   SummarizedExperiment
