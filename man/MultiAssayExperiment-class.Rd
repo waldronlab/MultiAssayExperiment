@@ -37,12 +37,14 @@ Names of Experiments
 \section{Slots}{
 
 \describe{
-\item{\code{elist}}{A \code{\link[S4Vectors]{SimpleList-class}} of data across different types of assays.}
+\item{\code{elist}}{A \code{\linkS4class{elist}} class object for each assay dataset.}
 
 \item{\code{masterPheno}}{A \code{data.frame} of all clinical data available across experiments.}
 
 \item{\code{sampleMap}}{A \code{data.frame} of translatable identifiers of samples and participants.}
 
 \item{\code{metadata}}{Additional data describing the \code{\link{MultiAssayExperiment}} object.}
+
+\item{\code{drops}}{A metadata \code{list} of dropped information.}
 }}
 

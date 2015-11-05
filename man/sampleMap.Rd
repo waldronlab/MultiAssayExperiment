@@ -14,7 +14,7 @@ sampleMap(x)
 \item{x}{A \code{\link{MultiAssayExperiment}} object.}
 }
 \value{
-A \code{"list"} object.
+A \code{list} object.
 }
 \description{
 Generic Accessor Functions

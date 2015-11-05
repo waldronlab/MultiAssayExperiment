@@ -1,22 +1,23 @@
 ### ==============================================
-### multiAssayExperiment object
+### MultiAssayExperiment object
 ### ----------------------------------------------
 
 #' An integrative MultiAssay class for experiment data
 #' 
-#' @slot elist A \code{\link[S4Vectors]{SimpleList-class}} of data across different types of assays. 
+#' @slot elist A \code{\linkS4class{elist}} class object for each assay dataset. 
 #' @slot masterPheno A \code{data.frame} of all clinical data available across experiments.
 #' @slot sampleMap A \code{data.frame} of translatable identifiers of samples and participants.
 #' @slot metadata Additional data describing the \code{\link{MultiAssayExperiment}} object. 
+#' @slot drops A metadata \code{list} of dropped information.
 #' @exportClass MultiAssayExperiment
 setClass("MultiAssayExperiment",
-		 representation(
-						elist="SimpleList",
-						masterPheno = "data.frame",
-						sampleMap = "data.frame", 
-						metadata = "ANY", 
-						drops = "list"
-						) 
+		 slots = c(
+				   elist="elist",
+				   masterPheno = "data.frame",
+				   sampleMap = "data.frame", 
+				   metadata = "ANY", 
+				   drops = "list"
+				   ) 
 		 )
 
 ##
@@ -49,7 +50,7 @@ setClass("MultiAssayExperiment",
 		msg <- paste("All sample identifiers in the assays must be unique!")
 		errors <- c(errors, msg)
 	}
-	if(length(errors) == 0) NULL else errors 
+	if(length(errors) == 0L) NULL else errors 
 }
 
 ## Experiment list must be the same length as the unique sampleMap assaynames 
@@ -60,34 +61,10 @@ setClass("MultiAssayExperiment",
 		msg <- paste("elist must be the same length as the sampleMap assaynames!")
 		errors <- c(errors, msg)
 	}
-	objcl <- sapply(object@elist, class)
-	featclasses <- sapply(lapply(object@elist, FUN = function(explist) {try(features(explist), silent = TRUE)}), class) 
-	featerrors <- featclasses == "try-error"
-	sampclasses <- sapply(lapply(object@elist, FUN = function(explist) {try(samples(explist), silent = TRUE)}), class) 
-	samperrors <- sampclasses == "try-error" 
-	brackcl <- sapply(lapply(object@elist, FUN = function(explist) {try(explist[1], silent = TRUE)}), class)
-	brackerr <- brackcl == "try-error"
-	if(any(featerrors)){
-		index <- which(featclasses == "try-error")
-		unsupport <- objcl[featerrors]
-		msgs <- sapply(seq_along(index), function(x, i) { paste0("Element [", x[i], "] of class '", unsupport[i], "' in the elist must have a features method!") }, x = index)
-		errors <- c(errors, unname(msgs))
-	}
-	if(any(samperrors)){
-		index <- which(sampclasses == "try-error")
-		unsupport <- objcl[samperrors]
-		msgs <- sapply(seq_along(index), function(x, i) { paste0("Element [", x[i], "] of class '", unsupport[i], "' in the elist must have a samples method!") }, x = index)
-		errors <- c(errors, unname(msgs))
-	}
-	if(any(brackerr)){
-		index <- which(brackcl == "try-error")
-		unsupport <- objcl[brackerr]
-		msgs <- sapply(seq_along(index), function(x, i) { paste0("Element [", x[i], "] of class '", unsupport[i], "' in the elist must have a bracket '[' method!") }, x = index)
-		errors <- c(errors, unname(msgs))
-	}
-	if(length(errors) == 0) NULL else errors
+	if(length(errors) == 0L) NULL else errors
 }
 
+## All sample names in the elist must be in the sampleMap
 .checkSampleNames <- function(object){
 	if(!all.equal(unname(unlist(lapply(object@elist, samples))), 
 				  object@sampleMap[, "assay"])){
@@ -103,19 +80,19 @@ setClass("MultiAssayExperiment",
 	NULL
 }
 
-
 .validMultiAssayExperiment <- function(object){
-	if(!(length(object@elist) == 0L)){
-		c(.checkElist(object), 
-		  .checkMasterPheno(object), 
+	if(length(object@elist) != 0L){
+		c(.checkMasterPheno(object), 
+		  .checkNames(object),	
 		  .checkSampleMap(object),
-		  .checkSampleNames(object),
-		  .checkNames(object))
+		  .checkSampleNames(object)
+		  )
 }}
 
 S4Vectors::setValidity2("MultiAssayExperiment", .validMultiAssayExperiment)
 
-#' Show method for MultiAssayExperiment class
+
+#' Show method for \code{\linkS4class{MultiAssayExperiment}} class
 #' 
 #' @param object A \code{\link{MultiAssayExperiment}} object.
 #' @return Returns a summary of contents for the \code{\link{MultiAssayExperiment}} class. 
@@ -208,3 +185,5 @@ setMethod("length", "MultiAssayExperiment",
 setMethod("names", "MultiAssayExperiment", 
 		  function(x) names(getElement(x, "elist"))
 		  )
+
+

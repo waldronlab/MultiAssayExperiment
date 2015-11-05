@@ -3,7 +3,7 @@
 \docType{methods}
 \name{show,MultiAssayExperiment-method}
 \alias{show,MultiAssayExperiment-method}
-\title{Show method for MultiAssayExperiment class}
+\title{Show method for \code{\linkS4class{MultiAssayExperiment}} class}
 \usage{
 \S4method{show}{MultiAssayExperiment}(object)
 }
@@ -14,6 +14,6 @@
 Returns a summary of contents for the \code{\link{MultiAssayExperiment}} class.
 }
 \description{
-Show method for MultiAssayExperiment class
+Show method for \code{\linkS4class{MultiAssayExperiment}} class
 }
 

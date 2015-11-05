@@ -20,7 +20,7 @@ suppressPackageStartupMessages(library(biocMultiAssay))
 empty <- MultiAssayExperiment()
 empty
 slotNames(empty)
-class(elist(empty))       #SimpleList
+class(elist(empty))       #elist
 class(masterPheno(empty)) #data.frame
 class(sampleMap(empty))   #data.frame
 class(metadata(empty))    #NULL (class "ANY")

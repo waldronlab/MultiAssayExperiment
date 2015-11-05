@@ -5,11 +5,11 @@
 \title{Create a MultiAssayExperiment object
 \code{MultiAssayExperiment} returns a \code{\linkS4class{MultiAssayExperiment}} object}
 \usage{
-MultiAssayExperiment(explist = list(), masterPheno = data.frame(),
-  sampleMap = list(), drops = list())
+MultiAssayExperiment(elist = list(), masterPheno = data.frame(),
+  sampleMap = data.frame(), drops = list())
 }
 \arguments{
-\item{explist}{A \code{list} of all combined experiments}
+\item{elist}{A \code{list} of all combined experiments}
 
 \item{masterPheno}{A \code{data.frame} of the phenotype data for all participants.}
 

@@ -40,32 +40,29 @@
 #'
 #' This function combines multiple data sources specific to one disease by matching samples. 
 #' 
-#' @param explist A \code{list} of all combined experiments
+#' @param elist A \code{list} of all combined experiments
 #' @param masterPheno A \code{data.frame} of the phenotype data for all participants.
 #' @param sampleMap A \code{data.frame} of sample identifiers, assay samples, and assay names.
 #' @param drop Logical (default FALSE) parameter for dropping samples with unmatched phenotype data.   
 #' @return A \code{MultiAssayExperiment} data object that stores experiment and phenotype data.
 #' @export MultiAssayExperiment
-MultiAssayExperiment <- function(explist = list(), masterPheno = data.frame(), sampleMap = data.frame(), drops = list()){
-	if(!all(c(length(sampleMap) == 0L, length(masterPheno) == 0L, length(explist) == 0L))){
+MultiAssayExperiment <- function(elist = list(), masterPheno = data.frame(), sampleMap = data.frame(), drops = list()){
+	if(!all(c(length(sampleMap) == 0L, length(masterPheno) == 0L, length(elist) == 0L))){
 		if((length(sampleMap) == 0L) & (length(masterPheno) == 0L)){
-			allsamps <- unique(unlist(lapply(explist, samples)))
+			allsamps <- unique(unlist(lapply(elist, samples)))
 			masterPheno <- data.frame(pheno1 = rep(NA, length(allsamps)), row.names = allsamps, stringsAsFactors = FALSE)
-			sampleMap <- .generateMap(masterPheno, explist)
+			sampleMap <- .generateMap(masterPheno, elist)
 		} else if((length(sampleMap) == 0L) & !(length(masterPheno) == 0L)){
 			warning("sampleMap not provided! Map will be created from data provided.")
-			sampleMap <- .generateMap(masterPheno, explist)
+			sampleMap <- .generateMap(masterPheno, elist)
 			validAssays <- split(sampleMap[["assay"]], sampleMap$assayname)
-			explist <- Map(subsetSample, explist, validAssays) 
-		}
-		if(is(explist, "list")){
-			explist <- S4Vectors::SimpleList(explist)
+			elist <- Map(subsetSample, elist, validAssays) 
 		}
 	} else {
-		explist <- S4Vectors::SimpleList(explist)
+		newMultiAssay <- new("MultiAssayExperiment", elist = elist(elist), masterPheno = masterPheno, sampleMap = sampleMap)
 	}
 	newMultiAssay <- new("MultiAssayExperiment",
-						 elist = explist,
+						 elist = elist(elist),
 						 masterPheno = masterPheno,
 						 sampleMap = sampleMap)
 	return(newMultiAssay)
