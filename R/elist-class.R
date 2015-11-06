@@ -1,12 +1,12 @@
-# .getErrors <- function(object, FUN, ...){
-# 	ob_cl <- class(object)
-# 	err_cl <- class(try(FUN(object), silent = TRUE))
-# 	names(err_cl) <- ob_cl
-# 	unsup <- Filter(function(x) x == "try-error", err_cl)
-# 	if(err_cl == "try-error"){
-# 		return(cat(sprintf("class %s must have a %s method!", names(err_cl), match.call(FUN)[2])))
-# 	}
-# }
+.getErrors <- function(object, my_fun){
+	obj_cl <- class(object)
+	e_class <- class(try(get(my_fun)(object), silent = TRUE))
+	if(e_class == "try-error"){
+		msg <-  paste0("class ", obj_cl, " must have a '", my_fun, "' method!")
+		return(msg)
+	}
+	NULL
+}
 
 ### ==============================================
 ### elist class
@@ -39,34 +39,24 @@ setMethod("elist", "SimpleList",
 .checkElist <- function(object){
 	if(length(object) != 0L){
 		errors <- character()
-		objcl <- sapply(object, class)
-		featclasses <- sapply(lapply(object, FUN = function(explist) {try(features(explist), silent = TRUE)}), class) 
-		featerrors <- featclasses == "try-error"
-		sampclasses <- sapply(lapply(object, FUN = function(explist) {try(samples(explist), silent = TRUE)}), class) 
-		samperrors <- sampclasses == "try-error" 
-		brackcl <- sapply(lapply(object, FUN = function(explist) {try(explist[1], silent = TRUE)}), class)
-		brackerr <- brackcl == "try-error"
-		if(any(featerrors)){
-			index <- which(featclasses == "try-error")
-			unsupport <- objcl[featerrors]
-			msgs <- sapply(seq_along(index), function(x, i) { paste0("Element [", x[i], "] of class '", unsupport[i], "' in the elist must have a features method!") }, x = index)
-			errors <- c(errors, unname(msgs))
+		for(i in seq_along(object)){
+			samp_err <- .getErrors(object[[i]], "samples")
+			if(!is.null(samp_err)){
+				errors <- c(errors, paste0("Element [", i, "] of ", samp_err))
+			}
+			feat_err <- .getErrors(object[[i]], "features")
+			if(!is.null(feat_err)){
+				errors <- c(errors, paste0("Element [", i, "] of ", feat_err))
+			}
+			brack_err <- .getErrors(object[[i]], "[")
+			if(!is.null(brack_err)){
+				errors <- c(errors, paste0("Element [", i, "] of ", brack_err))
+			}
 		}
-		if(any(samperrors)){
-			index <- which(sampclasses == "try-error")
-			unsupport <- objcl[samperrors]
-			msgs <- sapply(seq_along(index), function(x, i) { paste0("Element [", x[i], "] of class '", unsupport[i], "' in the elist must have a samples method!") }, x = index)
-			errors <- c(errors, unname(msgs))
-		}
-		if(any(brackerr)){
-			index <- which(brackcl == "try-error")
-			unsupport <- objcl[brackerr]
-			msgs <- sapply(seq_along(index), function(x, i) { paste0("Element [", x[i], "] of class '", unsupport[i], "' in the elist must have a bracket '[' method!") }, x = index)
-			errors <- c(errors, unname(msgs))
-		}
-		if(length(errors) == 0L) NULL else errors
-	}
-	NULL
+		if(length(errors) == 0L){
+			NULL
+		} else { errors }
+	} else { NULL }
 }
 
 .validElist <- function(object){
@@ -89,7 +79,7 @@ setMethod("show", "elist", function(object){
 		  o_names <- names(object)
 		  sampdim <- vapply(object, FUN = function(obj) { length(samples(obj)) }, FUN.VALUE = integer(1))
 		  featdim <- vapply(object, FUN = function(obj) { length(features(obj)) }, FUN.VALUE = integer(1))
-		  cat(sprintf('A "%s"', o_class), "object of length", o_len,
+		  cat(sprintf('"%s"', o_class), "object of length", o_len,
 			  sprintf('\n [%i] %s: "%s" - %s samples, %s features', seq(o_len), o_names, elem_cl, sampdim, featdim), "\n") 
 		  })
 

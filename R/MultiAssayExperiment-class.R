@@ -108,22 +108,21 @@ setMethod("show", "MultiAssayExperiment", function(object){
 		  c_sm <- class(object@sampleMap)
 		  c_md <- class(object@metadata)
 		  cat(sprintf('A "%s"', o_class),
-			  "object containing", o_len, 
-			  "\n listed", ifelse(o_len == 1L, "experiment", "experiments"), 
+			  "object of", o_len, "listed\n", ifelse(o_len == 1L, "experiment", "experiments"), 
 			  "with", ifelse(all(o_names == "none"), "no user-defined names",
 							 ifelse(length(o_names) == 1L, "a user-defined name", "user-defined names")),
 			  ifelse(length(o_len) == 0L, "or", "and"),
 			  ifelse(length(o_len) == 0L, "classes.",
-					 ifelse(length(classes) == 1L, "its respective class:", "their respective classes:")), 
-			  sprintf('\n [%i] %s - "%s"', seq(o_len), o_names, classes)
-			  , "\n")
+					 ifelse(length(classes) == 1L, "respective class.", "respective classes.")),
+			  "\n It contains an ") 
+		  show(object@elist)
 		  cat("To access slots use: \n elist() - to obtain the", sprintf('"%s"', c_elist), 
 			  "of experiment instances", 
 			  "\n masterPheno() - for the phenotype", sprintf('"%s"', c_mp), 
 			  "\n sampleMap() - for the sample availability", sprintf('"%s"', c_sm), 
 			  "\n metadata() - for the metadata object of 'ANY' class",
 			  "\nSee also: subsetByAssay(), subsetByFeature(), subsetBySample()\n")
-	  })
+		  })
 
 
 ### - - - - - - - - - - - - - - - - - - - - - - -
