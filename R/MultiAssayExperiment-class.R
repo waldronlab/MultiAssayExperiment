@@ -11,13 +11,13 @@
 #' @slot drops A metadata \code{list} of dropped information.
 #' @exportClass MultiAssayExperiment
 setClass("MultiAssayExperiment",
-		 slots = c(
-				   elist="elist",
-				   masterPheno = "data.frame",
-				   sampleMap = "data.frame", 
-				   metadata = "ANY", 
-				   drops = "list"
-				   ) 
+		 slots = list(
+					  elist="elist",
+					  masterPheno = "data.frame",
+					  sampleMap = "data.frame",
+					  metadata = "ANY",
+					  drops = "list"
+					  )
 		 )
 
 ##
@@ -128,37 +128,41 @@ setMethod("show", "MultiAssayExperiment", function(object){
 ### - - - - - - - - - - - - - - - - - - - - - - -
 ### Accessor methods
 ###
+
 #' Generic Accessor Functions
+#' 
 #' @param x A \code{\link{MultiAssayExperiment}} object.
 #' @return A \code{list} object. 
 #' @exportMethod sampleMap
 setGeneric("sampleMap", function(x) standardGeneric("sampleMap"))
-#' @describeIn sampleMap
+#' @describeIn MultiAssayExperiment Access sampleMap slot from MultiAssayExperiment
 setMethod("sampleMap", "MultiAssayExperiment", function(x)
 		  getElement(x, "sampleMap"))
 
 #' Generic Accessor Functions
+#' 
 #' @param x A \code{\link{MultiAssayExperiment}} object.
 #' @return A \code{\link[S4Vectors]{SimpleList-class}} object.
 #' @exportMethod elist
-setGeneric("elist", function(x) standardGeneric("elist"))
-#' @describeIn elist
+#' @describeIn MultiAssayExperiment Access elist class from MultiAssayExperiment
 setMethod("elist", "MultiAssayExperiment", function(x)
 		  getElement(x, "elist"))
 
 #' Generic Accessor Functions
+#' 
 #' @param x A \code{\link{MultiAssayExperiment}} object
 #' @return A \code{data.frame} object
 #' @exportMethod masterPheno
 setGeneric("masterPheno", function(x) standardGeneric("masterPheno"))
-#' @describeIn masterPheno
+#' @describeIn MultiAssayExperiment Access masterPheno slot from MultiAssayExperiment
 setMethod("masterPheno", "MultiAssayExperiment", function(x)
 		  getElement(x, "masterPheno"))
 
 #' Generic Acessor Functions 
+#' 
 #' @param x A \code{\link{MultiAssayExperiment}} object
 #' @return Any type of object describing the metadata
-#' @describeIn metadata
+#' @describeIn MultiAssayExperiment Access metadata slot from MultiAssayExperiment
 #' @exportMethod metadata
 setMethod("metadata", "MultiAssayExperiment", function(x)
 		  getElement(x, "metadata"))
@@ -171,7 +175,7 @@ setMethod("metadata", "MultiAssayExperiment", function(x)
 #' @param x A \code{\link{MultiAssayExperiment}} object
 #' @return An \code{integer} 
 #' @exportMethod length
-#' @describeIn MultiAssayExperiment
+#' @describeIn MultiAssayExperiment Get the length of elist 
 setMethod("length", "MultiAssayExperiment", 
 		  function(x) length(getElement(x, "elist"))
 		  )
@@ -180,7 +184,7 @@ setMethod("length", "MultiAssayExperiment",
 #' @param x A \code{\link{MultiAssayExperiment}} object
 #' @return A character vector of experiment names
 #' @exportMethod names
-#' @describeIn MultiAssayExperiment
+#' @describeIn MultiAssayExperiment Get the names of the elist
 setMethod("names", "MultiAssayExperiment", 
 		  function(x) names(getElement(x, "elist"))
 		  )

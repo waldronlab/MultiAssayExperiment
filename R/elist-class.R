@@ -2,7 +2,7 @@
 	obj_cl <- class(object)
 	e_class <- class(try(get(my_fun)(object), silent = TRUE))
 	if(e_class == "try-error"){
-		msg <-  paste0("class ", obj_cl, " must have a '", my_fun, "' method!")
+		msg <-  paste0("class ", obj_cl, " should have a '", my_fun, "' method!")
 		return(msg)
 	}
 	NULL
@@ -13,24 +13,28 @@
 ### ----------------------------------------------
 
 #' An integrative container for assay data
+#' @inheritParams S4Vectors::SimpleList
 #' @exportClass elist
 setClass("elist", contains = "SimpleList")
+
+#' Generic Builder and Accessor Function
+setGeneric("elist", function(x) standardGeneric("elist"))
 
 ### - - - - - - - - - - - - - - - - - - - - - - - -
 ### Builder
 ###
 
 #' Convert to \code{\link[S4Vectors]{SimpleList-class}}
+#'
 #' @param x A \code{list} object
 #' @return An \code{\linkS4class{elist}} class object
 #' @exportMethod elist
-#' @describeIn elist
+#' @describeIn elist Convert a list to a SimpleList
 setMethod("elist", "list",
 		  function(x) new("elist", S4Vectors::SimpleList(x)))
-#' @describeIn elist
+#' @describeIn elist Use a SimpleList
 setMethod("elist", "SimpleList",
 		  function(x) new("elist", x))
-
 
 ##
 ## Validity ---------------------------------
