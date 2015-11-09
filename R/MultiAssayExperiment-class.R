@@ -10,6 +10,7 @@
 #' @slot metadata Additional data describing the \code{\link{MultiAssayExperiment}} object. 
 #' @slot drops A metadata \code{list} of dropped information.
 #' @exportClass MultiAssayExperiment
+#' @include elist-class.R
 setClass("MultiAssayExperiment",
 		 slots = list(
 					  elist="elist",
