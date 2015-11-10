@@ -8,22 +8,23 @@
 }
 
 .getLogicalNames <- function(object, ids){
-	trimMap <- lapply(object@sampleMap, .cutMap)
-	logn <- lapply(trimMap, function(map) { map[, 1] %in% ids } )
+	listMap <- toListMap(object@sampleMap, "assayname")
+	logn <- lapply(listMap, function(map) { map[, 1] %in% ids } )
 	return(logn)
 }
 
 .getNamesLogical <- function(object, logiID){
-	trimMap <- lapply(object@sampleMap, .cutMap)
-	subList <- Map(subset, trimMap, logiID)
+	listMap <- toListMap(object@sampleMap, "assayname")
+	subList <- Map(subset, listMap, logiID)
 	usedNames <- Reduce(union, sapply(subList, "[", 1))
 	return(rownames(object@masterPheno)[match(usedNames, rownames(object@masterPheno))])
 }
 
 .getIndexLogical <- function(object, logiID){
-	trimMap <- lapply(object@sampleMap, .cutMap)
-	subList <- Map(subset, trimMap, logiID)
-	usedNames <- Reduce(union, sapply(subList, "[", 1))
+	listMap <- toListMap(object@sampleMap, "assayname")
+	listMap <- listMap[order(names(logiID@keeps))]
+	subList <- Map(subset, listMap, logiID@keeps)
+	usedNames <- logiID@query
 	return(match(usedNames, rownames(object@masterPheno)))
 }
 
@@ -37,14 +38,16 @@
 #' @return A logical list of matched sample references
 #' @export identifyBySample
 identifyBySample <- function(MultiAssay, j){
-	sampResults <- lapply(MultiAssay@elist, samples)
+	sampResults <- samples(MultiAssay)
 	iders <- rownames(.subPheno(MultiAssay, j))
 	logiclist <- .getLogicalNames(MultiAssay, iders)
+	logiclist <- logiclist[order(names(sampResults))]
 	revlogResult <- lapply(logiclist, "!")
 	dropped <- Map("[", sampResults, revlogResult)
 	newIdentify <- new("Identify",
-					   indim = logiclist, 
-					   identifier = iders, 
-					   drops = dropped)
+					   query = iders,
+					   keeps = logiclist,
+					   drops = dropped,
+					   type = "samples")
 	return(newIdentify)
 }

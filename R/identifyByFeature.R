@@ -5,23 +5,23 @@
 #' @return A logical list of matched assays
 #' @export identifyByFeature
 identifyByFeature <- function(MultiAssay, feature, requireall = FALSE){
-	featResults <- lapply(MultiAssay@elist, features)
-	logicresult <- sapply(seq(length(MultiAssay)),
+	featResults <- features(MultiAssay) 
+	logicresult <- sapply(seq_along(MultiAssay),
 						  function(i, feats) {feats %in% unlist(featResults[i]) }, feats = feature)
 	if(!is.vector(logicresult)){
 		logicvector <- apply(logicresult, 2, ifelse(requireall, all, any)) 
 	} else {
 		logicvector <- logicresult
 	}
-	logiclist <- sapply(seq(length(featResults)), 
+	logiclist <- sapply(seq_along(featResults), 
 						function(i, feats) {unlist(featResults[i]) %in% feats}, feats = feature)
-	logiclist <- lapply(logiclist, `!`)
-
-	dropped <- Map("[", featResults, logiclist)
-
+	names(logiclist) <- names(featResults)
+	revLogicList <- lapply(logiclist, `!`)
+	dropped <- Map("[", featResults, revLogicList)
 	newIdentify <- new("Identify", 
-					   inassay = logicvector,
-					   identifier = feature, 
-					   drops = dropped)
+					   query = feature,
+					   keeps = logiclist,
+					   drops = dropped,
+					   type = "features")
 	return(newIdentify)
 }

@@ -61,7 +61,8 @@ setMethod("subsetSample", "ExpressionSet", function(x, j) x[, j])
 setMethod("subsetSample", "RangedSummarizedExperiment", function(x, j) x[,j = j])
 #' @describeIn subsetSample Select samples for a GRangesList
 setMethod("subsetSample", "GRangesList", function(x, j) x[i=j]) 
-
+# Fix this
+setMethod("subsetSample", "elist", function(x, j) subsetSample(x, j, ...))
 #' Subset by Feature method
 #'
 #' @param x Either an \code{\linkS4class{ExpressionSet}}, \code{\linkS4class{GRangesList}}, \code{\linkS4class{RangedSummarizedExperiment}} or \code{matrix} class object

@@ -55,7 +55,7 @@ setClass("MultiAssayExperiment",
 }
 
 ## Experiment list must be the same length as the unique sampleMap assaynames 
-.checkElist <- function(object){
+.checkElist2 <- function(object){
 	errors <- character()
 	assaynames <- unique(object@sampleMap[, "assayname"])
 	if(length(object@elist) != length(assaynames)){
@@ -85,6 +85,7 @@ setClass("MultiAssayExperiment",
 	if(length(object@elist) != 0L){
 		c(.checkMasterPheno(object), 
 		  .checkNames(object),	
+		  .checkElist2(object), 
 		  .checkSampleMap(object),
 		  .checkSampleNames(object)
 		  )

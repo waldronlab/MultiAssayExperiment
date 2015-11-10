@@ -4,29 +4,22 @@
 
 #' An identifier class used for subsetting
 #' 
-#' @slot inassay A \code{logical} indicator for a match by assay
-#' @slot indim A \code{list} indicating valid matches in each assay
-#' @slot identifier \code{ANY} object that in used to find matches
+#' @slot query Any class indicator needed to subset
+#' @slot keeps A \code{list} indicating valid matches in each assay
 #' @slot drops A \code{list} of excluded information due to subsetting
+#' @slot type A \code{character} vector indicating method used to search
 setClass("Identify", 
-		 representation(
-						 keeps = "list",
+		 representation(query = "ANY",
+						keeps = "list",
 						drops  = "list", 
-						type = "character"
-						)
+						type = "character")
 		 )
 
 .checkDrops <- function(object){
 	errors <- character()
-	if(length(object@inassay) == 0L){
-		if(length(object@drops) != length(object@indim)){
-			msg <- paste("List of dropped information must be the same as the logical vector!")
-			errors <- c(errors, msg)
-		}
-	}
-	if(length(object@indim) == 0L){
-		if(length(object@drops) != length(object@inassay)){
-			msg <- paste("List of dropped information must be the same as the logical vector!")
+	if(length(object@keeps) != 0L){
+		if(length(object@drops) != length(object@keeps)){
+			msg <- paste("List of dropped information must be the same length as the kept information!")
 			errors <- c(errors, msg)
 		}
 	}
