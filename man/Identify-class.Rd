@@ -10,12 +10,12 @@ An identifier class used for subsetting
 \section{Slots}{
 
 \describe{
-\item{\code{inassay}}{A \code{logical} indicator for a match by assay}
+\item{\code{query}}{Any class indicator needed to subset}
 
-\item{\code{indim}}{A \code{list} indicating valid matches in each assay}
-
-\item{\code{identifier}}{\code{ANY} object that in used to find matches}
+\item{\code{keeps}}{A \code{list} indicating valid matches in each assay}
 
 \item{\code{drops}}{A \code{list} of excluded information due to subsetting}
+
+\item{\code{type}}{A \code{character} vector indicating method used to search}
 }}
 

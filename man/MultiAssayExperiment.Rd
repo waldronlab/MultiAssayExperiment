@@ -15,7 +15,7 @@ MultiAssayExperiment(elist = list(), masterPheno = data.frame(),
 
 \item{sampleMap}{A \code{data.frame} of sample identifiers, assay samples, and assay names.}
 
-\item{drop}{Logical (default FALSE) parameter for dropping samples with unmatched phenotype data.}
+\item{drops}{A \code{list} of unmatched information (included after subsetting)}
 }
 \value{
 A \code{MultiAssayExperiment} data object that stores experiment and phenotype data.

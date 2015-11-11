@@ -5,12 +5,12 @@
 \title{Subset MultiAssayExperiment object
 \code{subsetBySample} returns a subsetted \code{\linkS4class{MultiAssayExperiment}} object}
 \usage{
-subsetBySample(MultiAssay, logicID)
+subsetBySample(MultiAssay, identifier)
 }
 \arguments{
 \item{MultiAssay}{A \code{\link{MultiAssayExperiment}} object}
 
-\item{logicID}{A list of logical indicators to be used for subsetting}
+\item{identifier}{An \linkS4class{Identify} class object to be used for subsetting}
 }
 \description{
 Subset MultiAssayExperiment object

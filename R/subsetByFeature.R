@@ -6,8 +6,7 @@
 #' @param feature A \code{character} vector containing feature names
 #' @return A \code{\link{MultiAssayExperiment}} object 
 #' @export subsetByFeature
-subsetByFeature <- function(MultiAssay, feature, ...){
-	MultiAssay@elist <- endoapply(MultiAssay@elist, FUN = function(x, j, ...){
-subsetFeature(x, j, ...)}, j = feature)
+subsetByFeature <- function(MultiAssay, feature, ...){ 
+	MultiAssay@elist <- endoapply(MultiAssay@elist, subsetFeature, feature)
 	return(MultiAssay)
 }

@@ -2,6 +2,7 @@
 #' 
 #' @param MultiAssay A \code{\link{MultiAssayExperiment}} object
 #' @param feature A \code{character} vector containing feature names
+#' @param requireall logical (default FALSE) force matching of all features provided
 #' @return A logical list of matched assays
 #' @export identifyByFeature
 identifyByFeature <- function(MultiAssay, feature, requireall = FALSE){

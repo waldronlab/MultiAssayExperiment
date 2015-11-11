@@ -6,8 +6,9 @@
 #' @param method A \code{character} vector of length one designating to subset either by samples, features, or assays
 #' @describeIn MultiAssayExperiment
 #' export subset
-setGeneric("subset", function(x, indicator, ...) standardGeneric("subset"))
-setMethod("subset", signature("MultiAssayExperiment", "ANY"), function(x, indicator, ...){
+setMethod("subset", "MultiAssayExperiment", function(x, indicator, method, ...){
+		  if(length(list(...)) > 0L){
+			  stop("invalid subsetting")}
 		  if(method == "samples"){
 			  indicator <- identifyBySample(MultiAssay = x, indicator)
 			  return(subsetBySample(MultiAssay = x, indicator))
@@ -19,8 +20,4 @@ setMethod("subset", signature("MultiAssayExperiment", "ANY"), function(x, indica
 		  } else {
 			  stop("Please provide a valid subsetting 'by' argument!")
 		  }
-})
-
-setMethod("subset", signature("MultiAssayExperiment", "Identify"), function(x, indicator, ...){
-		  return(subset(MultiAssay = x, indicator))
 })

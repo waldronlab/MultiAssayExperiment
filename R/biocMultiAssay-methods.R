@@ -61,8 +61,8 @@ setMethod("subsetSample", "ExpressionSet", function(x, j) x[, j])
 setMethod("subsetSample", "RangedSummarizedExperiment", function(x, j) x[,j = j])
 #' @describeIn subsetSample Select samples for a GRangesList
 setMethod("subsetSample", "GRangesList", function(x, j) x[i=j]) 
-# Fix this
-setMethod("subsetSample", "elist", function(x, j) subsetSample(x, j, ...))
+
+
 #' Subset by Feature method
 #'
 #' @param x Either an \code{\linkS4class{ExpressionSet}}, \code{\linkS4class{GRangesList}}, \code{\linkS4class{RangedSummarizedExperiment}} or \code{matrix} class object
@@ -80,7 +80,7 @@ setMethod("subsetFeature", signature("matrix", "ANY"), function(x, j){
 			  x <- x[intersect(j, rownames(x)), , drop = FALSE]
 			  return(x)
 		  } else { 
-			  return(colnames(x))
+			  return(x[0, ])
 		  }
 })
 setMethod("subsetFeature", signature("matrix", "GRanges"), function(x, j){
@@ -107,37 +107,8 @@ setMethod("subsetFeature", signature("RangedSummarizedExperiment", "ANY"), funct
 })
 #' @describeIn subsetFeature Use subsetByOverlaps for all of the GRangesList
 setMethod("subsetFeature", signature("GRangesList", "GRanges"), function(x, j, ...){
-		  return(lapply(x, FUN = function(GR) { subsetByOverlaps(GR, j, ...) })) 
+		  return(endoapply(x, FUN = function(GR) { subsetByOverlaps(GR, j, ...) })) 
 })
 setMethod("subsetFeature", signature("GRangesList", "ANY"), function(x, j){ 
-		  return(lapply(x, FUN = function(GR) { x[0, ] }))
+		  return(endoapply(x, FUN = function(GR) { GR[0, ] }))
 })
-
-# setgeneric("fill", function(x, y) standardGeneric("fill"))
-# setmethod("fill", signature("matrix", "data.frame"), function(x, y){
-# 		  if(!all(y[,2] %in% colnames(x))){
-# 			  missingcols <- y[,2][!(y[,2] %in% colnames(x))]
-# 			  return(cbind(x,
-# 						   matrix(rep(NA, nrow(x)),
-# 								  ncol = 1,
-# 								  dimnames = list(NULL, missingcols))))
-# 		  } else {
-# 			  return(x)
-# 		  }
-# })
-# setmethod("fill", signature("ExpressionSet" , "data.frame"), function(x, y){
-# 		  if(!all(y[ ,2] %in% sampleNames(x))){
-# 			  missingcols <- y[,2][!(y[,2] %in% sampleNames(x))]
-# 			  return(cbind(exprs(x),
-# 						   matrix(rep(NA, nrow(exprs(x))), 
-# 								  ncol = 1, 
-# 								  dimnames = list(NULL, missingcols))))
-# 		  } else {
-# 			  return(x)
-# 		  }
-# })
-# 
-# setMethod("fill", signature("RangedSummarizedExperiment", "data.frame"), function(x, y){
-# 
-# 
-# })

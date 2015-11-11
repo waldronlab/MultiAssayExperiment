@@ -192,11 +192,11 @@ metadata(myMultiAssay)
 Temporarily not evaluated due to bug ([Issue 53][]):
 
 ```{r, eval=FALSE}
-logic_class <- identifyBySample(myMultiAssay, 2:1)
-logic_class
-subMultiAssay <- subsetBySample(myMultiAssay, logic_class)
+id_class <- identifyBySample(myMultiAssay, 2:1)
+id_class
+subMultiAssay <- subsetBySample(myMultiAssay, id_class)
 as.list(elist(subMultiAssay))
-subsetByAssay(subMultiAssay, c(TRUE, FALSE, FALSE, FALSE), drop = TRUE)[[1]] %>% exprs 
+subsetByAssay(subMultiAssay, c(TRUE, FALSE, FALSE, TRUE, FALSE), drop = TRUE)[[1]] %>% exprs 
 subMultiAssay
 ```
 
@@ -237,7 +237,7 @@ only ENST0000035076 row, and "Mirna" and "CNV gistic" have zero rows:
 featSubsetted0 <- subsetByFeature(myMultiAssay, "ENST00000355076")
 class(featSubsetted0)
 class(elist(featSubsetted0))
-as.list(elist(featSubsetted0))
+elist(featSubsetted0)
 ```
 
 In the following, `Affy` ExpressionSet keeps both rows but with their
@@ -268,7 +268,7 @@ rest passed on through "...":
 ```{r}
 rangeSubset <- GRanges(seqnames = c("chr1"), strand = c("-", "+", "-"), ranges = IRanges(start = c(1, 4, 6), width = 3))
 subsetted <- subsetByFeature(myMultiAssay, rangeSubset, maxgap = 2L, type = "within")
-as.list(elist(subsetted))
+elist(subsetted)
 ```
 
 ### Auto-create sampleMap slot from data

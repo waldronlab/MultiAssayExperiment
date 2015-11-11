@@ -10,6 +10,8 @@ identifyByFeature(MultiAssay, feature, requireall = FALSE)
 \item{MultiAssay}{A \code{\link{MultiAssayExperiment}} object}
 
 \item{feature}{A \code{character} vector containing feature names}
+
+\item{requireall}{logical (default FALSE) force matching of all features provided}
 }
 \value{
 A logical list of matched assays
