@@ -191,7 +191,7 @@ metadata(myMultiAssay)
 
 Temporarily not evaluated due to bug ([Issue 53][]):
 
-```{r, eval=FALSE}
+```{r}
 id_class <- identifyBySample(myMultiAssay, 2:1)
 id_class
 subMultiAssay <- subsetBySample(myMultiAssay, id_class)
