@@ -15,7 +15,9 @@ toListMap <- function(dfmap, assayCol = NULL){
 		stop("Assay name must be a string!")
 	}
 	colIndex <- which(colnames(dfmap) == assayCol)
-	newList <- split(dfmap[-colIndex], dfmap[assayCol])
-	return(lapply(newList, FUN = function(x) { rownames(x) <- NULL
-				  x} ))
+	newList <- split(dfmap[-colIndex], dfmap[,assayCol])
+	return(
+		   lapply(newList, FUN = function(x) { rownames(x) <- NULL
+				  x} )
+		   )
 }

@@ -1,3 +1,9 @@
+.arrangeMap <- function(map, ordering){
+	newOrd <- do.call(c, lapply(ordering, function(ord) { 
+					 which(map[, 1] == ord) } ))
+	return(newOrd)
+}
+
 .subPheno <- function(object, j){
 	return(object@masterPheno[j, ])
 }
@@ -7,17 +13,23 @@
 	return(compdf)
 }
 
+.separateMap <- function(object, ids){
+	DFsampleMap <- S4Vectors::DataFrame(object@sampleMap)
+	listDFsampleMap <- toListMap(DFsampleMap, "assayname")
+	listDFsampleMap <- listDFsampleMap[order(names(object@elist))]
+	loglistmatch <- lapply(listDFsampleMap, function(map) { map[,"master"] %in% ids })
+	keeps <- Map(function(x, y) { x[y,] }, listDFsampleMap, loglistmatch)
+	orderIndex <- lapply(keeps, .arrangeMap, ids)
+	orderedKeeps <- Map(function(x, y) { x[y, ] }, keeps, orderIndex)
+	duoMap <- list(keeps = orderedKeeps,
+				   drops = Map(function(x, y) { x[y,] }, listDFsampleMap, lapply(loglistmatch, `!`)))
+	return(duoMap)
+}
+
 .getLogicalNames <- function(object, ids){
 	listMap <- toListMap(object@sampleMap, "assayname")
 	logn <- lapply(listMap, function(map) { map[, 1] %in% ids } )
 	return(logn)
-}
-
-.getNamesLogical <- function(object, logiID){
-	listMap <- toListMap(object@sampleMap, "assayname")
-	subList <- Map(subset, listMap, logiID)
-	usedNames <- Reduce(union, sapply(subList, "[", 1))
-	return(rownames(object@masterPheno)[match(usedNames, rownames(object@masterPheno))])
 }
 
 .getIndexLogical <- function(object, logiID){
@@ -39,15 +51,16 @@
 #' @export identifyBySample
 identifyBySample <- function(MultiAssay, j){
 	sampResults <- samples(MultiAssay)
-	iders <- rownames(.subPheno(MultiAssay, j))
-	logiclist <- .getLogicalNames(MultiAssay, iders)
-	logiclist <- logiclist[order(names(sampResults))]
-	revlogResult <- lapply(logiclist, "!")
-	dropped <- Map("[", sampResults, revlogResult)
+	if(is.numeric(j)){
+		iders <- rownames(.subPheno(MultiAssay, j))
+	} else {
+		iders <- .subPheno(MultiAssay, j)
+	}
+	biMap <- .separateMap(MultiAssay, iders)
 	newIdentify <- new("Identify",
 					   query = iders,
-					   keeps = logiclist,
-					   drops = dropped,
+					   keeps = biMap[["keeps"]],
+					   drops = biMap[["drops"]],
 					   type = "samples")
 	return(newIdentify)
 }

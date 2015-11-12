@@ -10,3 +10,4 @@ subsetByFeature <- function(MultiAssay, feature, ...){
 	MultiAssay@elist <- endoapply(MultiAssay@elist, subsetFeature, feature)
 	return(MultiAssay)
 }
+

@@ -40,6 +40,7 @@ Collate:
     'MultiAssayExperiment-class.R'
     'MultiAssayExperiment.R'
     'TCGA_ov_v2rnaseq.R'
+    'apiDash.R'
     'biocMultiAssay-methods.R'
     'db_create.R'
     'downloadData.R'
@@ -53,5 +54,4 @@ Collate:
     'subsetBySample.R'
     'toListMap.R'
     'triche.R'
-    'apiDash.R'
-RoxygenNote: 5.0.0
+RoxygenNote: 5.0.1

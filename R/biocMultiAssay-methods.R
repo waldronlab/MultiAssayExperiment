@@ -68,7 +68,7 @@ setMethod("subsetSample", "GRangesList", function(x, j) x[i=j])
 #' @param x Either an \code{\linkS4class{ExpressionSet}}, \code{\linkS4class{GRangesList}}, \code{\linkS4class{RangedSummarizedExperiment}} or \code{matrix} class object
 #' @param j Either a \code{"numeric"}, \code{"character"}, or \code{logical} vector class for subsetting
 #' @param ... Additional arguments to pass
-#' @return Returnss a subsetted \code{\linkS4class{MultiAssayExperiment}} object
+#' @return Returns a subsetted \code{\linkS4class{MultiAssayExperiment}} object
 #' @export subsetFeature
 setGeneric("subsetFeature", function(x, j, ...) standardGeneric("subsetFeature"))
 setMethod("subsetFeature", signature("ANY", "GRanges"), function(x, j){
@@ -111,4 +111,15 @@ setMethod("subsetFeature", signature("GRangesList", "GRanges"), function(x, j, .
 })
 setMethod("subsetFeature", signature("GRangesList", "ANY"), function(x, j){ 
 		  return(endoapply(x, FUN = function(GR) { GR[0, ] }))
+})
+
+#' Convert Identify keeps slot to Map
+#'
+#' @param object An \linkS4class{Identify} class object
+#' @return Returns a data.frame representation of samples
+#' @export getMap
+setGeneric("getMap", function(object) standardGeneric("getMap"))
+#' describeIn getMap Convert map from list to data.frame
+setMethod("getMap", "Identify", function(object){
+		  if(object@type == "samples"){ return(.ldmap(object@keeps)) }
 })

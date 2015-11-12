@@ -27,7 +27,7 @@ subsetFeature(x, j, ...)
 \item{...}{Additional arguments to pass}
 }
 \value{
-Returnss a subsetted \code{\linkS4class{MultiAssayExperiment}} object
+Returns a subsetted \code{\linkS4class{MultiAssayExperiment}} object
 }
 \description{
 Subset by Feature method
