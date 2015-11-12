@@ -19,6 +19,7 @@ packageAPI = function(packname="biocMultiAssay") {
 
 
 apiDash = function() {
+   require(shinydashboard)
    ui <- dashboardPage(
      dashboardHeader(title = "Basic dashboard"),
      dashboardSidebar(
