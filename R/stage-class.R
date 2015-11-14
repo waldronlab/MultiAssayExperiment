@@ -1,14 +1,14 @@
 ### ==============================================
-### Identify class 
+### Stage class 
 ### ==============================================
 
-#' An identifier class used for subsetting
+#' An identifier class used for staging a subset operation
 #' 
 #' @slot query Any class indicator needed to subset
 #' @slot keeps A \code{list} indicating valid matches in each assay
 #' @slot drops A \code{list} of excluded information due to subsetting
 #' @slot type A \code{character} vector indicating method used to search
-setClass("Identify", 
+setClass("stage", 
 		 representation(query = "ANY",
 						keeps = "list",
 						drops  = "list", 
@@ -26,8 +26,8 @@ setClass("Identify",
 	if(length(errors) == 0L) NULL else errors	
 }
 
-.validIdentify <- function(object){
+.validStage <- function(object){
 	c(.checkDrops(object))
 }
 
-S4Vectors::setValidity2("Identify", .validIdentify)
+S4Vectors::setValidity2("stage", .validStage)

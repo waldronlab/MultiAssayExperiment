@@ -113,13 +113,13 @@ setMethod("subsetFeature", signature("GRangesList", "ANY"), function(x, j){
 		  return(endoapply(x, FUN = function(GR) { GR[0, ] }))
 })
 
-#' Convert Identify keeps slot to Map
+#' Convert Stage slot "keeps" to Map
 #'
-#' @param object An \linkS4class{Identify} class object
+#' @param object An \linkS4class{stage} class object
 #' @return Returns a data.frame representation of samples
 #' @export getMap
 setGeneric("getMap", function(object) standardGeneric("getMap"))
 #' describeIn getMap Convert map from list to data.frame
-setMethod("getMap", "Identify", function(object){
+setMethod("getMap", "stage", function(object){
 		  if(object@type == "samples"){ return(.ldmap(object@keeps)) }
 })

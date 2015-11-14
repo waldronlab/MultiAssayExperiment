@@ -3,11 +3,11 @@
 #' \code{subsetBySample} returns a subsetted \code{\linkS4class{MultiAssayExperiment}} object
 #'
 #' @param MultiAssay A \code{\link{MultiAssayExperiment}} object 
-#' @param identifier An \linkS4class{Identify} class object to be used for subsetting
+#' @param identifier An \linkS4class{stage} class object to be used for subsetting
 #' @export subsetBySample
 subsetBySample <- function(MultiAssay, identifier){
 	if(identifier@type != "samples"){
-		stop("Identify class should be of samples!")
+		stop("stage class should be of samples!")
 	}
 	newMap <- .ldmap(identifier@keeps)
 	chars <- lapply(identifier@keeps, function(x) as.character(unlist(x[,2])))
