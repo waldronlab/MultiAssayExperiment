@@ -16,6 +16,7 @@
 .separateMap <- function(object, ids){
 	DFsampleMap <- S4Vectors::DataFrame(object@sampleMap)
 	listDFsampleMap <- toListMap(DFsampleMap, "assayname")
+	browser()
 	listDFsampleMap <- listDFsampleMap[order(names(object@elist))]
 	loglistmatch <- lapply(listDFsampleMap, function(map) { map[,"master"] %in% ids })
 	keeps <- Map(function(x, y) { x[y,] }, listDFsampleMap, loglistmatch)
@@ -57,10 +58,10 @@ identifyBySample <- function(MultiAssay, j){
 		iders <- .subPheno(MultiAssay, j)
 	}
 	biMap <- .separateMap(MultiAssay, iders)
-	newIdentify <- new("Identify",
+	newStage <- new("stage",
 					   query = iders,
 					   keeps = biMap[["keeps"]],
 					   drops = biMap[["drops"]],
 					   type = "samples")
-	return(newIdentify)
+	return(newStage)
 }

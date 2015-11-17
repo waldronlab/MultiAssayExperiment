@@ -19,10 +19,10 @@ identifyByFeature <- function(MultiAssay, feature, requireall = FALSE){
 	names(logiclist) <- names(featResults)
 	revLogicList <- lapply(logiclist, `!`)
 	dropped <- Map("[", featResults, revLogicList)
-	newIdentify <- new("Identify", 
+	newStage <- new("stage", 
 					   query = feature,
 					   keeps = logiclist,
 					   drops = dropped,
 					   type = "features")
-	return(newIdentify)
+	return(newStage)
 }

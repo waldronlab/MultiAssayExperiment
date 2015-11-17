@@ -28,12 +28,13 @@ stage <- function(MultiAssay, identifier, by = NULL){
 			newDrops <- c(charDrops, rangeFeats)
 			newStage <- new("stage", 
 							query = identifier, 
-							keeps = newKeeps
-							drops = newDrops
+							keeps = newKeeps,
+							drops = newDrops,
 							type = "features")
 			return(newStage)
 		} else if(is(identifer, "GRanges")){
 			## TODO:			overlapsAny(rangeFeats, identifer)
+
 		} else if(is(identifier, "GRangesList")) { 
 			## TODO:		lapply(identifer, function(x) { overlapsAny(rangeFeats, x) } )
 		}

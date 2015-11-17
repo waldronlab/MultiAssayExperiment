@@ -24,14 +24,12 @@
 
 \S4method{names}{MultiAssayExperiment}(x)
 
-\S4method{subset}{MultiAssayExperiment}(x, indicator, method, ...)
+\S4method{subset}{MultiAssayExperiment}(x, indicator, ...)
 }
 \arguments{
 \item{x}{A \code{\link{MultiAssayExperiment}} object.}
 
-\item{indicator}{A \code{logical} or \code{character} vector or \code{Identify} class object to use for subsetting}
-
-\item{method}{A \code{character} vector of length one designating to subset either by samples, features, or assays}
+\item{indicator}{A \code{logical} or \code{character} vector or \code{stage} class object to use for subsetting}
 
 \item{x}{A \code{\link{MultiAssayExperiment}} object}
 
@@ -40,6 +38,8 @@
 \item{x}{A \code{\link{MultiAssayExperiment}} object}
 
 \item{MultiAssay}{A \code{\linkS4class{MultiAssayExperiment}} object}
+
+\item{method}{A \code{character} vector of length one designating to subset either by samples, features, or assays}
 }
 \value{
 A \code{\link[S4Vectors]{SimpleList-class}} object.

@@ -2,17 +2,17 @@
 % Please edit documentation in R/biocMultiAssay-methods.R
 \name{getMap}
 \alias{getMap}
-\title{Convert Identify keeps slot to Map}
+\title{Convert Stage slot "keeps" to Map}
 \usage{
 getMap(object)
 }
 \arguments{
-\item{object}{An \linkS4class{Identify} class object}
+\item{object}{An \linkS4class{stage} class object}
 }
 \value{
 Returns a data.frame representation of samples
 }
 \description{
-Convert Identify keeps slot to Map
+Convert Stage slot "keeps" to Map
 }
 
