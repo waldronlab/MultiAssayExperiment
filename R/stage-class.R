@@ -8,6 +8,7 @@
 #' @slot keeps A \code{list} indicating valid matches in each assay
 #' @slot drops A \code{list} of excluded information due to subsetting
 #' @slot type A \code{character} vector indicating method used to search
+#' @exportClass stage
 setClass("stage", 
 		 representation(query = "ANY",
 						keeps = "list",

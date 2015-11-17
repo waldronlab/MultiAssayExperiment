@@ -3,6 +3,7 @@
 #' @param MultiAssay A \code{\linkS4class{MultiAssayExperiment}}
 #' @param identifer Either a \code{character}, \code{numeric} or \code{logical} vector identifying targets 
 #' @return A \code{\linkS4class{stage}} class object for subsequent subsetting
+#' @export stage
 stage <- function(MultiAssay, identifier, by = NULL){
 	if(by == "samples"){
 		totalSamples <- samples(MultiAssay)
@@ -23,8 +24,9 @@ stage <- function(MultiAssay, identifier, by = NULL){
 		charFeats <- totalFeatures[which(sapply(totalFeatures, class) == "character")]
 		rangeFeats <- totalFeatures[!(names(MultiAssay) %in% names(charFeats))]
 		if(is.character(identifier)){
-			newKeeps <- lapply(charFeats, function(feats) { intersect(identifier, feats) })
-			charDrops <- lapply(charFeats, function(feast) { sort(c(setdiff(identifier, feats), setdiff(feats, identifier))) })
+			charKeeps <- lapply(charFeats, function(feats) { intersect(identifier, feats) })
+			browser()
+			charDrops <- lapply(charFeats, function(feats) { sort(c(setdiff(identifier, feats), setdiff(feats, identifier))) })
 			newDrops <- c(charDrops, rangeFeats)
 			newStage <- new("stage", 
 							query = identifier, 
