@@ -20,7 +20,6 @@ setMethod("features", "GRangesList", function(x) BiocGenerics::unlist(x))
 #' @describeIn features Get all the features for a MultiAssayExperiment
 setMethod("features", "MultiAssayExperiment", function(x) lapply(x@elist, features))
 
-
 #' Sample extractor generic
 #' 
 #' @param x Either an \code{\linkS4class{ExpressionSet}}, \code{\linkS4class{GRangesList}}, \code{\linkS4class{RangedSummarizedExperiment}} or \code{matrix} class object

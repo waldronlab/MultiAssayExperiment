@@ -14,7 +14,7 @@
 #' @param by Stage for subsetting by either samples, features or assays.
 #' @return A \code{\linkS4class{stage}} class object for subsequent subsetting
 #' @export stage
-stage <- function(MultiAssay, identifier, by = NULL){
+stage <- function(MultiAssay, identifier, by = NULL, ...){
   by <- tolower(gsub("s$", "", by, ignore.case = TRUE))
   if(by == "sample"){
     totalSamples <- samples(MultiAssay)
@@ -43,23 +43,26 @@ stage <- function(MultiAssay, identifier, by = NULL){
                       type = "features")
       return(newStage)
     } else if(is(identifer, "GRanges")){
-      ## TODO:		findOverlaps(MultiAssay@elist, identifier)@subjectHits
-		} else if(is(identifier, "GRangesList")) { 
-		  ## rangedFeats <- ranges(MultiAssay)
-			## TODO:		lapply(rangedFeats, function(x) { findOverlaps(x, identifier) } )
-		}
-	} else if(by == "assay"){
-		if(is.character(identifier)){
-			newKeeps <- names(MultiAssay@elist)[identifier]
-			newDrops <- !(names(MultiAssay@elist) %in% newKeeps)
-			newStage <- new("stage", 
-							query = identifier, 
-							keeps = newKeeps,
-							drops = newDrops, 
-							type = "assay")
-			return(newStage)
-		} else {
-			stop("Please specify assays by their name!")
-		}
-	}
+      elist_classes <- sapply(MultiAssay@elist, class)
+      logic_flag <- elist_classes %in% c("GRanges", "GRangesList", "RangedSummarizedExperiment")
+      rangeBased <- Map(subset, MultiAssay@elist, logic_flag)
+      
+      ## TODO: GRanges ---		findOverlaps(MultiAssay@elist, identifier, ...)@subjectHits
+      ## TODO: GRangesList ---		lapply(rangedFeats, function(x) { findOverlaps(x, identifier, ...) } )
+      ## TODO: RangedSummarizedExperiment --- findOverlaps(rowRanges(MultiAssay@elist), identifier, ...)@subjectHits
+    }
+  } else if(by == "assay"){
+    if(is.character(identifier)){
+      newKeeps <- names(MultiAssay@elist)[identifier]
+      newDrops <- !(names(MultiAssay@elist) %in% newKeeps)
+      newStage <- new("stage", 
+                      query = identifier, 
+                      keeps = newKeeps,
+                      drops = newDrops, 
+                      type = "assay")
+      return(newStage)
+    } else {
+      stop("Please specify assays by their name!")
+    }
+  }
 }
