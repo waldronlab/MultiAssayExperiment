@@ -8,11 +8,6 @@
 	return(object@masterPheno[j, ])
 }
 
-.cutMap <- function(map, lid){
-	compdf <- map[!is.na(map[, 2]), ]
-	return(compdf)
-}
-
 .separateMap <- function(object, ids){
 	DFsampleMap <- S4Vectors::DataFrame(object@sampleMap)
 	listDFsampleMap <- toListMap(DFsampleMap, "assayname")

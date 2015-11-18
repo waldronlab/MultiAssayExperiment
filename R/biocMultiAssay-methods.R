@@ -1,16 +1,6 @@
 #' @include elist-class.R MultiAssayExperiment-class.R
 NULL
 
-.assertMultiAssayExperiment <- function(object) {
-    if(!is(object, "MultiAssayExperiment"))
-        stop("'object' needs to be of class 'MultiAssayExperiment'")
-}
-
-.assertScalar <- function(x) {
-    if(!is.vector(x) && length(x) == 1 && !is.list(x))
-        stop("'x' needs to be a scalar")
-}
-
 #' Feature extractor method
 #' 
 #' @param x Either an \code{\linkS4class{ExpressionSet}}, \code{\linkS4class{GRangesList}}, \code{\linkS4class{RangedSummarizedExperiment}} or \code{matrix} class object
@@ -21,10 +11,12 @@ setGeneric("features", function(x) standardGeneric("features"))
 setMethod("features", "ExpressionSet", function(x) Biobase::featureNames(x))
 #' @describeIn features Get a summary of rowRanges for RangedSummarizedExperiment
 setMethod("features", "RangedSummarizedExperiment", function(x) BiocGenerics::unlist(GenomicRanges::rowRanges(x)))
+# names(rowRanges(rse))
 #' @describeIn features Get the rownames of a matrix
 setMethod("features", "matrix", function(x) rownames(x))
 #' @describeIn features Get the summary of ranges for a GRangesList
 setMethod("features", "GRangesList", function(x) BiocGenerics::unlist(x))
+# unlist(sapply(seq_along(grl), FUN = function(x, i) {paste(rep(names(x)[i], length(grl[[i]])), names(grl[[i]]), sep ="///")}, x = grl))
 #' @describeIn features Get all the features for a MultiAssayExperiment
 setMethod("features", "MultiAssayExperiment", function(x) lapply(x@elist, features))
 

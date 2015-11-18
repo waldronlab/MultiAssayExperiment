@@ -116,7 +116,7 @@ setMethod("show", "MultiAssayExperiment", function(object){
 			  ifelse(length(o_len) == 0L, "or", "and"),
 			  ifelse(length(o_len) == 0L, "classes.",
 					 ifelse(length(classes) == 1L, "respective class.", "respective classes.")),
-			  "\n It contains an ") 
+			  "\n Containing an ") 
 		  show(object@elist)
 		  cat("To access slots use: \n elist() - to obtain the", sprintf('"%s"', c_elist), 
 			  "of experiment instances", 
