@@ -11,12 +11,12 @@ setGeneric("features", function(x) standardGeneric("features"))
 setMethod("features", "ExpressionSet", function(x) Biobase::featureNames(x))
 #' @describeIn features Get a summary of rowRanges for RangedSummarizedExperiment
 setMethod("features", "RangedSummarizedExperiment", function(x) BiocGenerics::unlist(GenomicRanges::rowRanges(x)))
-# names(rowRanges(rse))
+# names(rowRanges(x))
 #' @describeIn features Get the rownames of a matrix
 setMethod("features", "matrix", function(x) rownames(x))
 #' @describeIn features Get the summary of ranges for a GRangesList
 setMethod("features", "GRangesList", function(x) BiocGenerics::unlist(x))
-# unlist(sapply(seq_along(grl), FUN = function(x, i) {paste(rep(names(x)[i], length(grl[[i]])), names(grl[[i]]), sep ="///")}, x = grl))
+# unlist(sapply(seq_along(x), FUN = function(grl, i) {paste(rep(names(grl)[i], length(grl[[i]])), names(grl[[i]]), sep ="///")}, grl = x))
 #' @describeIn features Get all the features for a MultiAssayExperiment
 setMethod("features", "MultiAssayExperiment", function(x) lapply(x@elist, features))
 
@@ -35,6 +35,14 @@ setMethod("samples", "matrix", function(object) colnames(object))
 setMethod("samples", "GRangesList", function(object) names(object)) 
 #' @describeIn samples Get all the samples for a MultiAssayExperiment
 setMethod("samples", "MultiAssayExperiment", function(object) lapply(object@elist, samples))
+
+# setGeneric("stage", function(subject, query, ...) standardGeneric("stage"))
+# setMethod("stage", signature("GRanges", "GRanges"), function(subject, query, ...)
+#   names(subject[findOverlaps(subject, query, ...)@subjectHits]))
+# setMethod("stage", signature("GRangesList", "GRanges"), function(subject, query, ...)
+#   	lapply(subject, function(grel) { names(grel[findOverlaps(grel, query, ...)]) } ))
+# setMethod("stage", signature("RangedSummarizedExperiment", "GRanges"), function(subject, query, ...)
+#    names(subject[findOverlaps(rowRanges(subject), query, ...)@subjectHits]))
 
 #' Subset by Sample generic 
 #'

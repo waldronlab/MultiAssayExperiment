@@ -46,7 +46,7 @@ stage <- function(MultiAssay, identifier, by = NULL, ...){
       elist_classes <- sapply(MultiAssay@elist, class)
       logic_flag <- elist_classes %in% c("GRanges", "GRangesList", "RangedSummarizedExperiment")
       rangeBased <- Map(subset, MultiAssay@elist, logic_flag)
-      
+      rangeIdentifiers <- lapply(rangeBased, identify)      
       ## TODO: GRanges ---		findOverlaps(MultiAssay@elist, identifier, ...)@subjectHits
       ## TODO: GRangesList ---		lapply(rangedFeats, function(x) { findOverlaps(x, identifier, ...) } )
       ## TODO: RangedSummarizedExperiment --- findOverlaps(rowRanges(MultiAssay@elist), identifier, ...)@subjectHits
