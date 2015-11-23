@@ -142,6 +142,7 @@ rowRanges <- GRanges(rep(c("chr1", "chr2"), c(2, nrows - 2)),
                      IRanges(floor(runif(nrows, 1e5, 1e6)), width=100),
                      strand=sample(c("+", "-"), nrows, TRUE),
                      feature_id=sprintf("ID\\%03d", 1:nrows))
+names(rowRanges) <- letters[1:5]
 colData <- DataFrame(Treatment=rep(c("ChIP", "Input"), 2),
                      row.names= c("mysnparray1", "mysnparray2", "mysnparray3", "mysnparray4"))
 rse <- SummarizedExperiment(assays=SimpleList(counts=counts),

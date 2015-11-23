@@ -1,3 +1,21 @@
+.subPheno <- function(object, j){
+	return(object@masterPheno[j, ])
+}
+
+.separateMap <- function(object, ids){
+	DFsampleMap <- S4Vectors::DataFrame(object@sampleMap)
+	listDFsampleMap <- toListMap(DFsampleMap, "assayname")
+	browser()
+	listDFsampleMap <- listDFsampleMap[order(names(object@elist))]
+	loglistmatch <- lapply(listDFsampleMap, function(map) { map[,"master"] %in% ids })
+	keeps <- Map(function(x, y) { x[y,] }, listDFsampleMap, loglistmatch)
+	orderIndex <- lapply(keeps, .arrangeMap, ids)
+	orderedKeeps <- Map(function(x, y) { x[y, ] }, keeps, orderIndex)
+	duoMap <- list(keeps = orderedKeeps,
+				   drops = Map(function(x, y) { x[y,] }, listDFsampleMap, lapply(loglistmatch, `!`)))
+	return(duoMap)
+}
+
 .featMap <- function(featList){
 	defeatmap <- lapply(seq_along(featList), FUN = function(i, x) {
 					data.frame(feature = x[[i]],
@@ -32,25 +50,15 @@ stage <- function(MultiAssay, identifier, by = NULL, ...){
     return(newStage)
   } else if(by == "feature"){
     totalFeatures <- features(MultiAssay)
-    if(is.character(identifier)){
-      subsetor <- Map(function(x, y){x %in% y}, totalFeatures, identifier)
-      newKeeps <- .featMap(Map(function(x, y) {x[y]}, totalFeatures, subsetor))
-      newDrops <- .featMap(Map(function(x, y) {x[y]}, totalFeatures, lapply(subsetor, "!")))
-      newStage <- new("stage", 
-                      query = identifier, 
-                      keeps = newKeeps,
-                      drops = newDrops,
-                      type = "features")
-      return(newStage)
-    } else if(is(identifer, "GRanges")){
-      elist_classes <- sapply(MultiAssay@elist, class)
-      logic_flag <- elist_classes %in% c("GRanges", "GRangesList", "RangedSummarizedExperiment")
-      rangeBased <- Map(subset, MultiAssay@elist, logic_flag)
-      rangeIdentifiers <- lapply(rangeBased, identify)      
-      ## TODO: GRanges ---		findOverlaps(MultiAssay@elist, identifier, ...)@subjectHits
-      ## TODO: GRangesList ---		lapply(rangedFeats, function(x) { findOverlaps(x, identifier, ...) } )
-      ## TODO: RangedSummarizedExperiment --- findOverlaps(rowRanges(MultiAssay@elist), identifier, ...)@subjectHits
-    }
+    newKeeps <- stage(MultiAssay, identifier)
+    subsetor <- Map(function(x, y){x %in% y}, totalFeatures, identifier)
+    newDrops <- .featMap(Map(function(x, y) {x[y]}, totalFeatures, lapply(subsetor, "!")))
+    newStage <- new("stage", 
+                    query = identifier, 
+                    keeps = newKeeps,
+                    drops = newDrops,
+                    type = "features")
+    return(newStage)
   } else if(by == "assay"){
     if(is.character(identifier)){
       newKeeps <- names(MultiAssay@elist)[identifier]

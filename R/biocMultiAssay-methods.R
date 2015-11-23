@@ -10,13 +10,12 @@ setGeneric("features", function(x) standardGeneric("features"))
 #' @describeIn features Get the featureNames for ExpressionSet
 setMethod("features", "ExpressionSet", function(x) Biobase::featureNames(x))
 #' @describeIn features Get a summary of rowRanges for RangedSummarizedExperiment
-setMethod("features", "RangedSummarizedExperiment", function(x) BiocGenerics::unlist(GenomicRanges::rowRanges(x)))
-# names(rowRanges(x))
+setMethod("features", "RangedSummarizedExperiment", function(x) names(GenomicRanges::rowRanges(x)))
 #' @describeIn features Get the rownames of a matrix
 setMethod("features", "matrix", function(x) rownames(x))
 #' @describeIn features Get the summary of ranges for a GRangesList
-setMethod("features", "GRangesList", function(x) BiocGenerics::unlist(x))
-# unlist(sapply(seq_along(x), FUN = function(grl, i) {paste(rep(names(grl)[i], length(grl[[i]])), names(grl[[i]]), sep ="///")}, grl = x))
+setMethod("features", "GRangesList", function(x) unlist(sapply(seq_along(x), FUN = function(grl, i)
+  {paste(rep(names(grl)[i], length(grl[[i]])), names(grl[[i]]), sep ="///")}, grl = x)))
 #' @describeIn features Get all the features for a MultiAssayExperiment
 setMethod("features", "MultiAssayExperiment", function(x) lapply(x@elist, features))
 
@@ -36,13 +35,35 @@ setMethod("samples", "GRangesList", function(object) names(object))
 #' @describeIn samples Get all the samples for a MultiAssayExperiment
 setMethod("samples", "MultiAssayExperiment", function(object) lapply(object@elist, samples))
 
-# setGeneric("stage", function(subject, query, ...) standardGeneric("stage"))
-# setMethod("stage", signature("GRanges", "GRanges"), function(subject, query, ...)
-#   names(subject[findOverlaps(subject, query, ...)@subjectHits]))
-# setMethod("stage", signature("GRangesList", "GRanges"), function(subject, query, ...)
-#   	lapply(subject, function(grel) { names(grel[findOverlaps(grel, query, ...)]) } ))
-# setMethod("stage", signature("RangedSummarizedExperiment", "GRanges"), function(subject, query, ...)
-#    names(subject[findOverlaps(rowRanges(subject), query, ...)@subjectHits]))
+#' Find hits by class type
+#' 
+#' @param subject Any valid element from the \code{\linkS4class{elist}} class
+#' @param query Either a \code{character} vector or \code{\linkS4class{GRanges}} object used to search by name or ranges
+#' @exportMethod stage
+setGeneric("stage", function(subject, query, ...) standardGeneric("stage"))
+#' @describeIn stage Find overlaps and return names
+setMethod("stage", signature("GRanges", "GRanges"), function(subject, query, ...)
+ names(subject[findOverlaps(subject, query, ...)@subjectHits]))
+#' @describeIn stageIteratively find overlaps and return names
+setMethod("stage", signature("GRangesList", "GRanges"), function(subject, query, ...)
+ 	lapply(subject, function(grel) { names(grel[findOverlaps(grel, query, ...)]) } ))
+#' @describeIn stage Find overlaps and return names for RangedSummarizedExperiment
+setMethod("stage", signature("RangedSummarizedExperiment", "GRanges"), function(subject, query, ...)
+  names(subject[findOverlaps(rowRanges(subject), query, ...)@subjectHits]))
+setMethod("stage", signature("character", "GRanges"), function(subject, query, ...)
+  NULL)
+#' @describeIn stage Find matching features in ExpressionSet
+setMethod("stage", signature("ExpressionSet", "character"), function(subject, query, ...)
+  intersect(query, features(subject)))
+#' @describeIn stage Find matching features in matrix
+setMethod("stage", signature("matrix", "character"), function(subject, query, ...)
+  intersect(query, features(subject)))
+#' @describeIn stage Find all matching features by character
+setMethod("stage", signature("MultiAssayExperiment", "character"), function(subject, query, ...)
+  lapply(subject, FUN = function(elem) { stage(elem, query, ...) }))
+#' @describeIn stage Find all matching features by GRanges
+setMethod("stage", signature("MultiAssayExperiment", "GRanges"), function(subject, query, ...)
+  lapply(subject, FUN = function(elem) { stage(elem, query, ...) }))
 
 #' Subset by Sample generic 
 #'

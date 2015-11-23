@@ -4,24 +4,6 @@
 	return(newOrd)
 }
 
-.subPheno <- function(object, j){
-	return(object@masterPheno[j, ])
-}
-
-.separateMap <- function(object, ids){
-	DFsampleMap <- S4Vectors::DataFrame(object@sampleMap)
-	listDFsampleMap <- toListMap(DFsampleMap, "assayname")
-	browser()
-	listDFsampleMap <- listDFsampleMap[order(names(object@elist))]
-	loglistmatch <- lapply(listDFsampleMap, function(map) { map[,"master"] %in% ids })
-	keeps <- Map(function(x, y) { x[y,] }, listDFsampleMap, loglistmatch)
-	orderIndex <- lapply(keeps, .arrangeMap, ids)
-	orderedKeeps <- Map(function(x, y) { x[y, ] }, keeps, orderIndex)
-	duoMap <- list(keeps = orderedKeeps,
-				   drops = Map(function(x, y) { x[y,] }, listDFsampleMap, lapply(loglistmatch, `!`)))
-	return(duoMap)
-}
-
 .getLogicalNames <- function(object, ids){
 	listMap <- toListMap(object@sampleMap, "assayname")
 	logn <- lapply(listMap, function(map) { map[, 1] %in% ids } )
