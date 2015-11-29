@@ -1,7 +1,7 @@
 ---
 title: "MultiAssayExperiment toy example"
 author: "Marcel Ramos, Levi Waldron"
-date: `r format(Sys.time(), '%B %d, %Y')`
+date: "`r format(Sys.time(), '%B %d, %Y')`"
 output: 
   html_document: 
     number_sections: yes
