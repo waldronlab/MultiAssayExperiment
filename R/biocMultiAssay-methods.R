@@ -20,7 +20,7 @@ setGeneric("features", function(x) standardGeneric("features"))
 #' @describeIn features Get the featureNames for ExpressionSet
 setMethod("features", "ExpressionSet", function(x) Biobase::featureNames(x))
 #' @describeIn features Get a summary of rowRanges for RangedSummarizedExperiment
-setMethod("features", "RangedSummarizedExperiment", function(x) BiocGenerics::unlist(GenomicRanges::rowRanges(x)))
+setMethod("features", "RangedSummarizedExperiment", function(x) BiocGenerics::unlist(SummarizedExperiment::rowRanges(x)))
 #' @describeIn features Get the rownames of a matrix
 setMethod("features", "matrix", function(x) rownames(x))
 #' @describeIn features Get the summary of ranges for a GRangesList
