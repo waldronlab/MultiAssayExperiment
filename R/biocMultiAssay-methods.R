@@ -1,4 +1,4 @@
-#' @include elist-class.R MultiAssayExperiment-class.R
+#' @include elist-class.R MultiAssayExperiment-class.R stage-class.R
 NULL
 
 #' Feature extractor method
@@ -39,6 +39,7 @@ setMethod("samples", "MultiAssayExperiment", function(object) lapply(object@elis
 #' 
 #' @param subject Any valid element from the \code{\linkS4class{elist}} class
 #' @param query Either a \code{character} vector or \code{\linkS4class{GRanges}} object used to search by name or ranges
+#' @return Names of matched queries
 #' @exportMethod stage
 setGeneric("stage", function(subject, query, ...) standardGeneric("stage"))
 #' @describeIn stage Find overlaps and return names
@@ -143,3 +144,33 @@ setGeneric("getMap", function(object) standardGeneric("getMap"))
 setMethod("getMap", "stage", function(object){
 		  if(object@type == "samples"){ return(.ldmap(object@keeps)) }
 })
+
+#' Names of Experiments 
+#' @param x A \code{\link{stage}} class object
+#' @return A character vector of experiment names
+#' @exportMethod names
+#' @describeIn stage Get the names from the kept elements in the elist
+setMethod("names", "stage", function(x)
+  names(getElement(x, "keeps"))
+)
+
+#' @describeIn stage Get the length of the kept slot 
+setMethod("length", "stage", function(x)
+  length(getElement(x, "keeps"))
+  )
+
+#' Generic Accessor Functions
+#' @param x A \code{\linkS4class{stage}} class object
+#' @return A \code{character} atomic vector
+#' @exportMethod type
+setGeneric("type", function(object) standardGeneric("type"))
+#' @describeIn stage Get the staging type (either by samples, features, assays)
+setMethod("type", "stage", function(object)
+  getElement(object, "type")
+  )
+
+#' @exportMethod query
+setGeneric("query", function(object) standardGeneric("query"))
+#' @describeIn stage Get the identifiers used for staging
+setMethod("query", "stage", function(object)
+  getElement(object, "query"))

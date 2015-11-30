@@ -32,3 +32,23 @@ setClass("stage",
 }
 
 S4Vectors::setValidity2("stage", .validStage)
+
+
+#' Show method for \code{\linkS4class{stage}} class
+#' 
+#' @param object A \code{\linkS4class{stage}} class object
+#' @return A summary of \code{\linkS4class{stage}} class contents 
+#' @exportMethod show
+setMethod("show", "stage", function(object){
+  o_class <- class(object)
+  o_len <- length(object)
+  o_names <- names(object)
+  stage_type <- type(object)
+  o_ids <- query(object)
+  v_len <- vapply(object@keeps, FUN = function(x) {length(x)}, FUN.VALUE = integer(1))
+  cat("A", sprintf('"%s"', o_class), "class object of length", paste0(o_len, ':'),
+      "\nIdentifiers: ")
+  cat(o_ids, sep = ", ")
+  cat("\n Staged by: ", '"', stage_type, '"', sep = "")
+  cat(sprintf('\n [%i] %s: %s %s', seq(o_len), o_names, v_len, stage_type), "\n")
+})

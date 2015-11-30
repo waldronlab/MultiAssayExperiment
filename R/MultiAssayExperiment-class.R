@@ -178,17 +178,17 @@ setMethod("metadata", "MultiAssayExperiment", function(x)
 #' @return An \code{integer} 
 #' @exportMethod length
 #' @describeIn MultiAssayExperiment Get the length of elist 
-setMethod("length", "MultiAssayExperiment", 
-		  function(x) length(getElement(x, "elist"))
-		  )
+setMethod("length", "MultiAssayExperiment", function(x)
+  length(getElement(x, "elist"))
+)
 
 #' Names of Experiments 
 #' @param x A \code{\link{MultiAssayExperiment}} object
 #' @return A character vector of experiment names
 #' @exportMethod names
 #' @describeIn MultiAssayExperiment Get the names of the elist
-setMethod("names", "MultiAssayExperiment", 
-		  function(x) names(getElement(x, "elist"))
-		  )
+setMethod("names", "MultiAssayExperiment", function(x)
+  names(getElement(x, "elist"))
+)
 
 

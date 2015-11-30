@@ -29,10 +29,10 @@ setGeneric("elist", function(x) standardGeneric("elist"))
 #' @param x A \code{list} object
 #' @return An \code{\linkS4class{elist}} class object
 #' @exportMethod elist
-#' @describeIn elist Convert a list to a SimpleList
+#' @describeIn elist Convert a list to a SimpleList to an elist
 setMethod("elist", "list",
 		  function(x) new("elist", S4Vectors::SimpleList(x)))
-#' @describeIn elist Use a SimpleList
+#' @describeIn elist Convert a SimpleList to an elist
 setMethod("elist", "SimpleList",
 		  function(x) new("elist", x))
 
