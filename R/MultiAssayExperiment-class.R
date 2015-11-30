@@ -67,7 +67,7 @@ setClass("MultiAssayExperiment",
 
 ## All sample names in the elist must be in the sampleMap
 .checkSampleNames <- function(object){
-	if(!all.equal(unname(unlist(lapply(object@elist, samples))), 
+	if(!all.equal(unname(unlist(samples(object))), 
 				  object@sampleMap[, "assay"])){
 		return("samples in the elist are not the same as samples in the sampleMap!")
 	}
