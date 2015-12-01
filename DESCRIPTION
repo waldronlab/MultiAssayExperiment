@@ -1,7 +1,7 @@
 Package: biocMultiAssay
 Title: Create Classes and Functions for Managing Multiple Assays on Sets of
     Samples
-Version: 0.1.6
+Version: 0.1.7
 Author: MultiAssay SIG
 Description: Develop an integrative environment where multiple assays are
     managed and preprocessed for genomic data analysis.
@@ -39,6 +39,7 @@ Collate:
     'MultiAssayExperiment-class.R'
     'MultiAssayExperiment.R'
     'TCGA_ov_v2rnaseq.R'
+    'allLM.pw.R'
     'apiDash.R'
     'stage-class.R'
     'biocMultiAssay-methods.R'
@@ -48,6 +49,8 @@ Collate:
     'identifyByFeature.R'
     'identifyBySample.R'
     'key2GRanges.R'
+    'pwplot.R'
+    'stage-class.R'
     'stage.R'
     'subset.R'
     'subsetByAssay.R'
