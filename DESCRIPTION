@@ -50,7 +50,6 @@ Collate:
     'identifyBySample.R'
     'key2GRanges.R'
     'pwplot.R'
-    'stage-class.R'
     'stage.R'
     'subset.R'
     'subsetByAssay.R'
