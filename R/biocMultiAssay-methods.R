@@ -1,4 +1,4 @@
-#' @include elist-class.R MultiAssayExperiment-class.R stage-class.R
+#' @include elist-class.R stage-class.R MultiAssayExperiment-class.R 
 NULL
 
 #' Feature extractor method
@@ -13,9 +13,11 @@ setMethod("features", "ExpressionSet", function(x) Biobase::featureNames(x))
 setMethod("features", "RangedSummarizedExperiment", function(x) names(SummarizedExperiment::rowRanges(x)))
 #' @describeIn features Get the rownames of a matrix
 setMethod("features", "matrix", function(x) rownames(x))
+#' @describeIn features Get the names of a GRanges
+setMethod("features", "GRanges", function(x) names(x))
 #' @describeIn features Get the summary of ranges for a GRangesList
 setMethod("features", "GRangesList", function(x) unlist(sapply(seq_along(x), FUN = function(grl, i)
-  {paste(rep(names(grl)[i], length(grl[[i]])), names(grl[[i]]), sep ="///")}, grl = x)))
+{paste(rep(names(grl)[i], length(grl[[i]])), features(x[[i]]), sep = "///")}, grl = x)))
 #' @describeIn features Get all the features for a MultiAssayExperiment
 setMethod("features", "MultiAssayExperiment", function(x) lapply(x@elist, features))
 
@@ -39,20 +41,20 @@ setMethod("samples", "MultiAssayExperiment", function(object) lapply(object@elis
 #' 
 #' @param subject Any valid element from the \code{\linkS4class{elist}} class
 #' @param query Either a \code{character} vector or \code{\linkS4class{GRanges}} object used to search by name or ranges
+#' @param ... Additional arguments to findOverlaps
 #' @return Names of matched queries
 #' @exportMethod stage
 setGeneric("stage", function(subject, query, ...) standardGeneric("stage"))
 #' @describeIn stage Find overlaps and return names
 setMethod("stage", signature("GRanges", "GRanges"), function(subject, query, ...)
  names(subject[findOverlaps(subject, query, ...)@subjectHits]))
-#' @describeIn stageIteratively find overlaps and return names
+#' @describeIn stage Iteratively find overlaps and return names
 setMethod("stage", signature("GRangesList", "GRanges"), function(subject, query, ...)
  	lapply(subject, function(grel) { names(grel[findOverlaps(grel, query, ...)]) } ))
 #' @describeIn stage Find overlaps and return names for RangedSummarizedExperiment
 setMethod("stage", signature("RangedSummarizedExperiment", "GRanges"), function(subject, query, ...)
   names(subject[findOverlaps(rowRanges(subject), query, ...)@subjectHits]))
-setMethod("stage", signature("character", "GRanges"), function(subject, query, ...)
-  NULL)
+setMethod("stage", signature("character", "GRanges"), function(subject, query, ...) character(0L) )
 #' @describeIn stage Find matching features in ExpressionSet
 setMethod("stage", signature("ExpressionSet", "character"), function(subject, query, ...)
   intersect(query, features(subject)))
@@ -87,7 +89,7 @@ setMethod("subsetSample", "GRangesList", function(x, j) x[i=j])
 #' Subset by Feature method
 #'
 #' @param x Either an \code{\linkS4class{ExpressionSet}}, \code{\linkS4class{GRangesList}}, \code{\linkS4class{RangedSummarizedExperiment}} or \code{matrix} class object
-#' @param j Either a \code{"numeric"}, \code{"character"}, or \code{logical} vector class for subsetting
+#' @param j Either a \code{numeric}, \code{character}, or \code{logical} vector class for subsetting
 #' @param ... Additional arguments to pass
 #' @return Returns a subsetted \code{\linkS4class{MultiAssayExperiment}} object
 #' @export subsetFeature

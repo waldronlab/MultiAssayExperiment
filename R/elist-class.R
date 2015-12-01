@@ -1,4 +1,4 @@
-.getErrors <- function(object, my_fun){
+.getMethErr <- function(object, my_fun){
 	obj_cl <- class(object)
 	e_class <- class(try(get(my_fun)(object), silent = TRUE))
 	if(e_class == "try-error"){
@@ -6,6 +6,16 @@
 		return(msg)
 	}
 	NULL
+}
+
+.getNameErr <- function(object){
+  obj_cl <- class(object)
+  if(obj_cl == "RangedSummarizeExperiment"){
+    if(is.null(names(object))){
+      msg <- paste0("names in RangedSummarizedExperiment are NULL!")
+      return(msg)
+    } else { NULL } 
+  } else { NULL }
 }
 
 ### ==============================================
@@ -40,31 +50,49 @@ setMethod("elist", "SimpleList",
 ## Validity ---------------------------------
 ##
 
-.checkElist <- function(object){
-	if(length(object) != 0L){
-		errors <- character()
-		for(i in seq_along(object)){
-			samp_err <- .getErrors(object[[i]], "samples")
-			if(!is.null(samp_err)){
-				errors <- c(errors, paste0("Element [", i, "] of ", samp_err))
-			}
-			feat_err <- .getErrors(object[[i]], "features")
-			if(!is.null(feat_err)){
-				errors <- c(errors, paste0("Element [", i, "] of ", feat_err))
-			}
-			brack_err <- .getErrors(object[[i]], "[")
-			if(!is.null(brack_err)){
-				errors <- c(errors, paste0("Element [", i, "] of ", brack_err))
-			}
-		}
-		if(length(errors) == 0L){
-			NULL
-		} else { errors }
-	} else { NULL }
+.checkMethods <- function(object){
+  errors <- character()
+  for(i in seq_along(object)){
+    samp_err <- .getMethErr(object[[i]], "samples")
+    if(!is.null(samp_err)){
+      errors <- c(errors, paste0("Element [", i, "] of ", samp_err))
+    }
+    feat_err <- .getMethErr(object[[i]], "features")
+    if(!is.null(feat_err)){
+      errors <- c(errors, paste0("Element [", i, "] of ", feat_err))
+    }
+    brack_err <- .getMethErr(object[[i]], "[")
+    if(!is.null(brack_err)){
+      errors <- c(errors, paste0("Element [", i, "] of ", brack_err))
+    }
+  }
+  if(length(errors) == 0L){
+    NULL
+  } else { errors }
+}
+
+.checkElistNames <- function(object){
+  errors <- character()
+  for(i in seq_along(object)){
+    name_err <- .getNameErr(object[[i]])
+    if(!is.null(name_err)){
+      errors <- c(errors, paste0("[", i, "] Element", name_err))
+    }
+  }
+  if(any(duplicated(names(object)))){
+    msg <- paste("Non-unique names provided!")
+    errors <- c(errors, msg)
+  } 
+  if(length(errors) == 0L){
+    NULL
+  } else { errors }
 }
 
 .validElist <- function(object){
-	.checkElist(object)
+  if(length(object) != 0L){
+  c(.checkMethods(object),
+    .checkElistNames(object))
+  }
 }
 
 ##  Make sure elist is valid before checking all of the sample names 
