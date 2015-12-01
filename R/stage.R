@@ -31,8 +31,8 @@
 #' @param by Stage for subsetting by either samples, features or assays.
 #' @return A \code{\linkS4class{stage}} class object for subsequent subsetting
 #' @export stage
-stage <- function(MultiAssay, identifier, by = NULL, ...){
-  by <- tolower(gsub("s$", "", by, ignore.case = TRUE))
+stage <- function(MultiAssay, identifier, by = character(), ...){
+  by <- tolower(gsub("s$", "", x = by, ignore.case = TRUE))
   if(by == "sample"){
     totalSamples <- samples(MultiAssay)
     if(is.numeric(identifier)){
