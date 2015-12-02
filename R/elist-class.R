@@ -8,11 +8,18 @@
 	NULL
 }
 
+createNames <- function(object){
+  for(i in seq_along(object)){
+   names(object[[i]]) <- 1:length(grl[[i]]) 
+  }
+  return(object)
+}
+
 .getNameErr <- function(object){
   obj_cl <- class(object)
-  if(obj_cl == "RangedSummarizeExperiment"){
+  if(obj_cl == "GRangesList"){
     if(is.null(names(object))){
-      msg <- paste0("names in RangedSummarizedExperiment are NULL!")
+      msg <- paste("names in", obj_cl, "are NULL!")
       return(msg)
     } else { NULL } 
   } else { NULL }

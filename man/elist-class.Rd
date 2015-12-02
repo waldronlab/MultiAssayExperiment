@@ -24,8 +24,8 @@ Convert to \code{\link[S4Vectors]{SimpleList-class}}
 }
 \section{Methods (by generic)}{
 \itemize{
-\item \code{elist}: Convert a list to a SimpleList
+\item \code{elist}: Convert a list to a SimpleList to an elist
 
-\item \code{elist}: Use a SimpleList
+\item \code{elist}: Convert a SimpleList to an elist
 }}
 

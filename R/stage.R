@@ -2,6 +2,10 @@
 	return(object@masterPheno[j, ])
 }
 
+.outersect <- function(x, y){
+  c(setdiff(x, y), setdiff(y, x))
+}
+
 .separateMap <- function(object, ids){
 	DFsampleMap <- S4Vectors::DataFrame(object@sampleMap)
 	listDFsampleMap <- toListMap(DFsampleMap, "assayname")
@@ -28,28 +32,30 @@
 #' 
 #' @param MultiAssay A \code{\linkS4class{MultiAssayExperiment}}
 #' @param identifer Either a \code{character}, \code{numeric} or \code{logical} vector identifying targets 
-#' @param by Stage for subsetting by either samples, features or assays.
+#' @param method Prepare/Stage for subsetting using samples, features or assays.
 #' @return A \code{\linkS4class{stage}} class object for subsequent subsetting
 #' @export stage
-stage <- function(MultiAssay, identifier, by = character(), ...){
-  by <- tolower(gsub("s$", "", x = by, ignore.case = TRUE))
-  if(by == "sample"){
+stage <- function(MultiAssay, identifier, method = character(), ...){
+  method <- match.arg(method, c("samples", "features", "assays"))
+  if(method == "samples"){
     totalSamples <- samples(MultiAssay)
-    if(is.numeric(identifier)){
-      iders <- rownames(.subPheno(MultiAssay, identifier))
+    if(!is.numeric(identifier) && !all(identifier %in% rownames(myMultiAssay@masterPheno))){
+      iders <- intersect(identifier, rownames(MultiAssay@masterPheno))
+      notUsed <- setdiff(identifier, rownames(MultiAssay@masterPheno))
+      warning("Non-matched identifers will be dropped! : ", notUsed)
     } else {
-      iders <- .subPheno(MultiAssay, identifier)
+    iders <- rownames(.subPheno(MultiAssay, identifier))
     }
     biMap <- .separateMap(MultiAssay, iders)
     newStage <- new("stage",
-                    query = iders,
+                    query = identifier,
                     keeps = biMap[["keeps"]],
                     drops = biMap[["drops"]],
                     type = "samples")
     return(newStage)
-  } else if(by == "feature"){
+  } else if(method == "features"){
     totalFeatures <- features(MultiAssay)
-    newKeeps <- stage(MultiAssay, identifier)
+    newKeeps <- getHits(MultiAssay, identifier)
     subsetor <- Map(function(x, y){x %in% y}, totalFeatures, identifier)
     newDrops <- .featMap(Map(function(x, y) {x[y]}, totalFeatures, lapply(subsetor, "!")))
     newStage <- new("stage", 
@@ -58,7 +64,7 @@ stage <- function(MultiAssay, identifier, by = character(), ...){
                     drops = newDrops,
                     type = "features")
     return(newStage)
-  } else if(by == "assay"){
+  } else if(method == "assays"){
     if(is.character(identifier)){
       newKeeps <- names(MultiAssay@elist)[identifier]
       newDrops <- !(names(MultiAssay@elist) %in% newKeeps)

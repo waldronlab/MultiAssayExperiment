@@ -22,7 +22,7 @@ subsetFeature(x, j, ...)
 \arguments{
 \item{x}{Either an \code{\linkS4class{ExpressionSet}}, \code{\linkS4class{GRangesList}}, \code{\linkS4class{RangedSummarizedExperiment}} or \code{matrix} class object}
 
-\item{j}{Either a \code{"numeric"}, \code{"character"}, or \code{logical} vector class for subsetting}
+\item{j}{Either a \code{numeric}, \code{character}, or \code{logical} vector class for subsetting}
 
 \item{...}{Additional arguments to pass}
 }

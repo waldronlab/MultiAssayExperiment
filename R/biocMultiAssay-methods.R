@@ -43,30 +43,30 @@ setMethod("samples", "MultiAssayExperiment", function(object) lapply(object@elis
 #' @param query Either a \code{character} vector or \code{\linkS4class{GRanges}} object used to search by name or ranges
 #' @param ... Additional arguments to findOverlaps
 #' @return Names of matched queries
-#' @exportMethod stage
-setGeneric("stage", function(subject, query, ...) standardGeneric("stage"))
-#' @describeIn stage Find overlaps and return names
-setMethod("stage", signature("GRanges", "GRanges"), function(subject, query, ...)
+#' @exportMethod getHits
+setGeneric("getHits", function(subject, query, ...) standardGeneric("getHits"))
+#' @describeIn getHits Find overlaps and return names
+setMethod("getHits", signature("GRanges", "GRanges"), function(subject, query, ...)
  names(subject[findOverlaps(subject, query, ...)@subjectHits]))
-#' @describeIn stage Iteratively find overlaps and return names
-setMethod("stage", signature("GRangesList", "GRanges"), function(subject, query, ...)
+#' @describeIn getHits Iteratively find overlaps and return names
+setMethod("getHits", signature("GRangesList", "GRanges"), function(subject, query, ...)
  	lapply(subject, function(grel) { names(grel[findOverlaps(grel, query, ...)]) } ))
-#' @describeIn stage Find overlaps and return names for RangedSummarizedExperiment
-setMethod("stage", signature("RangedSummarizedExperiment", "GRanges"), function(subject, query, ...)
+#' @describeIn getHits Find overlaps and return names for RangedSummarizedExperiment
+setMethod("getHits", signature("RangedSummarizedExperiment", "GRanges"), function(subject, query, ...)
   names(subject[findOverlaps(rowRanges(subject), query, ...)@subjectHits]))
-setMethod("stage", signature("character", "GRanges"), function(subject, query, ...) character(0L) )
-#' @describeIn stage Find matching features in ExpressionSet
-setMethod("stage", signature("ExpressionSet", "character"), function(subject, query, ...)
+setMethod("getHits", signature("character", "GRanges"), function(subject, query, ...) character(0L) )
+#' @describeIn getHits Find matching features in ExpressionSet
+setMethod("getHits", signature("ExpressionSet", "character"), function(subject, query, ...)
   intersect(query, features(subject)))
-#' @describeIn stage Find matching features in matrix
-setMethod("stage", signature("matrix", "character"), function(subject, query, ...)
+#' @describeIn getHits Find matching features in matrix
+setMethod("getHits", signature("matrix", "character"), function(subject, query, ...)
   intersect(query, features(subject)))
-#' @describeIn stage Find all matching features by character
-setMethod("stage", signature("MultiAssayExperiment", "character"), function(subject, query, ...)
-  lapply(subject, FUN = function(elem) { stage(elem, query, ...) }))
-#' @describeIn stage Find all matching features by GRanges
-setMethod("stage", signature("MultiAssayExperiment", "GRanges"), function(subject, query, ...)
-  lapply(subject, FUN = function(elem) { stage(elem, query, ...) }))
+#' @describeIn getHits Find all matching features by character
+setMethod("getHits", signature("MultiAssayExperiment", "character"), function(subject, query, ...)
+  lapply(subject, FUN = function(elem) { getHits(elem, query, ...) }))
+#' @describeIn getHits Find all matching features by GRanges
+setMethod("getHits", signature("MultiAssayExperiment", "GRanges"), function(subject, query, ...)
+  lapply(subject, FUN = function(elem) { getHits(elem, query, ...) }))
 
 #' Subset by Sample generic 
 #'

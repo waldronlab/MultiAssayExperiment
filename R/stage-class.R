@@ -45,7 +45,7 @@ setMethod("show", "stage", function(object){
   o_names <- names(object)
   stage_type <- type(object)
   o_ids <- query(object)
-  v_len <- vapply(object@keeps, FUN = function(x) {length(x)}, FUN.VALUE = integer(1))
+  v_len <- vapply(object@keeps, FUN = function(x) {nrow(x)}, FUN.VALUE = integer(1))
   cat("A", sprintf('"%s"', o_class), "class object of length", paste0(o_len, ':'),
       "\nIdentifiers: ")
   cat(o_ids, sep = ", ")

@@ -4,10 +4,12 @@
 \alias{stage}
 \title{Stage by Samples, Features, or Assays}
 \usage{
-stage(MultiAssay, identifier, by = NULL)
+stage(MultiAssay, identifier, method = character(), ...)
 }
 \arguments{
 \item{MultiAssay}{A \code{\linkS4class{MultiAssayExperiment}}}
+
+\item{method}{Prepare/Stage for subsetting using samples, features or assays.}
 
 \item{identifer}{Either a \code{character}, \code{numeric} or \code{logical} vector identifying targets}
 }

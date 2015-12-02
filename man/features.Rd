@@ -4,6 +4,7 @@
 \name{features}
 \alias{features}
 \alias{features,ExpressionSet-method}
+\alias{features,GRanges-method}
 \alias{features,GRangesList-method}
 \alias{features,MultiAssayExperiment-method}
 \alias{features,RangedSummarizedExperiment-method}
@@ -17,6 +18,8 @@ features(x)
 \S4method{features}{RangedSummarizedExperiment}(x)
 
 \S4method{features}{matrix}(x)
+
+\S4method{features}{GRanges}(x)
 
 \S4method{features}{GRangesList}(x)
 
@@ -38,6 +41,8 @@ Feature extractor method
 \item \code{RangedSummarizedExperiment}: Get a summary of rowRanges for RangedSummarizedExperiment
 
 \item \code{matrix}: Get the rownames of a matrix
+
+\item \code{GRanges}: Get the names of a GRanges
 
 \item \code{GRangesList}: Get the summary of ranges for a GRangesList
 

@@ -21,6 +21,16 @@
 	return(do.call(rbind, dfmap))
 }
 
+.FixElemNames <- function(object){
+  obj_cl <- class(object)
+  if(obj_cl == "GRangesList"){
+    if(is.null(names(object[[1]]))){
+      object <- createNames(object)
+    } 
+  } else { object } 
+  return(object)
+}
+
 .generateMap <- function(mPheno, exlist){
 	samps <- lapply(exlist, samples)
 	listM <- lapply(seq_along(samps), function(i, x) {data.frame(assay = x[[i]], assayname = names(x)[i], row.names = NULL, stringsAsFactors = FALSE) }, x = samps)
@@ -47,6 +57,7 @@
 #' @return A \code{MultiAssayExperiment} data object that stores experiment and phenotype data.
 #' @export MultiAssayExperiment
 MultiAssayExperiment <- function(elist = list(), masterPheno = data.frame(), sampleMap = data.frame(), drops = list()){
+  elist <- lapply(elist, .FixElemNames)
 	if(!all(c(length(sampleMap) == 0L, length(masterPheno) == 0L, length(elist) == 0L))){
 		if((length(sampleMap) == 0L) & (length(masterPheno) == 0L)){
 			allsamps <- unique(unlist(lapply(elist, samples)))
