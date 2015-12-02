@@ -5,9 +5,9 @@
 #' @param xtx a function that transforms the independent variable
 #' @param ytx a function that transforms the dependent variable
 #' @return a list with components 'mods' (lm results) and 'tslopes' (t stats for slope)
-#' @export allLM.pw
+#' @export allLM_pw
 
-allLM.pw = function(fmla, mae, xtx=force, ytx=force) {
+allLM_pw = function(fmla, mae, xtx=force, ytx=force) {
 #
 # formula specifies dependent and independent assays
 # form all regressions of ytx(dep) on xtx(indep) for all
