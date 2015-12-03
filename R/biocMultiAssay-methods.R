@@ -50,23 +50,33 @@ setMethod("getHits", signature("GRanges", "GRanges"), function(subject, query, .
  names(subject[findOverlaps(subject, query, ...)@subjectHits]))
 #' @describeIn getHits Iteratively find overlaps and return names
 setMethod("getHits", signature("GRangesList", "GRanges"), function(subject, query, ...)
- 	lapply(subject, function(grel) { names(grel[findOverlaps(grel, query, ...)]) } ))
+ 	lapply(subject, function(grel) { names(grel[findOverlaps(grel, query, ...)@subjectHits]) } ))
+#' @describeIn getHits Find matching features from GRangesList
+setMethod("getHits", signature("GRangesList", "character"), function(subject, query, ...)
+  intersect(query, features(subject)))
 #' @describeIn getHits Find overlaps and return names for RangedSummarizedExperiment
 setMethod("getHits", signature("RangedSummarizedExperiment", "GRanges"), function(subject, query, ...)
   names(subject[findOverlaps(rowRanges(subject), query, ...)@subjectHits]))
+#' @describeIn getHits Find matching features from RangedSummarizedExperiment
+setMethod("getHits", signature("RangedSummarizedExperiment", "character"), function(subject, query, ...)
+  intersect(query, features(subject)))
 setMethod("getHits", signature("character", "GRanges"), function(subject, query, ...) character(0L) )
 #' @describeIn getHits Find matching features in ExpressionSet
 setMethod("getHits", signature("ExpressionSet", "character"), function(subject, query, ...)
   intersect(query, features(subject)))
+setMethod("getHits", signature("ExpressionSet", "GRanges"), function(subject, query, ...)
+  intersect(features(query), features(subject)))
 #' @describeIn getHits Find matching features in matrix
 setMethod("getHits", signature("matrix", "character"), function(subject, query, ...)
   intersect(query, features(subject)))
+setMethod("getHits", signature("matrix", "GRanges"), function(subject, query, ...)
+  intersect(features(query), features(subject)))
 #' @describeIn getHits Find all matching features by character
 setMethod("getHits", signature("MultiAssayExperiment", "character"), function(subject, query, ...)
-  lapply(subject, FUN = function(elem) { getHits(elem, query, ...) }))
+  lapply(subject@elist, FUN = function(elem) { getHits(elem, query, ...) }))
 #' @describeIn getHits Find all matching features by GRanges
 setMethod("getHits", signature("MultiAssayExperiment", "GRanges"), function(subject, query, ...)
-  lapply(subject, FUN = function(elem) { getHits(elem, query, ...) }))
+  lapply(subject@elist, FUN = function(elem) { getHits(elem, query, ...) }))
 
 #' Subset by Sample generic 
 #'
