@@ -55,7 +55,7 @@ setMethod("show", "stage", function(object){
   o_len <- length(object)
   o_names <- names(object)
   stage_type <- type(object)
-  o_ids <- query(object)
+  o_ids <- features(query(object))
   #  v_len <- .getVLen(object)
   if(stage_type != "assays"){
     my_fun <- nrow

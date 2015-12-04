@@ -7,6 +7,8 @@ NULL
 #' @return Returns either rownames or featureNames
 #' @exportMethod features
 setGeneric("features", function(x) standardGeneric("features"))
+#' @describeIn features Return character if character
+setMethod("features", "character", function(x) x)
 #' @describeIn features Get the featureNames for ExpressionSet
 setMethod("features", "ExpressionSet", function(x) Biobase::featureNames(x))
 #' @describeIn features Get a summary of rowRanges for RangedSummarizedExperiment
@@ -184,4 +186,5 @@ setMethod("type", "stage", function(object)
 setGeneric("query", function(object) standardGeneric("query"))
 #' @describeIn stage Get the identifiers used for staging
 setMethod("query", "stage", function(object)
-  getElement(object, "query"))
+  getElement(object, "query")
+)
