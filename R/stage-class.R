@@ -56,11 +56,19 @@ setMethod("show", "stage", function(object){
   o_names <- names(object)
   stage_type <- type(object)
   o_ids <- query(object)
-#  v_len <- .getVLen(object)
-  v_len <- vapply(object@keeps, FUN = function(x) {nrow(x)}, FUN.VALUE = integer(1))
+  #  v_len <- .getVLen(object)
+  if(stage_type != "assays"){
+    my_fun <- nrow
+  } else {
+    my_fun <- function(logic){
+      if(logic) "keep"
+      else "drop"
+    }
+  }
+  v_ops <- sapply(object@keeps, FUN = function(x) {my_fun(x)})
   cat("A", sprintf('"%s"', o_class), "class object of length", paste0(o_len, ':'),
       "\nQuery: ")
   cat(o_ids, sep = ", ")
   cat("\n Staged by: ", '"', stage_type, '"', sep = "")
-  cat(sprintf('\n [%i] %s: %s %s', seq(o_len), o_names, v_len, ifelse(v_len == 1L, gsub("s$", "", stage_type), stage_type), "\n"))
+  cat(sprintf('\n [%i] %s: %s', seq(o_len), o_names, paste(v_ops, if(is.numeric(v_ops)){ifelse(v_ops == 1L, gsub("s$", "", stage_type), stage_type)}), "\n"))
 })

@@ -80,7 +80,7 @@ stage <- function(MultiAssay, identifier, method = character(), ...){
                     query = identifier, 
                     keeps = newKeeps,
                     drops = newDrops, 
-                    type = "assay")
+                    type = "assays")
   }
   return(newStage)
 }
