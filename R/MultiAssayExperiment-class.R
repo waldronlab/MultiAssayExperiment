@@ -14,7 +14,7 @@
 setClass("MultiAssayExperiment",
 		 slots = list(
 					  elist="elist",
-					  masterPheno = "data.frame",
+					  masterPheno = "DataFrame",
 					  sampleMap = "data.frame",
 					  metadata = "ANY",
 					  drops = "list"

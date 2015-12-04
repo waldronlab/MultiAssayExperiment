@@ -1,3 +1,15 @@
+.getVLen <- function(obj){
+  list_ob <- S4Vectors::split(obj@keeps, obj@keeps[["assayname"]])
+  browser()
+  sapply(seq_along(list_ob), function(i, x) {
+    if(is.na(x[[i]][["feature"]])){
+      0L
+    } else {
+      nrow(x[[i]]) 
+    }
+  }, x = list_ob)
+}
+
 ### ==============================================
 ### Stage class 
 ### ==============================================
@@ -33,7 +45,6 @@ setClass("stage",
 
 S4Vectors::setValidity2("stage", .validStage)
 
-
 #' Show method for \code{\linkS4class{stage}} class
 #' 
 #' @param object A \code{\linkS4class{stage}} class object
@@ -45,9 +56,10 @@ setMethod("show", "stage", function(object){
   o_names <- names(object)
   stage_type <- type(object)
   o_ids <- query(object)
+#  v_len <- .getVLen(object)
   v_len <- vapply(object@keeps, FUN = function(x) {nrow(x)}, FUN.VALUE = integer(1))
   cat("A", sprintf('"%s"', o_class), "class object of length", paste0(o_len, ':'),
-      "\nIdentifiers: ")
+      "\nQuery: ")
   cat(o_ids, sep = ", ")
   cat("\n Staged by: ", '"', stage_type, '"', sep = "")
   cat(sprintf('\n [%i] %s: %s %s', seq(o_len), o_names, v_len, stage_type), "\n")

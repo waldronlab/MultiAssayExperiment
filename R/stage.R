@@ -20,12 +20,15 @@
 }
 
 .featMap <- function(featList){
-	defeatmap <- lapply(seq_along(featList), FUN = function(i, x) {
-					data.frame(feature = x[[i]],
-							   assayname = names(x)[i],
-							   row.names = NULL,
-							   stringsAsFactors = FALSE) }, x = featList)
-	return(do.call(rbind, defeatmap))
+  defeatmap <- lapply(seq_along(featList), FUN = function(i, x) {
+    if(length(x[[i]])==0L){ 
+      S4Vectors::DataFrame(feature = NA) # , assayname = names(x)[i])
+    } else {
+      S4Vectors::DataFrame(feature = x[[i]]) # , assayname = Rle(names(x)[i]))
+    }
+  }, x = featList)
+  names(defeatmap) <- names(featList)
+  return(defeatmap)
 }
 
 #' Stage by Samples, Features, or Assays
@@ -44,7 +47,7 @@ stage <- function(MultiAssay, identifier, method = character(), ...){
       notUsed <- setdiff(identifier, rownames(MultiAssay@masterPheno))
       warning("Non-matched identifers will be dropped! : ", notUsed)
     } else {
-    iders <- rownames(.subPheno(MultiAssay, identifier))
+      iders <- rownames(.subPheno(MultiAssay, identifier))
     }
     biMap <- .separateMap(MultiAssay, iders)
     newStage <- new("stage",
@@ -52,30 +55,32 @@ stage <- function(MultiAssay, identifier, method = character(), ...){
                     keeps = biMap[["keeps"]],
                     drops = biMap[["drops"]],
                     type = "samples")
-    return(newStage)
   } else if(method == "features"){
     totalFeatures <- features(MultiAssay)
-    newKeeps <- getHits(MultiAssay, identifier)
-    subsetor <- Map(function(x, y){x %in% y}, totalFeatures, identifier)
-    newDrops <- .featMap(Map(function(x, y) {x[y]}, totalFeatures, lapply(subsetor, "!")))
+    subsetor <- getHits(MultiAssay, identifier)
+    newDrops <- .featMap(Map(function(x, y){.outersect(x, y)}, subsetor, totalFeatures))
+    newKeeps <- .featMap(subsetor)
     newStage <- new("stage", 
                     query = identifier, 
                     keeps = newKeeps,
                     drops = newDrops,
                     type = "features")
-    return(newStage)
   } else if(method == "assays"){
-    if(is.character(identifier)){
-      newKeeps <- names(MultiAssay@elist)[identifier]
-      newDrops <- !(names(MultiAssay@elist) %in% newKeeps)
-      newStage <- new("stage", 
-                      query = identifier, 
-                      keeps = newKeeps,
-                      drops = newDrops, 
-                      type = "assay")
-      return(newStage)
-    } else {
-      stop("Please specify assays by their name!")
+    if(!all(identifier %in% names(MultiAssay))){
+      stop("Invalid experiment names!")
     }
+    if(is.character(identifier)){
+      newKeeps <- as.list(names(MultiAssay) %in% identifier)
+    } else if(is.numeric(identifier)){
+      newKeeps <- as.list(names(MultiAssay) %in% names(MultiAssay)[identifier])
+    }
+    names(newKeeps) <- names(MultiAssay)
+    newDrops <- lapply(newKeeps, `!`) 
+    newStage <- new("stage", 
+                    query = identifier, 
+                    keeps = newKeeps,
+                    drops = newDrops, 
+                    type = "assay")
   }
+  return(newStage)
 }

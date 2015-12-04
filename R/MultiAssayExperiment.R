@@ -21,6 +21,14 @@
 	return(do.call(rbind, dfmap))
 }
 
+.ldmap2 <- function(listmap){
+  DFmap <- lapply(seq_along(listmap), FUN = function(i, x){
+    S4Vectors::DataFrame(master = x[[i]][, 1],
+                         assay = x[[i]][, 2],
+                         assayname = names(x)[i])}, x = listmap)
+  return(do.call(S4Vectors::rbind, DFmap))
+}
+
 .FixElemNames <- function(object){
   obj_cl <- class(object)
   if(obj_cl == "GRangesList"){

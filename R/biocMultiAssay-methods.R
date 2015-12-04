@@ -16,8 +16,7 @@ setMethod("features", "matrix", function(x) rownames(x))
 #' @describeIn features Get the names of a GRanges
 setMethod("features", "GRanges", function(x) names(x))
 #' @describeIn features Get the summary of ranges for a GRangesList
-setMethod("features", "GRangesList", function(x) unlist(sapply(seq_along(x), FUN = function(grl, i)
-{paste(rep(names(grl)[i], length(grl[[i]])), features(x[[i]]), sep = "///")}, grl = x)))
+setMethod("features", "GRangesList", function(x) names(unlist(x, use.names = FALSE)))
 #' @describeIn features Get all the features for a MultiAssayExperiment
 setMethod("features", "MultiAssayExperiment", function(x) lapply(x@elist, features))
 
@@ -50,7 +49,7 @@ setMethod("getHits", signature("GRanges", "GRanges"), function(subject, query, .
  names(subject[findOverlaps(subject, query, ...)@subjectHits]))
 #' @describeIn getHits Iteratively find overlaps and return names
 setMethod("getHits", signature("GRangesList", "GRanges"), function(subject, query, ...)
- 	lapply(subject, function(grel) { names(grel[findOverlaps(grel, query, ...)@subjectHits]) } ))
+  names(unlist(subject, use.names = FALSE))[findOverlaps(subject, query, ...)@subjectHits])
 #' @describeIn getHits Find matching features from GRangesList
 setMethod("getHits", signature("GRangesList", "character"), function(subject, query, ...)
   intersect(query, features(subject)))
@@ -166,10 +165,10 @@ setMethod("names", "stage", function(x)
   names(getElement(x, "keeps"))
 )
 
-#' @describeIn stage Get the length of the kept slot 
+#' @describeIn stage Get the number of assays from kept slot 
 setMethod("length", "stage", function(x)
   length(getElement(x, "keeps"))
-  )
+)
 
 #' Generic Accessor Functions
 #' @param x A \code{\linkS4class{stage}} class object
