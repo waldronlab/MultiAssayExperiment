@@ -62,5 +62,5 @@ setMethod("show", "stage", function(object){
       "\nQuery: ")
   cat(o_ids, sep = ", ")
   cat("\n Staged by: ", '"', stage_type, '"', sep = "")
-  cat(sprintf('\n [%i] %s: %s %s', seq(o_len), o_names, v_len, stage_type), "\n")
+  cat(sprintf('\n [%i] %s: %s %s', seq(o_len), o_names, v_len, ifelse(v_len == 1L, gsub("s$", "", stage_type), stage_type), "\n"))
 })

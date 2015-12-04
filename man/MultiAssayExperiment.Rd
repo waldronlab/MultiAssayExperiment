@@ -5,13 +5,13 @@
 \title{Create a MultiAssayExperiment object 
 \code{MultiAssayExperiment} returns a \code{\linkS4class{MultiAssayExperiment}} object}
 \usage{
-MultiAssayExperiment(elist = list(), masterPheno = data.frame(),
+MultiAssayExperiment(elist = list(), masterPheno = S4Vectors::DataFrame(),
   sampleMap = data.frame(), drops = list())
 }
 \arguments{
 \item{elist}{A \code{list} of all combined experiments}
 
-\item{masterPheno}{A \code{data.frame} of the phenotype data for all participants.}
+\item{masterPheno}{A \code{\link[S4Vectors]{DataFrame-class}} of the phenotype data for all participants.}
 
 \item{sampleMap}{A \code{data.frame} of sample identifiers, assay samples, and assay names.}
 

@@ -40,17 +40,20 @@
 }
 
 .generateMap <- function(mPheno, exlist){
-	samps <- lapply(exlist, samples)
-	listM <- lapply(seq_along(samps), function(i, x) {data.frame(assay = x[[i]], assayname = names(x)[i], row.names = NULL, stringsAsFactors = FALSE) }, x = samps)
-	full_map <- do.call(rbind, listM)
-	master <- rownames(mPheno)[match(full_map$assay, rownames(mPheno))]
-	autoMap <- cbind(master, full_map)
-	if(any(is.na(autoMap$master))){
-		notFound <- autoMap[is.na(autoMap$master),]
-		warning("Data from rows:", sprintf("\n %s - %s", notFound[, 2], notFound[, 3]), "\ndropped due to missing phenotype data!")
-	}
-	autoMap <- autoMap[!is.na(autoMap$master),]
-	return(autoMap)
+  samps <- lapply(exlist, samples)
+  listM <- lapply(seq_along(samps), function(i, x) {data.frame(assay = x[[i]], assayname = names(x)[i], row.names = NULL, stringsAsFactors = FALSE)}, x = samps)
+  #	listM <- lapply(seq_along(samps), function(i, x) {S4Vectors::DataFrame(assay = x[[i]], assayname = names(x)[i])}, x = samps)
+  #	full_map <- do.call(S4Vectors::rbind, listM)
+  full_map <- do.call(rbind, listM)
+  master <- rownames(mPheno)[match(full_map$assay, rownames(mPheno))]
+  autoMap <- cbind(master, full_map)
+  #	autoMap <- S4Vectors::cbind(DataFrame(master), full_map)
+  if(any(is.na(autoMap$master))){
+    notFound <- autoMap[is.na(autoMap$master),]
+    warning("Data from rows:", sprintf("\n %s - %s", notFound[, 2], notFound[, 3]), "\ndropped due to missing phenotype data!")
+  }
+  autoMap <- autoMap[!is.na(autoMap$master),]
+  return(autoMap)
 }
 
 #' Create a MultiAssayExperiment object 
@@ -59,17 +62,18 @@
 #' This function combines multiple data sources specific to one disease by matching samples. 
 #' 
 #' @param elist A \code{list} of all combined experiments
-#' @param masterPheno A \code{data.frame} of the phenotype data for all participants.
+#' @param masterPheno A \code{\link[S4Vectors]{DataFrame-class}} of the phenotype data for all participants.
 #' @param sampleMap A \code{data.frame} of sample identifiers, assay samples, and assay names.
 #' @param drops A \code{list} of unmatched information (included after subsetting)   
 #' @return A \code{MultiAssayExperiment} data object that stores experiment and phenotype data.
 #' @export MultiAssayExperiment
-MultiAssayExperiment <- function(elist = list(), masterPheno = data.frame(), sampleMap = data.frame(), drops = list()){
+MultiAssayExperiment <- function(elist = list(), masterPheno = S4Vectors::DataFrame(), sampleMap = data.frame(), drops = list()){
   elist <- lapply(elist, .FixElemNames)
 	if(!all(c(length(sampleMap) == 0L, length(masterPheno) == 0L, length(elist) == 0L))){
 		if((length(sampleMap) == 0L) & (length(masterPheno) == 0L)){
 			allsamps <- unique(unlist(lapply(elist, samples)))
-			masterPheno <- data.frame(pheno1 = rep(NA, length(allsamps)), row.names = allsamps, stringsAsFactors = FALSE)
+			masterPheno <- S4Vectors::DataFrame(pheno1 = rep(NA, length(allsamps)), row.names = allsamps)
+			browser()
 			sampleMap <- .generateMap(masterPheno, elist)
 		} else if((length(sampleMap) == 0L) & !(length(masterPheno) == 0L)){
 			warning("sampleMap not provided! Map will be created from data provided.")
@@ -77,9 +81,8 @@ MultiAssayExperiment <- function(elist = list(), masterPheno = data.frame(), sam
 			validAssays <- split(sampleMap[["assay"]], sampleMap$assayname)
 			elist <- Map(subsetSample, elist, validAssays) 
 		}
-	} else {
-		newMultiAssay <- new("MultiAssayExperiment", elist = elist(elist), masterPheno = masterPheno, sampleMap = sampleMap)
-	}
+	} 
+  if(!is(masterPheno, "DataFrame")){masterPheno <- S4Vectors::DataFrame(masterPheno)}
 	newMultiAssay <- new("MultiAssayExperiment",
 						 elist = elist(elist),
 						 masterPheno = masterPheno,

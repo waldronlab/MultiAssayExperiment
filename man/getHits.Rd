@@ -6,9 +6,11 @@
 \alias{getHits,ExpressionSet,character-method}
 \alias{getHits,GRanges,GRanges-method}
 \alias{getHits,GRangesList,GRanges-method}
+\alias{getHits,GRangesList,character-method}
 \alias{getHits,MultiAssayExperiment,GRanges-method}
 \alias{getHits,MultiAssayExperiment,character-method}
 \alias{getHits,RangedSummarizedExperiment,GRanges-method}
+\alias{getHits,RangedSummarizedExperiment,character-method}
 \alias{getHits,matrix,character-method}
 \title{Find hits by class type}
 \usage{
@@ -18,7 +20,11 @@ getHits(subject, query, ...)
 
 \S4method{getHits}{GRangesList,GRanges}(subject, query, ...)
 
+\S4method{getHits}{GRangesList,character}(subject, query, ...)
+
 \S4method{getHits}{RangedSummarizedExperiment,GRanges}(subject, query, ...)
+
+\S4method{getHits}{RangedSummarizedExperiment,character}(subject, query, ...)
 
 \S4method{getHits}{ExpressionSet,character}(subject, query, ...)
 
@@ -47,7 +53,11 @@ Find hits by class type
 
 \item \code{subject = GRangesList,query = GRanges}: Iteratively find overlaps and return names
 
+\item \code{subject = GRangesList,query = character}: Find matching features from GRangesList
+
 \item \code{subject = RangedSummarizedExperiment,query = GRanges}: Find overlaps and return names for RangedSummarizedExperiment
+
+\item \code{subject = RangedSummarizedExperiment,query = character}: Find matching features from RangedSummarizedExperiment
 
 \item \code{subject = ExpressionSet,query = character}: Find matching features in ExpressionSet
 

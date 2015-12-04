@@ -45,13 +45,13 @@ stage <- function(MultiAssay, identifier, method = character(), ...){
     if(!is.numeric(identifier) && !all(identifier %in% rownames(myMultiAssay@masterPheno))){
       iders <- intersect(identifier, rownames(MultiAssay@masterPheno))
       notUsed <- setdiff(identifier, rownames(MultiAssay@masterPheno))
-      warning("Non-matched identifers will be dropped! : ", notUsed)
+      warning("Nonmatched identifers were dropped! : ", notUsed)
     } else {
       iders <- rownames(.subPheno(MultiAssay, identifier))
     }
     biMap <- .separateMap(MultiAssay, iders)
     newStage <- new("stage",
-                    query = identifier,
+                    query = iders,
                     keeps = biMap[["keeps"]],
                     drops = biMap[["drops"]],
                     type = "samples")

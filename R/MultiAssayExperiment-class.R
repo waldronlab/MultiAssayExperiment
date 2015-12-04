@@ -28,8 +28,8 @@ setClass("MultiAssayExperiment",
 ## masterPheno should always be a data.frame
 .checkMasterPheno <- function(object){
 	errors <- character()
-	if(!is(object@masterPheno, "data.frame")){
-		return("masterPheno should be a data frame of metadata for all samples!")
+	if(!is(object@masterPheno, "DataFrame")){
+		return("masterPheno should be a DataFrame of metadata for all samples!")
 	}
 	NULL
 }

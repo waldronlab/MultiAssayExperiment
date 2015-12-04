@@ -32,7 +32,7 @@ Names of Experiments
 \itemize{
 \item \code{names}: Get the names from the kept elements in the elist
 
-\item \code{length}: Get the length of the kept slot
+\item \code{length}: Get the number of assays from kept slot
 
 \item \code{type}: Get the staging type (either by samples, features, assays)
 
