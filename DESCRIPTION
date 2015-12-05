@@ -1,7 +1,7 @@
 Package: biocMultiAssay
 Title: Create Classes and Functions for Managing Multiple Assays on Sets of
     Samples
-Version: 0.1.9
+Version: 0.2.1
 Author: MultiAssay SIG
 Description: Develop an integrative environment where multiple assays are
     managed and preprocessed for genomic data analysis.
@@ -28,7 +28,11 @@ Imports:
     RSQLite,
     GenomicRanges,
     BiocGenerics,
-    SummarizedExperiment, shiny, shinydashboard, foreach, doParallel
+    SummarizedExperiment,
+    shiny,
+    shinydashboard,
+    foreach,
+    doParallel
 Maintainer: VJ Carey <stvjc@channing.harvard.edu>
 License: Artistic-2.0
 LazyData: true
@@ -46,8 +50,6 @@ Collate:
     'db_create.R'
     'downloadData.R'
     'exs2se.R'
-    'identifyByFeature.R'
-    'identifyBySample.R'
     'key2GRanges.R'
     'pwplot.R'
     'stage.R'

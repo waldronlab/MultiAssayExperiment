@@ -3,7 +3,7 @@
 #' Select which assay(s) to obtain from available datasets
 #' 
 #' @param MultiAssay A \code{\link{MultiAssayExperiment}} object
-#' @param assayIndicator Either a numeric, character or logical vector indicating what assay(s) to select  
+#' @param assayIndicator Either a \code{numeric}, \code{character} or \code{logical} or \code{\link{stage}} object indicating what assay(s) to select  
 #' @param drop logical (default FALSE) Indicates whether to return a \code{list} of selected experiments
 #' @return A \code{\link{MultiAssayExperiment}} object or \code{list} if drop paramater is set to TRUE
 #' @export subsetByAssay
@@ -12,14 +12,22 @@ subsetByAssay <- function(MultiAssay, assayIndicator, drop = FALSE){
 		if(length(assayIndicator) != length(MultiAssay@elist)){
 			stop("Provide a valid logical vector of equal length!")
 		}
-	} else if(is.character(assayIndicator)){
+	} 
+  if(is.character(assayIndicator)){
 		if(!all(assayIndicator %in% names(MultiAssay@elist))){
 			stop("Provide a vector of valid assay names!")
 		} 
-	}
+  }
+  if(is(assayIndicator, "stage")){
+    if((assayIndicator@type != "assays")){
+      stop("Provide a stage class of assay type!")
+    } else {
+    assayIndicator <- unlist(assayIndicator@keeps)
+    }
+  }
 	listMap <- toListMap(MultiAssay@sampleMap, "assayname")
 	newMap <- listMap[assayIndicator]
-	newMap <- .ldmap(newMap)
+	newMap <- .convertList(newMap)
 	newSubset <- MultiAssay@elist[assayIndicator]
 	if(drop){
 		return(as.list(newSubset))

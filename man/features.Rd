@@ -8,10 +8,13 @@
 \alias{features,GRangesList-method}
 \alias{features,MultiAssayExperiment-method}
 \alias{features,RangedSummarizedExperiment-method}
+\alias{features,character-method}
 \alias{features,matrix-method}
 \title{Feature extractor method}
 \usage{
 features(x)
+
+\S4method{features}{character}(x)
 
 \S4method{features}{ExpressionSet}(x)
 
@@ -36,6 +39,8 @@ Feature extractor method
 }
 \section{Methods (by class)}{
 \itemize{
+\item \code{character}: Return character if character
+
 \item \code{ExpressionSet}: Get the featureNames for ExpressionSet
 
 \item \code{RangedSummarizedExperiment}: Get a summary of rowRanges for RangedSummarizedExperiment

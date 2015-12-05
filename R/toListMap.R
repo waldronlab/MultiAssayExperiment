@@ -14,11 +14,8 @@ toListMap <- function(mapdf, assayCol = NULL){
 	if(!is.character(assayCol) | length(assayCol) != 1L){
 		stop("Assay name must be a string!")
 	}
+  mapdf <- S4Vectors::DataFrame(mapdf)
 	newList <- S4Vectors::split(mapdf, mapdf[,assayCol])
 	newList <- lapply(newList, "[", c(1,2))
-	if(!is(dfmap, "DataFrame")){
-		newList <- lapply(newList, FUN = function(x) { rownames(x) <- NULL
-						  x} )
-	}
 	return(newList)
 }

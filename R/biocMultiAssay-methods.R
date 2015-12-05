@@ -155,7 +155,7 @@ setMethod("subsetFeature", signature("GRangesList", "ANY"), function(x, j){
 setGeneric("getMap", function(object) standardGeneric("getMap"))
 #' describeIn getMap Convert map from list to data.frame
 setMethod("getMap", "stage", function(object){
-		  if(object@type == "samples"){ return(.ldmap(object@keeps)) }
+		  .convertList(object, "keeps")
 })
 
 #' Names of Experiments 

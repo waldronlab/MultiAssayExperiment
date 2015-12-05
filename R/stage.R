@@ -2,6 +2,11 @@
 	return(object@masterPheno[j, ])
 }
 
+.arrangeMap <- function(map, ordering){
+	newOrd <- do.call(c, lapply(ordering, function(ord) { 
+					 which(map[, 1] == ord) } ))
+	return(newOrd)
+}
 .outersect <- function(x, y){
   c(setdiff(x, y), setdiff(y, x))
 }

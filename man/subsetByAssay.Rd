@@ -9,7 +9,7 @@ subsetByAssay(MultiAssay, assayIndicator, drop = FALSE)
 \arguments{
 \item{MultiAssay}{A \code{\link{MultiAssayExperiment}} object}
 
-\item{assayIndicator}{Either a numeric, character or logical vector indicating what assay(s) to select}
+\item{assayIndicator}{Either a \code{numeric}, \code{character} or \code{logical} or \code{\link{stage}} object indicating what assay(s) to select}
 
 \item{drop}{logical (default FALSE) Indicates whether to return a \code{list} of selected experiments}
 }

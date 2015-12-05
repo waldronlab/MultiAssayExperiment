@@ -15,7 +15,7 @@ setClass("MultiAssayExperiment",
 		 slots = list(
 					  elist="elist",
 					  masterPheno = "DataFrame",
-					  sampleMap = "data.frame",
+					  sampleMap = "DataFrame",
 					  metadata = "ANY",
 					  drops = "list"
 					  )
@@ -41,11 +41,11 @@ setClass("MultiAssayExperiment",
 		msg <- paste("All samples in the sampleMap must be in the masterPheno!")
 		errors <- c(errors, msg)
 	}
-	if(!length(object@elist) == length(names(split(object@sampleMap, object@sampleMap[, "assayname"])))){
+	if(!length(object@elist) == length(names(S4Vectors::split(object@sampleMap, object@sampleMap[, "assayname"])))){
 		msg <- paste("assaynames must be of the same length as the elist!")
 		errors <- c(errors, msg)
 	}
-	lcheckdups <- split(object@sampleMap[["assay"]], object@sampleMap$assayname)
+	lcheckdups <- S4Vectors::split(object@sampleMap[["assay"]], object@sampleMap$assayname)
 	logchecks <- any(vapply(lcheckdups, function(x) any(duplicated(x)), logical(1)))
 	if(logchecks){
 		msg <- paste("All sample identifiers in the assays must be unique!")
