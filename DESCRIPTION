@@ -1,7 +1,7 @@
 Package: biocMultiAssay
 Title: Create Classes and Functions for Managing Multiple Assays on Sets of
     Samples
-Version: 0.2.1
+Version: 0.2.2
 Author: MultiAssay SIG
 Description: Develop an integrative environment where multiple assays are
     managed and preprocessed for genomic data analysis.
@@ -33,7 +33,7 @@ Imports:
     shinydashboard,
     foreach,
     doParallel
-Maintainer: VJ Carey <stvjc@channing.harvard.edu>
+Maintainer: Marcel Ramos <mramos09@gmail.com>
 License: Artistic-2.0
 LazyData: true
 LazyLoad: yes

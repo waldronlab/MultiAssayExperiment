@@ -58,7 +58,7 @@ setMethod("show", "stage", function(object){
   o_ids <- features(query(object))
   #  v_len <- .getVLen(object)
   if(stage_type != "assays"){
-    my_fun <- nrow
+    my_fun <- function(x) length(na.omit(x[, 1]))
   } else {
     my_fun <- function(logic){
       if(logic) "keep"
