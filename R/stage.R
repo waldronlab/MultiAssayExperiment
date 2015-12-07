@@ -4,7 +4,7 @@
 
 .arrangeMap <- function(map, ordering){
 	newOrd <- do.call(c, lapply(ordering, function(ord) { 
-					 which(map[, 1] == ord) } ))
+					 which(as.vector(map[, 1]) == ord) } ))
 	return(newOrd)
 }
 .outersect <- function(x, y){
@@ -12,10 +12,9 @@
 }
 
 .separateMap <- function(object, ids){
-	DFsampleMap <- S4Vectors::DataFrame(object@sampleMap)
-	listDFsampleMap <- toListMap(DFsampleMap, "assayname")
+	listDFsampleMap <- toListMap(object@sampleMap, "assayname")
 	listDFsampleMap <- listDFsampleMap[order(names(object@elist))]
-	loglistmatch <- lapply(listDFsampleMap, function(map) { map[,"master"] %in% ids })
+	loglistmatch <- lapply(listDFsampleMap, function(map) { as.vector(map[,"master"]) %in% ids })
 	keeps <- Map(function(x, y) { x[y,] }, listDFsampleMap, loglistmatch)
 	orderIndex <- lapply(keeps, .arrangeMap, ids)
 	orderedKeeps <- Map(function(x, y) { x[y, ] }, keeps, orderIndex)
@@ -71,11 +70,18 @@ stage <- function(MultiAssay, identifier, method = character(), ...){
                     drops = newDrops,
                     type = "features")
   } else if(method == "assays"){
-    if(!all(identifier %in% names(MultiAssay))){
+    if(is.logical(identifier)){
+      if(length(identifier) == length(MultiAssay)){
+      newKeeps <- identifier
+    } else {
+      stop("Provide a logical identifier of identical length!")
+    }
+    } else if(is.character(identifier)){
+      if(all(identifier %in% names(MultiAssay))){
+      newKeeps <- as.list(names(MultiAssay) %in% identifier)
+    } else {
       stop("Invalid experiment names!")
     }
-    if(is.character(identifier)){
-      newKeeps <- as.list(names(MultiAssay) %in% identifier)
     } else if(is.numeric(identifier)){
       newKeeps <- as.list(names(MultiAssay) %in% names(MultiAssay)[identifier])
     }

@@ -21,8 +21,8 @@ empty <- MultiAssayExperiment()
 empty
 slotNames(empty)
 class(elist(empty))       #elist
-class(masterPheno(empty)) #data.frame
-class(sampleMap(empty))   #data.frame
+class(masterPheno(empty)) #DataFrame
+class(sampleMap(empty))   #DataFrame
 class(metadata(empty))    #NULL (class "ANY")
 methods(class="MultiAssayExperiment")
 ```

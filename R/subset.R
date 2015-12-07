@@ -38,15 +38,19 @@
 #' @param method A \code{character} vector of length one designating to subset either by samples, features, or assays
 #' @describeIn MultiAssayExperiment
 #' export subset
-setMethod("subset", "MultiAssayExperiment", function(x, indicator, method = character(), ...){
-		  if(length(list(...)) > 0L){
-			  stop("invalid subsetting")}
-		  method <- getElement(indicator, "type")
-		  if(method == "samples"){
-			  return(subsetBySample(MultiAssay = x, indicator))
-		  } else if(method == "features"){
-			  return(subsetByFeature(MultiAssay = x, indicator))
-		  } else if(method == "assays"){
-			  return(subsetByAssay(MultiAssay = x, indicator))
-		  } 
+setMethod("subset", "MultiAssayExperiment", function(x, indicator, method = NULL, ...){
+  if(length(list(...)) > 0L){
+    stop("invalid subsetting")}
+  if(is(indicator, "stage")){ 
+    method <- getElement(indicator, "type") 
+  } else if(is.null(method)){
+    stop("Please indicate a subset method!")
+  }
+  if(method == "samples"){
+    return(subsetBySample(MultiAssay = x, indicator))
+  } else if(method == "features"){
+    return(subsetByFeature(MultiAssay = x, indicator))
+  } else if(method == "assays"){
+    return(subsetByAssay(MultiAssay = x, indicator))
+  } 
 })
