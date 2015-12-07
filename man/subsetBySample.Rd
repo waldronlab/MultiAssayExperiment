@@ -10,7 +10,7 @@ subsetBySample(MultiAssay, identifier)
 \arguments{
 \item{MultiAssay}{A \code{\link{MultiAssayExperiment}} object}
 
-\item{identifier}{A \linkS4class{stage} class object to be used for subsetting}
+\item{identifier}{A \linkS4class{Stage} class object to be used for subsetting}
 }
 \description{
 Subset MultiAssayExperiment object

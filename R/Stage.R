@@ -40,9 +40,9 @@
 #' @param MultiAssay A \code{\linkS4class{MultiAssayExperiment}}
 #' @param identifer Either a \code{character}, \code{numeric} or \code{logical} vector identifying targets 
 #' @param method Prepare/Stage for subsetting using samples, features or assays.
-#' @return A \code{\linkS4class{stage}} class object for subsequent subsetting
-#' @export stage
-stage <- function(MultiAssay, identifier, method = character(), ...){
+#' @return A \code{\linkS4class{Stage}} class object for subsequent subsetting
+#' @export Stage
+Stage <- function(MultiAssay, identifier, method = character(), ...){
   method <- match.arg(method, c("samples", "features", "assays"))
   if(method == "samples"){
     totalSamples <- samples(MultiAssay)
@@ -54,7 +54,7 @@ stage <- function(MultiAssay, identifier, method = character(), ...){
       iders <- rownames(.subPheno(MultiAssay, identifier))
     }
     biMap <- .separateMap(MultiAssay, iders)
-    newStage <- new("stage",
+    newStage <- new("Stage",
                     query = iders,
                     keeps = biMap[["keeps"]],
                     drops = biMap[["drops"]],
@@ -64,7 +64,7 @@ stage <- function(MultiAssay, identifier, method = character(), ...){
     subsetor <- getHits(MultiAssay, identifier)
     newDrops <- .featMap(Map(function(x, y){.outersect(x, y)}, subsetor, totalFeatures))
     newKeeps <- .featMap(subsetor)
-    newStage <- new("stage", 
+    newStage <- new("Stage", 
                     query = identifier, 
                     keeps = newKeeps,
                     drops = newDrops,
@@ -87,7 +87,7 @@ stage <- function(MultiAssay, identifier, method = character(), ...){
     }
     names(newKeeps) <- names(MultiAssay)
     newDrops <- lapply(newKeeps, `!`) 
-    newStage <- new("stage", 
+    newStage <- new("Stage", 
                     query = identifier, 
                     keeps = newKeeps,
                     drops = newDrops, 

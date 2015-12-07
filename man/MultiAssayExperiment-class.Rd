@@ -24,13 +24,12 @@
 
 \S4method{names}{MultiAssayExperiment}(x)
 
-\S4method{subset}{MultiAssayExperiment}(x, indicator, method = character(),
-  ...)
+\S4method{subset}{MultiAssayExperiment}(x, indicator, method = NULL, ...)
 }
 \arguments{
 \item{x}{A \code{\link{MultiAssayExperiment}} object.}
 
-\item{indicator}{A \code{logical} or \code{character} vector or \code{stage} class object to use for subsetting}
+\item{indicator}{A \code{logical} or \code{character} vector or \code{Stage} class object to use for subsetting}
 
 \item{method}{A \code{character} vector of length one designating to subset either by samples, features, or assays}
 

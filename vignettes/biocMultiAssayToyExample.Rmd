@@ -21,8 +21,8 @@ empty <- MultiAssayExperiment()
 empty
 slotNames(empty)
 class(elist(empty))       #elist
-class(masterPheno(empty)) #DataFrame
-class(sampleMap(empty))   #DataFrame
+class(masterPheno(empty)) #data.frame
+class(sampleMap(empty))   #data.frame
 class(metadata(empty))    #NULL (class "ANY")
 methods(class="MultiAssayExperiment")
 ```
@@ -192,8 +192,8 @@ metadata(myMultiAssay)
 
 Temporarily not evaluated due to bug ([Issue 53][]):
 
-```{r}
-stage_cl <- stage(myMultiAssay, 2:1, "samples")
+```{r, eval = FALSE}
+stage_cl <- Stage(myMultiAssay, 2:1, "samples")
 stage_cl
 subMultiAssay <- subsetBySample(myMultiAssay, stage_cl)
 as.list(elist(subMultiAssay))
@@ -221,10 +221,10 @@ subsetByAssay(myMultiAssay, "Mirna", drop=TRUE)
 This operation returns a `MultiAssayExperiment` class, with any
 `elist` element not containing the feature having zero rows.
 
-Returns object of class `stage`: 
+Returns object of class `Stage`: 
 
 ```{r}
-stage(myMultiAssay, "ENST00000355076", "features")  
+Stage(myMultiAssay, "ENST00000355076", "features")  
 ```
 
 Returns MultiAssayExperiment where `Affy` and `Methyl 450k` contain
@@ -252,7 +252,7 @@ Note that the output of this function could be used as the input for
 `subsetByAssay`.
 
 ```{r}
-stage(myMultiAssay, c("ENST00000355076", "ENST00000294241"), "features") 
+Stage(myMultiAssay, c("ENST00000355076", "ENST00000294241"), "features") 
 ```
 
 ## Feature extraction by Ranges

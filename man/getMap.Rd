@@ -7,7 +7,7 @@
 getMap(object)
 }
 \arguments{
-\item{object}{An \linkS4class{stage} class object}
+\item{object}{An \linkS4class{Stage} class object}
 }
 \value{
 Returns a data.frame representation of samples

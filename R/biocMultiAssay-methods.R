@@ -1,4 +1,4 @@
-#' @include elist-class.R stage-class.R MultiAssayExperiment-class.R 
+#' @include elist-class.R Stage-class.R MultiAssayExperiment-class.R 
 NULL
 
 #' Feature extractor method
@@ -149,42 +149,42 @@ setMethod("subsetFeature", signature("GRangesList", "ANY"), function(x, j){
 
 #' Convert Stage slot "keeps" to Map
 #'
-#' @param object An \linkS4class{stage} class object
+#' @param object An \linkS4class{Stage} class object
 #' @return Returns a data.frame representation of samples
 #' @export getMap
 setGeneric("getMap", function(object) standardGeneric("getMap"))
 #' describeIn getMap Convert map from list to data.frame
-setMethod("getMap", "stage", function(object){
+setMethod("getMap", "Stage", function(object){
 		  .convertList(object, "keeps")
 })
 
 #' Names of Experiments 
-#' @param x A \code{\link{stage}} class object
+#' @param x A \code{\link{Stage}} class object
 #' @return A character vector of experiment names
 #' @exportMethod names
-#' @describeIn stage Get the names from the kept elements in the elist
-setMethod("names", "stage", function(x)
+#' @describeIn Stage Get the names from the kept elements in the elist
+setMethod("names", "Stage", function(x)
   names(getElement(x, "keeps"))
 )
 
-#' @describeIn stage Get the number of assays from kept slot 
-setMethod("length", "stage", function(x)
+#' @describeIn Stage Get the number of assays from kept slot 
+setMethod("length", "Stage", function(x)
   length(getElement(x, "keeps"))
 )
 
 #' Generic Accessor Functions
-#' @param x A \code{\linkS4class{stage}} class object
+#' @param x A \code{\linkS4class{Stage}} class object
 #' @return A \code{character} atomic vector
 #' @exportMethod type
 setGeneric("type", function(object) standardGeneric("type"))
-#' @describeIn stage Get the staging type (either by samples, features, assays)
-setMethod("type", "stage", function(object)
+#' @describeIn Stage Get the staging type (either by samples, features, assays)
+setMethod("type", "Stage", function(object)
   getElement(object, "type")
   )
 
 #' @exportMethod query
 setGeneric("query", function(object) standardGeneric("query"))
-#' @describeIn stage Get the identifiers used for staging
-setMethod("query", "stage", function(object)
+#' @describeIn Stage Get the identifiers used for staging
+setMethod("query", "Stage", function(object)
   getElement(object, "query")
 )
