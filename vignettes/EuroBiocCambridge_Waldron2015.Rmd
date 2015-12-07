@@ -145,8 +145,17 @@ Primary design elements:
 | metadata    | ANY        | Whole-experiment level metadata |
 | drop        | list       | Data manimulation provenance    |
 
-It is easy to create:
+`MultiAssayExperiment` constructor
+=================================================
 
+A minimal "ragged" example from two ExpressionSets:
+
+```{r}
+miniMA <- MultiAssayExperiment(list(eset1=exprdat[1, 1:3], 
+                                    eset2=exprdat[1:2, 3:4]))
+```
+
+A fuller example with specimen data `masPheno` and a `dfmap` relating different sample naming schemes:
 ```{r}
 myMultiAssay <- MultiAssayExperiment(objlist, masPheno, dfmap)
 ```
@@ -254,9 +263,11 @@ stage(myMultiAssay, "ENST00000355076", "features")
 Staging features by ranges:
 
 ```{r}
-rangeSubset <- GRanges(seqnames = c("chr1"), strand = c("-", "+", "-"), 
-                       ranges = IRanges(start = c(1, 4, 6), width = 3))
-stage(myMultiAssay, rangeSubset, "features", maxgap = 2L, type = "within")
+rangeSubset <- GRanges(seqnames = c("chr1"), 
+        strand = c("-", "+", "-"), 
+        ranges = IRanges(start = c(1, 4, 6), width = 3))
+stage(myMultiAssay, rangeSubset, "features",
+      maxgap = 2L, type = "within")
 ```
 
 `drops` slot
@@ -269,8 +280,8 @@ stage(myMultiAssay, rangeSubset, "features", maxgap = 2L, type = "within")
 
 biocMultiAssay harmonizes Bioconductor vocabulary
 =================================================
-- Gene expression, methylation, mutations, microRNA, proteins, metabolites, etc.
-- Existing classes include:
+- Gene expression, methylation, mutations, microRNA, proteins, etc.
+- Currently supported classes include:
     + `GRangesList`, `RangedSummarizedExperiment`, `ExpressionSet`, `matrix`
 
 ```{r, eval = FALSE}
@@ -291,7 +302,7 @@ RSE <- RangedSummarizedExperiment; rowRanges(RSE);
 biocMultiAssay harmonizes Bioconductor vocabulary
 =================================================
 
-```{r, eval = FALSE}
+```{r}
 library(biocMultiAssay)
 methods("features")
 ```
@@ -312,18 +323,18 @@ Upcoming priorities
 Conclusions
 =================================================
 
-- dynamic API at:
-```{r, eval=FALSE}
-API()
-```
-
-- http://github.com/vjcitn/biocMultiAssay
 - Harmonizes subsetting and matching across different data types
 - Links features and samples to clinical / specimen identifiers
 - In the process of curating TCGA and other publicly available data:
     + Curated Cancer Subtypes
     + Full clinical data
     + Pathological imaging information
+
+- http://github.com/vjcitn/biocMultiAssay
+- dynamic API at:
+```{r, eval=FALSE}
+biocMultiAssay::API()
+```
 
 Thank you!
 =================================================
