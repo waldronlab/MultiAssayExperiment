@@ -105,22 +105,22 @@ biocMultiAssay Bioconductor package
 =================================================
 
 - Objectives
-- Data Types and Classes
-- Upcoming development
+- Data types, classes, methods
+- Planned development
 
 
 biocMultiAssay objectives
 =================================================
 
 - Interrogation of several molecule types in one set of biological samples
-    + integration of ID-based and range-based data, with metadata
 - Build on existing methods for storing data types
-    + harmonize accessors, constructors, and methods of relevant Bioconductor classes
+    + harmonize methods of relevant Bioconductor classes
 - Support "ragged" datasets
     + partially overlapping features and samples
     + replicated features and samples
+    + ID-based and genomic range-based data, with metadata
 - Simplify complicated bookkeeping
-    + manipulation of multiple assays simultaneously
+    + manipulate multiple assays + metadata simultaneously
 - Plan for on-disk and remote representations of big data
 
 biocMultiAssay design
@@ -128,31 +128,40 @@ biocMultiAssay design
 
 Primary design elements:
 
-1. `MultiAssayExperiment`
-2. `elist`
-3. `stage`
+1. `MultiAssayExperiment`: the main container
+2. `elist`: experimental data
+3. `stage`: staging for subsetting operations
 
 `MultiAssayExperiment` class structure
 =================================================
 
-| Slot        | Class      |
-|-------------|------------|
-| elist       | elist      |
-| masterPheno | DataFrame  |
-| sampleMap   | DataFrame  |
-| metadata    | ANY        |
-| drop        | list       |
+"Under the hood" of a `MultiAssayExperiment`:
+
+| Slot        | Class      | What is it?                     |
+|-------------|------------|---------------------------------|
+| elist       | elist      | Assay data and metadata         |
+| masterPheno | DataFrame  | Specimen-level phenotype data   |
+| sampleMap   | DataFrame  | Mapping specimens to assays     |
+| metadata    | ANY        | Whole-experiment level metadata |
+| drop        | list       | Data manimulation provenance    |
+
+It is easy to create:
+
+```{r}
+myMultiAssay <- MultiAssayExperiment(objlist, masPheno, dfmap)
+```
 
 `elist` slot, class, and verb
 =================================================
 
 * Experimental data are stored as an `elist`
 * Inherits from S4Vectors::SimpleList
-* Provides a `show` method and generic `elist()` function
+    + adds a `show` method
+* Generic `elist()` function extracts or creates `elist` object
 
 * Validity checks: 
-    + `features()`, `samples()`, `subsetFeatures()`, `subsetSamples()` methods required
-    + unique samples() for each element
+    + require `features()`, `samples()`, `subsetFeatures()`, `subsetSamples()` methods
+    + consistency checks on `samples()` output when part of a `MultiAssayExperiment`
 
 `elist` slot, class, and verb
 =================================================
@@ -182,25 +191,15 @@ masterPheno(myMultiAssay)
 
 * sampleMap relates biological specimens to assays
     + 3-column DataFrame: 
+\tiny    
+```{r}
+head(sampleMap(myMultiAssay))
+```
 
 * Validity checks: 
     + items in `master` column must be found in rownames(masterPheno)
     + items in `assay` column must be found in samples(elist[[i]])
     + `assayname` column must contain only and all `elist` element names
-
-`sampleMap` slot and verb
-=================================================
-
-```{r}
-sampleMap(myMultiAssay)
-```
-
-`drops` slot
-=================================================
-
-* maintains complete data provenance
-    + subsetting by feature, sample, and assay
-    + tracks "keeps" and "drops" (just IDs)
 
 `stage` class and verb
 =================================================
@@ -227,31 +226,45 @@ sampleMap(myMultiAssay)
 `stage` class and verb
 =================================================
 
+Staging assays:
+```{r}
+stage(myMultiAssay, "Affy", "assays")
+```
+
+`stage` class and verb
+=================================================
+
+Staging samples:
+\small
+```{r}
+stage(myMultiAssay, c("Jack", "Jill"), "samples")
+```
+
+`stage` class and verb
+=================================================
+
+Staging features by ID:
+
 ```{r}
 stage(myMultiAssay, "ENST00000355076", "features")
-stage(myMultiAssay, "Affy", "assays")
-#stage(myMultiAssay, c("Jack", "Jill"), "samples")
 ```
-
-Subsetting in one step by ranges
+`stage` class and verb
 =================================================
+
+Staging features by ranges:
 
 ```{r}
-rangeSubset <- GRanges(seqnames = c("chr1"), strand = c("-", "+", "-"), ranges = IRanges(start = c(1, 4, 6), width = 3))
-subsetted <- subsetByFeature(myMultiAssay, rangeSubset, maxgap = 2L, type = "within")
-elist(subsetted)
+rangeSubset <- GRanges(seqnames = c("chr1"), strand = c("-", "+", "-"), 
+                       ranges = IRanges(start = c(1, 4, 6), width = 3))
+stage(myMultiAssay, rangeSubset, "features", maxgap = 2L, type = "within")
 ```
 
-Subsetting in one step by IDs
+`drops` slot
 =================================================
 
-```{r}
-subsetted <- elist(subsetByFeature(myMultiAssay, "ENST00000355076"))
-elist(subsetted)
-```
-
-`MultiAssayExperiment` is easy to create and use
-=================================================
+* uses `stage` information to maintain complete data provenance
+    + subsetting by feature, sample, and assay
+    + tracks "keeps" and "drops" (using IDs)
 
 
 biocMultiAssay harmonizes Bioconductor vocabulary
@@ -280,11 +293,7 @@ biocMultiAssay harmonizes Bioconductor vocabulary
 
 ```{r, eval = FALSE}
 library(biocMultiAssay)
-features(matrix)
-features(ExpressionSet)
-features(RangedSummarizedExperiment)
-features(GRanges)
-features(GRangesList)
+methods("features")
 ```
 
 __Note:__ also provides **`samples()`**, **"`[`"** (bracket), **`subsetSample()`**, and **`subsetFeature()`** functions to harmonize classes
@@ -303,15 +312,19 @@ Upcoming priorities
 Conclusions
 =================================================
 
-- `biocMultiAssay` stores and integrates multiple different types of data in one object
-    + currently in memory, will abstract on-disk and remote data
-- Harmonizes subsetting and matching across all data types
+- dynamic API at:
+```{r, eval=FALSE}
+API()
+```
+
+- http://github.com/vjcitn/biocMultiAssay
+- Harmonizes subsetting and matching across different data types
 - Links features and samples to clinical / specimen identifiers
 - In the process of curating TCGA and other publicly available data:
     + Curated Cancer Subtypes
     + Full clinical data
     + Pathological imaging information
-    
+
 Thank you!
 =================================================
 
