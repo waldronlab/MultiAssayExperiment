@@ -2,8 +2,8 @@
 #' 
 #' @title plot features chosen from two assays in a MultiAssayExperiment
 #' @description plot features chosen from two assays in a MultiAssayExperiment
-#' @param fmla1 defines sources of y and x using names of elist
-#' @param fmla2 defines scatterplot using names of features in the elist elements
+#' @param fmla1 defines sources of y and x using names of Elist
+#' @param fmla2 defines scatterplot using names of features in the Elist elements
 #' @param mae the MultiAssayExperiment instance
 #' @param ytx function transforming y before plot
 #' @param xtx function transforming x before plot
@@ -18,8 +18,8 @@ pwplot = function(fmla1, fmla2, mae, ytx=force, xtx=force, ...) {
 #
 lf = as.list(fmla1)
 nms = lapply(lf, as.character)
-yel = elist(mae)[[nms[[2]]]]
-xel = elist(mae)[[nms[[3]]]]
+yel = Elist(mae)[[nms[[2]]]]
+xel = Elist(mae)[[nms[[3]]]]
 sy = samples(yel)
 sx = samples(xel)
 sb = intersect(sy,sx)

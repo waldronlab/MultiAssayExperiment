@@ -53,30 +53,30 @@
 #'
 #' This function combines multiple data sources specific to one disease by matching samples. 
 #' 
-#' @param elist A \code{list} of all combined experiments
+#' @param Elist A \code{list} of all combined experiments
 #' @param masterPheno A \code{\link[S4Vectors]{DataFrame-class}} of the phenotype data for all participants.
 #' @param sampleMap A \code{data.frame} of sample identifiers, assay samples, and assay names.
 #' @param drops A \code{list} of unmatched information (included after subsetting)   
 #' @return A \code{MultiAssayExperiment} data object that stores experiment and phenotype data.
 #' @export MultiAssayExperiment
-MultiAssayExperiment <- function(elist = list(), masterPheno = S4Vectors::DataFrame(), sampleMap = S4Vectors::DataFrame(), drops = list()){
-  elist <- lapply(elist, .FixElemNames)
-	if(!all(c(length(sampleMap) == 0L, length(masterPheno) == 0L, length(elist) == 0L))){
+MultiAssayExperiment <- function(Elist = list(), masterPheno = S4Vectors::DataFrame(), sampleMap = S4Vectors::DataFrame(), drops = list()){
+  Elist <- lapply(Elist, .FixElemNames)
+	if(!all(c(length(sampleMap) == 0L, length(masterPheno) == 0L, length(Elist) == 0L))){
 		if((length(sampleMap) == 0L) & (length(masterPheno) == 0L)){
-			allsamps <- unique(unlist(lapply(elist, samples)))
+			allsamps <- unique(unlist(lapply(Elist, samples)))
 			masterPheno <- S4Vectors::DataFrame(pheno1 = rep(NA, length(allsamps)), row.names = allsamps)
-			sampleMap <- .generateMap(masterPheno, elist)
+			sampleMap <- .generateMap(masterPheno, Elist)
 		} else if((length(sampleMap) == 0L) & !(length(masterPheno) == 0L)){
 			warning("sampleMap not provided! Map will be created from data provided.")
-			sampleMap <- .generateMap(masterPheno, elist)
+			sampleMap <- .generateMap(masterPheno, Elist)
 			validAssays <- split(sampleMap[["assay"]], sampleMap$assayname)
-			elist <- Map(subsetSample, elist, validAssays) 
+			Elist <- Map(subsetSample, Elist, validAssays) 
 		}
 	} 
   if(!is(masterPheno, "DataFrame")){masterPheno <- S4Vectors::DataFrame(masterPheno)}
   if(!is(sampleMap, "DataFrame")){sampleMap <- S4Vectors::DataFrame(sampleMap)}
 	newMultiAssay <- new("MultiAssayExperiment",
-						 elist = elist(elist),
+						 Elist = Elist(Elist),
 						 masterPheno = masterPheno,
 						 sampleMap = sampleMap)
 	return(newMultiAssay)

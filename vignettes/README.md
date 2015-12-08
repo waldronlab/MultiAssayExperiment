@@ -13,7 +13,7 @@ empty
 ## A "MultiAssayExperiment" object containing 0 
 ##  listed experiments with user-defined names and their respective classes:  
 ## To access slots use: 
-##  elist() - to obtain the "SimpleList" of experiment instances 
+##  Elist() - to obtain the "SimpleList" of experiment instances 
 ##  masterPheno() - for the phenotype "data.frame" 
 ##  sampleMap() - for the sample availability "list" 
 ## See also: subsetByAssasy(), subsetByFeature(), subsetBySample()
@@ -24,11 +24,11 @@ slotNames(empty)
 ```
 
 ```
-## [1] "elist"       "masterPheno" "sampleMap"   "metadata"
+## [1] "Elist"       "masterPheno" "sampleMap"   "metadata"
 ```
 
 ```r
-class(empty@elist)       #SimpleList
+class(empty@Elist)       #SimpleList
 ```
 
 ```
@@ -66,7 +66,7 @@ methods(class="MultiAssayExperiment")
 ```
 
 ```
-## [1] elist       length      masterPheno names       sampleMap   show       
+## [1] Elist       length      masterPheno names       sampleMap   show       
 ## see '?methods' for accessing help and source code
 ```
 
@@ -375,7 +375,7 @@ rse <- SummarizedExperiment(assays=SimpleList(counts=counts),
 ```
 
 # Setup for creating the `MultiAssayExperiment` object
-Create an ID map for all available experiments.  Names required, and must be identical to names of `elist`.
+Create an ID map for all available experiments.  Names required, and must be identical to names of `Elist`.
 
 
 ```r
@@ -500,7 +500,7 @@ myMultiAssay
 ##  [4] CNV gistic - "GRangesList" 
 ##  [5] CNV gistic2 - "RangedSummarizedExperiment" 
 ## To access slots use: 
-##  elist() - to obtain the "SimpleList" of experiment instances 
+##  Elist() - to obtain the "SimpleList" of experiment instances 
 ##  masterPheno() - for the phenotype "data.frame" 
 ##  sampleMap() - for the sample availability "list" 
 ## See also: subsetByAssasy(), subsetByFeature(), subsetBySample()
@@ -514,12 +514,12 @@ Temporarily not evaluated due to bug ([Issue 53](https://github.com/vjcitn/biocM
 logicID <- identifyBySample(myMultiAssay, 1:2)
 logicID
 subMultiAssay <- subsetBySample(myMultiAssay, logicID)
-as.list(elist(subMultiAssay))
+as.list(Elist(subMultiAssay))
 subsetByAssay(subMultiAssay, c(TRUE, FALSE, FALSE, FALSE), drop = TRUE)[[1]] %>% exprs 
 subMultiAssay
 ```
 
-Endogenous operation, returns a MultiAssay object containing elist of length 1, map of length 1, and masterPheno for only Jack, Barbara, and Bob.  The "Mirna" argument is used to index the `elist` object using `[`, so could also be `integer` or `logical`:
+Endogenous operation, returns a MultiAssay object containing Elist of length 1, map of length 1, and masterPheno for only Jack, Barbara, and Bob.  The "Mirna" argument is used to index the `Elist` object using `[`, so could also be `integer` or `logical`:
 
 
 ```r
@@ -531,13 +531,13 @@ subsetByAssay(myMultiAssay, "Mirna", drop=FALSE)
 ##  listed experiment with a user-defined name and its respective class: 
 ##  [1] Mirna - "matrix" 
 ## To access slots use: 
-##  elist() - to obtain the "SimpleList" of experiment instances 
+##  Elist() - to obtain the "SimpleList" of experiment instances 
 ##  masterPheno() - for the phenotype "data.frame" 
 ##  sampleMap() - for the sample availability "list" 
 ## See also: subsetByAssasy(), subsetByFeature(), subsetBySample()
 ```
 
-Not endogenous, returns just the matrix contained in `elist$Mirna`
+Not endogenous, returns just the matrix contained in `Elist$Mirna`
 
 
 ```r
@@ -555,7 +555,7 @@ subsetByAssay(myMultiAssay, "Mirna", drop=TRUE)
 
 ## Subsetting by Feature 
 
-This operation returns a `MultiAssayExperiment` class, with any `elist` element not containing the feature having zero rows.
+This operation returns a `MultiAssayExperiment` class, with any `Elist` element not containing the feature having zero rows.
 
 Until we make subsetting by a gene ID work on ranges, the following will return c(TRUE, TRUE, FALSE, FALSE). When we implement subsetting by ranges, it should return c(TRUE, TRUE, FALSE, TRUE). 
 
@@ -641,7 +641,7 @@ class(featSubsetted0)
 ```
 
 ```r
-class(elist(featSubsetted0))
+class(Elist(featSubsetted0))
 ```
 
 ```
@@ -651,7 +651,7 @@ class(elist(featSubsetted0))
 ```
 
 ```r
-as.list(elist(featSubsetted0))
+as.list(Elist(featSubsetted0))
 ```
 
 ```
@@ -714,7 +714,7 @@ In the following, `Affy` ExpressionSet keeps both rows but with their order reve
 
 ```r
 featSubsetted <- subsetByFeature(myMultiAssay, c("ENST00000355076", "ENST00000294241"))
-as.list(elist(featSubsetted))
+as.list(Elist(featSubsetted))
 ```
 
 ```
@@ -914,7 +914,7 @@ See arguments to `GenomicRanges::subsetByOverlaps` for flexible types of subsett
 ```r
 rangeSubset <- GRanges(seqnames = c("chr1"), strand = c("-", "+", "-"), ranges = IRanges(start = c(1, 4, 6), width = 3))
 subsetted <- subsetByFeature(myMultiAssay, rangeSubset, maxgap = 2L, type = "within")
-as.list(elist(subsetted))
+as.list(Elist(subsetted))
 ```
 
 ```

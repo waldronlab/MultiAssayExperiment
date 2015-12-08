@@ -26,16 +26,16 @@ createNames <- function(object){
 }
 
 ### ==============================================
-### elist class
+### Elist class
 ### ----------------------------------------------
 
 #' An integrative container for assay data
 #' @inheritParams S4Vectors::SimpleList
-#' @exportClass elist
-setClass("elist", contains = "SimpleList")
+#' @exportClass Elist
+setClass("Elist", contains = "SimpleList")
 
 #' Generic Builder and Accessor Function
-setGeneric("elist", function(x) standardGeneric("elist"))
+setGeneric("Elist", function(x) standardGeneric("Elist"))
 
 ### - - - - - - - - - - - - - - - - - - - - - - - -
 ### Builder
@@ -44,14 +44,14 @@ setGeneric("elist", function(x) standardGeneric("elist"))
 #' Convert to \code{\link[S4Vectors]{SimpleList-class}}
 #'
 #' @param x A \code{list} object
-#' @return An \code{\linkS4class{elist}} class object
-#' @exportMethod elist
-#' @describeIn elist Convert a list to a SimpleList to an elist
-setMethod("elist", "list",
-		  function(x) new("elist", S4Vectors::SimpleList(x)))
-#' @describeIn elist Convert a SimpleList to an elist
-setMethod("elist", "SimpleList",
-		  function(x) new("elist", x))
+#' @return An \code{\linkS4class{Elist}} class object
+#' @exportMethod Elist
+#' @describeIn Elist Convert a list to a SimpleList to an Elist
+setMethod("Elist", "list",
+		  function(x) new("Elist", S4Vectors::SimpleList(x)))
+#' @describeIn Elist Convert a SimpleList to an Elist
+setMethod("Elist", "SimpleList",
+		  function(x) new("Elist", x))
 
 ##
 ## Validity ---------------------------------
@@ -102,16 +102,16 @@ setMethod("elist", "SimpleList",
   }
 }
 
-##  Make sure elist is valid before checking all of the sample names 
+##  Make sure Elist is valid before checking all of the sample names 
 
-S4Vectors::setValidity2("elist", .validElist)
+S4Vectors::setValidity2("Elist", .validElist)
 
-#' Show method for \code{\linkS4class{elist}} class
+#' Show method for \code{\linkS4class{Elist}} class
 #'
-#' @param object A \code{\linkS4class{elist}} object. 
-#' @return Returns a summary of contents for the \code{\linkS4class{elist}} class
+#' @param object A \code{\linkS4class{Elist}} object. 
+#' @return Returns a summary of contents for the \code{\linkS4class{Elist}} class
 #' exportMethod show
-setMethod("show", "elist", function(object){
+setMethod("show", "Elist", function(object){
 		  o_class <- class(object)
 		  elem_cl <- vapply(object, class, character(1))
 		  o_len <- length(object)

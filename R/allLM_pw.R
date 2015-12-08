@@ -1,6 +1,6 @@
 #' compute all pairwise linear models with optional transformations
 #'
-#' @param fmla A formula specifying assays using elist element names
+#' @param fmla A formula specifying assays using Elist element names
 #' @param mae A MultiAssayExperiment instance
 #' @param xtx a function that transforms the independent variable
 #' @param ytx a function that transforms the dependent variable
@@ -16,8 +16,8 @@ allLM_pw = function(fmla, mae, xtx=force, ytx=force) {
 #
 lf = as.list(fmla)
 nms = lapply(lf, as.character)
-yel = elist(mae)[[nms[[2]]]]
-xel = elist(mae)[[nms[[3]]]]
+yel = Elist(mae)[[nms[[2]]]]
+xel = Elist(mae)[[nms[[3]]]]
 sy = samples(yel)
 sx = samples(xel)
 sb = intersect(sy,sx)

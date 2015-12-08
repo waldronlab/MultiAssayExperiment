@@ -7,7 +7,7 @@
 allLM_pw(fmla, mae, xtx = force, ytx = force)
 }
 \arguments{
-\item{fmla}{A formula specifying assays using elist element names}
+\item{fmla}{A formula specifying assays using Elist element names}
 
 \item{mae}{A MultiAssayExperiment instance}
 

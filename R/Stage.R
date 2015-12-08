@@ -13,7 +13,7 @@
 
 .separateMap <- function(object, ids){
 	listDFsampleMap <- toListMap(object@sampleMap, "assayname")
-	listDFsampleMap <- listDFsampleMap[order(names(object@elist))]
+	listDFsampleMap <- listDFsampleMap[order(names(object@Elist))]
 	loglistmatch <- lapply(listDFsampleMap, function(map) { as.vector(map[,"master"]) %in% ids })
 	keeps <- Map(function(x, y) { x[y,] }, listDFsampleMap, loglistmatch)
 	orderIndex <- lapply(keeps, .arrangeMap, ids)

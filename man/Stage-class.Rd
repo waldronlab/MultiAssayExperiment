@@ -30,7 +30,7 @@ Names of Experiments
 }
 \section{Methods (by generic)}{
 \itemize{
-\item \code{names}: Get the names from the kept elements in the elist
+\item \code{names}: Get the names from the kept elements in the Elist
 
 \item \code{length}: Get the number of assays from kept slot
 

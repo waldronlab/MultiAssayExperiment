@@ -35,7 +35,7 @@ getHits(subject, query, ...)
 \S4method{getHits}{MultiAssayExperiment,GRanges}(subject, query, ...)
 }
 \arguments{
-\item{subject}{Any valid element from the \code{\linkS4class{elist}} class}
+\item{subject}{Any valid element from the \code{\linkS4class{Elist}} class}
 
 \item{query}{Either a \code{character} vector or \code{\linkS4class{GRanges}} object used to search by name or ranges}
 

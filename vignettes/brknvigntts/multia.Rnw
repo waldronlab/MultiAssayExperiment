@@ -53,9 +53,9 @@ ovhub = new("eHub", hub=elist, masterSampleData = get(load(pdpath)))
 lo = loadHub(ovhub)
 @
 <<reset>>=
-ovhub@allids = as.character(unique(unlist(lapply(lo@elist, sampleNames))))
+ovhub@allids = as.character(unique(unlist(lapply(lo@Elist, sampleNames))))
 ovhub
-sapply(lo@elist, function(x) dim(pData(x)))
+sapply(lo@Elist, function(x) dim(pData(x)))
 @
 
 

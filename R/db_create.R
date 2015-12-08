@@ -49,11 +49,11 @@
 # {
 #   stopifnot(is(hub, "MultiAssayExperiment"))  # could weaken
 #   db <- RSQLite::dbConnect(DBI::dbDriver("SQLite"), dbname)
-#   nass <- length(hub@elist)
-#   alldf = lapply(1:nass, function(x) .eset2longdf(hub@elist[[x]],
-#       assaytype=names(hub@elist)[x]))
+#   nass <- length(hub@Elist)
+#   alldf = lapply(1:nass, function(x) .eset2longdf(hub@Elist[[x]],
+#       assaytype=names(hub@Elist)[x]))
 #   alld = do.call(rbind, alldf)
-#   mphen = Biobase::pData(hub@elist[[masterInd]])
+#   mphen = Biobase::pData(hub@Elist[[masterInd]])
 #   RSQLite::dbWriteTable(db, tablename, alld)
 #   RSQLite::dbWriteTable(db, "masterPheno", mphen)
 #   db

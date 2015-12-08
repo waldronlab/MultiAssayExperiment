@@ -2,8 +2,8 @@
 % Please edit documentation in R/MultiAssayExperiment-class.R, R/subset.R
 \docType{class}
 \name{MultiAssayExperiment-class}
+\alias{Elist,MultiAssayExperiment-method}
 \alias{MultiAssayExperiment-class}
-\alias{elist,MultiAssayExperiment-method}
 \alias{length,MultiAssayExperiment-method}
 \alias{masterPheno,MultiAssayExperiment-method}
 \alias{metadata,MultiAssayExperiment-method}
@@ -14,7 +14,7 @@
 \usage{
 \S4method{sampleMap}{MultiAssayExperiment}(x)
 
-\S4method{elist}{MultiAssayExperiment}(x)
+\S4method{Elist}{MultiAssayExperiment}(x)
 
 \S4method{masterPheno}{MultiAssayExperiment}(x)
 
@@ -68,22 +68,22 @@ Subset MultiAssayExperiment object
 \itemize{
 \item \code{sampleMap}: Access sampleMap slot from MultiAssayExperiment
 
-\item \code{elist}: Access elist class from MultiAssayExperiment
+\item \code{Elist}: Access Elist class from MultiAssayExperiment
 
 \item \code{masterPheno}: Access masterPheno slot from MultiAssayExperiment
 
 \item \code{metadata}: Access metadata slot from MultiAssayExperiment
 
-\item \code{length}: Get the length of elist
+\item \code{length}: Get the length of Elist
 
-\item \code{names}: Get the names of the elist
+\item \code{names}: Get the names of the Elist
 
 \item \code{subset}: export subset
 }}
 \section{Slots}{
 
 \describe{
-\item{\code{elist}}{A \code{\linkS4class{elist}} class object for each assay dataset.}
+\item{\code{Elist}}{A \code{\linkS4class{Elist}} class object for each assay dataset.}
 
 \item{\code{masterPheno}}{A \code{data.frame} of all clinical data available across experiments.}
 

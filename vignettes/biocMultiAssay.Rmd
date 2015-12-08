@@ -86,7 +86,7 @@ of data reduction.
 
 We can determine the set of common identifiers.
 ```{r getcomm}
-allid = lapply(lovhub@elist, sampleNames)
+allid = lapply(lovhub@Elist, sampleNames)
 commids = allid[[1]]
 for (i in 2:length(allid))
  commids = intersect(commids, allid[[i]])
@@ -97,7 +97,7 @@ We can now generate the MultiAssayExperiment instance with only the
 common samples.
 ```{r docomm}
 locomm = lovhub
-locomm@elist = lapply(locomm@elist, function(x) x[,commids])
+locomm@Elist = lapply(locomm@Elist, function(x) x[,commids])
 locomm
 ```
 
@@ -110,7 +110,7 @@ heavy representations is a point of discussion.
 ovlist <- lapply(ov, function(x) get(load(x)))
 names(ovlist) <- tags
 ## use the "ov agilent" for masterpheno phenotype data:
-lovhub2 <- MultiAssay(masterPheno=pData(ovlist[[2]]), elist=ovlist) # drop=TRUE broken
+lovhub2 <- MultiAssay(masterPheno=pData(ovlist[[2]]), Elist=ovlist) # drop=TRUE broken
 lovhub2
 format(object.size(lovhub2), units = "Mb")
 ```

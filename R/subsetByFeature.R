@@ -7,7 +7,7 @@
 #' @return A \code{\link{MultiAssayExperiment}} object 
 #' @export subsetByFeature
 subsetByFeature <- function(MultiAssay, feature, ...){ 
-	MultiAssay@elist <- endoapply(MultiAssay@elist, subsetFeature, feature)
+	MultiAssay@Elist <- endoapply(MultiAssay@Elist, subsetFeature, feature)
 	return(MultiAssay)
 }
 

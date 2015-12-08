@@ -7,9 +7,9 @@
 pwplot(fmla1, fmla2, mae, ytx = force, xtx = force, ...)
 }
 \arguments{
-\item{fmla1}{defines sources of y and x using names of elist}
+\item{fmla1}{defines sources of y and x using names of Elist}
 
-\item{fmla2}{defines scatterplot using names of features in the elist elements}
+\item{fmla2}{defines scatterplot using names of features in the Elist elements}
 
 \item{mae}{the MultiAssayExperiment instance}
 

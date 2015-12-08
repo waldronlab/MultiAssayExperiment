@@ -9,12 +9,12 @@
 #' @export subsetByAssay
 subsetByAssay <- function(MultiAssay, assayIndicator, drop = FALSE){
   if(is.logical(assayIndicator)){
-    if(length(assayIndicator) != length(MultiAssay@elist)){
+    if(length(assayIndicator) != length(MultiAssay@Elist)){
       stop("Provide a valid logical vector of equal length!")
     }
   } 
   if(is.character(assayIndicator)){
-    if(!all(assayIndicator %in% names(MultiAssay@elist))){
+    if(!all(assayIndicator %in% names(MultiAssay@Elist))){
       stop("Provide a vector of valid assay names!")
     } 
   }
@@ -29,12 +29,12 @@ subsetByAssay <- function(MultiAssay, assayIndicator, drop = FALSE){
   listMap <- toListMap(MultiAssay@sampleMap, "assayname")
   newMap <- listMap[assayIndicator]
   newMap <- .convertList(newMap)
-  newSubset <- MultiAssay@elist[assayIndicator]
+  newSubset <- MultiAssay@Elist[assayIndicator]
   if(drop){
     return(as.list(newSubset))
   } else {
     MultiAssay@sampleMap <- newMap
-    MultiAssay@elist <- newSubset
+    MultiAssay@Elist <- newSubset
     if(exists(assayDrops)){
       
       if(length(MultiAssay@drops)==0L){

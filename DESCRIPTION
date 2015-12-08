@@ -39,7 +39,7 @@ LazyData: true
 LazyLoad: yes
 Collate:
     'API.R'
-    'elist-class.R'
+    'Elist-class.R'
     'MultiAssayExperiment-class.R'
     'MultiAssayExperiment.R'
     'Stage-class.R'

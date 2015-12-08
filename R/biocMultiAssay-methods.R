@@ -1,4 +1,4 @@
-#' @include elist-class.R Stage-class.R MultiAssayExperiment-class.R 
+#' @include Elist-class.R Stage-class.R MultiAssayExperiment-class.R 
 NULL
 
 #' Feature extractor method
@@ -20,7 +20,7 @@ setMethod("features", "GRanges", function(x) names(x))
 #' @describeIn features Get the summary of ranges for a GRangesList
 setMethod("features", "GRangesList", function(x) names(unlist(x, use.names = FALSE)))
 #' @describeIn features Get all the features for a MultiAssayExperiment
-setMethod("features", "MultiAssayExperiment", function(x) lapply(x@elist, features))
+setMethod("features", "MultiAssayExperiment", function(x) lapply(x@Elist, features))
 
 #' Sample extractor generic
 #' 
@@ -36,11 +36,11 @@ setMethod("samples", "matrix", function(object) colnames(object))
 #' @describeIn samples Get the names of each list element for a GRangesList
 setMethod("samples", "GRangesList", function(object) names(object)) 
 #' @describeIn samples Get all the samples for a MultiAssayExperiment
-setMethod("samples", "MultiAssayExperiment", function(object) lapply(object@elist, samples))
+setMethod("samples", "MultiAssayExperiment", function(object) lapply(object@Elist, samples))
 
 #' Find hits by class type
 #' 
-#' @param subject Any valid element from the \code{\linkS4class{elist}} class
+#' @param subject Any valid element from the \code{\linkS4class{Elist}} class
 #' @param query Either a \code{character} vector or \code{\linkS4class{GRanges}} object used to search by name or ranges
 #' @param ... Additional arguments to findOverlaps
 #' @return Names of matched queries
@@ -74,10 +74,10 @@ setMethod("getHits", signature("matrix", "GRanges"), function(subject, query, ..
   intersect(features(query), features(subject)))
 #' @describeIn getHits Find all matching features by character
 setMethod("getHits", signature("MultiAssayExperiment", "character"), function(subject, query, ...)
-  lapply(subject@elist, FUN = function(elem) { getHits(elem, query, ...) }))
+  lapply(subject@Elist, FUN = function(elem) { getHits(elem, query, ...) }))
 #' @describeIn getHits Find all matching features by GRanges
 setMethod("getHits", signature("MultiAssayExperiment", "GRanges"), function(subject, query, ...)
-  lapply(subject@elist, FUN = function(elem) { getHits(elem, query, ...) }))
+  lapply(subject@Elist, FUN = function(elem) { getHits(elem, query, ...) }))
 
 #' Subset by Sample generic 
 #'
@@ -162,7 +162,7 @@ setMethod("getMap", "Stage", function(object){
 #' @param x A \code{\link{Stage}} class object
 #' @return A character vector of experiment names
 #' @exportMethod names
-#' @describeIn Stage Get the names from the kept elements in the elist
+#' @describeIn Stage Get the names from the kept elements in the Elist
 setMethod("names", "Stage", function(x)
   names(getElement(x, "keeps"))
 )
