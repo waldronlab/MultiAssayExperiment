@@ -35,7 +35,7 @@ subsetByAssay <- function(MultiAssay, assayIndicator, drop = FALSE){
   } else {
     MultiAssay@sampleMap <- newMap
     MultiAssay@Elist <- newSubset
-    if(exists(assayDrops)){
+    if(exists("assayDrops")){
       
       if(length(MultiAssay@drops)==0L){
         sequence <- paste0("Operation_", 1)
