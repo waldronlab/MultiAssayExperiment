@@ -72,7 +72,7 @@ Stage <- function(MultiAssay, identifier, method = character(), ...){
   } else if(method == "assays"){
     if(is.logical(identifier)){
       if(length(identifier) == length(MultiAssay)){
-      newKeeps <- identifier
+      newKeeps <- as.list(identifier)
     } else {
       stop("Provide a valid logical assay identifier of equal length!")
     }
