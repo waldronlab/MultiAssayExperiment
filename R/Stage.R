@@ -74,16 +74,20 @@ Stage <- function(MultiAssay, identifier, method = character(), ...){
       if(length(identifier) == length(MultiAssay)){
       newKeeps <- identifier
     } else {
-      stop("Provide a logical identifier of identical length!")
+      stop("Provide a valid logical assay identifier of equal length!")
     }
     } else if(is.character(identifier)){
       if(all(identifier %in% names(MultiAssay))){
       newKeeps <- as.list(names(MultiAssay) %in% identifier)
     } else {
-      stop("Invalid experiment names!")
+      stop("Provide a vector of valid experiment names!")
     }
     } else if(is.numeric(identifier)){
+      if(all(identifier %in% 1:length(MultiAssay))){
       newKeeps <- as.list(names(MultiAssay) %in% names(MultiAssay)[identifier])
+      } else {
+        stop("Identifier out of bounds!")
+      }
     }
     names(newKeeps) <- names(MultiAssay)
     newDrops <- lapply(newKeeps, `!`) 

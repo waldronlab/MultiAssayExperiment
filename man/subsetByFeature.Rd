@@ -4,12 +4,12 @@
 \alias{subsetByFeature}
 \title{Subset MultiAssayExperiment object by Feature}
 \usage{
-subsetByFeature(MultiAssay, feature, ...)
+subsetByFeature(MultiAssay, featureIndicator, ...)
 }
 \arguments{
 \item{MultiAssay}{A \code{\link{MultiAssayExperiment}} object}
 
-\item{feature}{A \code{character} vector containing feature names}
+\item{featureIndicator}{Either a \code{character} vector or \code{\linkS4class{Stage}} class object containing feature names}
 }
 \value{
 A \code{\link{MultiAssayExperiment}} object

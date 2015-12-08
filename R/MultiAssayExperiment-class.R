@@ -34,7 +34,7 @@ setClass("MultiAssayExperiment",
 	NULL
 }
 
-## sampleMap is a data.frame with unique sampleNames across assay
+## sampleMap is a DataFrame with unique sampleNames across assay
 .checkSampleMap <- function(object){
 	errors <- character()
 	if(!all(unique(object@sampleMap[, "master"]) %in% rownames(object@masterPheno))){
@@ -74,6 +74,7 @@ setClass("MultiAssayExperiment",
 	NULL
 }
 
+## All names must match between Elist and sampleMap
 .checkNames <- function(object){
 	if(!all(names(object@Elist) %in% unique(object@sampleMap[, "assayname"]))){
 		return("Experiment names must match in both Elist and sampleMap!")
