@@ -62,6 +62,10 @@ setClass("MultiAssayExperiment",
 		msg <- paste("Elist must be the same length as the sampleMap assaynames!")
 		errors <- c(errors, msg)
 	}
+	if(!all(assaynames %in% names(object))){
+	  msg <- paste("Experiment/Assay names in both the Elist and the sampleMap must match!")
+	  errors <- c(errors, msg)
+	}
 	if(length(errors) == 0L) NULL else errors
 }
 

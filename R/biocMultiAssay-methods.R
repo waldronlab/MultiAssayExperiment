@@ -153,7 +153,7 @@ setMethod("subsetFeature", signature("GRangesList", "ANY"), function(x, j){
 #' @return Returns a data.frame representation of samples
 #' @export getMap
 setGeneric("getMap", function(object) standardGeneric("getMap"))
-#' describeIn getMap Convert map from list to data.frame
+#' describeIn Stage Convert map from list to DataFrame
 setMethod("getMap", "Stage", function(object){
 		  .convertList(object, "keeps")
 })

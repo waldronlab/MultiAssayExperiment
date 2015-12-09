@@ -3,11 +3,11 @@
 \docType{methods}
 \name{getMap,Stage-method}
 \alias{getMap,Stage-method}
-\title{describeIn getMap Convert map from list to data.frame}
+\title{describeIn Stage Convert map from list to DataFrame}
 \usage{
 \S4method{getMap}{Stage}(object)
 }
 \description{
-describeIn getMap Convert map from list to data.frame
+describeIn Stage Convert map from list to DataFrame
 }
 

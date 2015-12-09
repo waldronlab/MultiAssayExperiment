@@ -72,19 +72,19 @@ Stage <- function(MultiAssay, identifier, method = character(), ...){
   } else if(method == "assays"){
     if(is.logical(identifier)){
       if(length(identifier) == length(MultiAssay)){
-      newKeeps <- as.list(identifier)
-    } else {
-      stop("Provide a valid logical assay identifier of equal length!")
-    }
+        newKeeps <- as.list(identifier)
+      } else {
+        stop("Provide a valid logical assay identifier of equal length!")
+      }
     } else if(is.character(identifier)){
       if(all(identifier %in% names(MultiAssay))){
-      newKeeps <- as.list(names(MultiAssay) %in% identifier)
-    } else {
-      stop("Provide a vector of valid experiment names!")
-    }
+        newKeeps <- as.list(names(MultiAssay) %in% identifier)
+      } else {
+        stop("Provide a vector of valid experiment names!")
+      }
     } else if(is.numeric(identifier)){
       if(all(identifier %in% 1:length(MultiAssay))){
-      newKeeps <- as.list(names(MultiAssay) %in% names(MultiAssay)[identifier])
+        newKeeps <- as.list(names(MultiAssay) %in% names(MultiAssay)[identifier])
       } else {
         stop("Identifier out of bounds!")
       }

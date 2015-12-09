@@ -2,18 +2,19 @@
 % Please edit documentation in R/toListMap.R
 \name{toListMap}
 \alias{toListMap}
-\title{Convert data.frame map to list map
-\code{toListMap} returns a \code{list}}
+\title{Convert map from data.frame or DataFrame to list}
 \usage{
 toListMap(mapdf, assayCol = NULL)
 }
 \arguments{
-\item{assayCol}{A character vector of length one indicating the assay names column}
+\item{mapdf}{A \code{data.frame} or \code{DataFrame} object with identifiers in the first column}
 
-\item{dfmap}{A data frame object with identifiers in the first column}
+\item{assayCol}{A character vector of length one indicating the assay names column}
+}
+\value{
+A \code{list} object of DataFrames for each assay
 }
 \description{
-Convert data.frame map to list map
-\code{toListMap} returns a \code{list}
+\code{toListMap} returns a \code{list} of DataFrames
 }
 

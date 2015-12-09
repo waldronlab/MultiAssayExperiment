@@ -15,7 +15,7 @@ subsetByAssay <- function(MultiAssay, assayIndicator, drop = FALSE){
       stop("Provide an assay type Stage class!")
     }
   }
-  assayDrops <- assayIndicator@drops
+  assayDrops <- .convertList(assayIndicator@drops, type = "assays")
   assayIndicator <- unlist(assayIndicator@keeps[match(names(MultiAssay), names(assayIndicator))])
   listMap <- toListMap(MultiAssay@sampleMap, "assayname")
   newMap <- listMap[assayIndicator]
