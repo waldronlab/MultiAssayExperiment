@@ -45,7 +45,7 @@
 Stage <- function(MultiAssay, identifier, method = character(), ...){
   method <- match.arg(method, c("samples", "features", "assays"))
   if(method == "samples"){
-    totalSamples <- samples(MultiAssay)
+    totalSamples <- colnames(MultiAssay)
     if(!is.numeric(identifier) && !all(identifier %in% rownames(myMultiAssay@masterPheno))){
       iders <- intersect(identifier, rownames(MultiAssay@masterPheno))
       notUsed <- setdiff(identifier, rownames(MultiAssay@masterPheno))
@@ -60,7 +60,7 @@ Stage <- function(MultiAssay, identifier, method = character(), ...){
                     drops = biMap[["drops"]],
                     type = "samples")
   } else if(method == "features"){
-    totalFeatures <- features(MultiAssay)
+    totalFeatures <- rownames(MultiAssay)
     subsetor <- getHits(MultiAssay, identifier)
     newDrops <- .featMap(Map(function(x, y){.outersect(x, y)}, subsetor, totalFeatures))
     newKeeps <- .featMap(subsetor)

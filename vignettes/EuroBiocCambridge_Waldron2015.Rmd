@@ -169,8 +169,8 @@ myMultiAssay <- MultiAssayExperiment(objlist, masPheno, dfmap)
 * Generic `Elist()` function extracts or creates `Elist` object
 
 * Validity checks: 
-    + require `features()`, `samples()`, `subsetFeatures()`, `subsetSamples()` methods
-    + consistency checks on `samples()` output when part of a `MultiAssayExperiment`
+    + require `rownames()`, `colnames()`, `subsetFeatures()`, `subsetSamples()` methods
+    + consistency checks on `colnames()` output when part of a `MultiAssayExperiment`
 
 `Elist` slot, class, and verb
 =================================================
@@ -207,7 +207,7 @@ head(sampleMap(myMultiAssay))
 
 * Validity checks: 
     + items in `master` column must be found in rownames(masterPheno)
-    + items in `assay` column must be found in samples(Elist[[i]])
+    + items in `assay` column must be found in colnames(Elist[[i]])
     + `assayname` column must contain only and all `Elist` element names
 
 `Stage` class and verb
@@ -304,10 +304,10 @@ biocMultiAssay harmonizes Bioconductor vocabulary
 
 ```{r}
 library(biocMultiAssay)
-methods("features")
+methods("rownames")
 ```
 
-__Note:__ also provides **`samples()`**, **"`[`"** (bracket), **`subsetSample()`**, and **`subsetFeature()`** functions to harmonize classes
+__Note:__ also provides **`colnames()`**, **"`[`"** (bracket), **`subsetSample()`**, and **`subsetFeature()`** functions to harmonize classes
 
 Upcoming priorities
 =================================================

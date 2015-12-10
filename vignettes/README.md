@@ -73,11 +73,11 @@ methods(class="MultiAssayExperiment")
 Subsetting of samples and features is harmonized through some generic functions:
 
 ```r
-showMethods("features")
+showMethods("rownames")
 ```
 
 ```
-## Function: features (package biocMultiAssay)
+## Function: rownames (package biocMultiAssay)
 ## x="ExpressionSet"
 ## x="GRangesList"
 ## x="matrix"

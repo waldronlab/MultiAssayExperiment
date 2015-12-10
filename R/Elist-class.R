@@ -64,7 +64,7 @@ setMethod("Elist", "SimpleList",
     if(!is.null(samp_err)){
       errors <- c(errors, paste0("Element [", i, "] of ", samp_err))
     }
-    feat_err <- .getMethErr(object[[i]], "features")
+    feat_err <- .getMethErr(object[[i]], "rownames")
     if(!is.null(feat_err)){
       errors <- c(errors, paste0("Element [", i, "] of ", feat_err))
     }
@@ -117,7 +117,7 @@ setMethod("show", "Elist", function(object){
 		  o_len <- length(object)
 		  o_names <- names(object)
 		  sampdim <- vapply(object, FUN = function(obj) { length(samples(obj)) }, FUN.VALUE = integer(1))
-		  featdim <- vapply(object, FUN = function(obj) { length(features(obj)) }, FUN.VALUE = integer(1))
+		  featdim <- vapply(object, FUN = function(obj) { length(rownames(obj)) }, FUN.VALUE = integer(1))
 		  cat(sprintf('"%s"', o_class), "class object of length", paste0(o_len, ':'),
 			  sprintf('\n [%i] %s: "%s" - %s samples, %s features', seq(o_len), o_names, elem_cl, sampdim, featdim), "\n") 
 		  })

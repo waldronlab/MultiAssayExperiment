@@ -23,8 +23,8 @@ sx = samples(xel)
 sb = intersect(sy,sx)
 yel = yel[,sb]
 xel = xel[,sb]
-vdf = as.matrix(expand.grid( names(features(yel)), 
-    names(features(xel)), stringsAsFactors=FALSE ))
+vdf = as.matrix(expand.grid( names(rownames(yel)), 
+    names(rownames(xel)), stringsAsFactors=FALSE ))
 allf = apply(vdf, 1, function(x) as.formula(paste(x, collapse="~")))
 alllm = foreach (i = 1:length(allf)) %dopar% {
   df = data.frame(ytx(assay(yel)[vdf[i,1],]), xtx(assay(xel)[vdf[i,2],]))

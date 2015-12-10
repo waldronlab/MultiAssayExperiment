@@ -5,38 +5,30 @@ NULL
 #' 
 #' @param x Either an \code{\linkS4class{ExpressionSet}}, \code{\linkS4class{GRangesList}}, \code{\linkS4class{RangedSummarizedExperiment}} or \code{matrix} class object
 #' @return Returns either rownames or featureNames
-#' @exportMethod features
-setGeneric("features", function(x) standardGeneric("features"))
-#' @describeIn features Return character if character
-setMethod("features", "character", function(x) x)
-#' @describeIn features Get the featureNames for ExpressionSet
-setMethod("features", "ExpressionSet", function(x) Biobase::featureNames(x))
-#' @describeIn features Get a summary of rowRanges for RangedSummarizedExperiment
-setMethod("features", "RangedSummarizedExperiment", function(x) names(SummarizedExperiment::rowRanges(x)))
-#' @describeIn features Get the rownames of a matrix
-setMethod("features", "matrix", function(x) rownames(x))
-#' @describeIn features Get the names of a GRanges
-setMethod("features", "GRanges", function(x) names(x))
-#' @describeIn features Get the summary of ranges for a GRangesList
-setMethod("features", "GRangesList", function(x) names(unlist(x, use.names = FALSE)))
-#' @describeIn features Get all the features for a MultiAssayExperiment
-setMethod("features", "MultiAssayExperiment", function(x) lapply(x@Elist, features))
+#' @exportMethod rownames
+setMethod("rownames", "character", function(x) x)
+#' @describeIn rownames Get the featureNames for ExpressionSet
+setMethod("rownames", "ExpressionSet", function(x) Biobase::featureNames(x))
+#' @describeIn rownames Get a summary of rowRanges for RangedSummarizedExperiment
+setMethod("rownames", "RangedSummarizedExperiment", function(x) names(SummarizedExperiment::rowRanges(x)))
+#' @describeIn rownames Get the names of a GRanges
+setMethod("rownames", "GRanges", function(x) names(x))
+#' @describeIn rownames Get the summary of ranges for a GRangesList
+setMethod("rownames", "GRangesList", function(x) names(unlist(x, use.names = FALSE)))
+#' @describeIn rownames Get all the rownames for a MultiAssayExperiment
+setMethod("rownames", "MultiAssayExperiment", function(x) lapply(x@Elist, rownames))
 
 #' Sample extractor generic
 #' 
 #' @param x Either an \code{\linkS4class{ExpressionSet}}, \code{\linkS4class{GRangesList}}, \code{\linkS4class{RangedSummarizedExperiment}} or \code{matrix} class object
 #' @return Returns an object of the same class  
-#' @exportMethod samples
-#' @describeIn samples Get the sampleNames for ExpressionSet
-setMethod("samples", "ExpressionSet", function(object) Biobase::sampleNames(object)) 
-#' @describeIn samples Get colnames for RangedSummarizedExperiment
-setMethod("samples", "RangedSummarizedExperiment", function(object) BiocGenerics::colnames(object))
-#' @describeIn samples Get the colnames of a matrix
-setMethod("samples", "matrix", function(object) colnames(object))
-#' @describeIn samples Get the names of each list element for a GRangesList
-setMethod("samples", "GRangesList", function(object) names(object)) 
-#' @describeIn samples Get all the samples for a MultiAssayExperiment
-setMethod("samples", "MultiAssayExperiment", function(object) lapply(object@Elist, samples))
+#' @exportMethod colnames
+#' @describeIn colnames Get the sampleNames for ExpressionSet
+setMethod("colnames", "ExpressionSet", function(object) Biobase::sampleNames(object)) 
+#' @describeIn colnames Get the names of each list element for a GRangesList
+setMethod("colnames", "GRangesList", function(object) names(object)) 
+#' @describeIn colnames Get all the colnames for a MultiAssayExperiment
+setMethod("colnames", "MultiAssayExperiment", function(object) lapply(object@Elist, colnames))
 
 #' Find hits by class type
 #' 
@@ -52,30 +44,30 @@ setMethod("getHits", signature("GRanges", "GRanges"), function(subject, query, .
 #' @describeIn getHits Iteratively find overlaps and return names
 setMethod("getHits", signature("GRangesList", "GRanges"), function(subject, query, ...)
   names(unlist(subject, use.names = FALSE))[findOverlaps(subject, query, ...)@subjectHits])
-#' @describeIn getHits Find matching features from GRangesList
+#' @describeIn getHits Find matching rownames from GRangesList
 setMethod("getHits", signature("GRangesList", "character"), function(subject, query, ...)
-  intersect(query, features(subject)))
+  intersect(query, rownames(subject)))
 #' @describeIn getHits Find overlaps and return names for RangedSummarizedExperiment
 setMethod("getHits", signature("RangedSummarizedExperiment", "GRanges"), function(subject, query, ...)
   names(subject[findOverlaps(rowRanges(subject), query, ...)@subjectHits]))
-#' @describeIn getHits Find matching features from RangedSummarizedExperiment
+#' @describeIn getHits Find matching rownames from RangedSummarizedExperiment
 setMethod("getHits", signature("RangedSummarizedExperiment", "character"), function(subject, query, ...)
-  intersect(query, features(subject)))
+  intersect(query, rownames(subject)))
 setMethod("getHits", signature("character", "GRanges"), function(subject, query, ...) character(0L) )
-#' @describeIn getHits Find matching features in ExpressionSet
+#' @describeIn getHits Find matching rownames in ExpressionSet
 setMethod("getHits", signature("ExpressionSet", "character"), function(subject, query, ...)
-  intersect(query, features(subject)))
+  intersect(query, rownames(subject)))
 setMethod("getHits", signature("ExpressionSet", "GRanges"), function(subject, query, ...)
-  intersect(features(query), features(subject)))
-#' @describeIn getHits Find matching features in matrix
+  intersect(rownames(query), rownames(subject)))
+#' @describeIn getHits Find matching rownames in matrix
 setMethod("getHits", signature("matrix", "character"), function(subject, query, ...)
-  intersect(query, features(subject)))
+  intersect(query, rownames(subject)))
 setMethod("getHits", signature("matrix", "GRanges"), function(subject, query, ...)
-  intersect(features(query), features(subject)))
-#' @describeIn getHits Find all matching features by character
+  intersect(rownames(query), rownames(subject)))
+#' @describeIn getHits Find all matching rownames by character
 setMethod("getHits", signature("MultiAssayExperiment", "character"), function(subject, query, ...)
   lapply(subject@Elist, FUN = function(elem) { getHits(elem, query, ...) }))
-#' @describeIn getHits Find all matching features by GRanges
+#' @describeIn getHits Find all matching rownames by GRanges
 setMethod("getHits", signature("MultiAssayExperiment", "GRanges"), function(subject, query, ...)
   lapply(subject@Elist, FUN = function(elem) { getHits(elem, query, ...) }))
 
@@ -89,11 +81,11 @@ setMethod("getHits", signature("MultiAssayExperiment", "GRanges"), function(subj
 setGeneric("subsetSample", function(x, j, ...) standardGeneric("subsetSample"))
 #' @describeIn subsetSample Select columns of a matrix
 setMethod("subsetSample", "matrix", function(x, j) x[, j, drop = FALSE])
-#' @describeIn subsetSample Select samples of an ExpressionSet
+#' @describeIn subsetSample Select colnames of an ExpressionSet
 setMethod("subsetSample", "ExpressionSet", function(x, j) x[, j])
 #' @describeIn subsetSample Select column data of a RangedSummarizedExperiment
 setMethod("subsetSample", "RangedSummarizedExperiment", function(x, j) x[,j = j])
-#' @describeIn subsetSample Select samples for a GRangesList
+#' @describeIn subsetSample Select colnames for a GRangesList
 setMethod("subsetSample", "GRangesList", function(x, j) x[i=j]) 
 
 

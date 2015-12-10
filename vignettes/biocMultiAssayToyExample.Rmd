@@ -31,8 +31,8 @@ Subsetting of samples and features is harmonized through some generic
 functions:
 
 ```{r}
-methods("features")
-methods("samples")
+methods("rownames") # features
+methods("colnames") # samples
 methods("subsetSample")
 methods("subsetFeature")
 ```
@@ -289,8 +289,8 @@ sampleMap(MultiAssayExperiment(doubleExp, masPheno))
 
 Any data classes in the Elist object must support the following methods:
 
-* `samples()`
-* `features()`
+* `colnames()`
+* `rownames()`
 * `[`
 
 Here is what happens if one of the methods doesn't:

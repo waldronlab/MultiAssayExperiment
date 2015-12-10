@@ -43,7 +43,7 @@ setMethod("show", "Stage", function(object){
   o_len <- length(object)
   o_names <- names(object)
   stage_type <- type(object)
-  o_ids <- features(query(object))
+  o_ids <- rownames(query(object))
   if(stage_type != "assays"){
     my_fun <- function(x) length(na.omit(x[, 1]))
   } else {
