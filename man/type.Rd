@@ -7,7 +7,7 @@
 type(object)
 }
 \arguments{
-\item{x}{A \code{\linkS4class{Stage}} class object}
+\item{x}{A \code{\linkS4class{MultiAssayView}} class object}
 }
 \value{
 A \code{character} atomic vector

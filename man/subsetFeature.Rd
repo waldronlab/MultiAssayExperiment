@@ -4,7 +4,7 @@
 \name{subsetFeature}
 \alias{subsetFeature}
 \alias{subsetFeature,ExpressionSet,ANY-method}
-\alias{subsetFeature,GRangesList,GRanges-method}
+\alias{subsetFeature,RaggedRangedAssay,GRanges-method}
 \alias{subsetFeature,RangedSummarizedExperiment,GRanges-method}
 \alias{subsetFeature,matrix,ANY-method}
 \title{Subset by Feature method}
@@ -17,10 +17,10 @@ subsetFeature(x, j, ...)
 
 \S4method{subsetFeature}{RangedSummarizedExperiment,GRanges}(x, j, ...)
 
-\S4method{subsetFeature}{GRangesList,GRanges}(x, j, ...)
+\S4method{subsetFeature}{RaggedRangedAssay,GRanges}(x, j, ...)
 }
 \arguments{
-\item{x}{Either an \code{\linkS4class{ExpressionSet}}, \code{\linkS4class{GRangesList}}, \code{\linkS4class{RangedSummarizedExperiment}} or \code{matrix} class object}
+\item{x}{Either an \code{\linkS4class{ExpressionSet}}, \code{\linkS4class{RaggedRangedAssay}}, \code{\linkS4class{RangedSummarizedExperiment}} or \code{matrix} class object}
 
 \item{j}{Either a \code{numeric}, \code{character}, or \code{logical} vector class for subsetting}
 
@@ -40,6 +40,6 @@ Subset by Feature method
 
 \item \code{x = RangedSummarizedExperiment,j = GRanges}: Use subsetByOverlaps with additional and optional arguments
 
-\item \code{x = GRangesList,j = GRanges}: Use subsetByOverlaps for all of the GRangesList
+\item \code{x = RaggedRangedAssay,j = GRanges}: Use subsetByOverlaps for all of the RaggedRangedAssay
 }}
 

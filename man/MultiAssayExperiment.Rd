@@ -2,8 +2,7 @@
 % Please edit documentation in R/MultiAssayExperiment.R
 \name{MultiAssayExperiment}
 \alias{MultiAssayExperiment}
-\title{Create a MultiAssayExperiment object 
-\code{MultiAssayExperiment} returns a \code{\linkS4class{MultiAssayExperiment}} object}
+\title{Create a MultiAssayExperiment object}
 \usage{
 MultiAssayExperiment(Elist = list(), masterPheno = S4Vectors::DataFrame(),
   sampleMap = S4Vectors::DataFrame(), drops = list())

@@ -5,10 +5,10 @@
 \alias{getHits}
 \alias{getHits,ExpressionSet,character-method}
 \alias{getHits,GRanges,GRanges-method}
-\alias{getHits,GRangesList,GRanges-method}
-\alias{getHits,GRangesList,character-method}
 \alias{getHits,MultiAssayExperiment,GRanges-method}
 \alias{getHits,MultiAssayExperiment,character-method}
+\alias{getHits,RaggedRangedAssay,GRanges-method}
+\alias{getHits,RaggedRangedAssay,character-method}
 \alias{getHits,RangedSummarizedExperiment,GRanges-method}
 \alias{getHits,RangedSummarizedExperiment,character-method}
 \alias{getHits,matrix,character-method}
@@ -18,9 +18,9 @@ getHits(subject, query, ...)
 
 \S4method{getHits}{GRanges,GRanges}(subject, query, ...)
 
-\S4method{getHits}{GRangesList,GRanges}(subject, query, ...)
+\S4method{getHits}{RaggedRangedAssay,GRanges}(subject, query, ...)
 
-\S4method{getHits}{GRangesList,character}(subject, query, ...)
+\S4method{getHits}{RaggedRangedAssay,character}(subject, query, ...)
 
 \S4method{getHits}{RangedSummarizedExperiment,GRanges}(subject, query, ...)
 
@@ -51,20 +51,20 @@ Find hits by class type
 \itemize{
 \item \code{subject = GRanges,query = GRanges}: Find overlaps and return names
 
-\item \code{subject = GRangesList,query = GRanges}: Iteratively find overlaps and return names
+\item \code{subject = RaggedRangedAssay,query = GRanges}: Iteratively find overlaps and return names
 
-\item \code{subject = GRangesList,query = character}: Find matching features from GRangesList
+\item \code{subject = RaggedRangedAssay,query = character}: Find matching rownames from RaggedRangedAssay
 
 \item \code{subject = RangedSummarizedExperiment,query = GRanges}: Find overlaps and return names for RangedSummarizedExperiment
 
-\item \code{subject = RangedSummarizedExperiment,query = character}: Find matching features from RangedSummarizedExperiment
+\item \code{subject = RangedSummarizedExperiment,query = character}: Find matching rownames from RangedSummarizedExperiment
 
-\item \code{subject = ExpressionSet,query = character}: Find matching features in ExpressionSet
+\item \code{subject = ExpressionSet,query = character}: Find matching rownames in ExpressionSet
 
-\item \code{subject = matrix,query = character}: Find matching features in matrix
+\item \code{subject = matrix,query = character}: Find matching rownames in matrix
 
-\item \code{subject = MultiAssayExperiment,query = character}: Find all matching features by character
+\item \code{subject = MultiAssayExperiment,query = character}: Find all matching rownames by character
 
-\item \code{subject = MultiAssayExperiment,query = GRanges}: Find all matching features by GRanges
+\item \code{subject = MultiAssayExperiment,query = GRanges}: Find all matching rownames by GRanges
 }}
 

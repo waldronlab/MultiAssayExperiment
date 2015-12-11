@@ -23,7 +23,7 @@
 
 .FixElemNames <- function(object){
   obj_cl <- class(object)
-  if(obj_cl == "GRangesList"){
+  if(obj_cl == "RaggedRangedAssay"){
     if(is.null(names(object[[1]]))){
       object <- createNames(object)
     } 
@@ -48,8 +48,8 @@
   return(autoMap)
 }
 
+
 #' Create a MultiAssayExperiment object 
-#' \code{MultiAssayExperiment} returns a \code{\linkS4class{MultiAssayExperiment}} object 
 #'
 #' This function combines multiple data sources specific to one disease by matching samples. 
 #' 
@@ -60,7 +60,7 @@
 #' @return A \code{MultiAssayExperiment} data object that stores experiment and phenotype data.
 #' @export MultiAssayExperiment
 MultiAssayExperiment <- function(Elist = list(), masterPheno = S4Vectors::DataFrame(), sampleMap = S4Vectors::DataFrame(), drops = list()){
-  Elist <- lapply(Elist, .FixElemNames)
+  Elist <- lapply(Elist, function(x) {.FixElemNames(RaggedRangedAssay(x))})
 	if(!all(c(length(sampleMap) == 0L, length(masterPheno) == 0L, length(Elist) == 0L))){
 		if((length(sampleMap) == 0L) & (length(masterPheno) == 0L)){
 			allsamps <- unique(unlist(lapply(Elist, samples)))

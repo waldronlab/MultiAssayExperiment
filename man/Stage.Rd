@@ -2,7 +2,7 @@
 % Please edit documentation in R/Stage.R
 \name{Stage}
 \alias{Stage}
-\title{Stage by Samples, Features, or Assays}
+\title{Stage a MultiAssayView by Samples, Features, or Assays}
 \usage{
 Stage(MultiAssay, identifier, method = character(), ...)
 }
@@ -14,9 +14,9 @@ Stage(MultiAssay, identifier, method = character(), ...)
 \item{identifer}{Either a \code{character}, \code{numeric} or \code{logical} vector identifying targets}
 }
 \value{
-A \code{\linkS4class{Stage}} class object for subsequent subsetting
+A \code{\linkS4class{MultiAssayView}} class object for subsequent subsetting
 }
 \description{
-Stage by Samples, Features, or Assays
+Stage a MultiAssayView by Samples, Features, or Assays
 }
 

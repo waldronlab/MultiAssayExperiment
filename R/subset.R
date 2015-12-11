@@ -5,7 +5,7 @@
   } else {
   listmap <- object
   }
-  if(is(listmap, "Stage")){stop("Provide a slot name for the Stage class!")}
+  if(is(listmap, "MultiAssayView")){stop("Provide a slot name for the Stage class!")}
   DFmap <- lapply(seq_along(listmap), FUN = function(i, x){
     if(type == "samples"){
       if(isEmpty(x[i])){
@@ -41,7 +41,7 @@
 setMethod("subset", "MultiAssayExperiment", function(x, indicator, method = NULL, ...){
   if(length(list(...)) > 0L){
     stop("invalid subsetting")}
-  if(is(indicator, "Stage")){ 
+  if(is(indicator, "MultiAssayView")){ 
     method <- getElement(indicator, "type") 
   } else if(is.null(method)){
     stop("Please indicate a subset method!")

@@ -7,7 +7,7 @@
 #' @return A \code{\link{MultiAssayExperiment}} object 
 #' @export subsetByFeature
 subsetByFeature <- function(MultiAssay, featureIndicator, ...){ 
-  if(!is(featureIndicator, "Stage")){
+  if(!is(featureIndicator, "MultiAssayView")){
     featureIndicator <- Stage(MultiAssay, featureIndicator, "features")
   } else {
     if(featureIndicator@type != "features"){

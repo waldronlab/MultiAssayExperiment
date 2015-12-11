@@ -10,14 +10,14 @@
 
 createNames <- function(object){
   for(i in seq_along(object)){
-   names(object[[i]]) <- 1:length(grl[[i]]) 
+   names(object[[i]]) <- 1:length(object[[i]]) 
   }
   return(object)
 }
 
 .getNameErr <- function(object){
   obj_cl <- class(object)
-  if(obj_cl == "GRangesList"){
+  if(obj_cl == "RaggedRangedAssay"){
     if(is.null(names(object))){
       msg <- paste("names in", obj_cl, "are NULL!")
       return(msg)
@@ -60,7 +60,7 @@ setMethod("Elist", "SimpleList",
 .checkMethods <- function(object){
   errors <- character()
   for(i in seq_along(object)){
-    samp_err <- .getMethErr(object[[i]], "samples")
+    samp_err <- .getMethErr(object[[i]], "colnames")
     if(!is.null(samp_err)){
       errors <- c(errors, paste0("Element [", i, "] of ", samp_err))
     }
@@ -116,7 +116,8 @@ setMethod("show", "Elist", function(object){
 		  elem_cl <- vapply(object, class, character(1))
 		  o_len <- length(object)
 		  o_names <- names(object)
-		  sampdim <- vapply(object, FUN = function(obj) { length(samples(obj)) }, FUN.VALUE = integer(1))
+		  browser()
+		  sampdim <- vapply(object, FUN = function(obj) { length(colnames(obj)) }, FUN.VALUE = integer(1))
 		  featdim <- vapply(object, FUN = function(obj) { length(rownames(obj)) }, FUN.VALUE = integer(1))
 		  cat(sprintf('"%s"', o_class), "class object of length", paste0(o_len, ':'),
 			  sprintf('\n [%i] %s: "%s" - %s samples, %s features', seq(o_len), o_names, elem_cl, sampdim, featdim), "\n") 

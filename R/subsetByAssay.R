@@ -8,7 +8,7 @@
 #' @return A \code{\link{MultiAssayExperiment}} object or \code{list} if drop paramater is set to TRUE
 #' @export subsetByAssay
 subsetByAssay <- function(MultiAssay, assayIndicator, drop = FALSE){
-  if(!is(assayIndicator, "Stage")){
+  if(!is(assayIndicator, "MultiAssayView")){
     assayIndicator <- Stage(MultiAssay, assayIndicator, "assays")  
   } else {
     if((assayIndicator@type != "assays")){

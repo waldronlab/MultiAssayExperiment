@@ -4,7 +4,7 @@
 \name{subsetSample}
 \alias{subsetSample}
 \alias{subsetSample,ExpressionSet-method}
-\alias{subsetSample,GRangesList-method}
+\alias{subsetSample,RaggedRangedAssay-method}
 \alias{subsetSample,RangedSummarizedExperiment-method}
 \alias{subsetSample,matrix-method}
 \title{Subset by Sample generic}
@@ -17,10 +17,10 @@ subsetSample(x, j, ...)
 
 \S4method{subsetSample}{RangedSummarizedExperiment}(x, j)
 
-\S4method{subsetSample}{GRangesList}(x, j)
+\S4method{subsetSample}{RaggedRangedAssay}(x, j)
 }
 \arguments{
-\item{x}{Either an \code{\linkS4class{ExpressionSet}}, \code{\linkS4class{GRangesList}}, \code{\linkS4class{RangedSummarizedExperiment}} or \code{matrix} class object}
+\item{x}{Either an \code{\linkS4class{ExpressionSet}}, \code{\linkS4class{RaggedRangedAssay}}, \code{\linkS4class{RangedSummarizedExperiment}} or \code{matrix} class object}
 
 \item{j}{Either a \code{numeric}, \code{character}, or \code{logical} vector class for subsetting}
 
@@ -36,10 +36,10 @@ Subset by Sample generic
 \itemize{
 \item \code{matrix}: Select columns of a matrix
 
-\item \code{ExpressionSet}: Select samples of an ExpressionSet
+\item \code{ExpressionSet}: Select colnames of an ExpressionSet
 
 \item \code{RangedSummarizedExperiment}: Select column data of a RangedSummarizedExperiment
 
-\item \code{GRangesList}: Select samples for a GRangesList
+\item \code{RaggedRangedAssay}: Select colnames for a RaggedRangedAssay
 }}
 

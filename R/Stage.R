@@ -35,12 +35,12 @@
   return(defeatmap)
 }
 
-#' Stage by Samples, Features, or Assays
+#' Stage a MultiAssayView by Samples, Features, or Assays
 #' 
 #' @param MultiAssay A \code{\linkS4class{MultiAssayExperiment}}
 #' @param identifer Either a \code{character}, \code{numeric} or \code{logical} vector identifying targets 
 #' @param method Prepare/Stage for subsetting using samples, features or assays.
-#' @return A \code{\linkS4class{Stage}} class object for subsequent subsetting
+#' @return A \code{\linkS4class{MultiAssayView}} class object for subsequent subsetting
 #' @export Stage
 Stage <- function(MultiAssay, identifier, method = character(), ...){
   method <- match.arg(method, c("samples", "features", "assays"))
@@ -54,7 +54,7 @@ Stage <- function(MultiAssay, identifier, method = character(), ...){
       iders <- rownames(.subPheno(MultiAssay, identifier))
     }
     biMap <- .separateMap(MultiAssay, iders)
-    newStage <- new("Stage",
+    newMultiAssayView <- new("MultiAssayView",
                     query = iders,
                     keeps = biMap[["keeps"]],
                     drops = biMap[["drops"]],
@@ -64,7 +64,7 @@ Stage <- function(MultiAssay, identifier, method = character(), ...){
     subsetor <- getHits(MultiAssay, identifier)
     newDrops <- .featMap(Map(function(x, y){.outersect(x, y)}, subsetor, totalFeatures))
     newKeeps <- .featMap(subsetor)
-    newStage <- new("Stage", 
+    newMultiAssayView <- new("MultiAssayView", 
                     query = identifier, 
                     keeps = newKeeps,
                     drops = newDrops,
@@ -91,11 +91,11 @@ Stage <- function(MultiAssay, identifier, method = character(), ...){
     }
     names(newKeeps) <- names(MultiAssay)
     newDrops <- lapply(newKeeps, `!`) 
-    newStage <- new("Stage", 
+    newMultiAssayView <- new("MultiAssayView", 
                     query = identifier, 
                     keeps = newKeeps,
                     drops = newDrops, 
                     type = "assays")
   }
-  return(newStage)
+  return(newMultiAssayView)
 }
