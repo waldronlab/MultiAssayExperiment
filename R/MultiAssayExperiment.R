@@ -23,8 +23,8 @@
 
 .FixElemNames <- function(object){
   obj_cl <- class(object)
-  if(obj_cl == "RaggedRangedAssay"){
-    if(is.null(names(object[[1]]))){
+  if(obj_cl %in% c("RaggedRangedAssay", "GRangesList")){
+    if(is.null(rownames(object))){
       object <- createNames(object)
     } 
   } else { object } 

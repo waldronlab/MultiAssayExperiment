@@ -116,7 +116,6 @@ setMethod("show", "Elist", function(object){
 		  elem_cl <- vapply(object, class, character(1))
 		  o_len <- length(object)
 		  o_names <- names(object)
-		  browser()
 		  sampdim <- vapply(object, FUN = function(obj) { length(colnames(obj)) }, FUN.VALUE = integer(1))
 		  featdim <- vapply(object, FUN = function(obj) { length(rownames(obj)) }, FUN.VALUE = integer(1))
 		  cat(sprintf('"%s"', o_class), "class object of length", paste0(o_len, ':'),
