@@ -1,4 +1,5 @@
 #' @include Elist-class.R MultiAssayView-class.R RaggedRangedAssay-class.R MultiAssayExperiment-class.R
+#' @import BiocGenerics
 NULL
 
 #' Rownames extractor method 
@@ -68,6 +69,22 @@ setMethod("getHits", signature("MultiAssayExperiment", "character"), function(su
 #' @describeIn getHits Find all matching rownames by GRanges
 setMethod("getHits", signature("MultiAssayExperiment", "GRanges"), function(subject, query, ...)
   lapply(subject@Elist, FUN = function(elem) { getHits(elem, query, ...) }))
+
+# SEE : 
+  # showMethods("findOverlaps", classes = "RaggedRangedAssay", inherited = TRUE) 
+#----
+## setMethod("getHits", signature("ANY", "GRanges"), function(subject, query, ...){
+##   ranged <- all(c("findOverlaps", "subsetByOverlaps") %in% showMethods(class = class(subject)))
+##   if(ranged){
+##     query <- names(unlist(subject, use.names = FALSE))[findOverlaps(subject, query, ...)@subjectHits])
+##     getHits(subject, query)
+##   } else {
+##     subject[0,]
+##   }
+## })
+## setMethod("getHits", signature("ANY", "character"), function(subject, query, ...){
+##   query[query %in% rownames(subject)]
+## })
 
 #' Subset by Sample generic 
 #'

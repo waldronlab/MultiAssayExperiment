@@ -1,9 +1,9 @@
 .convertList <- function(object, slot=NULL, type = "samples"){
   if(!is.null(slot)){
-  listmap <- getElement(object, slot)
-  type <- object@type
+    listmap <- getElement(object, slot)
+    type <- object@type
   } else {
-  listmap <- object
+    listmap <- object
   }
   if(is(listmap, "MultiAssayView")){stop("Provide a slot name for the Stage class!")}
   DFmap <- lapply(seq_along(listmap), FUN = function(i, x){

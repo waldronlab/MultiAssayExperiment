@@ -32,7 +32,7 @@
 }
 
 .generateMap <- function(mPheno, exlist){
-  samps <- lapply(exlist, samples)
+  samps <- lapply(exlist, colnames)
   # listM <- lapply(seq_along(samps), function(i, x) {data.frame(assay = x[[i]], assayname = names(x)[i], row.names = NULL, stringsAsFactors = FALSE)}, x = samps)
   listM <- lapply(seq_along(samps), function(i, x) {S4Vectors::DataFrame(assay = x[[i]], assayname = names(x)[i])}, x = samps)
   full_map <- do.call(S4Vectors::rbind, listM)
@@ -63,7 +63,7 @@ MultiAssayExperiment <- function(Elist = list(), masterPheno = S4Vectors::DataFr
   Elist <- lapply(Elist, function(x) {.FixElemNames(RaggedRangedAssay(x))})
 	if(!all(c(length(sampleMap) == 0L, length(masterPheno) == 0L, length(Elist) == 0L))){
 		if((length(sampleMap) == 0L) & (length(masterPheno) == 0L)){
-			allsamps <- unique(unlist(lapply(Elist, samples)))
+			allsamps <- unique(unlist(lapply(Elist, colnames)))
 			masterPheno <- S4Vectors::DataFrame(pheno1 = rep(NA, length(allsamps)), row.names = allsamps)
 			sampleMap <- .generateMap(masterPheno, Elist)
 		} else if((length(sampleMap) == 0L) & !(length(masterPheno) == 0L)){
