@@ -25,5 +25,5 @@ setGeneric("RaggedRangedAssay", function(x) standardGeneric("RaggedRangedAssay")
 setMethod("RaggedRangedAssay", "GRangesList", function(x) new("RaggedRangedAssay", x))
 #' @describeIn RaggedRangedAssay Convert a GRanges to GRangesList to RaggedRangedAssay
 setMethod("RaggedRangedAssay", "GRanges", function(x) new("RaggedRangedAssay", GRangesList(x)))
-setMethod("RaggedRangedAssay", "ANY", function(x) x)
 setMethod("RaggedRangedAssay", "list", function(x) lapply(x, RaggedRangedAssay))
+setMethod("RaggedRangedAssay", "missing", function(x) new("RaggedRangedAssay"))

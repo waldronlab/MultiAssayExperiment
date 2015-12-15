@@ -52,6 +52,8 @@ setMethod("Elist", "list",
 #' @describeIn Elist Convert a SimpleList to an Elist
 setMethod("Elist", "SimpleList",
 		  function(x) new("Elist", x))
+setMethod("Elist", "missing", 
+          function(x) new("Elist"))
 
 ##
 ## Validity ---------------------------------
