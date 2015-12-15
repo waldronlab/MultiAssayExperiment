@@ -192,8 +192,6 @@ metadata(myMultiAssay)
 
 ## Subsetting by Sample
 
-Temporarily not evaluated due to bug ([Issue 53][]):
-
 ```{r}
 MultiAssayView_cl <- Stage(myMultiAssay, 2:1, "samples")
 MultiAssayView_cl

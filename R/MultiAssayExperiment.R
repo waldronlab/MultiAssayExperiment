@@ -21,12 +21,15 @@
 	return(do.call(rbind, dfmap))
 }
 
-.FixElemNames <- function(object){
+.PrepElements <- function(object){
   obj_cl <- class(object)
   if(obj_cl %in% c("RaggedRangedAssay", "GRangesList")){
     if(is.null(rownames(object))){
-      object <- createNames(object)
-    } 
+      for(i in seq_along(object)){
+        names(object[[i]]) <- 1:length(object[[i]])
+      }
+    }
+    object <- RaggedRangedAssay(object)
   } else { object } 
   return(object)
 }
@@ -60,25 +63,24 @@
 #' @return A \code{MultiAssayExperiment} data object that stores experiment and phenotype data.
 #' @export MultiAssayExperiment
 MultiAssayExperiment <- function(Elist = list(), masterPheno = S4Vectors::DataFrame(), sampleMap = S4Vectors::DataFrame(), drops = list()){
-  Elist <- lapply(Elist, function(x) {.FixElemNames(RaggedRangedAssay(x))})
-	if(!all(c(length(sampleMap) == 0L, length(masterPheno) == 0L, length(Elist) == 0L))){
-		if((length(sampleMap) == 0L) & (length(masterPheno) == 0L)){
-			allsamps <- unique(unlist(lapply(Elist, colnames)))
-			masterPheno <- S4Vectors::DataFrame(pheno1 = rep(NA, length(allsamps)), row.names = allsamps)
-			sampleMap <- .generateMap(masterPheno, Elist)
-		} else if((length(sampleMap) == 0L) & !(length(masterPheno) == 0L)){
-			warning("sampleMap not provided! Map will be created from data provided.")
-			sampleMap <- .generateMap(masterPheno, Elist)
-			validAssays <- split(sampleMap[["assay"]], sampleMap$assayname)
-			Elist <- Map(subsetSample, Elist, validAssays) 
-		}
-	} 
+  Elist <- lapply(Elist, function(x) {.PrepElements(x)})
+  if(!all(c(length(sampleMap) == 0L, length(masterPheno) == 0L, length(Elist) == 0L))){
+    if((length(sampleMap) == 0L) & (length(masterPheno) == 0L)){
+      allsamps <- unique(unlist(lapply(Elist, colnames)))
+      masterPheno <- S4Vectors::DataFrame(pheno1 = rep(NA, length(allsamps)), row.names = allsamps)
+      sampleMap <- .generateMap(masterPheno, Elist)
+    } else if((length(sampleMap) == 0L) & !(length(masterPheno) == 0L)){
+      warning("sampleMap not provided! Map will be created from data provided...")
+      sampleMap <- .generateMap(masterPheno, Elist)
+      validAssays <- split(sampleMap[["assay"]], sampleMap$assayname)
+      Elist <- Map(subsetSample, Elist, validAssays) 
+    }
+  }
   if(!is(masterPheno, "DataFrame")){masterPheno <- S4Vectors::DataFrame(masterPheno)}
   if(!is(sampleMap, "DataFrame")){sampleMap <- S4Vectors::DataFrame(sampleMap)}
-	newMultiAssay <- new("MultiAssayExperiment",
-						 Elist = Elist(Elist),
-						 masterPheno = masterPheno,
-						 sampleMap = sampleMap)
-	return(newMultiAssay)
+  newMultiAssay <- new("MultiAssayExperiment",
+                       Elist = Elist(Elist),
+                       masterPheno = masterPheno,
+                       sampleMap = sampleMap)
+  return(newMultiAssay)
 }
-

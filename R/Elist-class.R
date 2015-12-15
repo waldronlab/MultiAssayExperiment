@@ -8,13 +8,6 @@
 	NULL
 }
 
-createNames <- function(object){
-  for(i in seq_along(object)){
-   names(object[[i]]) <- 1:length(object[[i]]) 
-  }
-  return(object)
-}
-
 .getNameErr <- function(object){
   obj_cl <- class(object)
   if(obj_cl == "RaggedRangedAssay"){
