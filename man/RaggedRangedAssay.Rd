@@ -4,7 +4,7 @@
 \alias{RaggedRangedAssay}
 \title{Generic Builder and Accessor Function}
 \usage{
-RaggedRangedAssay(x)
+RaggedRangedAssay(...)
 }
 \description{
 Generic Builder and Accessor Function

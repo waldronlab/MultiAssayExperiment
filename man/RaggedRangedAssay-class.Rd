@@ -2,17 +2,14 @@
 % Please edit documentation in R/RaggedRangedAssay-class.R
 \docType{class}
 \name{RaggedRangedAssay-class}
-\alias{RaggedRangedAssay,GRanges-method}
 \alias{RaggedRangedAssay,GRangesList-method}
 \alias{RaggedRangedAssay-class}
 \title{An extension of the GRangesList class}
 \usage{
-\S4method{RaggedRangedAssay}{GRangesList}(x)
-
-\S4method{RaggedRangedAssay}{GRanges}(x)
+\S4method{RaggedRangedAssay}{GRangesList}(...)
 }
 \arguments{
-\item{x}{A \code{GRangesList} object}
+\item{...}{A \code{GRangesList} object}
 }
 \value{
 A \code{\linkS4class{RaggedRangedAssay}} class object
@@ -25,7 +22,5 @@ Convert GRangesList to RaggedRangedAssay
 \section{Methods (by generic)}{
 \itemize{
 \item \code{RaggedRangedAssay}: Convert a GRangesList to a RaggedRangedAssay
-
-\item \code{RaggedRangedAssay}: Convert a GRanges to GRangesList to RaggedRangedAssay
 }}
 

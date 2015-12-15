@@ -9,7 +9,7 @@
 setClass("RaggedRangedAssay", contains = "GRangesList")
 
 #' Generic Builder and Accessor Function
-setGeneric("RaggedRangedAssay", function(x) standardGeneric("RaggedRangedAssay"))
+setGeneric("RaggedRangedAssay", function(...) standardGeneric("RaggedRangedAssay"))
 
 ### - - - - - - - - - - - - - - - - - - - - - - - -
 ### Builder
@@ -17,11 +17,14 @@ setGeneric("RaggedRangedAssay", function(x) standardGeneric("RaggedRangedAssay")
 
 #' Convert GRangesList to RaggedRangedAssay
 #'
-#' @param x A \code{GRangesList} object
+#' @param ... A \code{GRangesList} object
 #' @return A \code{\linkS4class{RaggedRangedAssay}} class object
 #' @exportMethod RaggedRangedAssay
 #' @describeIn RaggedRangedAssay Convert a GRangesList to a RaggedRangedAssay
-setMethod("RaggedRangedAssay", "GRangesList", function(x) new("RaggedRangedAssay", x))
-#' @describeIn RaggedRangedAssay Convert a GRanges to GRangesList to RaggedRangedAssay
-setMethod("RaggedRangedAssay", "GRanges", function(x) new("RaggedRangedAssay", GRangesList(x)))
-setMethod("RaggedRangedAssay", "missing", function(x) new("RaggedRangedAssay"))
+setMethod("RaggedRangedAssay", "GRangesList", function(...){
+  as(..., "RaggedRangedAssay")
+})
+setMethod("RaggedRangedAssay", "ANY", function(...){
+  grl <- GRangesList(...)
+  RaggedRangedAssay(grl)
+})

@@ -1,5 +1,5 @@
 #' @include Elist-class.R MultiAssayView-class.R RaggedRangedAssay-class.R MultiAssayExperiment-class.R
-#' @import BiocGenerics SummarizedExperiment
+#' @import BiocGenerics SummarizedExperiment S4Vectors GenomicRanges
 NULL
 
 #' Rownames extractor method 
@@ -42,6 +42,13 @@ setMethod("assay", "RaggedRangedAssay", function(x) do.call(rbind, lapply(x, mco
 #' @describeIn MultiAssayExperiment Get the raw data from a MultiAssayExperiment as a list
 setMethod("assay", "MultiAssayExperiment", function(x) lapply(x@Elist, assay))
 
+.checkFindOverlaps <- function(obj_cl){
+  res1 <- showMethods("findOverlaps", class = obj_cl, inherited=TRUE, printTo=FALSE)
+  res2 <- showMethods("subsetByOverlaps", class = obj_cl, inherited=TRUE, printTo=FALSE)
+  return(all(identical(res1[1], "Function: findOverlaps (package IRanges)"),
+             identical(res2[1], "Function: subsetByOverlaps (package IRanges)")))
+}
+
 #' Find hits by class type
 #' 
 #' @param subject Any valid element from the \code{\linkS4class{Elist}} class
@@ -83,21 +90,19 @@ setMethod("getHits", signature("MultiAssayExperiment", "character"), function(su
 setMethod("getHits", signature("MultiAssayExperiment", "GRanges"), function(subject, query, ...)
   lapply(subject@Elist, FUN = function(elem) { getHits(elem, query, ...) }))
 
-# SEE : 
-  # showMethods("findOverlaps", classes = "RaggedRangedAssay", inherited = TRUE) 
-#----
-## setMethod("getHits", signature("ANY", "GRanges"), function(subject, query, ...){
-##   ranged <- all(c("findOverlaps", "subsetByOverlaps") %in% showMethods(class = class(subject)))
-##   if(ranged){
-##     query <- names(unlist(subject, use.names = FALSE))[findOverlaps(subject, query, ...)@subjectHits])
-##     getHits(subject, query)
-##   } else {
-##     subject[0,]
-##   }
-## })
-## setMethod("getHits", signature("ANY", "character"), function(subject, query, ...){
-##   query[query %in% rownames(subject)]
-## })
+#' @describeIn getHits Find all matching rownames for Range-based objects
+setMethod("getHits", signature("ANY", "GRanges"), function(subject, query, ...){
+if(.checkFindOverlaps(class(query))){
+   query <- names(unlist(subject, use.names = FALSE))[findOverlaps(subject, query, ...)@subjectHits]
+   getHits(subject, query)
+ } else {
+   subject[0,]
+ }
+})
+#' @describeIn getHits Find all matching rownames based on character query
+setMethod("getHits", signature("ANY", "character"), function(subject, query, ...){
+ query[query %in% rownames(subject)]
+})
 
 #' Subset by Sample generic 
 #'
