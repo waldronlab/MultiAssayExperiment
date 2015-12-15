@@ -24,10 +24,23 @@ setMethod("rownames", "MultiAssayExperiment", function(x) lapply(x@Elist, rownam
 #' @param x A compatible object with sample data
 #' @return Returns a vector of colnames or samplenames
 #' @exportMethod colnames
-setMethod("colnames", "ExpressionSet", function(x) Biobase::sampleNames(x)) 
-setMethod("colnames", "RaggedRangedAssay", function(x) base::names(x)) 
+setMethod("colnames", "ExpressionSet", function(x) Biobase::sampleNames(x))
+setMethod("colnames", "RaggedRangedAssay", function(x) base::names(x))
 #' @describeIn MultiAssayExperiment Get all the colnames for a MultiAssayExperiment
 setMethod("colnames", "MultiAssayExperiment", function(x) lapply(x@Elist, colnames))
+
+#' Assay accessor
+#'
+#' \code{assay} is used to obtain raw data
+#'
+#' @param x An experiment object with data
+#' @return A basic representation of internal data
+#' @exportMethod assay
+setMethod("assay", "ExpressionSet", function(x) Biobase::exprs(x))
+setMethod("assay", "matrix", function(x) x)
+setMethod("assay", "RaggedRangedAssay", function(x) do.call(rbind, lapply(x, mcols)))
+#' @describeIn MultiAssayExperiment Get the raw data from a MultiAssayExperiment as a list
+setMethod("assay", "MultiAssayExperiment", function(x) lapply(x@Elist, assay))
 
 #' Find hits by class type
 #' 
