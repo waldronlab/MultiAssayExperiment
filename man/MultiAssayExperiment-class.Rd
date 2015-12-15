@@ -4,6 +4,7 @@
 \name{MultiAssayExperiment-class}
 \alias{Elist,MultiAssayExperiment-method}
 \alias{MultiAssayExperiment-class}
+\alias{assay,MultiAssayExperiment,ANY-method}
 \alias{colnames,MultiAssayExperiment-method}
 \alias{length,MultiAssayExperiment-method}
 \alias{masterPheno,MultiAssayExperiment-method}
@@ -29,6 +30,8 @@
 \S4method{rownames}{MultiAssayExperiment}(x)
 
 \S4method{colnames}{MultiAssayExperiment}(x)
+
+\S4method{assay}{MultiAssayExperiment,ANY}(x)
 
 \S4method{subset}{MultiAssayExperiment}(x, indicator, method = NULL, ...)
 }
@@ -87,6 +90,8 @@ Subset MultiAssayExperiment object
 \item \code{rownames}: Get all the rownames for a MultiAssayExperiment
 
 \item \code{colnames}: Get all the colnames for a MultiAssayExperiment
+
+\item \code{assay}: Get the raw data from a MultiAssayExperiment as a list
 
 \item \code{subset}: export subset
 }}

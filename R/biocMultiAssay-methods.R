@@ -1,5 +1,5 @@
 #' @include Elist-class.R MultiAssayView-class.R RaggedRangedAssay-class.R MultiAssayExperiment-class.R
-#' @import BiocGenerics
+#' @import BiocGenerics SummarizedExperiment
 NULL
 
 #' Rownames extractor method 
@@ -114,8 +114,8 @@ setMethod("subsetSample", "ExpressionSet", function(x, j) x[, j])
 #' @describeIn subsetSample Select column data of a RangedSummarizedExperiment
 setMethod("subsetSample", "RangedSummarizedExperiment", function(x, j) x[,j = j])
 #' @describeIn subsetSample Select colnames for a RaggedRangedAssay
-setMethod("subsetSample", "RaggedRangedAssay", function(x, j) x[i=j]) 
-
+setMethod("subsetSample", "RaggedRangedAssay", function(x, j) x[i=j])
+### TODO: Invoke bracket method rather than "subsetSample" (different for RaggedRangedAssay)
 
 #' Subset by Feature method
 #'
