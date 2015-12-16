@@ -61,7 +61,7 @@ Stage <- function(MultiAssay, identifier, method = character(), ...){
                     type = "samples")
   } else if(method == "features"){
     totalFeatures <- rownames(MultiAssay)
-    subsetor <- getHits(MultiAssay, identifier)
+    subsetor <- getHits(MultiAssay, identifier, ...)
     newDrops <- .featMap(Map(function(x, y){.outersect(x, y)}, subsetor, totalFeatures))
     newKeeps <- .featMap(subsetor)
     newMultiAssayView <- new("MultiAssayView", 

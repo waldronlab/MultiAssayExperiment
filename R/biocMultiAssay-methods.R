@@ -43,10 +43,12 @@ setMethod("assay", "RaggedRangedAssay", function(x) do.call(rbind, lapply(x, mco
 setMethod("assay", "MultiAssayExperiment", function(x) lapply(x@Elist, assay))
 
 .checkFindOverlaps <- function(obj_cl){
-  res1 <- showMethods("findOverlaps", class = obj_cl, inherited=TRUE, printTo=FALSE)
-  res2 <- showMethods("subsetByOverlaps", class = obj_cl, inherited=TRUE, printTo=FALSE)
-  return(all(identical(res1[1], "Function: findOverlaps (package IRanges)"),
-             identical(res2[1], "Function: subsetByOverlaps (package IRanges)")))
+  return(
+    all(hasMethod("findOverlaps", signature(obj_cl, "GRanges"),
+                  where = c("package:GenomicRanges", "package:IRanges", "package:SummarizedExperiment")),
+        hasMethod("subsetByOverlaps", signature(obj_cl, "GRanges"),
+                  where = c("package:GenomicRanges", "package:IRanges", "package:SummarizedExperiment"))
+    ))
 }
 
 #' Find hits by class type
@@ -57,47 +59,28 @@ setMethod("assay", "MultiAssayExperiment", function(x) lapply(x@Elist, assay))
 #' @return Names of matched queries
 #' @exportMethod getHits
 setGeneric("getHits", function(subject, query, ...) standardGeneric("getHits"))
-#' @describeIn getHits Find overlaps and return names
-setMethod("getHits", signature("GRanges", "GRanges"), function(subject, query, ...)
- names(subject[findOverlaps(subject, query, ...)@subjectHits]))
-#' @describeIn getHits Iteratively find overlaps and return names
-setMethod("getHits", signature("RaggedRangedAssay", "GRanges"), function(subject, query, ...)
-  names(unlist(subject, use.names = FALSE))[findOverlaps(subject, query, ...)@subjectHits])
-#' @describeIn getHits Find matching rownames from RaggedRangedAssay
-setMethod("getHits", signature("RaggedRangedAssay", "character"), function(subject, query, ...)
-  intersect(query, rownames(subject)))
-#' @describeIn getHits Find overlaps and return names for RangedSummarizedExperiment
-setMethod("getHits", signature("RangedSummarizedExperiment", "GRanges"), function(subject, query, ...)
-  names(subject[findOverlaps(rowRanges(subject), query, ...)@subjectHits]))
-#' @describeIn getHits Find matching rownames from RangedSummarizedExperiment
-setMethod("getHits", signature("RangedSummarizedExperiment", "character"), function(subject, query, ...)
-  intersect(query, rownames(subject)))
-setMethod("getHits", signature("character", "GRanges"), function(subject, query, ...) character(0L) )
-#' @describeIn getHits Find matching rownames in ExpressionSet
-setMethod("getHits", signature("ExpressionSet", "character"), function(subject, query, ...)
-  intersect(query, rownames(subject)))
-setMethod("getHits", signature("ExpressionSet", "GRanges"), function(subject, query, ...)
-  intersect(rownames(query), rownames(subject)))
 #' @describeIn getHits Find matching rownames in matrix
 setMethod("getHits", signature("matrix", "character"), function(subject, query, ...)
-  intersect(query, rownames(subject)))
-setMethod("getHits", signature("matrix", "GRanges"), function(subject, query, ...)
-  intersect(rownames(query), rownames(subject)))
+  intersect(rownames(query), subject))
 #' @describeIn getHits Find all matching rownames by character
 setMethod("getHits", signature("MultiAssayExperiment", "character"), function(subject, query, ...)
   lapply(subject@Elist, FUN = function(elem) { getHits(elem, query, ...) }))
 #' @describeIn getHits Find all matching rownames by GRanges
 setMethod("getHits", signature("MultiAssayExperiment", "GRanges"), function(subject, query, ...)
   lapply(subject@Elist, FUN = function(elem) { getHits(elem, query, ...) }))
-
 #' @describeIn getHits Find all matching rownames for Range-based objects
 setMethod("getHits", signature("ANY", "GRanges"), function(subject, query, ...){
-if(.checkFindOverlaps(class(query))){
-   query <- names(unlist(subject, use.names = FALSE))[findOverlaps(subject, query, ...)@subjectHits]
-   getHits(subject, query)
- } else {
-   subject[0,]
- }
+  if(.checkFindOverlaps(class(subject))){
+    query <- names(unlist(subject, use.names = FALSE))[findOverlaps(subject, query, ...)@subjectHits]
+    getHits(subject, query)
+  } else {
+    query <- rownames(query)
+    if(is.null(query)){ # patch for NULL rownames-method return
+      character(0)
+    } else {
+      getHits(subject, query)
+    }
+  }
 })
 #' @describeIn getHits Find all matching rownames based on character query
 setMethod("getHits", signature("ANY", "character"), function(subject, query, ...){

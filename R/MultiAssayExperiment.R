@@ -21,14 +21,22 @@
 	return(do.call(rbind, dfmap))
 }
 
-.PrepElements <- function(object){
-  obj_cl <- class(object)
-  if(obj_cl %in% c("RaggedRangedAssay", "GRangesList")){
-    if(is.null(rownames(object))){
-      for(i in seq_along(object)){
-        names(object[[i]]) <- 1:length(object[[i]])
-      }
+.createNames <- function(object){
+  if(class(object) %in% c("RaggedRangedAssay", "GRangesList")){
+    for(i in seq_along(object)){
+      names(object[[i]]) <- 1:length(object[[i]])
     }
+  } else if(obj_cl == "RangedSummarizedExperiment"){
+    names(object) <- 1:length(object)
+  }
+  return(object)
+}
+
+.PrepElements <- function(object){
+  if(is.null(rownames(object))){
+    object <- .createNames(object)
+  }
+  if(class(object) == "GRangesList"){
     object <- RaggedRangedAssay(object)
   } else { object } 
   return(object)

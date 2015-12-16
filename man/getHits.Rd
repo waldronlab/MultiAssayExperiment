@@ -3,36 +3,24 @@
 \docType{methods}
 \name{getHits}
 \alias{getHits}
-\alias{getHits,ExpressionSet,character-method}
-\alias{getHits,GRanges,GRanges-method}
+\alias{getHits,ANY,GRanges-method}
+\alias{getHits,ANY,character-method}
 \alias{getHits,MultiAssayExperiment,GRanges-method}
 \alias{getHits,MultiAssayExperiment,character-method}
-\alias{getHits,RaggedRangedAssay,GRanges-method}
-\alias{getHits,RaggedRangedAssay,character-method}
-\alias{getHits,RangedSummarizedExperiment,GRanges-method}
-\alias{getHits,RangedSummarizedExperiment,character-method}
 \alias{getHits,matrix,character-method}
 \title{Find hits by class type}
 \usage{
 getHits(subject, query, ...)
-
-\S4method{getHits}{GRanges,GRanges}(subject, query, ...)
-
-\S4method{getHits}{RaggedRangedAssay,GRanges}(subject, query, ...)
-
-\S4method{getHits}{RaggedRangedAssay,character}(subject, query, ...)
-
-\S4method{getHits}{RangedSummarizedExperiment,GRanges}(subject, query, ...)
-
-\S4method{getHits}{RangedSummarizedExperiment,character}(subject, query, ...)
-
-\S4method{getHits}{ExpressionSet,character}(subject, query, ...)
 
 \S4method{getHits}{matrix,character}(subject, query, ...)
 
 \S4method{getHits}{MultiAssayExperiment,character}(subject, query, ...)
 
 \S4method{getHits}{MultiAssayExperiment,GRanges}(subject, query, ...)
+
+\S4method{getHits}{ANY,GRanges}(subject, query, ...)
+
+\S4method{getHits}{ANY,character}(subject, query, ...)
 }
 \arguments{
 \item{subject}{Any valid element from the \code{\linkS4class{Elist}} class}
@@ -49,22 +37,14 @@ Find hits by class type
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{subject = GRanges,query = GRanges}: Find overlaps and return names
-
-\item \code{subject = RaggedRangedAssay,query = GRanges}: Iteratively find overlaps and return names
-
-\item \code{subject = RaggedRangedAssay,query = character}: Find matching rownames from RaggedRangedAssay
-
-\item \code{subject = RangedSummarizedExperiment,query = GRanges}: Find overlaps and return names for RangedSummarizedExperiment
-
-\item \code{subject = RangedSummarizedExperiment,query = character}: Find matching rownames from RangedSummarizedExperiment
-
-\item \code{subject = ExpressionSet,query = character}: Find matching rownames in ExpressionSet
-
 \item \code{subject = matrix,query = character}: Find matching rownames in matrix
 
 \item \code{subject = MultiAssayExperiment,query = character}: Find all matching rownames by character
 
 \item \code{subject = MultiAssayExperiment,query = GRanges}: Find all matching rownames by GRanges
+
+\item \code{subject = ANY,query = GRanges}: Find all matching rownames for Range-based objects
+
+\item \code{subject = ANY,query = character}: Find all matching rownames based on character query
 }}
 
