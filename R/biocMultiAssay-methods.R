@@ -98,8 +98,10 @@ setMethod("subsetSample", "ExpressionSet", function(x, j) x[, j])
 setMethod("subsetSample", "RangedSummarizedExperiment", function(x, j) x[,j = j])
 #' @describeIn subsetSample Select colnames for a RaggedRangedAssay
 setMethod("subsetSample", "RaggedRangedAssay", function(x, j) x[i=j])
-### TODO: Invoke bracket method rather than "subsetSample" (different for RaggedRangedAssay)
-### Add [ method for RaggedRangedAssay drop = FALSE
+
+setMethod("[", c("RaggedRangedAssay", "ANY", "ANY"), function(x, i, j, ..., drop = TRUE){
+  ### TODO: See SummarizedExperiment/GRangesList methods
+})
 
 #' Subset by Feature method
 #'
