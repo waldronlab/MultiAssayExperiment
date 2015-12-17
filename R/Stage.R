@@ -1,12 +1,9 @@
-.subPheno <- function(object, j){
-	return(object@masterPheno[j, ])
-}
-
 .arrangeMap <- function(map, ordering){
 	newOrd <- do.call(c, lapply(ordering, function(ord) { 
 					 which(as.vector(map[, 1]) == ord) } ))
 	return(newOrd)
 }
+
 .outersect <- function(x, y){
   c(setdiff(x, y), setdiff(y, x))
 }
@@ -35,40 +32,40 @@
   return(defeatmap)
 }
 
-#' Stage a MultiAssayView by Samples, Features, or Assays
+#' Stage a MultiAssayView by colnames, rownames, or assay
 #' 
 #' @param MultiAssay A \code{\linkS4class{MultiAssayExperiment}}
 #' @param identifer Either a \code{character}, \code{numeric} or \code{logical} vector identifying targets 
-#' @param method Prepare/Stage for subsetting using samples, features or assays.
+#' @param method Prepare/Stage for subsetting using colnames, rownames or assays.
 #' @return A \code{\linkS4class{MultiAssayView}} class object for subsequent subsetting
 #' @export Stage
 Stage <- function(MultiAssay, identifier, method = character(), ...){
-  method <- match.arg(method, c("samples", "features", "assays"))
-  if(method == "samples"){
-    totalSamples <- colnames(MultiAssay)
+  method <- match.arg(method, c("colnames", "rownames", "assays"))
+  if(method == "colnames"){
+    totalColnames <- colnames(MultiAssay)
     if(!is.numeric(identifier) && !all(identifier %in% rownames(myMultiAssay@masterPheno))){
       iders <- intersect(identifier, rownames(MultiAssay@masterPheno))
       notUsed <- setdiff(identifier, rownames(MultiAssay@masterPheno))
       warning("Nonmatched identifers were dropped! : ", notUsed)
     } else {
-      iders <- rownames(.subPheno(MultiAssay, identifier))
+      iders <- rownames(MultiAssay@masterPheno[identifier, ])
     }
     biMap <- .separateMap(MultiAssay, iders)
     newMultiAssayView <- new("MultiAssayView",
                     query = iders,
                     keeps = biMap[["keeps"]],
                     drops = biMap[["drops"]],
-                    type = "samples")
-  } else if(method == "features"){
-    totalFeatures <- rownames(MultiAssay)
+                    type = "colnames")
+  } else if(method == "rownames"){
+    totalRownames <- rownames(MultiAssay)
     subsetor <- getHits(MultiAssay, identifier, ...)
-    newDrops <- .featMap(Map(function(x, y){.outersect(x, y)}, subsetor, totalFeatures))
+    newDrops <- .featMap(Map(function(x, y){.outersect(x, y)}, subsetor, totalRownames))
     newKeeps <- .featMap(subsetor)
     newMultiAssayView <- new("MultiAssayView", 
                     query = identifier, 
                     keeps = newKeeps,
                     drops = newDrops,
-                    type = "features")
+                    type = "rownames")
   } else if(method == "assays"){
     if(is.logical(identifier)){
       if(length(identifier) == length(MultiAssay)){

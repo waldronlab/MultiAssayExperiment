@@ -2,14 +2,14 @@
 % Please edit documentation in R/Stage.R
 \name{Stage}
 \alias{Stage}
-\title{Stage a MultiAssayView by Samples, Features, or Assays}
+\title{Stage a MultiAssayView by colnames, rownames, or Assays}
 \usage{
 Stage(MultiAssay, identifier, method = character(), ...)
 }
 \arguments{
 \item{MultiAssay}{A \code{\linkS4class{MultiAssayExperiment}}}
 
-\item{method}{Prepare/Stage for subsetting using samples, features or assays.}
+\item{method}{Prepare/Stage for subsetting using colnames, rownames or assays.}
 
 \item{identifer}{Either a \code{character}, \code{numeric} or \code{logical} vector identifying targets}
 }
@@ -17,6 +17,6 @@ Stage(MultiAssay, identifier, method = character(), ...)
 A \code{\linkS4class{MultiAssayView}} class object for subsequent subsetting
 }
 \description{
-Stage a MultiAssayView by Samples, Features, or Assays
+Stage a MultiAssayView by colnames, rownames, or Assays
 }
 

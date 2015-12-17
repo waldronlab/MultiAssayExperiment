@@ -40,7 +40,7 @@
 
 \item{indicator}{A \code{logical} or \code{character} vector or \code{Stage} class object to use for subsetting}
 
-\item{method}{A \code{character} vector of length one designating to subset either by samples, features, or assays}
+\item{method}{A \code{character} vector of length one designating to subset either by colnames, rownames, or assays}
 
 \item{x}{A \code{\link{MultiAssayExperiment}} object}
 

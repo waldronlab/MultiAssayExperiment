@@ -1,4 +1,4 @@
-.convertList <- function(object, slot=NULL, type = "samples"){
+.convertList <- function(object, slot=NULL, type = "colnames"){
   if(!is.null(slot)){
     listmap <- getElement(object, slot)
     type <- object@type
@@ -7,7 +7,7 @@
   }
   if(is(listmap, "MultiAssayView")){stop("Provide a slot name for the Stage class!")}
   DFmap <- lapply(seq_along(listmap), FUN = function(i, x){
-    if(type == "samples"){
+    if(type == "colnames"){
       if(isEmpty(x[i])){
         S4Vectors::DataFrame(master = Rle(NA), assay = NA, assayname = Rle(names(x)[i]))
       } else {
@@ -15,7 +15,7 @@
                              assay = x[[i]][, 2],
                              assayname = Rle(names(x)[i]))
       }
-    } else if(type == "features"){
+    } else if(type == "rownames"){
       if(isEmpty(x[i])){
         S4Vectors::DataFrame(feature = NA, assayname = Rle(names(x)[i]))
       } else {
@@ -35,7 +35,7 @@
 #' 
 #' @param MultiAssay A \code{\linkS4class{MultiAssayExperiment}} object
 #' @param indicator A \code{logical} or \code{character} vector or \code{Stage} class object to use for subsetting
-#' @param method A \code{character} vector of length one designating to subset either by samples, features, or assays
+#' @param method A \code{character} vector of length one designating to subset either by colnames, rownames, or assays
 #' @describeIn MultiAssayExperiment
 #' export subset
 setMethod("subset", "MultiAssayExperiment", function(x, indicator, method = NULL, ...){
@@ -46,9 +46,9 @@ setMethod("subset", "MultiAssayExperiment", function(x, indicator, method = NULL
   } else if(is.null(method)){
     stop("Please indicate a subset method!")
   }
-  if(method == "samples"){
+  if(method == "colnames"){
     return(subsetBySample(MultiAssay = x, indicator))
-  } else if(method == "features"){
+  } else if(method == "rownames"){
     return(subsetByFeature(MultiAssay = x, indicator))
   } else if(method == "assays"){
     return(subsetByAssay(MultiAssay = x, indicator))

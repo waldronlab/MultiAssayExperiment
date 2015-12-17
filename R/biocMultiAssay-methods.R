@@ -74,12 +74,7 @@ setMethod("getHits", signature("ANY", "GRanges"), function(subject, query, ...){
     query <- names(unlist(subject, use.names = FALSE))[findOverlaps(subject, query, ...)@subjectHits]
     getHits(subject, query)
   } else {
-    query <- rownames(query)
-    if(is.null(query)){ # patch for NULL rownames-method return
-      character(0)
-    } else {
-      getHits(subject, query)
-    }
+    character(0)
   }
 })
 #' @describeIn getHits Find all matching rownames based on character query
@@ -104,6 +99,7 @@ setMethod("subsetSample", "RangedSummarizedExperiment", function(x, j) x[,j = j]
 #' @describeIn subsetSample Select colnames for a RaggedRangedAssay
 setMethod("subsetSample", "RaggedRangedAssay", function(x, j) x[i=j])
 ### TODO: Invoke bracket method rather than "subsetSample" (different for RaggedRangedAssay)
+### Add [ method for RaggedRangedAssay drop = FALSE
 
 #' Subset by Feature method
 #'
@@ -158,7 +154,7 @@ setMethod("subsetFeature", signature("RaggedRangedAssay", "ANY"), function(x, j)
 #' Convert MultiAssayView slot "keeps" to Map
 #'
 #' @param object An \linkS4class{MultiAssayView} class object
-#' @return Returns a data.frame representation of samples
+#' @return Returns a DataFrame representation of colnames
 #' @export getMap
 setGeneric("getMap", function(object) standardGeneric("getMap"))
 #' describeIn MultiAssayView Convert map from list to DataFrame
@@ -185,7 +181,7 @@ setMethod("length", "MultiAssayView", function(x)
 #' @return A \code{character} atomic vector
 #' @exportMethod type
 setGeneric("type", function(object) standardGeneric("type"))
-#' @describeIn MultiAssayView Get the staging type (either by samples, features, assays)
+#' @describeIn MultiAssayView Get the staging type (either by colnames, rownames, assays)
 setMethod("type", "MultiAssayView", function(object)
   getElement(object, "type")
   )
