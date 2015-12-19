@@ -8,7 +8,7 @@
 #' @export subsetByFeature
 subsetByFeature <- function(MultiAssay, featureIndicator, ...){ 
   if(!is(featureIndicator, "MultiAssayView")){
-    featureIndicator <- Stage(MultiAssay, featureIndicator, "features")
+    featureIndicator <- Stage(MultiAssay, featureIndicator, "rownames")
   } else {
     if(featureIndicator@type != "features"){
     stop("Provide a feature type Stage class!")

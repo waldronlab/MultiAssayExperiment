@@ -99,9 +99,51 @@ setMethod("subsetSample", "RangedSummarizedExperiment", function(x, j) x[,j = j]
 #' @describeIn subsetSample Select colnames for a RaggedRangedAssay
 setMethod("subsetSample", "RaggedRangedAssay", function(x, j) x[i=j])
 
-setMethod("[", c("RaggedRangedAssay", "ANY", "ANY"), function(x, i, j, ..., drop = TRUE){
-  ### TODO: See SummarizedExperiment/GRangesList methods
-})
+.sBSubRRAright <- function(x, j){
+  if(!is.character(j)){
+    stop("'j' must be a character vector")
+  } else {
+    valNames <- (j %in% colnames(x))
+    j <- j[valNames]
+    x <- callNextMethod(x = x, i = j)
+  }
+  return(x)
+}
+
+.RangedBracketSubsetRRA <- function(x, i, j, ..., drop){
+  if(length(drop) != 1L || (!missing(drop) && drop)){warning("'drop' ignored '[,", class(x), ",ANY,ANY-method'")}
+  if(!missing(j)){
+    x <- .sBSubRRAright(x, j)
+  }
+  if(!missing(i)){
+    x <- endoapply(x, function(rra){
+      subsetByOverlaps(rra, i, ...)
+    })
+  }
+  return(x)
+}
+
+.sBracketSubsetRRA <- function(x, i, j, ..., drop){
+  if(length(drop) != 1L || (!missing(drop) && drop)){warning("'drop' ignored '[,", class(x), ",ANY,ANY-method'")}
+  if(missing(i) && missing(j)){ return(x) }
+  if(!missing(j)){
+    x <- .sBSubRRAright(x, j)
+  }
+  if(!missing(i)){
+    if(is.character(i)){
+      # call to NSBS > Error when i not in names(h)?
+      x <-  endoapply(x, function(g){
+        BiocGenerics::Filter(function(h){names(h) %in% i}, g)
+      })
+    } else {
+      stop("'i' must be a character vector")
+    }
+  }
+  return(x)
+}
+
+setMethod("[", c("RaggedRangedAssay", "GRanges", "ANY"), .RangedBracketSubsetRRA)
+setMethod("[", c("RaggedRangedAssay", "ANY", "ANY"), .sBracketSubsetRRA)
 
 #' Subset by Feature method
 #'
