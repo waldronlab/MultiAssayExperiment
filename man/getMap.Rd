@@ -10,7 +10,7 @@ getMap(object)
 \item{object}{An \linkS4class{MultiAssayView} class object}
 }
 \value{
-Returns a data.frame representation of samples
+Returns a DataFrame representation of colnames
 }
 \description{
 Convert MultiAssayView slot "keeps" to Map

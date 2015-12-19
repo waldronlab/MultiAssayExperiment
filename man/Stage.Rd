@@ -2,7 +2,7 @@
 % Please edit documentation in R/Stage.R
 \name{Stage}
 \alias{Stage}
-\title{Stage a MultiAssayView by colnames, rownames, or Assays}
+\title{Stage a MultiAssayView by colnames, rownames, or assay}
 \usage{
 Stage(MultiAssay, identifier, method = character(), ...)
 }
@@ -17,6 +17,6 @@ Stage(MultiAssay, identifier, method = character(), ...)
 A \code{\linkS4class{MultiAssayView}} class object for subsequent subsetting
 }
 \description{
-Stage a MultiAssayView by colnames, rownames, or Assays
+Stage a MultiAssayView by colnames, rownames, or assay
 }
 

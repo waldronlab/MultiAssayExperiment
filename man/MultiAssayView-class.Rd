@@ -34,7 +34,7 @@ Names of Experiments
 
 \item \code{length}: Get the number of assays from kept slot
 
-\item \code{type}: Get the staging type (either by samples, features, assays)
+\item \code{type}: Get the staging type (either by colnames, rownames, assays)
 
 \item \code{query}: Get the identifiers used for staging
 }}
