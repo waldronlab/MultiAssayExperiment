@@ -194,7 +194,7 @@ metadata(myMultiAssay)
 ```{r}
 MultiAssayView_cl <- Stage(myMultiAssay, 2:1, "colnames")
 MultiAssayView_cl
-subMultiAssay <- subsetBySample(myMultiAssay, MultiAssayView_cl)
+subMultiAssay <- subset(myMultiAssay, MultiAssayView_cl, "sample")
 as.list(Elist(subMultiAssay))
 subsetByAssay(subMultiAssay, c(TRUE, FALSE, FALSE, TRUE, FALSE), drop = TRUE)[[1]] %>% exprs 
 subMultiAssay
@@ -206,13 +206,15 @@ Bob.  The "Mirna" argument is used to index the `Elist` object using
 `[`, so could also be `integer` or `logical`:
 
 ```{r}
-subsetByAssay(myMultiAssay, "Mirna", drop=FALSE)
+subset(myMultiAssay, "Mirna", "assays")
 ```
 
 Not endogenous, returns just the matrix contained in `Elist$Mirna`
 
-```{r}
-subsetByAssay(myMultiAssay, "Mirna", drop=TRUE)
+### TODO: Fix drop argument in subset
+
+```{r, eval = FALSE}
+subset(myMultiAssay, "Mirna", "assays", drop = TRUE)
 ```
 
 ## Subsetting by Feature 
@@ -230,7 +232,7 @@ Returns MultiAssayExperiment where `Affy` and `Methyl 450k` contain
 only ENST0000035076 row, and "Mirna" and "CNV gistic" have zero rows:
 
 ```{r}
-featSubsetted0 <- subsetByFeature(myMultiAssay, "ENST00000355076")
+featSubsetted0 <- subset(myMultiAssay, Stage(myMultiAssay, "ENST00000355076", "rownames"))
 class(featSubsetted0)
 class(Elist(featSubsetted0))
 Elist(featSubsetted0)
@@ -239,8 +241,10 @@ Elist(featSubsetted0)
 In the following, `Affy` ExpressionSet keeps both rows but with their
 order reversed, and `Methyl 450k` keeps only its second row.
 
+### TODO: Fix order of output
+
 ```{r}
-featSubsetted <- subsetByFeature(myMultiAssay, c("ENST00000355076", "ENST00000294241"))
+featSubsetted <- subset(myMultiAssay, Stage(myMultiAssay, c("ENST00000355076", "ENST00000294241"), "rownames"))
 exprs(Elist(myMultiAssay)[[1]])
 exprs(Elist(featSubsetted)[[1]])
 ```
@@ -248,7 +252,7 @@ exprs(Elist(featSubsetted)[[1]])
 ## Identify and stage assays that contain any of a vector of features
 
 Note that the output of this function could be used as the input for
-`subsetByAssay`.
+`subset`.
 
 ```{r}
 Stage(myMultiAssay, c("ENST00000355076", "ENST00000294241"), "rownames") 
@@ -260,9 +264,9 @@ See arguments to `GenomicRanges::subsetByOverlaps` for flexible types
 of subsetting. The first two arguments are for subsetByFeature, the
 rest passed on through "...":
 
-```{r}
+```{r, eval = FALSE}
 rangeSubset <- GRanges(seqnames = c("chr1"), strand = c("-", "+", "-"), ranges = IRanges(start = c(1, 4, 6), width = 3))
-subsetted <- subsetByFeature(myMultiAssay, rangeSubset, maxgap = 2L, type = "within")
+subsetted <- subset(myMultiAssay, rangeSubset, "rownames", maxgap = 2L, type = "within")
 Elist(subsetted)
 ```
 

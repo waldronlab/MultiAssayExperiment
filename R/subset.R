@@ -39,13 +39,12 @@
 #' @describeIn MultiAssayExperiment
 #' export subset
 setMethod("subset", "MultiAssayExperiment", function(x, indicator, method = NULL, ...){
-  if(length(list(...)) > 0L){
-    stop("invalid subsetting")}
-  if(is(indicator, "MultiAssayView")){ 
+  if(is(indicator, "MultiAssayView")){
     method <- getElement(indicator, "type") 
   } else if(is.null(method)){
-    stop("Please indicate a subset method!")
+    stop("Indicate a subset method!")
   }
+  method <- match.arg(method, c("colnames", "rownames", "assays"))
   if(method == "colnames"){
     return(subsetBySample(MultiAssay = x, indicator))
   } else if(method == "rownames"){

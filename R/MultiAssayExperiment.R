@@ -81,7 +81,8 @@ MultiAssayExperiment <- function(Elist = list(), masterPheno = S4Vectors::DataFr
       warning("sampleMap not provided! Map will be created from data provided...")
       sampleMap <- .generateMap(masterPheno, Elist)
       validAssays <- split(sampleMap[["assay"]], sampleMap$assayname)
-      Elist <- Map(subsetSample, Elist, validAssays) 
+      # Fix subsetting Function
+      Elist <- Map(function(x, y) { x[, y]}, Elist, validAssays) 
     }
   }
   if(!is(masterPheno, "DataFrame")){masterPheno <- S4Vectors::DataFrame(masterPheno)}
