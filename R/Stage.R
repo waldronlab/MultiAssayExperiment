@@ -23,7 +23,7 @@
 .featMap <- function(featList){
   defeatmap <- lapply(seq_along(featList), FUN = function(i, x) {
     if(length(x[[i]])==0L){ 
-      S4Vectors::DataFrame(feature = NA) # , assayname = names(x)[i])
+      S4Vectors::DataFrame(feature = character(0)) # , assayname = names(x)[i])
     } else {
       S4Vectors::DataFrame(feature = x[[i]]) # , assayname = Rle(names(x)[i]))
     }

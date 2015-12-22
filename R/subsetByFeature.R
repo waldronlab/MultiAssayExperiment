@@ -10,24 +10,14 @@ subsetByFeature <- function(MultiAssay, featureIndicator, ...){
   if(!is(featureIndicator, "MultiAssayView")){
     featureIndicator <- Stage(MultiAssay, featureIndicator, "rownames")
   } else {
-    if(featureIndicator@type != "features"){
-    stop("Provide a feature type Stage class!")
+    if(featureIndicator@type != "rownames"){
+    stop("Provide a rownames type MultiAssayView class!")
   }
   }
-  if(length(MultiAssay@drops)==0L){
-    sequence <- paste0("Operation_", 1)
-    MultiAssay@drops <- list(.convertList(featureIndicator, "drops"))
-    names(MultiAssay@drops) <- sequence
-  } else {
-    num <- as.numeric(gsub("Operation_", "", names(MultiAssay@drops)[length(MultiAssay@drops)]))+1
-    sequence <- paste0("Operation_", num)
-    newElement <- list(.convertList(identifier, "drops"))
-    names(newElement) <- sequence
-    MultiAssay@drops <- c(MultiAssay@drops, newElement)
-  }
+  MultiAssay@drops <- c(MultiAssay@drops, list(.convertList(featureIndicator, "drops")))
   featureMaker <- lapply(featureIndicator@keeps, unlist)
-  MultiAssay@Elist <- Elist(Map(subsetFeature, MultiAssay@Elist, featureMaker))
-#  MultiAssay@Elist <- mendoapply(MultiAssay@Elist, subsetFeature, featureMaker)
+  MultiAssay@Elist <- MultiAssay@Elist[featureMaker]
+  #  MultiAssay@Elist <- mendoapply(MultiAssay@Elist, subsetFeature, featureMaker)
 	return(MultiAssay)
 }
 

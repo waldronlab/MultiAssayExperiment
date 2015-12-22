@@ -26,17 +26,7 @@ subsetByAssay <- function(MultiAssay, assayIndicator, drop = FALSE){
   } else {
     MultiAssay@sampleMap <- newMap
     MultiAssay@Elist <- newSubset
-    if(length(MultiAssay@drops)==0L){
-      sequence <- paste0("Operation_", 1)
-      MultiAssay@drops <- list(assayDrops)
-      names(MultiAssay@drops) <- sequence
-    } else {
-      num <- as.numeric(gsub("Operation_", "", names(MultiAssay@drops)[length(MultiAssay@drops)]))+1
-      sequence <- paste0("Operation_", num)
-      newElement <- list(assayDrops)
-      names(newElement) <- sequence
-      MultiAssay@drops <- c(MultiAssay@drops, newElement)
-    }
-    return(MultiAssay)
+    MultiAssay@drops <- c(MultiAssay@drops, list(assayDrops))
   }
+  return(MultiAssay)
 }

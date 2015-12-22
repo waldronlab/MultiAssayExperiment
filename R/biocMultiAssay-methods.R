@@ -68,10 +68,15 @@ setMethod("getHits", signature("MultiAssayExperiment", "character"), function(su
 #' @describeIn getHits Find all matching rownames by GRanges
 setMethod("getHits", signature("MultiAssayExperiment", "GRanges"), function(subject, query, ...)
   lapply(subject@Elist, FUN = function(elem) { getHits(elem, query, ...) }))
+setMethod("getHits", signature("GRanges", "GRanges"), function(subject, query, ...){
+  query <- names(subject)[findOverlaps(subject, query, ...)@subjectHits]
+  getHits(subject, query)
+})
 #' @describeIn getHits Find all matching rownames for Range-based objects
 setMethod("getHits", signature("ANY", "GRanges"), function(subject, query, ...){
   if(.checkFindOverlaps(class(subject))){
-    query <- names(unlist(subject, use.names = FALSE))[findOverlaps(subject, query, ...)@subjectHits]
+    listGR <- lapply(subject, function(x) {x[findOverlaps(x, query, ...)@subjectHits]})
+    query <- unlist(sapply(listGR, rownames))
     getHits(subject, query)
   } else {
     character(0)
@@ -82,29 +87,10 @@ setMethod("getHits", signature("ANY", "character"), function(subject, query, ...
  query[query %in% rownames(subject)]
 })
 
-#' Subset by Sample generic 
-#'
-#' @param x Either an \code{\linkS4class{ExpressionSet}}, \code{\linkS4class{RaggedRangedAssay}}, \code{\linkS4class{RangedSummarizedExperiment}} or \code{matrix} class object
-#' @param j Either a \code{numeric}, \code{character}, or \code{logical} vector class for subsetting
-#' @param ... Additional arguments to pass
-#' @return Returns a subsetted \code{\linkS4class{MultiAssayExperiment}} object
-#' @exportMethod subsetSample
-setGeneric("subsetSample", function(x, j, ...) standardGeneric("subsetSample"))
-#' @describeIn subsetSample Select columns of a matrix
-setMethod("subsetSample", "matrix", function(x, j) x[, j, drop = FALSE])
-#' @describeIn subsetSample Select colnames of an ExpressionSet
-setMethod("subsetSample", "ExpressionSet", function(x, j) x[, j])
-#' @describeIn subsetSample Select column data of a RangedSummarizedExperiment
-setMethod("subsetSample", "RangedSummarizedExperiment", function(x, j) x[,j = j])
-#' @describeIn subsetSample Select colnames for a RaggedRangedAssay
-setMethod("subsetSample", "RaggedRangedAssay", function(x, j) x[i=j])
-
 .sBSubRRAright <- function(x, j){
   if(!is.character(j)){
     stop("'j' must be a character vector")
   } else {
-    valNames <- (j %in% colnames(x))
-    j <- j[valNames]
     x <- callNextMethod(x = x, i = j)
   }
   return(x)
@@ -131,12 +117,16 @@ setMethod("subsetSample", "RaggedRangedAssay", function(x, j) x[i=j])
   }
   if(!missing(i)){
     if(is.character(i)){
-      # call to NSBS > Error when i not in names(h)?
-      x <-  endoapply(x, function(g){
+      newi <- sapply(x, function(g){any(i %in% names(g))}) # hot fix
+      if(!any(newi)){
+        stop("Supply valid rownames!")
+      }
+      x <- callNextMethod(x = x, i = newi)
+      x <- endoapply(x, function(g){
         BiocGenerics::Filter(function(h){names(h) %in% i}, g)
       })
     } else {
-      stop("'i' must be a character vector")
+      stop("i must be character!")
     }
   }
   return(x)
@@ -144,56 +134,6 @@ setMethod("subsetSample", "RaggedRangedAssay", function(x, j) x[i=j])
 
 setMethod("[", c("RaggedRangedAssay", "GRanges", "ANY"), .RangedBracketSubsetRRA)
 setMethod("[", c("RaggedRangedAssay", "ANY", "ANY"), .sBracketSubsetRRA)
-
-#' Subset by Feature method
-#'
-#' @param x Either an \code{\linkS4class{ExpressionSet}}, \code{\linkS4class{RaggedRangedAssay}}, \code{\linkS4class{RangedSummarizedExperiment}} or \code{matrix} class object
-#' @param j Either a \code{numeric}, \code{character}, or \code{logical} vector class for subsetting
-#' @param ... Additional arguments to pass
-#' @return Returns a subsetted \code{\linkS4class{MultiAssayExperiment}} object
-#' @export subsetFeature
-setGeneric("subsetFeature", function(x, j, ...) standardGeneric("subsetFeature"))
-setMethod("subsetFeature", signature("ANY", "GRanges"), function(x, j){
-		  return(x[0, ])
-})
-#' @describeIn subsetFeature Subset matrix with corresponding class
-setMethod("subsetFeature", signature("matrix", "ANY"), function(x, j){
-		  if(any(rownames(x) %in% j)){
-			  x <- x[intersect(j, rownames(x)), , drop = FALSE]
-			  return(x)
-		  } else { 
-			  return(x[0, ])
-		  }
-})
-setMethod("subsetFeature", signature("matrix", "GRanges"), function(x, j){
-		  return(x[0, ])
-})
-#' @describeIn subsetFeature Subset ExpressionSet with corresponding class
-setMethod("subsetFeature", signature("ExpressionSet", "ANY"), function(x, j){
-		  if(any(featureNames(x) %in% j)){
-			  x <- x[intersect(j, featureNames(x)), ]
-			  return(x)
-		  } else {
-			  return(x[0,])
-		  }
-})
-setMethod("subsetFeature", signature("ExpressionSet", "GRanges"), function(x, j){
-		  return(x[0, ])
-})
-#' @describeIn subsetFeature Use subsetByOverlaps with additional and optional arguments
-setMethod("subsetFeature", signature("RangedSummarizedExperiment", "GRanges"), function(x, j, ...){
-		  return(subsetByOverlaps(x, j, ...))
-})
-setMethod("subsetFeature", signature("RangedSummarizedExperiment", "ANY"), function(x, j){
-		  return(x[0, ])
-})
-#' @describeIn subsetFeature Use subsetByOverlaps for all of the RaggedRangedAssay
-setMethod("subsetFeature", signature("RaggedRangedAssay", "GRanges"), function(x, j, ...){
-		  return(endoapply(x, FUN = function(GR) { subsetByOverlaps(GR, j, ...) })) 
-})
-setMethod("subsetFeature", signature("RaggedRangedAssay", "ANY"), function(x, j){ 
-		  return(endoapply(x, FUN = function(GR) { GR[0, ] }))
-})
 
 #' Convert MultiAssayView slot "keeps" to Map
 #'
