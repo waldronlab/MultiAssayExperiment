@@ -9,7 +9,7 @@
 }
 
 .getNameErr <- function(object){
-  if(inherits(object, "RaggedRangedAssay")){
+  if(inherits(object, "RangedRaggedAssay")){
     if(is.null(names(object))){
       msg <- paste("names in", obj_cl, "are NULL!")
       return(msg)
@@ -24,7 +24,7 @@
 #' An integrative container for assay data
 #' @inheritParams S4Vectors::SimpleList
 #' @exportClass Elist
-.Elist <- setClass("Elist", contains = "SimpleList")
+setClass("Elist", contains = "SimpleList")
 
 #' Generic Builder and Accessor Function
 setGeneric("Elist", function(x) standardGeneric("Elist"))
@@ -33,16 +33,18 @@ setGeneric("Elist", function(x) standardGeneric("Elist"))
 ### Builder
 ###
 
+.Elist <- setClass("Elist", contains = "SimpleList")
+
 #' Convert to \code{\link[S4Vectors]{SimpleList-class}}
 #'
 #' @param x A \code{list} object
 #' @return An \code{\linkS4class{Elist}} class object
-#' @exportMethod Elist
+#' @export Elist
 #' @describeIn Elist Convert a list to a SimpleList to an Elist
-setMethod("Elist", "ANY", function(x)
 Elist <- function(x = list()){
   .Elist(SimpleList(x))
-})
+}
+
 
 ##
 ## Validity ---------------------------------

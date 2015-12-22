@@ -22,7 +22,7 @@
 }
 
 .createNames <- function(object){
-  if(class(object) %in% c("RaggedRangedAssay", "GRangesList")){
+  if(class(object) %in% c("RangedRaggedAssay", "GRangesList")){
     for(i in seq_along(object)){
       names(object[[i]]) <- 1:length(object[[i]])
     }
@@ -37,7 +37,7 @@
     object <- .createNames(object)
   }
   if(class(object) == "GRangesList"){
-    object <- RaggedRangedAssay(object)
+    object <- RangedRaggedAssay(object)
   } else { object } 
   return(object)
 }

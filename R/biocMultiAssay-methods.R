@@ -1,4 +1,4 @@
-#' @include Elist-class.R MultiAssayView-class.R RaggedRangedAssay-class.R MultiAssayExperiment-class.R
+#' @include Elist-class.R MultiAssayView-class.R RangedRaggedAssay-class.R MultiAssayExperiment-class.R
 #' @import BiocGenerics SummarizedExperiment S4Vectors GenomicRanges
 NULL
 
@@ -13,7 +13,7 @@ setMethod("rownames", "character", function(x) x)
 setMethod("rownames", "ExpressionSet", function(x) Biobase::featureNames(x))
 setMethod("rownames", "RangedSummarizedExperiment", function(x) names(SummarizedExperiment::rowRanges(x)))
 setMethod("rownames", "GRanges", function(x) names(x))
-setMethod("rownames", "RaggedRangedAssay", function(x) names(unlist(x, use.names = FALSE)))
+setMethod("rownames", "RangedRaggedAssay", function(x) names(unlist(x, use.names = FALSE)))
 #' @describeIn MultiAssayExperiment Get all the rownames for a MultiAssayExperiment
 setMethod("rownames", "MultiAssayExperiment", function(x) lapply(x@Elist, rownames))
 
@@ -25,7 +25,7 @@ setMethod("rownames", "MultiAssayExperiment", function(x) lapply(x@Elist, rownam
 #' @return Returns a vector of colnames or samplenames
 #' @exportMethod colnames
 setMethod("colnames", "ExpressionSet", function(x) Biobase::sampleNames(x))
-setMethod("colnames", "RaggedRangedAssay", function(x) base::names(x))
+setMethod("colnames", "RangedRaggedAssay", function(x) base::names(x))
 #' @describeIn MultiAssayExperiment Get all the colnames for a MultiAssayExperiment
 setMethod("colnames", "MultiAssayExperiment", function(x) lapply(x@Elist, colnames))
 
@@ -38,7 +38,7 @@ setMethod("colnames", "MultiAssayExperiment", function(x) lapply(x@Elist, colnam
 #' @exportMethod assay
 setMethod("assay", "ExpressionSet", function(x) Biobase::exprs(x))
 setMethod("assay", "matrix", function(x) x)
-setMethod("assay", "RaggedRangedAssay", function(x) do.call(rbind, lapply(x, mcols)))
+setMethod("assay", "RangedRaggedAssay", function(x) do.call(rbind, lapply(x, mcols)))
 #' @describeIn MultiAssayExperiment Get the raw data from a MultiAssayExperiment as a list
 setMethod("assay", "MultiAssayExperiment", function(x) lapply(x@Elist, assay))
 
@@ -132,8 +132,8 @@ setMethod("getHits", signature("ANY", "character"), function(subject, query, ...
   return(x)
 }
 
-setMethod("[", c("RaggedRangedAssay", "GRanges", "ANY"), .RangedBracketSubsetRRA)
-setMethod("[", c("RaggedRangedAssay", "ANY", "ANY"), .sBracketSubsetRRA)
+setMethod("[", c("RangedRaggedAssay", "GRanges", "ANY"), .RangedBracketSubsetRRA)
+setMethod("[", c("RangedRaggedAssay", "ANY", "ANY"), .sBracketSubsetRRA)
 
 #' Convert MultiAssayView slot "keeps" to Map
 #'
