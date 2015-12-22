@@ -40,7 +40,6 @@ setGeneric("Elist", function(x) standardGeneric("Elist"))
 #' @param x A \code{list} object
 #' @return An \code{\linkS4class{Elist}} class object
 #' @export Elist
-#' @describeIn Elist Convert a list to a SimpleList to an Elist
 Elist <- function(x = list()){
   .Elist(SimpleList(x))
 }

@@ -17,7 +17,7 @@
 \usage{
 \S4method{sampleMap}{MultiAssayExperiment}(x)
 
-\S4method{Elist}{MultiAssayExperiment}(x)
+\S4method{Elist}{MultiAssayExperiment}(x = list())
 
 \S4method{masterPheno}{MultiAssayExperiment}(x)
 

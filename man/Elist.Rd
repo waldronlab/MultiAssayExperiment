@@ -4,9 +4,19 @@
 \alias{Elist}
 \title{Generic Builder and Accessor Function}
 \usage{
-Elist(x)
+Elist(x = list())
+
+Elist(x = list())
+}
+\arguments{
+\item{x}{A \code{list} object}
+}
+\value{
+An \code{\linkS4class{Elist}} class object
 }
 \description{
 Generic Builder and Accessor Function
+
+Convert to \code{\link[S4Vectors]{SimpleList-class}}
 }
 

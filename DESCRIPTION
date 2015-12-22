@@ -44,7 +44,7 @@ Collate:
     'MultiAssayExperiment.R'
     'MultiAssayView-class.R'
     'MultiAssayView.R'
-    'RaggedRangedAssay-class.R'
+    'RangedRaggedAssay-class.R'
     'TCGA_ov_v2rnaseq.R'
     'allLM_pw.R'
     'apiDash.R'

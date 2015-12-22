@@ -2,30 +2,9 @@
 % Please edit documentation in R/Elist-class.R
 \docType{class}
 \name{Elist-class}
-\alias{Elist,SimpleList-method}
-\alias{Elist,list-method}
 \alias{Elist-class}
 \title{An integrative container for assay data}
-\usage{
-\S4method{Elist}{list}(x)
-
-\S4method{Elist}{SimpleList}(x)
-}
-\arguments{
-\item{x}{A \code{list} object}
-}
-\value{
-An \code{\linkS4class{Elist}} class object
-}
 \description{
 An integrative container for assay data
-
-Convert to \code{\link[S4Vectors]{SimpleList-class}}
 }
-\section{Methods (by generic)}{
-\itemize{
-\item \code{Elist}: Convert a list to a SimpleList to an Elist
-
-\item \code{Elist}: Convert a SimpleList to an Elist
-}}
 
