@@ -73,7 +73,7 @@
 MultiAssayExperiment <- function(Elist = list(), masterPheno = S4Vectors::DataFrame(), sampleMap = S4Vectors::DataFrame(), drops = list()){
   Elist <- lapply(Elist, function(x) {.PrepElements(x)})
   if(!all(c(length(sampleMap) == 0L, length(masterPheno) == 0L, length(Elist) == 0L))){
-    if((length(sampleMap) == 0L) & (length(masterPheno) == 0L)){
+    if((length(sampleMap) == 0L) && (length(masterPheno) == 0L)){
       allsamps <- unique(unlist(lapply(Elist, colnames)))
       masterPheno <- S4Vectors::DataFrame(pheno1 = rep(NA, length(allsamps)), row.names = allsamps)
       sampleMap <- .generateMap(masterPheno, Elist)
