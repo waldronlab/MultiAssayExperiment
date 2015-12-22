@@ -9,7 +9,7 @@ subsetByFeature(MultiAssay, featureIndicator, ...)
 \arguments{
 \item{MultiAssay}{A \code{\link{MultiAssayExperiment}} object}
 
-\item{featureIndicator}{Either a \code{character} vector or \code{\linkS4class{Stage}} class object containing feature names}
+\item{featureIndicator}{Either a \code{character} vector or \code{\linkS4class{MultiAssayView}} class object containing feature names}
 }
 \value{
 A \code{\link{MultiAssayExperiment}} object

@@ -32,14 +32,14 @@
   return(defeatmap)
 }
 
-#' Stage a MultiAssayView by colnames, rownames, or assay
+#' MultiAssayView operation for colnames, rownames, or assay
 #' 
 #' @param MultiAssay A \code{\linkS4class{MultiAssayExperiment}}
 #' @param identifer Either a \code{character}, \code{numeric} or \code{logical} vector identifying targets 
-#' @param method Prepare/Stage for subsetting using colnames, rownames or assays.
+#' @param method Prepare/View for subsetting using colnames, rownames or assays.
 #' @return A \code{\linkS4class{MultiAssayView}} class object for subsequent subsetting
-#' @export Stage
-Stage <- function(MultiAssay, identifier, method = character(), ...){
+#' @export MultiAssayView
+MultiAssayView <- function(MultiAssay, identifier, method = character(), ...){
   method <- match.arg(method, c("colnames", "rownames", "assays"))
   if(method == "colnames"){
     totalColnames <- colnames(MultiAssay)

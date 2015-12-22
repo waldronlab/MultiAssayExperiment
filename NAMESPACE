@@ -2,7 +2,7 @@
 
 export(API)
 export(MultiAssayExperiment)
-export(Stage)
+export(MultiAssayView)
 export(allLM_pw)
 export(getMap)
 export(pwplot)

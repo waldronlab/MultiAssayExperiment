@@ -130,7 +130,7 @@ Primary design elements:
 
 1. `MultiAssayExperiment`: the main container
 2. `Elist`: experimental data
-3. `Stage`: staging for subsetting operations
+3. `MultiAssayView`: Set up for subsetting operations
 
 `MultiAssayExperiment` class structure
 =================================================
@@ -210,7 +210,7 @@ head(sampleMap(myMultiAssay))
     + items in `assay` column must be found in colnames(Elist[[i]])
     + `assayname` column must contain only and all `Elist` element names
 
-`Stage` class and verb
+`MultiAssayView` class and verb
 =================================================
 
 - Set up a subset operation by identifiers
@@ -220,10 +220,10 @@ head(sampleMap(myMultiAssay))
     + provides a way to log changes to the `MultiAssayExperiment` object
     + is compatible with on-disk and remote "big data"
 
-`Stage` class and verb
+`MultiAssayView` class and verb
 =================================================
 
-* `Stage` class structure:
+* `MultiAssayView` class structure:
 
 | Slot  | Class     |
 |-------|-----------|
@@ -232,32 +232,32 @@ head(sampleMap(myMultiAssay))
 | drops | list      |
 | type  | character |
 
-`Stage` class and verb
+`MultiAssayView` class and verb
 =================================================
 
 Staging assays:
 ```{r}
-Stage(myMultiAssay, "Affy", "assays")
+MultiAssayView(myMultiAssay, "Affy", "assays")
 ```
 
-`Stage` class and verb
+`MultiAssayView` class and verb
 =================================================
 
 Staging samples:
 \small
 ```{r}
-Stage(myMultiAssay, c("Jack", "Jill"), "samples")
+MultiAssayView(myMultiAssay, c("Jack", "Jill"), "samples")
 ```
 
-`Stage` class and verb
+`MultiAssayView` class and verb
 =================================================
 
 Staging features by ID:
 
 ```{r}
-Stage(myMultiAssay, "ENST00000355076", "features")
+MultiAssayView(myMultiAssay, "ENST00000355076", "features")
 ```
-`Stage` class and verb
+`MultiAssayView` class and verb
 =================================================
 
 Staging features by ranges:
@@ -266,14 +266,14 @@ Staging features by ranges:
 rangeSubset <- GRanges(seqnames = c("chr1"), 
         strand = c("-", "+", "-"), 
         ranges = IRanges(start = c(1, 4, 6), width = 3))
-Stage(myMultiAssay, rangeSubset, "features",
+MultiAssayView(myMultiAssay, rangeSubset, "features",
       maxgap = 2L, type = "within")
 ```
 
 `drops` slot
 =================================================
 
-* uses `Stage` information to maintain complete data provenance
+* uses `MultiAssayView` information to maintain complete data provenance
     + subsetting by feature, sample, and assay
     + tracks "keeps" and "drops" (using IDs)
 

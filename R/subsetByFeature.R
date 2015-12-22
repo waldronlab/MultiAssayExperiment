@@ -3,12 +3,12 @@
 #' Subset MultiAssayExperiment class by provided feature names
 #' 
 #' @param MultiAssay A \code{\link{MultiAssayExperiment}} object
-#' @param featureIndicator Either a \code{character} vector or \code{\linkS4class{Stage}} class object containing feature names
+#' @param featureIndicator Either a \code{character} vector or \code{\linkS4class{MultiAssayView}} class object containing feature names
 #' @return A \code{\link{MultiAssayExperiment}} object 
 #' @export subsetByFeature
 subsetByFeature <- function(MultiAssay, featureIndicator, ...){ 
   if(!is(featureIndicator, "MultiAssayView")){
-    featureIndicator <- Stage(MultiAssay, featureIndicator, "rownames")
+    featureIndicator <- MultiAssayView(MultiAssay, featureIndicator, "rownames")
   } else {
     if(featureIndicator@type != "rownames"){
     stop("Provide a rownames type MultiAssayView class!")
@@ -20,4 +20,3 @@ subsetByFeature <- function(MultiAssay, featureIndicator, ...){
   #  MultiAssay@Elist <- mendoapply(MultiAssay@Elist, subsetFeature, featureMaker)
 	return(MultiAssay)
 }
-

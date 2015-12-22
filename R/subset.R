@@ -5,7 +5,7 @@
   } else {
     listmap <- object
   }
-  if(is(listmap, "MultiAssayView")){stop("Provide a slot name for the Stage class!")}
+  if(is(listmap, "MultiAssayView")){stop("Provide a slot name for the MultiAssayView class!")}
   DFmap <- lapply(seq_along(listmap), FUN = function(i, x){
     if(type == "colnames"){
       if(isEmpty(x[i])){
@@ -34,7 +34,7 @@
 #' \code{subset} returns a subsetted \code{\linkS4class{MultiAssayExperiment}} object
 #' 
 #' @param MultiAssay A \code{\linkS4class{MultiAssayExperiment}} object
-#' @param indicator A \code{logical} or \code{character} vector or \code{Stage} class object to use for subsetting
+#' @param indicator A \code{logical} or \code{character} vector or \code{MultiAssayView} class object to use for subsetting
 #' @param method A \code{character} vector of length one designating to subset either by colnames, rownames, or assays
 #' @describeIn MultiAssayExperiment
 #' export subset

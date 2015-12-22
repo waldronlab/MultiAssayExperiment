@@ -3,16 +3,16 @@
 #' Select which assay(s) to obtain from available datasets
 #' 
 #' @param MultiAssay A \code{\link{MultiAssayExperiment}} object
-#' @param assayIndicator Either a \code{numeric}, \code{character} or \code{logical} or \code{\link{Stage}} object indicating what assay(s) to select  
+#' @param assayIndicator Either a \code{numeric}, \code{character} or \code{logical} or \code{\link{MultiAssayView}} object indicating what assay(s) to select  
 #' @param drop logical (default FALSE) Indicates whether to return a \code{list} of selected experiments
 #' @return A \code{\link{MultiAssayExperiment}} object or \code{list} if drop paramater is set to TRUE
 #' @export subsetByAssay
 subsetByAssay <- function(MultiAssay, assayIndicator, drop = FALSE){
   if(!is(assayIndicator, "MultiAssayView")){
-    assayIndicator <- Stage(MultiAssay, assayIndicator, "assays")  
+    assayIndicator <- MultiAssayView(MultiAssay, assayIndicator, "assays")  
   } else {
     if((assayIndicator@type != "assays")){
-      stop("Provide an assay type Stage class!")
+      stop("Provide an assay type MultiAssayView class!")
     }
   }
   assayDrops <- .convertList(assayIndicator@drops, type = "assays")

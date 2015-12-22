@@ -38,7 +38,7 @@
 \arguments{
 \item{x}{A \code{\link{MultiAssayExperiment}} object.}
 
-\item{indicator}{A \code{logical} or \code{character} vector or \code{Stage} class object to use for subsetting}
+\item{indicator}{A \code{logical} or \code{character} vector or \code{MultiAssayView} class object to use for subsetting}
 
 \item{method}{A \code{character} vector of length one designating to subset either by colnames, rownames, or assays}
 
@@ -100,9 +100,9 @@ Subset MultiAssayExperiment object
 \describe{
 \item{\code{Elist}}{A \code{\linkS4class{Elist}} class object for each assay dataset.}
 
-\item{\code{masterPheno}}{A \code{data.frame} of all clinical data available across experiments.}
+\item{\code{masterPheno}}{A \code{DataFrame} of all clinical data available across experiments.}
 
-\item{\code{sampleMap}}{A \code{data.frame} of translatable identifiers of samples and participants.}
+\item{\code{sampleMap}}{A \code{DataFrame} of translatable identifiers of samples and participants.}
 
 \item{\code{metadata}}{Additional data describing the \code{\link{MultiAssayExperiment}} object.}
 
