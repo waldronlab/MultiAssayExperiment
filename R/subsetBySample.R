@@ -12,8 +12,8 @@ subsetBySample <- function(MultiAssay, identifier){
     subsetor <- lapply(identifier@keeps, function(x) unlist(x[,2]))
   }
   ##  mendoapply not working
-  ## 	newSubset <- S4Vectors::mendoapply(subsetSample, MultiAssay@Elist, subsetor) 
-  newSubset <- mapply(function(x, y){ x[ ,y , drop = FALSE]}, MultiAssay@Elist, subsetor)
+  ## 	newSubset <- S4Vectors::mendoapply(subsetSample, Elist(MultiAssay), subsetor) 
+  newSubset <- mapply(function(x, y){ x[ ,y , drop = FALSE]}, Elist(MultiAssay), subsetor)
   newSubset <- Elist(newSubset)
   # Clone or replace method for slot??
   MultiAssay@sampleMap <- newMap

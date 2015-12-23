@@ -64,10 +64,10 @@ setMethod("getHits", signature("matrix", "character"), function(subject, query, 
   intersect(rownames(query), subject))
 #' @describeIn getHits Find all matching rownames by character
 setMethod("getHits", signature("MultiAssayExperiment", "character"), function(subject, query, ...)
-  lapply(subject@Elist, FUN = function(elem) { getHits(elem, query, ...) }))
+  lapply(Elist(subject), FUN = function(elem) { getHits(elem, query, ...) }))
 #' @describeIn getHits Find all matching rownames by GRanges
 setMethod("getHits", signature("MultiAssayExperiment", "GRanges"), function(subject, query, ...)
-  lapply(subject@Elist, FUN = function(elem) { getHits(elem, query, ...) }))
+  lapply(Elist(subject), FUN = function(elem) { getHits(elem, query, ...) }))
 setMethod("getHits", signature("GRanges", "GRanges"), function(subject, query, ...){
   query <- names(subject)[findOverlaps(subject, query, ...)@subjectHits]
   getHits(subject, query)

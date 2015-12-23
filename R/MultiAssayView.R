@@ -9,8 +9,8 @@
 }
 
 .separateMap <- function(object, ids){
-	listDFsampleMap <- toListMap(object@sampleMap, "assayname")
-	listDFsampleMap <- listDFsampleMap[order(names(object@Elist))]
+	listDFsampleMap <- toListMap(sampleMap(object), "assayname")
+	listDFsampleMap <- listDFsampleMap[order(names(Elist(object)))]
 	loglistmatch <- lapply(listDFsampleMap, function(map) { as.vector(map[,"master"]) %in% ids })
 	keeps <- Map(function(x, y) { x[y,] }, listDFsampleMap, loglistmatch)
 	orderIndex <- lapply(keeps, .arrangeMap, ids)
@@ -43,12 +43,12 @@ MultiAssayView <- function(MultiAssay, identifier, method = character(), ...){
   method <- match.arg(method, c("colnames", "rownames", "assays"))
   if(method == "colnames"){
     totalColnames <- colnames(MultiAssay)
-    if(!is.numeric(identifier) && !all(identifier %in% rownames(myMultiAssay@masterPheno))){
-      iders <- intersect(identifier, rownames(MultiAssay@masterPheno))
-      notUsed <- setdiff(identifier, rownames(MultiAssay@masterPheno))
+    if(!is.numeric(identifier) && !all(identifier %in% rownames(masterPheno(myMultiAssay)))){
+      iders <- intersect(identifier, rownames(masterPheno(MultiAssay)))
+      notUsed <- setdiff(identifier, rownames(masterPheno(MultiAssay)))
       warning("Nonmatched identifers were dropped! : ", notUsed)
     } else {
-      iders <- rownames(MultiAssay@masterPheno[identifier, ])
+      iders <- rownames(masterPheno(MultiAssay)[identifier, ])
     }
     biMap <- .separateMap(MultiAssay, iders)
     newMultiAssayView <- new("MultiAssayView",

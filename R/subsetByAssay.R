@@ -17,10 +17,10 @@ subsetByAssay <- function(MultiAssay, assayIndicator, drop = FALSE){
   }
   assayDrops <- .convertList(assayIndicator@drops, type = "assays")
   assayIndicator <- unlist(assayIndicator@keeps[match(names(MultiAssay), names(assayIndicator))])
-  listMap <- toListMap(MultiAssay@sampleMap, "assayname")
+  listMap <- toListMap(sampleMap(MultiAssay), "assayname")
   newMap <- listMap[assayIndicator]
   newMap <- .convertList(newMap)
-  newSubset <- MultiAssay@Elist[assayIndicator]
+  newSubset <- Elist(MultiAssay)[assayIndicator]
   if(drop){
     return(as.list(newSubset))
   } else {
