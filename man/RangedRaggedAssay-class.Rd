@@ -2,6 +2,7 @@
 % Please edit documentation in R/RangedRaggedAssay-class.R
 \docType{class}
 \name{RangedRaggedAssay-class}
+\alias{.RangedRaggedAssay}
 \alias{RangedRaggedAssay-class}
 \title{An extension of the GRangesList class}
 \description{

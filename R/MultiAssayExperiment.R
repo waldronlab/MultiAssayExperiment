@@ -53,7 +53,7 @@
   autoMap <- S4Vectors::cbind(DataFrame(master), full_map)
   if(any(is.na(autoMap$master))){
     notFound <- autoMap[is.na(autoMap$master),]
-    warning("Data from rows:", sprintf("\n %s - %s", notFound[, 2], notFound[, 3]), "\ndropped due to missing phenotype data!")
+    warning("Data from rows:", sprintf("\n %s - %s", notFound[, 2], notFound[, 3]), "\ndropped due to missing phenotype data")
   }
   autoMap <- autoMap[!is.na(autoMap$master),]
   return(autoMap)

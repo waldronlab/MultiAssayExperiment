@@ -6,13 +6,11 @@
 #' 
 #' @inheritParams GenomicRanges::GRangesList
 #' @exportClass RangedRaggedAssay
-setClass("RangedRaggedAssay", contains = "GRangesList")
+.RangedRaggedAssay <- setClass("RangedRaggedAssay", contains = "GRangesList")
 
 ### - - - - - - - - - - - - - - - - - - - - - - - -
 ### Builder
 ###
-
-.RangedRaggedAssay <- setClass("RangedRaggedAssay", contains = "GRangesList")
 
 #' Create a RangedRaggedAssay
 #'

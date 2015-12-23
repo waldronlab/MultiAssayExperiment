@@ -6,7 +6,7 @@
 #' @export subsetBySample
 subsetBySample <- function(MultiAssay, identifier){
   if(is(identifier, "MultiAssayView") && getElement(identifier, "type") != "colnames"){
-    stop("MultiAssayView class should be of colnames!")
+    stop("MultiAssayView class should be of colnames")
   } else {
     newMap <- getMap(identifier)
     subsetor <- lapply(identifier@keeps, function(x) unlist(x[,2]))

@@ -2,7 +2,7 @@
 	obj_cl <- class(object)
 	e_class <- class(try(get(my_fun)(object), silent = TRUE))
 	if(e_class == "try-error"){
-		msg <-  paste0("class ", obj_cl, " should have a '", my_fun, "' method!")
+		msg <-  paste0("class ", obj_cl, " should have a '", my_fun, "' method")
 		return(msg)
 	}
 	NULL
@@ -11,7 +11,7 @@
 .getNameErr <- function(object){
   if(inherits(object, "RangedRaggedAssay")){
     if(is.null(names(object))){
-      msg <- paste("names in", obj_cl, "are NULL!")
+      msg <- paste("names in", obj_cl, "are NULL")
       return(msg)
     } else { NULL } 
   } else { NULL }
@@ -82,7 +82,7 @@ Elist <- function(x = list()){
     }
   }
   if(any(duplicated(names(object)))){
-    msg <- paste("Non-unique names provided!")
+    msg <- "Non-unique names provided"
     errors <- c(errors, msg)
   } 
   if(length(errors) == 0L){

@@ -119,14 +119,14 @@ setMethod("getHits", signature("ANY", "character"), function(subject, query, ...
     if(is.character(i)){
       newi <- sapply(x, function(g){any(i %in% names(g))}) # hot fix
       if(!any(newi)){
-        stop("Supply valid rownames!")
+        stop("Supply valid rownames")
       }
       x <- callNextMethod(x = x, i = newi)
       x <- endoapply(x, function(g){
         BiocGenerics::Filter(function(h){names(h) %in% i}, g)
       })
     } else {
-      stop("i must be character!")
+      stop("i must be character")
     }
   }
   return(x)

@@ -8,13 +8,13 @@
 #' @export toListMap
 toListMap <- function(mapdf, assayCol = NULL){
 	if(is.null(assayCol)){
-		stop("Provide the name of the column for assay names!")
+		stop("Provide assaynames column reference")
 	}
 	if(!assayCol %in% colnames(mapdf)){
-		stop("Assay names column not found in dataframe!")
+		stop("assayname column not found in dataframe")
 	}
 	if(!is.character(assayCol) | length(assayCol) != 1L){
-		stop("Assay name must be a string!")
+		stop("assayname must be a string")
 	}
   if(is(mapdf, "data.frame")){
   mapdf <- S4Vectors::DataFrame(mapdf)

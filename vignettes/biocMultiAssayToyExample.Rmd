@@ -317,4 +317,3 @@ invalid.obj
     + require that sample names in the new object already exist in masterPheno
 
 [html]: http://rpubs.com/lwaldron/biocmultiassaytoyexample
-[Issue 53]: https://github.com/vjcitn/biocMultiAssay/issues/53

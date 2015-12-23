@@ -12,7 +12,7 @@ subsetByAssay <- function(MultiAssay, assayIndicator, drop = FALSE){
     assayIndicator <- MultiAssayView(MultiAssay, assayIndicator, "assays")  
   } else {
     if((assayIndicator@type != "assays")){
-      stop("Provide an assay type MultiAssayView class!")
+      stop("Provide an assay type MultiAssayView class")
     }
   }
   assayDrops <- .convertList(assayIndicator@drops, type = "assays")
