@@ -30,23 +30,26 @@
 #' 
 #' @inheritParams S4Vectors::SimpleList
 #' @exportClass Elist
-setClass("Elist", contains = "SimpleList")
+.Elist <- setClass("Elist", contains = "SimpleList")
 
 ### - - - - - - - - - - - - - - - - - - - - - - - -
 ### Builder
 ###
 
-.Elist <- setClass("Elist", contains = "SimpleList")
+setGeneric("Elist", function(x) standardGeneric("Elist"))
 
 #' Convert from \code{\link[S4Vectors]{SimpleList-class}}
 #' to the multi-experiment data container
 #'
 #' @param x A \code{list} object
 #' @return An \code{\linkS4class{Elist}} class object
-#' @export Elist
-Elist <- function(x = list()){
+#' @exportMethod Elist
+setMethod("Elist", "ANY", function(x){
   .Elist(S4Vectors::SimpleList(x))
-}
+})
+setMethod("Elist", "missing", function(x){
+ .Elist(S4Vectors::SimpleList(list())) 
+})
 
 ##
 ## Validity ---------------------------------

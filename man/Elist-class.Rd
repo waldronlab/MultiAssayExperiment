@@ -2,6 +2,7 @@
 % Please edit documentation in R/Elist-class.R
 \docType{class}
 \name{Elist-class}
+\alias{.Elist}
 \alias{Elist-class}
 \title{A container for multi-experiment data}
 \description{

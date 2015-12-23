@@ -25,6 +25,8 @@ setClass("MultiAssayExperiment",
 ## Validity ---------------------------------
 ##
 
+## Fix with internal function (i.e .sortUniqueIdentical & .allin)
+## Prepare for unit testing - Travis CI
 ## sampleMap is a DataFrame with unique sampleNames across assay
 .checkSampleMap <- function(object){
 	errors <- character()
@@ -33,10 +35,6 @@ setClass("MultiAssayExperiment",
 		errors <- c(errors, msg)
 	}
 	lcheckdups <- S4Vectors::split(sampleMap(object)[["assay"]], sampleMap(object)[, "assayname"])
-	if(!length(Elist(object)) == length(names(lcheckdups))){
-		msg <- "assaynames must be of the same length as the Elist"
-		errors <- c(errors, msg)
-	}
 	logchecks <- any(vapply(lcheckdups, function(x) any(duplicated(x)), logical(1)))
 	if(logchecks){
 		msg <- "All sample identifiers in the assays must be unique"
@@ -79,8 +77,7 @@ setClass("MultiAssayExperiment",
 
 .validMultiAssayExperiment <- function(object){
 	if(length(Elist(object)) != 0L){
-		c(.checkMasterPheno(object), 
-		  .checkNames(object),	
+		c(.checkNames(object),	
 		  .checkElist2(object), 
 		  .checkSampleMap(object),
 		  .checkSampleNames(object)
@@ -142,7 +139,6 @@ setMethod("sampleMap", "MultiAssayExperiment", function(x)
 #' @param x A \code{\link{MultiAssayExperiment}} object.
 #' @return A \code{\link[S4Vectors]{SimpleList-class}} object.
 #' @exportMethod Elist
-setGeneric("Elist", function(x) standardGeneric("Elist"))
 #' @describeIn MultiAssayExperiment Access Elist class from MultiAssayExperiment
 setMethod("Elist", "MultiAssayExperiment", function(x)
 		  getElement(x, "Elist"))

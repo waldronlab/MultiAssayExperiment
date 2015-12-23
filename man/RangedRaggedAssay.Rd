@@ -4,7 +4,7 @@
 \alias{RangedRaggedAssay}
 \title{Create a RangedRaggedAssay}
 \usage{
-RangedRaggedAssay(x = list())
+RangedRaggedAssay(x = GRangesList())
 }
 \arguments{
 \item{x}{A \code{list}, \code{GRanges} or \code{GRangesList} object}
