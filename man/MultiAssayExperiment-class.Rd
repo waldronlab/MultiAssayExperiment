@@ -17,7 +17,7 @@
 \usage{
 \S4method{sampleMap}{MultiAssayExperiment}(x)
 
-\S4method{Elist}{MultiAssayExperiment}(x = list())
+\S4method{Elist}{MultiAssayExperiment}(x)
 
 \S4method{masterPheno}{MultiAssayExperiment}(x)
 
@@ -36,7 +36,7 @@
 \S4method{subset}{MultiAssayExperiment}(x, indicator, method = NULL, ...)
 }
 \arguments{
-\item{x}{A \code{\link{MultiAssayExperiment}} object.}
+\item{x}{A \code{\link{MultiAssayExperiment}} object}
 
 \item{indicator}{A \code{logical} or \code{character} vector or \code{MultiAssayView} class object to use for subsetting}
 
@@ -46,13 +46,9 @@
 
 \item{x}{A \code{\link{MultiAssayExperiment}} object}
 
-\item{x}{A \code{\link{MultiAssayExperiment}} object}
-
 \item{MultiAssay}{A \code{\linkS4class{MultiAssayExperiment}} object}
 }
 \value{
-A \code{\link[S4Vectors]{SimpleList-class}} object.
-
 Any type of object describing the metadata
 
 An \code{integer}
@@ -61,8 +57,6 @@ A character vector of experiment names
 }
 \description{
 An integrative MultiAssay class for experiment data
-
-Generic Accessor Functions
 
 Generic Acessor Functions
 

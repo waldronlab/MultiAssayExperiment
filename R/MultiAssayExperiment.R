@@ -77,8 +77,8 @@ MultiAssayExperiment <- function(Elist = list(), masterPheno = S4Vectors::DataFr
       allsamps <- unique(unlist(lapply(Elist, colnames)))
       masterPheno <- S4Vectors::DataFrame(pheno1 = rep(NA, length(allsamps)), row.names = allsamps)
       sampleMap <- .generateMap(masterPheno, Elist)
-    } else if((length(sampleMap) == 0L) & !(length(masterPheno) == 0L)){
-      warning("sampleMap not provided! Map will be created from data provided...")
+    } else if((length(sampleMap) == 0L) && !(length(masterPheno) == 0L)){
+      warning("sampleMap not provided, map will be generated")
       sampleMap <- .generateMap(masterPheno, Elist)
       validAssays <- split(sampleMap[["assay"]], sampleMap$assayname)
       Elist <- Map(function(x, y) { x[, y]}, Elist, validAssays) 

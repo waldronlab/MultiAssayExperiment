@@ -20,7 +20,7 @@ setClass("MultiAssayView",
 	errors <- character()
 	if(length(object@keeps) != 0L){
 		if(length(object@drops) != length(object@keeps)){
-			msg <- paste("List of dropped information must be the same length as the kept information!")
+			msg <- "List of dropped information must be the same length as the kept information"
 			errors <- c(errors, msg)
 		}
 	}

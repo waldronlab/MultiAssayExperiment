@@ -8,23 +8,17 @@
 #' @exportClass RangedRaggedAssay
 setClass("RangedRaggedAssay", contains = "GRangesList")
 
-#' Generic Builder and Accessor Function
-setGeneric("RangedRaggedAssay", function(...) standardGeneric("RangedRaggedAssay"))
-
 ### - - - - - - - - - - - - - - - - - - - - - - - -
 ### Builder
 ###
 
-#' Convert GRangesList to RangedRaggedAssay
+.RangedRaggedAssay <- setClass("RangedRaggedAssay", contains = "GRangesList")
+
+#' Create a RangedRaggedAssay
 #'
-#' @param ... A \code{GRangesList} object
+#' @param x A \code{list}, \code{GRanges} or \code{GRangesList} object
 #' @return A \code{\linkS4class{RangedRaggedAssay}} class object
-#' @exportMethod RangedRaggedAssay
-#' @describeIn RangedRaggedAssay Convert a GRangesList to a RangedRaggedAssay
-setMethod("RangedRaggedAssay", "GRangesList", function(...){
-  as(..., "RangedRaggedAssay")
-})
-setMethod("RangedRaggedAssay", "ANY", function(...){
-  grl <- GRangesList(...)
-  RangedRaggedAssay(grl)
-})
+#' @export RangedRaggedAssay
+RangedRaggedAssay <- function(x = list()){
+  .RangedRaggedAssay(GRangesList(x))
+}

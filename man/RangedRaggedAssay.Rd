@@ -2,11 +2,17 @@
 % Please edit documentation in R/RangedRaggedAssay-class.R
 \name{RangedRaggedAssay}
 \alias{RangedRaggedAssay}
-\title{Generic Builder and Accessor Function}
+\title{Create a RangedRaggedAssay}
 \usage{
-RangedRaggedAssay(...)
+RangedRaggedAssay(x = list())
+}
+\arguments{
+\item{x}{A \code{list}, \code{GRanges} or \code{GRangesList} object}
+}
+\value{
+A \code{\linkS4class{RangedRaggedAssay}} class object
 }
 \description{
-Generic Builder and Accessor Function
+Create a RangedRaggedAssay
 }
 

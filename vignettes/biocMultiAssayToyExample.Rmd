@@ -25,8 +25,8 @@ class(masterPheno(empty)) #DataFrame
 class(sampleMap(empty))   #DataFrame
 class(metadata(empty))    #NULL (class "ANY")
 methods(class="MultiAssayExperiment")
-methods(class="RaggedRangedAssay")
-getMethod("colnames", "RaggedRangedAssay")
+methods(class="RangedRaggedAssay")
+getMethod("colnames", "RangedRaggedAssay")
 ```
 
 Subsetting of samples and features is harmonized through some generic

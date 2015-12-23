@@ -25,30 +25,21 @@ setClass("MultiAssayExperiment",
 ## Validity ---------------------------------
 ##
 
-## masterPheno should always be a data.frame
-.checkMasterPheno <- function(object){
-	errors <- character()
-	if(!is(object@masterPheno, "DataFrame")){
-		return("masterPheno should be a DataFrame of metadata for all samples!")
-	}
-	NULL
-}
-
 ## sampleMap is a DataFrame with unique sampleNames across assay
 .checkSampleMap <- function(object){
 	errors <- character()
-	if(!all(unique(object@sampleMap[, "master"]) %in% rownames(object@masterPheno))){
-		msg <- paste("All samples in the sampleMap must be in the masterPheno!")
+	if(!all(unique(sampleMap(object)[, "master"]) %in% rownames(masterPheno(object)))){
+		msg <- "All samples in the sampleMap must be in the masterPheno"
 		errors <- c(errors, msg)
 	}
-	if(!length(object@Elist) == length(names(S4Vectors::split(object@sampleMap, object@sampleMap[, "assayname"])))){
-		msg <- paste("assaynames must be of the same length as the Elist!")
+	lcheckdups <- S4Vectors::split(sampleMap(object)[["assay"]], sampleMap(object)[, "assayname"])
+	if(!length(Elist(object)) == length(names(lcheckdups))){
+		msg <- "assaynames must be of the same length as the Elist"
 		errors <- c(errors, msg)
 	}
-	lcheckdups <- S4Vectors::split(object@sampleMap[["assay"]], object@sampleMap$assayname)
 	logchecks <- any(vapply(lcheckdups, function(x) any(duplicated(x)), logical(1)))
 	if(logchecks){
-		msg <- paste("All sample identifiers in the assays must be unique!")
+		msg <- "All sample identifiers in the assays must be unique"
 		errors <- c(errors, msg)
 	}
 	if(length(errors) == 0L) NULL else errors 
@@ -57,13 +48,13 @@ setClass("MultiAssayExperiment",
 ## Experiment list must be the same length as the unique sampleMap assaynames 
 .checkElist2 <- function(object){
 	errors <- character()
-	assaynames <- unique(object@sampleMap[, "assayname"])
-	if(length(object@Elist) != length(assaynames)){
-		msg <- paste("Elist must be the same length as the sampleMap assaynames!")
+	assaynames <- unique(sampleMap(object)[, "assayname"])
+	if(length(Elist(object)) != length(assaynames)){
+		msg <- "Elist must be the same length as the sampleMap assaynames"
 		errors <- c(errors, msg)
 	}
 	if(!all(assaynames %in% names(object))){
-	  msg <- paste("Experiment/Assay names in both the Elist and the sampleMap must match!")
+	  msg <- "Experiment/Assay names in both the Elist and the sampleMap must match"
 	  errors <- c(errors, msg)
 	}
 	if(length(errors) == 0L) NULL else errors
@@ -72,22 +63,22 @@ setClass("MultiAssayExperiment",
 ## All sample names in the Elist must be in the sampleMap
 .checkSampleNames <- function(object){
 	if(!identical(sort(unname(unlist(colnames(object)))), 
-				  sort(object@sampleMap[, "assay"]))){
-		return("samples in the Elist are not the same as samples in the sampleMap!")
+				  sort(sampleMap(object)[, "assay"]))){
+		return("samples in the Elist are not the same as samples in the sampleMap")
 	}
 	NULL
 }
 
 ## All names must match between Elist and sampleMap
 .checkNames <- function(object){
-	if(!all(names(object@Elist) %in% unique(object@sampleMap[, "assayname"]))){
-		return("Experiment names must match in both Elist and sampleMap!")
+	if(!all(names(Elist(object)) %in% unique(sampleMap(object)[, "assayname"]))){
+		return("Experiment names must match in both Elist and sampleMap")
 	}
 	NULL
 }
 
 .validMultiAssayExperiment <- function(object){
-	if(length(object@Elist) != 0L){
+	if(length(Elist(object)) != 0L){
 		c(.checkMasterPheno(object), 
 		  .checkNames(object),	
 		  .checkElist2(object), 
@@ -110,10 +101,9 @@ setMethod("show", "MultiAssayExperiment", function(object){
 		  o_names <- names(object)
 		  if(length(o_names)==0L){ o_names <- "none" }
 		  classes <- vapply(Elist(object), class, character(1))
-		  c_elist <- class(object@Elist)
-		  c_mp <- class(object@masterPheno)
-		  c_sm <- class(object@sampleMap)
-		  c_md <- class(object@metadata)
+		  c_elist <- class(Elist(object))
+		  c_mp <- class(masterPheno(object))
+		  c_sm <- class(sampleMap(object))
 		  cat(sprintf('A "%s"', o_class),
 			  "object of", o_len, "listed\n", ifelse(o_len == 1L, "experiment", "experiments"), 
 			  "with", ifelse(all(o_names == "none"), "no user-defined names",
@@ -122,7 +112,7 @@ setMethod("show", "MultiAssayExperiment", function(object){
 			  ifelse(length(o_len) == 0L, "classes.",
 					 ifelse(length(classes) == 1L, "respective class.", "respective classes.")),
 			  "\n Containing an ") 
-		  show(object@Elist)
+		  show(Elist(object))
 		  cat("To access slots use: \n Elist() - to obtain the", sprintf('"%s"', c_elist), 
 			  "of experiment instances", 
 			  "\n masterPheno() - for the phenotype", sprintf('"%s"', c_mp), 
@@ -146,11 +136,13 @@ setGeneric("sampleMap", function(x) standardGeneric("sampleMap"))
 setMethod("sampleMap", "MultiAssayExperiment", function(x)
 		  getElement(x, "sampleMap"))
 
+
 #' Generic Accessor Functions
 #' 
 #' @param x A \code{\link{MultiAssayExperiment}} object.
 #' @return A \code{\link[S4Vectors]{SimpleList-class}} object.
 #' @exportMethod Elist
+setGeneric("Elist", function(x) standardGeneric("Elist"))
 #' @describeIn MultiAssayExperiment Access Elist class from MultiAssayExperiment
 setMethod("Elist", "MultiAssayExperiment", function(x)
 		  getElement(x, "Elist"))
@@ -195,5 +187,3 @@ setMethod("length", "MultiAssayExperiment", function(x)
 setMethod("names", "MultiAssayExperiment", function(x)
   names(getElement(x, "Elist"))
 )
-
-
