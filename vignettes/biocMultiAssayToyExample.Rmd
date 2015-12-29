@@ -211,9 +211,7 @@ subset(myMultiAssay, "Mirna", "assays")
 
 Not endogenous, returns just the matrix contained in `Elist$Mirna`
 
-### TODO: Fix drop argument in subset
-
-```{r, eval = FALSE}
+```{r}
 subset(myMultiAssay, "Mirna", "assays", drop = TRUE)
 ```
 

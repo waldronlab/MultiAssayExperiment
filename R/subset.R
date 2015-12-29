@@ -38,7 +38,7 @@
 #' @param method A \code{character} vector of length one designating to subset either by colnames, rownames, or assays
 #' @describeIn MultiAssayExperiment
 #' export subset
-setMethod("subset", "MultiAssayExperiment", function(x, indicator, method = NULL, ...){
+setMethod("subset", "MultiAssayExperiment", function(x, indicator, method = NULL, drop = FALSE){
   if(is(indicator, "MultiAssayView")){
     method <- getElement(indicator, "type") 
   } else if(is.null(method)){
@@ -46,10 +46,10 @@ setMethod("subset", "MultiAssayExperiment", function(x, indicator, method = NULL
   }
   method <- match.arg(method, c("colnames", "rownames", "assays"))
   if(method == "colnames"){
-    return(subsetBySample(MultiAssay = x, indicator))
+    return(subsetBySample(MultiAssay = x, indicator, drop))
   } else if(method == "rownames"){
-    return(subsetByFeature(MultiAssay = x, indicator))
+    return(subsetByFeature(MultiAssay = x, indicator, drop))
   } else if(method == "assays"){
-    return(subsetByAssay(MultiAssay = x, indicator))
+    return(subsetByAssay(MultiAssay = x, indicator, drop))
   } 
 })

@@ -6,7 +6,7 @@
 #' @param featureIndicator Either a \code{character} vector or \code{\linkS4class{MultiAssayView}} class object containing feature names
 #' @return A \code{\link{MultiAssayExperiment}} object 
 #' @export subsetByFeature
-subsetByFeature <- function(MultiAssay, featureIndicator, ...){ 
+subsetByFeature <- function(MultiAssay, featureIndicator, drop = FALSE){ 
   if(!is(featureIndicator, "MultiAssayView")){
     featureIndicator <- MultiAssayView(MultiAssay, featureIndicator, "rownames")
   } else {

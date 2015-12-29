@@ -4,7 +4,7 @@
 #' @param MultiAssay A \code{\link{MultiAssayExperiment}} object 
 #' @param identifier A \linkS4class{MultiAssayView} class object to be used for subsetting
 #' @export subsetBySample
-subsetBySample <- function(MultiAssay, identifier, ...){
+subsetBySample <- function(MultiAssay, identifier, drop = FALSE){
   if(is(identifier, "MultiAssayView") && getElement(identifier, "type") != "colnames"){
     stop("MultiAssayView class should be of colnames")
   } else {
@@ -13,7 +13,7 @@ subsetBySample <- function(MultiAssay, identifier, ...){
   }
   ##  mendoapply not working
   ## 	newSubset <- S4Vectors::mendoapply(subsetSample, Elist(MultiAssay), subsetor) 
-  newSubset <- mapply(function(x, y){ x[ ,y, ...]}, Elist(MultiAssay), subsetor)
+  newSubset <- mapply(function(x, y){x[, y, drop = drop]}, Elist(MultiAssay), subsetor)
   newSubset <- Elist(newSubset)
   # Clone or replace method for slot??
   MultiAssay@sampleMap <- newMap
