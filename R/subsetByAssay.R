@@ -22,7 +22,7 @@ subsetByAssay <- function(MultiAssay, assayIndicator, drop = FALSE){
   newMap <- .convertList(newMap)
   newSubset <- Elist(MultiAssay)[assayIndicator]
   if(drop){
-    return(as.list(newSubset))
+      return(as.list(newSubset))
   } else {
     MultiAssay@sampleMap <- newMap
     MultiAssay@Elist <- newSubset

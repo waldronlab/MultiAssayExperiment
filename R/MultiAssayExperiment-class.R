@@ -25,22 +25,37 @@ setClass("MultiAssayExperiment",
 ## Validity ---------------------------------
 ##
 
-## Fix with internal function (i.e .sortUniqueIdentical & .allin)
+.uniqueSortIdentical <- function(charvec1, charvec2){
+  listInput <- list(charvec1, charvec2)
+  listInput <- lapply(listInput, function(x) sort(unique(x)))
+  return(identical(listInput[[1]], listInput[[2]]))
+}
+
+.allIn <- function(charvec1, charvec2){
+  return(all(charvec2 %in% charvec1))
+}
+
 ## Prepare for unit testing - Travis CI
 ## sampleMap is a DataFrame with unique sampleNames across assay
-.checkSampleMap <- function(object){
+.checkSampleMapNames <- function(object){
 	errors <- character()
-	if(!all(unique(sampleMap(object)[, "master"]) %in% rownames(masterPheno(object)))){
+	if(!(.allIn(rownames(masterPheno(object)), slot(sampleMap(object)[, "master"], "values")))){
 		msg <- "All samples in the sampleMap must be in the masterPheno"
 		errors <- c(errors, msg)
 	}
-	lcheckdups <- S4Vectors::split(sampleMap(object)[["assay"]], sampleMap(object)[, "assayname"])
+	if(length(errors) == 0L) NULL else errors
+}
+
+.uniqueNamesInAssays <- function(object){
+  errors <- character()
+	SampMap <- sampleMap(object)
+	lcheckdups <- S4Vectors::split(SampMap[["assay"]], SampMap[, "assayname"])
 	logchecks <- any(vapply(lcheckdups, function(x) any(duplicated(x)), logical(1)))
 	if(logchecks){
 		msg <- "All sample identifiers in the assays must be unique"
 		errors <- c(errors, msg)
 	}
-	if(length(errors) == 0L) NULL else errors 
+	if(length(errors) == 0L) NULL else errors
 }
 
 ## Experiment list must be the same length as the unique sampleMap assaynames 
@@ -79,7 +94,8 @@ setClass("MultiAssayExperiment",
 	if(length(Elist(object)) != 0L){
 		c(.checkNames(object),	
 		  .checkElist2(object), 
-		  .checkSampleMap(object),
+		  .checkSampleMapNames(object),
+		  .uniqueNamesInAssays(object),
 		  .checkSampleNames(object)
 		  )
 }}

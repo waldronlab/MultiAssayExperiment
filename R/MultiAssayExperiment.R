@@ -45,10 +45,10 @@
 .generateMap <- function(mPheno, exlist){
   samps <- lapply(exlist, colnames)
   # listM <- lapply(seq_along(samps), function(i, x) {data.frame(assay = x[[i]], assayname = names(x)[i], row.names = NULL, stringsAsFactors = FALSE)}, x = samps)
-  listM <- lapply(seq_along(samps), function(i, x) {S4Vectors::DataFrame(assay = x[[i]], assayname = names(x)[i])}, x = samps)
+  listM <- lapply(seq_along(samps), function(i, x) {S4Vectors::DataFrame(assay = x[[i]], assayname = Rle(names(x)[i]))}, x = samps)
   full_map <- do.call(S4Vectors::rbind, listM)
   # full_map <- do.call(rbind, listM)
-  master <- rownames(mPheno)[match(full_map$assay, rownames(mPheno))]
+  master <- Rle(rownames(mPheno)[match(full_map$assay, rownames(mPheno))])
   # autoMap <- cbind(master, full_map)
   autoMap <- S4Vectors::cbind(DataFrame(master), full_map)
   if(any(is.na(autoMap$master))){
@@ -80,7 +80,7 @@ MultiAssayExperiment <- function(Elist = list(), masterPheno = S4Vectors::DataFr
     } else if((length(sampleMap) == 0L) && !(length(masterPheno) == 0L)){
       warning("sampleMap not provided, map will be generated")
       sampleMap <- .generateMap(masterPheno, Elist)
-      validAssays <- split(sampleMap[["assay"]], sampleMap$assayname)
+      validAssays <- S4Vectors::split(sampleMap[["assay"]], sampleMap[, "assayname"])
       Elist <- Map(function(x, y) { x[, y]}, Elist, validAssays) 
     }
   }
