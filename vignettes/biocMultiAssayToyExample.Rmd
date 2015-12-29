@@ -194,7 +194,7 @@ metadata(myMultiAssay)
 ```{r}
 MultiAssayView_cl <- MultiAssayView(myMultiAssay, 2:1, "colnames")
 MultiAssayView_cl
-subMultiAssay <- subset(myMultiAssay, MultiAssayView_cl, "sample")
+subMultiAssay <- subset(myMultiAssay, MultiAssayView_cl)
 as.list(Elist(subMultiAssay))
 subsetByAssay(subMultiAssay, c(TRUE, FALSE, FALSE, TRUE, FALSE), drop = TRUE)[[1]] %>% exprs 
 subMultiAssay

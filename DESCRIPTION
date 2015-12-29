@@ -16,13 +16,14 @@ Suggests:
     data.table,
     hgu133a.db,
     reshape2,
-    shinydashboard
-Depends:
+    shinydashboard,
+    testthat
+Depends: 
     R (>= 3.0.1),
     Biobase,
     dplyr,
     S4Vectors
-Imports:
+Imports: 
     DBI,
     methods,
     RSQLite,
@@ -37,7 +38,7 @@ Maintainer: Marcel Ramos <mramos09@gmail.com>
 License: Artistic-2.0
 LazyData: true
 LazyLoad: yes
-Collate:
+Collate: 
     'API.R'
     'Elist-class.R'
     'MultiAssayExperiment-class.R'

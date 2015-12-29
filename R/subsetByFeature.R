@@ -11,12 +11,12 @@ subsetByFeature <- function(MultiAssay, featureIndicator, drop = FALSE){
     featureIndicator <- MultiAssayView(MultiAssay, featureIndicator, "rownames")
   } else {
     if(featureIndicator@type != "rownames"){
-    stop("Provide a rownames type MultiAssayView class")
-  }
+      stop("Provide a rownames type MultiAssayView class")
+    }
   }
   MultiAssay@drops <- c(MultiAssay@drops, list(.convertList(featureIndicator, "drops")))
   featureMaker <- lapply(featureIndicator@keeps, unlist)
   MultiAssay@Elist <- Elist(MultiAssay)[featureMaker]
   #  MultiAssay@Elist <- mendoapply(Elist(MultiAssay), subsetFeature, featureMaker)
-	return(MultiAssay)
+  return(MultiAssay)
 }

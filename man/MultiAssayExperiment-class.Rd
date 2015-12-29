@@ -33,7 +33,8 @@
 
 \S4method{assay}{MultiAssayExperiment,ANY}(x)
 
-\S4method{subset}{MultiAssayExperiment}(x, indicator, method = NULL, ...)
+\S4method{subset}{MultiAssayExperiment}(x, indicator, method = NULL,
+  drop = FALSE)
 }
 \arguments{
 \item{x}{A \code{\link{MultiAssayExperiment}} object.}

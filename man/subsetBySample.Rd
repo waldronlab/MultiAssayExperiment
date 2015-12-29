@@ -5,7 +5,7 @@
 \title{Subset MultiAssayExperiment object
 \code{subsetBySample} returns a subsetted \code{\linkS4class{MultiAssayExperiment}} object}
 \usage{
-subsetBySample(MultiAssay, identifier, ...)
+subsetBySample(MultiAssay, identifier, drop = FALSE)
 }
 \arguments{
 \item{MultiAssay}{A \code{\link{MultiAssayExperiment}} object}
