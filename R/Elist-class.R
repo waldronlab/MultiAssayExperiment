@@ -8,6 +8,23 @@
 	NULL
 }
 
+## Check class conforms to API
+.hasMethods <- function(object, my_fun){
+  obj_cl <- class(object)
+  if(any(my_fun %in% c("[", "assay"))){
+    if(any(obj_cl %in% c("GRangesList", "RangedRaggedAssay"))){
+      return(hasMethod(my_fun, signature = c(obj_cl, "ANY"),
+                where = c("package:GenomicRanges", "package:IRanges", "package:SummarizedExperiment")))
+    } else if(is(object, "RangedSummarizedExperiment")){
+      return(hasMethod(my_fun, signature = c(class(object), "missing"), 
+                where = c("package:GenomicRanges", "package:IRanges", "package:SummarizedExperiment")))
+    } else {
+      return(hasMethod(my_fun, signature = c(obj_cl, "ANY")))
+    }
+  }
+  return(hasMethod(my_fun, signature = obj_cl))
+}
+
 .getNameErr <- function(object){
   if(inherits(object, "RangedRaggedAssay")){
     if(is.null(names(object))){
@@ -55,7 +72,20 @@ setMethod("Elist", "missing", function(x){
 ## Validity ---------------------------------
 ##
 
-.checkMethods <- function(object){
+.checkMethodsTable <- function(object){
+  supportedMethods <- c("colnames", "rownames", "[", "assay")
+  errors <- character(length(object)*length(supportedMethods))
+  for(i in seq_along(object)){
+    for(j in seq_along(supportedMethods)){
+      if(!(.hasMethods(object[[i]], supportedMethods[[j]]))){
+        errors <- c(errors, paste0("Element [", i, "] of class ", class(object[[i]]), " does not have a ", supportedMethods[[j]], " method"))
+      }
+    }
+  }
+  return(errors)
+}
+
+.forceEvalMethods <- function(object){
   errors <- character()
   for(i in seq_along(object)){
     samp_err <- .getMethErr(object[[i]], "colnames")
@@ -95,7 +125,7 @@ setMethod("Elist", "missing", function(x){
 
 .validElist <- function(object){
   if(length(object) != 0L){
-  c(.checkMethods(object),
+  c(.forceEvalMethods(object),
     .checkElistNames(object))
   }
 }
