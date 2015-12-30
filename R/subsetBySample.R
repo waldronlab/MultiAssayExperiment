@@ -3,7 +3,6 @@
 #'
 #' @param MultiAssay A \code{\link{MultiAssayExperiment}} object 
 #' @param identifier A \linkS4class{MultiAssayView} class object to be used for subsetting
-#' @export subsetBySample
 subsetBySample <- function(MultiAssay, identifier, drop = FALSE){
   if(is(identifier, "MultiAssayView") && getElement(identifier, "type") != "colnames"){
     stop("MultiAssayView class should be of colnames")

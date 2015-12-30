@@ -59,10 +59,10 @@ setMethod("assay", "MultiAssayExperiment", function(x) lapply(x@Elist, assay))
 setGeneric("getHits", function(subject, query, ...) standardGeneric("getHits"))
 #' @describeIn getHits Find all matching rownames by character
 setMethod("getHits", signature("MultiAssayExperiment", "character"), function(subject, query, ...)
-  lapply(Elist(subject), FUN = function(elem) { getHits(elem, query, ...) }))
+  lapply(Elist(subject), FUN = function(elem, ...) { getHits(elem, query, ...) }))
 #' @describeIn getHits Find all matching rownames by GRanges
 setMethod("getHits", signature("MultiAssayExperiment", "GRanges"), function(subject, query, ...)
-  lapply(Elist(subject), FUN = function(elem) { getHits(elem, query, ...) }))
+  lapply(Elist(subject), FUN = function(elem, ...) { getHits(elem, query, ...) }))
 setMethod("getHits", signature("GRanges", "GRanges"), function(subject, query, ...){
   query <- names(subject)[findOverlaps(subject, query, ...)@subjectHits]
   getHits(subject, query)
@@ -70,7 +70,7 @@ setMethod("getHits", signature("GRanges", "GRanges"), function(subject, query, .
 #' @describeIn getHits Find all matching rownames for Range-based objects
 setMethod("getHits", signature("ANY", "GRanges"), function(subject, query, ...){
   if(.checkFindOverlaps(class(subject))){
-    listGR <- lapply(subject, function(x) {x[findOverlaps(x, query, ...)@subjectHits]})
+    listGR <- lapply(subject, function(x, ...) {x[findOverlaps(x, query, ...)@subjectHits]})
     query <- unlist(sapply(listGR, rownames))
     getHits(subject, query)
   } else {
@@ -112,7 +112,7 @@ setMethod("getHits", signature("ANY", "character"), function(subject, query, ...
   }
   if(!missing(i)){
     if(is.character(i)){
-      newi <- sapply(x, function(g){any(i %in% names(g))}) # hot fix
+      newi <- sapply(x, function(g, i){any(i %in% names(g))}, i = i) # hot fix
       if(!any(newi)){
         stop("Supply valid rownames")
       }
