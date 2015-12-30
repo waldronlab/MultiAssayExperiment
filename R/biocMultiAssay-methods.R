@@ -9,10 +9,8 @@ NULL
 #' @param x A compatible object with feature data 
 #' @return Returns either rownames or featureNames
 #' @exportMethod rownames
-setMethod("rownames", "character", function(x) x)
 setMethod("rownames", "ExpressionSet", function(x) Biobase::featureNames(x))
 setMethod("rownames", "RangedSummarizedExperiment", function(x) names(SummarizedExperiment::rowRanges(x)))
-setMethod("rownames", "GRanges", function(x) names(x))
 setMethod("rownames", "RangedRaggedAssay", function(x) names(unlist(x, use.names = FALSE)))
 #' @describeIn MultiAssayExperiment Get all the rownames for a MultiAssayExperiment
 setMethod("rownames", "MultiAssayExperiment", function(x) lapply(x@Elist, rownames))
@@ -59,9 +57,6 @@ setMethod("assay", "MultiAssayExperiment", function(x) lapply(x@Elist, assay))
 #' @return Names of matched queries
 #' @exportMethod getHits
 setGeneric("getHits", function(subject, query, ...) standardGeneric("getHits"))
-#' @describeIn getHits Find matching rownames in matrix
-setMethod("getHits", signature("matrix", "character"), function(subject, query, ...)
-  intersect(rownames(query), subject))
 #' @describeIn getHits Find all matching rownames by character
 setMethod("getHits", signature("MultiAssayExperiment", "character"), function(subject, query, ...)
   lapply(Elist(subject), FUN = function(elem) { getHits(elem, query, ...) }))

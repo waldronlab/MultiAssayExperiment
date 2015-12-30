@@ -72,39 +72,51 @@ setMethod("Elist", "missing", function(x){
 ## Validity ---------------------------------
 ##
 
-.checkMethodsTable <- function(object){
+.getMethErr2 <- function(object){
+  obj_cl <- class(object)
   supportedMethods <- c("colnames", "rownames", "[", "assay")
-  errors <- character(length(object)*length(supportedMethods))
-  for(i in seq_along(object)){
-    for(j in seq_along(supportedMethods)){
-      if(!(.hasMethods(object[[i]], supportedMethods[[j]]))){
-        errors <- c(errors, paste0("Element [", i, "] of class ", class(object[[i]]), " does not have a ", supportedMethods[[j]], " method"))
-      }
-    }
+  methErr <- which(!sapply(supportedMethods, function(x) { .hasMethods(object, x)}))
+  if(any(methErr)){
+    unsupported <- names(methErr)
+    msg <- paste0("class '", obj_cl, "' does not method(s): ", paste(unsupported, collapse = ", "))
+    return(msg)
   }
-  return(errors)
+  NULL
 }
 
-.forceEvalMethods <- function(object){
+.checkMethodsTable <- function(object){
   errors <- character()
   for(i in seq_along(object)){
-    samp_err <- .getMethErr(object[[i]], "colnames")
-    if(!is.null(samp_err)){
-      errors <- c(errors, paste0("Element [", i, "] of ", samp_err))
-    }
-    feat_err <- .getMethErr(object[[i]], "rownames")
-    if(!is.null(feat_err)){
-      errors <- c(errors, paste0("Element [", i, "] of ", feat_err))
-    }
-    brack_err <- .getMethErr(object[[i]], "[")
-    if(!is.null(brack_err)){
-      errors <- c(errors, paste0("Element [", i, "] of ", brack_err))
+    coll_err <- .getMethErr2(object[[i]])    
+    if(!is.null(coll_err)){
+      errors <- c(errors, paste0("Element [", i, "] of ", coll_err))
     }
   }
   if(length(errors) == 0L){
     NULL
   } else { errors }
 }
+
+# .forceEvalMethods <- function(object){
+#   errors <- character()
+#   for(i in seq_along(object)){
+#     samp_err <- .getMethErr(object[[i]], "colnames")
+#     if(!is.null(samp_err)){
+#       errors <- c(errors, paste0("Element [", i, "] of ", samp_err))
+#     }
+#     feat_err <- .getMethErr(object[[i]], "rownames")
+#     if(!is.null(feat_err)){
+#       errors <- c(errors, paste0("Element [", i, "] of ", feat_err))
+#     }
+#     brack_err <- .getMethErr(object[[i]], "[")
+#     if(!is.null(brack_err)){
+#       errors <- c(errors, paste0("Element [", i, "] of ", brack_err))
+#     }
+#   }
+#   if(length(errors) == 0L){
+#     NULL
+#   } else { errors }
+# }
 
 .checkElistNames <- function(object){
   errors <- character()
@@ -125,7 +137,7 @@ setMethod("Elist", "missing", function(x){
 
 .validElist <- function(object){
   if(length(object) != 0L){
-  c(.forceEvalMethods(object),
+  c(.checkMethodsTable(object),
     .checkElistNames(object))
   }
 }
@@ -140,13 +152,13 @@ S4Vectors::setValidity2("Elist", .validElist)
 #' @return Returns a summary of contents for the \code{\linkS4class{Elist}} class
 #' exportMethod show
 setMethod("show", "Elist", function(object){
-		  o_class <- class(object)
-		  elem_cl <- vapply(object, class, character(1))
-		  o_len <- length(object)
-		  o_names <- names(object)
-		  sampdim <- vapply(object, FUN = function(obj) { length(colnames(obj)) }, FUN.VALUE = integer(1))
-		  featdim <- vapply(object, FUN = function(obj) { length(rownames(obj)) }, FUN.VALUE = integer(1))
-		  cat(sprintf('"%s"', o_class), "class object of length", paste0(o_len, ':'),
-			  sprintf('\n [%i] %s: "%s" - %s samples, %s features', seq(o_len), o_names, elem_cl, sampdim, featdim), "\n") 
-		  })
+  o_class <- class(object)
+  elem_cl <- vapply(object, class, character(1))
+  o_len <- length(object)
+  o_names <- names(object)
+  sampdim <- vapply(object, FUN = function(obj) { length(colnames(obj)) }, FUN.VALUE = integer(1))
+  featdim <- vapply(object, FUN = function(obj) { length(rownames(obj)) }, FUN.VALUE = integer(1))
+  cat(sprintf('"%s"', o_class), "class object of length", paste0(o_len, ':'),
+      sprintf('\n [%i] %s: "%s" - %s samples, %s features', seq(o_len), o_names, elem_cl, sampdim, featdim), "\n") 
+})
 

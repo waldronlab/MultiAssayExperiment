@@ -37,7 +37,6 @@ methods("rownames") # features
 methods("colnames") # samples
 ```
 
-
 # Generate toy data
 
 In this example we have 4 patients, and a bit of metadata on them:

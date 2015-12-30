@@ -43,7 +43,11 @@ setMethod("show", "MultiAssayView", function(object){
   o_len <- length(object)
   o_names <- names(object)
   view_type <- type(object)
-  o_ids <- rownames(query(object))
+  if(is.character(query(object))){
+    o_ids <- Biobase::selectSome(query(object))
+  } else if(is(object, "GRanges")){
+    o_ids <- names(object)
+  }
   if(view_type != "assays"){
     my_fun <- function(x) length(na.omit(x[, 1]))
   } else {
