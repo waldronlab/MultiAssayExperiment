@@ -1,13 +1,3 @@
-.getMethErr <- function(object, my_fun){
-	obj_cl <- class(object)
-	e_class <- class(try(get(my_fun)(object), silent = TRUE))
-	if(e_class == "try-error"){
-		msg <-  paste0("class ", obj_cl, " should have a '", my_fun, "' method")
-		return(msg)
-	}
-	NULL
-}
-
 ## Check class conforms to API
 .hasMethods <- function(object, my_fun){
   obj_cl <- class(object)
@@ -78,7 +68,7 @@ setMethod("Elist", "missing", function(x){
   methErr <- which(!sapply(supportedMethods, function(x) { .hasMethods(object, x)}))
   if(any(methErr)){
     unsupported <- names(methErr)
-    msg <- paste0("class '", obj_cl, "' does not method(s): ", paste(unsupported, collapse = ", "))
+    msg <- paste0("class '", obj_cl, "' does not have method(s): ", paste(unsupported, collapse = ", "))
     return(msg)
   }
   NULL
@@ -96,27 +86,6 @@ setMethod("Elist", "missing", function(x){
     NULL
   } else { errors }
 }
-
-# .forceEvalMethods <- function(object){
-#   errors <- character()
-#   for(i in seq_along(object)){
-#     samp_err <- .getMethErr(object[[i]], "colnames")
-#     if(!is.null(samp_err)){
-#       errors <- c(errors, paste0("Element [", i, "] of ", samp_err))
-#     }
-#     feat_err <- .getMethErr(object[[i]], "rownames")
-#     if(!is.null(feat_err)){
-#       errors <- c(errors, paste0("Element [", i, "] of ", feat_err))
-#     }
-#     brack_err <- .getMethErr(object[[i]], "[")
-#     if(!is.null(brack_err)){
-#       errors <- c(errors, paste0("Element [", i, "] of ", brack_err))
-#     }
-#   }
-#   if(length(errors) == 0L){
-#     NULL
-#   } else { errors }
-# }
 
 .checkElistNames <- function(object){
   errors <- character()
