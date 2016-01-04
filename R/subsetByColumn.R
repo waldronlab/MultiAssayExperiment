@@ -1,9 +1,9 @@
 #' Subset MultiAssayExperiment object
-#' \code{subsetBySample} returns a subsetted \code{\linkS4class{MultiAssayExperiment}} object
+#' \code{subsetByColumn} returns a subsetted \code{\linkS4class{MultiAssayExperiment}} object
 #'
 #' @param MultiAssay A \code{\link{MultiAssayExperiment}} object 
 #' @param identifier A \linkS4class{MultiAssayView} class object to be used for subsetting
-subsetBySample <- function(MultiAssay, identifier, drop = FALSE){
+subsetByColumn <- function(MultiAssay, identifier, drop = FALSE){
   if(is(identifier, "MultiAssayView") && getElement(identifier, "type") != "colnames"){
     stop("MultiAssayView class should be of colnames")
   } else {

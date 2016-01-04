@@ -7,12 +7,9 @@
 \alias{getHits,ANY,character-method}
 \alias{getHits,MultiAssayExperiment,GRanges-method}
 \alias{getHits,MultiAssayExperiment,character-method}
-\alias{getHits,matrix,character-method}
 \title{Find hits by class type}
 \usage{
 getHits(subject, query, ...)
-
-\S4method{getHits}{matrix,character}(subject, query, ...)
 
 \S4method{getHits}{MultiAssayExperiment,character}(subject, query, ...)
 
@@ -37,8 +34,6 @@ Find hits by class type
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{subject = matrix,query = character}: Find matching rownames in matrix
-
 \item \code{subject = MultiAssayExperiment,query = character}: Find all matching rownames by character
 
 \item \code{subject = MultiAssayExperiment,query = GRanges}: Find all matching rownames by GRanges

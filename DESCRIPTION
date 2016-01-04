@@ -1,7 +1,7 @@
 Package: biocMultiAssay
 Title: Create Classes and Functions for Managing Multiple Assays on Sets of
     Samples
-Version: 0.2.2
+Version: 0.3.0
 Author: MultiAssay SIG
 Description: Develop an integrative environment where multiple assays are
     managed and preprocessed for genomic data analysis.
@@ -18,12 +18,12 @@ Suggests:
     reshape2,
     shinydashboard,
     testthat
-Depends: 
+Depends:
     R (>= 3.0.1),
     Biobase,
     dplyr,
     S4Vectors
-Imports: 
+Imports:
     DBI,
     methods,
     RSQLite,
@@ -38,7 +38,7 @@ Maintainer: Marcel Ramos <mramos09@gmail.com>
 License: Artistic-2.0
 LazyData: true
 LazyLoad: yes
-Collate: 
+Collate:
     'API.R'
     'Elist-class.R'
     'MultiAssayExperiment-class.R'
@@ -57,8 +57,8 @@ Collate:
     'pwplot.R'
     'subset.R'
     'subsetByAssay.R'
-    'subsetByFeature.R'
-    'subsetBySample.R'
+    'subsetByColumn.R'
+    'subsetByRow.R'
     'toListMap.R'
     'triche.R'
 RoxygenNote: 5.0.1

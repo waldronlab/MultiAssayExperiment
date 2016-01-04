@@ -1,0 +1,12 @@
+language: r
+sudo: required
+
+# Strict checks in place
+warnings_are_errors: true
+
+# Flag as Bioconductor package
+bioc_required: true
+
+# Run binary install of testthat (makes things faster, so they say...)
+r_binary_packages: 
+  - testthat

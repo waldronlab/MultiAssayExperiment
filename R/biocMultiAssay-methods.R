@@ -171,3 +171,7 @@ setGeneric("query", function(object) standardGeneric("query"))
 setMethod("query", "MultiAssayView", function(object)
   getElement(object, "query")
 )
+
+#' @exportMethod isEmpty
+setMethod("isEmpty", "MultiAssayExperiment", function(x)
+  length(x) == 0L)
