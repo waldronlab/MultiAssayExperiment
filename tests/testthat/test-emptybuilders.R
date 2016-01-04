@@ -6,8 +6,13 @@ test_that("builders return empty", {
   expect_true(isEmpty(Elist()))
 })
 
-test_that("builders return approrpriate functions", {
-  expect_equal(class(MultiAssayExperiment()), "MultiAssayExperiment")
-  expect_equal(class(RangedRaggedAssay()), "RangedRaggedAssay")
-  expect_equal(class(Elist()), "Elist")
+test_that("builders return appropriate class", {
+  expect_true(is(MultiAssayExperiment(), "MultiAssayExperiment"))
+  expect_true(is(RangedRaggedAssay(), "RangedRaggedAssay"))
+})
+
+test_that("slots are of appropriate class", {
+  expect_true(is(masterPheno(MultiAssayExperiment()), "DataFrame"))
+  expect_true(is(sampleMap(MultiAssayExperiment()), "DataFrame"))
+  expect_true(is(Elist(), "Elist"))
 })
