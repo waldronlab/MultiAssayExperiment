@@ -2,12 +2,8 @@
 .hasMethods <- function(object, my_fun){
   obj_cl <- class(object)
   if(any(my_fun %in% c("[", "assay"))){
-    if(any(obj_cl %in% c("GRangesList", "RangedRaggedAssay"))){
-      return(hasMethod(my_fun, signature = c(obj_cl, "ANY"),
-                where = c("package:GenomicRanges", "package:IRanges", "package:SummarizedExperiment")))
-    } else if(is(object, "RangedSummarizedExperiment")){
-      return(hasMethod(my_fun, signature = c(class(object), "missing"), 
-                where = c("package:GenomicRanges", "package:IRanges", "package:SummarizedExperiment")))
+    if(is(object, "RangedSummarizedExperiment")){
+      return(hasMethod(my_fun, signature = c(class(object), "missing")))
     } else {
       return(hasMethod(my_fun, signature = c(obj_cl, "ANY")))
     }

@@ -195,7 +195,7 @@ MultiAssayView_cl <- MultiAssayView(myMultiAssay, 2:1, "colnames")
 MultiAssayView_cl
 subMultiAssay <- subset(myMultiAssay, MultiAssayView_cl)
 as.list(Elist(subMultiAssay))
-subsetByAssay(subMultiAssay, c(TRUE, FALSE, FALSE, TRUE, FALSE), drop = TRUE)[[1]] %>% exprs 
+subset(subMultiAssay, c(TRUE, FALSE, FALSE, TRUE, FALSE), "assays", drop = TRUE)[[1]] %>% exprs 
 subMultiAssay
 ```
 
@@ -228,6 +228,8 @@ MultiAssayView(myMultiAssay, "ENST00000355076", "rownames")
 Returns MultiAssayExperiment where `Affy` and `Methyl 450k` contain
 only ENST0000035076 row, and "Mirna" and "CNV gistic" have zero rows:
 
+### TODO: Fix evaluation with empty character(0)
+
 ```{r}
 featSubsetted0 <- subset(myMultiAssay, MultiAssayView(myMultiAssay, "ENST00000355076", "rownames"))
 class(featSubsetted0)
@@ -256,7 +258,7 @@ MultiAssayView(myMultiAssay, c("ENST00000355076", "ENST00000294241"), "rownames"
 ## Feature extraction by Ranges
 
 See arguments to `GenomicRanges::subsetByOverlaps` for flexible types
-of subsetting. The first two arguments are for subsetByFeature, the
+of subsetting. The first two arguments are for `subset`, the
 rest passed on through "...":
 
 ```{r, eval = FALSE}

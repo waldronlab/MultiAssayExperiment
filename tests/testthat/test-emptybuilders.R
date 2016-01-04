@@ -15,4 +15,5 @@ test_that("slots are of appropriate class", {
   expect_true(is(masterPheno(MultiAssayExperiment()), "DataFrame"))
   expect_true(is(sampleMap(MultiAssayExperiment()), "DataFrame"))
   expect_true(is(Elist(), "Elist"))
+  expect_null(metadata(MultiAssayExperiment()))
 })
