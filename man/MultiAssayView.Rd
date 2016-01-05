@@ -4,10 +4,10 @@
 \alias{MultiAssayView}
 \title{MultiAssayView operation for colnames, rownames, or assay}
 \usage{
-MultiAssayView(MultiAssay, identifier, method = character(), ...)
+MultiAssayView(MultiAssayExperiment, identifier, method = character(), ...)
 }
 \arguments{
-\item{MultiAssay}{A \code{\linkS4class{MultiAssayExperiment}}}
+\item{MultiAssayExperiment}{A \code{\linkS4class{MultiAssayExperiment}}}
 
 \item{identifier}{Either a \code{character}, \code{numeric} or \code{logical} vector identifying targets}
 

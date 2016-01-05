@@ -51,8 +51,8 @@ setMethod("show", "MultiAssayView", function(object){
   if(view_type != "assays"){
     my_fun <- function(x) length(na.omit(x[, 1]))
   } else {
-    my_fun <- function(logic){
-      if(logic) "keep"
+    my_fun <- function(x){
+      if(x) "keep"
       else "drop"
     }
   }

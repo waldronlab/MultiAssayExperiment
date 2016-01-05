@@ -71,8 +71,8 @@ setMethod("getHits", signature("GRanges", "GRanges"), function(subject, query, .
 setMethod("getHits", signature("ANY", "GRanges"), function(subject, query, ...){
   if(.checkFindOverlaps(class(subject))){
     listGR <- lapply(subject, function(x, ...) {x[findOverlaps(x, query, ...)@subjectHits]})
-    query <- unlist(sapply(listGR, rownames))
-    getHits(subject, query)
+    newQuery <- unlist(sapply(listGR, rownames))
+    getHits(subject, newQuery)
   } else {
     character(0)
   }

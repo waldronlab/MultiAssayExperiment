@@ -1,6 +1,8 @@
 biocMultiAssay
 ==============
 
+[![Build Status](https://api.travis-ci.org/LiNk-NY/biocMultiAssay.png?branch=master)](https://travis-ci.org/LiNk-NY/biocMultiAssay)
+
 # Introduction
 
 This repo is intended to start the Bioconductor special interest group

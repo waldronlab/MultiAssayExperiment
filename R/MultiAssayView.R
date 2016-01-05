@@ -34,32 +34,32 @@
 
 #' MultiAssayView operation for colnames, rownames, or assay
 #' 
-#' @param MultiAssay A \code{\linkS4class{MultiAssayExperiment}}
+#' @param MultiAssayExperiment A \code{\linkS4class{MultiAssayExperiment}}
 #' @param identifier Either a \code{character}, \code{numeric} or \code{logical} vector identifying targets 
 #' @param method Prepare/View for subsetting using colnames, rownames or assays.
 #' @param ... Additional arguments passed to the findOverlaps function
 #' @return A \code{\linkS4class{MultiAssayView}} class object for subsequent subsetting
 #' @export MultiAssayView
-MultiAssayView <- function(MultiAssay, identifier, method = character(), ...){
+MultiAssayView <- function(MultiAssayExperiment, identifier, method = character(), ...){
   method <- match.arg(method, c("colnames", "rownames", "assays"))
   if(method == "colnames"){
-    totalColnames <- colnames(MultiAssay)
-    if(!is.numeric(identifier) && !all(identifier %in% rownames(masterPheno(myMultiAssay)))){
-      iders <- intersect(identifier, rownames(masterPheno(MultiAssay)))
-      notUsed <- setdiff(identifier, rownames(masterPheno(MultiAssay)))
+    totalColnames <- colnames(MultiAssayExperiment)
+    if(!is.numeric(identifier) && !all(identifier %in% rownames(masterPheno(MultiAssayExperiment)))){
+      iders <- intersect(identifier, rownames(masterPheno(MultiAssayExperiment)))
+      notUsed <- setdiff(identifier, rownames(masterPheno(MultiAssayExperiment)))
       warning("Nonmatched identifers were dropped! : ", notUsed)
     } else {
-      iders <- rownames(masterPheno(MultiAssay)[identifier, ])
+      iders <- rownames(masterPheno(MultiAssayExperiment)[identifier, ])
     }
-    biMap <- .separateMap(MultiAssay, iders)
+    biMap <- .separateMap(MultiAssayExperiment, iders)
     newMultiAssayView <- new("MultiAssayView",
                     query = iders,
                     keeps = biMap[["keeps"]],
                     drops = biMap[["drops"]],
                     type = "colnames")
   } else if(method == "rownames"){
-    totalRownames <- rownames(MultiAssay)
-    subsetor <- getHits(MultiAssay, identifier, ...)
+    totalRownames <- rownames(MultiAssayExperiment)
+    subsetor <- getHits(MultiAssayExperiment, identifier, ...)
     newDrops <- .featMap(Map(function(x, y){.outersect(x, y)}, subsetor, totalRownames))
     newKeeps <- .featMap(subsetor)
     newMultiAssayView <- new("MultiAssayView", 
@@ -69,25 +69,25 @@ MultiAssayView <- function(MultiAssay, identifier, method = character(), ...){
                     type = "rownames")
   } else if(method == "assays"){
     if(is.logical(identifier)){
-      if(length(identifier) == length(MultiAssay)){
+      if(length(identifier) == length(MultiAssayExperiment)){
         newKeeps <- as.list(identifier)
       } else {
         stop("Provide a valid logical assay identifier of equal length")
       }
     } else if(is.character(identifier)){
-      if(all(identifier %in% names(MultiAssay))){
-        newKeeps <- as.list(names(MultiAssay) %in% identifier)
+      if(all(identifier %in% names(MultiAssayExperiment))){
+        newKeeps <- as.list(names(MultiAssayExperiment) %in% identifier)
       } else {
         stop("Provide a vector of valid experiment names")
       }
     } else if(is.numeric(identifier)){
-      if(all(identifier %in% 1:length(MultiAssay))){
-        newKeeps <- as.list(names(MultiAssay) %in% names(MultiAssay)[identifier])
+      if(all(identifier %in% 1:length(MultiAssayExperiment))){
+        newKeeps <- as.list(names(MultiAssayExperiment) %in% names(MultiAssayExperiment)[identifier])
       } else {
         stop("Identifier out of bounds")
       }
     }
-    names(newKeeps) <- names(MultiAssay)
+    names(newKeeps) <- names(MultiAssayExperiment)
     newDrops <- lapply(newKeeps, `!`) 
     newMultiAssayView <- new("MultiAssayView", 
                     query = identifier, 
