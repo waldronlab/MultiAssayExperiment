@@ -12,7 +12,7 @@ subsetByColumn(MultiAssayExperiment, colIndicator, drop = FALSE)
 
 \item{colIndicator}{A \linkS4class{MultiAssayView} class object to be used for subsetting}
 
-\item{drop}{logical indicates whether to coerce to lowest possible dimension after subsetting}
+\item{drop}{logical (default FALSE) whether to coerce lowest possible dimension after subsetting}
 }
 \description{
 Subset MultiAssayExperiment object

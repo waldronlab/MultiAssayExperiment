@@ -112,22 +112,26 @@ setMethod("getHits", signature("ANY", "character"), function(subject, query, ...
   }
   if(!missing(i)){
     if(is.character(i)){
-      newi <- sapply(x, function(g, i){any(i %in% names(g))}, i = i) # hot fix
-      if(!any(newi)){
-        stop("Supply valid rownames")
+      if(length(i) != 0L){
+        newi <- sapply(x, function(g, i){any(i %in% names(g))}, i = i) # hot fix
+        x <- callNextMethod(x = x, i = newi)
+        x <- endoapply(x, function(g){
+          BiocGenerics::Filter(function(h){names(h) %in% i}, g)
+        })
+      } else {
+        # return an empty RangedRaggedAssay when no matches within assay
+        x <- callNextMethod(x = x, i = 0)
       }
-      x <- callNextMethod(x = x, i = newi)
-      x <- endoapply(x, function(g){
-        BiocGenerics::Filter(function(h){names(h) %in% i}, g)
-      })
     } else {
-      stop("i must be character")
+      x <- callNextMethod(x = x, i = i)
     }
   }
   return(x)
 }
 
+#' @describeIn MultiAssayExperiment Subset RangedRaggedAssay using GRanges object 
 setMethod("[", c("RangedRaggedAssay", "GRanges", "ANY"), .RangedBracketSubsetRRA)
+#' @describeIn MultiAssayExperiment Subset RangedRaggedAssay using character vector
 setMethod("[", c("RangedRaggedAssay", "ANY", "ANY"), .sBracketSubsetRRA)
 
 #' Convert MultiAssayView slot "keeps" to Map

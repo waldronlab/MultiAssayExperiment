@@ -11,7 +11,7 @@ subsetByRow(MultiAssayExperiment, rowIndicator, drop = FALSE, ...)
 
 \item{rowIndicator}{Either a \code{character} vector or \code{\linkS4class{MultiAssayView}} class object containing feature names}
 
-\item{drop}{logical indicating whether to coerce to lowest possible dimension after subsetting}
+\item{drop}{logical (default FALSE) whether to coerce lowest possible dimension after subsetting}
 
 \item{...}{Additional arguments to pass to low level subsetting function}
 }

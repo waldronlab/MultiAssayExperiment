@@ -11,7 +11,7 @@ subsetByAssay(MultiAssayExperiment, assayIndicator, drop = FALSE)
 
 \item{assayIndicator}{Either a \code{numeric}, \code{character} or \code{logical} or \code{\link{MultiAssayView}} object indicating what assay(s) to select}
 
-\item{drop}{logical (default FALSE) Indicates whether to return a \code{list} of selected experiments}
+\item{drop}{logical (default FALSE) whether to return a \code{list} of selected experiments}
 }
 \value{
 A \code{\link{MultiAssayExperiment}} object or \code{list} if drop paramater is set to TRUE

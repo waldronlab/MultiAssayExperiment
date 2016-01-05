@@ -3,7 +3,7 @@
 #'
 #' @param MultiAssayExperiment A \code{\link{MultiAssayExperiment}} object 
 #' @param colIndicator A \linkS4class{MultiAssayView} class object to be used for subsetting
-#' @param drop logical indicates whether to coerce to lowest possible dimension after subsetting
+#' @param drop logical (default FALSE) whether to coerce lowest possible dimension after subsetting
 subsetByColumn <- function(MultiAssayExperiment, colIndicator, drop = FALSE){
   if(is(colIndicator, "MultiAssayView") && getElement(colIndicator, "type") != "colnames"){
     stop("MultiAssayView class should be of colnames")
@@ -13,7 +13,7 @@ subsetByColumn <- function(MultiAssayExperiment, colIndicator, drop = FALSE){
   }
   ##  mendoapply not working
   ## 	newSubset <- S4Vectors::mendoapply(subsetSample, Elist(MultiAssayExperiment), subsetor) 
-  newSubset <- mapply(function(x, y, i){x[, y, drop = i]}, x = Elist(MultiAssayExperiment), y = subsetor, i = drop)
+  newSubset <- mapply(function(x, i, j, drop) {x[, j, drop = drop]}, x = Elist(MultiAssayExperiment), j = subsetor, drop = drop)
   newSubset <- Elist(newSubset)
   # Clone or replace method for slot??
   MultiAssayExperiment@sampleMap <- newMap

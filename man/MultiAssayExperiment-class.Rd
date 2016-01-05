@@ -4,6 +4,8 @@
 \name{MultiAssayExperiment-class}
 \alias{Elist,MultiAssayExperiment-method}
 \alias{MultiAssayExperiment-class}
+\alias{[,RangedRaggedAssay,ANY-method}
+\alias{[,RangedRaggedAssay,GRanges-method}
 \alias{assay,MultiAssayExperiment,ANY-method}
 \alias{colnames,MultiAssayExperiment-method}
 \alias{length,MultiAssayExperiment-method}
@@ -33,11 +35,19 @@
 
 \S4method{assay}{MultiAssayExperiment,ANY}(x)
 
+\S4method{[}{RangedRaggedAssay,GRanges}(x, i, j, ..., drop = TRUE)
+
+\S4method{[}{RangedRaggedAssay,ANY}(x, i, j, ..., drop = TRUE)
+
 \S4method{subset}{MultiAssayExperiment}(x, indicator, method = NULL,
   drop = FALSE, ...)
 }
 \arguments{
 \item{x}{A \code{\linkS4class{MultiAssayExperiment}} object}
+
+\item{...}{Additional arguments to pass to SubsetByOverlaps when subsetting by rownames}
+
+\item{drop}{logical (default FALSE) whether to coerce lowest possible dimension after subsetting}
 
 \item{indicator}{A \code{logical} or \code{character} vector or \code{MultiAssayView} class object to use for subsetting}
 
@@ -83,6 +93,10 @@ Subset MultiAssayExperiment object
 \item \code{colnames}: Get all the colnames for a MultiAssayExperiment
 
 \item \code{assay}: Get the raw data from a MultiAssayExperiment as a list
+
+\item \code{[}: Subset RangedRaggedAssay using GRanges object
+
+\item \code{[}: Subset RangedRaggedAssay using character vector
 
 \item \code{subset}: export subset
 }}
