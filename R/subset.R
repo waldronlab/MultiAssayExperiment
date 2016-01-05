@@ -33,7 +33,7 @@
 #' Subset MultiAssayExperiment object
 #' \code{subset} returns a subsetted \code{\linkS4class{MultiAssayExperiment}} object
 #' 
-#' @param MultiAssay A \code{\linkS4class{MultiAssayExperiment}} object
+#' @param x A \code{\linkS4class{MultiAssayExperiment}} object
 #' @param indicator A \code{logical} or \code{character} vector or \code{MultiAssayView} class object to use for subsetting
 #' @param method A \code{character} vector of length one designating to subset either by colnames, rownames, or assays
 #' @describeIn MultiAssayExperiment

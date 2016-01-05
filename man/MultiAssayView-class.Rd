@@ -3,12 +3,15 @@
 \docType{class}
 \name{MultiAssayView-class}
 \alias{MultiAssayView-class}
+\alias{getMap,MultiAssayView-method}
 \alias{length,MultiAssayView-method}
 \alias{names,MultiAssayView-method}
 \alias{query,MultiAssayView-method}
 \alias{type,MultiAssayView-method}
 \title{An identifier class used for staging a subset operation}
 \usage{
+\S4method{getMap}{MultiAssayView}(object)
+
 \S4method{names}{MultiAssayView}(x)
 
 \S4method{length}{MultiAssayView}(x)
@@ -25,11 +28,11 @@ A character vector of experiment names
 }
 \description{
 An identifier class used for staging a subset operation
-
-Names of Experiments
 }
 \section{Methods (by generic)}{
 \itemize{
+\item \code{getMap}: Convert map from list to DataFrame
+
 \item \code{names}: Get the names from the kept elements in the Elist
 
 \item \code{length}: Get the number of assays from kept slot

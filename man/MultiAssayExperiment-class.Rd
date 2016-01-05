@@ -37,22 +37,14 @@
   drop = FALSE, ...)
 }
 \arguments{
-\item{x}{A \code{\link{MultiAssayExperiment}} object.}
+\item{x}{A \code{\linkS4class{MultiAssayExperiment}} object}
 
 \item{indicator}{A \code{logical} or \code{character} vector or \code{MultiAssayView} class object to use for subsetting}
 
 \item{method}{A \code{character} vector of length one designating to subset either by colnames, rownames, or assays}
-
-\item{x}{A \code{\link{MultiAssayExperiment}} object}
-
-\item{x}{A \code{\link{MultiAssayExperiment}} object}
-
-\item{x}{A \code{\link{MultiAssayExperiment}} object}
-
-\item{MultiAssay}{A \code{\linkS4class{MultiAssayExperiment}} object}
 }
 \value{
-A \code{\link[S4Vectors]{SimpleList-class}} object.
+A \code{\linkS4class{Elist}} object.
 
 Any type of object describing the metadata
 
@@ -68,8 +60,6 @@ Generic Accessor Functions
 Generic Acessor Functions
 
 Length of Experiment List
-
-Names of Experiments
 
 Subset MultiAssayExperiment object
 \code{subset} returns a subsetted \code{\linkS4class{MultiAssayExperiment}} object

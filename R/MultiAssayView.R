@@ -35,8 +35,9 @@
 #' MultiAssayView operation for colnames, rownames, or assay
 #' 
 #' @param MultiAssay A \code{\linkS4class{MultiAssayExperiment}}
-#' @param identifer Either a \code{character}, \code{numeric} or \code{logical} vector identifying targets 
+#' @param identifier Either a \code{character}, \code{numeric} or \code{logical} vector identifying targets 
 #' @param method Prepare/View for subsetting using colnames, rownames or assays.
+#' @param ... Additional arguments passed to the findOverlaps function
 #' @return A \code{\linkS4class{MultiAssayView}} class object for subsequent subsetting
 #' @export MultiAssayView
 MultiAssayView <- function(MultiAssay, identifier, method = character(), ...){

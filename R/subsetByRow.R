@@ -2,21 +2,23 @@
 #' 
 #' Subset MultiAssayExperiment class by provided feature names
 #' 
-#' @param MultiAssay A \code{\link{MultiAssayExperiment}} object
+#' @param MultiAssayExperiment A \code{\link{MultiAssayExperiment}} object
 #' @param featureIndicator Either a \code{character} vector or \code{\linkS4class{MultiAssayView}} class object containing feature names
+#' @param drop logical indicating whether to coerce to lowest possible dimension after subsetting
+#' @param ... Additional arguments to pass to low level subsetting function
 #' @return A \code{\link{MultiAssayExperiment}} object 
-subsetByRow <- function(MultiAssay, featureIndicator, drop = FALSE, ...){ 
+subsetByRow <- function(MultiAssayExperiment, featureIndicator, drop = FALSE, ...){ 
   if(!is(featureIndicator, "MultiAssayView")){
-    featureIndicator <- MultiAssayView(MultiAssay, featureIndicator, "rownames")
+    featureIndicator <- MultiAssayView(MultiAssayExperiment, featureIndicator, "rownames")
   } else {
     if(featureIndicator@type != "rownames"){
       stop("Provide a rownames type MultiAssayView class")
     }
   }
-  MultiAssay@drops <- c(MultiAssay@drops, list(.convertList(featureIndicator, "drops")))
+  MultiAssayExperiment@drops <- c(MultiAssayExperiment@drops, list(.convertList(featureIndicator, "drops")))
   featureMaker <- lapply(featureIndicator@keeps, unlist)
-  # MultiAssay@Elist <- Elist(MultiAssay)[featureMaker]
-  MultiAssay@Elist <- mapply(function(x, y, i, ...){x[y, , drop = i, ...]}, x = Elist(MultiAssay), y = featureMaker, i = drop, ...)
-  #  MultiAssay@Elist <- mendoapply(Elist(MultiAssay), subsetFeature, featureMaker)
-  return(MultiAssay)
+  # MultiAssayExperiment@Elist <- Elist(MultiAssayExperiment)[featureMaker]
+  MultiAssayExperiment@Elist <- mapply(function(x, y, i, ...){x[y, , drop = i, ...]}, x = Elist(MultiAssayExperiment), y = featureMaker, i = drop, ...)
+  #  MultiAssayExperiment@Elist <- mendoapply(Elist(MultiAssayExperiment), subsetFeature, featureMaker)
+  return(MultiAssayExperiment)
 }

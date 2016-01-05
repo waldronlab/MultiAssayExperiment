@@ -136,12 +136,11 @@ setMethod("[", c("RangedRaggedAssay", "ANY", "ANY"), .sBracketSubsetRRA)
 #' @return Returns a DataFrame representation of colnames
 #' @export getMap
 setGeneric("getMap", function(object) standardGeneric("getMap"))
-#' describeIn MultiAssayView Convert map from list to DataFrame
+#' @describeIn MultiAssayView Convert map from list to DataFrame
 setMethod("getMap", "MultiAssayView", function(object){
 		  .convertList(object, "keeps")
 })
 
-#' Names of Experiments 
 #' @param x A \code{\link{MultiAssayView}} class object
 #' @return A character vector of experiment names
 #' @exportMethod names

@@ -9,9 +9,11 @@ MultiAssayView(MultiAssay, identifier, method = character(), ...)
 \arguments{
 \item{MultiAssay}{A \code{\linkS4class{MultiAssayExperiment}}}
 
+\item{identifier}{Either a \code{character}, \code{numeric} or \code{logical} vector identifying targets}
+
 \item{method}{Prepare/View for subsetting using colnames, rownames or assays.}
 
-\item{identifer}{Either a \code{character}, \code{numeric} or \code{logical} vector identifying targets}
+\item{...}{Additional arguments passed to the findOverlaps function}
 }
 \value{
 A \code{\linkS4class{MultiAssayView}} class object for subsequent subsetting

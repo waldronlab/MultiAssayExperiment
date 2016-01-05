@@ -31,7 +31,6 @@ Imports:
     BiocGenerics,
     SummarizedExperiment,
     shiny,
-    shinydashboard,
     foreach,
     doParallel
 Maintainer: Marcel Ramos <mramos09@gmail.com>

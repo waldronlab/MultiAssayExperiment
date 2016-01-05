@@ -4,10 +4,10 @@
 \alias{subsetByAssay}
 \title{Subset MultiAssayExperiment object by Assay type}
 \usage{
-subsetByAssay(MultiAssay, assayIndicator, drop = FALSE)
+subsetByAssay(MultiAssayExperiment, assayIndicator, drop = FALSE)
 }
 \arguments{
-\item{MultiAssay}{A \code{\link{MultiAssayExperiment}} object}
+\item{MultiAssayExperiment}{A \code{\link{MultiAssayExperiment}} object}
 
 \item{assayIndicator}{Either a \code{numeric}, \code{character} or \code{logical} or \code{\link{MultiAssayView}} object indicating what assay(s) to select}
 

@@ -10,7 +10,7 @@ masterPheno(x)
 \item{x}{A \code{\link{MultiAssayExperiment}} object}
 }
 \value{
-A \code{data.frame} object
+A \code{DataFrame} object
 }
 \description{
 Generic Accessor Functions
