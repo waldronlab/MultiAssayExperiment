@@ -5,12 +5,12 @@
 \title{Subset MultiAssayExperiment object
 \code{subsetByColumn} returns a subsetted \code{\linkS4class{MultiAssayExperiment}} object}
 \usage{
-subsetByColumn(MultiAssayExperiment, identifier, drop = FALSE)
+subsetByColumn(MultiAssayExperiment, colIndicator, drop = FALSE)
 }
 \arguments{
 \item{MultiAssayExperiment}{A \code{\link{MultiAssayExperiment}} object}
 
-\item{identifier}{A \linkS4class{MultiAssayView} class object to be used for subsetting}
+\item{colIndicator}{A \linkS4class{MultiAssayView} class object to be used for subsetting}
 
 \item{drop}{logical indicates whether to coerce to lowest possible dimension after subsetting}
 }

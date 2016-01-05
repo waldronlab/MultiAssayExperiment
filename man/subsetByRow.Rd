@@ -4,12 +4,12 @@
 \alias{subsetByRow}
 \title{Subset MultiAssayExperiment object by Feature}
 \usage{
-subsetByRow(MultiAssayExperiment, featureIndicator, drop = FALSE, ...)
+subsetByRow(MultiAssayExperiment, rowIndicator, drop = FALSE, ...)
 }
 \arguments{
 \item{MultiAssayExperiment}{A \code{\link{MultiAssayExperiment}} object}
 
-\item{featureIndicator}{Either a \code{character} vector or \code{\linkS4class{MultiAssayView}} class object containing feature names}
+\item{rowIndicator}{Either a \code{character} vector or \code{\linkS4class{MultiAssayView}} class object containing feature names}
 
 \item{drop}{logical indicating whether to coerce to lowest possible dimension after subsetting}
 

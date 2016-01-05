@@ -2,14 +2,14 @@
 #' \code{subsetByColumn} returns a subsetted \code{\linkS4class{MultiAssayExperiment}} object
 #'
 #' @param MultiAssayExperiment A \code{\link{MultiAssayExperiment}} object 
-#' @param identifier A \linkS4class{MultiAssayView} class object to be used for subsetting
+#' @param colIndicator A \linkS4class{MultiAssayView} class object to be used for subsetting
 #' @param drop logical indicates whether to coerce to lowest possible dimension after subsetting
-subsetByColumn <- function(MultiAssayExperiment, identifier, drop = FALSE){
-  if(is(identifier, "MultiAssayView") && getElement(identifier, "type") != "colnames"){
+subsetByColumn <- function(MultiAssayExperiment, colIndicator, drop = FALSE){
+  if(is(colIndicator, "MultiAssayView") && getElement(colIndicator, "type") != "colnames"){
     stop("MultiAssayView class should be of colnames")
   } else {
-    newMap <- getMap(identifier)
-    subsetor <- lapply(identifier@keeps, function(x) unlist(x[,2]))
+    newMap <- getMap(colIndicator)
+    subsetor <- lapply(colIndicator@keeps, function(x) unlist(x[,2]))
   }
   ##  mendoapply not working
   ## 	newSubset <- S4Vectors::mendoapply(subsetSample, Elist(MultiAssayExperiment), subsetor) 
@@ -18,6 +18,6 @@ subsetByColumn <- function(MultiAssayExperiment, identifier, drop = FALSE){
   # Clone or replace method for slot??
   MultiAssayExperiment@sampleMap <- newMap
   MultiAssayExperiment@Elist <- newSubset
-  MultiAssayExperiment@drops <- c(MultiAssayExperiment@drops, list(.convertList(identifier, "drops")))
+  MultiAssayExperiment@drops <- c(MultiAssayExperiment@drops, list(.convertList(colIndicator, "drops")))
   return(MultiAssayExperiment)
 }

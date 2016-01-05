@@ -46,10 +46,10 @@ setMethod("subset", "MultiAssayExperiment", function(x, indicator, method = NULL
   }
   method <- match.arg(method, c("colnames", "rownames", "assays"))
   if(method == "colnames"){
-    return(subsetByColumn(MultiAssay = x, indicator, drop))
+    return(subsetByColumn(MultiAssayExperiment = x, colIndicator = indicator, drop))
   } else if(method == "rownames"){
-    return(subsetByRow(MultiAssay = x, indicator, drop, ...))
+    return(subsetByRow(MultiAssayExperiment = x, rowIndicator = indicator, drop, ...))
   } else if(method == "assays"){
-    return(subsetByAssay(MultiAssay = x, indicator, drop))
+    return(subsetByAssay(MultiAssayExperiment = x, assayIndicator = indicator, drop))
   } 
 })
