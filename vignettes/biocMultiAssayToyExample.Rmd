@@ -21,7 +21,7 @@ empty <- MultiAssayExperiment()
 empty
 slotNames(empty)
 class(Elist(empty))       #Elist
-class(masterPheno(empty)) #DataFrame
+class(pData(empty)) #DataFrame
 class(sampleMap(empty))   #DataFrame
 class(metadata(empty))    #NULL (class "ANY")
 methods(class="MultiAssayExperiment")
@@ -57,7 +57,7 @@ exprdat <- ExpressionSet(assayData=arraydat, phenoData=arraypdat)
 exprdat
 ```
 
-The following map matches masterPheno sample names to exprdata sample
+The following map matches pData sample names to exprdata sample
 names.  Note that row orders aren't initially matched up.
 
 ```{r}
@@ -75,7 +75,7 @@ simple matrix. Also, it contains a replicate for one of the patients.
                                    c("methyl1", "methyl2", "methyl3", "methyl4", "methyl5"))))
 ```
 
-The following map matches masterPheno sample names to methyldat sample
+The following map matches pData sample names to methyldat sample
 names.
 
 ```{r}
@@ -93,7 +93,7 @@ sample naming convention as we did for arrays.
                                   c("micro1", "micro2", "micro3"))))
 ```
 
-And the following map matches masterPheno sample names to microdat
+And the following map matches pData sample names to microdat
 sample names.
 
 ```{r}
@@ -121,7 +121,7 @@ names(grl) <- c("snparray1", "snparray2", "snparray3")
 grl
 ```
 
-The following `data.frame` matches masterPheno sample to the
+The following `data.frame` matches pData sample to the
 `GRangesList`:
 
 ```{r}
@@ -183,7 +183,7 @@ objlist <- list("Affy" = exprdat, "Methyl 450k" = methyldat, "Mirna" = microdat,
 myMultiAssay <- MultiAssayExperiment(objlist, masPheno, dfmap)
 myMultiAssay
 Elist(myMultiAssay)
-masterPheno(myMultiAssay)
+pData(myMultiAssay)
 sampleMap(myMultiAssay)
 metadata(myMultiAssay) 
 ```
@@ -200,7 +200,7 @@ subMultiAssay
 ```
 
 Endogenous operation, returns a MultiAssay object containing Elist of
-length 1, map of length 1, and masterPheno for only Jack, Barbara, and
+length 1, map of length 1, and pData for only Jack, Barbara, and
 Bob.  The "Mirna" argument is used to index the `Elist` object using
 `[`, so could also be `integer` or `logical`:
 
@@ -312,7 +312,7 @@ invalid.obj
 
 * `c()` function for adding new assays to existing `MultiAssayExperiment`
     + e.g. c(myMultiAssay, neweset)
-    + require that sample names in the new object match masterPheno sample names
-    + require that sample names in the new object already exist in masterPheno
+    + require that sample names in the new object match pData sample names
+    + require that sample names in the new object already exist in pData
 
 [html]: http://rpubs.com/lwaldron/biocmultiassaytoyexample

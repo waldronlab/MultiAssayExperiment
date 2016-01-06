@@ -99,6 +99,7 @@ setMethod("getHits", signature("ANY", "character"), function(subject, query, ...
   if(!missing(i)){
     x <- endoapply(x, function(rra){
       subsetByOverlaps(rra, i, ...)
+      # x <- x[relist(subsetByOverlaps(unlist(x, use.names = FALSE), i, ...), x)]
     })
   }
   return(x)
@@ -112,16 +113,7 @@ setMethod("getHits", signature("ANY", "character"), function(subject, query, ...
   }
   if(!missing(i)){
     if(is.character(i)){
-      if(length(i) != 0L){
-        newi <- sapply(x, function(g, i){any(i %in% names(g))}, i = i) # hot fix
-        x <- callNextMethod(x = x, i = newi)
-        x <- endoapply(x, function(g){
-          BiocGenerics::Filter(function(h){names(h) %in% i}, g)
-        })
-      } else {
-        # return an empty RangedRaggedAssay when no matches within assay
-        x <- callNextMethod(x = x, i = 0)
-      }
+      x <- x[relist(names(unlist(x, use.names = FALSE)) %in% i, x)]
     } else {
       x <- callNextMethod(x = x, i = i)
     }
@@ -133,6 +125,25 @@ setMethod("getHits", signature("ANY", "character"), function(subject, query, ...
 setMethod("[", c("RangedRaggedAssay", "GRanges", "ANY"), .RangedBracketSubsetRRA)
 #' @describeIn MultiAssayExperiment Subset RangedRaggedAssay using character vector
 setMethod("[", c("RangedRaggedAssay", "ANY", "ANY"), .sBracketSubsetRRA)
+
+.subsetMultiAssayExperiment <- function(x, i, j, k, ..., drop){
+  if (length(drop) != 1L || (!missing(drop) && drop)) {
+    warning("'drop' ignored '[,", class(x), ",ANY,ANY-method'")}
+  if(missing(i) && missing(j) && missing(k)){ return(x) } 
+  if(!missing(k)){
+    x <- subsetByAssay(x, k, drop = drop)
+  }
+  if(!missing(j)){
+    x <- subsetByColumn(x, j, drop = drop)
+  }
+  if(!missing(i)){
+    x <- subsetByRow(x, i, ..., drop = drop)
+  }
+  return(x)
+}
+
+#' @describeIn MultiAssayExperiment Subset a MultiAssayExperiment object
+setMethod("[", c("MultiAssayExperiment", "ANY", "ANY", "ANY"), .subsetMultiAssayExperiment)
 
 #' Convert MultiAssayView slot "keeps" to Map
 #'
@@ -178,3 +189,4 @@ setMethod("query", "MultiAssayView", function(object)
 #' @exportMethod isEmpty
 setMethod("isEmpty", "MultiAssayExperiment", function(x)
   length(x) == 0L)
+

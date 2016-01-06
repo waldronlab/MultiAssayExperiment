@@ -4,13 +4,13 @@
 \alias{MultiAssayExperiment}
 \title{Create a MultiAssayExperiment object}
 \usage{
-MultiAssayExperiment(Elist = list(), masterPheno = S4Vectors::DataFrame(),
+MultiAssayExperiment(Elist = list(), pData = S4Vectors::DataFrame(),
   sampleMap = S4Vectors::DataFrame(), drops = list())
 }
 \arguments{
 \item{Elist}{A \code{list} of all combined experiments}
 
-\item{masterPheno}{A \code{\link[S4Vectors]{DataFrame-class}} of the phenotype data for all participants.}
+\item{pData}{A \code{\link[S4Vectors]{DataFrame-class}} of the phenotype data for all participants.}
 
 \item{sampleMap}{A \code{data.frame} of sample identifiers, assay samples, and assay names.}
 

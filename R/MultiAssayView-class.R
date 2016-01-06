@@ -43,12 +43,12 @@ setMethod("show", "MultiAssayView", function(object){
   o_len <- length(object)
   o_names <- names(object)
   view_type <- type(object)
-  if(is.character(query(object))){
+  if (is.character(query(object))) {
     o_ids <- Biobase::selectSome(query(object))
-  } else if(is(object, "GRanges")){
+  } else if (is(object, "GRanges")) {
     o_ids <- names(object)
   }
-  if(view_type != "assays"){
+  if (view_type != "assays") {
     my_fun <- function(x) length(na.omit(x[, 1]))
   } else {
     my_fun <- function(x){
@@ -56,10 +56,16 @@ setMethod("show", "MultiAssayView", function(object){
       else "drop"
     }
   }
-  v_ops <- sapply(object@keeps, FUN = function(x) {my_fun(x)})
-  cat("A", sprintf('"%s"', o_class), "class object of length", paste0(o_len, ':'),
+  v_ops <- sapply(object@keeps, FUN = my_fun)
+  cat("A", sprintf('"%s"', o_class), "class object of length",
+      paste0(o_len, ':'),
       "\nQuery: ")
   cat(o_ids, sep = ", ")
   cat("\n Viewed by: ", '"', view_type, '"', sep = "")
-  cat(sprintf('\n [%i] %s: %s', seq(o_len), o_names, paste(v_ops, if(is.numeric(v_ops)){ifelse(v_ops == 1L, gsub("s$", "", view_type), view_type)}), "\n"))
+  viewed <- paste(v_ops, if(is.numeric(v_ops)){
+    ifelse(v_ops == 1L, gsub("s$", "", view_type), view_type)
+  }) 
+  cat(sprintf('\n [%i] %s: %s', seq(o_len), o_names,
+              viewed, 
+              "\n"))
 })

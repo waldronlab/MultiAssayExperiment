@@ -44,12 +44,12 @@ MultiAssayView <- function(MultiAssayExperiment, identifier, method = character(
   method <- match.arg(method, c("colnames", "rownames", "assays"))
   if(method == "colnames"){
     totalColnames <- colnames(MultiAssayExperiment)
-    if(!is.numeric(identifier) && !all(identifier %in% rownames(masterPheno(MultiAssayExperiment)))){
-      iders <- intersect(identifier, rownames(masterPheno(MultiAssayExperiment)))
-      notUsed <- setdiff(identifier, rownames(masterPheno(MultiAssayExperiment)))
+    if(!is.numeric(identifier) && !all(identifier %in% rownames(pData(MultiAssayExperiment)))){
+      iders <- intersect(identifier, rownames(pData(MultiAssayExperiment)))
+      notUsed <- setdiff(identifier, rownames(pData(MultiAssayExperiment)))
       warning("Nonmatched identifers were dropped! : ", notUsed)
     } else {
-      iders <- rownames(masterPheno(MultiAssayExperiment)[identifier, ])
+      iders <- rownames(pData(MultiAssayExperiment)[identifier, ])
     }
     biMap <- .separateMap(MultiAssayExperiment, iders)
     newMultiAssayView <- new("MultiAssayView",

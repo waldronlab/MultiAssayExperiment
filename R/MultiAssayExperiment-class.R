@@ -5,7 +5,7 @@
 #' An integrative MultiAssay class for experiment data
 #' 
 #' @slot Elist A \code{\linkS4class{Elist}} class object for each assay dataset. 
-#' @slot masterPheno A \code{DataFrame} of all clinical data available across experiments.
+#' @slot pData A \code{DataFrame} of all clinical data available across experiments.
 #' @slot sampleMap A \code{DataFrame} of translatable identifiers of samples and participants.
 #' @slot metadata Additional data describing the \code{\link{MultiAssayExperiment}} object. 
 #' @slot drops A metadata \code{list} of dropped information.
@@ -14,7 +14,7 @@
 setClass("MultiAssayExperiment",
 		 slots = list(
 					  Elist="Elist",
-					  masterPheno = "DataFrame",
+					  pData = "DataFrame",
 					  sampleMap = "DataFrame",
 					  metadata = "ANY",
 					  drops = "list"
@@ -39,8 +39,8 @@ setClass("MultiAssayExperiment",
 ## sampleMap is a DataFrame with unique sampleNames across assay
 .checkSampleMapNames <- function(object){
 	errors <- character()
-	if(!(.allIn(rownames(masterPheno(object)), slot(sampleMap(object)[, "master"], "values")))){
-		msg <- "All samples in the sampleMap must be in the masterPheno"
+	if(!(.allIn(rownames(pData(object)), slot(sampleMap(object)[, "master"], "values")))){
+		msg <- "All samples in the sampleMap must be in the pData"
 		errors <- c(errors, msg)
 	}
 	if(length(errors) == 0L) NULL else errors
@@ -115,7 +115,7 @@ setMethod("show", "MultiAssayExperiment", function(object){
 		  if(length(o_names)==0L){ o_names <- "none" }
 		  classes <- vapply(Elist(object), class, character(1))
 		  c_elist <- class(Elist(object))
-		  c_mp <- class(masterPheno(object))
+		  c_mp <- class(pData(object))
 		  c_sm <- class(sampleMap(object))
 		  cat(sprintf('A "%s"', o_class),
 			  "object of", o_len, "listed\n", ifelse(o_len == 1L, "experiment", "experiments"), 
@@ -128,7 +128,7 @@ setMethod("show", "MultiAssayExperiment", function(object){
 		  show(Elist(object))
 		  cat("To access slots use: \n Elist() - to obtain the", sprintf('"%s"', c_elist), 
 			  "of experiment instances", 
-			  "\n masterPheno() - for the phenotype", sprintf('"%s"', c_mp), 
+			  "\n pData() - for the phenotype", sprintf('"%s"', c_mp), 
 			  "\n sampleMap() - for the sample availability", sprintf('"%s"', c_sm), 
 			  "\n metadata() - for the metadata object of 'ANY' class",
 			  "\nSee also: subsetByAssay(), subsetByFeature(), subsetBySample()\n")
@@ -162,11 +162,11 @@ setMethod("Elist", "MultiAssayExperiment", function(x)
 #' 
 #' @param x A \code{\link{MultiAssayExperiment}} object
 #' @return A \code{DataFrame} object
-#' @exportMethod masterPheno
-setGeneric("masterPheno", function(x) standardGeneric("masterPheno"))
-#' @describeIn MultiAssayExperiment Access masterPheno slot from MultiAssayExperiment
-setMethod("masterPheno", "MultiAssayExperiment", function(x)
-		  getElement(x, "masterPheno"))
+#' @exportMethod pData
+setGeneric("pData", function(x) standardGeneric("pData"))
+#' @describeIn MultiAssayExperiment Access pData slot from MultiAssayExperiment
+setMethod("pData", "MultiAssayExperiment", function(x)
+		  getElement(x, "pData"))
 
 #' Generic Acessor Functions 
 #' 

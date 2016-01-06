@@ -140,7 +140,7 @@ Primary design elements:
 | Slot        | Class      | What is it?                     |
 |-------------|------------|---------------------------------|
 | Elist       | Elist      | Assay data and metadata         |
-| masterPheno | DataFrame  | Specimen-level phenotype data   |
+| pData | DataFrame  | Specimen-level phenotype data   |
 | sampleMap   | DataFrame  | Mapping specimens to assays     |
 | metadata    | ANY        | Whole-experiment level metadata |
 | drop        | list       | Data manimulation provenance    |
@@ -185,11 +185,11 @@ Elist(list(affy=myExpressionSet, muts=mySE, cna=myGRL))
 Elist(myMultiAssay)
 ```
 
-`masterPheno` slot and verb
+`pData` slot and verb
 =================================================
 
 ```{r}
-masterPheno(myMultiAssay)
+pData(myMultiAssay)
 ```
 
 * Validity checks: must be a DataFrame
@@ -206,7 +206,7 @@ head(sampleMap(myMultiAssay))
 ```
 
 * Validity checks: 
-    + items in `master` column must be found in rownames(masterPheno)
+    + items in `master` column must be found in rownames(pData)
     + items in `assay` column must be found in colnames(Elist[[i]])
     + `assayname` column must contain only and all `Elist` element names
 

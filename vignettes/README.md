@@ -14,7 +14,7 @@ empty
 ##  listed experiments with user-defined names and their respective classes:  
 ## To access slots use: 
 ##  Elist() - to obtain the "SimpleList" of experiment instances 
-##  masterPheno() - for the phenotype "data.frame" 
+##  pData() - for the phenotype "DataFrame" 
 ##  sampleMap() - for the sample availability "list" 
 ## See also: subsetByAssasy(), subsetByFeature(), subsetBySample()
 ```
@@ -24,7 +24,7 @@ slotNames(empty)
 ```
 
 ```
-## [1] "Elist"       "masterPheno" "sampleMap"   "metadata"
+## [1] "Elist"       "pData" "sampleMap"   "metadata"
 ```
 
 ```r
@@ -38,7 +38,7 @@ class(empty@Elist)       #SimpleList
 ```
 
 ```r
-class(empty@masterPheno) #data.frame
+class(empty@pData) #data.frame
 ```
 
 ```
@@ -66,7 +66,7 @@ methods(class="MultiAssayExperiment")
 ```
 
 ```
-## [1] Elist       length      masterPheno names       sampleMap   show       
+## [1] Elist       length      pData names       sampleMap   show       
 ## see '?methods' for accessing help and source code
 ```
 
@@ -186,7 +186,7 @@ exprdat
 ## Annotation:
 ```
 
-The following map matches masterPheno sample names to exprdata sample names.  Note that row orders aren't initially matched up.
+The following map matches pData sample names to exprdata sample names.  Note that row orders aren't initially matched up.
 
 ```r
 (exprmap <- data.frame(master=rownames(masPheno)[c(1, 2, 4, 3)], assay=c("array1", "array2", "array3", "array4")))
@@ -215,7 +215,7 @@ Now methylation data.  It uses gene identifiers also, but measures a partially o
 ## ENST00000383706       2       4       6       8      10
 ```
 
-The following map matches masterPheno sample names to methyldat sample names.
+The following map matches pData sample names to methyldat sample names.
 
 
 ```r
@@ -249,7 +249,7 @@ Now we have a microRNA platform, which has no common identifiers.  It is also mi
 ## hsa-miR148b     204    208    212
 ```
 
-And the following map matches masterPheno sample names to microdat sample names.
+And the following map matches pData sample names to microdat sample names.
 
 ```r
 (micromap <- data.frame(master = c("Jack", "Barbara", "Bob"),
@@ -308,7 +308,7 @@ grl
 ## seqinfo: 3 sequences from an unspecified genome; no seqlengths
 ```
 
-The following `data.frame` matches masterPheno sample to the `GRangesList`: 
+The following `data.frame` matches pData sample to the `GRangesList`: 
 
 
 ```r
@@ -501,7 +501,7 @@ myMultiAssay
 ##  [5] CNV gistic2 - "RangedSummarizedExperiment" 
 ## To access slots use: 
 ##  Elist() - to obtain the "SimpleList" of experiment instances 
-##  masterPheno() - for the phenotype "data.frame" 
+##  pData() - for the phenotype "data.frame" 
 ##  sampleMap() - for the sample availability "list" 
 ## See also: subsetByAssasy(), subsetByFeature(), subsetBySample()
 ```
@@ -519,7 +519,7 @@ subsetByAssay(subMultiAssay, c(TRUE, FALSE, FALSE, FALSE), drop = TRUE)[[1]] %>%
 subMultiAssay
 ```
 
-Endogenous operation, returns a MultiAssay object containing Elist of length 1, map of length 1, and masterPheno for only Jack, Barbara, and Bob.  The "Mirna" argument is used to index the `Elist` object using `[`, so could also be `integer` or `logical`:
+Endogenous operation, returns a MultiAssay object containing Elist of length 1, map of length 1, and pData for only Jack, Barbara, and Bob.  The "Mirna" argument is used to index the `Elist` object using `[`, so could also be `integer` or `logical`:
 
 
 ```r
@@ -532,7 +532,7 @@ subsetByAssay(myMultiAssay, "Mirna", drop=FALSE)
 ##  [1] Mirna - "matrix" 
 ## To access slots use: 
 ##  Elist() - to obtain the "SimpleList" of experiment instances 
-##  masterPheno() - for the phenotype "data.frame" 
+##  pData() - for the phenotype "data.frame" 
 ##  sampleMap() - for the sample availability "list" 
 ## See also: subsetByAssasy(), subsetByFeature(), subsetBySample()
 ```
@@ -983,5 +983,5 @@ as.list(Elist(subsetted))
 
 * `c()` function for adding new assays to existing `MultiAssayExperiment`
     + e.g. c(myMultiAssay, neweset)
-    + require that sample names in the new object match masterPheno sample names
-    + require that sample names in the new object already exist in masterPheno
+    + require that sample names in the new object match pData sample names
+    + require that sample names in the new object already exist in pData

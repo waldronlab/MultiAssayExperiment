@@ -9,9 +9,9 @@
 \alias{assay,MultiAssayExperiment,ANY-method}
 \alias{colnames,MultiAssayExperiment-method}
 \alias{length,MultiAssayExperiment-method}
-\alias{masterPheno,MultiAssayExperiment-method}
 \alias{metadata,MultiAssayExperiment-method}
 \alias{names,MultiAssayExperiment-method}
+\alias{pData,MultiAssayExperiment-method}
 \alias{rownames,MultiAssayExperiment-method}
 \alias{sampleMap,MultiAssayExperiment-method}
 \alias{subset,MultiAssayExperiment-method}
@@ -21,7 +21,7 @@
 
 \S4method{Elist}{MultiAssayExperiment}(x)
 
-\S4method{masterPheno}{MultiAssayExperiment}(x)
+\S4method{pData}{MultiAssayExperiment}(x)
 
 \S4method{metadata}{MultiAssayExperiment}(x)
 
@@ -80,7 +80,7 @@ Subset MultiAssayExperiment object
 
 \item \code{Elist}: Access Elist class from MultiAssayExperiment
 
-\item \code{masterPheno}: Access masterPheno slot from MultiAssayExperiment
+\item \code{pData}: Access pData slot from MultiAssayExperiment
 
 \item \code{metadata}: Access metadata slot from MultiAssayExperiment
 
@@ -105,7 +105,7 @@ Subset MultiAssayExperiment object
 \describe{
 \item{\code{Elist}}{A \code{\linkS4class{Elist}} class object for each assay dataset.}
 
-\item{\code{masterPheno}}{A \code{DataFrame} of all clinical data available across experiments.}
+\item{\code{pData}}{A \code{DataFrame} of all clinical data available across experiments.}
 
 \item{\code{sampleMap}}{A \code{DataFrame} of translatable identifiers of samples and participants.}
 
