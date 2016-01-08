@@ -11,7 +11,7 @@ NULL
 #' @exportMethod rownames
 setMethod("rownames", "ExpressionSet", function(x) Biobase::featureNames(x))
 setMethod("rownames", "RangedSummarizedExperiment", function(x) names(SummarizedExperiment::rowRanges(x)))
-setMethod("rownames", "RangedRaggedAssay", function(x) names(unlist(x, use.names = FALSE)))
+setMethod("rownames", "RangedRaggedAssay", function(x) IRanges::CharacterList(x))
 #' @describeIn MultiAssayExperiment Get all the rownames for a MultiAssayExperiment
 setMethod("rownames", "MultiAssayExperiment", function(x) lapply(x@Elist, rownames))
 
@@ -126,18 +126,21 @@ setMethod("[", c("RangedRaggedAssay", "GRanges", "ANY"), .RangedBracketSubsetRRA
 #' @describeIn MultiAssayExperiment Subset RangedRaggedAssay using character vector
 setMethod("[", c("RangedRaggedAssay", "ANY", "ANY"), .sBracketSubsetRRA)
 
-.subsetMultiAssayExperiment <- function(x, i, j, k, ..., drop){
-  if (length(drop) != 1L || (!missing(drop) && drop)) {
-    warning("'drop' ignored '[,", class(x), ",ANY,ANY-method'")}
+# default drop = TRUE for dropping assays when no rows or no columns present 
+.subsetMultiAssayExperiment <- function(x, i, j, k, ..., drop = TRUE){
   if(missing(i) && missing(j) && missing(k)){ return(x) } 
   if(!missing(k)){
-    x <- subsetByAssay(x, k, drop = drop)
+    x <- subsetByAssay(x, k)
   }
   if(!missing(j)){
-    x <- subsetByColumn(x, j, drop = drop)
+    x <- subsetByColumn(x, j)
   }
   if(!missing(i)){
-    x <- subsetByRow(x, i, ..., drop = drop)
+    x <- subsetByRow(x, i, ...)
+  }
+  if(drop){
+    toKeep <- names(which(!sapply(rownames(x, isEmpty))))
+    x <- x[,,toKeep]
   }
   return(x)
 }

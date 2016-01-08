@@ -84,6 +84,7 @@ MultiAssayView <- function(MultiAssayExperiment, identifier, method = character(
       if(all(identifier %in% 1:length(MultiAssayExperiment))){
         newKeeps <- as.list(names(MultiAssayExperiment) %in% names(MultiAssayExperiment)[identifier])
       } else {
+       # insert alternative  
         stop("Identifier out of bounds")
       }
     }

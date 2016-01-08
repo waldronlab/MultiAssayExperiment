@@ -6,7 +6,7 @@
 #' @param assayIndicator Either a \code{numeric}, \code{character} or \code{logical} or \code{\link{MultiAssayView}} object indicating what assay(s) to select  
 #' @param drop logical (default FALSE) whether to return a \code{list} of selected experiments
 #' @return A \code{\link{MultiAssayExperiment}} object or \code{list} if drop paramater is set to TRUE
-subsetByAssay <- function(MultiAssayExperiment, assayIndicator, drop = FALSE){
+subsetByAssay <- function(MultiAssayExperiment, assayIndicator){
   if(!is(assayIndicator, "MultiAssayView")){
     assayIndicator <- MultiAssayView(MultiAssayExperiment, assayIndicator, "assays")  
   } else {
@@ -20,12 +20,8 @@ subsetByAssay <- function(MultiAssayExperiment, assayIndicator, drop = FALSE){
   newMap <- listMap[assayIndicator]
   newMap <- .convertList(newMap)
   newSubset <- Elist(MultiAssayExperiment)[assayIndicator]
-  if(drop){
-      return(as.list(newSubset))
-  } else {
     MultiAssayExperiment@sampleMap <- newMap
     MultiAssayExperiment@Elist <- newSubset
     MultiAssayExperiment@drops <- c(MultiAssayExperiment@drops, list(assayDrops))
-  }
   return(MultiAssayExperiment)
 }
