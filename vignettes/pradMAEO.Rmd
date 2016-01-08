@@ -1,0 +1,39 @@
+---
+title: "pradMAEO - <strong>PR</strong>ostate <strong>AD</strong>enocarcinoma <strong>M</strong>ulti<strong>A</strong>ssay<strong>E</strong>xperiment <strong>O</strong>bject"
+author: "Lucas Schiffer"
+date: "January 8, 2016"
+output: html_document
+---
+
+This vignette is the current working document for the development of a prostate adenocarcinoma MultiAssayExperiment object. Data is taken from The Cancer Genome Atlas (TCGA) using the getFirehoseData() method of the RTCGAToolbox package, then manipulated to fit into the MultiAssayExperiment object.
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+#install bioconductor
+#source("https://bioconductor.org/biocLite.R")
+#biocLite()
+
+#install RTCGAToolbox
+#BiocInstaller::biocLite("LiNk-NY/RTCGAToolbox")
+library(RTCGAToolbox)
+
+#install biocMultiAssay
+#BiocInstaller::biocLite("vjcitn/biocMultiAssay")
+library(biocMultiAssay)
+
+#RTCGAToolbox help
+#?RTCGAToolbox
+```
+
+Cohort datasets can be generated with the getFirehoseDatasets() method
+
+```{r}
+getFirehoseDatasets()
+```
+
+The <strong>PR</strong>ostate <strong>AD</strong>enocarcinoma dataset is identified by the cohort name "PRAD" and can be obtained using the getFirehouseData() method. Once returned the FirehoseData object can be seialized for manipulation. Use of the extract() method is necessary to convert data into an ExpressionSet or GRangesList object, which can then be used to create a MuliAssayExperiment object.
+
+```{r message=FALSE, warning=FALSE}
+prad <- getFirehoseData("PRAD", runDate = "20150402")
+bcPRAD <- extract(prad, type = NULL, clinical = TRUE)
+```
+
