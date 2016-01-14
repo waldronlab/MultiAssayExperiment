@@ -4,20 +4,27 @@
 #' @param MultiAssayExperiment A \code{\link{MultiAssayExperiment}} object 
 #' @param colIndicator A \linkS4class{MultiAssayView} class object to be used for subsetting
 #' @param drop logical (default FALSE) whether to coerce lowest possible dimension after subsetting
-subsetByColumn <- function(MultiAssayExperiment, colIndicator, drop = FALSE){
-  if(is(colIndicator, "MultiAssayView") && getElement(colIndicator, "type") != "colnames"){
-    stop("MultiAssayView class should be of colnames")
-  } else {
-    newMap <- getMap(colIndicator)
-    subsetor <- lapply(colIndicator@keeps, function(x) unlist(x[,2]))
+subsetByColumn <- function(MultiAssayExperiment, colIndicator){
+ if(is.character(colIndicator)){
+  loglistmatch <- lapply(colnames(MultiAssayExperiment), function(charElem) {
+    charElem %in% colIndicator})
+  if(!any(unlist(loglistmatch))){
+    stop("No matches found")
   }
-  ##  mendoapply not working
+ } else {
+   stop("colIndicator must be character")
+ }
   ## 	newSubset <- S4Vectors::mendoapply(subsetSample, Elist(MultiAssayExperiment), subsetor) 
-  newSubset <- mapply(function(x, i, j, drop) {x[, j, drop = drop]}, x = Elist(MultiAssayExperiment), j = subsetor, drop = drop)
+  newSubset <- mapply(function(x, i, j, drop) {x[, j, drop = FALSE]}, x = Elist(MultiAssayExperiment), j = loglistmatch)
   newSubset <- Elist(newSubset)
+  listMap <- toListMap(sampleMap(MultiAssayExperiment), "assayname")
+  logmapInd <- lapply(listMap, function(x) { x[,2] %in% colIndicator })
+  newMap <- mapply(function(x, y) {x[y,]}, listMap, logmapInd)
+  newMap <- Filter(function(x) {!isEmpty(x)}, newMap)
+  newMap <- .convertList(newMap)
   # Clone or replace method for slot??
-  MultiAssayExperiment@sampleMap <- newMap
-  MultiAssayExperiment@Elist <- newSubset
-  MultiAssayExperiment@drops <- c(MultiAssayExperiment@drops, list(.convertList(colIndicator, "drops")))
+  sampleMap(MultiAssayExperiment) <- newMap
+  Elist(MultiAssayExperiment) <- newSubset
+# MultiAssayExperiment@drops <- c(MultiAssayExperiment@drops, list(.convertList(colIndicator, "drops")))
   return(MultiAssayExperiment)
 }

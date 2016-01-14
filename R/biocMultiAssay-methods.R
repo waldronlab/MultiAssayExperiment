@@ -83,11 +83,7 @@ setMethod("getHits", signature("ANY", "character"), function(subject, query, ...
 })
 
 .sBSubRRAright <- function(x, j){
-  if(!is.character(j)){
-    stop("'j' must be a character vector")
-  } else {
-    x <- callNextMethod(x = x, i = j)
-  }
+  x <- callNextMethod(x = x, i = j)
   return(x)
 }
 
@@ -139,8 +135,11 @@ setMethod("[", c("RangedRaggedAssay", "ANY", "ANY"), .sBracketSubsetRRA)
     x <- subsetByRow(x, i, ...)
   }
   if(drop){
-    toKeep <- names(which(!sapply(rownames(x, isEmpty))))
-    x <- x[,,toKeep]
+    ## Fix determination of empty or invalid assays
+    toKeep <- names(which(!sapply(rownames(x), function(el) {length(el) == 0L})))
+    toKeep2 <- names(which(!sapply(colnames(x), function(el) {length(el) == 0L})))
+    validAssays <- intersect(toKeep, toKeep2)
+    x <- x[,,validAssays, drop = FALSE]
   }
   return(x)
 }
@@ -192,4 +191,3 @@ setMethod("query", "MultiAssayView", function(object)
 #' @exportMethod isEmpty
 setMethod("isEmpty", "MultiAssayExperiment", function(x)
   length(x) == 0L)
-

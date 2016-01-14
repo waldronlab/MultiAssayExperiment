@@ -8,7 +8,7 @@
 #' @param ... Additional arguments to pass to low level subsetting function
 #' @return A \code{\link{MultiAssayExperiment}} object 
 subsetByRow <- function(MultiAssayExperiment, rowIndicator, ...) { 
-  if(is(rowIndicator, "character")){
+  if(is.character(rowIndicator)){
   loglistmatch <- lapply(rownames(MultiAssayExperiment), function(charElem) {
     charElem %in% rowIndicator })
   } else {

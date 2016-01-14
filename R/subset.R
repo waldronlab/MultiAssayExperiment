@@ -41,18 +41,16 @@
 #' @describeIn MultiAssayExperiment
 #' export subset
 setMethod("subset", "MultiAssayExperiment", function(x, indicator, method = NULL, drop = FALSE, ...){
-  if(is(indicator, "MultiAssayView")){
-    method <- getElement(indicator, "type") 
-  } else if(is.null(method)){
+  if(is.null(method)){
     stop("Indicate a subset method")
   } else {
     method <- match.arg(method, c("colnames", "rownames", "assays"))
   }
   if(method == "colnames"){
-    return(subsetByColumn(MultiAssayExperiment = x, colIndicator = indicator, drop))
+    return(subsetByColumn(MultiAssayExperiment = x, colIndicator = indicator))
   } else if(method == "rownames"){
-    return(subsetByRow(MultiAssayExperiment = x, rowIndicator = indicator, drop, ...))
+    return(subsetByRow(MultiAssayExperiment = x, rowIndicator = indicator, ...))
   } else if(method == "assays"){
-    return(subsetByAssay(MultiAssayExperiment = x, assayIndicator = indicator, drop))
+    return(subsetByAssay(MultiAssayExperiment = x, assayIndicator = indicator))
   } 
 })

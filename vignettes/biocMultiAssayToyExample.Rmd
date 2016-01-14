@@ -189,8 +189,9 @@ metadata(myMultiAssay)
 ```
 
 ## Subsetting by Sample
+### TODO: Requires a different function for subsetting
 
-```{r}
+```{r, eval = FALSE}
 MultiAssayView_cl <- MultiAssayView(myMultiAssay, 2:1, "colnames")
 MultiAssayView_cl
 subMultiAssay <- subset(myMultiAssay, MultiAssayView_cl)
@@ -206,12 +207,6 @@ Bob.  The "Mirna" argument is used to index the `Elist` object using
 
 ```{r}
 subset(myMultiAssay, "Mirna", "assays")
-```
-
-Not endogenous, returns just the matrix contained in `Elist$Mirna`
-
-```{r}
-subset(myMultiAssay, "Mirna", "assays", drop = TRUE)
 ```
 
 ## Subsetting by Feature 
