@@ -2,20 +2,21 @@
 % Please edit documentation in R/subsetByColumn.R
 \name{subsetByColumn}
 \alias{subsetByColumn}
-\title{Subset MultiAssayExperiment object
-\code{subsetByColumn} returns a subsetted \code{\linkS4class{MultiAssayExperiment}} object}
+\title{Subset MultiAssayExperiment object}
 \usage{
-subsetByColumn(MultiAssayExperiment, colIndicator, drop = FALSE)
+subsetByColumn(MultiAssayExperiment, colIndicator)
 }
 \arguments{
 \item{MultiAssayExperiment}{A \code{\link{MultiAssayExperiment}} object}
 
-\item{colIndicator}{A \linkS4class{MultiAssayView} class object to be used for subsetting}
-
-\item{drop}{logical (default FALSE) whether to coerce lowest possible dimension after subsetting}
+\item{colIndicator}{A \linkS4class{MultiAssayView} class object to be used 
+for subsetting}
+}
+\value{
+A \code{\link{MultiAssayExperiment}} object
 }
 \description{
-Subset MultiAssayExperiment object
-\code{subsetByColumn} returns a subsetted \code{\linkS4class{MultiAssayExperiment}} object
+\code{subsetByColumn} returns a subsetted 
+\code{\linkS4class{MultiAssayExperiment}} object
 }
 

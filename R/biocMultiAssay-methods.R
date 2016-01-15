@@ -49,6 +49,13 @@ setMethod("assay", "MultiAssayExperiment", function(x) lapply(x@Elist, assay))
     ))
 }
 
+setMethod("ncol", signature("RangedRaggedAssay"), function(x){
+  length(x)
+})
+setMethod("nrow", signature("RangedRaggedAssay"), function(x){
+  length(unlist(x))
+})
+
 #' Find hits by class type
 #' 
 #' @param subject Any valid element from the \code{\linkS4class{Elist}} class
@@ -126,7 +133,10 @@ setMethod("[", c("RangedRaggedAssay", "GRanges", "ANY"), .RangedBracketSubsetRRA
 #' @describeIn MultiAssayExperiment Subset RangedRaggedAssay using character vector
 setMethod("[", c("RangedRaggedAssay", "ANY", "ANY"), .sBracketSubsetRRA)
 
-# default drop = TRUE for dropping assays when no rows or no columns present 
+.isEmpty <- function(object){
+  ncol(object) == 0L | nrow(object) == 0L
+}
+
 .subsetMultiAssayExperiment <- function(x, i, j, k, ..., drop = TRUE){
   if(missing(i) && missing(j) && missing(k)){ return(x) } 
   if(!missing(k)){
@@ -139,12 +149,11 @@ setMethod("[", c("RangedRaggedAssay", "ANY", "ANY"), .sBracketSubsetRRA)
     x <- subsetByRow(x, i, ...)
   }
   if(drop){
-    ## Fix determination of empty or invalid assays
-    ## isEmpty not defined for ExpressionSet class
-    toKeep <- names(which(!sapply(rownames(x), function(el) {length(el) == 0L})))
-    toKeep2 <- names(which(!sapply(colnames(x), function(el) {length(el) == 0L})))
-    validAssays <- intersect(toKeep, toKeep2)
-    x <- x[,,validAssays, drop = FALSE]
+    emptyAssays <- lapply(Elist(x), .isEmpty)
+    if(any(unlist(emptyAssays))){
+      keeps <- names(emptyAssays)[sapply(emptyAssays, function(x) !isTRUE(x))]
+      x <- x[,,keeps, drop = FALSE]
+    }
   }
   return(x)
 }

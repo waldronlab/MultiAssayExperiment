@@ -4,17 +4,15 @@
 \alias{subsetByAssay}
 \title{Subset MultiAssayExperiment object by Assay type}
 \usage{
-subsetByAssay(MultiAssayExperiment, assayIndicator, drop = FALSE)
+subsetByAssay(MultiAssayExperiment, assayIndicator)
 }
 \arguments{
 \item{MultiAssayExperiment}{A \code{\link{MultiAssayExperiment}} object}
 
-\item{assayIndicator}{Either a \code{numeric}, \code{character} or \code{logical} or \code{\link{MultiAssayView}} object indicating what assay(s) to select}
-
-\item{drop}{logical (default FALSE) whether to return a \code{list} of selected experiments}
+\item{assayIndicator}{Either a \code{numeric}, \code{character} or \code{logical} object indicating what assay(s) to select}
 }
 \value{
-A \code{\link{MultiAssayExperiment}} object or \code{list} if drop paramater is set to TRUE
+A \code{\link{MultiAssayExperiment}} object
 }
 \description{
 Select which assay(s) to obtain from available datasets

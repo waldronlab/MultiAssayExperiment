@@ -200,7 +200,6 @@ assay(Elist(myMultiAssay)[[4]])
 ```
 
 ## Subsetting by Sample
-### TODO: Requires a different function for subsetting
 
 ```{r}
 MultiAssayView_cl <- MultiAssayView(myMultiAssay, 2:1, "colnames")
@@ -208,6 +207,7 @@ MultiAssayView_cl
 ```
 
 ### Using a `MultiAssayView` class to subset
+### TODO: Requires a different function for subsetting
 
 ```{r, eval = FALSE}
 subMultiAssay <- subset(myMultiAssay, MultiAssayView_cl)

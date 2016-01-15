@@ -4,6 +4,7 @@
 \name{MultiAssayExperiment-class}
 \alias{Elist,MultiAssayExperiment-method}
 \alias{MultiAssayExperiment-class}
+\alias{[,MultiAssayExperiment,ANY-method}
 \alias{[,RangedRaggedAssay,ANY-method}
 \alias{[,RangedRaggedAssay,GRanges-method}
 \alias{assay,MultiAssayExperiment,ANY-method}
@@ -38,6 +39,8 @@
 \S4method{[}{RangedRaggedAssay,GRanges}(x, i, j, ..., drop = TRUE)
 
 \S4method{[}{RangedRaggedAssay,ANY}(x, i, j, ..., drop = TRUE)
+
+\S4method{[}{MultiAssayExperiment,ANY}(x, i, j, k, ..., drop = TRUE)
 
 \S4method{subset}{MultiAssayExperiment}(x, indicator, method = NULL,
   drop = FALSE, ...)
@@ -97,6 +100,8 @@ Subset MultiAssayExperiment object
 \item \code{[}: Subset RangedRaggedAssay using GRanges object
 
 \item \code{[}: Subset RangedRaggedAssay using character vector
+
+\item \code{[}: Subset a MultiAssayExperiment object
 
 \item \code{subset}: export subset
 }}

@@ -195,16 +195,16 @@ setMethod("names", "MultiAssayExperiment", function(x)
   names(getElement(x, "Elist"))
 )
 
-#' @exportMethod
 setGeneric("sampleMap<-", function(x, value) standardGeneric("sampleMap<-"))
+#' @exportMethod sampleMap<-
 setReplaceMethod("sampleMap", c("MultiAssayExperiment", "DataFrame"),
                  function(x, value) {
                    slot(x, "sampleMap") <- value
                    return(x)
                  })
 
-#' @exportMethod
 setGeneric("Elist<-", function(x, value) standardGeneric("Elist<-"))
+#' @exportMethod Elist<-
 setReplaceMethod("Elist", c("MultiAssayExperiment", "Elist"),
                  function(x, value) {
                    slot(x, "Elist") <- value
