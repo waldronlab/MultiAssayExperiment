@@ -188,6 +188,17 @@ sampleMap(myMultiAssay)
 metadata(myMultiAssay) 
 ```
 
+# `rangedRaggedAssay` class
+
+Note that the GRangesList got converted to a `rangedRaggedAssay`, which has some additional methods:
+
+```{r}
+class(Elist(myMultiAssay)[[4]])
+rownames(Elist(myMultiAssay)[[4]])
+colnames(Elist(myMultiAssay)[[4]])
+assay(Elist(myMultiAssay)[[4]])
+```
+
 ## Subsetting by Sample
 ### TODO: Requires a different function for subsetting
 
@@ -284,6 +295,19 @@ subsetted <- subset(myMultiAssay, rangeSubset, "rownames", maxgap = 2L, type = "
 Elist(subsetted)
 ```
 
+## Subsetting by square bracket
+
+Not yet working, eval=FALSE
+```{r, eval=FALSE}
+myMultiAssay[rangeSubset, , ]
+myMultiAssay[c("ENST00000355076", "ENST00000294241"), , ]
+myMultiAssay[, c("Jack", "Jill"), ]
+```
+
+```{r}
+myMultiAssay[, , "Mirna"]
+```
+
 ### Auto-create sampleMap slot from data
 
 ```{r}
@@ -308,7 +332,9 @@ Any data classes in the Elist object must support the following methods:
 
 * `colnames()`
 * `rownames()`
+* `assay()`    #to return experimental data
 * `[`
+
 
 Here is what happens if one of the methods doesn't:
 ```{r}
