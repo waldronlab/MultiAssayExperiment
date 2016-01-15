@@ -191,9 +191,14 @@ metadata(myMultiAssay)
 ## Subsetting by Sample
 ### TODO: Requires a different function for subsetting
 
-```{r, eval = FALSE}
+```{r}
 MultiAssayView_cl <- MultiAssayView(myMultiAssay, 2:1, "colnames")
 MultiAssayView_cl
+```
+
+### Using a `MultiAssayView` class to subset
+
+```{r, eval = FALSE}
 subMultiAssay <- subset(myMultiAssay, MultiAssayView_cl)
 as.list(Elist(subMultiAssay))
 subset(subMultiAssay, c(TRUE, FALSE, FALSE, TRUE, FALSE), "assays", drop = TRUE)[[1]] %>% exprs 
@@ -209,6 +214,16 @@ Bob.  The "Mirna" argument is used to index the `Elist` object using
 subset(myMultiAssay, "Mirna", "assays")
 ```
 
+## Bracket operations 
+
+The bracket method for the `MultiAssayExperiment` returns a specified subset of the data. 
+The positions within the bracket operator, indicate `rownames`, `colnames`, and `assays` respectively. 
+To subset by a particular assay, one can use this syntax: 
+
+```{r}
+myMultiAssay[,,"Mirna"]
+```
+
 ## Subsetting by Feature 
 
 This operation returns a `MultiAssayExperiment` class, with any
@@ -216,8 +231,14 @@ This operation returns a `MultiAssayExperiment` class, with any
 
 Returns object of class `MultiAssayView`: 
 
-```{r}
+```{r, eval = FALSE}
 MultiAssayView(myMultiAssay, "ENST00000355076", "rownames")  
+```
+
+### Subset by rownames using the bracket `[` method
+## TODO: Fix RangedRaggedAssay bug
+```{r}
+myMultiAssay["ENST00000355076",,]
 ```
 
 Returns MultiAssayExperiment where `Affy` and `Methyl 450k` contain
@@ -225,7 +246,7 @@ only ENST0000035076 row, and "Mirna" and "CNV gistic" have zero rows:
 
 ### TODO: Fix evaluation with empty character(0)
 
-```{r}
+```{r, eval = FALSE}
 featSubsetted0 <- subset(myMultiAssay, MultiAssayView(myMultiAssay, "ENST00000355076", "rownames"))
 class(featSubsetted0)
 class(Elist(featSubsetted0))
@@ -235,7 +256,8 @@ Elist(featSubsetted0)
 In the following, `Affy` ExpressionSet keeps both rows but with their
 order reversed, and `Methyl 450k` keeps only its second row.
 
-```{r}
+### Subsetting using MultiAssayView? 
+```{r, eval=FALSE}
 featSubsetted <- subset(myMultiAssay, MultiAssayView(myMultiAssay, c("ENST00000355076", "ENST00000294241"), "rownames"))
 exprs(Elist(myMultiAssay)[[1]])
 exprs(Elist(featSubsetted)[[1]])
@@ -246,7 +268,7 @@ exprs(Elist(featSubsetted)[[1]])
 Note that the output of this function could be used as the input for
 `subset`.
 
-```{r}
+```{r, eval = FALSE}
 MultiAssayView(myMultiAssay, c("ENST00000355076", "ENST00000294241"), "rownames") 
 ```
 

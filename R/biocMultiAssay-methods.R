@@ -82,6 +82,10 @@ setMethod("getHits", signature("ANY", "character"), function(subject, query, ...
  query[query %in% rownames(subject)]
 })
 
+setMethod("getHits", signature("RangedRaggedAssay", "character"), function(subject, query, ...){
+  CharacterList(lapply(subject, function(x) {names(x)[names(x) %in% query]}))
+})
+
 .sBSubRRAright <- function(x, j){
   x <- callNextMethod(x = x, i = j)
   return(x)
@@ -136,6 +140,7 @@ setMethod("[", c("RangedRaggedAssay", "ANY", "ANY"), .sBracketSubsetRRA)
   }
   if(drop){
     ## Fix determination of empty or invalid assays
+    ## isEmpty not defined for ExpressionSet class
     toKeep <- names(which(!sapply(rownames(x), function(el) {length(el) == 0L})))
     toKeep2 <- names(which(!sapply(colnames(x), function(el) {length(el) == 0L})))
     validAssays <- intersect(toKeep, toKeep2)

@@ -60,12 +60,12 @@ MultiAssayView <- function(MultiAssayExperiment, identifier, method = character(
   } else if(method == "rownames"){
     totalRownames <- rownames(MultiAssayExperiment)
     subsetor <- getHits(MultiAssayExperiment, identifier, ...)
-    newDrops <- .featMap(Map(function(x, y){.outersect(x, y)}, subsetor, totalRownames))
+    # newDrops <- .featMap(Map(function(x, y){.outersect(x, y)}, subsetor, totalRownames))
     newKeeps <- .featMap(subsetor)
     newMultiAssayView <- new("MultiAssayView", 
                     query = identifier, 
                     keeps = newKeeps,
-                    drops = newDrops,
+#                   drops = newDrops,
                     type = "rownames")
   } else if(method == "assays"){
     if(is.logical(identifier)){
