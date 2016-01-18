@@ -8,14 +8,14 @@
 #' @return A \code{\link{MultiAssayExperiment}} object 
 subsetByRow <- function(MultiAssayExperiment, rowIndicator, ...) { 
   if(is.character(rowIndicator)){
-  loglistmatch <- lapply(rownames(MultiAssayExperiment), function(charElem) {
-    charElem %in% rowIndicator })
+  orderedMatches <- lapply(rownames(MultiAssayExperiment), function(charElem) {
+    na.omit(charElem[charElem %in% rowIndicator][order(rowIndicator)]) })
   } else {
-    stop("rowIndicator must be character")
+    stop("rowIndicator must be character or GRanges")
   }
   # MultiAssayExperiment@Elist <- Elist(MultiAssayExperiment)[featureMaker]
   MultiAssayExperiment@Elist <- Elist(mapply(function(x, i, j, ..., drop = FALSE) 
-    {x[i, , ..., drop = FALSE]}, x = Elist(MultiAssayExperiment), i = loglistmatch, ...))
+    {x[i, , ..., drop = FALSE]}, x = Elist(MultiAssayExperiment), i = orderedMatches, ...))
   #  MultiAssayExperiment@Elist <- mendoapply(Elist(MultiAssayExperiment), subsetFeature, featureMaker)
   return(MultiAssayExperiment)
 }

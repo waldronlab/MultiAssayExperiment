@@ -246,30 +246,29 @@ Returns object of class `MultiAssayView`:
 MultiAssayView(myMultiAssay, "ENST00000355076", "rownames")  
 ```
 
-### Subset by rownames using the bracket `[` method
-## TODO: Fix RangedRaggedAssay bug
-```{r}
-myMultiAssay["ENST00000355076",,]
-```
-
 Returns MultiAssayExperiment where `Affy` and `Methyl 450k` contain
 only ENST0000035076 row, and "Mirna" and "CNV gistic" have zero rows:
 
 ### TODO: Fix evaluation with empty character(0)
 
 ```{r, eval = FALSE}
-featSubsetted0 <- subset(myMultiAssay, MultiAssayView(myMultiAssay, "ENST00000355076", "rownames"))
+featSubsetted0 <- subset(myMultiAssay, "ENST00000355076", "rownames")
 class(featSubsetted0)
 class(Elist(featSubsetted0))
 Elist(featSubsetted0)
 ```
 
+### Subset by rownames using the bracket `[` method
+
+```{r}
+myMultiAssay["ENST00000355076",,]
+```
+
 In the following, `Affy` ExpressionSet keeps both rows but with their
 order reversed, and `Methyl 450k` keeps only its second row.
 
-### Subsetting using MultiAssayView? 
 ```{r, eval=FALSE}
-featSubsetted <- subset(myMultiAssay, MultiAssayView(myMultiAssay, c("ENST00000355076", "ENST00000294241"), "rownames"))
+featSubsetted <- subset(myMultiAssay, c("ENST00000355076", "ENST00000294241"), "rownames")
 exprs(Elist(myMultiAssay)[[1]])
 exprs(Elist(featSubsetted)[[1]])
 ```

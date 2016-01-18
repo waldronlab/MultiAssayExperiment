@@ -90,10 +90,15 @@ setMethod("getHits", signature("ANY", "character"), function(subject, query, ...
 })
 
 setMethod("getHits", signature("RangedRaggedAssay", "character"), function(subject, query, ...){
-  subject[relist(names(unlist(subject, use.names = FALSE)) %in% query, subject)]
+  RowNames <- names(unlist(subject, use.names = FALSE))
+  if(any(RowNames %in% query)){
+    rownames(subject[relist(RowNames %in% query, subject)])
+  } else {
+    character(0)
+  }
 })
 
-.sBSubRRAright <- function(x, j){
+.sBSubRRAright <- function(x, j) {
   x <- callNextMethod(x = x, i = j)
   return(x)
 }
