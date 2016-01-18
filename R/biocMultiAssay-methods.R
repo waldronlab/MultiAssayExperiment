@@ -90,7 +90,7 @@ setMethod("getHits", signature("ANY", "character"), function(subject, query, ...
 })
 
 setMethod("getHits", signature("RangedRaggedAssay", "character"), function(subject, query, ...){
-  CharacterList(lapply(subject, function(x) {names(x)[names(x) %in% query]}))
+  subject[relist(names(unlist(subject, use.names = FALSE)) %in% query, subject)]
 })
 
 .sBSubRRAright <- function(x, j){
@@ -134,7 +134,7 @@ setMethod("[", c("RangedRaggedAssay", "GRanges", "ANY"), .RangedBracketSubsetRRA
 setMethod("[", c("RangedRaggedAssay", "ANY", "ANY"), .sBracketSubsetRRA)
 
 .isEmpty <- function(object){
-  ncol(object) == 0L | nrow(object) == 0L
+  unname(ncol(object)) == 0L | unname(nrow(object)) == 0L
 }
 
 .subsetMultiAssayExperiment <- function(x, i, j, k, ..., drop = TRUE){
@@ -150,7 +150,9 @@ setMethod("[", c("RangedRaggedAssay", "ANY", "ANY"), .sBracketSubsetRRA)
   }
   if(drop){
     emptyAssays <- lapply(Elist(x), .isEmpty)
-    if(any(unlist(emptyAssays))){
+    if(all(unlist(emptyAssays))){
+      x <- MultiAssayExperiment()
+    } else if (any(unlist(emptyAssays))) {
       keeps <- names(emptyAssays)[sapply(emptyAssays, function(x) !isTRUE(x))]
       x <- x[,,keeps, drop = FALSE]
     }
