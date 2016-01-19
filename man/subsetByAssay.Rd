@@ -9,7 +9,8 @@ subsetByAssay(MultiAssayExperiment, assayIndicator)
 \arguments{
 \item{MultiAssayExperiment}{A \code{\link{MultiAssayExperiment}} object}
 
-\item{assayIndicator}{Either a \code{numeric}, \code{character} or \code{logical} object indicating what assay(s) to select}
+\item{assayIndicator}{Either a \code{numeric}, \code{character} or
+\code{logical} object indicating what assay(s) to select}
 }
 \value{
 A \code{\link{MultiAssayExperiment}} object

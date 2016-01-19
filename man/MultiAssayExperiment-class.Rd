@@ -48,13 +48,17 @@
 \arguments{
 \item{x}{A \code{\linkS4class{MultiAssayExperiment}} object}
 
-\item{...}{Additional arguments to pass to SubsetByOverlaps when subsetting by rownames}
+\item{...}{Additional arguments to pass to SubsetByOverlaps when subsetting
+by rownames}
 
-\item{drop}{logical (default FALSE) whether to coerce lowest possible dimension after subsetting}
+\item{drop}{logical (default FALSE) whether to coerce lowest possible
+dimension after subsetting}
 
-\item{indicator}{A \code{logical} or \code{character} vector or \code{MultiAssayView} class object to use for subsetting}
+\item{indicator}{A \code{logical} or \code{character} vector or
+\code{MultiAssayView} class object to use for subsetting}
 
-\item{method}{A \code{character} vector of length one designating to subset either by colnames, rownames, or assays}
+\item{method}{A \code{character} vector of length one designating to subset
+either by colnames, rownames, or assays}
 }
 \value{
 A \code{\linkS4class{Elist}} object.
@@ -75,7 +79,8 @@ Generic Acessor Functions
 Length of Experiment List
 
 Subset MultiAssayExperiment object
-\code{subset} returns a subsetted \code{\linkS4class{MultiAssayExperiment}} object
+\code{subset} returns a subsetted \code{\linkS4class{MultiAssayExperiment}}
+object
 }
 \section{Methods (by generic)}{
 \itemize{
@@ -103,7 +108,8 @@ Subset MultiAssayExperiment object
 
 \item \code{[}: Subset a MultiAssayExperiment object
 
-\item \code{subset}: export subset
+\item \code{subset}: Subset a
+\code{\linkS4class{MultiAssayExperiment}} class object
 }}
 \section{Slots}{
 

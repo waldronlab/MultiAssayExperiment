@@ -3,9 +3,10 @@
 #' Select which assay(s) to obtain from available datasets
 #' 
 #' @param MultiAssayExperiment A \code{\link{MultiAssayExperiment}} object
-#' @param assayIndicator Either a \code{numeric}, \code{character} or \code{logical} object indicating what assay(s) to select  
+#' @param assayIndicator Either a \code{numeric}, \code{character} or
+#' \code{logical} object indicating what assay(s) to select  
 #' @return A \code{\link{MultiAssayExperiment}} object 
-subsetByAssay <- function(MultiAssayExperiment, assayIndicator){
+subsetByAssay <- function(MultiAssayExperiment, assayIndicator) {
   newSubset <- Elist(MultiAssayExperiment)[assayIndicator]
   listMap <- toListMap(sampleMap(MultiAssayExperiment), "assayname")
   newMap <- listMap[assayIndicator]

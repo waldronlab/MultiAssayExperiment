@@ -19,8 +19,6 @@ subsetByColumn <- function(MultiAssayExperiment, colIndicator) {
     } else {
         stop("colIndicator must be character")
     }
-    ## newSubset <- S4Vectors::mendoapply(subsetSample,
-    ## Elist(MultiAssayExperiment), subsetor)
     newSubset <- mapply(function(x, i, j, drop) {
         x[, j, drop = FALSE]
     }, x = Elist(MultiAssayExperiment), j = loglistmatch)
