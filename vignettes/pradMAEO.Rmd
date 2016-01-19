@@ -24,16 +24,42 @@ library(biocMultiAssay)
 #?RTCGAToolbox
 ```
 
-Cohort datasets can be generated with the getFirehoseDatasets() method
+Cohort datasets can be generated with the getFirehoseDatasets() method.
 
 ```{r}
 getFirehoseDatasets()
 ```
 
-The <strong>PR</strong>ostate <strong>AD</strong>enocarcinoma dataset is identified by the cohort name "PRAD" and can be obtained using the getFirehouseData() method. Once returned the FirehoseData object can be seialized for manipulation. Use of the extract() method is necessary to convert data into an ExpressionSet or GRangesList object, which can then be used to create a MuliAssayExperiment object.
+Analysis and Running dates can be obtained through the getFirehoseAnalyzeDates() and getFirehoseRunningDates() methods of the RTCGAToolbox.
 
-```{r message=FALSE, warning=FALSE}
-prad <- getFirehoseData("PRAD", runDate = "20150402")
-bcPRAD <- extract(prad, type = NULL, clinical = TRUE)
+```{r}
+getFirehoseAnalyzeDates()
+getFirehoseRunningDates()
 ```
 
+The <strong>PR</strong>ostate <strong>AD</strong>enocarcinoma dataset is identified by the cohort name "PRAD" and can be obtained using the getFirehouseData() method. Once returned the FirehoseData object can be serialized for manipulation. Use of the extract() method is necessary to convert data into a ExpressionSet or GRangesList objects, which can then be used to create a MuliAssayExperiment object.
+
+```{r message=FALSE, warning=FALSE}
+x <- "PRAD"
+y <- getFirehoseRunningDates()[1]
+z <- getFirehoseAnalyzeDates()[1]
+
+if(file.exists("data/prad.Rda")) {
+  load("data/prad.Rda")
+} else {
+  prad <- getFirehoseData(x, runDate = y, gistic2_Date = z, RNAseq_Gene = TRUE, Clinic = TRUE, 
+          miRNASeq_Gene = TRUE, RNAseq2_Gene_Norm = TRUE, CNA_SNP = TRUE, CNV_SNP = TRUE, CNA_Seq = TRUE, 
+          CNA_CGH = TRUE, Methylation = TRUE, Mutation = TRUE, mRNA_Array = TRUE, miRNA_Array = TRUE,
+          RPPA = TRUE, RNAseqNorm = "raw_counts", RNAseq2Norm = "normalized_count", forceDownload = TRUE, 
+          destdir = ".", fileSizeLimit = 500, getUUIDs = FALSE)
+  save(prad, file = "data/prad.Rda")
+}
+
+names <- slotNames(prad)[5:17]
+
+for(i in names) {
+  try(assign(i, extract(prad, i, clinical = TRUE)), silent = TRUE)
+}
+
+rm(i)
+```
