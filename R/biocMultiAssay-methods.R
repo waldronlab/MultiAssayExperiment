@@ -3,12 +3,6 @@
 #' @import BiocGenerics SummarizedExperiment S4Vectors GenomicRanges
 NULL
 
-#' Rownames extractor method 
-#' 
-#' \code{rownames} are used to obtain feature names from experiment data
-#' 
-#' @param x A compatible object with feature data 
-#' @return Returns either rownames or featureNames
 #' @exportMethod rownames
 setMethod("rownames", "ExpressionSet", function(x)
   Biobase::featureNames(x))
@@ -21,12 +15,6 @@ setMethod("rownames", "RangedRaggedAssay", function(x)
 setMethod("rownames", "MultiAssayExperiment", function(x)
   lapply(Elist(x), rownames))
 
-#' Colnames extractor 
-#' 
-#' \code{colnames} are used to obtain sample names from experiment data
-#' 
-#' @param x A compatible object with sample data
-#' @return Returns a vector of colnames or samplenames
 #' @exportMethod colnames
 setMethod("colnames", "ExpressionSet", function(x)
   Biobase::sampleNames(x))
@@ -37,12 +25,6 @@ setMethod("colnames", "RangedRaggedAssay", function(x)
 setMethod("colnames", "MultiAssayExperiment", function(x)
   lapply(Elist(x), colnames))
 
-#' Assay accessor
-#'
-#' \code{assay} is used to obtain raw data
-#'
-#' @param x An experiment object with data
-#' @return A basic representation of internal data
 #' @exportMethod assay
 setMethod("assay", "ExpressionSet", function(x)
   Biobase::exprs(x))

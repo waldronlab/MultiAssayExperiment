@@ -49,6 +49,7 @@ Collate:
     'allLM_pw.R'
     'apiDash.R'
     'biocMultiAssay-methods.R'
+    'biocMultiAssay.R'
     'db_create.R'
     'downloadData.R'
     'exs2se.R'

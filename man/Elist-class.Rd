@@ -3,10 +3,11 @@
 \docType{class}
 \name{Elist-class}
 \alias{.Elist}
+\alias{Elist}
 \alias{Elist-class}
 \title{A container for multi-experiment data}
 \description{
-The \code{\linkS4class{Elist}} class is a container that builds on 
+The \code{Elist} class is a container that builds on 
 the \code{\link[S4Vectors]{SimpleList-class}} with additional 
 checks for consistency in experiment names and length.
 It contains a \code{SimpleList} of experiments with sample identifiers.
