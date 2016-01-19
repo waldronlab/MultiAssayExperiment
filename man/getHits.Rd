@@ -22,7 +22,8 @@ getHits(subject, query, ...)
 \arguments{
 \item{subject}{Any valid element from the \code{\linkS4class{Elist}} class}
 
-\item{query}{Either a \code{character} vector or \code{\linkS4class{GRanges}} object used to search by name or ranges}
+\item{query}{Either a \code{character} vector or \code{\linkS4class{GRanges}}
+object used to search by name or ranges}
 
 \item{...}{Additional arguments to findOverlaps}
 }

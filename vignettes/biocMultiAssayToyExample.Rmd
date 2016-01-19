@@ -188,9 +188,9 @@ sampleMap(myMultiAssay)
 metadata(myMultiAssay) 
 ```
 
-# `rangedRaggedAssay` class
+# `RangedRaggedAssay` class
 
-Note that the GRangesList got converted to a `rangedRaggedAssay`, which has some additional methods:
+Note that the GRangesList got converted to a `RangedRaggedAssay`, which has some additional methods:
 
 ```{r}
 class(Elist(myMultiAssay)[[4]])

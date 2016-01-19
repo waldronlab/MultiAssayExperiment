@@ -7,9 +7,11 @@
 toListMap(mapdf, assayCol = NULL)
 }
 \arguments{
-\item{mapdf}{A \code{data.frame} or \code{DataFrame} object with identifiers in the first column}
+\item{mapdf}{A \code{data.frame} or \code{DataFrame} object with
+identifiers in the first column}
 
-\item{assayCol}{A character vector of length one indicating the assay names column}
+\item{assayCol}{A character vector of length one indicating the assay
+names column}
 }
 \value{
 A \code{list} object of DataFrames for each assay

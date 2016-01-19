@@ -11,7 +11,8 @@
 \item{object}{A \code{\link{MultiAssayExperiment}} object.}
 }
 \value{
-Returns a summary of contents for the \code{\link{MultiAssayExperiment}} class.
+Returns a summary of contents for
+the \code{\link{MultiAssayExperiment}} class.
 }
 \description{
 Show method for \code{\linkS4class{MultiAssayExperiment}} class

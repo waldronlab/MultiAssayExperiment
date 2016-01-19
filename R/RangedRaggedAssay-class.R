@@ -17,8 +17,8 @@
 #' @param x A \code{list}, \code{GRanges} or \code{GRangesList} object
 #' @return A \code{\linkS4class{RangedRaggedAssay}} class object
 #' @export RangedRaggedAssay
-RangedRaggedAssay <- function(x = GRangesList()){
-  if(inherits(x, "GRanges")){
+RangedRaggedAssay <- function(x = GRangesList()) {
+  if(inherits(x, "GRanges")) {
     x <- GRangesList(x)
   }
   .RangedRaggedAssay(x)

@@ -84,23 +84,30 @@ object
 }
 \section{Methods (by generic)}{
 \itemize{
-\item \code{sampleMap}: Access sampleMap slot from MultiAssayExperiment
+\item \code{sampleMap}: Access sampleMap slot from
+MultiAssayExperiment
 
-\item \code{Elist}: Access Elist class from MultiAssayExperiment
+\item \code{Elist}: Access Elist class from
+MultiAssayExperiment
 
-\item \code{pData}: Access pData slot from MultiAssayExperiment
+\item \code{pData}: Access pData slot from
+MultiAssayExperiment
 
-\item \code{metadata}: Access metadata slot from MultiAssayExperiment
+\item \code{metadata}: Access metadata slot from
+MultiAssayExperiment
 
 \item \code{length}: Get the length of Elist
 
 \item \code{names}: Get the names of the Elist
 
-\item \code{rownames}: Get all the rownames for a MultiAssayExperiment
+\item \code{rownames}: Get all the rownames for a
+MultiAssayExperiment
 
-\item \code{colnames}: Get all the colnames for a MultiAssayExperiment
+\item \code{colnames}: Get all the colnames for a
+MultiAssayExperiment
 
-\item \code{assay}: Get the raw data from a MultiAssayExperiment as a list
+\item \code{assay}: Get the raw data from a
+MultiAssayExperiment as a list
 
 \item \code{[}: Subset RangedRaggedAssay using GRanges object
 
@@ -116,11 +123,14 @@ object
 \describe{
 \item{\code{Elist}}{A \code{\linkS4class{Elist}} class object for each assay dataset.}
 
-\item{\code{pData}}{A \code{DataFrame} of all clinical data available across experiments.}
+\item{\code{pData}}{A \code{DataFrame} of all clinical data available across
+experiments.}
 
-\item{\code{sampleMap}}{A \code{DataFrame} of translatable identifiers of samples and participants.}
+\item{\code{sampleMap}}{A \code{DataFrame} of translatable identifiers of samples
+and participants.}
 
-\item{\code{metadata}}{Additional data describing the \code{\link{MultiAssayExperiment}} object.}
+\item{\code{metadata}}{Additional data describing the
+\code{\link{MultiAssayExperiment}} object.}
 
 \item{\code{drops}}{A metadata \code{list} of dropped information.}
 }}

@@ -2,7 +2,7 @@
 % Please edit documentation in R/biocMultiAssay-methods.R
 \name{getMap}
 \alias{getMap}
-\title{Convert MultiAssayView slot "keeps" to Map}
+\title{Convert MultiAssayView slot 'keeps' to Map}
 \usage{
 getMap(object)
 }
@@ -13,6 +13,6 @@ getMap(object)
 Returns a DataFrame representation of colnames
 }
 \description{
-Convert MultiAssayView slot "keeps" to Map
+Convert MultiAssayView slot 'keeps' to Map
 }
 

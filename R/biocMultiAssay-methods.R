@@ -1,4 +1,5 @@
-#' @include Elist-class.R MultiAssayView-class.R RangedRaggedAssay-class.R MultiAssayExperiment-class.R
+#' @include Elist-class.R MultiAssayView-class.R RangedRaggedAssay-class.R
+#' MultiAssayExperiment-class.R
 #' @import BiocGenerics SummarizedExperiment S4Vectors GenomicRanges
 NULL
 
@@ -31,7 +32,8 @@ setMethod("colnames", "ExpressionSet", function(x)
   Biobase::sampleNames(x))
 setMethod("colnames", "RangedRaggedAssay", function(x)
   base::names(x))
-#' @describeIn MultiAssayExperiment Get all the colnames for a MultiAssayExperiment
+#' @describeIn MultiAssayExperiment Get all the colnames for a
+#' MultiAssayExperiment
 setMethod("colnames", "MultiAssayExperiment", function(x)
   lapply(Elist(x), colnames))
 

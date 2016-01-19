@@ -11,8 +11,8 @@
 \item{object}{A \code{\linkS4class{Elist}} object.}
 }
 \value{
-Returns a summary of contents for the \code{\linkS4class{Elist}} class
-exportMethod show
+Returns a summary of contents for the \code{\linkS4class{Elist}}
+class
 }
 \description{
 Show method for \code{\linkS4class{Elist}} class
