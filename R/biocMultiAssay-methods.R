@@ -77,7 +77,7 @@ setMethod("getHits", signature("MultiAssayExperiment", "GRanges"),
 }))
 setMethod("getHits", signature("GRanges", "GRanges"),
           function(subject, query, ...) {
-  query <- names(subject)[findOverlaps(subject, query, ...)@subjectHits]
+  query <- names(subject)[subjectHits(findOverlaps(subject, query, ...))]
   getHits(subject, query)
 })
 #' @describeIn getHits Find all matching rownames for Range-based objects
@@ -85,10 +85,11 @@ setMethod("getHits", signature("ANY", "GRanges"),
           function(subject, query, ...) {
             if (.checkFindOverlaps(class(subject))) {
               listGR <- lapply(subject, function(x, ...) {
-                x[findOverlaps(x, query, ...)@subjectHits]
+                x[subjectHits(findOverlaps(x, query, ...))]
               })
-              newQuery <- unlist(sapply(listGR, rownames))
-              getHits(subject, newQuery)
+              listGR <- Filter(function(x){length(x) != 0L}, listGR)
+              result <- vapply(listGR, names, character(1))
+             # getHits(subject, newQuery)
             } else {
               character(0)
             }

@@ -4,7 +4,8 @@
 #' \code{\linkS4class{MultiAssayExperiment}} object
 #'
 #' @param MultiAssayExperiment A \code{\link{MultiAssayExperiment}} object 
-#' @param colIndicator A \linkS4class{MultiAssayView} class object to be used 
+#' @param colIndicator Either a \code{numeric}, \code{character} or
+#' \code{logical} object indicating what rownames in the pData to select
 #' for subsetting
 #' @return A \code{\link{MultiAssayExperiment}} object 
 subsetByColumn <- function(MultiAssayExperiment, colIndicator) {

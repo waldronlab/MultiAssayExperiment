@@ -9,7 +9,8 @@ subsetByColumn(MultiAssayExperiment, colIndicator)
 \arguments{
 \item{MultiAssayExperiment}{A \code{\link{MultiAssayExperiment}} object}
 
-\item{colIndicator}{A \linkS4class{MultiAssayView} class object to be used 
+\item{colIndicator}{Either a \code{numeric}, \code{character} or
+\code{logical} object indicating what rownames in the pData to select
 for subsetting}
 }
 \value{

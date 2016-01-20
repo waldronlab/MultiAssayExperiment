@@ -9,8 +9,8 @@ subsetByRow(MultiAssayExperiment, rowIndicator, ...)
 \arguments{
 \item{MultiAssayExperiment}{A \code{\link{MultiAssayExperiment}} object}
 
-\item{rowIndicator}{A \code{character} vector class object containing
-feature names}
+\item{rowIndicator}{A \code{character} vector or \code{GRanges} class object
+containing feature names or ranges}
 
 \item{...}{Additional arguments to pass to low level subsetting function}
 }
