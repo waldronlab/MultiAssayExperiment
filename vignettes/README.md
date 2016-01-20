@@ -1,1 +1,0 @@
-The biocMultiAssayToyExample.Rmd vignette is the current working document for developing the MultiAssayExperiment class and methods. See a built html version at http://rpubs.com/lwaldron/biocmultiassaytoyexample .

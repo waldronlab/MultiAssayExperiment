@@ -47,7 +47,7 @@
 #' @param Elist A \code{list} of all combined experiments
 #' @param pData A \code{\link[S4Vectors]{DataFrame-class}} of the phenotype
 #' data for all participants.
-#' @param sampleMap A \code{data.frame} of sample identifiers, assay samples,
+#' @param sampleMap A \code{DataFrame} of sample identifiers, assay samples,
 #' and assay names.
 #' @param drops A \code{list} of unmatched information
 #' (included after subsetting)   

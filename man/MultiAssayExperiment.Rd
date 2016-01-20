@@ -13,7 +13,7 @@ MultiAssayExperiment(Elist = list(), pData = S4Vectors::DataFrame(),
 \item{pData}{A \code{\link[S4Vectors]{DataFrame-class}} of the phenotype
 data for all participants.}
 
-\item{sampleMap}{A \code{data.frame} of sample identifiers, assay samples,
+\item{sampleMap}{A \code{DataFrame} of sample identifiers, assay samples,
 and assay names.}
 
 \item{drops}{A \code{list} of unmatched information

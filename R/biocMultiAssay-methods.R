@@ -9,11 +9,11 @@ setMethod("rownames", "ExpressionSet", function(x)
 setMethod("rownames", "RangedSummarizedExperiment", function(x)
   names(SummarizedExperiment::rowRanges(x)))
 setMethod("rownames", "RangedRaggedAssay", function(x)
-  IRanges::CharacterList(x))
+  names(unlist(x, use.names = FALSE)))
 #' @describeIn MultiAssayExperiment Get all the rownames for a
 #' MultiAssayExperiment
 setMethod("rownames", "MultiAssayExperiment", function(x)
-  lapply(Elist(x), rownames))
+  CharacterList(lapply(Elist(x), rownames)))
 
 #' @exportMethod colnames
 setMethod("colnames", "ExpressionSet", function(x)
@@ -175,10 +175,10 @@ setMethod("[", c("RangedRaggedAssay", "ANY", "ANY"),
     x <- subsetByRow(x, i, ...)
   }
   if (drop) {
-    emptyAssays <- lapply(Elist(x), .isEmpty)
-    if (all(unlist(emptyAssays))) {
+    emptyAssays <- vapply(Elist(x), FUN = .isEmpty, FUN.VALUE = logical(1))
+    if (all(emptyAssays)) {
       x <- MultiAssayExperiment()
-    } else if (any(unlist(emptyAssays))) {
+    } else if (any(emptyAssays)) {
       keeps <- names(emptyAssays)[sapply(emptyAssays, function(x) !isTRUE(x))]
       x <- x[, , keeps, drop = FALSE]
     }
