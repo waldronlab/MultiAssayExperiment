@@ -9,33 +9,27 @@
 #' for subsetting
 #' @return A \code{\link{MultiAssayExperiment}} object 
 subsetByColumn <- function(MultiAssayExperiment, colIndicator) {
-    if (is.character(colIndicator)) {
-        loglistmatch <- lapply(colnames(MultiAssayExperiment), 
-                          function(charElem) {
-                            charElem %in% colIndicator
-                            })
-        if (!any(unlist(loglistmatch))) {
-            stop("No matches found")
-        }
-    } else {
-        stop("colIndicator must be character")
+  identifiers <- rownames(pData(MultiAssayExperiment))
+  if(is.character(colIndicator)){
+    logMatches <- identifiers %in% colIndicator
+    if(!any(logMatches)){
+      stop("No matching identifiers found")
     }
-    newSubset <- mapply(function(x, i, j, drop) {
-        x[, j, drop = FALSE]
-    }, x = Elist(MultiAssayExperiment), j = loglistmatch)
-    newSubset <- Elist(newSubset)
-    listMap <- toListMap(sampleMap(MultiAssayExperiment), "assayname")
-    logmapInd <- lapply(listMap, function(x) {
-        x[, 2] %in% colIndicator
-    })
-    newMap <- mapply(function(x, y) {
-        x[y, ]
-    }, listMap, logmapInd)
-    newMap <- Filter(function(x) {
-        !isEmpty(x)
-    }, newMap)
-    newMap <- .convertList(newMap)
-    sampleMap(MultiAssayExperiment) <- newMap
-    Elist(MultiAssayExperiment) <- newSubset
-    return(MultiAssayExperiment)
+    selectors <- identifiers[identifiers %in% colIndicator]
+  } else {
+    selectors <- rownames(pData(MultiAssayExperiment))[colIndicator]
+  }
+  listMap <- toListMap(sampleMap(MultiAssayExperiment), "assayname")
+  listMap <- listMap[order(names(MultiAssayExperiment))]
+  listMap <- lapply(listMap, function(assay) {
+    assay[which(as.vector(assay[, 1]) %in% selectors),]
+  })
+  newMap <- .convertList(listMap)
+  columns <- lapply(listMap, function(x) {x[, 2, drop = TRUE]})
+  newSubset <- mapply(function(x, j) {x[, j, drop = FALSE]},
+                      x = Elist(MultiAssayExperiment), j = columns)
+  newSubset <- Elist(newSubset)
+  Elist(MultiAssayExperiment) <- newSubset
+  sampleMap(MultiAssayExperiment) <- newMap
+  return(MultiAssayExperiment)
 } 
