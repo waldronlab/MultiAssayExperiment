@@ -84,12 +84,12 @@ setMethod("getHits", signature("GRanges", "GRanges"),
 setMethod("getHits", signature("ANY", "GRanges"),
           function(subject, query, ...) {
             if (.checkFindOverlaps(class(subject))) {
-              listGR <- lapply(subject, function(x, ...) {
-                x[subjectHits(findOverlaps(x, query, ...))]
-              })
-              listGR <- Filter(function(x){length(x) != 0L}, listGR)
-              result <- vapply(listGR, names, character(1))
-             # getHits(subject, newQuery)
+              uList <- unlist(subject, use.names = FALSE)
+              overlapsAny(uList, query, ...)
+              # endoapply(subject, function(range) {range[subjectHits(findOverlaps(range, query, ...))]})
+              # listGR <- Filter(function(x){length(x) != 0L}, listGR)
+              # result <- vapply(listGR, names, character(1))
+              # getHits(subject, newQuery)
             } else {
               character(0)
             }

@@ -35,7 +35,7 @@
 #' 
 #' @param x A \code{\linkS4class{MultiAssayExperiment}} object
 #' @param indicator A \code{logical} or \code{character} vector or
-#' \code{MultiAssayView} class object to use for subsetting
+#' \code{GRanges} class object to use for subsetting
 #' @param method A \code{character} vector of length one designating to subset
 #' either by colnames, rownames, or assays
 #' @param drop logical (default FALSE) whether to coerce lowest possible
@@ -47,7 +47,9 @@
 #' @export subset
 setMethod("subset", "MultiAssayExperiment",
           function(x, indicator, method = NULL, drop = FALSE, ...) {
-            if (is.null(method)) {
+            if (is(indicator, "GRanges")) {
+              method <- "rownames"
+            } else if (is.null(method)) {
               stop("Indicate a subset method")
             } else {
               method <- match.arg(method, c("colnames", "rownames", "assays"))
