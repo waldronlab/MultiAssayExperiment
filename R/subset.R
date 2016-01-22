@@ -46,7 +46,7 @@
 #' \code{\linkS4class{MultiAssayExperiment}} class object
 #' @export subset
 setMethod("subset", "MultiAssayExperiment",
-          function(x, indicator, method = NULL, drop = FALSE, ...) {
+          function(x, indicator, method = NULL, drop = TRUE, ...) {
             if (is(indicator, "GRanges")) {
               method <- "rownames"
             } else if (is.null(method)) {

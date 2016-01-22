@@ -248,10 +248,9 @@ MultiAssayView(myMultiAssay, "ENST00000355076", "rownames")
 
 Returns MultiAssayExperiment where `Affy` and `Methyl 450k` contain
 only ENST0000035076 row, and "Mirna" and "CNV gistic" have zero rows:
+(`drop` argument is set to `TRUE` by default)
 
-### TODO: Fix evaluation with empty character(0)
-
-```{r, eval = FALSE}
+```{r}
 featSubsetted0 <- subset(myMultiAssay, "ENST00000355076", "rownames")
 class(featSubsetted0)
 class(Elist(featSubsetted0))
@@ -284,11 +283,11 @@ MultiAssayView(myMultiAssay, c("ENST00000355076", "ENST00000294241"), "rownames"
 
 ## Feature extraction by Ranges
 
-See arguments to `GenomicRanges::subsetByOverlaps` for flexible types
+See arguments to `IRanges::subsetByOverlaps` for flexible types
 of subsetting. The first two arguments are for `subset`, the
 rest passed on through "...":
 
-```{r, eval = FALSE}
+```{r}
 rangeSubset <- GRanges(seqnames = c("chr1"), strand = c("-", "+", "-"), ranges = IRanges(start = c(1, 4, 6), width = 3))
 subsetted <- subset(myMultiAssay, rangeSubset, "rownames", maxgap = 2L, type = "within")
 Elist(subsetted)
@@ -296,8 +295,7 @@ Elist(subsetted)
 
 ## Subsetting by square bracket
 
-Not yet working, eval=FALSE
-```{r, eval=FALSE}
+```{r}
 myMultiAssay[rangeSubset, , ]
 myMultiAssay[c("ENST00000355076", "ENST00000294241"), , ]
 myMultiAssay[, c("Jack", "Jill"), ]

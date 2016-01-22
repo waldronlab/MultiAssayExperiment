@@ -13,8 +13,8 @@ subsetByRow <- function(MultiAssayExperiment, rowIndicator, ...) {
   }
   hitList <- getHits(MultiAssayExperiment, rowIndicator, ...)
   Elist(MultiAssayExperiment) <-
-    Elist(mapply(function(x, i, j, ..., drop = FALSE) {
-      x[i, , ..., drop = FALSE]
-    }, x = Elist(MultiAssayExperiment), i = hitList, ...))
+    Elist(mapply(function(x, y) {
+      x[y, , drop = FALSE]
+    }, x = Elist(MultiAssayExperiment), y = hitList))
   return(MultiAssayExperiment)
-} 
+}
