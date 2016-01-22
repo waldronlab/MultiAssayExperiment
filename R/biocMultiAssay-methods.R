@@ -77,22 +77,25 @@ setMethod("getHits", signature("MultiAssayExperiment", "GRanges"),
 }))
 setMethod("getHits", signature("GRanges", "GRanges"),
           function(subject, query, ...) {
-  query <- names(subject)[subjectHits(findOverlaps(subject, query, ...))]
-  getHits(subject, query)
-})
+            names(subject)[queryHits(findOverlaps(subject, query, ...))]
+          })
 #' @describeIn getHits Find all matching rownames for Range-based objects
 setMethod("getHits", signature("ANY", "GRanges"),
           function(subject, query, ...) {
             if (.checkFindOverlaps(class(subject))) {
-              uList <- unlist(subject, use.names = FALSE)
-              overlapsAny(uList, query, ...)
-              # endoapply(subject, function(range) {range[subjectHits(findOverlaps(range, query, ...))]})
-              # listGR <- Filter(function(x){length(x) != 0L}, listGR)
-              # result <- vapply(listGR, names, character(1))
-              # getHits(subject, newQuery)
+              lapply(subject, function(x) {
+                names(x)[queryHits(
+                  findOverlaps(query = x, subject = query, ...))]
+              })
             } else {
               character(0)
             }
+          })
+#' @describeIn getHits Find rownames for RangedSummarizedExperiment hits 
+setMethod("getHits", signature("RangedSummarizedExperiment", "GRanges"),
+          function(subject, query, ...) {
+            subject <- rowRanges(subject)
+            getHits(subject, query)
           })
 #' @describeIn getHits Find all matching rownames based on character query
 setMethod("getHits", signature("ANY", "character"),

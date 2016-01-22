@@ -11,13 +11,10 @@ subsetByRow <- function(MultiAssayExperiment, rowIndicator, ...) {
   if (!is.character(rowIndicator) && !is(rowIndicator, "GRanges")) {
     stop("rowIndicator must be character or GRanges")
   }
-  orderedMatches <-
-    lapply(rownames(MultiAssayExperiment), function(charElem) {
-      na.omit(charElem[charElem %in% rowIndicator][order(rowIndicator)])
-    })
+  hitList <- getHits(MultiAssayExperiment, rowIndicator, ...)
   Elist(MultiAssayExperiment) <-
     Elist(mapply(function(x, i, j, ..., drop = FALSE) {
       x[i, , ..., drop = FALSE]
-    }, x = Elist(MultiAssayExperiment), i = orderedMatches, ...))
+    }, x = Elist(MultiAssayExperiment), i = hitList, ...))
   return(MultiAssayExperiment)
 } 
