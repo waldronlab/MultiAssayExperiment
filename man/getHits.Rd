@@ -7,6 +7,7 @@
 \alias{getHits,ANY,character-method}
 \alias{getHits,MultiAssayExperiment,GRanges-method}
 \alias{getHits,MultiAssayExperiment,character-method}
+\alias{getHits,RangedSummarizedExperiment,GRanges-method}
 \title{Find hits by class type}
 \usage{
 getHits(subject, query, ...)
@@ -16,6 +17,8 @@ getHits(subject, query, ...)
 \S4method{getHits}{MultiAssayExperiment,GRanges}(subject, query, ...)
 
 \S4method{getHits}{ANY,GRanges}(subject, query, ...)
+
+\S4method{getHits}{RangedSummarizedExperiment,GRanges}(subject, query, ...)
 
 \S4method{getHits}{ANY,character}(subject, query, ...)
 }
@@ -40,6 +43,8 @@ Find hits by class type
 \item \code{subject = MultiAssayExperiment,query = GRanges}: Find all matching rownames by GRanges
 
 \item \code{subject = ANY,query = GRanges}: Find all matching rownames for Range-based objects
+
+\item \code{subject = RangedSummarizedExperiment,query = GRanges}: Find rownames for RangedSummarizedExperiment hits
 
 \item \code{subject = ANY,query = character}: Find all matching rownames based on character query
 }}

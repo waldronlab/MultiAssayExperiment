@@ -5,8 +5,6 @@
 \alias{Elist,MultiAssayExperiment-method}
 \alias{MultiAssayExperiment-class}
 \alias{[,MultiAssayExperiment,ANY-method}
-\alias{[,RangedRaggedAssay,ANY-method}
-\alias{[,RangedRaggedAssay,GRanges-method}
 \alias{assay,MultiAssayExperiment,ANY-method}
 \alias{colnames,MultiAssayExperiment-method}
 \alias{length,MultiAssayExperiment-method}
@@ -36,14 +34,10 @@
 
 \S4method{assay}{MultiAssayExperiment,ANY}(x)
 
-\S4method{[}{RangedRaggedAssay,GRanges}(x, i, j, ..., drop = TRUE)
-
-\S4method{[}{RangedRaggedAssay,ANY}(x, i, j, ..., drop = TRUE)
-
 \S4method{[}{MultiAssayExperiment,ANY}(x, i, j, k, ..., drop = TRUE)
 
 \S4method{subset}{MultiAssayExperiment}(x, indicator, method = NULL,
-  drop = FALSE, ...)
+  drop = TRUE, ...)
 }
 \arguments{
 \item{x}{A \code{\linkS4class{MultiAssayExperiment}} object}
@@ -55,7 +49,7 @@ by rownames}
 dimension after subsetting}
 
 \item{indicator}{A \code{logical} or \code{character} vector or
-\code{MultiAssayView} class object to use for subsetting}
+\code{GRanges} class object to use for subsetting}
 
 \item{method}{A \code{character} vector of length one designating to subset
 either by colnames, rownames, or assays}
@@ -109,10 +103,6 @@ MultiAssayExperiment
 \item \code{assay}: Get the raw data from a
 MultiAssayExperiment as a list
 
-\item \code{[}: Subset RangedRaggedAssay using GRanges object
-
-\item \code{[}: Subset RangedRaggedAssay using character vector
-
 \item \code{[}: Subset a MultiAssayExperiment object
 
 \item \code{subset}: Subset a
@@ -121,16 +111,16 @@ MultiAssayExperiment as a list
 \section{Slots}{
 
 \describe{
-\item{\code{Elist}}{A \code{\linkS4class{Elist}} class object for each assay dataset.}
+\item{\code{Elist}}{A \code{\linkS4class{Elist}} class object for each assay dataset}
 
 \item{\code{pData}}{A \code{DataFrame} of all clinical data available across
-experiments.}
+experiments}
 
 \item{\code{sampleMap}}{A \code{DataFrame} of translatable identifiers of samples
-and participants.}
+and participants}
 
 \item{\code{metadata}}{Additional data describing the
-\code{\link{MultiAssayExperiment}} object.}
+\code{\link{MultiAssayExperiment}} object}
 
 \item{\code{drops}}{A metadata \code{list} of dropped information.}
 }}

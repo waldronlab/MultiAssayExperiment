@@ -48,8 +48,5 @@ Collate:
     'biocMultiAssay-methods.R'
     'biocMultiAssay.R'
     'subset.R'
-    'subsetByAssay.R'
-    'subsetByColumn.R'
-    'subsetByRow.R'
     'toListMap.R'
 RoxygenNote: 5.0.1
