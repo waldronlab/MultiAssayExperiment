@@ -11,9 +11,9 @@ setMethod("rownames", "RangedSummarizedExperiment", function(x)
 setMethod("rownames", "RangedRaggedAssay", function(x)
   names(unlist(x, use.names = FALSE)))
 #' @describeIn MultiAssayExperiment Get all the rownames for a
-#' MultiAssayExperiment
+#' MultiAssayExperiment using \code{\link[IRanges]{CharacterList}}
 setMethod("rownames", "MultiAssayExperiment", function(x)
-  CharacterList(lapply(Elist(x), rownames)))
+  IRanges::CharacterList(lapply(Elist(x), rownames)))
 
 #' @exportMethod colnames
 setMethod("colnames", "ExpressionSet", function(x)
@@ -122,7 +122,7 @@ setMethod("getHits", signature("RangedRaggedAssay", "character"),
   }
   if (!missing(i)) {
     x <- endoapply(x, function(rra) {
-      subsetByOverlaps(rra, i, ...)
+      IRanges::subsetByOverlaps(rra, i, ...)
       # x <- x[relist(subsetByOverlaps(unlist(x,
       # use.names = FALSE), i, ...), x)]
     })

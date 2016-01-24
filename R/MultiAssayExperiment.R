@@ -46,13 +46,13 @@
 #' 
 #' @param Elist A \code{list} of all combined experiments
 #' @param pData A \code{\link[S4Vectors]{DataFrame-class}} of the phenotype
-#' data for all participants.
+#' data for all participants
 #' @param sampleMap A \code{DataFrame} of sample identifiers, assay samples,
-#' and assay names.
+#' and assay names
 #' @param drops A \code{list} of unmatched information
 #' (included after subsetting)   
 #' @return A \code{MultiAssayExperiment} data object that stores experiment
-#' and phenotype data.
+#' and phenotype data
 #' @export MultiAssayExperiment
 MultiAssayExperiment <-
   function(Elist = list(),

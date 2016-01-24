@@ -14,7 +14,7 @@
 .getNameErr <- function(object) {
   if (inherits(object, "RangedRaggedAssay")) {
     if (is.null(names(object))) {
-      msg <- paste("names in", obj_cl, "are NULL")
+      msg <- paste("names in", class(object), "are NULL")
       return(msg)
     } else {
       NULL

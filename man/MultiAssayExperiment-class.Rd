@@ -95,7 +95,7 @@ MultiAssayExperiment
 \item \code{names}: Get the names of the Elist
 
 \item \code{rownames}: Get all the rownames for a
-MultiAssayExperiment
+MultiAssayExperiment using \code{\link[IRanges]{CharacterList}}
 
 \item \code{colnames}: Get all the colnames for a
 MultiAssayExperiment
