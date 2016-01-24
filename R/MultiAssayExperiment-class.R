@@ -4,13 +4,13 @@
 
 #' An integrative MultiAssay class for experiment data
 #' 
-#' @slot Elist A \code{\linkS4class{Elist}} class object for each assay dataset. 
+#' @slot Elist A \code{\linkS4class{Elist}} class object for each assay dataset
 #' @slot pData A \code{DataFrame} of all clinical data available across
-#' experiments.
+#' experiments
 #' @slot sampleMap A \code{DataFrame} of translatable identifiers of samples
-#' and participants.
+#' and participants
 #' @slot metadata Additional data describing the
-#' \code{\link{MultiAssayExperiment}} object. 
+#' \code{\link{MultiAssayExperiment}} object
 #' @slot drops A metadata \code{list} of dropped information.
 #' @exportClass MultiAssayExperiment
 #' @include Elist-class.R

@@ -55,14 +55,14 @@ setMethod("subset", "MultiAssayExperiment",
               method <- match.arg(method, c("colnames", "rownames", "assays"))
             }
             if (method == "colnames") {
-              MultiAssay <- subsetByColumn(MultiAssayExperiment = x,
-                                           colIndicator = indicator)
+              MultiAssay <- subsetByColumn(x = x,
+                                           y = indicator)
             } else if (method == "rownames") {
-              MultiAssay <- subsetByRow(MultiAssayExperiment = x,
-                                        rowIndicator = indicator, ...)
+              MultiAssay <- subsetByRow(x = x,
+                                        y = indicator, ...)
             } else if (method == "assays") {
-              MultiAssay <- subsetByAssay(MultiAssayExperiment = x,
-                                          assayIndicator = indicator)
+              MultiAssay <- subsetByAssay(x = x,
+                                          y = indicator)
             }
             if(drop){
               emptyAssays <- lapply(Elist(MultiAssay), .isEmpty)

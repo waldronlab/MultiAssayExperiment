@@ -113,22 +113,18 @@ setMethod("getHits", signature("RangedRaggedAssay", "character"),
             }
           })
 
-.sBSubRRAright <- function(x, j) {
-  x <- callNextMethod(x = x, i = j)
-  return(x)
-}
-
 .RangedBracketSubsetRRA <- function(x, i, j, ..., drop) {
   if (length(drop) != 1L || (!missing(drop) && drop)) {
     warning("'drop' ignored '[,", class(x), ",ANY,ANY-method'")
   }
   if (!missing(j)) {
-    x <- .sBSubRRAright(x, j)
+    x <- callNextMethod(x = x, i = j)
   }
   if (!missing(i)) {
     x <- endoapply(x, function(rra) {
       subsetByOverlaps(rra, i, ...)
-      # x <- x[relist(subsetByOverlaps(unlist(x, use.names = FALSE), i, ...), x)]
+      # x <- x[relist(subsetByOverlaps(unlist(x,
+      # use.names = FALSE), i, ...), x)]
     })
   }
   return(x)
@@ -142,7 +138,7 @@ setMethod("getHits", signature("RangedRaggedAssay", "character"),
     return(x)
   }
   if (!missing(j)) {
-    x <- .sBSubRRAright(x, j)
+    x <- callNextMethod(x = x, i = j)
   }
   if (!missing(i)) {
     if (is.character(i)) {
@@ -154,12 +150,25 @@ setMethod("getHits", signature("RangedRaggedAssay", "character"),
   return(x)
 }
 
-#' @describeIn MultiAssayExperiment Subset RangedRaggedAssay using GRanges object 
-setMethod("[", c("RangedRaggedAssay", "GRanges", "ANY"),
-          .RangedBracketSubsetRRA)
-#' @describeIn MultiAssayExperiment Subset RangedRaggedAssay using character vector
+#' Subset RangedRaggedAssay 
+#' 
+#' @description 
+#' Subsetting a RangedRaggedAssay can be done using either rownames and column
+#' names
+#' 
+#' @param x A \code{\link{RangedRaggedAssay}} class
+#' @param i Either a \code{character} or \code{GRanges} class object 
+#' to subset by rows
+#' @param j Either a \code{character}, \code{numeric}, or \code{logical} 
+#' type for selecting columns (\code{\link[GenomicRanges]{GRangesList}} method)
+#' @param ... Any additional arguments passed on to subsetByOverlaps
+#' @seealso \code{\link[IRanges]{findOverlaps-methods}}
+#' @return A \code{\link{RangedRaggedAssay}} class object
+#' @exportMethod [ 
 setMethod("[", c("RangedRaggedAssay", "ANY", "ANY"),
           .sBracketSubsetRRA)
+setMethod("[", c("RangedRaggedAssay", "GRanges", "ANY"),
+          .RangedBracketSubsetRRA)
 
 .isEmpty <- function(object) {
   unname(ncol(object)) == 0L | unname(nrow(object)) == 0L
@@ -239,3 +248,86 @@ setMethod("query", "MultiAssayView", function(object)
 #' @exportMethod isEmpty
 setMethod("isEmpty", "MultiAssayExperiment", function(x)
   length(x) == 0L)
+
+#' Subset MultiAssayExperiment object by Assay type
+#' 
+#' Select which assay(s) to obtain from available datasets
+#' 
+#' @param x A \code{\link{MultiAssayExperiment}} object
+#' @param y Either a \code{numeric}, \code{character} or
+#' \code{logical} object indicating what assay(s) to select  
+#' @return A \code{\link{MultiAssayExperiment}} object 
+setGeneric("subsetByAssay", function(x, y) standardGeneric("subsetByAssay"))
+setMethod("subsetByAssay", c("MultiAssayExperiment", "ANY"), function(x, y) {
+  newSubset <- Elist(x)[y]
+  listMap <- toListMap(sampleMap(x), "assayname")
+  newMap <- listMap[y]
+  newMap <- .convertList(newMap)
+  sampleMap(x) <- newMap
+  Elist(x) <- newSubset
+  return(x)
+})
+
+#' Subset MultiAssayExperiment object
+#' 
+#' \code{subsetByColumn} returns a subsetted 
+#' \code{\linkS4class{MultiAssayExperiment}} object
+#'
+#' @param x A \code{\link{MultiAssayExperiment}} object 
+#' @param y Either a \code{numeric}, \code{character} or
+#' \code{logical} object indicating what rownames in the pData to select
+#' for subsetting
+#' @return A \code{\link{MultiAssayExperiment}} object 
+setGeneric("subsetByColumn", function(x, y) standardGeneric("subsetByColumn"))
+setMethod("subsetByColumn", c("MultiAssayExperiment", "ANY"), function(x, y) {
+  selectors <- rownames(pData(x))[y]
+  listMap <- toListMap(sampleMap(x), "assayname")
+  listMap <- listMap[order(names(x))]
+  listMap <- lapply(listMap, function(assay) {
+    assay[which(as.vector(assay[, 1]) %in% selectors),]
+  })
+  newMap <- .convertList(listMap)
+  columns <- lapply(listMap, function(mapChunk) {mapChunk[, 2, drop = TRUE]})
+  newSubset <- mapply(function(x, j) {x[, j, drop = FALSE]},
+                      x = Elist(x), j = columns)
+  newSubset <- Elist(newSubset)
+  Elist(x) <- newSubset
+  sampleMap(x) <- newMap
+  return(x)
+})
+
+setMethod("subsetByColumn", c("MultiAssayExperiment", "character"), 
+          function(x, y) {
+            logMatches <- rownames(pData(x)) %in% y
+            if (!any(logMatches)){
+              stop("No matching identifiers found")
+            }
+            callNextMethod(x = x, y = logMatches)
+          })
+
+setClassUnion("GRangesORcharacter", c("GRanges", "character"))
+
+#' Subset MultiAssayExperiment object by Feature
+#' 
+#' Subset MultiAssayExperiment class by provided feature names
+#' 
+#' @param x A \code{\link{MultiAssayExperiment}} object
+#' @param y A \code{character} vector or \code{GRanges} class object
+#' containing feature names or ranges
+#' @param ... Additional arguments to pass to low level subsetting function
+#' @return A \code{\link{MultiAssayExperiment}} object 
+setGeneric("subsetByRow", function(x, y, ...) standardGeneric("subsetByRow"))
+setMethod("subsetByRow", c("MultiAssayExperiment", "GRangesORcharacter"), function(x, y, ...) {
+  hitList <- getHits(x, y, ...)
+  Elist(x) <- Elist(mapply(function(f, g) {
+    f[g, , drop =  FALSE]
+  }, f = Elist(x), g = hitList))
+  return(x)
+})
+
+setMethod("subsetByRow", c("MultiAssayExperiment", "GRanges"), function(x, y, ...) {
+  if (is.null(names(y))) {
+    names(y) <- 1:length(y)
+  }
+  callNextMethod(x = x, y = y, ...)
+})
