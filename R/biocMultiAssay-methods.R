@@ -289,7 +289,7 @@ setMethod("subsetByColumn", c("MultiAssayExperiment", "ANY"), function(x, y) {
   newMap <- listToMap(listMap)
   columns <- lapply(listMap, function(mapChunk) {mapChunk[, 2, drop = TRUE]})
   newSubset <- mapply(function(x, j) {x[, j, drop = FALSE]},
-                      x = Elist(x), j = columns)
+                      x = Elist(x), j = columns, SIMPLIFY = FALSE)
   newSubset <- Elist(newSubset)
   Elist(x) <- newSubset
   sampleMap(x) <- newMap
@@ -321,7 +321,7 @@ setMethod("subsetByRow", c("MultiAssayExperiment", "GRangesORcharacter"), functi
   hitList <- getHits(x, y, ...)
   Elist(x) <- Elist(mapply(function(f, g) {
     f[g, , drop =  FALSE]
-  }, f = Elist(x), g = hitList))
+  }, f = Elist(x), g = hitList, SIMPLIFY = FALSE))
   return(x)
 })
 
