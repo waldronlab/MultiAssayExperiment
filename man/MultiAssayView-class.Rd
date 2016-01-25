@@ -2,55 +2,44 @@
 % Please edit documentation in R/MultiAssayView-class.R, R/biocMultiAssay-methods.R
 \docType{class}
 \name{MultiAssayView-class}
+\alias{.MultiAssayView}
+\alias{MultiAssayView}
 \alias{MultiAssayView-class}
-\alias{getMap,MultiAssayView-method}
 \alias{length,MultiAssayView-method}
 \alias{names,MultiAssayView-method}
-\alias{query,MultiAssayView-method}
-\alias{type,MultiAssayView-method}
-\title{An identifier class used for staging a subset operation}
+\title{An class used for staging a subset operation}
 \usage{
-\S4method{getMap}{MultiAssayView}(object)
-
 \S4method{names}{MultiAssayView}(x)
 
 \S4method{length}{MultiAssayView}(x)
-
-\S4method{type}{MultiAssayView}(object)
-
-\S4method{query}{MultiAssayView}(object)
 }
 \arguments{
-\item{x}{A \code{\link{MultiAssayView}} class object}
+\item{x}{A \code{\linkS4class{MultiAssayView}} class object}
 }
 \value{
 A character vector of experiment names
 }
 \description{
-An identifier class used for staging a subset operation
+An class used for staging a subset operation
 }
 \section{Methods (by generic)}{
 \itemize{
-\item \code{getMap}: Convert map from list to DataFrame
-
 \item \code{names}: Get the names from the kept elements in the Elist
 
 \item \code{length}: Get the number of assays from kept slot
-
-\item \code{type}: Get the staging type (either by colnames,
-rownames, assays)
-
-\item \code{query}: Get the identifiers used for staging
 }}
 \section{Slots}{
 
 \describe{
-\item{\code{query}}{Any class indicator needed to subset}
+\item{\code{subject}}{A MultiAssayExperiment instance}
 
-\item{\code{keeps}}{A \code{list} indicating valid matches in each assay}
+\item{\code{rowindex}}{An \code{IntegerList} indexing rows of subject
+retained for subsequent operations}
 
-\item{\code{drops}}{A \code{list} of excluded information due to subsetting}
+\item{\code{colindex}}{An \code{IntegerList} indexing columns of sujbect
+retained for subsequent operations}
 
-\item{\code{type}}{A \code{character} vector indicating method used to search}
+\item{\code{assayindex}}{An \code{IntegerList} indexing assays of subject
+retained for subsequent operations}
 }}
 

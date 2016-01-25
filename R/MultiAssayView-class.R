@@ -6,17 +6,20 @@
 #'
 #' @slot subject A MultiAssayExperiment instance
 #' @slot rowindex An \code{IntegerList} indexing rows of subject
-#'     retained for subsequent work.
+#'     retained for subsequent operations
 #' @slot colindex An \code{IntegerList} indexing columns of sujbect
-#'     retained for subsequent work.
+#'     retained for subsequent operations
+#' @slot assayindex An \code{IntegerList} indexing assays of subject
+#'     retained for subsequent operations
 #' @exportClass MultiAssayView
-
+#' @aliases MultiAssayView
 .MultiAssayView <- setClass("MultiAssayView",
          representation(
              subject = "environment",
-             rowindex="IntegerList",
-             colindex="IntegerList")
-         )
+             rowindex = "IntegerList",
+             colindex = "IntegerList", 
+             assayindex = "integer"
+         ))
 
 .idxlist <- function(x) {
     nms <- names(x)
@@ -26,11 +29,13 @@
     setNames(relist(idx, x), nms)
 }
 
+#' @export MultiAssayView
 MultiAssayView <- function(subject) {
     stopifnot(inherits(subject, "MultiAssayExperiment"))
     .MultiAssayView(subject=as.environment(list(subject=subject)),
                     rowindex=.idxlist(rownames(subject)),
-                    colindex=.idxlist(colnames(subject)))
+                    colindex=.idxlist(colnames(subject)),
+                    assayindex = seq_along(subject))
 }
 
 .subject <- function(x) {
@@ -42,6 +47,9 @@ MultiAssayView <- function(subject) {
 
 .colindex <- function(x)
     getElement(x, "colindex")
+
+.assayindex <- function(x)
+    getElement(x, "assayindex")
 
 setMethod("rownames", "MultiAssayView", function(x) {
     CharacterList(rownames(.subject(x)))[.rowindex(x)]
@@ -70,8 +78,8 @@ setReplaceMethod("colnames", c("MultiAssayView", "ANY"),
     ## FIXME: below is +/- ok for typeof(i) == character only
     index[which(names %in% i)]
 
-setMethod("[", c("MultiAssayView", "ANY", "ANY"),
-    function(x, i, j, ..., drop=TRUE)
+setMethod("[", c("MultiAssayView", "ANY", "ANY", "ANY"),
+    function(x, i, j, k, ..., drop=TRUE)
 {
     rowindex <- .rowindex(x)
     if (!missing(i))
@@ -79,7 +87,10 @@ setMethod("[", c("MultiAssayView", "ANY", "ANY"),
     colindex <- .colindex(x)
     if (!missing(j))
         colindex <- .subset1(j, colindex, colnames(x))
-    initialize(x, rowindex=rowindex, colindex=colindex)
+    assayindex <- .assayindex(x)
+    if (!missing(k))
+        assayindex <- assayindex[k]
+    initialize(x, rowindex=rowindex, colindex=colindex, assayindex = assayindex)
     ## FIXME: row/colnames should be updated to reflect subsets ?
 })
 
@@ -89,6 +100,7 @@ materialize <- function(x)
 
     subject <- .subject(x)
     elist <- Elist(subject)
+    elist <- elist[names(x)]
     elist <- mendoapply(function(e, i) e[i,,drop=FALSE], elist, rownames(x))
     elist <- mendoapply(function(e, j) e[,j, drop=FALSE], elist, colnames(x))
     initialize(subject, Elist=elist)

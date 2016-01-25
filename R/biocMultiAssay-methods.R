@@ -203,46 +203,17 @@ setMethod("[", c("RangedRaggedAssay", "GRanges", "ANY"),
 setMethod("[", c("MultiAssayExperiment", "ANY", "ANY", "ANY"),
           .subsetMultiAssayExperiment)
 
-#' Convert MultiAssayView slot 'keeps' to Map
-#'
-#' @param object An \linkS4class{MultiAssayView} class object
-#' @return Returns a DataFrame representation of colnames
-#' @export getMap
-setGeneric("getMap", function(object) standardGeneric("getMap"))
-#' @describeIn MultiAssayView Convert map from list to DataFrame
-setMethod("getMap", "MultiAssayView", function(object) {
-  listToMap(object, "keeps")
-})
-
-#' @param x A \code{\link{MultiAssayView}} class object
+#' @param x A \code{\linkS4class{MultiAssayView}} class object
 #' @return A character vector of experiment names
 #' @exportMethod names
 #' @describeIn MultiAssayView Get the names from the kept elements in the Elist
 setMethod("names", "MultiAssayView", function(x)
-  names(getElement(x, "keeps"))
+  names(getElement(x, "subject")[["subject"]])
 )
 
 #' @describeIn MultiAssayView Get the number of assays from kept slot 
 setMethod("length", "MultiAssayView", function(x)
-  length(getElement(x, "keeps"))
-)
-
-#' Generic Accessor Functions
-#' @param x A \code{\linkS4class{MultiAssayView}} class object
-#' @return A \code{character} atomic vector
-#' @exportMethod type
-setGeneric("type", function(object) standardGeneric("type"))
-#' @describeIn MultiAssayView Get the staging type (either by colnames,
-#' rownames, assays)
-setMethod("type", "MultiAssayView", function(object)
-  getElement(object, "type")
-)
-
-#' @exportMethod query
-setGeneric("query", function(object) standardGeneric("query"))
-#' @describeIn MultiAssayView Get the identifiers used for staging
-setMethod("query", "MultiAssayView", function(object)
-  getElement(object, "query")
+  length(getElement(x, "subject")[["subject"]])
 )
 
 #' @exportMethod isEmpty
