@@ -4,10 +4,10 @@
 \alias{mapToList}
 \title{Convert map from data.frame or DataFrame to list}
 \usage{
-mapToList(mapdf, assayCol = NULL)
+mapToList(object, assayCol = NULL)
 }
 \arguments{
-\item{mapdf}{A \code{data.frame} or \code{DataFrame} object with
+\item{object}{A \code{data.frame} or \code{DataFrame} object with
 identifiers in the first column}
 
 \item{assayCol}{A character vector of length one indicating the assay
