@@ -47,6 +47,7 @@ Collate:
     'RangedRaggedAssay-class.R'
     'biocMultiAssay-methods.R'
     'biocMultiAssay.R'
+    'listToMap.R'
+    'mapToList.R'
     'subset.R'
-    'toListMap.R'
 RoxygenNote: 5.0.1

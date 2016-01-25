@@ -211,7 +211,7 @@ setMethod("[", c("MultiAssayExperiment", "ANY", "ANY", "ANY"),
 setGeneric("getMap", function(object) standardGeneric("getMap"))
 #' @describeIn MultiAssayView Convert map from list to DataFrame
 setMethod("getMap", "MultiAssayView", function(object) {
-  .convertList(object, "keeps")
+  listToMap(object, "keeps")
 })
 
 #' @param x A \code{\link{MultiAssayView}} class object
@@ -260,9 +260,9 @@ setMethod("isEmpty", "MultiAssayExperiment", function(x)
 setGeneric("subsetByAssay", function(x, y) standardGeneric("subsetByAssay"))
 setMethod("subsetByAssay", c("MultiAssayExperiment", "ANY"), function(x, y) {
   newSubset <- Elist(x)[y]
-  listMap <- toListMap(sampleMap(x), "assayname")
+  listMap <- mapToList(sampleMap(x), "assayname")
   newMap <- listMap[y]
-  newMap <- .convertList(newMap)
+  newMap <- listToMap(newMap)
   sampleMap(x) <- newMap
   Elist(x) <- newSubset
   return(x)
@@ -281,12 +281,12 @@ setMethod("subsetByAssay", c("MultiAssayExperiment", "ANY"), function(x, y) {
 setGeneric("subsetByColumn", function(x, y) standardGeneric("subsetByColumn"))
 setMethod("subsetByColumn", c("MultiAssayExperiment", "ANY"), function(x, y) {
   selectors <- rownames(pData(x))[y]
-  listMap <- toListMap(sampleMap(x), "assayname")
+  listMap <- mapToList(sampleMap(x), "assayname")
   listMap <- listMap[order(names(x))]
   listMap <- lapply(listMap, function(assay) {
     assay[which(as.vector(assay[, 1]) %in% selectors),]
   })
-  newMap <- .convertList(listMap)
+  newMap <- listToMap(listMap)
   columns <- lapply(listMap, function(mapChunk) {mapChunk[, 2, drop = TRUE]})
   newSubset <- mapply(function(x, j) {x[, j, drop = FALSE]},
                       x = Elist(x), j = columns)

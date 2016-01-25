@@ -244,14 +244,14 @@ The following non-exported convenience function converts a list of `data.frame`
 objects to a valid object for the `sampleMap`:
 
 ```{r, message = FALSE}
-dfmap <- biocMultiAssay:::.convertList(listmap)
+dfmap <- listToMap(listmap)
 dfmap
 ```
 
 Note, `dfmap` can be reverted to a list with another provided function:
 
 ```{r, eval=FALSE}
-toListMap(dfmap, "assayname")
+mapToList(dfmap, "assayname")
 ```
 
 ## Experimental data as a `list()`

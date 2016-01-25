@@ -9,7 +9,7 @@
 }
 
 .separateMap <- function(object, ids){
-	listDFsampleMap <- toListMap(sampleMap(object), "assayname")
+	listDFsampleMap <- mapToList(sampleMap(object), "assayname")
 	listDFsampleMap <- listDFsampleMap[order(names(Elist(object)))]
 	loglistmatch <- lapply(listDFsampleMap, function(map) { as.vector(map[,"master"]) %in% ids })
 	keeps <- Map(function(x, y) { x[y,] }, listDFsampleMap, loglistmatch)

@@ -1,34 +1,3 @@
-.convertList <- function(object, type = "colnames") {
-  listmap <- object
-  DFmap <- lapply(seq_along(listmap), FUN = function(i, x) {
-    if (type == "colnames") {
-      if (isEmpty(x[i])) {
-        S4Vectors::DataFrame(master = Rle(NA),
-                             assay = NA,
-                             assayname = Rle(names(x)[i]))
-      } else {
-        S4Vectors::DataFrame(master = Rle(x[[i]][, 1]),
-                             assay = x[[i]][, 2],
-                             assayname = Rle(names(x)[i]))
-      }
-    } else if (type == "rownames") {
-      if (isEmpty(x[i])) {
-        S4Vectors::DataFrame(feature = NA,
-                             assayname = Rle(names(x)[i]))
-      } else {
-        S4Vectors::DataFrame(feature = x[[i]][, 1],
-                             assayname = Rle(names(x)[i]))
-      }
-    } else if (type == "assays") {
-      S4Vectors::DataFrame(value = x[[i]],
-                           assayname = names(x)[i])
-    }
-  }, x = listmap)
-  newMap <- do.call(S4Vectors::rbind, DFmap)
-  newMap <- newMap[!is.na(newMap[, 1]), ]
-  return(newMap)
-}
-
 #' Subset MultiAssayExperiment object
 #' \code{subset} returns a subsetted \code{\linkS4class{MultiAssayExperiment}}
 #' object

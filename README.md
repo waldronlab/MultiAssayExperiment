@@ -22,7 +22,7 @@ Here is a [calendar](https://www.google.com/calendar/embed?src=9ar0qc8mpkv6b9int
 
 A vignette describing the creation of the `MultiAssayExperiment` object
 and subsetting can be found in the *vignettes* directory under the name
-*biocMultiAssayToyExample.Rmd*. 
+*MultiAssayExperiment.Rmd*. 
 
 # Object documentation & Manual Generation
 
