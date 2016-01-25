@@ -7,6 +7,7 @@
 \alias{[,MultiAssayExperiment,ANY-method}
 \alias{assay,MultiAssayExperiment,ANY-method}
 \alias{colnames,MultiAssayExperiment-method}
+\alias{isEmpty,MultiAssayExperiment-method}
 \alias{length,MultiAssayExperiment-method}
 \alias{metadata,MultiAssayExperiment-method}
 \alias{names,MultiAssayExperiment-method}
@@ -35,6 +36,8 @@
 \S4method{assay}{MultiAssayExperiment,ANY}(x)
 
 \S4method{[}{MultiAssayExperiment,ANY}(x, i, j, k, ..., drop = TRUE)
+
+\S4method{isEmpty}{MultiAssayExperiment}(x)
 
 \S4method{subset}{MultiAssayExperiment}(x, indicator, method = NULL,
   drop = TRUE, ...)
@@ -104,6 +107,9 @@ MultiAssayExperiment
 MultiAssayExperiment as a list
 
 \item \code{[}: Subset a MultiAssayExperiment object
+
+\item \code{isEmpty}: Logical value of empty 
+\code{MultiAssayExperiment}
 
 \item \code{subset}: Subset a
 \code{\linkS4class{MultiAssayExperiment}} class object

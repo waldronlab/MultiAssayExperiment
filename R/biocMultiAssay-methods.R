@@ -203,20 +203,20 @@ setMethod("[", c("RangedRaggedAssay", "GRanges", "ANY"),
 setMethod("[", c("MultiAssayExperiment", "ANY", "ANY", "ANY"),
           .subsetMultiAssayExperiment)
 
-#' @param x A \code{\linkS4class{MultiAssayView}} class object
-#' @return A character vector of experiment names
-#' @exportMethod names
-#' @describeIn MultiAssayView Get the names from the kept elements in the Elist
+#' @describeIn MultiAssayView Get a \code{character} vector of experiment names
 setMethod("names", "MultiAssayView", function(x)
   names(getElement(x, "subject")[["subject"]])
 )
 
-#' @describeIn MultiAssayView Get the number of assays from kept slot 
+#' @describeIn MultiAssayView Get the number of assays in the
+#' \code{MultiAssayExperiment} instance
 setMethod("length", "MultiAssayView", function(x)
   length(getElement(x, "subject")[["subject"]])
 )
 
 #' @exportMethod isEmpty
+#' @describeIn MultiAssayExperiment Logical value of empty
+#' \code{MultiAssayExperiment}
 setMethod("isEmpty", "MultiAssayExperiment", function(x)
   length(x) == 0L)
 

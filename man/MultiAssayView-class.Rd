@@ -5,33 +5,39 @@
 \alias{.MultiAssayView}
 \alias{MultiAssayView}
 \alias{MultiAssayView-class}
+\alias{colnames,MultiAssayView-method}
 \alias{length,MultiAssayView-method}
 \alias{names,MultiAssayView-method}
-\title{An class used for staging a subset operation}
+\alias{rownames,MultiAssayView-method}
+\title{A class used for staging a subset operation}
 \usage{
+\S4method{rownames}{MultiAssayView}(x)
+
+\S4method{colnames}{MultiAssayView}(x)
+
 \S4method{names}{MultiAssayView}(x)
 
 \S4method{length}{MultiAssayView}(x)
 }
-\arguments{
-\item{x}{A \code{\linkS4class{MultiAssayView}} class object}
-}
-\value{
-A character vector of experiment names
-}
 \description{
-An class used for staging a subset operation
+Use a \code{MultiAssayView} class to initialize a subsetting operation 
+of a \code{\linkS4class{MultiAssayExperiment}} class object
 }
 \section{Methods (by generic)}{
 \itemize{
-\item \code{names}: Get the names from the kept elements in the Elist
+\item \code{rownames}: Get a CharacterList of rownames
 
-\item \code{length}: Get the number of assays from kept slot
+\item \code{colnames}: Get a CharacterList of colnames
+
+\item \code{names}: Get a \code{character} vector of experiment names
+
+\item \code{length}: Get the number of assays in the 
+\code{MultiAssayExperiment} instance
 }}
 \section{Slots}{
 
 \describe{
-\item{\code{subject}}{A MultiAssayExperiment instance}
+\item{\code{subject}}{A \code{\linkS4class{MultiAssayExperiment}} instance}
 
 \item{\code{rowindex}}{An \code{IntegerList} indexing rows of subject
 retained for subsequent operations}

@@ -2,9 +2,12 @@
 ### MultiAssayView class
 ### ==============================================
 
-#' An class used for staging a subset operation
+#' A class used for staging a subset operation
 #'
-#' @slot subject A MultiAssayExperiment instance
+#' Use a \code{MultiAssayView} class to initialize a subsetting operation
+#' of a \code{\linkS4class{MultiAssayExperiment}} class object
+#'
+#' @slot subject A \code{\linkS4class{MultiAssayExperiment}} instance
 #' @slot rowindex An \code{IntegerList} indexing rows of subject
 #'     retained for subsequent operations
 #' @slot colindex An \code{IntegerList} indexing columns of sujbect
@@ -51,6 +54,7 @@ MultiAssayView <- function(subject) {
 .assayindex <- function(x)
     getElement(x, "assayindex")
 
+#' @describeIn MultiAssayView Get a CharacterList of rownames
 setMethod("rownames", "MultiAssayView", function(x) {
     CharacterList(rownames(.subject(x)))[.rowindex(x)]
 })
@@ -63,6 +67,7 @@ setReplaceMethod("rownames", c("MultiAssayView", "ANY"),
     x
 })
 
+#' @describeIn MultiAssayView Get a CharacterList of colnames
 setMethod("colnames", "MultiAssayView", function(x) {
     CharacterList(colnames(.subject(x)))[.colindex(x)]
 })
