@@ -1,0 +1,468 @@
+---
+title: "MultiAssayExperiment primary vignette"
+author: "Marcel Ramos, Levi Waldron"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+output: 
+  html_document: 
+    number_sections: yes
+    toc: yes
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+---
+
+A built [html][] version of this vignette is available.
+
+```{r, echo=FALSE, warning=FALSE}
+suppressPackageStartupMessages(library(biocMultiAssay))
+```
+
+# API
+
+See the API wiki by typing:
+```{r, eval=FALSE}
+API()
+```
+
+
+# Overview of the `MultiAssayExperiment` class
+
+Here is an overview of the class and its constructors and extractors:
+```{r}
+empty <- MultiAssayExperiment()
+empty
+slotNames(empty)
+class(Elist(empty))       #Elist
+class(pData(empty)) #DataFrame
+class(sampleMap(empty))   #DataFrame
+class(metadata(empty))    #NULL (class "ANY")
+methods(class="MultiAssayExperiment")
+```
+
+Subsetting of samples and features is harmonized through some generic
+functions:
+
+```{r}
+methods("rownames") # features
+methods("colnames") # samples
+```
+
+# pData: primary Data
+The `MultiAssayExperiment` keeps one set of "primary" metadata that describes 
+the biological specimens, and is overarching of all the individual multi-omics 
+assays.  The user can create this as a `data.frame` or a `DataFrame`; in either 
+case it is stored internally as a `DataFrame`.  
+
+In the following examples we will have assays for 4 patients, with the following bit of 
+metadata relating to the patients:
+```{r}
+masPheno <- data.frame(sex=c("M", "F", "M", "F"),
+						  age=38:41,
+						  row.names=c("Jack", "Jill", "Bob", "Barbara"))
+masPheno
+```
+
+# A simple example where sampleMap isn't provided
+
+If each assay uses the same colnames (ie, if the same sample identifiers are 
+used for each experiment), a simple list of these datasets is sufficient for 
+the `MultiAssayExperiment()` constructor function.  It is not necessary for 
+them to have the same rownames or colnames:
+```{r}
+exprss1 <- matrix(rnorm(16), ncol = 4,
+				 dimnames = list(sprintf("ENST00000%i", sample(288754:290000, 4)),
+								 c("Jack", "Jill", "Bob", "Bobby")))
+exprss2 <- matrix(rnorm(12), ncol = 3, 
+				 dimnames = list(sprintf("ENST00000%i", sample(288754:290000, 4)),
+								 c("Jack", "Jane", "Bob")))
+doubleExp <- list("methyl 2k"  = exprss1, "methyl 3k" = exprss2)
+simpleMultiAssay <- MultiAssayExperiment(Elist=doubleExp)
+simpleMultiAssay
+```
+
+In the above example, the user did not provide the `pData` argument so the 
+constructor function filled it with a trivial DataFrame:
+```{r}
+pData(simpleMultiAssay)
+```
+
+But the `pData` can be provided.  Here, note that any assay sample (column) that 
+cannot be mapped to a corresponding row in the provided `pData` gets dropped.  
+This is part of ensuring internal validity of the `MultiAssayExperiment`.
+```{r}
+simpleMultiAssay2 <- MultiAssayExperiment(Elist=doubleExp, pData=masPheno)
+simpleMultiAssay2
+pData(simpleMultiAssay2)
+```
+
+# Creating a `MultiAssayExperiment` object: a rich example
+
+In this section we demonstrate all core supported data classes, using different 
+sample ID conventions for each assay, with master pData. The currently supported 
+classes of datasets are `matrix`, `ExpressionSet`, `RangedSummarizedExperiment`, 
+and `RangedRaggedAssay`. 
+
+## Create toy datasets demonstrating all supported data types
+We have three matrix-like datasets.  First let's say expression data, which in this example we represent as an `ExpressionSet`:
+
+```{r, message=FALSE}
+library(Biobase)
+(arraydat <- matrix(seq(101, 108), ncol=4, dimnames=list(c("ENST00000294241", "ENST00000355076"), c("array1", "array2", "array3", "array4"))))
+arraypdat <- as(data.frame(slope53=rnorm(4), row.names=c("array1", "array2", "array3", "array4")), "AnnotatedDataFrame")
+exprdat <- ExpressionSet(assayData=arraydat, phenoData=arraypdat)
+exprdat
+```
+
+The following map matches pData sample names to exprdata sample
+names.  Note that row orders aren't initially matched up, and this is OK.
+
+```{r}
+(exprmap <- data.frame(master=rownames(masPheno)[c(1, 2, 4, 3)],
+					   assay=c("array1", "array2", "array3", "array4"), stringsAsFactors = FALSE))
+```
+
+Now methylation data, which we will represent as a `matrix`.  It uses 
+gene identifiers also, but measures a partially overlapping set of genes.  
+For fun, let's store this as a simple matrix. Also, it contains a replicate 
+for one of the patients.
+
+```{r}
+(methyldat <- matrix(1:10, ncol=5, 
+                     dimnames=list(c("ENST00000355076", "ENST00000383706"),
+                                   c("methyl1", "methyl2", "methyl3", "methyl4", "methyl5"))))
+```
+
+The following map matches pData sample names to methyldat sample
+names.
+
+```{r}
+(methylmap <- data.frame(master = c("Jack", "Jack", "Jill", "Barbara", "Bob"),
+                        assay = c("methyl1", "methyl2", "methyl3", "methyl4", "methyl5"), stringsAsFactors = FALSE))
+```
+
+Now we have a microRNA platform, which has no common identifiers with the other datasets, 
+and which we also represent as a `matrix`.  It
+is also missing data for Jill.  Just for fun, let's use the same
+sample naming convention as we did for arrays.
+
+```{r}
+(microdat <- matrix(201:212, ncol=3, 
+                    dimnames=list(c("hsa-miR-21", "hsa-miR-191", "hsa-miR-148a", "hsa-miR148b"), 
+                                  c("micro1", "micro2", "micro3"))))
+```
+
+And the following map matches pData sample names to microdat
+sample names.
+
+```{r}
+(micromap <- data.frame(master = c("Jack", "Barbara", "Bob"),
+                        assay = c("micro1", "micro2", "micro3"), stringsAsFactors = FALSE))
+```
+
+Let's include a `RangedRaggedAssay`, which is defined in this package and extends 
+`GRangesList`.  This is intended for data such as segmented copy number, which provide 
+genomic ranges that may be different for each sample.  We start with a `GRangesList`, 
+which will later be converted automatically by the `MultiAssayExperiment` constructor 
+function.
+
+```{r}
+suppressPackageStartupMessages(library(GenomicRanges))
+gr1 <-
+  GRanges(seqnames = "chr3", ranges = IRanges(58000000, 59502360), #completely encompasses ENST00000355076
+          strand = "+", score = 5L, GC = 0.45)
+gr2 <-
+  GRanges(seqnames = c("chr3", "chr3"),
+          ranges = IRanges(c(58493000, 3), width=9000), #first is within ENST0000035076
+          strand = c("+", "-"), score = 3:4, GC = c(0.3, 0.5))
+gr3 <-
+  GRanges(seqnames = c("chr1", "chr2"),
+          ranges = IRanges(c(1, 4), c(3, 9)),
+          strand = c("-", "-"), score = c(6L, 2L), GC = c(0.4, 0.1))
+grl <- GRangesList("gr1" = gr1, "gr2" = gr2, "gr3" = gr3)
+names(grl) <- c("snparray1", "snparray2", "snparray3")
+grl
+```
+
+The following `data.frame` matches pData sample to the
+`GRangesList`:
+
+```{r}
+(rangemap <- data.frame(master = c("Jack", "Jill", "Jill"), 
+						assay = c("snparray1", "snparray2", "snparray3"), stringsAsFactors = FALSE))
+```
+
+Finally, we create a dataset of class `RangedSummarizedExperiment`:
+
+```{r}
+library(SummarizedExperiment)
+nrows <- 5; ncols <- 4
+counts <- matrix(runif(nrows * ncols, 1, 1e4), nrows)
+rowRanges <- GRanges(rep(c("chr1", "chr2"), c(2, nrows - 2)),
+                     IRanges(floor(runif(nrows, 1e5, 1e6)), width=100),
+                     strand=sample(c("+", "-"), nrows, TRUE),
+                     feature_id=sprintf("ID\\%03d", 1:nrows))
+names(rowRanges) <- letters[1:5]
+colData <- DataFrame(Treatment=rep(c("ChIP", "Input"), 2),
+                     row.names= c("mysnparray1", "mysnparray2", "mysnparray3", "mysnparray4"))
+rse <- SummarizedExperiment(assays=SimpleList(counts=counts),
+                            rowRanges=rowRanges, colData=colData)
+```
+
+```{r}
+(rangemap2 <- data.frame(master = c("Jack", "Jill", "Bob", "Barbara"), 
+                        assay = c("mysnparray1", "mysnparray2", "mysnparray3", "mysnparray4"), stringsAsFactors = FALSE))
+```
+
+## sampleMap
+Because we used platform-specific sample identifiers (e.g. mysnparray1, etc), 
+we must create an ID map for all available experiments. The `MultiAssayExperiment` 
+constructor function can do this automatically if a single naming convention is used, 
+bypassing this step.  You must provide a three-column `data.frame` or `DataFrame`, 
+with the following columns and exactly the specified column names:
+
+1. **master** provides the "master" sample names.  All values in this column must also 
+be present in the rownames of pData(MultiAssayExperiment). In this example, allowable 
+values in this column are "Jack", "Jill", "Barbara", and "Bob".
+2. **assay** provides the sample names used by experimental datasets, which in practice 
+are often different than the master sample names.  For each assay, every sample name 
+must be found in this column: for example, every value returned by colnames(exprdat) 
+must be found among the rows containing `Affy`.  Otherwise, those assays would be 
+orphaned: it would be impossible to match them up to samples in the overall experiment.  
+However, duplicated values are allowed, to represent replicates with the same overall 
+experiment-level annotation.
+3. **assayname** provides the names of the different experiments / assays performed.  
+These are user-defined, with the only requirement that the names of the `Elist`, where 
+the experimental assays are stored, must be contained in this column. In this example 
+we will use the following names:
+
+```{r}
+listmap <- list(exprmap, methylmap, micromap, rangemap, rangemap2)
+names(listmap) <- c("Affy", "Methyl 450k", "Mirna", "CNV gistic", "CNV gistic2")
+listmap
+```
+
+The following non-exported convenience function converts a list of `data.frame` 
+objects to a valid object for the `sampleMap`:
+
+```{r, message = FALSE}
+dfmap <- biocMultiAssay:::.convertList(listmap)
+dfmap
+```
+
+Note, `dfmap` can be reverted to a list with another provided function:
+
+```{r, eval=FALSE}
+toListMap(dfmap, "assayname")
+```
+
+## Experimental data as a `list()`
+Create an named list of experiments for the MultiAssay function. All of these names 
+must be found within in the third column of `dfmap`:
+
+```{r}
+objlist <- list("Affy" = exprdat, "Methyl 450k" = methyldat, "Mirna" = microdat, "CNV gistic" = grl, "CNV gistic2" = rse)
+```
+
+## Creation of the `MultiAssayExperiment` class object
+
+We recommend using the `MultiAssayExperiment()` constructor function:
+
+```{r}
+myMultiAssay <- MultiAssayExperiment(objlist, masPheno, dfmap)
+myMultiAssay
+```
+
+The following extractor functions can be used to get extract data from the object:
+
+```{r}
+Elist(myMultiAssay)
+pData(myMultiAssay)
+sampleMap(myMultiAssay)
+metadata(myMultiAssay)
+```
+
+Note that the `Elist` class extends the `SimpleList` class to add some 
+validity checks specific to `MultiAssayExperiment`.  It can be used like a list.
+
+# `RangedRaggedAssay` class
+
+Note that the GRangesList got converted to a `RangedRaggedAssay`, a class 
+intended for data such as segmented copy number that is provides different 
+genomic ranges for each sample.  `RangedRaggedAssay` is defined by this 
+package and inherits from `GRangesList`:
+
+```{r}
+methods(class="RangedRaggedAssay")
+getMethod("colnames", "RangedRaggedAssay")
+```
+
+It has some additional methods that are required for any data class contained 
+in a `MultiAssayExperiment`:
+```{r}
+class(Elist(myMultiAssay)[[4]])
+rownames(Elist(myMultiAssay)[[4]])
+colnames(Elist(myMultiAssay)[[4]])
+assay(Elist(myMultiAssay)[[4]])
+```
+
+# Subsetting
+
+The core functionality of `MultiAssayExperiment` is to allow subsetting by 
+assay, rownames, and colnames, across all experiments simultaneously while 
+guaranteeing continued matching of samples.
+
+## Subsetting by sample / columns
+
+Subsetting by column, i.e. columns, will be more obvious after recalling the pData:
+```{r}
+pData(myMultiAssay)
+```
+
+Subsetting by samples acts on the pData DataFrame, and can be done using an integer, 
+a character vector containing rownames of pData, or logical.  For example using an 
+integer to keep the first two rows of pData:
+```{r}
+subset(myMultiAssay, 1:2, "colnames")
+```
+
+Note that the above operation keeps different numbers of columns / samples from each 
+assay, reflecting the reality that some samples may not have been assayed in all 
+experiments, and may have replicates in some.  Another example using rownames and 
+returning the same result:
+```{r}
+subset(myMultiAssay, c("Jack", "Jill"), "colnames")
+```
+
+And finally, an example using a logical:
+```{r}
+subset(myMultiAssay, pData(myMultiAssay)$sex=="M", "colnames")
+```
+
+## Subsetting by assays
+
+You can select certain assays / experiments using subset, by providing a character, 
+logical, or integer vector.  An example using character:
+```{r}
+subset(myMultiAssay, c("Affy", "CNV gistic"), "assays")
+```
+
+Examples using logical and integer:
+```{r}
+is.cnv = grepl("CNV", names(Elist(myMultiAssay)))
+is.cnv
+subset(myMultiAssay, is.cnv, "assays")
+subset(myMultiAssay, which(is.cnv), "assays")
+```
+
+`subset()` is an endogenous operation, in that it always returns another 
+`MultiAssayExperiment` object. Use `assay(myMultiAssay)` to retrieve the 
+experimental data in an ordinary `list` of datasets as their original classes.
+
+## Subsetting by rownames / features IDs
+
+Rownames (feature IDs) **must be specified as a character vector** - integer and 
+logical vectors do not make sense because in general assays may have different 
+identifiers.  This operation always returns a `MultiAssayExperiment` class, with 
+any `Elist` element not containing the feature having zero rows.
+
+
+Returns MultiAssayExperiment where `Affy` and `Methyl 450k` contain
+only ENST0000035076 row, and "Mirna" and "CNV gistic" have zero rows:
+(`drop` argument is set to `TRUE` by default)
+
+```{r}
+featSubsetted0 <- subset(myMultiAssay, "ENST00000355076", "rownames")
+class(featSubsetted0)
+class(Elist(featSubsetted0))
+Elist(featSubsetted0)
+```
+
+In the following, `Affy` ExpressionSet keeps both rows but with their
+order reversed, and `Methyl 450k` keeps only its second row.
+
+```{r, eval=FALSE}
+featSubsetted <- subset(myMultiAssay, c("ENST00000355076", "ENST00000294241"), "rownames")
+exprs(Elist(myMultiAssay)[[1]])
+exprs(Elist(featSubsetted)[[1]])
+```
+
+## Subsetting rows / feature by `GenomicRanges`
+
+For `MultiAssayExperiment` objects containing range-based objects (currently 
+`RangedSummarizedExperiment` and `RangedRaggedAssay`), these can be subset 
+using a `GRanges` object, for example:
+```{r}
+gr <- GRanges(seqnames = c("chr1"), strand = c("-", "+", "-"), 
+              ranges = IRanges(start = c(1, 4, 6), width = 3))
+```
+
+Now do the subsetting.  The function doing the work here is `IRanges::subsetByOverlaps` 
+- see its arguments for flexible types of subsetting by range. The first three arguments 
+here are for `subset`, the rest passed on to `IRanges::subsetByOverlaps` through "...":
+
+```{r}
+subsetted <- subset(myMultiAssay, gr, "rownames", maxgap = 2L, type = "within")
+Elist(subsetted)
+```
+
+# Bracket operations 
+
+The bracket method for the `MultiAssayExperiment` returns a specified subset of the data.
+The positions within the bracket operator, indicate `rownames`, `colnames`, and `assays` respectively. 
+
+Subset by rownames using the bracket `[` method (only character is allowed):
+```{r}
+myMultiAssay["ENST00000355076", , ]
+```
+
+By columns - character, integer, and logical are allowed:
+```{r}
+myMultiAssay[, "Jack", ]
+myMultiAssay[, 1, ]
+myMultiAssay[, c(TRUE, FALSE, FALSE, FALSE), ]
+```
+
+By assay - character, integer, and logical are allowed:
+```{r}
+myMultiAssay[, , "Mirna"]
+myMultiAssay[, , 3]
+myMultiAssay[, , c(FALSE, FALSE, TRUE, FALSE, FALSE)]
+```
+
+
+
+# Requirements for support of additional data classes
+
+Any data classes in the Elist object must support the following methods:
+
+* `colnames()`
+* `rownames()`
+* `assay()`    #to return experimental data
+* `[`
+
+
+Here is what happens if one of the methods doesn't:
+```{r}
+objlist2 <- objlist
+objlist2[[2]] <- data.frame(objlist2[[2]])
+invalid.obj <- try(MultiAssayExperiment(objlist2, masPheno, dfmap))
+invalid.obj
+```
+
+# Wishlist
+
+* `c()` function for adding new assays to existing `MultiAssayExperiment`
+    + e.g. c(myMultiAssay, neweset)
+    + require that sample names in the new object match pData sample names
+    + require that sample names in the new object already exist in pData
+* Figure out how to support a "long-and-skinny" SQL database
+* "mergeDups" function to merge duplicate samples in any assay
+    + For matrix-like objects, it is clear how to do this. Default would be simple 
+      mean of the columns, but could allow user-specified functions.
+    + For GRangesList, it's not obvious how to merge duplicates.  Just concatenate?
+
+# sessionInfo()
+```{r}
+sessionInfo()
+```
+
+[html]: http://rpubs.com/lwaldron/multiassayexperiment
