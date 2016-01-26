@@ -4,6 +4,16 @@
 
 #' An integrative MultiAssay class for experiment data
 #' 
+#' @description 
+#' The \code{MultiAssayExperiment} class can be used to manage results of 
+#' diverse assays on a collection of specimen. Currently,  the class can handle
+#' assays that are organized instances of \code{RangedSummarizedExperiment}, 
+#' \code{ExpressionSet}, \code{matrix}, \code{RangedRaggedAssay} 
+#' (inherits from \code{GRangesList}), and \code{RangedVcfStack}. Create new
+#' \code{MultiAssayExperiment} instances with the eponymous constructor, 
+#' minimally with the argument \code{\linkS4class{Elist}}, potentially also
+#' with the arguments \code{pData} and \code{sampleMap}
+#' 
 #' @slot Elist A \code{\linkS4class{Elist}} class object for each assay dataset
 #' @slot pData A \code{DataFrame} of all clinical data available across
 #' experiments
@@ -38,8 +48,7 @@ setClass("MultiAssayExperiment",
   return(all(charvec2 %in% charvec1))
 }
 
-## Prepare for unit testing - Travis CI sampleMap is a DataFrame with unique
-## sampleNames across assay
+## sampleMap is a DataFrame with unique sampleNames across assay
 .checkSampleMapNames <- function(object) {
   errors <- character()
   if (!(.allIn(rownames(pData(object)),
@@ -114,12 +123,10 @@ setClass("MultiAssayExperiment",
 S4Vectors::setValidity2("MultiAssayExperiment", .validMultiAssayExperiment)
 
 
-#' Show method for \code{\linkS4class{MultiAssayExperiment}} class
-#' 
-#' @param object A \code{\link{MultiAssayExperiment}} object.
-#' @return Returns a summary of contents for
-#' the \code{\link{MultiAssayExperiment}} class. 
 #' @exportMethod show
+#' @describeIn MultiAssayExperiment Show method for a
+#' \code{MultiAssayExperiment}
+#' @param object A \code{MultiAssayExperiment} class object
 setMethod("show", "MultiAssayExperiment", function(object) {
   o_class <- class(object)
   o_len <- length(object)
@@ -158,41 +165,34 @@ setMethod("show", "MultiAssayExperiment", function(object) {
 ### Accessor methods
 ###
 
-#' Generic Accessor Functions
-#' 
-#' @param x A \code{\link{MultiAssayExperiment}} object.
-#' @return A \code{list} object. 
-#' @exportMethod sampleMap
+#' Accessor function for the \code{sampleMap} slot of a
+#' \code{MultiAssayExperiment} object
+#'
+#' @param x A \code{MultiAssayExperiment} object
+#' @return A \code{DataFrame} object of sample relationships across experiments
 setGeneric("sampleMap", function(x) standardGeneric("sampleMap"))
 #' @describeIn MultiAssayExperiment Access sampleMap slot from
 #' MultiAssayExperiment
 setMethod("sampleMap", "MultiAssayExperiment", function(x)
   getElement(x, "sampleMap"))
 
-
-#' Generic Accessor Functions
-#' 
-#' @return A \code{\linkS4class{Elist}} object.
 #' @exportMethod Elist
 #' @describeIn MultiAssayExperiment Access Elist class from
 #' MultiAssayExperiment
 setMethod("Elist", "MultiAssayExperiment", function(x)
   getElement(x, "Elist"))
 
-#' Generic Accessor Functions
-#' 
-#' @param x A \code{\link{MultiAssayExperiment}} object
-#' @return A \code{DataFrame} object
-#' @exportMethod pData
+#' Accessor function for \code{pData} slot of a \code{MultiAssayExperiment}
+#' object
+#'
+#' @param x A \linkS4class{MultiAssayExperiment} object
+#' @return A \code{DataFrame} object of phenotype/clinical data
 setGeneric("pData", function(x) standardGeneric("pData"))
 #' @describeIn MultiAssayExperiment Access pData slot from
 #' MultiAssayExperiment
 setMethod("pData", "MultiAssayExperiment", function(x)
   getElement(x, "pData"))
 
-#' Generic Acessor Functions 
-#' 
-#' @return Any type of object describing the metadata
 #' @describeIn MultiAssayExperiment Access metadata slot from
 #' MultiAssayExperiment
 #' @exportMethod metadata
@@ -203,31 +203,44 @@ setMethod("metadata", "MultiAssayExperiment", function(x)
 ### Getters
 ###
 
-#' Length of Experiment List
-#' @return An \code{integer} 
 #' @exportMethod length
 #' @describeIn MultiAssayExperiment Get the length of Elist 
 setMethod("length", "MultiAssayExperiment", function(x)
   length(getElement(x, "Elist"))
 )
 
-#' @return A character vector of experiment names
 #' @exportMethod names
 #' @describeIn MultiAssayExperiment Get the names of the Elist
 setMethod("names", "MultiAssayExperiment", function(x)
   names(getElement(x, "Elist"))
 )
 
+#' Replace a slot value with a given \code{DataFrame}
+#' 
+#' @param x A \code{MultiAssayExperiment} object
+#' @param value A \code{DataFrame} object to replace the existing
+#' \code{sampleMap}
 setGeneric("sampleMap<-", function(x, value) standardGeneric("sampleMap<-"))
 #' @exportMethod sampleMap<-
+#' @describeIn MultiAssayExperiment value: A \code{DataFrame} sampleMap 
+#' representation
+#' @param value A \code{DataFrame} or \code{Elist} object to replace the existing
+#' \code{sampleMap} or an \code{Elist} slot, respectively
 setReplaceMethod("sampleMap", c("MultiAssayExperiment", "DataFrame"),
                  function(x, value) {
                    slot(x, "sampleMap") <- value
                    return(x)
                  })
-
+#' Replace an \code{Elist} slot value with a given \code{\linkS4class{Elist}}
+#' class object
+#'
+#' @param x A \code{MultiAssayExperiment} class object
+#' @param value An \code{\linkS4class{Elist}} object to replace the existing
+#' \code{\linkS4class{Elist}} slot
 setGeneric("Elist<-", function(x, value) standardGeneric("Elist<-"))
 #' @exportMethod Elist<-
+#' @describeIn MultiAssayExperiment value: An \linkS4class{Elist} 
+#' representation
 setReplaceMethod("Elist", c("MultiAssayExperiment", "Elist"),
                  function(x, value) {
                    slot(x, "Elist") <- value

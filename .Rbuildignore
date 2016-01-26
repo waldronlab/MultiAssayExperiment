@@ -12,3 +12,4 @@ txt$
 gz$
 cache$
 .travis.yml
+.gitignore

@@ -11,8 +11,6 @@
 #' dimension after subsetting 
 #' @param ... Additional arguments to pass to SubsetByOverlaps when subsetting
 #' by rownames
-#' @describeIn MultiAssayExperiment Subset a
-#' \code{\linkS4class{MultiAssayExperiment}} class object
 #' @export subset
 setMethod("subset", "MultiAssayExperiment",
           function(x, indicator, method = NULL, drop = TRUE, ...) {

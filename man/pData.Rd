@@ -2,17 +2,19 @@
 % Please edit documentation in R/MultiAssayExperiment-class.R
 \name{pData}
 \alias{pData}
-\title{Generic Accessor Functions}
+\title{Accessor function for \code{pData} slot of a \code{MultiAssayExperiment}
+object}
 \usage{
 pData(x)
 }
 \arguments{
-\item{x}{A \code{\link{MultiAssayExperiment}} object}
+\item{x}{A \linkS4class{MultiAssayExperiment} object}
 }
 \value{
-A \code{DataFrame} object
+A \code{DataFrame} object of phenotype/clinical data
 }
 \description{
-Generic Accessor Functions
+Accessor function for \code{pData} slot of a \code{MultiAssayExperiment}
+object
 }
 

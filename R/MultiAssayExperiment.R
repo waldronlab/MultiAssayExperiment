@@ -41,8 +41,8 @@
 
 #' Create a MultiAssayExperiment object 
 #'
-#' This function combines multiple data sources specific to one disease by
-#' matching samples. 
+#' This function combines multiple data elements from the different hierarchies 
+#' of data (study, experiments, and samples)
 #' 
 #' @param Elist A \code{list} of all combined experiments
 #' @param pData A \code{\link[S4Vectors]{DataFrame-class}} of the phenotype

@@ -2,17 +2,19 @@
 % Please edit documentation in R/MultiAssayExperiment-class.R
 \name{sampleMap}
 \alias{sampleMap}
-\title{Generic Accessor Functions}
+\title{Accessor function for the \code{sampleMap} slot of a
+\code{MultiAssayExperiment} object}
 \usage{
 sampleMap(x)
 }
 \arguments{
-\item{x}{A \code{\link{MultiAssayExperiment}} object.}
+\item{x}{A \code{MultiAssayExperiment} object}
 }
 \value{
-A \code{list} object.
+A \code{DataFrame} object of sample relationships across experiments
 }
 \description{
-Generic Accessor Functions
+Accessor function for the \code{sampleMap} slot of a
+\code{MultiAssayExperiment} object
 }
 

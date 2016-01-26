@@ -36,7 +36,9 @@
 #' It contains a \code{SimpleList} of experiments with sample identifiers.
 #' One element present per experiment performed.  
 #' 
-#' @inheritParams S4Vectors::SimpleList
+#' Convert from \code{\link{SimpleList}} or \code{list}
+#' to the multi-experiment data container
+#' 
 #' @exportClass Elist
 #' @aliases Elist
 .Elist <- setClass("Elist", contains = "SimpleList")
@@ -47,15 +49,15 @@
 
 setGeneric("Elist", function(x) standardGeneric("Elist"))
 
-#' Convert from \code{\link[S4Vectors]{SimpleList-class}}
-#' to the multi-experiment data container
-#'
 #' @param x A \code{list} object
 #' @return An \code{\linkS4class{Elist}} class object
 #' @exportMethod Elist
+#' @describeIn Elist Create an \link{Elist} object from an "ANY" class object, 
+#' mainly \code{list}
 setMethod("Elist", "ANY", function(x) {
   .Elist(S4Vectors::SimpleList(x))
 })
+#' @describeIn Elist Create an empty Elist for signature "missing"
 setMethod("Elist", "missing", function(x) {
   .Elist(S4Vectors::SimpleList(list()))
 })
@@ -125,12 +127,8 @@ setMethod("Elist", "missing", function(x) {
 
 S4Vectors::setValidity2("Elist", .validElist)
 
-#' Show method for \code{\linkS4class{Elist}} class
-#'
-#' @param object A \code{\linkS4class{Elist}} object. 
-#' @return Returns a summary of contents for the \code{\linkS4class{Elist}}
-#' class
-#' @exportMethod show
+#' @describeIn Elist Show method for \code{\linkS4class{Elist}} class
+#' @param object An \code{\linkS4class{Elist}} class object
 setMethod("show", "Elist", function(object) {
   o_class <- class(object)
   elem_cl <- vapply(object, class, character(1))

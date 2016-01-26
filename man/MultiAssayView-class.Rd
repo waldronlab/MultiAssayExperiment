@@ -5,22 +5,43 @@
 \alias{.MultiAssayView}
 \alias{MultiAssayView}
 \alias{MultiAssayView-class}
+\alias{[,MultiAssayView,ANY-method}
 \alias{colnames,MultiAssayView-method}
 \alias{length,MultiAssayView-method}
 \alias{names,MultiAssayView-method}
 \alias{rownames,MultiAssayView-method}
+\alias{show,MultiAssayView-method}
 \title{A class used for staging a subset operation}
 \usage{
 \S4method{rownames}{MultiAssayView}(x)
 
 \S4method{colnames}{MultiAssayView}(x)
 
+\S4method{[}{MultiAssayView,ANY}(x, i, j, k, ..., drop = TRUE)
+
+\S4method{show}{MultiAssayView}(object)
+
 \S4method{names}{MultiAssayView}(x)
 
 \S4method{length}{MultiAssayView}(x)
 }
+\arguments{
+\item{x}{A \code{MultiAssayView} class object}
+
+\item{i}{A \code{character} vector for subsetting rownames}
+
+\item{j}{A \code{character} vector for subsetting colnames}
+
+\item{k}{A \code{character} vector for subsetting assays}
+
+\item{...}{Additional parameters}
+
+\item{drop}{logical (default TRUE) whether to drop empty assay elements}
+
+\item{object}{A \code{MultiAssayView} class object}
+}
 \description{
-Use a \code{MultiAssayView} class to initialize a subsetting operation 
+Use a \code{MultiAssayView} class to initialize a subsetting operation
 of a \code{\linkS4class{MultiAssayExperiment}} class object
 }
 \section{Methods (by generic)}{
@@ -29,9 +50,14 @@ of a \code{\linkS4class{MultiAssayExperiment}} class object
 
 \item \code{colnames}: Get a CharacterList of colnames
 
+\item \code{[}: Subset MultiAssayView dimensions with a 
+\code{character} vector
+
+\item \code{show}: Show method for \code{MultiAssayView}
+
 \item \code{names}: Get a \code{character} vector of experiment names
 
-\item \code{length}: Get the number of assays in the 
+\item \code{length}: Get the number of assays in the
 \code{MultiAssayExperiment} instance
 }}
 \section{Slots}{
@@ -45,7 +71,7 @@ retained for subsequent operations}
 \item{\code{colindex}}{An \code{IntegerList} indexing columns of sujbect
 retained for subsequent operations}
 
-\item{\code{assayindex}}{An \code{IntegerList} indexing assays of subject
+\item{\code{assayindex}}{An \code{integer} indexing assays of subject
 retained for subsequent operations}
 }}
 

@@ -24,7 +24,7 @@ A \code{MultiAssayExperiment} data object that stores experiment
 and phenotype data
 }
 \description{
-This function combines multiple data sources specific to one disease by
-matching samples.
+This function combines multiple data elements from the different hierarchies 
+of data (study, experiments, and samples)
 }
 

@@ -20,8 +20,6 @@ Suggests:
     testthat
 Depends:
     R (>= 3.0.1),
-    Biobase,
-    dplyr,
     S4Vectors
 Imports:
     DBI,
@@ -32,7 +30,8 @@ Imports:
     SummarizedExperiment,
     shiny,
     foreach,
-    doParallel
+    doParallel,
+    IRanges
 Maintainer: Marcel Ramos <mramos09@gmail.com>
 License: Artistic-2.0
 LazyData: true

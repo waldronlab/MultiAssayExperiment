@@ -12,10 +12,11 @@
 #'     retained for subsequent operations
 #' @slot colindex An \code{IntegerList} indexing columns of sujbect
 #'     retained for subsequent operations
-#' @slot assayindex An \code{IntegerList} indexing assays of subject
+#' @slot assayindex An \code{integer} indexing assays of subject
 #'     retained for subsequent operations
 #' @exportClass MultiAssayView
 #' @aliases MultiAssayView
+#' @importFrom IRanges CharacterList
 .MultiAssayView <- setClass("MultiAssayView",
          representation(
              subject = "environment",
@@ -29,7 +30,7 @@
     x <- unname(CharacterList(x))
     offset <- rep(cumsum(c(0L, lengths(x)[-length(x)])), lengths(x))
     idx <- seq_along(unlist(x, use.names=FALSE)) - offset
-    setNames(relist(idx, x), nms)
+    stats::setNames(relist(idx, x), nms)
 }
 
 #' @export MultiAssayView
@@ -83,6 +84,14 @@ setReplaceMethod("colnames", c("MultiAssayView", "ANY"),
     ## FIXME: below is +/- ok for typeof(i) == character only
     index[which(names %in% i)]
 
+#' @describeIn MultiAssayView Subset MultiAssayView dimensions with a 
+#' \code{character} vector
+#' @param x A \code{MultiAssayView} class object
+#' @param i A \code{character} vector for subsetting rownames
+#' @param j A \code{character} vector for subsetting colnames
+#' @param k A \code{character} vector for subsetting assays
+#' @param ... Additional parameters 
+#' @param drop logical (default TRUE) whether to drop empty assay elements
 setMethod("[", c("MultiAssayView", "ANY", "ANY", "ANY"),
     function(x, i, j, k, ..., drop=TRUE)
 {
@@ -111,6 +120,8 @@ materialize <- function(x)
     initialize(subject, Elist=elist)
 }
 
+#' @describeIn MultiAssayView Show method for \code{MultiAssayView}
+#' @param object A \code{MultiAssayView} class object
 setMethod("show", "MultiAssayView", function(object) {
     rownames <- rownames(object)
     colnames <- colnames(object)

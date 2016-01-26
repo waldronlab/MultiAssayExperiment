@@ -12,12 +12,18 @@ subsetByRow(x, y, ...)
 \item{y}{A \code{character} vector or \code{GRanges} class object
 containing feature names or ranges}
 
-\item{...}{Additional arguments to pass to low level subsetting function}
+\item{...}{Additional arguments to pass to low level subsetting function 
+primarily when using a \code{GRanges} object for subsetting
+(via \code{getHits})}
 }
 \value{
 A \code{\link{MultiAssayExperiment}} object
 }
 \description{
-Subset MultiAssayExperiment class by provided feature names
+Subset \code{MultiAssayExperiment} class by provided feature names or a 
+\code{GRanges} object
+}
+\seealso{
+\code{\link{getHits}}
 }
 

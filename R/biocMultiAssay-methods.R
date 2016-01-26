@@ -1,38 +1,52 @@
-#' @include Elist-class.R MultiAssayView-class.R RangedRaggedAssay-class.R
-#' MultiAssayExperiment-class.R
+#' @include RangedRaggedAssay-class.R MultiAssayExperiment-class.R 
+#' Elist-class.R MultiAssayView-class.R 
+#' 
 #' @import BiocGenerics SummarizedExperiment S4Vectors GenomicRanges
 NULL
 
-#' @exportMethod rownames
+#' Harmonize featureNames to rownames of an \code{ExpressionSet} object
+#' @param x An \code{ExpressionSet} class object
 setMethod("rownames", "ExpressionSet", function(x)
   Biobase::featureNames(x))
+#' Harmonize names of rowRanges to rownames of a
+#' \code{RangedSummarizedExperiment} object
+#' @param x A \code{RangedSummarizedExperiment} object
 setMethod("rownames", "RangedSummarizedExperiment", function(x)
   names(SummarizedExperiment::rowRanges(x)))
+#' @describeIn RangedRaggedAssay Get feature names from a RangedRaggedAssay
 setMethod("rownames", "RangedRaggedAssay", function(x)
   names(unlist(x, use.names = FALSE)))
 #' @describeIn MultiAssayExperiment Get all the rownames for a
 #' MultiAssayExperiment using \code{\link[IRanges]{CharacterList}}
+#' @exportMethod rownames
 setMethod("rownames", "MultiAssayExperiment", function(x)
   IRanges::CharacterList(lapply(Elist(x), rownames)))
-
-#' @exportMethod colnames
+#' Harmonize sampleNames to colnames of an \code{ExpressionSet} object
+#' @param x An \code{ExpressionSet} object
 setMethod("colnames", "ExpressionSet", function(x)
   Biobase::sampleNames(x))
+#' @describeIn RangedRaggedAssay Get sample names from a RangedRaggedAssay
 setMethod("colnames", "RangedRaggedAssay", function(x)
   base::names(x))
 #' @describeIn MultiAssayExperiment Get all the colnames for a
 #' MultiAssayExperiment
+#' @exportMethod colnames
 setMethod("colnames", "MultiAssayExperiment", function(x)
   lapply(Elist(x), colnames))
-
-#' @exportMethod assay
+#' Harmonize exprs to assay of an \code{ExpressionSet} object
+#' @param x An \code{ExpressionSet} object
 setMethod("assay", "ExpressionSet", function(x)
   Biobase::exprs(x))
+#' Harmonize show to assay of a \code{matrix} object
+#' @param x A \code{matrix} object
 setMethod("assay", "matrix", function(x) x)
+#' @describeIn RangedRaggedAssay Get experiment metadata from a 
+#' RangedRaggedAssay
 setMethod("assay", "RangedRaggedAssay", function(x)
   do.call(rbind, lapply(x, mcols)))
 #' @describeIn MultiAssayExperiment Get the raw data from a
 #' MultiAssayExperiment as a list
+#' @exportMethod assay
 setMethod("assay", "MultiAssayExperiment", function(x)
   lapply(Elist(x), assay))
 
@@ -47,12 +61,6 @@ setMethod("assay", "MultiAssayExperiment", function(x)
   )
 }
 
-setMethod("ncol", signature("RangedRaggedAssay"), function(x) {
-  length(x)
-})
-setMethod("nrow", signature("RangedRaggedAssay"), function(x) {
-  length(unlist(x))
-})
 
 #' Find hits by class type
 #' 
@@ -75,6 +83,8 @@ setMethod("getHits", signature("MultiAssayExperiment", "GRanges"),
             lapply(Elist(subject), FUN = function(elem, ...) {
   getHits(elem, query, ...)
 }))
+#' @describeIn getHits Find and get corresponding names of two \code{GRanges}
+#' using \code{findOverlaps}
 setMethod("getHits", signature("GRanges", "GRanges"),
           function(subject, query, ...) {
             names(subject)[queryHits(findOverlaps(subject, query, ...))]
@@ -102,7 +112,10 @@ setMethod("getHits", signature("ANY", "character"),
           function(subject, query, ...) {
             query[query %in% rownames(subject)]
           })
-
+#' @describeIn RangedRaggedAssay Find matching features by character in a 
+#' RangedRaggedAssay
+#' @param subject A \code{RangedRaggedAssay} class object
+#' @param query A \code{character} class for searching hits
 setMethod("getHits", signature("RangedRaggedAssay", "character"),
           function(subject, query, ...) {
             RowNames <- names(unlist(subject, use.names = FALSE))
@@ -112,63 +125,6 @@ setMethod("getHits", signature("RangedRaggedAssay", "character"),
               character(0)
             }
           })
-
-.RangedBracketSubsetRRA <- function(x, i, j, ..., drop) {
-  if (length(drop) != 1L || (!missing(drop) && drop)) {
-    warning("'drop' ignored '[,", class(x), ",ANY,ANY-method'")
-  }
-  if (!missing(j)) {
-    x <- callNextMethod(x = x, i = j)
-  }
-  if (!missing(i)) {
-    x <- endoapply(x, function(rra) {
-      IRanges::subsetByOverlaps(rra, i, ...)
-      # x <- x[relist(subsetByOverlaps(unlist(x,
-      # use.names = FALSE), i, ...), x)]
-    })
-  }
-  return(x)
-}
-
-.sBracketSubsetRRA <- function(x, i, j, ..., drop) {
-  if (length(drop) != 1L || (!missing(drop) && drop)) {
-    warning("'drop' ignored '[,", class(x), ",ANY,ANY-method'")
-  }
-  if (missing(i) && missing(j)) {
-    return(x)
-  }
-  if (!missing(j)) {
-    x <- callNextMethod(x = x, i = j)
-  }
-  if (!missing(i)) {
-    if (is.character(i)) {
-      x <- x[relist(names(unlist(x, use.names = FALSE)) %in% i, x)]
-    } else {
-      x <- callNextMethod(x = x, i = i)
-    }
-  }
-  return(x)
-}
-
-#' Subset RangedRaggedAssay 
-#' 
-#' @description 
-#' Subsetting a RangedRaggedAssay can be done using either rownames and column
-#' names
-#' 
-#' @param x A \code{\link{RangedRaggedAssay}} class
-#' @param i Either a \code{character} or \code{GRanges} class object 
-#' to subset by rows
-#' @param j Either a \code{character}, \code{numeric}, or \code{logical} 
-#' type for selecting columns (\code{\link[GenomicRanges]{GRangesList}} method)
-#' @param ... Any additional arguments passed on to subsetByOverlaps
-#' @seealso \code{\link[IRanges]{findOverlaps-methods}}
-#' @return A \code{\link{RangedRaggedAssay}} class object
-#' @exportMethod [ 
-setMethod("[", c("RangedRaggedAssay", "ANY", "ANY"),
-          .sBracketSubsetRRA)
-setMethod("[", c("RangedRaggedAssay", "GRanges", "ANY"),
-          .RangedBracketSubsetRRA)
 
 .isEmpty <- function(object) {
   unname(ncol(object)) == 0L | unname(nrow(object)) == 0L
@@ -199,7 +155,19 @@ setMethod("[", c("RangedRaggedAssay", "GRanges", "ANY"),
   return(x)
 }
 
-#' @describeIn MultiAssayExperiment Subset a MultiAssayExperiment object
+#' @describeIn MultiAssayExperiment Subset a \code{MultiAssayExperiment} object
+#' @param x A \code{MultiAssayExperiment} object for subsetting
+#' @param i Either a \code{character}, or \code{GRanges} object for subsetting
+#' by rows
+#' @param j Either a \code{character}, \code{logical}, or \code{numeric} vector
+#' for subsetting by columns
+#' @param k Either a \code{character}, \code{logical}, or \code{numeric} vector
+#' for subsetting by assays
+#' @param ... Additional arguments passed down to \code{getHits} support
+#' function for subsetting by rows
+#' @param drop logical (default TRUE) whether to drop empty assay elements
+#' in the \code{Elist}
+#' @seealso \code{getHits}
 setMethod("[", c("MultiAssayExperiment", "ANY", "ANY", "ANY"),
           .subsetMultiAssayExperiment)
 
@@ -250,6 +218,8 @@ setMethod("subsetByAssay", c("MultiAssayExperiment", "ANY"), function(x, y) {
 #' for subsetting
 #' @return A \code{\link{MultiAssayExperiment}} object 
 setGeneric("subsetByColumn", function(x, y) standardGeneric("subsetByColumn"))
+#' @describeIn subsetByColumn Either a \code{numeric} or \code{logical} vector
+#' to apply a column subset of a \code{MultiAssayExperiment} object
 setMethod("subsetByColumn", c("MultiAssayExperiment", "ANY"), function(x, y) {
   selectors <- rownames(pData(x))[y]
   listMap <- mapToList(sampleMap(x), "assayname")
@@ -267,6 +237,8 @@ setMethod("subsetByColumn", c("MultiAssayExperiment", "ANY"), function(x, y) {
   return(x)
 })
 
+#' @describeIn subsetByColumn Use a character vector for subsetting column 
+#' names
 setMethod("subsetByColumn", c("MultiAssayExperiment", "character"), 
           function(x, y) {
             logMatches <- rownames(pData(x)) %in% y
@@ -280,13 +252,17 @@ setClassUnion("GRangesORcharacter", c("GRanges", "character"))
 
 #' Subset MultiAssayExperiment object by Feature
 #' 
-#' Subset MultiAssayExperiment class by provided feature names
+#' Subset \code{MultiAssayExperiment} class by provided feature names or a 
+#' \code{GRanges} object
 #' 
 #' @param x A \code{\link{MultiAssayExperiment}} object
 #' @param y A \code{character} vector or \code{GRanges} class object
 #' containing feature names or ranges
-#' @param ... Additional arguments to pass to low level subsetting function
+#' @param ... Additional arguments to pass to low level subsetting function 
+#' primarily when using a \code{GRanges} object for subsetting
+#' (via \code{getHits})
 #' @return A \code{\link{MultiAssayExperiment}} object 
+#' @seealso \code{\link{getHits}}
 setGeneric("subsetByRow", function(x, y, ...) standardGeneric("subsetByRow"))
 setMethod("subsetByRow", c("MultiAssayExperiment", "GRangesORcharacter"), function(x, y, ...) {
   hitList <- getHits(x, y, ...)
