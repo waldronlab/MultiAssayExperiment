@@ -7,6 +7,9 @@ output: html_document
 
 This vignette is the current working document for the development of a prostate adenocarcinoma MultiAssayExperiment object. Data is taken from The Cancer Genome Atlas (TCGA) using the getFirehoseData() method of the RTCGAToolbox package, then manipulated to fit into the MultiAssayExperiment object.
 
+GitHub Source <- <a href="https://github.com/schifferl/biocMultiAssay/blob/master/vignettes/pradMAEO.Rmd">https://github.com/schifferl/biocMultiAssay/blob/master/vignettes/pradMAEO.Rmd</a><br>
+Rpubs HTML <- <a href="https://rpubs.com/schifferl/pradMAEO">https://rpubs.com/schifferl/pradMAEO</a>
+
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 #install bioconductor
 #source("https://bioconductor.org/biocLite.R")
@@ -52,8 +55,7 @@ if(file.exists("data/prad.Rda")) {
           CNA_CGH = TRUE, Methylation = TRUE, Mutation = TRUE, mRNA_Array = TRUE, miRNA_Array = TRUE,
           RPPA = TRUE, RNAseqNorm = "raw_counts", RNAseq2Norm = "normalized_count", forceDownload = TRUE, 
           destdir = ".", fileSizeLimit = 500, getUUIDs = FALSE)
-  #comment when kniting html
-  #save(prad, file = "data/prad.Rda")
+  #save(prad, file = "data/prad.Rda") #comment when kniting html
 }
 
 names <- slotNames(prad)[5:17]
@@ -63,7 +65,8 @@ for(i in names) {
 }
 
 vars <- ls()
-clean <- c("names", "vars")
+
+clean <- c("vars", "clean")
 
 for(i in vars) {
   if(!(i %in% names)) {
