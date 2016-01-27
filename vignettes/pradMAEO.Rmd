@@ -39,7 +39,7 @@ getFirehoseRunningDates()
 
 The <strong>PR</strong>ostate <strong>AD</strong>enocarcinoma dataset is identified by the cohort name "PRAD" and can be obtained using the getFirehouseData() method. Once returned the FirehoseData object can be serialized for manipulation. Use of the extract() method is necessary to convert data into a ExpressionSet or GRangesList objects, which can then be used to create a MuliAssayExperiment object.
 
-```{r message=FALSE, warning=FALSE}
+```{r message=FALSE, warning=FALSE, results='hide'}
 x <- "PRAD"
 y <- getFirehoseRunningDates()[1]
 z <- getFirehoseAnalyzeDates()[1]
@@ -52,7 +52,8 @@ if(file.exists("data/prad.Rda")) {
           CNA_CGH = TRUE, Methylation = TRUE, Mutation = TRUE, mRNA_Array = TRUE, miRNA_Array = TRUE,
           RPPA = TRUE, RNAseqNorm = "raw_counts", RNAseq2Norm = "normalized_count", forceDownload = TRUE, 
           destdir = ".", fileSizeLimit = 500, getUUIDs = FALSE)
-  save(prad, file = "data/prad.Rda")
+  #comment when kniting html
+  #save(prad, file = "data/prad.Rda")
 }
 
 names <- slotNames(prad)[5:17]
@@ -61,5 +62,20 @@ for(i in names) {
   try(assign(i, extract(prad, i, clinical = TRUE)), silent = TRUE)
 }
 
-rm(i)
+vars <- ls()
+clean <- c("names", "vars")
+
+for(i in vars) {
+  if(!(i %in% names)) {
+    clean <- c(clean, i)
+  }
+}
+
+rm(list = clean)
+```
+
+The global environment should now contain the relevant data serialized as ExpressionSet or GRangesList objects.
+
+```{r}
+ls.str()
 ```
