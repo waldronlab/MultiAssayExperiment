@@ -173,25 +173,22 @@ setMethod("show", "MultiAssayExperiment", function(object) {
 setGeneric("sampleMap", function(x) standardGeneric("sampleMap"))
 #' @describeIn MultiAssayExperiment Access sampleMap slot from
 #' MultiAssayExperiment
+#' @exportMethod sampleMap
 setMethod("sampleMap", "MultiAssayExperiment", function(x)
   getElement(x, "sampleMap"))
 
-#' @exportMethod Elist
 #' @describeIn MultiAssayExperiment Access Elist class from
 #' MultiAssayExperiment
+#' @exportMethod Elist
 setMethod("Elist", "MultiAssayExperiment", function(x)
   getElement(x, "Elist"))
 
-#' Accessor function for \code{pData} slot of a \code{MultiAssayExperiment}
-#' object
-#'
-#' @param x A \linkS4class{MultiAssayExperiment} object
-#' @return A \code{DataFrame} object of phenotype/clinical data
-setGeneric("pData", function(x) standardGeneric("pData"))
 #' @describeIn MultiAssayExperiment Access pData slot from
 #' MultiAssayExperiment
-setMethod("pData", "MultiAssayExperiment", function(x)
-  getElement(x, "pData"))
+#' @exportMethod pData
+#' @importFrom Biobase pData
+setMethod("pData", "MultiAssayExperiment", function(object)
+  getElement(object, "pData"))
 
 #' @describeIn MultiAssayExperiment Access metadata slot from
 #' MultiAssayExperiment

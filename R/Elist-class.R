@@ -116,6 +116,18 @@ setMethod("Elist", "missing", function(x) {
   }
 }
 
+.checkElistDims <- function(object) {
+  emptyRows <- (vapply(object, nrow, integer(1)) == 0L)
+  emptyCols <- (vapply(object, ncol, integer(1)) == 0L)
+  newmat <- rbind(emptyRows, emptyCols)
+  emptyDims <- apply(newmat, 2, any)
+  if (any(emptyDims)) {
+    warning("Elist elements",
+            sprintf(" '%s' ", names(which(emptyDims))),
+            "have empty dimensions")
+  }
+}
+
 .validElist <- function(object) {
   if (length(object) != 0L) {
     c(.checkMethodsTable(object),

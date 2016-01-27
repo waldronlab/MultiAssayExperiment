@@ -25,7 +25,7 @@
 
 \S4method{Elist}{MultiAssayExperiment}(x)
 
-\S4method{pData}{MultiAssayExperiment}(x)
+\S4method{pData}{MultiAssayExperiment}(object)
 
 \S4method{metadata}{MultiAssayExperiment}(x)
 
