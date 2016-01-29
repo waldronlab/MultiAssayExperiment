@@ -31,7 +31,8 @@ Imports:
     shiny,
     foreach,
     doParallel,
-    IRanges
+    IRanges,
+    Biobase
 Maintainer: Marcel Ramos <mramos09@gmail.com>
 License: Artistic-2.0
 LazyData: true

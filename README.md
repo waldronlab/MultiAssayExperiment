@@ -2,6 +2,7 @@ biocMultiAssay
 ==============
 
 [![Build Status](https://api.travis-ci.org/LiNk-NY/biocMultiAssay.png?branch=master)](https://travis-ci.org/LiNk-NY/biocMultiAssay)
+[![Coverage Status](https://img.shields.io/codecov/c/github/LiNk-NY/biocMultiAssay/master.svg)](https://codecov.io/github/biocMultiAssay?branch=master)
 
 # Introduction
 
