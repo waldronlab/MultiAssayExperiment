@@ -1,7 +1,7 @@
 Package: biocMultiAssay
 Title: Create Classes and Functions for Managing Multiple Assays on Sets of
     Samples
-Version: 0.3.0
+Version: 0.4.0
 Author: MultiAssay SIG
 Description: Develop an integrative environment where multiple assays are
     managed and preprocessed for genomic data analysis.
@@ -19,18 +19,13 @@ Suggests:
     shinydashboard,
     testthat
 Depends:
-    R (>= 3.0.1),
-    S4Vectors
+    R (>= 3.0.1)
 Imports:
-    DBI,
     methods,
-    RSQLite,
     GenomicRanges,
     BiocGenerics,
     SummarizedExperiment,
-    shiny,
-    foreach,
-    doParallel,
+    S4Vectors,
     IRanges,
     Biobase
 Maintainer: Marcel Ramos <mramos09@gmail.com>
