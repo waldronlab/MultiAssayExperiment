@@ -13,3 +13,5 @@
 /vignettes/cache/
 *.vim
 
+
+*.dcf

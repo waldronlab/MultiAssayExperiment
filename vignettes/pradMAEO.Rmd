@@ -55,10 +55,10 @@ if(file.exists("data/prad.Rda")) {
           CNA_CGH = TRUE, Methylation = TRUE, Mutation = TRUE, mRNA_Array = TRUE, miRNA_Array = TRUE,
           RPPA = TRUE, RNAseqNorm = "raw_counts", RNAseq2Norm = "normalized_count", forceDownload = TRUE, 
           destdir = ".", fileSizeLimit = 500, getUUIDs = FALSE)
-  #save(prad, file = "data/prad.Rda") #comment when kniting html
+  save(prad, file = "data/prad.Rda") #comment when kniting html
 }
 
-names <- slotNames(prad)[5:17]
+names <- slotNames(prad)[5:17] #change for confilict
 
 for(i in names) {
   try(assign(i, extract(prad, i, clinical = TRUE)), silent = TRUE)
@@ -81,4 +81,24 @@ The global environment should now contain the relevant data serialized as Expres
 
 ```{r}
 ls.str()
+```
+
+In order to create an EList object it is necessary to convert GRangesList objects to RangedRaggedAssay objects using the RangedRaggedAssay() method, such that assay methods for a MultiAssayExperiment are provided. Within the if block, the nameof variable is instantiated again after type conversion so that it references the RangedRaggedAssay rather than the GRangesList object.
+
+```{r}
+vars <- ls()
+listof <- list()
+
+for(i in vars) {
+  nameof <- get(i)
+  if(inherits(nameof, "GRangesList")) {
+    assign(i, RangedRaggedAssay(nameof))
+    nameof <- get(i)
+  }
+  listof <- c(listof, list(nameof))
+}
+
+experiments <- Elist(listof)
+
+rm(vars, i, nameof, listof)
 ```
