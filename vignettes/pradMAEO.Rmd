@@ -102,3 +102,12 @@ experiments <- Elist(listof)
 
 rm(vars, i, nameof, listof)
 ```
+
+Phenotype data, or pData, can be extracted from FirehoseData in much the same way that experimental data was extracted. The resulting dataframe must be converted to an AnnotatedDataFrame type before it is serialized into a pData object. Finally, a MultiAssayExperiment can be created using the Elist and pData objects.
+
+```{r}
+load("data/prad.Rda")
+pd <- pData(as(extract(prad, NULL, clinical = TRUE), "AnnotatedDataFrame"))
+pradMAEO <- MultiAssayExperiment(Elist = experiments, pData = pd)
+rm(prad)
+```
