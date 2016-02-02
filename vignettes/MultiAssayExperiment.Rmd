@@ -379,7 +379,7 @@ Elist(featSubsetted0)
 In the following, `Affy` ExpressionSet keeps both rows but with their
 order reversed, and `Methyl 450k` keeps only its second row.
 
-```{r, eval=FALSE}
+```{r}
 featSubsetted <- subset(myMultiAssay, c("ENST00000355076", "ENST00000294241"), "rownames")
 exprs(Elist(myMultiAssay)[[1]])
 exprs(Elist(featSubsetted)[[1]])
