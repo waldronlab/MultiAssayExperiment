@@ -22,9 +22,6 @@ library(RTCGAToolbox)
 #install biocMultiAssay
 #BiocInstaller::biocLite("vjcitn/biocMultiAssay")
 library(biocMultiAssay)
-
-#RTCGAToolbox help
-#?RTCGAToolbox
 ```
 
 Cohort datasets can be generated with the getFirehoseDatasets() method.
