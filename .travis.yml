@@ -7,9 +7,22 @@ warnings_are_errors: true
 # Flag as Bioconductor package
 bioc_required: true
 
-# Run binary install of testthat (makes things faster, so they say...)
+# Run binary install of testthat
 r_binary_packages: 
   - testthat
+
+bioc_packages:
+  - BiocGenerics
+  - S4Vectors
+  - GenomicRanges
+  - SummarizedExperiment
+  - Biobase
+  - IRanges
+  - Homo.sapiens
+  - hgu95av2.db
+  - GenomicFeatures
+  - TxDb.Hsapiens.UCSC.hg19.knownGene
+  - hgu133a.db
 
 # Test code coverage
 r_github_packages:
