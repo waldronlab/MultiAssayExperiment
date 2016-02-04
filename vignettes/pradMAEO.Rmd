@@ -52,7 +52,7 @@ if(file.exists(fp)) {
           miRNASeq_Gene = TRUE, RNAseq2_Gene_Norm = TRUE, CNA_SNP = TRUE, CNV_SNP = TRUE, CNA_Seq = TRUE, 
           CNA_CGH = TRUE, Methylation = TRUE, Mutation = TRUE, mRNA_Array = TRUE, miRNA_Array = TRUE,
           RPPA = TRUE, RNAseqNorm = "raw_counts", RNAseq2Norm = "normalized_count", forceDownload = TRUE, 
-          destdir = ".", fileSizeLimit = 500, getUUIDs = FALSE) #use fileSizeLimit = 5000 for Methylation data
+          destdir = ".", fileSizeLimit = 50000, getUUIDs = FALSE) #use fileSizeLimit = 5000 for Methylation data
   save(prad, file = fp)
 }
 
@@ -101,12 +101,12 @@ experiments <- Elist(listof) #comment when kniting html
 rm(vars, i, nameof, listof)
 ```
 
-Phenotype data, or pData, can be extracted from FirehoseData in much the same way that experimental data was extracted. The resulting dataframe must be converted to an AnnotatedDataFrame type before it is serialized into a pData object. Finally, a MultiAssayExperiment can be created using the Elist and pData objects.
+Phenotype data, or pData, can be extracted from FirehoseData in much the same way that experimental data was extracted. The resulting dataframe can then be serialized and used in conjunction with the Elist object to create a MultiAssayExperiment object.
 
 ```{r}
 fp <- "~/GitHub/biocMultiAssay/data/prad.Rda"
 load(fp)
-pd <- pData(as(extract(prad, NULL, clinical = TRUE), "AnnotatedDataFrame"))
+pd <- extract(prad, NULL, clinical = TRUE)
 pradMAEO <- MultiAssayExperiment(Elist = experiments, pData = pd) #comment when kniting html
-rm(prad)
+rm(fp, prad)
 ```
