@@ -28,7 +28,6 @@ Imports:
     IRanges,
     Biobase
 Maintainer: Marcel Ramos <mramos09@gmail.com>
-biocViews: Infrastructure, DataRepresentation
 License: Artistic-2.0
 LazyData: true
 LazyLoad: yes
