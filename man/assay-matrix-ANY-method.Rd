@@ -10,6 +10,9 @@
 \arguments{
 \item{x}{A \code{matrix} object}
 }
+\value{
+A \code{matrix} of data
+}
 \description{
 Harmonize show to assay of a \code{matrix} object
 }

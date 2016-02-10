@@ -10,6 +10,9 @@
 \arguments{
 \item{x}{An \code{ExpressionSet} class object}
 }
+\value{
+A \code{character} vector of row names
+}
 \description{
 Harmonize featureNames to rownames of an \code{ExpressionSet} object
 }

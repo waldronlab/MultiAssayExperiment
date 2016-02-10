@@ -70,6 +70,9 @@ function for subsetting by rows}
 \item{drop}{logical (default TRUE) whether to drop empty assay elements
 in the \code{Elist}}
 }
+\value{
+A \code{MultiAssayExperiment} object
+}
 \description{
 The \code{MultiAssayExperiment} class can be used to manage results of 
 diverse assays on a collection of specimen. Currently,  the class can handle

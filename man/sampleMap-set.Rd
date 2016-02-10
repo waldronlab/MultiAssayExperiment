@@ -12,6 +12,9 @@ sampleMap(x) <- value
 \item{value}{A \code{DataFrame} object to replace the existing
 \code{sampleMap}}
 }
+\value{
+A \code{sampleMap} with replacement values
+}
 \description{
 Replace a slot value with a given \code{DataFrame}
 }

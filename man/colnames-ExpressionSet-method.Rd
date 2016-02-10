@@ -10,6 +10,9 @@
 \arguments{
 \item{x}{An \code{ExpressionSet} object}
 }
+\value{
+A \code{character} vector of column names
+}
 \description{
 Harmonize sampleNames to colnames of an \code{ExpressionSet} object
 }

@@ -14,6 +14,7 @@
 #'     retained for subsequent operations
 #' @slot assayindex An \code{integer} indexing assays of subject
 #'     retained for subsequent operations
+#' @return A \code{MultiAssayView} object
 #' @exportClass MultiAssayView
 #' @aliases MultiAssayView
 #' @importFrom IRanges CharacterList

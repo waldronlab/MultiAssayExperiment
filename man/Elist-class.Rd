@@ -44,4 +44,8 @@ mainly \code{list}
 
 \item \code{show}: Show method for \code{\linkS4class{Elist}} class
 }}
+\examples{
+Elist()
+
+}
 

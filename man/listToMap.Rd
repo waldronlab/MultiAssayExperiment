@@ -20,4 +20,11 @@ A \code{DataFrame} class object of names
 Takes a \code{list} of names and converts it to a 
 \code{DataFrame} map depending on the type.
 }
+\examples{
+
+\dontrun{
+DFmap <- listToMap(listMap)
+}
+
+}
 

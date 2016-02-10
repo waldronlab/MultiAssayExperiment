@@ -8,6 +8,12 @@
 #' @param type Any of the valid types of maps including colnames, rownames, 
 #' and assays. 
 #' @return A \code{DataFrame} class object of names
+#' @examples
+#'
+#' \dontrun{
+#' DFmap <- listToMap(listMap)
+#' }
+#'
 #' @export listToMap
 listToMap <- function(object, type = "colnames") {
   listmap <- object

@@ -38,7 +38,10 @@
 #' 
 #' Convert from \code{\link{SimpleList}} or \code{list}
 #' to the multi-experiment data container
-#' 
+#'
+#' @examples
+#' Elist()
+#'
 #' @exportClass Elist
 #' @aliases Elist
 .Elist <- setClass("Elist", contains = "SimpleList")

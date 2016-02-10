@@ -40,6 +40,9 @@
 
 \item{object}{A \code{MultiAssayView} class object}
 }
+\value{
+A \code{MultiAssayView} object
+}
 \description{
 Use a \code{MultiAssayView} class to initialize a subsetting operation
 of a \code{\linkS4class{MultiAssayExperiment}} class object
