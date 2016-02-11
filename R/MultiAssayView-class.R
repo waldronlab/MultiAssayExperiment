@@ -1,71 +1,133 @@
 ### ==============================================
-### MultiAssayView class 
+### MultiAssayView class
 ### ==============================================
 
-#' An identifier class used for staging a subset operation
-#' 
-#' @slot query Any class indicator needed to subset
-#' @slot keeps A \code{list} indicating valid matches in each assay
-#' @slot drops A \code{list} of excluded information due to subsetting
-#' @slot type A \code{character} vector indicating method used to search
+#' A class used for staging a subset operation
+#'
+#' Use a \code{MultiAssayView} class to initialize a subsetting operation
+#' of a \code{\linkS4class{MultiAssayExperiment}} class object
+#'
+#' @slot subject A \code{\linkS4class{MultiAssayExperiment}} instance
+#' @slot rowindex An \code{IntegerList} indexing rows of subject
+#'     retained for subsequent operations
+#' @slot colindex An \code{IntegerList} indexing columns of sujbect
+#'     retained for subsequent operations
+#' @slot assayindex An \code{integer} indexing assays of subject
+#'     retained for subsequent operations
 #' @exportClass MultiAssayView
-setClass("MultiAssayView", 
-		 representation(query = "ANY",
-						keeps = "list",
-						drops  = "list", 
-						type = "character")
-		 )
+#' @aliases MultiAssayView
+#' @importFrom IRanges CharacterList
+.MultiAssayView <- setClass("MultiAssayView",
+         representation(
+             subject = "environment",
+             rowindex = "IntegerList",
+             colindex = "IntegerList", 
+             assayindex = "integer"
+         ))
 
-.checkDrops <- function(object){
-	errors <- character()
-	if(length(object@keeps) != 0L){
-		if(length(object@drops) != length(object@keeps)){
-			msg <- "List of dropped information must be the same length as the kept information"
-			errors <- c(errors, msg)
-		}
-	}
-	if(length(errors) == 0L) NULL else errors	
+.idxlist <- function(x) {
+    nms <- names(x)
+    x <- unname(CharacterList(x))
+    offset <- rep(cumsum(c(0L, lengths(x)[-length(x)])), lengths(x))
+    idx <- seq_along(unlist(x, use.names=FALSE)) - offset
+    stats::setNames(relist(idx, x), nms)
 }
 
-.validMultiAssayView <- function(object){
-	c(.checkDrops(object))
+#' @export MultiAssayView
+MultiAssayView <- function(subject) {
+    stopifnot(inherits(subject, "MultiAssayExperiment"))
+    .MultiAssayView(subject=as.environment(list(subject=subject)),
+                    rowindex=.idxlist(rownames(subject)),
+                    colindex=.idxlist(colnames(subject)),
+                    assayindex = seq_along(subject))
 }
 
-S4Vectors::setValidity2("MultiAssayView", .validMultiAssayView)
+.subject <- function(x) {
+    getElement(x, "subject")[["subject"]]
+}
 
-#' Show method for \code{\linkS4class{MultiAssayView}} class
-#' 
-#' @param object A \code{\linkS4class{MultiAssayView}} class object
-#' @return A summary of \code{\linkS4class{MultiAssayView}} class contents 
-#' @exportMethod show
-setMethod("show", "MultiAssayView", function(object){
-  o_class <- class(object)
-  o_len <- length(object)
-  o_names <- names(object)
-  view_type <- type(object)
-  if (is.character(query(object))) {
-    o_ids <- Biobase::selectSome(query(object))
-  } else if (is(object, "GRanges")) {
-    o_ids <- names(object)
-  }
-  if (view_type != "assays") {
-    my_fun <- function(x) length(na.omit(x[, 1]))
-  } else {
-    my_fun <- function(x){
-      if(x) "keep"
-      else "drop"
-    }
-  }
-  v_ops <- sapply(object@keeps, FUN = my_fun)
-  cat("A", sprintf('"%s"', o_class), "class object of length",
-      paste0(o_len, ':'),
-      "\nQuery: ")
-  cat(o_ids, sep = ", ")
-  cat("\n Viewed by: ", '"', view_type, '"', sep = "")
-  viewed <- paste(v_ops, if(is.numeric(v_ops)){
-    ifelse(v_ops == 1L, gsub("s$", "", view_type), view_type)
-  }) 
-  cat(sprintf('\n [%i] %s: %s', seq(o_len), o_names,
-              viewed, 
-              "\n"))
+.rowindex <- function(x)
+    getElement(x, "rowindex")
+
+.colindex <- function(x)
+    getElement(x, "colindex")
+
+.assayindex <- function(x)
+    getElement(x, "assayindex")
+
+#' @describeIn MultiAssayView Get a CharacterList of rownames
+setMethod("rownames", "MultiAssayView", function(x) {
+    CharacterList(rownames(.subject(x)))[.rowindex(x)]
+})
+
+setReplaceMethod("rownames", c("MultiAssayView", "ANY"),
+    function(x, value)
+{
+    slot(x, "rownames") <-
+        match(CharacterList(value), rownames(x))
+    x
+})
+
+#' @describeIn MultiAssayView Get a CharacterList of colnames
+setMethod("colnames", "MultiAssayView", function(x) {
+    CharacterList(colnames(.subject(x)))[.colindex(x)]
+})
+
+setReplaceMethod("colnames", c("MultiAssayView", "ANY"),
+   function(x, value)
+{
+    slot(x, "colnames") <- CharacterList(x)
+    x
+})
+
+.subset1 <- function(i, index, names)
+    ## FIXME: below is +/- ok for typeof(i) == character only
+    index[which(names %in% i)]
+
+#' @describeIn MultiAssayView Subset MultiAssayView dimensions with a 
+#' \code{character} vector
+#' @param x A \code{MultiAssayView} class object
+#' @param i A \code{character} vector for subsetting rownames
+#' @param j A \code{character} vector for subsetting colnames
+#' @param k A \code{character} vector for subsetting assays
+#' @param ... Additional parameters 
+#' @param drop logical (default TRUE) whether to drop empty assay elements
+setMethod("[", c("MultiAssayView", "ANY", "ANY", "ANY"),
+    function(x, i, j, k, ..., drop=TRUE)
+{
+    rowindex <- .rowindex(x)
+    if (!missing(i))
+        rowindex <- .subset1(i, rowindex, rownames(x))
+    colindex <- .colindex(x)
+    if (!missing(j))
+        colindex <- .subset1(j, colindex, colnames(x))
+    assayindex <- .assayindex(x)
+    if (!missing(k))
+        assayindex <- assayindex[k]
+    initialize(x, rowindex=rowindex, colindex=colindex, assayindex = assayindex)
+    ## FIXME: row/colnames should be updated to reflect subsets ?
+})
+
+materialize <- function(x)
+{
+    stopifnot(inherits(x, "MultiAssayView"))
+
+    subject <- .subject(x)
+    elist <- Elist(subject)
+    elist <- elist[names(x)]
+    elist <- mendoapply(function(e, i) e[i,,drop=FALSE], elist, rownames(x))
+    elist <- mendoapply(function(e, j) e[,j, drop=FALSE], elist, colnames(x))
+    initialize(subject, Elist=elist)
+}
+
+#' @describeIn MultiAssayView Show method for \code{MultiAssayView}
+#' @param object A \code{MultiAssayView} class object
+setMethod("show", "MultiAssayView", function(object) {
+    rownames <- rownames(object)
+    colnames <- colnames(object)
+    cat("A", class(object), "object\n")
+    cat("\nrownames():\n")
+    print(rownames)
+    cat("\ncolnames():\n")
+    print(colnames)
 })

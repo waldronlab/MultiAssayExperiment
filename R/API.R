@@ -3,6 +3,8 @@
 #' 
 #' @export
 API <- function(){
-browseURL("https://github.com/vjcitn/biocMultiAssay/wiki/biocMultiAssay-API")
+utils::browseURL(
+  "https://github.com/vjcitn/biocMultiAssay/wiki/biocMultiAssay-API"
+  )
 }
 

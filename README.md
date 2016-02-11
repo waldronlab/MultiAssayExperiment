@@ -2,6 +2,7 @@ biocMultiAssay
 ==============
 
 [![Build Status](https://api.travis-ci.org/LiNk-NY/biocMultiAssay.png?branch=master)](https://travis-ci.org/LiNk-NY/biocMultiAssay)
+[![Coverage Status](https://img.shields.io/codecov/c/github/LiNk-NY/biocMultiAssay/master.svg)](https://codecov.io/github/biocMultiAssay?branch=master)
 
 # Introduction
 
@@ -22,7 +23,7 @@ Here is a [calendar](https://www.google.com/calendar/embed?src=9ar0qc8mpkv6b9int
 
 A vignette describing the creation of the `MultiAssayExperiment` object
 and subsetting can be found in the *vignettes* directory under the name
-*biocMultiAssayToyExample.Rmd*. 
+*MultiAssayExperiment.Rmd*. 
 
 # Object documentation & Manual Generation
 

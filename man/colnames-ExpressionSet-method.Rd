@@ -3,17 +3,14 @@
 \docType{methods}
 \name{colnames,ExpressionSet-method}
 \alias{colnames,ExpressionSet-method}
-\title{Colnames extractor}
+\title{Harmonize sampleNames to colnames of an \code{ExpressionSet} object}
 \usage{
 \S4method{colnames}{ExpressionSet}(x)
 }
 \arguments{
-\item{x}{A compatible object with sample data}
-}
-\value{
-Returns a vector of colnames or samplenames
+\item{x}{An \code{ExpressionSet} object}
 }
 \description{
-\code{colnames} are used to obtain sample names from experiment data
+Harmonize sampleNames to colnames of an \code{ExpressionSet} object
 }
 

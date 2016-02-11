@@ -1,7 +1,7 @@
-Package: biocMultiAssay
+Package: MultiAssayExperiment
 Title: Create Classes and Functions for Managing Multiple Assays on Sets of
     Samples
-Version: 0.3.0
+Version: 0.6.0
 Author: MultiAssay SIG
 Description: Develop an integrative environment where multiple assays are
     managed and preprocessed for genomic data analysis.
@@ -15,25 +15,20 @@ Suggests:
     TxDb.Hsapiens.UCSC.hg19.knownGene,
     data.table,
     hgu133a.db,
-    reshape2,
     shinydashboard,
     testthat
 Depends:
-    R (>= 3.0.1),
-    Biobase,
-    dplyr,
-    S4Vectors
+    R (>= 3.3.0)
 Imports:
-    DBI,
     methods,
-    RSQLite,
     GenomicRanges,
     BiocGenerics,
     SummarizedExperiment,
-    shiny,
-    foreach,
-    doParallel
+    S4Vectors,
+    IRanges,
+    Biobase
 Maintainer: Marcel Ramos <mramos09@gmail.com>
+biocViews: Infrastructure, DataRepresentation
 License: Artistic-2.0
 LazyData: true
 LazyLoad: yes
@@ -43,21 +38,10 @@ Collate:
     'MultiAssayExperiment-class.R'
     'MultiAssayExperiment.R'
     'MultiAssayView-class.R'
-    'MultiAssayView.R'
     'RangedRaggedAssay-class.R'
-    'TCGA_ov_v2rnaseq.R'
-    'allLM_pw.R'
-    'apiDash.R'
     'biocMultiAssay-methods.R'
-    'db_create.R'
-    'downloadData.R'
-    'exs2se.R'
-    'key2GRanges.R'
-    'pwplot.R'
+    'biocMultiAssay.R'
+    'listToMap.R'
+    'mapToList.R'
     'subset.R'
-    'subsetByAssay.R'
-    'subsetByColumn.R'
-    'subsetByRow.R'
-    'toListMap.R'
-    'triche.R'
 RoxygenNote: 5.0.1

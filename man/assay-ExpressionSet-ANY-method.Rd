@@ -3,17 +3,14 @@
 \docType{methods}
 \name{assay,ExpressionSet,ANY-method}
 \alias{assay,ExpressionSet,ANY-method}
-\title{Assay accessor}
+\title{Harmonize exprs to assay of an \code{ExpressionSet} object}
 \usage{
 \S4method{assay}{ExpressionSet,ANY}(x)
 }
 \arguments{
-\item{x}{An experiment object with data}
-}
-\value{
-A basic representation of internal data
+\item{x}{An \code{ExpressionSet} object}
 }
 \description{
-\code{assay} is used to obtain raw data
+Harmonize exprs to assay of an \code{ExpressionSet} object
 }
 
