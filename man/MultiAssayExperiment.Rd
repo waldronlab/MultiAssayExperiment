@@ -10,16 +10,21 @@ MultiAssayExperiment(Elist = list(), pData = S4Vectors::DataFrame(),
 \arguments{
 \item{Elist}{A \code{list} of all combined experiments}
 
-\item{pData}{A \code{\link[S4Vectors]{DataFrame-class}} of the phenotype data for all participants.}
+\item{pData}{A \code{\link[S4Vectors]{DataFrame-class}} of the phenotype
+data for all participants}
 
-\item{sampleMap}{A \code{data.frame} of sample identifiers, assay samples, and assay names.}
+\item{sampleMap}{A \code{DataFrame} of sample identifiers, assay samples,
+and assay names}
 
-\item{drops}{A \code{list} of unmatched information (included after subsetting)}
+\item{drops}{A \code{list} of unmatched information
+(included after subsetting)}
 }
 \value{
-A \code{MultiAssayExperiment} data object that stores experiment and phenotype data.
+A \code{MultiAssayExperiment} data object that stores experiment
+and phenotype data
 }
 \description{
-This function combines multiple data sources specific to one disease by matching samples.
+This function combines multiple data elements from the different hierarchies 
+of data (study, experiments, and samples)
 }
 

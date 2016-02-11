@@ -11,3 +11,5 @@ vignettes/OvarDB.sqlite
 txt$
 gz$
 cache$
+.travis.yml
+.gitignore

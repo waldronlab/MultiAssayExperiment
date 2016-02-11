@@ -2,54 +2,76 @@
 % Please edit documentation in R/MultiAssayView-class.R, R/biocMultiAssay-methods.R
 \docType{class}
 \name{MultiAssayView-class}
+\alias{.MultiAssayView}
+\alias{MultiAssayView}
 \alias{MultiAssayView-class}
-\alias{getMap,MultiAssayView-method}
+\alias{[,MultiAssayView,ANY-method}
+\alias{colnames,MultiAssayView-method}
 \alias{length,MultiAssayView-method}
 \alias{names,MultiAssayView-method}
-\alias{query,MultiAssayView-method}
-\alias{type,MultiAssayView-method}
-\title{An identifier class used for staging a subset operation}
+\alias{rownames,MultiAssayView-method}
+\alias{show,MultiAssayView-method}
+\title{A class used for staging a subset operation}
 \usage{
-\S4method{getMap}{MultiAssayView}(object)
+\S4method{rownames}{MultiAssayView}(x)
+
+\S4method{colnames}{MultiAssayView}(x)
+
+\S4method{[}{MultiAssayView,ANY}(x, i, j, k, ..., drop = TRUE)
+
+\S4method{show}{MultiAssayView}(object)
 
 \S4method{names}{MultiAssayView}(x)
 
 \S4method{length}{MultiAssayView}(x)
-
-\S4method{type}{MultiAssayView}(object)
-
-\S4method{query}{MultiAssayView}(object)
 }
 \arguments{
-\item{x}{A \code{\link{MultiAssayView}} class object}
-}
-\value{
-A character vector of experiment names
+\item{x}{A \code{MultiAssayView} class object}
+
+\item{i}{A \code{character} vector for subsetting rownames}
+
+\item{j}{A \code{character} vector for subsetting colnames}
+
+\item{k}{A \code{character} vector for subsetting assays}
+
+\item{...}{Additional parameters}
+
+\item{drop}{logical (default TRUE) whether to drop empty assay elements}
+
+\item{object}{A \code{MultiAssayView} class object}
 }
 \description{
-An identifier class used for staging a subset operation
+Use a \code{MultiAssayView} class to initialize a subsetting operation
+of a \code{\linkS4class{MultiAssayExperiment}} class object
 }
 \section{Methods (by generic)}{
 \itemize{
-\item \code{getMap}: Convert map from list to DataFrame
+\item \code{rownames}: Get a CharacterList of rownames
 
-\item \code{names}: Get the names from the kept elements in the Elist
+\item \code{colnames}: Get a CharacterList of colnames
 
-\item \code{length}: Get the number of assays from kept slot
+\item \code{[}: Subset MultiAssayView dimensions with a 
+\code{character} vector
 
-\item \code{type}: Get the staging type (either by colnames, rownames, assays)
+\item \code{show}: Show method for \code{MultiAssayView}
 
-\item \code{query}: Get the identifiers used for staging
+\item \code{names}: Get a \code{character} vector of experiment names
+
+\item \code{length}: Get the number of assays in the
+\code{MultiAssayExperiment} instance
 }}
 \section{Slots}{
 
 \describe{
-\item{\code{query}}{Any class indicator needed to subset}
+\item{\code{subject}}{A \code{\linkS4class{MultiAssayExperiment}} instance}
 
-\item{\code{keeps}}{A \code{list} indicating valid matches in each assay}
+\item{\code{rowindex}}{An \code{IntegerList} indexing rows of subject
+retained for subsequent operations}
 
-\item{\code{drops}}{A \code{list} of excluded information due to subsetting}
+\item{\code{colindex}}{An \code{IntegerList} indexing columns of sujbect
+retained for subsequent operations}
 
-\item{\code{type}}{A \code{character} vector indicating method used to search}
+\item{\code{assayindex}}{An \code{integer} indexing assays of subject
+retained for subsequent operations}
 }}
 

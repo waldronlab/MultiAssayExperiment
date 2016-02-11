@@ -1,4 +1,0 @@
-http://s3.amazonaws.com/cancerhub/esif_toy.csv
-http://s3.amazonaws.com/cancerhub/expr.dat_toy.csv
-http://s3.amazonaws.com/cancerhub/pharma_toy.csv
-http://s3.amazonaws.com/cancerhub/CCLE_copynumber_2013-12-03.seg.txt

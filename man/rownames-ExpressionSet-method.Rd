@@ -3,17 +3,14 @@
 \docType{methods}
 \name{rownames,ExpressionSet-method}
 \alias{rownames,ExpressionSet-method}
-\title{Rownames extractor method}
+\title{Harmonize featureNames to rownames of an \code{ExpressionSet} object}
 \usage{
 \S4method{rownames}{ExpressionSet}(x)
 }
 \arguments{
-\item{x}{A compatible object with feature data}
-}
-\value{
-Returns either rownames or featureNames
+\item{x}{An \code{ExpressionSet} class object}
 }
 \description{
-\code{rownames} are used to obtain feature names from experiment data
+Harmonize featureNames to rownames of an \code{ExpressionSet} object
 }
 
