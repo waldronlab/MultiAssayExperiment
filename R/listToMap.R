@@ -1,22 +1,11 @@
-#' Create a map of names from a list of names
-#' 
-#' @description Takes a \code{list} of names and converts it to a 
-#' \code{DataFrame} map depending on the type. 
-#' 
-#' @param object A \code{list} class object containing names of either 
+#' @param listmap A \code{list} class object containing names of either 
 #' experiments, assays or features. 
 #' @param type Any of the valid types of maps including colnames, rownames, 
 #' and assays. 
 #' @return A \code{DataFrame} class object of names
-#' @examples
-#'
-#' \dontrun{
-#' DFmap <- listToMap(listMap)
-#' }
-#'
+#' @describeIn mapToList Inverse of the listToMap function
 #' @export listToMap
-listToMap <- function(object, type = "colnames") {
-  listmap <- object
+listToMap <- function(listmap, type = "colnames") {
   DFmap <- lapply(seq_along(listmap), FUN = function(i, x) {
     if (type == "colnames") {
       if (S4Vectors::isEmpty(x[i])) {

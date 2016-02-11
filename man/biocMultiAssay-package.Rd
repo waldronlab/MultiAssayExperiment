@@ -4,15 +4,19 @@
 \name{biocMultiAssay-package}
 \alias{biocMultiAssay}
 \alias{biocMultiAssay-package}
-\title{Create an integrative multiassay container}
+\title{MultiAssayExperiment: Build an integrative multiassay container}
 \description{
-MultiAssayExperiment allows the manipulation of related multiassay datasets
+MultiAssayExperiment allows the manipulation of related multiassay 
+datasets with partially overlapping samples, associated metadata at 
+the level of an entire study, and at the level of the "biological unit".
+The biological unit may be a patient, plant, yeast strain, etc.
 }
 \details{
-An integrative package for coordinated representation of multiple experiments
-on partially overlapping samples, with associated metadata at the level of
-an entire study and at the level of the "biological unit". The biological
-unit may be a patient, plant, yeast strain, etc. This package is designed
-around the following hierarchy of information: study, experiments, samples
+The package hierarch of information: 
+\itemize{
+\item study
+\item experiments
+\item samples
+}
 }
 

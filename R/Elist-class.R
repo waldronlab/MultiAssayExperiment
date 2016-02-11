@@ -39,8 +39,7 @@
 #' Convert from \code{\link{SimpleList}} or \code{list}
 #' to the multi-experiment data container
 #'
-#' @examples
-#' Elist()
+#' @example inst/scripts/Elist-Ex.R
 #'
 #' @exportClass Elist
 #' @aliases Elist
