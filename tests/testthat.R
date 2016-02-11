@@ -1,4 +1,4 @@
 library(testthat)
-library(biocMultiAssay)
+library(MultiAssayExperiment)
 
-test_check("biocMultiAssay")
+test_check("MultiAssayExperiment")
