@@ -1,8 +1,8 @@
-biocMultiAssay
+MultiAssayExperiment
 ==============
 
-[![Build Status](https://api.travis-ci.org/LiNk-NY/biocMultiAssay.png?branch=master)](https://travis-ci.org/LiNk-NY/biocMultiAssay)
-[![Coverage Status](https://img.shields.io/codecov/c/github/LiNk-NY/biocMultiAssay/master.svg)](https://codecov.io/github/biocMultiAssay?branch=master)
+[![Build Status](https://api.travis-ci.org/LiNk-NY/MultiAssayExperiment.png?branch=master)](https://travis-ci.org/LiNk-NY/MultiAssayExperiment)
+[![Coverage Status](https://img.shields.io/codecov/c/github/LiNk-NY/MultiAssayExperiment/master.svg)](https://codecov.io/github/MultiAssayExperiment?branch=master)
 
 # Introduction
 
@@ -13,8 +13,8 @@ high-dimensional assays obtained on all or many members of a group of
 samples or patients.
 
 Please take a look look at the [API
-Discussion](https://github.com/vjcitn/biocMultiAssay/issues/7), and
-consider joining the [biocMultiAssay Google
+Discussion](https://github.com/vjcitn/MultiAssayExperiment/issues/7), and
+consider joining the [MultiAssayExperiment Google
 Group](https://groups.google.com/forum/#!forum/biocmultiassay) to get
 involved.  
 Here is a [calendar](https://www.google.com/calendar/embed?src=9ar0qc8mpkv6b9intgmdcdf0ss%40group.calendar.google.com&ctz=America/New_York) of upcoming meetings.
