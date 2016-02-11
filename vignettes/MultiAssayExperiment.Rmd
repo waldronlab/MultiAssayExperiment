@@ -13,7 +13,7 @@ vignette: >
 A built [html][] version of this vignette is available.
 
 ```{r, echo=FALSE, warning=FALSE}
-suppressPackageStartupMessages(library(biocMultiAssay))
+suppressPackageStartupMessages(library(MultiAssayExperiment))
 ```
 
 # API

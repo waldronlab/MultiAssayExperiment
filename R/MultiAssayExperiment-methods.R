@@ -182,17 +182,6 @@ setMethod("getHits", signature("RangedRaggedAssay", "character"),
 setMethod("[", c("MultiAssayExperiment", "ANY", "ANY", "ANY"),
           .subsetMultiAssayExperiment)
 
-#' @describeIn MultiAssayView Get a \code{character} vector of experiment names
-setMethod("names", "MultiAssayView", function(x)
-  names(getElement(x, "subject")[["subject"]])
-)
-
-#' @describeIn MultiAssayView Get the number of assays in the
-#' \code{MultiAssayExperiment} instance
-setMethod("length", "MultiAssayView", function(x)
-  length(getElement(x, "subject")[["subject"]])
-)
-
 #' @exportMethod isEmpty
 #' @describeIn MultiAssayExperiment Logical value of empty
 #' \code{MultiAssayExperiment}
