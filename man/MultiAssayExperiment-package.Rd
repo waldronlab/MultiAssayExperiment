@@ -2,8 +2,8 @@
 % Please edit documentation in R/MultiAssayExperiment-pkg.R
 \docType{package}
 \name{MultiAssayExperiment-package}
+\alias{MultiAssayExperiment}
 \alias{MultiAssayExperiment-package}
-\alias{_PACKAGE}
 \title{MultiAssayExperiment: Build an integrative multiassay container}
 \description{
 MultiAssayExperiment allows the manipulation of related multiassay 

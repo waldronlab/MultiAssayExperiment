@@ -42,7 +42,7 @@
 #' @example inst/scripts/Elist-Ex.R
 #'
 #' @exportClass Elist
-#' @rdname Elist-class
+#' @name Elist-class
 .Elist <- setClass("Elist", contains = "SimpleList")
 
 ### - - - - - - - - - - - - - - - - - - - - - - - -
