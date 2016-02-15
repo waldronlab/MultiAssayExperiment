@@ -11,6 +11,9 @@
 \arguments{
 \item{x}{A \code{RangedSummarizedExperiment} object}
 }
+\value{
+A \code{character} vector of row names
+}
 \description{
 Harmonize names of rowRanges to rownames of a
 \code{RangedSummarizedExperiment} object

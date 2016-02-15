@@ -22,6 +22,7 @@
 #' @slot metadata Additional data describing the
 #' \code{\link{MultiAssayExperiment}} object
 #' @slot drops A metadata \code{list} of dropped information.
+#' @return A \code{MultiAssayExperiment} object
 #' @exportClass MultiAssayExperiment
 #' @include Elist-class.R
 setClass("MultiAssayExperiment",
@@ -217,6 +218,7 @@ setMethod("names", "MultiAssayExperiment", function(x)
 #' @param x A \code{MultiAssayExperiment} object
 #' @param value A \code{DataFrame} object to replace the existing
 #' \code{sampleMap}
+#' @return A \code{sampleMap} with replacement values
 setGeneric("sampleMap<-", function(x, value) standardGeneric("sampleMap<-"))
 #' @exportMethod sampleMap<-
 #' @describeIn MultiAssayExperiment value: A \code{DataFrame} sampleMap 
@@ -234,6 +236,14 @@ setReplaceMethod("sampleMap", c("MultiAssayExperiment", "DataFrame"),
 #' @param x A \code{MultiAssayExperiment} class object
 #' @param value An \code{\linkS4class{Elist}} object to replace the existing
 #' \code{\linkS4class{Elist}} slot
+#'
+#' @examples
+#'
+#' \dontrun{
+#' Elist(myMultiAssayExperiment) <- myNewElist
+#' }
+#'
+#' @return A \link{Elist} class object
 setGeneric("Elist<-", function(x, value) standardGeneric("Elist<-"))
 #' @exportMethod Elist<-
 #' @describeIn MultiAssayExperiment value: An \linkS4class{Elist} 

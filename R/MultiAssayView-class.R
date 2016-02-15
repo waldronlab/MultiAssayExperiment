@@ -14,9 +14,9 @@
 #'     retained for subsequent operations
 #' @slot assayindex An \code{integer} indexing assays of subject
 #'     retained for subsequent operations
+#' @return A \code{MultiAssayView} object
 #' @exportClass MultiAssayView
 #' @aliases MultiAssayView
-#' @importFrom IRanges CharacterList
 .MultiAssayView <- setClass("MultiAssayView",
          representation(
              subject = "environment",
@@ -79,6 +79,17 @@ setReplaceMethod("colnames", c("MultiAssayView", "ANY"),
     slot(x, "colnames") <- CharacterList(x)
     x
 })
+
+#' @describeIn MultiAssayView Get a \code{character} vector of experiment names
+setMethod("names", "MultiAssayView", function(x)
+  names(getElement(x, "subject")[["subject"]])
+)
+
+#' @describeIn MultiAssayView Get the number of assays in the
+#' \code{MultiAssayExperiment} instance
+setMethod("length", "MultiAssayView", function(x)
+  length(getElement(x, "subject")[["subject"]])
+)
 
 .subset1 <- function(i, index, names)
     ## FIXME: below is +/- ok for typeof(i) == character only

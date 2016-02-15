@@ -2,13 +2,18 @@
 % Please edit documentation in R/API.R
 \name{API}
 \alias{API}
-\title{Refer to the API documentation
-\code{API} opens a browser to the API documentation}
+\title{Refer to the API documentation}
 \usage{
 API()
 }
+\value{
+Documentation via the GitHub wiki
+}
 \description{
-Refer to the API documentation
 \code{API} opens a browser to the API documentation
+}
+\examples{
+API()
+
 }
 

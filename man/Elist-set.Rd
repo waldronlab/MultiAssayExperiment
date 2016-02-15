@@ -13,8 +13,18 @@ Elist(x) <- value
 \item{value}{An \code{\linkS4class{Elist}} object to replace the existing
 \code{\linkS4class{Elist}} slot}
 }
+\value{
+A \link{Elist} class object
+}
 \description{
 Replace an \code{Elist} slot value with a given \code{\linkS4class{Elist}}
 class object
+}
+\examples{
+
+\dontrun{
+Elist(myMultiAssayExperiment) <- myNewElist
+}
+
 }
 
