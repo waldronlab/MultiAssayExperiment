@@ -53,6 +53,7 @@
 #' (included after subsetting)   
 #' @return A \code{MultiAssayExperiment} data object that stores experiment
 #' and phenotype data
+#' @example inst/scripts/MultiAssayExperiment-Ex.R
 #' @export MultiAssayExperiment
 MultiAssayExperiment <-
   function(Elist = list(),

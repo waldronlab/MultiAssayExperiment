@@ -1,16 +1,18 @@
 #' @include RangedRaggedAssay-class.R MultiAssayExperiment-class.R 
 #' Elist-class.R MultiAssayView-class.R 
 #' 
-#' @import BiocGenerics SummarizedExperiment S4Vectors GenomicRanges
+#' @import BiocGenerics SummarizedExperiment S4Vectors GenomicRanges methods
 NULL
 
 #' Harmonize featureNames to rownames of an \code{ExpressionSet} object
 #' @param x An \code{ExpressionSet} class object
+#' @return A \code{character} vector of row names
 setMethod("rownames", "ExpressionSet", function(x)
   Biobase::featureNames(x))
 #' Harmonize names of rowRanges to rownames of a
 #' \code{RangedSummarizedExperiment} object
 #' @param x A \code{RangedSummarizedExperiment} object
+#' @return A \code{character} vector of row names
 setMethod("rownames", "RangedSummarizedExperiment", function(x)
   names(SummarizedExperiment::rowRanges(x)))
 #' @describeIn RangedRaggedAssay Get feature names from a RangedRaggedAssay
@@ -23,6 +25,7 @@ setMethod("rownames", "MultiAssayExperiment", function(x)
   IRanges::CharacterList(lapply(Elist(x), rownames)))
 #' Harmonize sampleNames to colnames of an \code{ExpressionSet} object
 #' @param x An \code{ExpressionSet} object
+#' @return A \code{character} vector of column names
 setMethod("colnames", "ExpressionSet", function(x)
   Biobase::sampleNames(x))
 #' @describeIn RangedRaggedAssay Get sample names from a RangedRaggedAssay
@@ -35,10 +38,12 @@ setMethod("colnames", "MultiAssayExperiment", function(x)
   lapply(Elist(x), colnames))
 #' Harmonize exprs to assay of an \code{ExpressionSet} object
 #' @param x An \code{ExpressionSet} object
+#' @return A \code{matrix} of data
 setMethod("assay", "ExpressionSet", function(x)
   Biobase::exprs(x))
 #' Harmonize show to assay of a \code{matrix} object
 #' @param x A \code{matrix} object
+#' @return A \code{matrix} of data
 setMethod("assay", "matrix", function(x) x)
 #' @describeIn RangedRaggedAssay Get experiment metadata from a 
 #' RangedRaggedAssay
@@ -69,6 +74,12 @@ setMethod("assay", "MultiAssayExperiment", function(x)
 #' object used to search by name or ranges
 #' @param ... Additional arguments to findOverlaps
 #' @return Names of matched queries
+#' @examples
+#'
+#' \dontrun{
+#' getHits(myMultiAssayExperiment, myGRanges)
+#' }
+#'
 #' @exportMethod getHits
 setGeneric("getHits", function(subject, query, ...) standardGeneric("getHits"))
 #' @describeIn getHits Find all matching rownames by character
@@ -170,17 +181,6 @@ setMethod("getHits", signature("RangedRaggedAssay", "character"),
 #' @seealso \code{getHits}
 setMethod("[", c("MultiAssayExperiment", "ANY", "ANY", "ANY"),
           .subsetMultiAssayExperiment)
-
-#' @describeIn MultiAssayView Get a \code{character} vector of experiment names
-setMethod("names", "MultiAssayView", function(x)
-  names(getElement(x, "subject")[["subject"]])
-)
-
-#' @describeIn MultiAssayView Get the number of assays in the
-#' \code{MultiAssayExperiment} instance
-setMethod("length", "MultiAssayView", function(x)
-  length(getElement(x, "subject")[["subject"]])
-)
 
 #' @exportMethod isEmpty
 #' @describeIn MultiAssayExperiment Logical value of empty

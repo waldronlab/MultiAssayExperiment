@@ -10,6 +10,9 @@
 \arguments{
 \item{x}{An \code{ExpressionSet} object}
 }
+\value{
+A \code{matrix} of data
+}
 \description{
 Harmonize exprs to assay of an \code{ExpressionSet} object
 }

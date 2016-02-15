@@ -1,7 +1,8 @@
 #' Subset MultiAssayExperiment object
-#' \code{subset} returns a subsetted \code{\linkS4class{MultiAssayExperiment}}
-#' object
-#' 
+#'
+#' The \code{subset} function allows for searching through colnames and
+#' rownames to obtain the requested subset of data or experiments (assays).
+#'
 #' @param x A \code{\linkS4class{MultiAssayExperiment}} object
 #' @param indicator A \code{logical} or \code{character} vector or
 #' \code{GRanges} class object to use for subsetting
@@ -11,6 +12,7 @@
 #' dimension after subsetting 
 #' @param ... Additional arguments to pass to SubsetByOverlaps when subsetting
 #' by rownames
+#' @return A subsetted \link{MultiAssayExperiment} class object
 #' @export subset
 setMethod("subset", "MultiAssayExperiment",
           function(x, indicator, method = NULL, drop = TRUE, ...) {
