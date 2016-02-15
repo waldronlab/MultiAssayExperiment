@@ -31,30 +31,35 @@
 #' A container for multi-experiment data
 #' 
 #' The \code{Elist} class is a container that builds on 
-#' the \code{\link[S4Vectors]{SimpleList-class}} with additional 
+#' the \code{SimpleList} with additional 
 #' checks for consistency in experiment names and length.
 #' It contains a \code{SimpleList} of experiments with sample identifiers.
 #' One element present per experiment performed.  
 #' 
-#' Convert from \code{\link{SimpleList}} or \code{list}
+#' Convert from \code{SimpleList} or \code{list}
 #' to the multi-experiment data container
 #'
 #' @example inst/scripts/Elist-Ex.R
 #'
 #' @exportClass Elist
-#' @aliases Elist
+#' @rdname Elist-class
 .Elist <- setClass("Elist", contains = "SimpleList")
 
 ### - - - - - - - - - - - - - - - - - - - - - - - -
 ### Builder
 ###
 
+#' Elist Acessor function for the \code{Elist} slot of a 
+#' \code{MultiAssayExperiment} object
+#' 
+#' @param x A code{MultiAssayExperiment} class object
+#' @return A \code{Elist} class object of experiment data
 setGeneric("Elist", function(x) standardGeneric("Elist"))
 
 #' @param x A \code{list} object
-#' @return An \code{\linkS4class{Elist}} class object
+#' @return An \code{Elist} class object
 #' @exportMethod Elist
-#' @describeIn Elist Create an \link{Elist} object from an "ANY" class object, 
+#' @describeIn Elist Create an \code{Elist} object from an "ANY" class object, 
 #' mainly \code{list}
 setMethod("Elist", "ANY", function(x) {
   .Elist(S4Vectors::SimpleList(x))

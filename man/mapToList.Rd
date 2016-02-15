@@ -3,7 +3,6 @@
 \name{listToMap}
 \alias{listToMap}
 \alias{mapToList}
-\alias{sampleMap}
 \title{Convert map from data.frame or DataFrame to list and vice versa}
 \usage{
 listToMap(listmap, type = "colnames")

@@ -14,13 +14,12 @@ arraypdat <- as(data.frame(
 exprdat <- Biobase::ExpressionSet(assayData=arraydat, phenoData=arraypdat)
 
 ## Create a sample methylation dataset
-methyldat <- matrix(1:10,
-                    ncol = 5, 
+methyldat <- matrix(1:10, ncol = 5,
                     dimnames = list(
                       c("ENST00000355076", "ENST00000383706"),
                       c("methyl1", "methyl2", "methyl3", "methyl4", "methyl5")))
 
 ## Combine to a named list and call the Elist constructor function
-ExpList<- list(arraydat, methyldat)
+ExpList <- list(arraydat, methyldat)
 names(ExpList) <- c("Affy", "Methyl450k")
 myElist <- Elist(ExpList)

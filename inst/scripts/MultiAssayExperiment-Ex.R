@@ -1,5 +1,5 @@
 ## Run the example Elist
-example("Elist")
+example("Elist-class")
 
 ## Run the sample map example
 example("listToMap")

@@ -2,7 +2,7 @@
 % Please edit documentation in R/MultiAssayExperiment-class.R
 \name{Elist<-}
 \alias{Elist<-}
-\title{Replace an \code{Elist} slot value with a given \code{\linkS4class{Elist}}
+\title{Replace an \code{Elist} slot value with a given \code{Elist}
 class object}
 \usage{
 Elist(x) <- value
@@ -10,14 +10,14 @@ Elist(x) <- value
 \arguments{
 \item{x}{A \code{MultiAssayExperiment} class object}
 
-\item{value}{An \code{\linkS4class{Elist}} object to replace the existing
-\code{\linkS4class{Elist}} slot}
+\item{value}{An \code{Elist} object to replace the existing
+\code{Elist} slot}
 }
 \value{
-A \link{Elist} class object
+A \code{Elist} class object
 }
 \description{
-Replace an \code{Elist} slot value with a given \code{\linkS4class{Elist}}
+Replace an \code{Elist} slot value with a given \code{Elist}
 class object
 }
 \examples{

@@ -4,8 +4,8 @@
 \name{RangedRaggedAssay-class}
 \alias{.RangedRaggedAssay}
 \alias{RangedRaggedAssay-class}
-\alias{[,RangedRaggedAssay,ANY,ANY,ANY-method}
-\alias{[,RangedRaggedAssay,GRanges,ANY,ANY-method}
+\alias{[,RangedRaggedAssay,ANY-method}
+\alias{[,RangedRaggedAssay,GRanges-method}
 \alias{assay,RangedRaggedAssay,ANY-method}
 \alias{colnames,RangedRaggedAssay-method}
 \alias{getHits,RangedRaggedAssay,character-method}
@@ -18,9 +18,9 @@
 
 \S4method{nrow}{RangedRaggedAssay}(x)
 
-\S4method{[}{RangedRaggedAssay,ANY,ANY,ANY}(x, i, j, ..., drop = TRUE)
+\S4method{[}{RangedRaggedAssay,ANY}(x, i, j, ..., drop = TRUE)
 
-\S4method{[}{RangedRaggedAssay,GRanges,ANY,ANY}(x, i, j, ..., drop = TRUE)
+\S4method{[}{RangedRaggedAssay,GRanges}(x, i, j, ..., drop = TRUE)
 
 \S4method{rownames}{RangedRaggedAssay}(x)
 

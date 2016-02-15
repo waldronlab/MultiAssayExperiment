@@ -23,6 +23,9 @@
 #' \code{\link{MultiAssayExperiment}} object
 #' @slot drops A metadata \code{list} of dropped information.
 #' @return A \code{MultiAssayExperiment} object
+#' 
+#' @example inst/scripts/MultiAssayExperiment-Ex.R
+#' 
 #' @exportClass MultiAssayExperiment
 #' @include Elist-class.R
 setClass("MultiAssayExperiment",
@@ -172,6 +175,7 @@ setMethod("show", "MultiAssayExperiment", function(object) {
 #' @param x A \code{MultiAssayExperiment} object
 #' @return A \code{DataFrame} object of sample relationships across experiments
 setGeneric("sampleMap", function(x) standardGeneric("sampleMap"))
+
 #' @describeIn MultiAssayExperiment Access sampleMap slot from
 #' MultiAssayExperiment
 #' @exportMethod sampleMap
@@ -220,6 +224,7 @@ setMethod("names", "MultiAssayExperiment", function(x)
 #' \code{sampleMap}
 #' @return A \code{sampleMap} with replacement values
 setGeneric("sampleMap<-", function(x, value) standardGeneric("sampleMap<-"))
+
 #' @exportMethod sampleMap<-
 #' @describeIn MultiAssayExperiment value: A \code{DataFrame} sampleMap 
 #' representation
@@ -230,12 +235,13 @@ setReplaceMethod("sampleMap", c("MultiAssayExperiment", "DataFrame"),
                    slot(x, "sampleMap") <- value
                    return(x)
                  })
-#' Replace an \code{Elist} slot value with a given \code{\linkS4class{Elist}}
+
+#' Replace an \code{Elist} slot value with a given \code{Elist}
 #' class object
 #'
 #' @param x A \code{MultiAssayExperiment} class object
-#' @param value An \code{\linkS4class{Elist}} object to replace the existing
-#' \code{\linkS4class{Elist}} slot
+#' @param value An \code{Elist} object to replace the existing
+#' \code{Elist} slot
 #'
 #' @examples
 #'
@@ -243,10 +249,11 @@ setReplaceMethod("sampleMap", c("MultiAssayExperiment", "DataFrame"),
 #' Elist(myMultiAssayExperiment) <- myNewElist
 #' }
 #'
-#' @return A \link{Elist} class object
+#' @return A \code{Elist} class object
 setGeneric("Elist<-", function(x, value) standardGeneric("Elist<-"))
+
 #' @exportMethod Elist<-
-#' @describeIn MultiAssayExperiment value: An \linkS4class{Elist} 
+#' @describeIn MultiAssayExperiment value: An \code{Elist} 
 #' representation
 setReplaceMethod("Elist", c("MultiAssayExperiment", "Elist"),
                  function(x, value) {

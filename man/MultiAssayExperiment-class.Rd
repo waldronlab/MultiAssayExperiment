@@ -5,7 +5,7 @@
 \alias{Elist,MultiAssayExperiment-method}
 \alias{Elist<-,MultiAssayExperiment,Elist-method}
 \alias{MultiAssayExperiment-class}
-\alias{[,MultiAssayExperiment,ANY,ANY,ANY-method}
+\alias{[,MultiAssayExperiment,ANY-method}
 \alias{assay,MultiAssayExperiment,ANY-method}
 \alias{colnames,MultiAssayExperiment-method}
 \alias{isEmpty,MultiAssayExperiment-method}
@@ -43,7 +43,7 @@
 
 \S4method{assay}{MultiAssayExperiment,ANY}(x)
 
-\S4method{[}{MultiAssayExperiment,ANY,ANY,ANY}(x, i, j, k, ..., drop = TRUE)
+\S4method{[}{MultiAssayExperiment,ANY}(x, i, j, k, ..., drop = TRUE)
 
 \S4method{isEmpty}{MultiAssayExperiment}(x)
 }
@@ -107,7 +107,7 @@ MultiAssayExperiment
 \item \code{sampleMap<-}: value: A \code{DataFrame} sampleMap 
 representation
 
-\item \code{Elist<-}: value: An \linkS4class{Elist} 
+\item \code{Elist<-}: value: An \code{Elist} 
 representation
 
 \item \code{rownames}: Get all the rownames for a
@@ -140,6 +140,23 @@ and participants}
 
 \item{\code{drops}}{A metadata \code{list} of dropped information.}
 }}
+\examples{
+## Run the example Elist
+example("Elist-class")
+
+## Run the sample map example
+example("listToMap")
+
+## Create an example phenotype data
+myPheno <- data.frame(sex = c("M", "F", "M", "F"),
+                       age = 38:41,
+                       row.names = c("Jack", "Jill", "Bob", "Barbara"))
+
+## Auto-creation of map
+myMultiAssayExperiment <- MultiAssayExperiment(Elist = myElist,
+                                               pData = myPheno,
+                                               sampleMap = myDF)
+}
 \seealso{
 \code{getHits}
 }
