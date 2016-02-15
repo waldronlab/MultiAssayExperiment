@@ -28,6 +28,7 @@ setMethod("ncol", signature("RangedRaggedAssay"), function(x)
   length(x))
 #' @describeIn RangedRaggedAssay Get the row length of a RangedRaggedAssay
 setMethod("nrow", signature("RangedRaggedAssay"), function(x)
+  # QUESTION: Is explicit unlist()-ing slow? Might be possible to sum lengths()?
   length(unlist(x)))
 
 .RangedBracketSubsetRRA <- function(x, i, j, ..., drop) {
@@ -35,6 +36,7 @@ setMethod("nrow", signature("RangedRaggedAssay"), function(x)
     warning("'drop' ignored '[,", class(x), ",ANY,ANY-method'")
   }
   if (!missing(j)) {
+    # QUESTION: i = j, is that correct?
     x <- callNextMethod(x = x, i = j)
   }
   if (!missing(i)) {
@@ -55,6 +57,7 @@ setMethod("nrow", signature("RangedRaggedAssay"), function(x)
     return(x)
   }
   if (!missing(j)) {
+    # QUESTION: i = j, is that correct?
     x <- callNextMethod(x = x, i = j)
   }
   if (!missing(i)) {
@@ -70,16 +73,18 @@ setMethod("nrow", signature("RangedRaggedAssay"), function(x)
 #' Subset RangedRaggedAssay 
 #' 
 #' @description 
+# QUESTION: rownames [and | or] colnumn names?
 #' Subsetting a RangedRaggedAssay can be done using either rownames and column
 #' names
 #' 
 #' @param x A \code{\link{RangedRaggedAssay}} class
-#' @param i Either a \code{character} or \code{GRanges} class object 
+# QUESTION: Why can't `i` be a numeric or logical vector?
+#' @param i Either a \code{character} or \code{GRanges} class object
 #' to subset by rows
 #' @param j Either a \code{character}, \code{numeric}, or \code{logical} 
 #' type for selecting columns (\code{\link[GenomicRanges]{GRangesList}} method)
 #' @param ... Any additional arguments passed on to subsetByOverlaps
-#' @param drop logical (defalut TRUE) whether to drop empty columns 
+#' @param drop logical (default TRUE) whether to drop empty columns
 #' @seealso \code{\link[IRanges]{findOverlaps-methods}}
 #' @return A \code{\link{RangedRaggedAssay}} class object
 #' @describeIn RangedRaggedAssay Subset a \code{RangedRaggedAssay} with either 

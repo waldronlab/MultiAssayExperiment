@@ -14,7 +14,7 @@ setMethod("rownames", "ExpressionSet", function(x)
 #' @param x A \code{RangedSummarizedExperiment} object
 #' @return A \code{character} vector of row names
 setMethod("rownames", "RangedSummarizedExperiment", function(x)
-  names(SummarizedExperiment::rowRanges(x)))
+  names(x))
 #' @describeIn RangedRaggedAssay Get feature names from a RangedRaggedAssay
 setMethod("rownames", "RangedRaggedAssay", function(x)
   names(unlist(x, use.names = FALSE)))
@@ -98,6 +98,9 @@ setMethod("getHits", signature("MultiAssayExperiment", "GRanges"),
 #' using \code{findOverlaps}
 setMethod("getHits", signature("GRanges", "GRanges"),
           function(subject, query, ...) {
+            # QUESTION: Does subject always have names()? If not, could
+            #           shortcut by checking if is.null(names(subject)) is
+            #           TRUE.
             names(subject)[queryHits(findOverlaps(subject, query, ...))]
           })
 #' @describeIn getHits Find all matching rownames for Range-based objects
@@ -105,6 +108,9 @@ setMethod("getHits", signature("ANY", "GRanges"),
           function(subject, query, ...) {
             if (.checkFindOverlaps(class(subject))) {
               lapply(subject, function(x) {
+                # QUESTION: Does x always have names()? If not, could
+                #           shortcut by checking if is.null(names(subject)) is
+                #           TRUE.
                 names(x)[queryHits(
                   findOverlaps(query = x, subject = query, ...))]
               })
@@ -138,7 +144,7 @@ setMethod("getHits", signature("RangedRaggedAssay", "character"),
           })
 
 .isEmpty <- function(object) {
-  unname(ncol(object)) == 0L | unname(nrow(object)) == 0L
+  isTRUE(unname(ncol(object)) == 0L | unname(nrow(object)) == 0L)
 }
 
 .subsetMultiAssayExperiment <- function(x, i, j, k, ..., drop = TRUE) {
@@ -157,6 +163,8 @@ setMethod("getHits", signature("RangedRaggedAssay", "character"),
   if (drop) {
     emptyAssays <- vapply(Elist(x), FUN = .isEmpty, FUN.VALUE = logical(1))
     if (all(emptyAssays)) {
+      # QUESTION: Should the rows be retained even though all assays have been
+      #           dropped?
       x <- MultiAssayExperiment()
     } else if (any(emptyAssays)) {
       keeps <- names(emptyAssays)[sapply(emptyAssays, function(x) !isTRUE(x))]
@@ -166,6 +174,7 @@ setMethod("getHits", signature("RangedRaggedAssay", "character"),
   return(x)
 }
 
+# QUESTION: Why can't `i` be a numeric or logical vector?
 #' @describeIn MultiAssayExperiment Subset a \code{MultiAssayExperiment} object
 #' @param x A \code{MultiAssayExperiment} object for subsetting
 #' @param i Either a \code{character}, or \code{GRanges} object for subsetting
@@ -225,6 +234,8 @@ setMethod("subsetByColumn", c("MultiAssayExperiment", "ANY"), function(x, y) {
   listMap <- mapToList(sampleMap(x), "assayname")
   listMap <- listMap[order(names(x))]
   listMap <- lapply(listMap, function(assay) {
+    # QUESTION: Can/should `as.vector(assay[, 1])` be replaced by
+    #           `assay[, 1, drop = TRUE]`
     assay[which(as.vector(assay[, 1]) %in% selectors),]
   })
   newMap <- listToMap(listMap)
@@ -256,6 +267,7 @@ setClassUnion("GRangesORcharacter", c("GRanges", "character"))
 #' \code{GRanges} object
 #' 
 #' @param x A \code{\link{MultiAssayExperiment}} object
+# QUESTION: Should character and GRanges be \link[]-ed?
 #' @param y A \code{character} vector or \code{GRanges} class object
 #' containing feature names or ranges
 #' @param ... Additional arguments to pass to low level subsetting function 
@@ -272,9 +284,11 @@ setMethod("subsetByRow", c("MultiAssayExperiment", "GRangesORcharacter"), functi
   return(x)
 })
 
+# QUESTION: What if length(y) == 0? E.g., compare MAE[character(0)] vs.
+#           MAE[GenomicRanges::GRanges()]
 setMethod("subsetByRow", c("MultiAssayExperiment", "GRanges"), function(x, y, ...) {
   if (is.null(names(y))) {
-    names(y) <- 1:length(y)
+    names(y) <- seq_along(y)
   }
   callNextMethod(x = x, y = y, ...)
 })

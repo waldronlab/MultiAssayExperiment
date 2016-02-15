@@ -9,10 +9,13 @@
 #' @param method A \code{character} vector of length one designating to subset
 #' either by colnames, rownames, or assays
 #' @param drop logical (default FALSE) whether to coerce lowest possible
-#' dimension after subsetting 
-#' @param ... Additional arguments to pass to SubsetByOverlaps when subsetting
+#' dimension after subsetting
+#' @param ... Additional arguments to pass to
+#' \code{\link[IRanges]{subsetByOverlaps}} when subsetting
 #' by rownames
 #' @return A subsetted \link{MultiAssayExperiment} class object
+# QUESTION: This roxygen2 directive exports subset as a function, not an S4
+# method. Is this intentional?
 #' @export subset
 setMethod("subset", "MultiAssayExperiment",
           function(x, indicator, method = NULL, drop = TRUE, ...) {
@@ -23,6 +26,8 @@ setMethod("subset", "MultiAssayExperiment",
             } else {
               method <- match.arg(method, c("colnames", "rownames", "assays"))
             }
+            # QUESTION: Why if user supplies incomplete or incorrect `method`,
+            # e.g., `method = "col"` or `method = "feature"`?
             if (method == "colnames") {
               MultiAssay <- subsetByColumn(x = x,
                                            y = indicator)
@@ -33,15 +38,15 @@ setMethod("subset", "MultiAssayExperiment",
               MultiAssay <- subsetByAssay(x = x,
                                           y = indicator)
             }
-            if(drop){
-              emptyAssays <- lapply(Elist(MultiAssay), .isEmpty)
-              if(all(unlist(emptyAssays))){
+            if (drop) {
+              isEmptyAssay <- vapply(Elist(MultiAssay), .isEmpty, logical(1L))
+              if (all(isEmptyAssay)) {
                 MultiAssay <- MultiAssayExperiment()
-              } else if (any(unlist(emptyAssays))) {
-                keeps <-
-                  names(emptyAssays)[sapply(emptyAssays,
-                                            function(x) !isTRUE(x))]
-                MultiAssay <- MultiAssay[,,keeps, drop = FALSE]
+              } else if (any(isEmptyAssay)) {
+                # NOTE: modified .isEmpty to always return TRUE or FALSE (and
+                # never NA) by using an isTRUE() within .isEmpty()
+                keeps <- names(isEmptyAssay)[!isEmptyAssay]
+                MultiAssay <- MultiAssay[, , keeps, drop = FALSE]
               }
             }
             return(MultiAssay)

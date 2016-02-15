@@ -1,10 +1,12 @@
 .createNames <- function(object) {
+  # QUESTION: Is this general enough? E.g., what if object extends these
+  #           classes.
   if (class(object) %in% c("RangedRaggedAssay", "GRangesList")) {
     for (i in seq_along(object)) {
-      names(object[[i]]) <- 1:length(object[[i]])
+      names(object[[i]]) <- seq_along(object[[i]])
     }
   } else if (is(object, "RangedSummarizedExperiment")) {
-    names(object) <- 1:length(object)
+    names(object) <- seq_along(object)
   }
   return(object)
 }
@@ -27,6 +29,7 @@
     S4Vectors::DataFrame(assay = x[[i]], assayname = Rle(names(x)[i]))
   }, x = samps)
   full_map <- do.call(S4Vectors::rbind, listM)
+  # QUESTION: `$` access vs. `[[`, access?
   master <- Rle(rownames(mPheno)[match(full_map$assay, rownames(mPheno))])
   autoMap <- S4Vectors::cbind(DataFrame(master), full_map)
   if (any(is.na(autoMap$master))) {
@@ -35,6 +38,7 @@
             sprintf("\n %s - %s", notFound[, 2], notFound[, 3]),
             "\ndropped due to missing phenotype data")
   }
+  # QUESTION: drop = ???
   autoMap <- autoMap[!is.na(autoMap$master), ]
   return(autoMap)
 }
