@@ -3,7 +3,6 @@
 \docType{class}
 \name{MultiAssayView-class}
 \alias{.MultiAssayView}
-\alias{MultiAssayView}
 \alias{MultiAssayView-class}
 \alias{[,MultiAssayView,ANY-method}
 \alias{colnames,MultiAssayView-method}

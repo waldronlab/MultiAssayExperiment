@@ -1,4 +1,4 @@
-#' MultiAssayExperiment: Build an integrative multiassay container
+#' MultiAssayExperiment: Build an integrative multi-assay container
 #' 
 #' MultiAssayExperiment allows the manipulation of related multiassay 
 #' datasets with partially overlapping samples, associated metadata at 
@@ -13,7 +13,8 @@
 #' }
 #' 
 #' @docType package
+#' @name MultiAssayExperiment
 #' @import BiocGenerics SummarizedExperiment S4Vectors GenomicRanges methods
 #' @importFrom Biobase pData
 #' @importFrom IRanges CharacterList
-"_PACKAGE"
+NULL

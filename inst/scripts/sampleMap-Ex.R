@@ -11,5 +11,6 @@ methylmap <- data.frame(
 ## Combine as a named list and convert to a DataFrame
 mylist <- list(exprmap, methylmap)
 names(mylist) <- c("Affy", "Methyl450k")
-myDF <- listToMap(mylist)
-mylist <- mapToList(myDF)
+
+## Create a sampleMap
+mySampleMap <- listToMap(mylist)

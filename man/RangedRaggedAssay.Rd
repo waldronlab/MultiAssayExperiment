@@ -15,4 +15,11 @@ A \code{\linkS4class{RangedRaggedAssay}} class object
 \description{
 Create a RangedRaggedAssay
 }
+\examples{
+## Load an example GRangesList object
+library(GenomicRanges)
+example("GRangesList")
+
+myRRA <- RangedRaggedAssay(grl)
+}
 

@@ -9,8 +9,8 @@
 #' @param assayCol A character vector of length one indicating the assay
 #' names column 
 #' @return A \code{list} object of DataFrames for each assay
-#' @aliases listToMap mapToList
-#' @example inst/scripts/listMap-Ex.R
+#' @aliases listToMap 
+#' @example inst/scripts/listToMap-Ex.R
 #' @export mapToList
 mapToList <- function(dfmap, assayCol = "assayname") {
     if (is.null(assayCol)) {

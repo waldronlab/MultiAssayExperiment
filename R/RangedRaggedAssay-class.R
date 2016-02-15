@@ -5,6 +5,7 @@
 #' An extension of the GRangesList class
 #' 
 #' @exportClass RangedRaggedAssay
+#' @name RangedRaggedAssay-class
 .RangedRaggedAssay <- setClass("RangedRaggedAssay", contains = "GRangesList")
 
 ### - - - - - - - - - - - - - - - - - - - - - - - -
@@ -15,6 +16,7 @@
 #'
 #' @param x A \code{list}, \code{GRanges} or \code{GRangesList} object
 #' @return A \code{\linkS4class{RangedRaggedAssay}} class object
+#' @example inst/scripts/RangedRaggedAssay-Ex.R
 #' @export RangedRaggedAssay
 RangedRaggedAssay <- function(x = GRangesList()) {
   if(inherits(x, "GRanges")) {

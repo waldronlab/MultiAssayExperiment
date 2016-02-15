@@ -24,7 +24,8 @@
 #' @slot drops A metadata \code{list} of dropped information.
 #' @return A \code{MultiAssayExperiment} object
 #' 
-#' @example inst/scripts/MultiAssayExperiment-Ex.R
+#' @examples
+#' MultiAssayExperiment()
 #' 
 #' @exportClass MultiAssayExperiment
 #' @include Elist-class.R
@@ -174,6 +175,7 @@ setMethod("show", "MultiAssayExperiment", function(object) {
 #'
 #' @param x A \code{MultiAssayExperiment} object
 #' @return A \code{DataFrame} object of sample relationships across experiments
+#' @example inst/scripts/sampleMap-Ex.R
 setGeneric("sampleMap", function(x) standardGeneric("sampleMap"))
 
 #' @describeIn MultiAssayExperiment Access sampleMap slot from

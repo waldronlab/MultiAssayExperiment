@@ -39,7 +39,8 @@
 #' Convert from \code{SimpleList} or \code{list}
 #' to the multi-experiment data container
 #'
-#' @example inst/scripts/Elist-Ex.R
+#' @examples
+#' Elist()
 #'
 #' @exportClass Elist
 #' @name Elist-class
@@ -54,6 +55,9 @@
 #' 
 #' @param x A code{MultiAssayExperiment} class object
 #' @return A \code{Elist} class object of experiment data
+#' 
+#' @example inst/scripts/Elist-Ex.R 
+#' 
 setGeneric("Elist", function(x) standardGeneric("Elist"))
 
 #' @param x A \code{list} object

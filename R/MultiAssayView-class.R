@@ -16,7 +16,7 @@
 #'     retained for subsequent operations
 #' @return A \code{MultiAssayView} object
 #' @exportClass MultiAssayView
-#' @aliases MultiAssayView
+#' @name MultiAssayView-class
 .MultiAssayView <- setClass("MultiAssayView",
          representation(
              subject = "environment",

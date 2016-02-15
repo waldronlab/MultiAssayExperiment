@@ -53,7 +53,11 @@
 #' (included after subsetting)   
 #' @return A \code{MultiAssayExperiment} data object that stores experiment
 #' and phenotype data
+#' 
+#' @example inst/scripts/MultiAssayExperiment-Ex.R
+#' 
 #' @export MultiAssayExperiment
+#' @seealso MultiAssayExperiment-class
 MultiAssayExperiment <-
   function(Elist = list(),
            pData = S4Vectors::DataFrame(),
