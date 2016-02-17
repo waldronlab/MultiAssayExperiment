@@ -22,7 +22,7 @@ mapToList <- function(dfmap, assayCol = "assayname") {
     if (!is.character(assayCol) | length(assayCol) != 1L) {
         stop("assayname must be a string")
     }
-    if (is(dfmap, "data.frame")) {
+    if (inherits(dfmap, "data.frame")) {
         dfmap <- S4Vectors::DataFrame(dfmap)
     }
     newList <- S4Vectors::split(dfmap, dfmap[, assayCol])

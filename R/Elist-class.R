@@ -2,7 +2,7 @@
 .hasMethods <- function(object, my_fun) {
   obj_cl <- class(object)
   if (any(my_fun %in% c("[", "assay"))) {
-    if (is(object, "RangedSummarizedExperiment")) {
+    if (inherits(object, "RangedSummarizedExperiment")) {
       return(hasMethod(my_fun, signature = c(class(object), "missing")))
     } else {
       return(hasMethod(my_fun, signature = c(obj_cl, "ANY")))
@@ -11,17 +11,22 @@
   return(hasMethod(my_fun, signature = obj_cl))
 }
 
-.getNameErr <- function(object) {
-  if (inherits(object, "RangedRaggedAssay")) {
-    if (is.null(names(object))) {
-      msg <- paste("names in", class(object), "are NULL")
-      return(msg)
-    } else {
-      NULL
-    }
+.getRowColNamesErr <- function(object) {
+  if (is.null(rownames(object)) || is.null(colnames(object))) {
+    msg <- paste("rownames or colnames in", class(object), "are NULL")
+    return(msg)
   } else {
     NULL
   }
+}
+
+.PrepElements <- function(object) {
+  if (inherits(object, "GRangesList")) {
+    object <- RangedRaggedAssay(object)
+  } else {
+    object
+  }
+  return(object)
 }
 
 ### ==============================================
@@ -66,7 +71,11 @@ setGeneric("Elist", function(x) standardGeneric("Elist"))
 #' @describeIn Elist Create an \code{Elist} object from an "ANY" class object, 
 #' mainly \code{list}
 setMethod("Elist", "ANY", function(x) {
-  .Elist(S4Vectors::SimpleList(x))
+  objList <- S4Vectors::endoapply(x, .PrepElements)
+  if (inherits(x, "list")) {
+    objList <- S4Vectors::SimpleList(x)
+  }
+  return(.Elist(objList))
 })
 #' @describeIn Elist Create an empty Elist for signature "missing"
 setMethod("Elist", "missing", function(x) {
@@ -77,7 +86,7 @@ setMethod("Elist", "missing", function(x) {
 ### Validity 
 ###
 
-.getMethErr2 <- function(object) {
+.getMethErr <- function(object) {
   obj_cl <- class(object)
   supportedMethods <- c("colnames", "rownames", "[", "assay")
   methErr <- which(!sapply(supportedMethods, function(x) {
@@ -96,7 +105,7 @@ setMethod("Elist", "missing", function(x) {
 .checkMethodsTable <- function(object) {
   errors <- character()
   for (i in seq_along(object)) {
-    coll_err <- .getMethErr2(object[[i]])
+    coll_err <- .getMethErr(object[[i]])
     if (!is.null(coll_err)) {
       errors <- c(errors, paste0("Element [", i, "] of ", coll_err))
     }
@@ -142,7 +151,8 @@ setMethod("Elist", "missing", function(x) {
 .validElist <- function(object) {
   if (length(object) != 0L) {
     c(.checkMethodsTable(object),
-    .checkElistNames(object))
+    .checkElistNames(object),
+    .checkElistDims(object))
   }
 }
 

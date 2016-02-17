@@ -9,12 +9,6 @@ NULL
 #' @return A \code{character} vector of row names
 setMethod("rownames", "ExpressionSet", function(x)
   Biobase::featureNames(x))
-#' Harmonize names of rowRanges to rownames of a
-#' \code{RangedSummarizedExperiment} object
-#' @param x A \code{RangedSummarizedExperiment} object
-#' @return A \code{character} vector of row names
-setMethod("rownames", "RangedSummarizedExperiment", function(x)
-  names(SummarizedExperiment::rowRanges(x)))
 #' @describeIn RangedRaggedAssay Get feature names from a RangedRaggedAssay
 setMethod("rownames", "RangedRaggedAssay", function(x)
   names(unlist(x, use.names = FALSE)))

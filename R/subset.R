@@ -16,7 +16,7 @@
 #' @export subset
 setMethod("subset", "MultiAssayExperiment",
           function(x, indicator, method = NULL, drop = TRUE, ...) {
-            if (is(indicator, "GRanges")) {
+            if (inherits(indicator, "GRanges")) {
               method <- "rownames"
             } else if (is.null(method)) {
               stop("Indicate a subset method")

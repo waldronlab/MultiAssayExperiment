@@ -1,22 +1,10 @@
 .createNames <- function(object) {
-  if (class(object) %in% c("RangedRaggedAssay", "GRangesList")) {
-    for (i in seq_along(object)) {
-      names(object[[i]]) <- 1:length(object[[i]])
-    }
-  } else if (is(object, "RangedSummarizedExperiment")) {
-    names(object) <- 1:length(object)
-  }
-  return(object)
-}
-
-.PrepElements <- function(object) {
-  if (is.null(rownames(object))) {
-    object <- .createNames(object)
-  }
   if (inherits(object, "GRangesList")) {
-    object <- RangedRaggedAssay(object)
-  } else {
-    object
+    u_obj <- unlist(object, use.names = FALSE)
+    names(u_obj) <- seq_len(length(u_obj))
+    object <- relist(u_obj, object)
+  } else if (inherits(object, "RangedSummarizedExperiment")) {
+    rownames(object) <- seq_along(object)
   }
   return(object)
 }
@@ -63,9 +51,7 @@ MultiAssayExperiment <-
            pData = S4Vectors::DataFrame(),
            sampleMap = S4Vectors::DataFrame(),
            drops = list()) {
-    Elist <- lapply(Elist, function(x) {
-      .PrepElements(x)
-    })
+    newElist <- Elist(Elist)
     if (!all(c(length(sampleMap) == 0L,
                length(pData) == 0L,
                length(Elist) == 0L))) {
@@ -74,7 +60,7 @@ MultiAssayExperiment <-
         pData <- S4Vectors::DataFrame(
           pheno1 = rep(NA, length(allsamps)),
           row.names = allsamps)
-        sampleMap <- .generateMap(pData, Elist)
+        sampleMap <- .generateMap(pData, newElist)
       } else if ((length(sampleMap) == 0L) && !(length(pData) == 0L)) {
         warning("sampleMap not provided, map will be generated")
         sampleMap <- .generateMap(pData, Elist)
@@ -82,7 +68,7 @@ MultiAssayExperiment <-
           S4Vectors::split(sampleMap[["assay"]], sampleMap[, "assayname"])
         Elist <- Map(function(x, y) {
           x[, y]
-        }, Elist, validAssays)
+        }, newElist, validAssays)
       }
     }
     if (!is(pData, "DataFrame")) {
@@ -92,7 +78,7 @@ MultiAssayExperiment <-
       sampleMap <- S4Vectors::DataFrame(sampleMap)
     }
     newMultiAssay <- new("MultiAssayExperiment",
-                         Elist = Elist(Elist),
+                         Elist = newElist,
                          pData = pData, 
                          sampleMap = sampleMap)
     return(newMultiAssay)
