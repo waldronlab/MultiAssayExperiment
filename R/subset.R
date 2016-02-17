@@ -14,9 +14,7 @@
 #' \code{\link[IRanges]{subsetByOverlaps}} when subsetting
 #' by rownames
 #' @return A subsetted \link{MultiAssayExperiment} class object
-# QUESTION: This roxygen2 directive exports subset as a function, not an S4
-# method. Is this intentional?
-#' @export subset
+#' @export
 setMethod("subset", "MultiAssayExperiment",
           function(x, indicator, method = NULL, drop = TRUE, ...) {
             if (is(indicator, "GRanges")) {
@@ -26,8 +24,6 @@ setMethod("subset", "MultiAssayExperiment",
             } else {
               method <- match.arg(method, c("colnames", "rownames", "assays"))
             }
-            # QUESTION: Why if user supplies incomplete or incorrect `method`,
-            # e.g., `method = "col"` or `method = "feature"`?
             if (method == "colnames") {
               MultiAssay <- subsetByColumn(x = x,
                                            y = indicator)
@@ -43,8 +39,6 @@ setMethod("subset", "MultiAssayExperiment",
               if (all(isEmptyAssay)) {
                 MultiAssay <- MultiAssayExperiment()
               } else if (any(isEmptyAssay)) {
-                # NOTE: modified .isEmpty to always return TRUE or FALSE (and
-                # never NA) by using an isTRUE() within .isEmpty()
                 keeps <- names(isEmptyAssay)[!isEmptyAssay]
                 MultiAssay <- MultiAssay[, , keeps, drop = FALSE]
               }

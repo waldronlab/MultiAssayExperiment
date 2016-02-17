@@ -65,7 +65,8 @@ setClass("MultiAssayExperiment",
   errors <- character()
   SampMap <- sampleMap(object)
   lcheckdups <- S4Vectors::split(SampMap[["assay"]], SampMap[, "assayname"])
-  logchecks <- any(vapply(lcheckdups, anyDuplicated, numeric(1)))
+  logchecks <- any(vapply(lcheckdups, function(x) as.logical(anyDuplicated(x)),
+                          logical(1L)))
   if (logchecks) {
     msg <- "All sample identifiers in the assays must be unique"
     errors <- c(errors, msg)
