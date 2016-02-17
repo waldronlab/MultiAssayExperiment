@@ -57,7 +57,7 @@
 #' @return A \code{Elist} class object of experiment data
 #' 
 #' @example inst/scripts/Elist-Ex.R 
-#' 
+#' @export
 setGeneric("Elist", function(x) standardGeneric("Elist"))
 
 #' @param x A \code{list} object

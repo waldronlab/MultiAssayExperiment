@@ -114,8 +114,10 @@ setMethod("[", c("MultiAssayView", "ANY", "ANY", "ANY"),
         colindex <- .subset1(j, colindex, colnames(x))
     assayindex <- .assayindex(x)
     if (!missing(k))
-        assayindex <- assayindex[k]
-    initialize(x, rowindex=rowindex, colindex=colindex, assayindex = assayindex)
+      assayindex <- assayindex[k]
+    initialize(x, rowindex = rowindex,
+               colindex = colindex,
+               assayindex = assayindex)
     ## FIXME: row/colnames should be updated to reflect subsets ?
 })
 

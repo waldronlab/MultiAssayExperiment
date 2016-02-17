@@ -228,9 +228,10 @@ setMethod("names", "MultiAssayExperiment", function(x)
 setGeneric("sampleMap<-", function(x, value) standardGeneric("sampleMap<-"))
 
 #' @exportMethod sampleMap<-
-#' @describeIn MultiAssayExperiment value: A \code{DataFrame} sampleMap 
+#' @describeIn MultiAssayExperiment value: A \code{DataFrame} sampleMap
 #' representation
-#' @param value A \code{DataFrame} or \code{Elist} object to replace the existing
+#' @param value A \code{DataFrame} or \code{Elist} object to replace the
+#' existing
 #' \code{sampleMap} or an \code{Elist} slot, respectively
 setReplaceMethod("sampleMap", c("MultiAssayExperiment", "DataFrame"),
                  function(x, value) {
@@ -246,10 +247,11 @@ setReplaceMethod("sampleMap", c("MultiAssayExperiment", "DataFrame"),
 #' \code{Elist} slot
 #'
 #' @examples
-#'
-#' \dontrun{
-#' Elist(myMultiAssayExperiment) <- myNewElist
-#' }
+#' ## Load a MultiAssayExperiment
+#' example("MultiAssayExperiment")
+#' 
+#' ## Replace with an empty Elist
+#' Elist(myMultiAssayExperiment) <- Elist()
 #'
 #' @return A \code{Elist} class object
 setGeneric("Elist<-", function(x, value) standardGeneric("Elist<-"))

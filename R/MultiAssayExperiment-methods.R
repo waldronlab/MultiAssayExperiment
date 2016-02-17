@@ -70,16 +70,12 @@ setMethod("assay", "MultiAssayExperiment", function(x)
 #' Find hits by class type
 #' 
 #' @param subject Any valid element from the \code{\linkS4class{Elist}} class
-#' @param query Either a \code{character} vector or \code{\linkS4class{GRanges}}
+#' @param query Either a \code{character} vector or
+#' \code{\linkS4class{GRanges}}
 #' object used to search by name or ranges
 #' @param ... Additional arguments to findOverlaps
 #' @return Names of matched queries
-#' @examples
-#'
-#' \dontrun{
-#' getHits(myMultiAssayExperiment, myGRanges)
-#' }
-#'
+#' @example inst/scripts/getHits-Ex.R
 #' @exportMethod getHits
 setGeneric("getHits", function(subject, query, ...) standardGeneric("getHits"))
 #' @describeIn getHits Find all matching rownames by character
@@ -264,17 +260,19 @@ setClassUnion("GRangesORcharacter", c("GRanges", "character"))
 #' @return A \code{\link{MultiAssayExperiment}} object 
 #' @seealso \code{\link{getHits}}
 setGeneric("subsetByRow", function(x, y, ...) standardGeneric("subsetByRow"))
-setMethod("subsetByRow", c("MultiAssayExperiment", "GRangesORcharacter"), function(x, y, ...) {
-  hitList <- getHits(x, y, ...)
-  Elist(x) <- Elist(mapply(function(f, g) {
-    f[g, , drop =  FALSE]
-  }, f = Elist(x), g = hitList, SIMPLIFY = FALSE))
-  return(x)
-})
+setMethod("subsetByRow", c("MultiAssayExperiment", "GRangesORcharacter"),
+          function(x, y, ...) {
+            hitList <- getHits(x, y, ...)
+            Elist(x) <- Elist(mapply(function(f, g) {
+              f[g, , drop =  FALSE]
+            }, f = Elist(x), g = hitList, SIMPLIFY = FALSE))
+            return(x)
+          })
 
-setMethod("subsetByRow", c("MultiAssayExperiment", "GRanges"), function(x, y, ...) {
-  if (is.null(names(y))) {
-    names(y) <- 1:length(y)
-  }
-  callNextMethod(x = x, y = y, ...)
-})
+setMethod("subsetByRow", c("MultiAssayExperiment", "GRanges"),
+          function(x, y, ...) {
+            if (is.null(names(y))) {
+              names(y) <- 1:length(y)
+            }
+            callNextMethod(x = x, y = y, ...)
+          })

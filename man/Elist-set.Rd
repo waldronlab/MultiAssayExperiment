@@ -21,10 +21,11 @@ Replace an \code{Elist} slot value with a given \code{Elist}
 class object
 }
 \examples{
+## Load a MultiAssayExperiment
+example("MultiAssayExperiment")
 
-\dontrun{
-Elist(myMultiAssayExperiment) <- myNewElist
-}
+## Replace with an empty Elist
+Elist(myMultiAssayExperiment) <- Elist()
 
 }
 

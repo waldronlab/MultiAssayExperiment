@@ -44,10 +44,17 @@ The package hierarchy of information:
 }
 \examples{
 ## Run the example Elist
-example("Elist-class")
+example("Elist")
+
+## Load example GRangesList object
+example("RangedRaggedAssay")
+
+## Add the RangedRaggedAssay to the list
+ExpList <- c(ExpList, myRRA)
+names(ExpList)[3] <- "CNVgistic"
 
 ## Run the sample map example
-example("listToMap")
+example("sampleMap")
 
 ## Create an example phenotype data
 myPheno <- data.frame(sex = c("M", "F", "M", "F"),
@@ -55,9 +62,9 @@ myPheno <- data.frame(sex = c("M", "F", "M", "F"),
                        row.names = c("Jack", "Jill", "Bob", "Barbara"))
 
 ## Auto-creation of map
-myMultiAssayExperiment <- MultiAssayExperiment(Elist = myElist,
+myMultiAssayExperiment <- MultiAssayExperiment(Elist = ExpList,
                                                pData = myPheno,
-                                               sampleMap = myDF)
+                                               sampleMap = mySampleMap)
 }
 \seealso{
 MultiAssayExperiment-class

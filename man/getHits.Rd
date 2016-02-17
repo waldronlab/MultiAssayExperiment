@@ -55,10 +55,11 @@ using \code{findOverlaps}
 \item \code{subject = ANY,query = character}: Find all matching rownames based on character query
 }}
 \examples{
+## Load an example MultiAssayExperiment object
+example("MultiAssayExperiment")
+example("GRangesList")
 
-\dontrun{
-getHits(myMultiAssayExperiment, myGRanges)
-}
-
+## Find what ranges fit the criteria (see findOverlaps)
+getHits(myMultiAssayExperiment, gr1)
 }
 

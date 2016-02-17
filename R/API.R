@@ -8,9 +8,7 @@
 #' API()
 #'
 #' @export
-API <- function(){
-utils::browseURL(
-  "https://github.com/vjcitn/MultiAssayExperiment/wiki/MultiAssayExperiment-API"
-  )
-}
-
+API <- function() {
+  utils::browseURL(
+"https://github.com/vjcitn/MultiAssayExperiment/wiki/MultiAssayExperiment-API"
+  )}
