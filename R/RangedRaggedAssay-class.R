@@ -74,12 +74,12 @@ setMethod("nrow", signature("RangedRaggedAssay"), function(x)
 #' names
 #' 
 #' @param x A \code{\link{RangedRaggedAssay}} class
-#' @param i Either a \code{character} or \code{GRanges} class object 
+#' @param i Either a \code{character} or \code{GRanges} class object
 #' to subset by rows
 #' @param j Either a \code{character}, \code{numeric}, or \code{logical} 
 #' type for selecting columns (\code{\link[GenomicRanges]{GRangesList}} method)
 #' @param ... Any additional arguments passed on to subsetByOverlaps
-#' @param drop logical (defalut TRUE) whether to drop empty columns 
+#' @param drop logical (default TRUE) whether to drop empty columns
 #' @seealso \code{\link[IRanges]{findOverlaps-methods}}
 #' @return A \code{\link{RangedRaggedAssay}} class object
 #' @describeIn RangedRaggedAssay Subset a \code{RangedRaggedAssay} with either 

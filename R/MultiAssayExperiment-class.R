@@ -12,8 +12,8 @@
 #' (inherits from \code{GRangesList}), and \code{RangedVcfStack}. Create new
 #' \code{MultiAssayExperiment} instances with the eponymous constructor, 
 #' minimally with the argument \code{\linkS4class{Elist}}, potentially also
-#' with the arguments \code{pData} and \code{sampleMap}
-#' 
+#' with the arguments \code{pData} and \code{sampleMap}.
+#'
 #' @slot Elist A \code{\linkS4class{Elist}} class object for each assay dataset
 #' @slot pData A \code{DataFrame} of all clinical data available across
 #' experiments
@@ -21,7 +21,7 @@
 #' and participants
 #' @slot metadata Additional data describing the
 #' \code{\link{MultiAssayExperiment}} object
-#' @slot drops A metadata \code{list} of dropped information.
+#' @slot drops A metadata \code{list} of dropped information
 #' @return A \code{MultiAssayExperiment} object
 #' @exportClass MultiAssayExperiment
 #' @include Elist-class.R
@@ -65,8 +65,8 @@ setClass("MultiAssayExperiment",
   errors <- character()
   SampMap <- sampleMap(object)
   lcheckdups <- S4Vectors::split(SampMap[["assay"]], SampMap[, "assayname"])
-  logchecks <- any(vapply(lcheckdups,
-                          function(x) any(duplicated(x)), logical(1)))
+  logchecks <- any(vapply(lcheckdups, function(x) as.logical(anyDuplicated(x)),
+                          logical(1L)))
   if (logchecks) {
     msg <- "All sample identifiers in the assays must be unique"
     errors <- c(errors, msg)

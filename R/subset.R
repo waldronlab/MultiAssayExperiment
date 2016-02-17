@@ -9,11 +9,12 @@
 #' @param method A \code{character} vector of length one designating to subset
 #' either by colnames, rownames, or assays
 #' @param drop logical (default FALSE) whether to coerce lowest possible
-#' dimension after subsetting 
-#' @param ... Additional arguments to pass to SubsetByOverlaps when subsetting
+#' dimension after subsetting
+#' @param ... Additional arguments to pass to
+#' \code{\link[IRanges]{subsetByOverlaps}} when subsetting
 #' by rownames
 #' @return A subsetted \link{MultiAssayExperiment} class object
-#' @export subset
+#' @export
 setMethod("subset", "MultiAssayExperiment",
           function(x, indicator, method = NULL, drop = TRUE, ...) {
             if (is(indicator, "GRanges")) {
@@ -33,15 +34,13 @@ setMethod("subset", "MultiAssayExperiment",
               MultiAssay <- subsetByAssay(x = x,
                                           y = indicator)
             }
-            if(drop){
-              emptyAssays <- lapply(Elist(MultiAssay), .isEmpty)
-              if(all(unlist(emptyAssays))){
+            if (drop) {
+              isEmptyAssay <- vapply(Elist(MultiAssay), .isEmpty, logical(1L))
+              if (all(isEmptyAssay)) {
                 MultiAssay <- MultiAssayExperiment()
-              } else if (any(unlist(emptyAssays))) {
-                keeps <-
-                  names(emptyAssays)[sapply(emptyAssays,
-                                            function(x) !isTRUE(x))]
-                MultiAssay <- MultiAssay[,,keeps, drop = FALSE]
+              } else if (any(isEmptyAssay)) {
+                keeps <- names(isEmptyAssay)[!isEmptyAssay]
+                MultiAssay <- MultiAssay[, , keeps, drop = FALSE]
               }
             }
             return(MultiAssay)

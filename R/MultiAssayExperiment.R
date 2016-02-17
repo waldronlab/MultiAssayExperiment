@@ -1,10 +1,10 @@
 .createNames <- function(object) {
-  if (class(object) %in% c("RangedRaggedAssay", "GRangesList")) {
+  if (inherits(object, "GRangesList")) {
     for (i in seq_along(object)) {
-      names(object[[i]]) <- 1:length(object[[i]])
+      names(object[[i]]) <- seq_along(object[[i]])
     }
-  } else if (is(object, "RangedSummarizedExperiment")) {
-    names(object) <- 1:length(object)
+  } else if (is(object, "SummarizedExperiment")) {
+    names(object) <- seq_along(object)
   }
   return(object)
 }
