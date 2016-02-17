@@ -52,7 +52,8 @@
 
 \item{x}{A \code{MultiAssayExperiment} object for subsetting}
 
-\item{value}{A \code{DataFrame} or \code{Elist} object to replace the existing
+\item{value}{A \code{DataFrame} or \code{Elist} object to replace the
+existing
 \code{sampleMap} or an \code{Elist} slot, respectively}
 
 \item{i}{Either a \code{character}, or \code{GRanges} object for subsetting
@@ -104,7 +105,7 @@ MultiAssayExperiment
 
 \item \code{names}: Get the names of the Elist
 
-\item \code{sampleMap<-}: value: A \code{DataFrame} sampleMap 
+\item \code{sampleMap<-}: value: A \code{DataFrame} sampleMap
 representation
 
 \item \code{Elist<-}: value: An \code{Elist} 

@@ -33,7 +33,22 @@
     stats::setNames(relist(idx, x), nms)
 }
 
+#' A parallel representation for manipulating a MultiAssayExperiment
+#' 
+#' The purpose of the \code{MultiAssayView} class is to provide a
+#' lightweight and memory efficient representation of a 
+#' \code{MultiAssayExperiment} class object.
+#' 
+#' @param subject A \code{MultiAssayExperiment} class object
+#' @return A \code{MultiAssayView} representation of a loaded
+#' \code{MultiAssayExperiment} object.
+#' 
+#' @examples 
+#' example("MultiAssayExperiment")
+#' MultiAssayView(myMultiAssayExperiment)
+#' 
 #' @export MultiAssayView
+#' @name MultiAssayView
 MultiAssayView <- function(subject) {
     stopifnot(inherits(subject, "MultiAssayExperiment"))
     .MultiAssayView(subject=as.environment(list(subject=subject)),

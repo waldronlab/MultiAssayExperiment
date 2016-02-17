@@ -31,7 +31,7 @@ datasets with partially overlapping samples, associated metadata at
 the level of an entire study, and at the level of the "biological unit".
 The biological unit may be a patient, plant, yeast strain, etc.
 
-This function combines multiple data elements from the different hierarchies 
+This function combines multiple data elements from the different hierarchies
 of data (study, experiments, and samples)
 }
 \details{

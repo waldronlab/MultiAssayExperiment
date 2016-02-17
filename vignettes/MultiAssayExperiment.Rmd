@@ -7,7 +7,7 @@ output:
     number_sections: yes
     toc: yes
 vignette: >
-    %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEngine{knitr::rmarkdown}
 ---
 
 A built [html][] version of this vignette is available.
