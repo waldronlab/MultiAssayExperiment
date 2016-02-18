@@ -24,7 +24,7 @@
 
 .getRowColNamesErr <- function(object) {
   if (is.null(rownames(object)) || is.null(colnames(object))) {
-    msg <- paste("rownames or colnames in", class(object), "are NULL")
+    msg <- paste(" rownames or colnames in", class(object), "are NULL")
     return(msg)
   } else {
     NULL
@@ -32,11 +32,11 @@
 }
 
 .PrepElements <- function(object) {
-  if (inherits(object, "GRangesList")) {
-    object <- RangedRaggedAssay(object)
-  }
   if (is.null(rownames(object))) {
     object <- .createRownames(object)
+  }
+  if (is(object, "GRangesList")) {
+    object <- RangedRaggedAssay(object)
   }
   return(object)
 }
@@ -83,9 +83,9 @@ setGeneric("Elist", function(x) standardGeneric("Elist"))
 #' @describeIn Elist Create an \code{Elist} object from an "ANY" class object, 
 #' mainly \code{list}
 setMethod("Elist", "ANY", function(x) {
-  objList <- S4Vectors::endoapply(x, .PrepElements)
-  if (inherits(x, "list")) {
-    objList <- S4Vectors::SimpleList(x)
+  objList <- lapply(x, .PrepElements)
+  if (inherits(objList, "list")) {
+    objList <- S4Vectors::SimpleList(objList)
   }
   return(.Elist(objList))
 })
