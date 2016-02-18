@@ -11,6 +11,17 @@
   return(hasMethod(my_fun, signature = obj_cl))
 }
 
+.createRownames <- function(object) {
+  if (inherits(object, "GRangesList")) {
+    u_obj <- unlist(object, use.names = FALSE)
+    names(u_obj) <- seq_len(length(u_obj))
+    object <- relist(u_obj, object)
+  } else if (inherits(object, "RangedSummarizedExperiment")) {
+    rownames(object) <- seq_along(object)
+  }
+  return(object)
+}
+
 .getRowColNamesErr <- function(object) {
   if (is.null(rownames(object)) || is.null(colnames(object))) {
     msg <- paste("rownames or colnames in", class(object), "are NULL")
@@ -23,8 +34,9 @@
 .PrepElements <- function(object) {
   if (inherits(object, "GRangesList")) {
     object <- RangedRaggedAssay(object)
-  } else {
-    object
+  }
+  if (is.null(rownames(object))) {
+    object <- .createRownames(object)
   }
   return(object)
 }
@@ -120,7 +132,7 @@ setMethod("Elist", "missing", function(x) {
 .checkElistNames <- function(object) {
   errors <- character()
   for (i in seq_along(object)) {
-    name_err <- .getNameErr(object[[i]])
+    name_err <- .getRowColNamesErr(object[[i]])
     if (!is.null(name_err)) {
       errors <- c(errors, paste0("[", i, "] Element", name_err))
     }

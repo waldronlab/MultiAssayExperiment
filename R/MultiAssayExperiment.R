@@ -1,13 +1,6 @@
-.createNames <- function(object) {
-  if (inherits(object, "GRangesList")) {
-    u_obj <- unlist(object, use.names = FALSE)
-    names(u_obj) <- seq_len(length(u_obj))
-    object <- relist(u_obj, object)
-  } else if (inherits(object, "RangedSummarizedExperiment")) {
-    rownames(object) <- seq_along(object)
-  }
-  return(object)
-}
+### ==============================================
+### MultiAssayExperiment constructor
+### ----------------------------------------------
 
 .generateMap <- function(mPheno, exlist) {
   samps <- lapply(exlist, colnames)
@@ -66,9 +59,10 @@ MultiAssayExperiment <-
         sampleMap <- .generateMap(pData, Elist)
         validAssays <-
           S4Vectors::split(sampleMap[["assay"]], sampleMap[, "assayname"])
-        Elist <- Map(function(x, y) {
+        newElist <- Map(function(x, y) {
           x[, y]
         }, newElist, validAssays)
+        newElist <- Elist(newElist)
       }
     }
     if (!is(pData, "DataFrame")) {

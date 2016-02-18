@@ -100,7 +100,7 @@ setClass("MultiAssayExperiment",
 .checkSampleNames <- function(object) {
   if (!.uniqueSortIdentical(unname(unlist(colnames(object))),
                             sampleMap(object)[, "assay"])) {
-    return("samples in the Elist are not the same as samples in the sampleMap")
+    return("samples in the 'Elist' and 'sampleMap' are not equal")
   }
   NULL
 }
