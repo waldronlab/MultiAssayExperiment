@@ -25,12 +25,6 @@ RangedRaggedAssay <- function(x = GRangesList()) {
   .RangedRaggedAssay(x)
 }
 
-#' @describeIn RangedRaggedAssay Get the column length of a RangedRaggedAssay
-setMethod("ncol", signature("RangedRaggedAssay"), function(x)
-  length(x))
-#' @describeIn RangedRaggedAssay Get the row length of a RangedRaggedAssay
-setMethod("nrow", signature("RangedRaggedAssay"), function(x)
-  length(unlist(x)))
 
 .RangedBracketSubsetRRA <- function(x, i, j, ..., drop) {
   if (length(drop) != 1L || (!missing(drop) && drop)) {
@@ -93,3 +87,17 @@ setMethod("[", c("RangedRaggedAssay", "ANY", "ANY"),
 setMethod("[", c("RangedRaggedAssay", "GRanges", "ANY"),
           .RangedBracketSubsetRRA)
 
+#' @describeIn RangedRaggedAssay Obtain dimension lengths of a
+#' \code{RangedRaggedAssay} class object
+setMethod("dim", "RangedRaggedAssay", function(x)
+  c(length(unlist(x)), length(x)))
+
+#' @describeIn RangedRaggedAssay Get the column length of a
+#' \code{RangedRaggedAssay} class object
+setMethod("ncol", signature("RangedRaggedAssay"), function(x)
+  dim(x)[2])
+
+#' @describeIn RangedRaggedAssay Get the row length of a
+#' \code{RangedRaggedAssay} class object
+setMethod("nrow", signature("RangedRaggedAssay"), function(x)
+  dim(x)[1])

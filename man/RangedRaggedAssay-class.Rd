@@ -8,19 +8,22 @@
 \alias{[,RangedRaggedAssay,GRanges-method}
 \alias{assay,RangedRaggedAssay,ANY-method}
 \alias{colnames,RangedRaggedAssay-method}
+\alias{dim,RangedRaggedAssay-method}
 \alias{getHits,RangedRaggedAssay,character-method}
 \alias{ncol,RangedRaggedAssay-method}
 \alias{nrow,RangedRaggedAssay-method}
 \alias{rownames,RangedRaggedAssay-method}
 \title{An extension of the GRangesList class}
 \usage{
-\S4method{ncol}{RangedRaggedAssay}(x)
-
-\S4method{nrow}{RangedRaggedAssay}(x)
-
 \S4method{[}{RangedRaggedAssay,ANY}(x, i, j, ..., drop = TRUE)
 
 \S4method{[}{RangedRaggedAssay,GRanges}(x, i, j, ..., drop = TRUE)
+
+\S4method{dim}{RangedRaggedAssay}(x)
+
+\S4method{ncol}{RangedRaggedAssay}(x)
+
+\S4method{nrow}{RangedRaggedAssay}(x)
 
 \S4method{rownames}{RangedRaggedAssay}(x)
 
@@ -58,15 +61,20 @@ names
 }
 \section{Methods (by generic)}{
 \itemize{
-\item \code{ncol}: Get the column length of a RangedRaggedAssay
-
-\item \code{nrow}: Get the row length of a RangedRaggedAssay
-
 \item \code{[}: Subset a \code{RangedRaggedAssay} with either 
 \code{chracter}, \code{numeric}, or \code{logical}
 
 \item \code{[}: Subset a \code{RangedRaggedAssay} using a
 \code{GRanges} class object
+
+\item \code{dim}: Obtain dimension lengths of a
+\code{RangedRaggedAssay} class object
+
+\item \code{ncol}: Get the column length of a
+\code{RangedRaggedAssay} class object
+
+\item \code{nrow}: Get the row length of a
+\code{RangedRaggedAssay} class object
 
 \item \code{rownames}: Get feature names from a RangedRaggedAssay
 

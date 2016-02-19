@@ -16,16 +16,23 @@
     u_obj <- unlist(object, use.names = FALSE)
     names(u_obj) <- seq_len(length(u_obj))
     object <- relist(u_obj, object)
-  } else if (inherits(object, "RangedSummarizedExperiment")) {
+  } else if (inherits(object, "SummarizedExperiment")) {
     rownames(object) <- seq_along(object)
   }
   return(object)
 }
 
-.getRowColNamesErr <- function(object) {
-  if (is.null(rownames(object)) || is.null(colnames(object))) {
-    msg <- paste(" rownames or colnames in", class(object), "are NULL")
-    return(msg)
+.getRowNamesErr <- function(object) {
+  if (dim(object)[1] > 0 && is.null(rownames(object))) {
+    msg <- paste(" rownames in", class(object), "are NULL")
+  } else {
+    NULL
+  }
+}
+
+.getColNamesErr <- function(object) {
+  if (dim(object)[2] > 0 && is.null(colnames(object))) {
+    msg <- paste(" colnames in", class(object), "are NULL")
   } else {
     NULL
   }
@@ -35,7 +42,8 @@
   if (is.null(rownames(object))) {
     object <- .createRownames(object)
   }
-  if (is(object, "GRangesList")) {
+  ## use is() to exclude RangedRaggedAssay
+  if (inherits(object, "GRangesList") && !is(object, "RangedRaggedAssay")) {
     object <- RangedRaggedAssay(object)
   }
   return(object)
@@ -100,7 +108,7 @@ setMethod("Elist", "missing", function(x) {
 
 .getMethErr <- function(object) {
   obj_cl <- class(object)
-  supportedMethods <- c("colnames", "rownames", "[", "assay")
+  supportedMethods <- c("colnames", "rownames", "[", "assay", "dim")
   methErr <- which(!sapply(supportedMethods, function(x) {
     .hasMethods(object, x)
   }))
@@ -132,9 +140,13 @@ setMethod("Elist", "missing", function(x) {
 .checkElistNames <- function(object) {
   errors <- character()
   for (i in seq_along(object)) {
-    name_err <- .getRowColNamesErr(object[[i]])
-    if (!is.null(name_err)) {
-      errors <- c(errors, paste0("[", i, "] Element", name_err))
+    rowname_err <- .getRowNamesErr(object[[i]])
+    colname_err <- .getColNamesErr(object[[i]])
+    if (!is.null(rowname_err)) {
+      errors <- c(errors, paste0("[", i, "] Element", rowname_err))
+    }
+    if (!is.null(colname_err)) {
+      errors <- c(errors, paste0("[", i, "] Element", colname_err))
     }
   }
   if (any(duplicated(names(object)))) {
@@ -149,8 +161,8 @@ setMethod("Elist", "missing", function(x) {
 }
 
 .checkElistDims <- function(object) {
-  emptyRows <- (vapply(object, nrow, integer(1)) == 0L)
-  emptyCols <- (vapply(object, ncol, integer(1)) == 0L)
+  emptyRows <- (vapply(object, function(g) {dim(g)[1]}, integer(1)) == 0L)
+  emptyCols <- (vapply(object, function(g) {dim(g)[2]}, integer(1)) == 0L)
   newmat <- rbind(emptyRows, emptyCols)
   emptyDims <- apply(newmat, 2, any)
   if (any(emptyDims)) {
