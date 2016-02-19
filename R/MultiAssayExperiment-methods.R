@@ -128,7 +128,7 @@ setMethod("getHits", signature("RangedRaggedAssay", "character"),
           })
 
 .isEmpty <- function(object) {
-  unname(ncol(object)) == 0L | unname(nrow(object)) == 0L
+  isTRUE(unname(ncol(object)) == 0L | unname(nrow(object)) == 0L)
 }
 
 .subsetMultiAssayExperiment <- function(x, i, j, k, ..., drop = TRUE) {
@@ -264,9 +264,9 @@ setMethod("subsetByRow", c("MultiAssayExperiment", "GRangesORcharacter"),
           })
 
 setMethod("subsetByRow", c("MultiAssayExperiment", "GRanges"),
-          function(x, y, ...) {
-            if (is.null(names(y))) {
-              names(y) <- 1:length(y)
-            }
-            callNextMethod(x = x, y = y, ...)
-          })
+function(x, y, ...) {
+  if (is.null(names(y))) {
+    names(y) <- seq_along(y)
+  }
+  callNextMethod(x = x, y = y, ...)
+})
