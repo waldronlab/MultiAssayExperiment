@@ -36,7 +36,7 @@
 \arguments{
 \item{x}{A \code{\link{RangedRaggedAssay}} class}
 
-\item{i}{Either a \code{character} or \code{GRanges} class object 
+\item{i}{Either a \code{character} or \code{GRanges} class object
 to subset by rows}
 
 \item{j}{Either a \code{character}, \code{numeric}, or \code{logical} 
@@ -44,7 +44,7 @@ type for selecting columns (\code{\link[GenomicRanges]{GRangesList}} method)}
 
 \item{...}{Any additional arguments passed on to subsetByOverlaps}
 
-\item{drop}{logical (defalut TRUE) whether to drop empty columns}
+\item{drop}{logical (default TRUE) whether to drop empty columns}
 
 \item{subject}{A \code{RangedRaggedAssay} class object}
 

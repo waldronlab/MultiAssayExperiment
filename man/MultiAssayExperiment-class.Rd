@@ -82,7 +82,7 @@ assays that are organized instances of \code{RangedSummarizedExperiment},
 (inherits from \code{GRangesList}), and \code{RangedVcfStack}. Create new
 \code{MultiAssayExperiment} instances with the eponymous constructor, 
 minimally with the argument \code{\linkS4class{Elist}}, potentially also
-with the arguments \code{pData} and \code{sampleMap}
+with the arguments \code{pData} and \code{sampleMap}.
 }
 \section{Methods (by generic)}{
 \itemize{
@@ -139,7 +139,7 @@ and participants}
 \item{\code{metadata}}{Additional data describing the
 \code{\link{MultiAssayExperiment}} object}
 
-\item{\code{drops}}{A metadata \code{list} of dropped information.}
+\item{\code{drops}}{A metadata \code{list} of dropped information}
 }}
 \examples{
 MultiAssayExperiment()

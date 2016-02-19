@@ -14,7 +14,7 @@
 #' \code{\link[IRanges]{subsetByOverlaps}} when subsetting
 #' by rownames
 #' @return A subsetted \link{MultiAssayExperiment} class object
-#' @export
+#' @exportMethod subset
 setMethod("subset", "MultiAssayExperiment",
           function(x, indicator, method = NULL, drop = TRUE, ...) {
             if (inherits(indicator, "GRanges")) {
