@@ -4,11 +4,6 @@
 #' @import BiocGenerics SummarizedExperiment S4Vectors GenomicRanges methods
 NULL
 
-#' Harmonize featureNames to rownames of an \code{ExpressionSet} object
-#' @param x An \code{ExpressionSet} class object
-#' @return A \code{character} vector of row names
-setMethod("rownames", "ExpressionSet", function(x)
-  Biobase::featureNames(x))
 #' @describeIn RangedRaggedAssay Get feature names from a RangedRaggedAssay
 setMethod("rownames", "RangedRaggedAssay", function(x)
   names(unlist(x, use.names = FALSE)))
@@ -17,11 +12,6 @@ setMethod("rownames", "RangedRaggedAssay", function(x)
 #' @exportMethod rownames
 setMethod("rownames", "MultiAssayExperiment", function(x)
   IRanges::CharacterList(lapply(Elist(x), rownames)))
-#' Harmonize sampleNames to colnames of an \code{ExpressionSet} object
-#' @param x An \code{ExpressionSet} object
-#' @return A \code{character} vector of column names
-setMethod("colnames", "ExpressionSet", function(x)
-  Biobase::sampleNames(x))
 #' @describeIn RangedRaggedAssay Get sample names from a RangedRaggedAssay
 setMethod("colnames", "RangedRaggedAssay", function(x)
   base::names(x))
