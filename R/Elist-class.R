@@ -175,8 +175,7 @@ setMethod("Elist", "missing", function(x) {
 .validElist <- function(object) {
   if (length(object) != 0L) {
     c(.checkMethodsTable(object),
-    .checkElistNames(object),
-    .checkElistDims(object))
+    .checkElistNames(object))
   }
 }
 
