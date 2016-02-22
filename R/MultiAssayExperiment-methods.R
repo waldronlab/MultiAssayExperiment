@@ -244,6 +244,8 @@ setClassUnion("GRangesORcharacter", c("GRanges", "character"))
 #' @return A \code{\link{MultiAssayExperiment}} object 
 #' @seealso \code{\link{getHits}}
 setGeneric("subsetByRow", function(x, y, ...) standardGeneric("subsetByRow"))
+#' @describeIn subsetByRow Use either a GRanges or character to select the
+#' rows for which to subset for
 setMethod("subsetByRow", c("MultiAssayExperiment", "GRangesORcharacter"),
           function(x, y, ...) {
             hitList <- getHits(x, y, ...)
@@ -253,10 +255,12 @@ setMethod("subsetByRow", c("MultiAssayExperiment", "GRangesORcharacter"),
             return(x)
           })
 
+#' @describeIn subsetByRow Subset MultiAssayExperiment with
+#' GRanges object
 setMethod("subsetByRow", c("MultiAssayExperiment", "GRanges"),
-function(x, y, ...) {
-  if (is.null(names(y))) {
-    names(y) <- seq_along(y)
-  }
-  callNextMethod(x = x, y = y, ...)
-})
+          function(x, y, ...) {
+            if (is.null(names(y))) {
+              names(y) <- seq_along(y)
+            }
+            callNextMethod(x = x, y = y, ...)
+          })
