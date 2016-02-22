@@ -40,7 +40,6 @@ Collate:
     'MultiAssayExperiment-methods.R'
     'MultiAssayExperiment-pkg.R'
     'MultiAssayExperiment.R'
-    'MultiAssayView-class.R'
     'listToMap.R'
     'mapToList.R'
     'subset.R'

@@ -5,7 +5,7 @@
 \alias{Elist,MultiAssayExperiment-method}
 \alias{Elist<-,MultiAssayExperiment,Elist-method}
 \alias{MultiAssayExperiment-class}
-\alias{[,MultiAssayExperiment,ANY-method}
+\alias{[,MultiAssayExperiment,ANY,ANY-method}
 \alias{assay,MultiAssayExperiment,ANY-method}
 \alias{colnames,MultiAssayExperiment-method}
 \alias{isEmpty,MultiAssayExperiment-method}
@@ -43,7 +43,7 @@
 
 \S4method{assay}{MultiAssayExperiment,ANY}(x)
 
-\S4method{[}{MultiAssayExperiment,ANY}(x, i, j, k, ..., drop = TRUE)
+\S4method{[}{MultiAssayExperiment,ANY,ANY}(x, i, j, k, ..., drop = TRUE)
 
 \S4method{isEmpty}{MultiAssayExperiment}(x)
 }
