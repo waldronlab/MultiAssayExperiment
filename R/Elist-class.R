@@ -1,14 +1,11 @@
-## Check class conforms to API
+## Helper function for .getMethErr to check method tables
 .hasMethods <- function(object, my_fun) {
-  obj_cl <- class(object)
-  if (any(my_fun %in% c("[", "assay"))) {
-    if (inherits(object, "RangedSummarizedExperiment")) {
-      return(hasMethod(my_fun, signature = c(class(object), "missing")))
-    } else {
-      return(hasMethod(my_fun, signature = c(obj_cl, "ANY")))
+  if (my_fun == "assay") {
+    if (inherits(object, "SummarizedExperiment")) {
+      return(hasMethod(my_fun, signature = c(class(object), "numeric")))
     }
   }
-  return(hasMethod(my_fun, signature = obj_cl))
+  return(hasMethod(my_fun, signature = class(object)))
 }
 
 .createRownames <- function(object) {
@@ -106,15 +103,15 @@ setMethod("Elist", "missing", function(x) {
 ### Validity 
 ###
 
+## Helper function for .checkMethodsTable
 .getMethErr <- function(object) {
-  obj_cl <- class(object)
   supportedMethods <- c("colnames", "rownames", "[", "assay", "dim")
   methErr <- which(!sapply(supportedMethods, function(x) {
     .hasMethods(object, x)
   }))
   if (any(methErr)) {
     unsupported <- names(methErr)
-    msg <- paste0("class '", obj_cl,
+    msg <- paste0("class '", class(object),
                   "' does not have method(s): ",
                   paste(unsupported, collapse = ", "))
     return(msg)
@@ -122,6 +119,7 @@ setMethod("Elist", "missing", function(x) {
   NULL
 }
 
+## 1.i. Check for available methods
 .checkMethodsTable <- function(object) {
   errors <- character()
   for (i in seq_along(object)) {
@@ -149,7 +147,7 @@ setMethod("Elist", "missing", function(x) {
       errors <- c(errors, paste0("[", i, "] Element", colname_err))
     }
   }
-  if (any(duplicated(names(object)))) {
+  if (anyDuplicated(names(object))) {
     msg <- "Non-unique names provided"
     errors <- c(errors, msg)
   }
