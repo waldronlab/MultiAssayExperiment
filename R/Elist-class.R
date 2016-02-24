@@ -1,13 +1,4 @@
-## Helper function for .getMethErr to check method tables
-.hasMethods <- function(object, my_fun) {
-  if (my_fun == "assay") {
-    if (inherits(object, "RangedSummarizedExperiment")) {
-      return(hasMethod(my_fun, signature = c(class(object), "numeric")))
-    }
-  }
-  return(hasMethod(my_fun, signature = class(object)))
-}
-
+## Helper functions for check non-NULL rownames
 .getRowNamesErr <- function(object) {
   if (dim(object)[1] > 0 && is.null(rownames(object))) {
     msg <- paste(" rownames in", class(object), "are NULL")
@@ -107,9 +98,9 @@ setMethod("Elist", "missing", function(x) {
 
 ## Helper function for .checkMethodsTable
 .getMethErr <- function(object) {
-  supportedMethods <- c("colnames", "rownames", "[", "assay", "dim")
+  supportedMethods <- c("colnames", "rownames", "[", "dim")
   methErr <- which(!sapply(supportedMethods, function(x) {
-    .hasMethods(object, x)
+    hasMethod(f = x, signature = class(object))
   }))
   if (any(methErr)) {
     unsupported <- names(methErr)

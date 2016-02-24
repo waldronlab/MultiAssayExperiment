@@ -40,6 +40,7 @@ Collate:
     'MultiAssayExperiment-methods.R'
     'MultiAssayExperiment-pkg.R'
     'MultiAssayExperiment.R'
+    'hasAssay.R'
     'listToMap.R'
     'mapToList.R'
     'subset.R'
