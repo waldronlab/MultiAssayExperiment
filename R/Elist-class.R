@@ -1,7 +1,7 @@
 ## Helper function for .getMethErr to check method tables
 .hasMethods <- function(object, my_fun) {
   if (my_fun == "assay") {
-    if (inherits(object, "SummarizedExperiment")) {
+    if (inherits(object, "RangedSummarizedExperiment")) {
       return(hasMethod(my_fun, signature = c(class(object), "numeric")))
     }
   }
