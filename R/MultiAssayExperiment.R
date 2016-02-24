@@ -8,7 +8,11 @@
     S4Vectors::DataFrame(assay = x[[i]], assayname = Rle(names(x)[i]))
   }, x = samps)
   full_map <- do.call(S4Vectors::rbind, listM)
-  master <- Rle(rownames(mPheno)[match(full_map$assay, rownames(mPheno))])
+  matches <- match(full_map$assay, rownames(mPheno))
+  if (all(is.na(matches))) {
+    stop("no way to map pData to Elist")
+  }
+  master <- Rle(rownames(mPheno)[matches])  
   autoMap <- S4Vectors::cbind(DataFrame(master), full_map)
   if (any(is.na(autoMap$master))) {
     notFound <- autoMap[is.na(autoMap$master), ]
@@ -49,14 +53,16 @@ MultiAssayExperiment <-
                length(pData) == 0L,
                length(Elist) == 0L))) {
       if ((length(sampleMap) == 0L) && (length(pData) == 0L)) {
-        allsamps <- unique(unlist(lapply(Elist, colnames)))
+        warning("neither sampleMap nor pData provided,",
+                " sampleMap will be generated")
+        allsamps <- unique(unlist(lapply(newElist, colnames)))
         pData <- S4Vectors::DataFrame(
           pheno1 = rep(NA, length(allsamps)),
           row.names = allsamps)
         sampleMap <- .generateMap(pData, newElist)
-      } else if ((length(sampleMap) == 0L) && !(length(pData) == 0L)) {
-        warning("sampleMap not provided, map will be generated")
-        sampleMap <- .generateMap(pData, Elist)
+      } else if ((length(sampleMap) == 0L) && (length(pData) != 0L)) {
+        warning("sampleMap not provided, trying to generate sampleMap...")
+        sampleMap <- .generateMap(pData, newElist)
         validAssays <-
           S4Vectors::split(sampleMap[["assay"]], sampleMap[, "assayname"])
         newElist <- Map(function(x, y) {
