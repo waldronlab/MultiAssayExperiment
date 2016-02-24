@@ -8,17 +8,6 @@
   return(hasMethod(my_fun, signature = class(object)))
 }
 
-.createRownames <- function(object) {
-  if (inherits(object, "GRangesList")) {
-    u_obj <- unlist(object, use.names = FALSE)
-    names(u_obj) <- seq_len(length(u_obj))
-    object <- relist(u_obj, object)
-  } else if (inherits(object, "SummarizedExperiment")) {
-    rownames(object) <- seq_along(object)
-  }
-  return(object)
-}
-
 .getRowNamesErr <- function(object) {
   if (dim(object)[1] > 0 && is.null(rownames(object))) {
     msg <- paste(" rownames in", class(object), "are NULL")
@@ -35,6 +24,19 @@
   }
 }
 
+## Helper function for .PrepElements in Elist construction
+.createRownames <- function(object) {
+  if (inherits(object, "GRangesList")) {
+    u_obj <- unlist(object, use.names = FALSE)
+    names(u_obj) <- seq_len(length(u_obj))
+    object <- relist(u_obj, object)
+  } else if (inherits(object, "SummarizedExperiment")) {
+    rownames(object) <- seq_along(object)
+  }
+  return(object)
+}
+
+## Ensure Elist elements are appropriate for the API and rownames are present
 .PrepElements <- function(object) {
   if (is.null(rownames(object))) {
     object <- .createRownames(object)
@@ -135,6 +137,8 @@ setMethod("Elist", "missing", function(x) {
   }
 }
 
+## 1.ii. Check for null rownames and colnames for each element in the Elist
+## and duplicated element names
 .checkElistNames <- function(object) {
   errors <- character()
   for (i in seq_along(object)) {
@@ -155,18 +159,6 @@ setMethod("Elist", "missing", function(x) {
     NULL
   } else {
     errors
-  }
-}
-
-.checkElistDims <- function(object) {
-  emptyRows <- (vapply(object, function(g) {dim(g)[1]}, integer(1)) == 0L)
-  emptyCols <- (vapply(object, function(g) {dim(g)[2]}, integer(1)) == 0L)
-  newmat <- rbind(emptyRows, emptyCols)
-  emptyDims <- apply(newmat, 2, any)
-  if (any(emptyDims)) {
-    warning("Elist elements",
-            sprintf(" '%s' ", names(which(emptyDims))),
-            "have empty dimensions")
   }
 }
 
