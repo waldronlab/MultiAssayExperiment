@@ -1,3 +1,14 @@
+## Helper function for validity checks
+.uniqueSortIdentical <- function(charvec1, charvec2) {
+  listInput <- list(charvec1, charvec2)
+  listInput <- lapply(listInput, function(x) sort(unique(x)))
+  return(identical(listInput[[1]], listInput[[2]]))
+}
+
+.allIn <- function(charvec1, charvec2) {
+  return(all(charvec2 %in% charvec1))
+}
+
 ### ==============================================
 ### MultiAssayExperiment class
 ### ----------------------------------------------
@@ -39,32 +50,59 @@ setClass("MultiAssayExperiment",
          )
 )
 
-##
-## Validity ---------------------------------
-##
+### - - - - - - - - - - - - - - - - - - - - - - - -
+### Validity 
+###
 
-.uniqueSortIdentical <- function(charvec1, charvec2) {
-  listInput <- list(charvec1, charvec2)
-  listInput <- lapply(listInput, function(x) sort(unique(x)))
-  return(identical(listInput[[1]], listInput[[2]]))
-}
-
-.allIn <- function(charvec1, charvec2) {
-  return(all(charvec2 %in% charvec1))
-}
-
-## sampleMap is a DataFrame with unique sampleNames across assay
-.checkSampleMapNames <- function(object) {
+## ELIST
+## 1.i. Elist length must be equal to unique length of sampleMap "assayname"
+.checkElist <- function(object) {
   errors <- character()
-  if (!(.allIn(rownames(pData(object)),
-               slot(sampleMap(object)[, "master"], "values")))) {
-    msg <- "All samples in the sampleMap must be in the pData"
+  assaynames <- unique(sampleMap(object)[, "assayname"])
+  if (length(Elist(object)) != length(assaynames)) {
+    msg <- "Elist must be the same length as the sampleMap assaynames"
     errors <- c(errors, msg)
   }
-  if (length(errors) == 0L) 
+## 1.ii. Element names of the Elist should match the unique names in the
+## sampleMap "assayname"
+  if (!all(assaynames %in% names(Elist(object)))) {
+    msg <- paste0("Experiment/Assay names in both the ",
+                  "Elist and the sampleMap must match")
+    errors <- c(errors, msg)
+  }
+  if (length(errors) == 0L)
     NULL else errors
 }
 
+## 1.iii. sample names contained in the Elist should match the sample names
+## in the sampleMap "assay" column
+.checkSampleNames <- function(object) {
+  if (!.uniqueSortIdentical(
+    unname(unlist(colnames(object))),
+    sampleMap(object)[, "assay"])) {
+    return("samples in the 'Elist' and 'sampleMap' are not equal")
+  }
+  NULL
+}
+
+## SAMPLEMAP
+## 3.i. all names in the sampleMap "master" column must be found in the
+## pData clinical data slot
+.checkSampleMapNames <- function(object) {
+  errors <- character()
+  if (!(.allIn(
+    rownames(pData(object)),
+    slot(sampleMap(object)[, "master"], "values")
+  ))) {
+    msg <- "All samples in the sampleMap must be in the pData"
+    errors <- c(errors, msg)
+  }
+  if (length(errors) == 0L)
+    NULL else errors
+}
+
+## 3.iii. sample identifiers within the sampleMap "assay" column must be
+## unique within each element of the Elist
 .uniqueNamesInAssays <- function(object) {
   errors <- character()
   SampMap <- sampleMap(object)
@@ -75,34 +113,8 @@ setClass("MultiAssayExperiment",
     msg <- "All sample identifiers in the assays must be unique"
     errors <- c(errors, msg)
   }
-  if (length(errors) == 0L) 
+  if (length(errors) == 0L)
     NULL else errors
-}
-
-## Experiment list must be the same length as the unique sampleMap assaynames
-.checkElist2 <- function(object) {
-  errors <- character()
-  assaynames <- unique(sampleMap(object)[, "assayname"])
-  if (length(Elist(object)) != length(assaynames)) {
-    msg <- "Elist must be the same length as the sampleMap assaynames"
-    errors <- c(errors, msg)
-  }
-  if (!all(assaynames %in% names(object))) {
-    msg <- paste0("Experiment/Assay names in both the ",
-                  "Elist and the sampleMap must match")
-    errors <- c(errors, msg)
-  }
-  if (length(errors) == 0L) 
-    NULL else errors
-}
-
-## All sample names in the Elist must be in the sampleMap
-.checkSampleNames <- function(object) {
-  if (!.uniqueSortIdentical(unname(unlist(colnames(object))),
-                            sampleMap(object)[, "assay"])) {
-    return("samples in the 'Elist' and 'sampleMap' are not equal")
-  }
-  NULL
 }
 
 ## All names must match between Elist and sampleMap
@@ -117,7 +129,7 @@ setClass("MultiAssayExperiment",
 .validMultiAssayExperiment <- function(object) {
   if (length(Elist(object)) != 0L) {
     c(.checkNames(object),
-      .checkElist2(object),
+      .checkElist(object),
       .checkSampleMapNames(object), 
       .uniqueNamesInAssays(object),
       .checkSampleNames(object)
