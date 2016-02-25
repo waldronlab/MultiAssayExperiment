@@ -65,17 +65,17 @@ setClass("MultiAssayExperiment",
   }
 ## 1.ii. Element names of the Elist should match the unique names in the
 ## sampleMap "assayname"
-  if (!all(assaynames %in% names(Elist(object)))) {
-    msg <- paste0("Experiment/Assay names in both the ",
-                  "Elist and the sampleMap must match")
+  if (!all(names(Elist(object)) %in% assaynames)) {
+    msg <- paste0("Experiment/Assay names in Elist must be found ",
+                  "in the sampleMap assay column")
     errors <- c(errors, msg)
   }
   if (length(errors) == 0L)
     NULL else errors
 }
 
-## 1.iii. sample names contained in the Elist should match the sample names
-## in the sampleMap "assay" column
+## 1.iii. colnames in Elist elements should match the names
+## in the sampleMap "assay" column NEEDS UPDATING
 .checkSampleNames <- function(object) {
   if (!.uniqueSortIdentical(
     unname(unlist(colnames(object))),
@@ -86,8 +86,8 @@ setClass("MultiAssayExperiment",
 }
 
 ## SAMPLEMAP
-## 3.i. all names in the sampleMap "master" column must be found in the
-## pData clinical data slot
+## 3.i. all values in the sampleMap "master" column must be found in the
+## rownames of pData
 .checkSampleMapNames <- function(object) {
   errors <- character()
   if (!(.allIn(
@@ -101,8 +101,8 @@ setClass("MultiAssayExperiment",
     NULL else errors
 }
 
-## 3.iii. sample identifiers within the sampleMap "assay" column must be
-## unique within each element of the Elist
+## 3.ii. Within rows of `sampleMap` corresponding to a single value in the 
+## "assayname" column, there can be no duplicated values in the "assay" column.
 .uniqueNamesInAssays <- function(object) {
   errors <- character()
   SampMap <- sampleMap(object)
@@ -171,10 +171,10 @@ setMethod("show", "MultiAssayExperiment", function(object) {
   cat("To access slots use: \n Elist() - to obtain the",
       sprintf('"%s"', c_elist), 
       "of experiment instances",
-      "\n pData() - for the phenotype", sprintf('"%s"', c_mp),
+      "\n pData() - for the primary/phenotype", sprintf('"%s"', c_mp),
       "\n sampleMap() - for the sample availability", sprintf('"%s"', c_sm),
       "\n metadata() - for the metadata object of 'ANY' class",
-      "\nSee also: subsetByAssay(), subsetByFeature(), subsetBySample()\n")
+      "\nSee also: subsetByAssay(), subsetByRow(), subsetByColumn()\n")
 })
 
 
