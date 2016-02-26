@@ -175,10 +175,10 @@ setMethod("show", "MultiAssayExperiment", function(object) {
   cat("To access slots use: \n Elist() - to obtain the",
       sprintf('"%s"', c_elist), 
       "of experiment instances",
-      "\n pData() - for the phenotype", sprintf('"%s"', c_mp),
+      "\n pData() - for the primary/phenotype", sprintf('"%s"', c_mp),
       "\n sampleMap() - for the sample availability", sprintf('"%s"', c_sm),
       "\n metadata() - for the metadata object of 'ANY' class",
-      "\nSee also: subsetByAssay(), subsetByFeature(), subsetBySample()\n")
+      "\nSee also: subsetByAssay(), subsetByRow(), subsetByColumn()\n")
 })
 
 
