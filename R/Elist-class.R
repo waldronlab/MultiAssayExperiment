@@ -112,7 +112,7 @@ setMethod("Elist", "missing", function(x) {
   NULL
 }
 
-## 1.i. Check for available methods
+## 1.i. Check that [, colnames, rownames and dim methods are possible
 .checkMethodsTable <- function(object) {
   errors <- character()
   for (i in seq_along(object)) {
@@ -159,8 +159,6 @@ setMethod("Elist", "missing", function(x) {
     .checkElistNames(object))
   }
 }
-
-## Make sure Elist is valid before checking all of the sample names
 
 S4Vectors::setValidity2("Elist", .validElist)
 

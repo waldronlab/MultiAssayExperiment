@@ -55,7 +55,8 @@ setClass("MultiAssayExperiment",
 ###
 
 ## ELIST
-## 1.i. Elist length must be equal to unique length of sampleMap "assayname"
+## 1.i. Elist length must be the same as the unique length of the
+## sampleMap "assayname" column.
 .checkElist <- function(object) {
   errors <- character()
   assaynames <- unique(sampleMap(object)[, "assayname"])
@@ -63,8 +64,9 @@ setClass("MultiAssayExperiment",
     msg <- "Elist must be the same length as the sampleMap assaynames"
     errors <- c(errors, msg)
   }
-## 1.ii. Element names of the Elist should match the unique names in the
-## sampleMap "assayname"
+
+## 1.ii. Element names of the Elist should be found in the
+## sampleMap "assayname" column.
   if (!all(assaynames %in% names(Elist(object)))) {
     msg <- paste0("Experiment/Assay names in both the ",
                   "Elist and the sampleMap must match")
@@ -85,6 +87,9 @@ setClass("MultiAssayExperiment",
   NULL
 }
 
+## PDATA
+## 2.i. inherits(pData, "DataFrame") == TRUE
+
 ## SAMPLEMAP
 ## 3.i. all names in the sampleMap "master" column must be found in the
 ## pData clinical data slot
@@ -101,7 +106,7 @@ setClass("MultiAssayExperiment",
     NULL else errors
 }
 
-## 3.iii. sample identifiers within the sampleMap "assay" column must be
+## 3.ii. sample identifiers within the sampleMap "assay" column must be
 ## unique within each element of the Elist
 .uniqueNamesInAssays <- function(object) {
   errors <- character()
@@ -138,7 +143,6 @@ setClass("MultiAssayExperiment",
 }
 
 S4Vectors::setValidity2("MultiAssayExperiment", .validMultiAssayExperiment)
-
 
 #' @exportMethod show
 #' @describeIn MultiAssayExperiment Show method for a

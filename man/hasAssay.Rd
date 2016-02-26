@@ -7,7 +7,7 @@
 hasAssay(object)
 }
 \arguments{
-\item{object}{A \code{MultiAssayExperiment} object instance}
+\item{object}{A \code{MultiAssayExperiment} or \code{list} object instance}
 }
 \value{
 A \code{logical} value indicating method availability
