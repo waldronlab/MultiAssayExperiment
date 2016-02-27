@@ -5,7 +5,7 @@
 \alias{Elist,MultiAssayExperiment-method}
 \alias{Elist<-,MultiAssayExperiment,Elist-method}
 \alias{MultiAssayExperiment-class}
-\alias{[,MultiAssayExperiment,ANY,ANY,ANY-method}
+\alias{[,MultiAssayExperiment,ANY-method}
 \alias{assay,MultiAssayExperiment,ANY-method}
 \alias{colnames,MultiAssayExperiment-method}
 \alias{isEmpty,MultiAssayExperiment-method}
@@ -43,7 +43,7 @@
 
 \S4method{assay}{MultiAssayExperiment,ANY}(x)
 
-\S4method{[}{MultiAssayExperiment,ANY,ANY,ANY}(x, i, j, k, ..., drop = TRUE)
+\S4method{[}{MultiAssayExperiment,ANY}(x, i, j, k, ..., drop = TRUE)
 
 \S4method{isEmpty}{MultiAssayExperiment}(x)
 }
@@ -52,7 +52,8 @@
 
 \item{x}{A \code{MultiAssayExperiment} object for subsetting}
 
-\item{value}{A \code{DataFrame} or \code{Elist} object to replace the existing
+\item{value}{A \code{DataFrame} or \code{Elist} object to replace the
+existing
 \code{sampleMap} or an \code{Elist} slot, respectively}
 
 \item{i}{Either a \code{character}, or \code{GRanges} object for subsetting
@@ -81,7 +82,7 @@ assays that are organized instances of \code{RangedSummarizedExperiment},
 (inherits from \code{GRangesList}), and \code{RangedVcfStack}. Create new
 \code{MultiAssayExperiment} instances with the eponymous constructor, 
 minimally with the argument \code{\linkS4class{Elist}}, potentially also
-with the arguments \code{pData} and \code{sampleMap}
+with the arguments \code{pData} and \code{sampleMap}.
 }
 \section{Methods (by generic)}{
 \itemize{
@@ -104,10 +105,10 @@ MultiAssayExperiment
 
 \item \code{names}: Get the names of the Elist
 
-\item \code{sampleMap<-}: value: A \code{DataFrame} sampleMap 
+\item \code{sampleMap<-}: value: A \code{DataFrame} sampleMap
 representation
 
-\item \code{Elist<-}: value: An \linkS4class{Elist} 
+\item \code{Elist<-}: value: An \code{Elist} 
 representation
 
 \item \code{rownames}: Get all the rownames for a
@@ -138,8 +139,12 @@ and participants}
 \item{\code{metadata}}{Additional data describing the
 \code{\link{MultiAssayExperiment}} object}
 
-\item{\code{drops}}{A metadata \code{list} of dropped information.}
+\item{\code{drops}}{A metadata \code{list} of dropped information}
 }}
+\examples{
+MultiAssayExperiment()
+
+}
 \seealso{
 \code{getHits}
 }

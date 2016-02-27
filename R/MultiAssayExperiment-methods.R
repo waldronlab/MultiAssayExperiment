@@ -4,17 +4,6 @@
 #' @import BiocGenerics SummarizedExperiment S4Vectors GenomicRanges methods
 NULL
 
-#' Harmonize featureNames to rownames of an \code{ExpressionSet} object
-#' @param x An \code{ExpressionSet} class object
-#' @return A \code{character} vector of row names
-setMethod("rownames", "ExpressionSet", function(x)
-  Biobase::featureNames(x))
-#' Harmonize names of rowRanges to rownames of a
-#' \code{RangedSummarizedExperiment} object
-#' @param x A \code{RangedSummarizedExperiment} object
-#' @return A \code{character} vector of row names
-setMethod("rownames", "RangedSummarizedExperiment", function(x)
-  names(SummarizedExperiment::rowRanges(x)))
 #' @describeIn RangedRaggedAssay Get feature names from a RangedRaggedAssay
 setMethod("rownames", "RangedRaggedAssay", function(x)
   names(unlist(x, use.names = FALSE)))
@@ -23,11 +12,6 @@ setMethod("rownames", "RangedRaggedAssay", function(x)
 #' @exportMethod rownames
 setMethod("rownames", "MultiAssayExperiment", function(x)
   IRanges::CharacterList(lapply(Elist(x), rownames)))
-#' Harmonize sampleNames to colnames of an \code{ExpressionSet} object
-#' @param x An \code{ExpressionSet} object
-#' @return A \code{character} vector of column names
-setMethod("colnames", "ExpressionSet", function(x)
-  Biobase::sampleNames(x))
 #' @describeIn RangedRaggedAssay Get sample names from a RangedRaggedAssay
 setMethod("colnames", "RangedRaggedAssay", function(x)
   base::names(x))
@@ -70,16 +54,12 @@ setMethod("assay", "MultiAssayExperiment", function(x)
 #' Find hits by class type
 #' 
 #' @param subject Any valid element from the \code{\linkS4class{Elist}} class
-#' @param query Either a \code{character} vector or \code{\linkS4class{GRanges}}
+#' @param query Either a \code{character} vector or
+#' \code{\linkS4class{GRanges}}
 #' object used to search by name or ranges
 #' @param ... Additional arguments to findOverlaps
 #' @return Names of matched queries
-#' @examples
-#'
-#' \dontrun{
-#' getHits(myMultiAssayExperiment, myGRanges)
-#' }
-#'
+#' @example inst/scripts/getHits-Ex.R
 #' @exportMethod getHits
 setGeneric("getHits", function(subject, query, ...) standardGeneric("getHits"))
 #' @describeIn getHits Find all matching rownames by character
@@ -138,7 +118,7 @@ setMethod("getHits", signature("RangedRaggedAssay", "character"),
           })
 
 .isEmpty <- function(object) {
-  unname(ncol(object)) == 0L | unname(nrow(object)) == 0L
+  isTRUE(unname(ncol(object)) == 0L | unname(nrow(object)) == 0L)
 }
 
 .subsetMultiAssayExperiment <- function(x, i, j, k, ..., drop = TRUE) {
@@ -264,17 +244,23 @@ setClassUnion("GRangesORcharacter", c("GRanges", "character"))
 #' @return A \code{\link{MultiAssayExperiment}} object 
 #' @seealso \code{\link{getHits}}
 setGeneric("subsetByRow", function(x, y, ...) standardGeneric("subsetByRow"))
-setMethod("subsetByRow", c("MultiAssayExperiment", "GRangesORcharacter"), function(x, y, ...) {
-  hitList <- getHits(x, y, ...)
-  Elist(x) <- Elist(mapply(function(f, g) {
-    f[g, , drop =  FALSE]
-  }, f = Elist(x), g = hitList, SIMPLIFY = FALSE))
-  return(x)
-})
+#' @describeIn subsetByRow Use either a GRanges or character to select the
+#' rows for which to subset for
+setMethod("subsetByRow", c("MultiAssayExperiment", "GRangesORcharacter"),
+          function(x, y, ...) {
+            hitList <- getHits(x, y, ...)
+            Elist(x) <- Elist(mapply(function(f, g) {
+              f[g, , drop =  FALSE]
+            }, f = Elist(x), g = hitList, SIMPLIFY = FALSE))
+            return(x)
+          })
 
-setMethod("subsetByRow", c("MultiAssayExperiment", "GRanges"), function(x, y, ...) {
-  if (is.null(names(y))) {
-    names(y) <- 1:length(y)
-  }
-  callNextMethod(x = x, y = y, ...)
-})
+#' @describeIn subsetByRow Subset MultiAssayExperiment with
+#' GRanges object
+setMethod("subsetByRow", c("MultiAssayExperiment", "GRanges"),
+          function(x, y, ...) {
+            if (is.null(names(y))) {
+              names(y) <- seq_along(y)
+            }
+            callNextMethod(x = x, y = y, ...)
+          })

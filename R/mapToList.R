@@ -9,8 +9,8 @@
 #' @param assayCol A character vector of length one indicating the assay
 #' names column 
 #' @return A \code{list} object of DataFrames for each assay
-#' @aliases listToMap mapToList sampleMap
-#' @example inst/scripts/listMap-Ex.R
+#' @aliases listToMap 
+#' @example inst/scripts/listToMap-Ex.R
 #' @export mapToList
 mapToList <- function(dfmap, assayCol = "assayname") {
     if (is.null(assayCol)) {
@@ -22,7 +22,7 @@ mapToList <- function(dfmap, assayCol = "assayname") {
     if (!is.character(assayCol) | length(assayCol) != 1L) {
         stop("assayname must be a string")
     }
-    if (is(dfmap, "data.frame")) {
+    if (inherits(dfmap, "data.frame")) {
         dfmap <- S4Vectors::DataFrame(dfmap)
     }
     newList <- S4Vectors::split(dfmap, dfmap[, assayCol])

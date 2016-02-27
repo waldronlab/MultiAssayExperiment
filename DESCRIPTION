@@ -1,7 +1,7 @@
 Package: MultiAssayExperiment
 Title: Create Classes and Functions for Managing Multiple Assays on Sets of
     Samples
-Version: 0.6.0
+Version: 0.7.0
 Author: MultiAssay SIG
 Description: Develop an integrative environment where multiple assays are
     managed and preprocessed for genomic data analysis.
@@ -18,7 +18,7 @@ Suggests:
     shinydashboard,
     testthat
 Depends:
-    R (>= 3.3.0)
+    R (>= 3.2.0)
 Imports:
     methods,
     GenomicRanges,
@@ -40,7 +40,7 @@ Collate:
     'MultiAssayExperiment-methods.R'
     'MultiAssayExperiment-pkg.R'
     'MultiAssayExperiment.R'
-    'MultiAssayView-class.R'
+    'hasAssay.R'
     'listToMap.R'
     'mapToList.R'
     'subset.R'
