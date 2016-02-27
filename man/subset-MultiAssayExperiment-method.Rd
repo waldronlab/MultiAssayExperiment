@@ -20,7 +20,8 @@ either by colnames, rownames, or assays}
 \item{drop}{logical (default FALSE) whether to coerce lowest possible
 dimension after subsetting}
 
-\item{...}{Additional arguments to pass to SubsetByOverlaps when subsetting
+\item{...}{Additional arguments to pass to
+\code{\link[IRanges]{subsetByOverlaps}} when subsetting
 by rownames}
 }
 \value{

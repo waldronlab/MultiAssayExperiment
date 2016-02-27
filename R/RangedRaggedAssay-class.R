@@ -5,6 +5,7 @@
 #' An extension of the GRangesList class
 #' 
 #' @exportClass RangedRaggedAssay
+#' @name RangedRaggedAssay-class
 .RangedRaggedAssay <- setClass("RangedRaggedAssay", contains = "GRangesList")
 
 ### - - - - - - - - - - - - - - - - - - - - - - - -
@@ -15,6 +16,7 @@
 #'
 #' @param x A \code{list}, \code{GRanges} or \code{GRangesList} object
 #' @return A \code{\linkS4class{RangedRaggedAssay}} class object
+#' @example inst/scripts/RangedRaggedAssay-Ex.R
 #' @export RangedRaggedAssay
 RangedRaggedAssay <- function(x = GRangesList()) {
   if(inherits(x, "GRanges")) {
@@ -23,12 +25,6 @@ RangedRaggedAssay <- function(x = GRangesList()) {
   .RangedRaggedAssay(x)
 }
 
-#' @describeIn RangedRaggedAssay Get the column length of a RangedRaggedAssay
-setMethod("ncol", signature("RangedRaggedAssay"), function(x)
-  length(x))
-#' @describeIn RangedRaggedAssay Get the row length of a RangedRaggedAssay
-setMethod("nrow", signature("RangedRaggedAssay"), function(x)
-  length(unlist(x)))
 
 .RangedBracketSubsetRRA <- function(x, i, j, ..., drop) {
   if (length(drop) != 1L || (!missing(drop) && drop)) {
@@ -74,12 +70,12 @@ setMethod("nrow", signature("RangedRaggedAssay"), function(x)
 #' names
 #' 
 #' @param x A \code{\link{RangedRaggedAssay}} class
-#' @param i Either a \code{character} or \code{GRanges} class object 
+#' @param i Either a \code{character} or \code{GRanges} class object
 #' to subset by rows
 #' @param j Either a \code{character}, \code{numeric}, or \code{logical} 
 #' type for selecting columns (\code{\link[GenomicRanges]{GRangesList}} method)
 #' @param ... Any additional arguments passed on to subsetByOverlaps
-#' @param drop logical (defalut TRUE) whether to drop empty columns 
+#' @param drop logical (default TRUE) whether to drop empty columns
 #' @seealso \code{\link[IRanges]{findOverlaps-methods}}
 #' @return A \code{\link{RangedRaggedAssay}} class object
 #' @describeIn RangedRaggedAssay Subset a \code{RangedRaggedAssay} with either 
@@ -91,3 +87,17 @@ setMethod("[", c("RangedRaggedAssay", "ANY", "ANY"),
 setMethod("[", c("RangedRaggedAssay", "GRanges", "ANY"),
           .RangedBracketSubsetRRA)
 
+#' @describeIn RangedRaggedAssay Obtain dimension lengths of a
+#' \code{RangedRaggedAssay} class object
+setMethod("dim", "RangedRaggedAssay", function(x)
+  c(length(unlist(x)), length(x)))
+
+#' @describeIn RangedRaggedAssay Get the column length of a
+#' \code{RangedRaggedAssay} class object
+setMethod("ncol", signature("RangedRaggedAssay"), function(x)
+  dim(x)[2])
+
+#' @describeIn RangedRaggedAssay Get the row length of a
+#' \code{RangedRaggedAssay} class object
+setMethod("nrow", signature("RangedRaggedAssay"), function(x)
+  dim(x)[1])

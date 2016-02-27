@@ -28,7 +28,8 @@ getHits(subject, query, ...)
 \arguments{
 \item{subject}{Any valid element from the \code{\linkS4class{Elist}} class}
 
-\item{query}{Either a \code{character} vector or \code{\linkS4class{GRanges}}
+\item{query}{Either a \code{character} vector or
+\code{\linkS4class{GRanges}}
 object used to search by name or ranges}
 
 \item{...}{Additional arguments to findOverlaps}
@@ -55,10 +56,11 @@ using \code{findOverlaps}
 \item \code{subject = ANY,query = character}: Find all matching rownames based on character query
 }}
 \examples{
+## Load an example MultiAssayExperiment object
+example("MultiAssayExperiment")
+example("GRangesList")
 
-\dontrun{
-getHits(myMultiAssayExperiment, myGRanges)
-}
-
+## Find what ranges fit the criteria (see findOverlaps)
+getHits(myMultiAssayExperiment, gr1)
 }
 

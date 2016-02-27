@@ -3,7 +3,6 @@
 \name{listToMap}
 \alias{listToMap}
 \alias{mapToList}
-\alias{sampleMap}
 \title{Convert map from data.frame or DataFrame to list and vice versa}
 \usage{
 listToMap(listmap, type = "colnames")
@@ -38,20 +37,12 @@ opposite by taking a \code{list} and converting it to \code{DataFrame}.
 \item \code{listToMap}: Inverse of the listToMap function
 }}
 \examples{
-## Create sample maps for each experiment
-exprmap <- data.frame(
-    master = c("Jack", "Jill", "Barbara", "Bob"),
-    assay = c("array1", "array2", "array3", "array4"), 
-    stringsAsFactors = FALSE)
-methylmap <- data.frame(
-    master = c("Jack", "Jack", "Jill", "Barbara", "Bob"),
-    assay = c("methyl1", "methyl2", "methyl3", "methyl4", "methyl5"),
-    stringsAsFactors = FALSE)
+example("sampleMap")
 
-## Combine as a named list and convert to a DataFrame
-mylist <- list(exprmap, methylmap)
-names(mylist) <- c("Affy", "Methyl450k")
-myDF <- listToMap(mylist)
-mylist <- mapToList(myDF)
+## Create a sampleMap from a list using the listToMap function
+mySampleMap <- listToMap(mylist)
+
+## The inverse operation is also available
+mylist <- mapToList(mySampleMap)
 }
 

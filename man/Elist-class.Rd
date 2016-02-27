@@ -3,7 +3,6 @@
 \docType{class}
 \name{Elist-class}
 \alias{.Elist}
-\alias{Elist}
 \alias{Elist,ANY-method}
 \alias{Elist,missing-method}
 \alias{Elist-class}
@@ -22,22 +21,22 @@
 \item{object}{An \code{\linkS4class{Elist}} class object}
 }
 \value{
-An \code{\linkS4class{Elist}} class object
+An \code{Elist} class object
 }
 \description{
 The \code{Elist} class is a container that builds on 
-the \code{\link[S4Vectors]{SimpleList-class}} with additional 
+the \code{SimpleList} with additional 
 checks for consistency in experiment names and length.
 It contains a \code{SimpleList} of experiments with sample identifiers.
 One element present per experiment performed.
 }
 \details{
-Convert from \code{\link{SimpleList}} or \code{list}
+Convert from \code{SimpleList} or \code{list}
 to the multi-experiment data container
 }
 \section{Methods (by generic)}{
 \itemize{
-\item \code{Elist}: Create an \link{Elist} object from an "ANY" class object, 
+\item \code{Elist}: Create an \code{Elist} object from an "ANY" class object, 
 mainly \code{list}
 
 \item \code{Elist}: Create an empty Elist for signature "missing"
@@ -45,31 +44,7 @@ mainly \code{list}
 \item \code{show}: Show method for \code{\linkS4class{Elist}} class
 }}
 \examples{
-## Create an empty Elist instance 
 Elist()
 
-## Create array matrix and AnnotatedDataFrame to create an ExpressionSet class
-arraydat <- matrix(seq(101, 108), ncol=4,
-                   dimnames = list(
-                     c("ENST00000294241", "ENST00000355076"), 
-                     c("array1", "array2", "array3", "array4")
-                   ))
-arraypdat <- as(data.frame(
-  slope53 = rnorm(4), 
-  row.names = c("array1", "array2", "array3", "array4")), 
-  "AnnotatedDataFrame")
-exprdat <- Biobase::ExpressionSet(assayData=arraydat, phenoData=arraypdat)
-
-## Create a sample methylation dataset
-methyldat <- matrix(1:10,
-                    ncol = 5, 
-                    dimnames = list(
-                      c("ENST00000355076", "ENST00000383706"),
-                      c("methyl1", "methyl2", "methyl3", "methyl4", "methyl5")))
-
-## Combine to a named list and call the Elist constructor function
-ExpList<- list(arraydat, methyldat)
-names(ExpList) <- c("Affy", "Methyl450k")
-myElist <- Elist(ExpList)
 }
 
