@@ -76,13 +76,19 @@ setClass("MultiAssayExperiment",
     NULL else errors
 }
 
-## 1.iii. sample names contained in the Elist should match the sample names
-## in the sampleMap "assay" column
+## 1.iii. For each Elist element, colnames must be found in the "assay" column
+## of the sampleMap
 .checkSampleNames <- function(object) {
-  if (!.uniqueSortIdentical(
-    unname(unlist(colnames(object))),
-    sampleMap(object)[, "assay"])) {
-    return("samples in the 'Elist' and 'sampleMap' are not equal")
+  sampMap <- sampleMap(object)
+  assayCols <- S4Vectors::split(sampMap[, "assay"],
+                                sampMap[, "assayname"])[order(names(object))]
+  colNams <- CharacterList(colnames(object))
+  logicResult <- Map(function(columnNames, assayColumns) {
+    columnNames %in% assayColumns
+  }, columnNames = colNams,
+  assayColumns = assayCols)
+  if (!Reduce(all, logicResult)) {
+    return("not all samples in the 'Elist' are found in the 'sampleMap'")
   }
   NULL
 }
