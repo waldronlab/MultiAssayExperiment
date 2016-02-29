@@ -96,8 +96,8 @@ setClass("MultiAssayExperiment",
 ## 2.i. inherits(pData, "DataFrame") == TRUE
 
 ## SAMPLEMAP
-## 3.i. all names in the sampleMap "master" column must be found in the
-## pData clinical data slot
+## 3.i. all values in the sampleMap "master" column must be found in the
+## rownames of pData
 .checkSampleMapNames <- function(object) {
   errors <- character()
   if (!(.allIn(
@@ -111,8 +111,8 @@ setClass("MultiAssayExperiment",
     NULL else errors
 }
 
-## 3.ii. sample identifiers within the sampleMap "assay" column must be
-## unique within each element of the Elist
+## 3.ii. Within rows of "sampleMap" corresponding to a single value in the 
+## "assayname" column, there can be no duplicated values in the "assay" column
 .uniqueNamesInAssays <- function(object) {
   SampMap <- sampleMap(object)
   lcheckdups <- S4Vectors::split(SampMap[["assay"]], SampMap[, "assayname"])
