@@ -1,0 +1,34 @@
+---
+title: "RTCGAToolbox implementation of pradMAEO - <strong>PR</strong>ostate <strong>AD</strong>enocarcinoma <strong>M</strong>ulti<strong>A</strong>ssay<strong>E</strong>xperiment <strong>O</strong>bject"
+author: "Lucas Schiffer"
+date: "February 29, 2016"
+output: html_document
+---
+
+This vignette is the current working document for the development of a prostate adenocarcinoma MultiAssayExperiment object. Data is taken from The Cancer Genome Atlas (TCGA) using the TCGAdownload() method of the TCGAbiolinks package, then manipulated to fit into the MultiAssayExperiment object.
+
+GitHub Source <- <a href="https://github.com/schifferl/biocMultiAssay/blob/master/vignettes/pradMAEO-TCGAbiolinks.Rmd">https://github.com/schifferl/biocMultiAssay/blob/master/vignettes/pradMAEO.Rmd</a><br>
+Rpubs HTML <- <a href="https://rpubs.com/schifferl/pradMAEO">https://rpubs.com/schifferl/pradMAEO-TCGAbiolinks</a>
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+#install devtools
+#install.packages("devtools")
+library(devtools)
+
+#install bioconductor
+source("https://bioconductor.org/biocLite.R")
+biocLite()
+
+#install rJava
+install.packages("rJava")
+library(rJava)
+
+#install TCGAbiolinks
+BiocInstaller::biocLite("TCGAbiolinks")
+library(TCGAbiolinks)
+
+#install biocMultiAssay
+BiocInstaller::biocLite("vjcitn/biocMultiAssay")
+library(biocMultiAssay)
+```
+

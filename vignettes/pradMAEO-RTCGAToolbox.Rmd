@@ -1,0 +1,49 @@
+---
+title: "RTCGAToolbox implementation of pradMAEO - <strong>PR</strong>ostate <strong>AD</strong>enocarcinoma <strong>M</strong>ulti<strong>A</strong>ssay<strong>E</strong>xperiment <strong>O</strong>bject"
+author: "Lucas Schiffer"
+date: "February 29, 2016"
+output: html_document
+---
+
+This vignette is the current working document for the development of a prostate adenocarcinoma MultiAssayExperiment object. Data is taken from The Cancer Genome Atlas (TCGA) using the getFirehoseData() method of the RTCGAToolbox package, then manipulated to fit into the MultiAssayExperiment object.
+
+GitHub Source <- <a href="https://github.com/schifferl/biocMultiAssay/blob/master/vignettes/pradMAEO-RTCGAToolbox.Rmd">https://github.com/schifferl/biocMultiAssay/blob/master/vignettes/pradMAEO.Rmd</a><br>
+Rpubs HTML <- <a href="https://rpubs.com/schifferl/pradMAEO">https://rpubs.com/schifferl/pradMAEO-RTCGAToolbox</a>
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+#install devtools
+install.packages("devtools")
+library(devtools)
+
+#install bioconductor
+source("https://bioconductor.org/biocLite.R")
+biocLite()
+
+#install RTCGAToolbox
+BiocInstaller::biocLite("LiNk-NY/RTCGAToolbox")
+library(RTCGAToolbox)
+
+#install biocMultiAssay
+BiocInstaller::biocLite("vjcitn/biocMultiAssay")
+library(biocMultiAssay)
+```
+
+Cohort datasets can be generated with the getFirehoseDatasets() method.
+
+```{r}
+getFirehoseDatasets()
+```
+
+Analysis and Running dates can be obtained through the getFirehoseAnalyzeDates() and getFirehoseRunningDates() methods of the RTCGAToolbox.
+
+```{r}
+getFirehoseAnalyzeDates()
+getFirehoseRunningDates()
+```
+
+The <strong>PR</strong>ostate <strong>AD</strong>enocarcinoma dataset is identified by the cohort name "PRAD" and can be obtained using the getFirehouseData() method. Once returned the FirehoseData object can be serialized for manipulation. Use of the extract() method is necessary to convert data into a ExpressionSet or GRangesList objects, which can then be used to create a MuliAssayExperiment object.
+
+```{r}
+
+```
+
