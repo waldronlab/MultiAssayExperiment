@@ -67,9 +67,8 @@ setClass("MultiAssayExperiment",
 
 ## 1.ii. Element names of the Elist should be found in the
 ## sampleMap "assayname" column.
-  if (!all(assaynames %in% names(Elist(object)))) {
-    msg <- paste0("Experiment/Assay names in both the ",
-                  "Elist and the sampleMap must match")
+  if (!all(names(Elist(object)) %in% assaynames)) {
+    msg <- "All Elist names were not found in the sampleMap assaynames"
     errors <- c(errors, msg)
   }
   if (length(errors) == 0L)
@@ -97,8 +96,8 @@ setClass("MultiAssayExperiment",
 ## 2.i. inherits(pData, "DataFrame") == TRUE
 
 ## SAMPLEMAP
-## 3.i. all names in the sampleMap "master" column must be found in the
-## pData clinical data slot
+## 3.i. all values in the sampleMap "master" column must be found in the
+## rownames of pData
 .checkSampleMapNames <- function(object) {
   errors <- character()
   if (!(.allIn(
@@ -112,35 +111,23 @@ setClass("MultiAssayExperiment",
     NULL else errors
 }
 
-## 3.ii. sample identifiers within the sampleMap "assay" column must be
-## unique within each element of the Elist
+## 3.ii. Within rows of "sampleMap" corresponding to a single value in the 
+## "assayname" column, there can be no duplicated values in the "assay" column
 .uniqueNamesInAssays <- function(object) {
-  errors <- character()
   SampMap <- sampleMap(object)
   lcheckdups <- S4Vectors::split(SampMap[["assay"]], SampMap[, "assayname"])
-  logchecks <- any(vapply(lcheckdups, function(x) as.logical(anyDuplicated(x)),
-                          logical(1L)))
+  logchecks <- any(vapply(lcheckdups, FUN = function(x) {
+    as.logical(anyDuplicated(x))
+  }, FUN.VALUE = logical(1L)))
   if (logchecks) {
-    msg <- "All sample identifiers in the assays must be unique"
-    errors <- c(errors, msg)
-  }
-  if (length(errors) == 0L)
-    NULL else errors
-}
-
-## All names must match between Elist and sampleMap
-.checkNames <- function(object) {
-  if (!all(
-    names(Elist(object)) %in% unique(sampleMap(object)[, "assayname"]))) {
-    return("Experiment names must match in both Elist and sampleMap")
+    return("All sample identifiers in the assays must be unique")
   }
   NULL
 }
 
 .validMultiAssayExperiment <- function(object) {
   if (length(Elist(object)) != 0L) {
-    c(.checkNames(object),
-      .checkElist(object),
+    c(.checkElist(object),
       .checkSampleMapNames(object), 
       .uniqueNamesInAssays(object),
       .checkSampleNames(object)
