@@ -2,19 +2,21 @@
 .cleanT = function(x) gsub(".__T__", "", x)
 
 #' Refer to the API documentation
-#'
+#' 
 #' \code{API} opens a browser to the API documentation
 #' 
 #' @param shiny (logical default FALSE) whether to launch the shiny version
 #' of the API (experimental)
 #' 
 #' @return Documentation via the GitHub wiki
-#'
+#' 
 #' @examples
 #' API()
-#'
+#' 
+#' @author Vincent J Carey
+#' 
 #' @import shinydashboard shiny
-#'
+#' 
 #' @export
 API <- function(shiny = FALSE) {
   if (shiny) {

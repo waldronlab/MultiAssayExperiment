@@ -20,4 +20,7 @@ Documentation via the GitHub wiki
 API()
 
 }
+\author{
+Vincent J Carey
+}
 
