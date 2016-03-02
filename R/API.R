@@ -26,7 +26,6 @@ API <- function(shiny = FALSE) {
   }
 }
 
-
 .packageAPI <- function(packname="MultiAssayExperiment") {
   ns = getNamespace(packname)
   nsElements = ls(ns, all.names = TRUE)
@@ -34,9 +33,13 @@ API <- function(shiny = FALSE) {
   classes = .cleanC(grep(".__C__", nsElements, value=TRUE))
   todrop = sapply(classes, function(x)extends(x, "language"))
   if (any(todrop)) classes = classes[-which(todrop)]
-  TmethsWithin = .cleanT(grep(packname, grep(".__T__", nsElements, value=TRUE), value=TRUE))
-  TmethsWithout = .cleanT(grep(packname, grep(".__T__", nsElements, value=TRUE), value=TRUE, invert=TRUE))
-  Mcmeths = lapply(classes, function(x) methods(class=x))  # use methods()
+  TmethsWithin = .cleanT(grep(packname, grep(".__T__", nsElements,
+                                             value=TRUE),
+                              value=TRUE))
+  TmethsWithout = .cleanT(grep(packname, grep(".__T__", nsElements,
+                                              value=TRUE),
+                               value=TRUE, invert=TRUE))
+  Mcmeths = lapply(classes, function(x) utils::methods(class=x))
   names(Mcmeths) = classes
   #list(nsElements = nsElements, nsNS = nsNS, classes=classes, cmeths=cmeths)
   list(classes=classes, Mcmeths=Mcmeths, TmethsWithin=TmethsWithin,
@@ -62,7 +65,8 @@ API <- function(shiny = FALSE) {
       shiny::fluidRow(
         shinydashboard::tabBox(
           title = "API explorer",
-          # The id lets us use input$tabset1 on the server to find the current tab
+          # The id lets us use input$tabset1 on the server to
+          # find the current tab
           id = "tabset1", height = "250px",
           shiny::tabPanel("Classes", 
                    shiny::tableOutput("ls1")), 
