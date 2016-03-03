@@ -7,7 +7,6 @@ Description: Develop an integrative environment where multiple assays are
     managed and preprocessed for genomic data analysis.
 Suggests:
     BiocStyle,
-    shinydashboard,
     testthat,
     knitr
 Depends:
@@ -19,7 +18,9 @@ Imports:
     SummarizedExperiment,
     S4Vectors,
     IRanges,
-    Biobase
+    Biobase,
+    shinydashboard,
+    shiny
 Maintainer: Marcel Ramos <mramos09@gmail.com>
 biocViews: Infrastructure, DataRepresentation
 License: Artistic-2.0
