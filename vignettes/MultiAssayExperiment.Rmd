@@ -8,6 +8,7 @@ output:
     toc: yes
 vignette: >
   %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{Coordinating Analysis of Multi-Assay Experiments}
 ---
 
 A built [html][] version of this vignette is available.

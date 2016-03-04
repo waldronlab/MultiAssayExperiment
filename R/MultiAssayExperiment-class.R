@@ -98,7 +98,7 @@ setClass("MultiAssayExperiment",
 }
 
 ## PDATA
-## 2.i. inherits(pData, "DataFrame") == TRUE
+## 2.i. See setClass above where pData = "DataFrame"
 
 ## SAMPLEMAP
 ## 3.i. all values in the sampleMap "master" column must be found in the
