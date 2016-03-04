@@ -86,7 +86,12 @@ setClass("MultiAssayExperiment",
     columnNames %in% assayColumns
   }, columnNames = colNams,
   assayColumns = assayCols)
-  if (!Reduce(all, logicResult)) {
+  if (length(logicResult) > 1) {
+    loVals <- Reduce(all, logicResult)
+  } else {
+    loVals <- unlist(logicResult)
+  }
+  if (!loVals) {
     return("not all samples in the 'Elist' are found in the 'sampleMap'")
   }
   NULL
@@ -102,7 +107,7 @@ setClass("MultiAssayExperiment",
   errors <- character()
   if (!(.allIn(
     rownames(pData(object)),
-    slot(sampleMap(object)[, "master"], "values")
+    as.vector(sampleMap(object)[, "master"])
   ))) {
     msg <- "All samples in the sampleMap must be in the pData"
     errors <- c(errors, msg)
