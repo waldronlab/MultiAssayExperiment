@@ -118,7 +118,7 @@ setMethod("getHits", signature("RangedRaggedAssay", "character"),
           })
 
 .isEmpty <- function(object) {
-  isTRUE(unname(ncol(object)) == 0L | unname(nrow(object)) == 0L)
+  isTRUE(unname(dim(object)[1]) == 0L | unname(dim(object)[2]) == 0L)
 }
 
 .subsetMultiAssayExperiment <- function(x, i, j, k, ..., drop = TRUE) {
@@ -137,7 +137,7 @@ setMethod("getHits", signature("RangedRaggedAssay", "character"),
   if (drop) {
     emptyAssays <- vapply(Elist(x), FUN = .isEmpty, FUN.VALUE = logical(1))
     if (all(emptyAssays)) {
-      x <- MultiAssayExperiment()
+      warning("no data in assays")
     } else if (any(emptyAssays)) {
       keeps <- names(emptyAssays)[sapply(emptyAssays, function(x) !isTRUE(x))]
       x <- x[, , keeps, drop = FALSE]

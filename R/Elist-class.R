@@ -169,11 +169,11 @@ setMethod("show", "Elist", function(object) {
   elem_cl <- vapply(object, class, character(1))
   o_len <- length(object)
   o_names <- names(object)
-  sampdim <- vapply(object, FUN = function(obj) {
-    ncol(obj)
-  }, FUN.VALUE = integer(1))
   featdim <- vapply(object, FUN = function(obj) {
-    nrow(obj)
+    dim(obj)[1]
+  }, FUN.VALUE = integer(1))
+  sampdim <- vapply(object, FUN = function(obj) {
+    dim(obj)[2]
   }, FUN.VALUE = integer(1))
   cat(sprintf('"%s"', o_class),
       "class object of length",
