@@ -10,15 +10,7 @@ This vignette is the current working document for the development of a prostate 
 GitHub Source <- <a href="https://github.com/schifferl/biocMultiAssay/blob/master/vignettes/pradMAEO-RTCGAToolbox.Rmd">https://github.com/schifferl/biocMultiAssay/blob/master/vignettes/pradMAEO.Rmd</a><br>
 Rpubs HTML <- <a href="https://rpubs.com/schifferl/pradMAEO">https://rpubs.com/schifferl/pradMAEO-RTCGAToolbox</a>
 
-```{r, echo=FALSE, message=FALSE, warning=FALSE}
-#install devtools
-install.packages("devtools")
-library(devtools)
-
-#install bioconductor
-source("https://bioconductor.org/biocLite.R")
-biocLite()
-
+```{r, echo=FALSE, eval=FALSE}
 #install RTCGAToolbox
 BiocInstaller::biocLite("LiNk-NY/RTCGAToolbox")
 library(RTCGAToolbox)
@@ -30,20 +22,19 @@ library(biocMultiAssay)
 
 Cohort datasets can be generated with the getFirehoseDatasets() method.
 
-```{r}
+```{r eval=FALSE}
 getFirehoseDatasets()
 ```
 
 Analysis and Running dates can be obtained through the getFirehoseAnalyzeDates() and getFirehoseRunningDates() methods of the RTCGAToolbox.
 
-```{r}
+```{r eval=FALSE}
 getFirehoseAnalyzeDates()
 getFirehoseRunningDates()
 ```
 
 The <strong>PR</strong>ostate <strong>AD</strong>enocarcinoma dataset is identified by the cohort name "PRAD" and can be obtained using the getFirehouseData() method. Once returned the FirehoseData object can be serialized for manipulation. Use of the extract() method is necessary to convert data into a ExpressionSet or GRangesList objects, which can then be used to create a MuliAssayExperiment object.
 
-```{r}
+```{r eval=FALSE}
 
 ```
-
