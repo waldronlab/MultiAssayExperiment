@@ -10,15 +10,7 @@ This vignette is the current working document for the development of a prostate 
 GitHub Source <- <a href="https://github.com/schifferl/biocMultiAssay/blob/master/vignettes/pradMAEO-TCGAbiolinks.Rmd">https://github.com/schifferl/biocMultiAssay/blob/master/vignettes/pradMAEO.Rmd</a><br>
 Rpubs HTML <- <a href="https://rpubs.com/schifferl/pradMAEO">https://rpubs.com/schifferl/pradMAEO-TCGAbiolinks</a>
 
-```{r, echo=FALSE, message=FALSE, warning=FALSE}
-#install devtools
-#install.packages("devtools")
-library(devtools)
-
-#install bioconductor
-source("https://bioconductor.org/biocLite.R")
-biocLite()
-
+```{r, echo=FALSE, eval=FALSE}
 #install rJava
 install.packages("rJava")
 library(rJava)
@@ -31,4 +23,3 @@ library(TCGAbiolinks)
 BiocInstaller::biocLite("vjcitn/biocMultiAssay")
 library(biocMultiAssay)
 ```
-

@@ -10,13 +10,9 @@ This vignette is the current working document for the development of a prostate 
 GitHub Source <- <a href="https://github.com/schifferl/biocMultiAssay/blob/master/vignettes/pradMAEO.Rmd">https://github.com/schifferl/biocMultiAssay/blob/master/vignettes/pradMAEO.Rmd</a><br>
 Rpubs HTML <- <a href="https://rpubs.com/schifferl/pradMAEO">https://rpubs.com/schifferl/pradMAEO</a>
 
-```{r, echo=FALSE, message=FALSE, warning=FALSE}
-#install bioconductor
-#source("https://bioconductor.org/biocLite.R")
-#biocLite()
-
+```{r, echo=FALSE, eval=FALSE}
 #install RTCGAToolbox
-#BiocInstaller::biocLite("LiNk-NY/RTCGAToolbox")
+BiocInstaller::biocLite("LiNk-NY/RTCGAToolbox")
 library(RTCGAToolbox)
 
 #install biocMultiAssay
@@ -26,20 +22,20 @@ library(biocMultiAssay)
 
 Cohort datasets can be generated with the getFirehoseDatasets() method.
 
-```{r}
+```{r eval=FALSE}
 getFirehoseDatasets()
 ```
 
 Analysis and Running dates can be obtained through the getFirehoseAnalyzeDates() and getFirehoseRunningDates() methods of the RTCGAToolbox.
 
-```{r}
+```{r eval=FALSE}
 getFirehoseAnalyzeDates()
 getFirehoseRunningDates()
 ```
 
 The <strong>PR</strong>ostate <strong>AD</strong>enocarcinoma dataset is identified by the cohort name "PRAD" and can be obtained using the getFirehouseData() method. Once returned the FirehoseData object can be serialized for manipulation. Use of the extract() method is necessary to convert data into a ExpressionSet or GRangesList objects, which can then be used to create a MuliAssayExperiment object.
 
-```{r message=FALSE, warning=FALSE, results='hide'}
+```{r  eval=FALSE}
 fp <- "~/GitHub/biocMultiAssay/data/prad.Rda"
 x <- "PRAD"
 y <- getFirehoseRunningDates()[1]
@@ -77,13 +73,13 @@ rm(list = clean)
 
 The global environment should now contain the relevant data serialized as ExpressionSet or GRangesList objects.
 
-```{r}
+```{r eval=FALSE}
 ls.str()
 ```
 
 In order to create an EList object it is necessary to convert GRangesList objects to RangedRaggedAssay objects using the RangedRaggedAssay() method, such that assay methods for a MultiAssayExperiment are provided. Within the if block, the nameof variable is instantiated again after type conversion so that it references the RangedRaggedAssay rather than the GRangesList object.
 
-```{r}
+```{r eval=FALSE}
 vars <- ls()
 listof <- list()
 
@@ -103,7 +99,7 @@ rm(vars, i, nameof, listof)
 
 Phenotype data, or pData, can be extracted from FirehoseData in much the same way that experimental data was extracted. The resulting dataframe can then be serialized and used in conjunction with the Elist object to create a MultiAssayExperiment object.
 
-```{r}
+```{r eval=FALSE}
 fp <- "~/GitHub/biocMultiAssay/data/prad.Rda"
 load(fp)
 pd <- DataFrame(extract(prad, NULL, clinical = TRUE))
