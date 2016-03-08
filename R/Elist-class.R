@@ -17,11 +17,7 @@
 
 ## Helper function for .PrepElements in Elist construction
 .createRownames <- function(object) {
-  if (inherits(object, "GRangesList")) {
-    u_obj <- unlist(object, use.names = FALSE)
-    names(u_obj) <- seq_len(length(u_obj))
-    object <- relist(u_obj, object)
-  } else if (inherits(object, "SummarizedExperiment")) {
+  if (inherits(object, "SummarizedExperiment")) {
     rownames(object) <- seq_along(object)
   }
   return(object)
@@ -29,12 +25,12 @@
 
 ## Ensure Elist elements are appropriate for the API and rownames are present
 .PrepElements <- function(object) {
-  if (is.null(rownames(object))) {
-    object <- .createRownames(object)
-  }
   ## use is() to exclude RangedRaggedAssay
   if (inherits(object, "GRangesList") && !is(object, "RangedRaggedAssay")) {
     object <- RangedRaggedAssay(object)
+  }
+  if (is.null(rownames(object))) {
+    object <- .createRownames(object)
   }
   return(object)
 }

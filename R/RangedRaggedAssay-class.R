@@ -19,10 +19,18 @@
 #' @example inst/scripts/RangedRaggedAssay-Ex.R
 #' @export RangedRaggedAssay
 RangedRaggedAssay <- function(x = GRangesList()) {
-  if(inherits(x, "GRanges")) {
+  if (inherits(x, "GRanges")) {
     x <- GRangesList(x)
   }
-  .RangedRaggedAssay(x)
+  if (inherits(x, "GRangesList")) {
+    if (is.null(rownames(x))) {
+      u_obj <- unlist(x, use.names = FALSE)
+      names(u_obj) <- seq_len(length(u_obj))
+      x <- relist(u_obj, x)
+    }
+  }
+  x <- .RangedRaggedAssay(x)
+  return(x)
 }
 
 
@@ -55,7 +63,10 @@ RangedRaggedAssay <- function(x = GRangesList()) {
   }
   if (!missing(i)) {
     if (is.character(i)) {
-      x <- x[relist(names(unlist(x, use.names = FALSE)) %in% i, x)]
+      cLL <- relist(names(unlist(x, use.names = FALSE)) %in% i, x)
+      x <- callNextMethod(x = x, i = cLL)
+    } else if (is.numeric(i) || is.logical(i)) {
+      x <- endoapply(x, function(range){range[i,]})
     } else {
       x <- callNextMethod(x = x, i = i)
     }
