@@ -89,7 +89,7 @@ setClass("MultiAssayExperiment",
   if (length(logicResult) > 1) {
     loVals <- Reduce(all, logicResult)
   } else {
-    loVals <- unlist(logicResult)
+    loVals <- all(unlist(logicResult))
   }
   if (!loVals) {
     return("not all samples in the 'Elist' are found in the 'sampleMap'")
