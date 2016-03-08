@@ -264,3 +264,21 @@ setMethod("subsetByRow", c("MultiAssayExperiment", "GRanges"),
             }
             callNextMethod(x = x, y = y, ...)
           })
+
+setMethod("subsetByRow", c("MultiAssayExperiment", "logical"), 
+          function(x, y) {
+            if (!all(!Biobase::isUnique(sapply(Elist(x), function(z) {dim(z)[1]})))) {
+              stop("the length of logical vector must match",
+                   " that of all the rows in the Elist")
+            } else {
+              callNextMethod(x = x, y = y)
+            }
+          })
+
+setMethod("subsetByRow", c("MultiAssayExperiment", "ANY"),
+          function(x, y) {
+            newElist <- S4Vectors::endoapply(Elist(x), 
+                                             function(z) {z[y,, drop = FALSE]})
+            Elist(x) <- newElist
+            return(x)
+          })
