@@ -7,32 +7,39 @@ NULL
 #' @describeIn RangedRaggedAssay Get feature names from a RangedRaggedAssay
 setMethod("rownames", "RangedRaggedAssay", function(x)
   names(unlist(x, use.names = FALSE)))
+
 #' @describeIn MultiAssayExperiment Get all the rownames for a
 #' MultiAssayExperiment using \code{\link[IRanges]{CharacterList}}
 #' @exportMethod rownames
 setMethod("rownames", "MultiAssayExperiment", function(x)
   IRanges::CharacterList(lapply(Elist(x), rownames)))
+
 #' @describeIn RangedRaggedAssay Get sample names from a RangedRaggedAssay
 setMethod("colnames", "RangedRaggedAssay", function(x)
   base::names(x))
+
 #' @describeIn MultiAssayExperiment Get all the colnames for a
 #' MultiAssayExperiment
 #' @exportMethod colnames
 setMethod("colnames", "MultiAssayExperiment", function(x)
   lapply(Elist(x), colnames))
+
 #' Harmonize exprs to assay of an \code{ExpressionSet} object
 #' @param x An \code{ExpressionSet} object
 #' @return A \code{matrix} of data
 setMethod("assay", "ExpressionSet", function(x)
   Biobase::exprs(x))
+
 #' Harmonize show to assay of a \code{matrix} object
 #' @param x A \code{matrix} object
 #' @return A \code{matrix} of data
 setMethod("assay", "matrix", function(x) x)
+
 #' @describeIn RangedRaggedAssay Get experiment metadata from a 
 #' RangedRaggedAssay
 setMethod("assay", "RangedRaggedAssay", function(x)
   do.call(rbind, lapply(x, mcols)))
+
 #' @describeIn MultiAssayExperiment Get the raw data from a
 #' MultiAssayExperiment as a list
 #' @exportMethod assay
@@ -62,24 +69,28 @@ setMethod("assay", "MultiAssayExperiment", function(x)
 #' @example inst/scripts/getHits-Ex.R
 #' @exportMethod getHits
 setGeneric("getHits", function(subject, query, ...) standardGeneric("getHits"))
+
 #' @describeIn getHits Find all matching rownames by character
 setMethod("getHits", signature("MultiAssayExperiment", "character"),
           function(subject, query, ...)
             lapply(Elist(subject), FUN = function(elem, ...) {
   getHits(elem, query, ...)
 }))
+
 #' @describeIn getHits Find all matching rownames by GRanges
 setMethod("getHits", signature("MultiAssayExperiment", "GRanges"),
           function(subject, query, ...)
             lapply(Elist(subject), FUN = function(elem, ...) {
   getHits(elem, query, ...)
 }))
+
 #' @describeIn getHits Find and get corresponding names of two \code{GRanges}
 #' using \code{findOverlaps}
 setMethod("getHits", signature("GRanges", "GRanges"),
           function(subject, query, ...) {
             names(subject)[queryHits(findOverlaps(subject, query, ...))]
           })
+
 #' @describeIn getHits Find all matching rownames for Range-based objects
 setMethod("getHits", signature("ANY", "GRanges"),
           function(subject, query, ...) {
@@ -92,17 +103,20 @@ setMethod("getHits", signature("ANY", "GRanges"),
               character(0)
             }
           })
+
 #' @describeIn getHits Find rownames for RangedSummarizedExperiment hits 
 setMethod("getHits", signature("RangedSummarizedExperiment", "GRanges"),
           function(subject, query, ...) {
             subject <- rowRanges(subject)
             getHits(subject, query)
           })
+
 #' @describeIn getHits Find all matching rownames based on character query
 setMethod("getHits", signature("ANY", "character"),
           function(subject, query, ...) {
             query[query %in% rownames(subject)]
           })
+
 #' @describeIn RangedRaggedAssay Find matching features by character in a 
 #' RangedRaggedAssay
 #' @param subject A \code{RangedRaggedAssay} class object

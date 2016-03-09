@@ -83,6 +83,7 @@ setMethod("Elist", "ANY", function(x) {
   }
   return(.Elist(objList))
 })
+
 #' @describeIn Elist Create an empty Elist for signature "missing"
 setMethod("Elist", "missing", function(x) {
   .Elist(S4Vectors::SimpleList(list()))
