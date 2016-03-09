@@ -3,8 +3,12 @@
 \docType{methods}
 \name{subsetByRow}
 \alias{subsetByRow}
+\alias{subsetByRow,MultiAssayExperiment,ANY-method}
 \alias{subsetByRow,MultiAssayExperiment,GRanges-method}
 \alias{subsetByRow,MultiAssayExperiment,GRangesORcharacter-method}
+\alias{subsetByRow,MultiAssayExperiment,List-method}
+\alias{subsetByRow,MultiAssayExperiment,list-method}
+\alias{subsetByRow,MultiAssayExperiment,logical-method}
 \title{Subset MultiAssayExperiment object by Feature}
 \usage{
 subsetByRow(x, y, ...)
@@ -12,6 +16,14 @@ subsetByRow(x, y, ...)
 \S4method{subsetByRow}{MultiAssayExperiment,GRangesORcharacter}(x, y, ...)
 
 \S4method{subsetByRow}{MultiAssayExperiment,GRanges}(x, y, ...)
+
+\S4method{subsetByRow}{MultiAssayExperiment,logical}(x, y)
+
+\S4method{subsetByRow}{MultiAssayExperiment,ANY}(x, y)
+
+\S4method{subsetByRow}{MultiAssayExperiment,list}(x, y)
+
+\S4method{subsetByRow}{MultiAssayExperiment,List}(x, y)
 }
 \arguments{
 \item{x}{A \code{\link{MultiAssayExperiment}} object}
@@ -37,6 +49,16 @@ rows for which to subset for
 
 \item \code{x = MultiAssayExperiment,y = GRanges}: Subset MultiAssayExperiment with
 GRanges object
+
+\item \code{x = MultiAssayExperiment,y = logical}: Use a logical vector to select rows of a
+MultiAssayExperiment
+
+\item \code{x = MultiAssayExperiment,y = ANY}: Subset a MultiAssayExperiment with either a
+numeric or logical vector
+
+\item \code{x = MultiAssayExperiment,y = list}: Use a list of equal length as the Elist to subset
+
+\item \code{x = MultiAssayExperiment,y = List}: Use an S4 List to subset a MultiAssayExperiment
 }}
 \seealso{
 \code{\link{getHits}}

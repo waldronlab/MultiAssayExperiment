@@ -40,7 +40,7 @@ methyldat <- matrix(1:10, ncol = 5,
                       c("methyl1", "methyl2", "methyl3", "methyl4", "methyl5")))
 
 ## Combine to a named list and call the Elist constructor function
-ExpList <- list(arraydat, methyldat)
+ExpList <- list(exprdat, methyldat)
 names(ExpList) <- c("Affy", "Methyl450k")
 myElist <- Elist(ExpList)
 }
