@@ -249,10 +249,7 @@ setGeneric("subsetByRow", function(x, y, ...) standardGeneric("subsetByRow"))
 setMethod("subsetByRow", c("MultiAssayExperiment", "GRangesORcharacter"),
           function(x, y, ...) {
             hitList <- getHits(x, y, ...)
-            Elist(x) <- Elist(mapply(function(f, g) {
-              f[g, , drop =  FALSE]
-            }, f = Elist(x), g = hitList, SIMPLIFY = FALSE))
-            return(x)
+            x[hitList, ]
           })
 
 #' @describeIn subsetByRow Subset MultiAssayExperiment with
@@ -265,6 +262,8 @@ setMethod("subsetByRow", c("MultiAssayExperiment", "GRanges"),
             callNextMethod(x = x, y = y, ...)
           })
 
+#' @describeIn subsetByRow Use a logical vector to select rows of a
+#' MultiAssayExperiment
 setMethod("subsetByRow", c("MultiAssayExperiment", "logical"), 
           function(x, y) {
             if (!all(!Biobase::isUnique(sapply(Elist(x), function(z) {dim(z)[1]})))) {
@@ -275,10 +274,32 @@ setMethod("subsetByRow", c("MultiAssayExperiment", "logical"),
             }
           })
 
+#' @describeIn subsetByRow Subset a MultiAssayExperiment with either a
+#' numeric or logical vector
 setMethod("subsetByRow", c("MultiAssayExperiment", "ANY"),
           function(x, y) {
             newElist <- S4Vectors::endoapply(Elist(x), 
                                              function(z) {z[y,, drop = FALSE]})
             Elist(x) <- newElist
             return(x)
+          })
+
+#' @describeIn subsetByRow Use a list of equal length as the Elist to subset
+setMethod("subsetByRow", c("MultiAssayExperiment", "list"),
+          function(x, y) {
+            if (length(x) != length(y)) {
+              stop("list length must be the same as Elist length")
+            }
+            ## would prefer mendoapply if possible
+            Elist(x) <- Elist(mapply(function(f, g) {
+              f[g, , drop =  FALSE]
+            }, f = Elist(x), g = y, SIMPLIFY = FALSE))
+            return(x)
+          })
+
+#' @describeIn subsetByRow Use an S4 List to subset a MultiAssayExperiment
+setMethod("subsetByRow", c("MultiAssayExperiment", "List"),
+          function(x, y) {
+            Y <- as.list(y)
+            x[Y, ]
           })
