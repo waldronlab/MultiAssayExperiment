@@ -16,7 +16,7 @@ myPheno <- data.frame(sex = c("M", "F", "M", "F"),
                        age = 38:41,
                        row.names = c("Jack", "Jill", "Bob", "Barbara"))
 
-## Auto-creation of map
+## Create a MultiAssayExperiment instance
 myMultiAssayExperiment <- MultiAssayExperiment(Elist = ExpList,
                                                pData = myPheno,
                                                sampleMap = mySampleMap)

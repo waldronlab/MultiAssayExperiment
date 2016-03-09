@@ -15,7 +15,24 @@ gr3 <-
 
 grl <- GRangesList("gr1" = gr1, "gr2" = gr2, "gr3" = gr3)
 names(grl) <- c("snparray1", "snparray2", "snparray3")
+myRRA <- RangedRaggedAssay(grl)
+
+arraydat <- matrix(seq(101, 108), ncol=4,
+                   dimnames = list(
+                     c("ENST00000294241", "ENST00000355076"), 
+                     c("array1", "array2", "array3", "array4")
+                   ))
+arraypdat <- as(data.frame(
+  slope53 = rnorm(4), 
+  row.names = c("array1", "array2", "array3", "array4")), 
+  "AnnotatedDataFrame")
+exprdat <- Biobase::ExpressionSet(assayData=arraydat, phenoData=arraypdat)
+
+ExpList <- list(myRRA, exprdat)
+names(ExpList) <- c("CNVgistic", "Affy")
+myElist <- Elist(ExpList)
 
 test_that("the appropriate class is returned", {
-  expect_true(is(RangedRaggedAssay(grl), "RangedRaggedAssay"))
+  expect_true(is(myRRA, "RangedRaggedAssay"))
+  expect_true(is(myElist, "Elist"))
 })
