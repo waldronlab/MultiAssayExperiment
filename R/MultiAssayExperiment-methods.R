@@ -298,7 +298,9 @@ setMethod("subsetByRow", c("MultiAssayExperiment", "ANY"),
             return(x)
           })
 
-#' @describeIn subsetByRow Use a list of equal length as the Elist to subset
+#' @describeIn subsetByRow Use a list of equal length as the Elist to subset.
+#' The order of the subsetting elements in this list must match that of the
+#' Elist in the MultiAssayExperiment.
 setMethod("subsetByRow", c("MultiAssayExperiment", "list"),
           function(x, y) {
             if (length(x) != length(y)) {
@@ -311,7 +313,9 @@ setMethod("subsetByRow", c("MultiAssayExperiment", "list"),
             return(x)
           })
 
-#' @describeIn subsetByRow Use an S4 List to subset a MultiAssayExperiment
+#' @describeIn subsetByRow Use an S4 List to subset a MultiAssayExperiment.
+#' The order of the subsetting elements in this list must match that of the 
+#' Elist in the MultiAssayExperiment.
 setMethod("subsetByRow", c("MultiAssayExperiment", "List"),
           function(x, y) {
             Y <- as.list(y)
