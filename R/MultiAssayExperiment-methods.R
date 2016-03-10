@@ -22,7 +22,7 @@ setMethod("colnames", "RangedRaggedAssay", function(x)
 #' MultiAssayExperiment
 #' @exportMethod colnames
 setMethod("colnames", "MultiAssayExperiment", function(x)
-  lapply(Elist(x), colnames))
+  IRanges::CharacterList(lapply(Elist(x), colnames)))
 
 #' Harmonize exprs to assay of an \code{ExpressionSet} object
 #' @param x An \code{ExpressionSet} object
@@ -149,11 +149,11 @@ setMethod("getHits", signature("RangedRaggedAssay", "character"),
     x <- subsetByRow(x, i, ...)
   }
   if (drop) {
-    emptyAssays <- vapply(Elist(x), FUN = .isEmpty, FUN.VALUE = logical(1))
-    if (all(emptyAssays)) {
+    isEmptyAssay <- vapply(Elist(x), FUN = .isEmpty, FUN.VALUE = logical(1L))
+    if (all(isEmptyAssay)) {
       warning("no data in assays")
-    } else if (any(emptyAssays)) {
-      keeps <- names(emptyAssays)[sapply(emptyAssays, function(x) !isTRUE(x))]
+    } else if (any(isEmptyAssay)) {
+      keeps <- names(isEmptyAssay)[sapply(isEmptyAssay, function(z) !isTRUE(z))]
       x <- x[, , keeps, drop = FALSE]
     }
   }
@@ -231,7 +231,7 @@ setMethod("subsetByColumn", c("MultiAssayExperiment", "ANY"), function(x, y) {
   return(x)
 })
 
-#' @describeIn subsetByColumn Use a character vector for subsetting column 
+#' @describeIn subsetByColumn Use a character vector for subsetting column
 #' names
 setMethod("subsetByColumn", c("MultiAssayExperiment", "character"), 
           function(x, y) {
@@ -280,12 +280,17 @@ setMethod("subsetByRow", c("MultiAssayExperiment", "GRanges"),
 #' MultiAssayExperiment
 setMethod("subsetByRow", c("MultiAssayExperiment", "logical"), 
           function(x, y) {
-            if (!all(!Biobase::isUnique(sapply(Elist(x), function(z) {dim(z)[1]})))) {
-              stop("the length of logical vector must match",
-                   " that of all the rows in the Elist")
-            } else {
-              callNextMethod(x = x, y = y)
+            ElistNrows <- vapply(Elist(x), FUN = function(z) {
+              dim(z)[1]
+            }, FUN.VALUE = integer(1L))
+            isSameLength <- vapply(ElistNrows, FUN = function(z) {
+              z == length(y)
+            }, FUN.VALUE = logical(1L))
+            if (!all(isSameLength)) {
+              warning("the length of logical vector does not match",
+                      " that of all the rows in the Elist")
             }
+            callNextMethod(x = x, y = y)
           })
 
 #' @describeIn subsetByRow Subset a MultiAssayExperiment with either a
