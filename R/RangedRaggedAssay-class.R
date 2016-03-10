@@ -121,7 +121,7 @@ setMethod("nrow", signature("RangedRaggedAssay"), function(x)
 ## All ranges in the RangedRaggedAssay should be disjoint
 .checkDisjoint <- function(object) {
   if (!all(GenomicRanges::isDisjoint(object))) {
-    stop("All ranges in the 'RangedRaggedAssay' must be disjoint")
+    #stop("All ranges in the 'RangedRaggedAssay' must be disjoint")
   }
   NULL
 }
