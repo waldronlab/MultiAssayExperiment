@@ -1,7 +1,7 @@
 ---
 title: "RTCGAToolbox implementation of pradMAEO - <strong>PR</strong>ostate <strong>AD</strong>enocarcinoma <strong>M</strong>ulti<strong>A</strong>ssay<strong>E</strong>xperiment <strong>O</strong>bject"
 author: "Lucas Schiffer"
-date: "February 29, 2016"
+date: "March 09, 2016"
 output: html_document
 ---
 
@@ -10,31 +10,75 @@ This vignette is the current working document for the development of a prostate 
 GitHub Source <- <a href="https://github.com/schifferl/biocMultiAssay/blob/master/vignettes/pradMAEO-RTCGAToolbox.Rmd">https://github.com/schifferl/biocMultiAssay/blob/master/vignettes/pradMAEO.Rmd</a><br>
 Rpubs HTML <- <a href="https://rpubs.com/schifferl/pradMAEO">https://rpubs.com/schifferl/pradMAEO-RTCGAToolbox</a>
 
-```{r, echo=FALSE, eval=FALSE}
-#install RTCGAToolbox
-BiocInstaller::biocLite("LiNk-NY/RTCGAToolbox")
+```{r}
+is.installed <- function(pkgName) {
+  is.element(pkgName, installed.packages()[,1])
+} 
+
+# RTCGAToolbox
+if (!is.installed("RTCGAToolbox")){
+  BiocInstaller::biocLite("LiNk-NY/RTCGAToolbox")
+}
 library(RTCGAToolbox)
 
-#install biocMultiAssay
-BiocInstaller::biocLite("vjcitn/biocMultiAssay")
-library(biocMultiAssay)
+# MultiAssayExperiment
+if (!is.installed("MultiAssayExperiment")){
+  BiocInstaller::biocLite("vjcitn/MultiAssayExperiment")
+}
+library(MultiAssayExperiment)
 ```
 
 Cohort datasets can be generated with the getFirehoseDatasets() method.
 
-```{r eval=FALSE}
+```{r}
 getFirehoseDatasets()
 ```
 
 Analysis and Running dates can be obtained through the getFirehoseAnalyzeDates() and getFirehoseRunningDates() methods of the RTCGAToolbox.
 
-```{r eval=FALSE}
+```{r}
 getFirehoseAnalyzeDates()
 getFirehoseRunningDates()
 ```
 
 The <strong>PR</strong>ostate <strong>AD</strong>enocarcinoma dataset is identified by the cohort name "PRAD" and can be obtained using the getFirehouseData() method. Once returned the FirehoseData object can be serialized for manipulation. Use of the extract() method is necessary to convert data into a ExpressionSet or GRangesList objects, which can then be used to create a MuliAssayExperiment object.
 
-```{r eval=FALSE}
-
+```{r}
+newMAEO <- function(ds, rd, ad) {
+  for(i in ds) {
+    cn <- tolower(i)
+    fp <- paste(getwd(), "/data/", cn, ".Rda", sep = "")
+    if(file.exists(fp)) {
+        load(fp)
+    } else {
+        co <- getFirehoseData(i, runDate = rd, gistic2_Date = ad, RNAseq_Gene = TRUE, Clinic = TRUE, miRNASeq_Gene = TRUE, RNAseq2_Gene_Norm = TRUE, CNA_SNP = TRUE, CNV_SNP = TRUE, CNA_Seq = TRUE, CNA_CGH = TRUE, Methylation = TRUE, Mutation = TRUE, mRNA_Array = TRUE, miRNA_Array = TRUE, RPPA = TRUE, RNAseqNorm = TRUE, RNAseq2Norm = TRUE, forceDownload = FALSE, destdir = ".", fileSizeLimit = 500000, getUUIDs = FALSE)
+        save(co, file = fp)
+    }
+    pd <- DataFrame(extract(co, NULL, clinical = TRUE))
+    el <- list()
+    nl <- list()
+    for(i in slotNames(co)[5:17]) {
+      push2el <- TRUE
+      tryCatch({
+        assign(i, extract(co, i, clinical = TRUE)) 
+      }, error = function(e) {
+        push2el <<- FALSE
+      }, finally = {
+        if(push2el == TRUE){
+          nl <- c(nl, i)
+          if(inherits(get(i), "GRangesList")) {
+            RangedRaggedAssay(get(i))
+          }
+          el <- c(el, get(i))
+        }
+      })
+    }
+    names(el) <- nl
+    cel <- cleanExpList(el, pd)
+    map <- generateTCGAmap(el, pd)
+    MEAOname <- paste(cn, "MAEO", sep = "")
+    assign(paste(cn, "MAEO", sep = ""), MultiAssayExperiment(Elist = cel, pData = pd, sampleMap = map))
+    save(list = MEAOname, file = paste(getwd(), "/data/", cn, "MAEO.Rda", sep = ""))
+  }
+}
 ```
