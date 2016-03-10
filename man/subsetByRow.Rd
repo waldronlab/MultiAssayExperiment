@@ -56,9 +56,13 @@ MultiAssayExperiment
 \item \code{x = MultiAssayExperiment,y = ANY}: Subset a MultiAssayExperiment with either a
 numeric or logical vector
 
-\item \code{x = MultiAssayExperiment,y = list}: Use a list of equal length as the Elist to subset
+\item \code{x = MultiAssayExperiment,y = list}: Use a list of equal length as the Elist to subset.
+The order of the subsetting elements in this list must match that of the
+Elist in the MultiAssayExperiment.
 
-\item \code{x = MultiAssayExperiment,y = List}: Use an S4 List to subset a MultiAssayExperiment
+\item \code{x = MultiAssayExperiment,y = List}: Use an S4 List to subset a MultiAssayExperiment.
+The order of the subsetting elements in this list must match that of the 
+Elist in the MultiAssayExperiment.
 }}
 \seealso{
 \code{\link{getHits}}
