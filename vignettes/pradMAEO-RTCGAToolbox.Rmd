@@ -7,25 +7,25 @@ output: html_document
 
 This vignette is the current working document for the development of a prostate adenocarcinoma MultiAssayExperiment object. Data is taken from The Cancer Genome Atlas (TCGA) using the getFirehoseData() method of the RTCGAToolbox package, then manipulated to fit into the MultiAssayExperiment object.
 
-GitHub Source <- <a href="https://github.com/schifferl/biocMultiAssay/blob/master/vignettes/pradMAEO-RTCGAToolbox.Rmd">https://github.com/schifferl/biocMultiAssay/blob/master/vignettes/pradMAEO.Rmd</a><br>
+GitHub Source <- <a href="https://github.com/schifferl/biocMultiAssay/blob/master/vignettes/pradMAEO-RTCGAToolbox.Rmd">https://github.com/schifferl/biocMultiAssay/blob/master/vignettes/pradMAEO-RTCGAToolbox.Rmd</a><br>
 Rpubs HTML <- <a href="https://rpubs.com/schifferl/pradMAEO">https://rpubs.com/schifferl/pradMAEO-RTCGAToolbox</a>
 
 Cohort datasets can be generated with the getFirehoseDatasets() method.
 
-```{r}
-ds <- getFirehoseDatasets()[4]
+```{r eval = FALSE}
+ds <- getFirehoseDatasets()[1:4]
 ```
 
 Analysis and Running dates can be obtained through the getFirehoseAnalyzeDates() and getFirehoseRunningDates() methods of the RTCGAToolbox.
 
-```{r}
+```{r eval = FALSE}
 rd <- getFirehoseRunningDates()[1]
 ad <- getFirehoseAnalyzeDates()[1]
 ```
 
 The <strong>PR</strong>ostate <strong>AD</strong>enocarcinoma dataset is identified by the cohort name "PRAD" and can be obtained using the getFirehouseData() method. Once returned the FirehoseData object can be serialized for manipulation. Use of the extract() method is necessary to convert data into a ExpressionSet or GRangesList objects, which can then be used to create a MuliAssayExperiment object.
 
-```{r}
+```{r eval = FALSE}
 newMAEO <- function(ds, rd, ad) {
   for(i in ds) {
     cn <- tolower(i)
@@ -33,7 +33,12 @@ newMAEO <- function(ds, rd, ad) {
     if(file.exists(fp)) {
         load(fp)
     } else {
-        co <- getFirehoseData(i, runDate = rd, gistic2_Date = ad, RNAseq_Gene = TRUE, Clinic = TRUE, miRNASeq_Gene = TRUE, RNAseq2_Gene_Norm = TRUE, CNA_SNP = TRUE, CNV_SNP = TRUE, CNA_Seq = TRUE, CNA_CGH = TRUE, Methylation = TRUE, Mutation = TRUE, mRNA_Array = TRUE, miRNA_Array = TRUE, RPPA = TRUE, RNAseqNorm = TRUE, RNAseq2Norm = TRUE, forceDownload = TRUE, destdir = "./tmp", fileSizeLimit = 5, getUUIDs = FALSE) #500000
+        co <- getFirehoseData(i, runDate = rd, gistic2_Date = ad, RNAseq_Gene = TRUE, Clinic = TRUE, 
+                              miRNASeq_Gene = TRUE, RNAseq2_Gene_Norm = TRUE, CNA_SNP = TRUE, 
+                              CNV_SNP = TRUE, CNA_Seq = TRUE, CNA_CGH = TRUE, Methylation = TRUE, 
+                              Mutation = TRUE, mRNA_Array = TRUE, miRNA_Array = TRUE, RPPA = TRUE, 
+                              RNAseqNorm = TRUE, RNAseq2Norm = TRUE, forceDownload = FALSE, 
+                              destdir = "./tmp", fileSizeLimit = 50, getUUIDs = FALSE) #500000
         save(co, file = fp)
     }
     pd <- DataFrame(extract(co, NULL, clinical = TRUE))
@@ -57,7 +62,8 @@ newMAEO <- function(ds, rd, ad) {
     cel <- cleanExpList(nel, pd)
     map <- generateTCGAmap(nel, pd)
     MEAOname <- paste(cn, "MAEO", sep = "")
-    assign(paste(cn, "MAEO", sep = ""), MultiAssayExperiment(Elist = cel, pData = pd, sampleMap = map), envir = .GlobalEnv)
+    assign(paste(cn, "MAEO", sep = ""), MultiAssayExperiment(Elist = cel, pData = pd, sampleMap = map), 
+           envir = .GlobalEnv)
     save(list = MEAOname, file = paste(getwd(), "/data/", cn, "MAEO.Rda", sep = ""))
   }
 }
@@ -65,6 +71,6 @@ newMAEO <- function(ds, rd, ad) {
 
 Generate a new MuliAssayExperiment object using the newMAEO() function.
 
-```{r}
+```{r eval = FALSE}
 newMAEO(ds, rd, ad)
 ```
