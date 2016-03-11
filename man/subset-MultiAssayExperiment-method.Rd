@@ -15,7 +15,7 @@
 \code{GRanges} class object to use for subsetting}
 
 \item{method}{A \code{character} vector of length one designating to subset
-either by colnames, rownames, or assays}
+either by columns, rows, or assays}
 
 \item{drop}{logical (default FALSE) whether to coerce lowest possible
 dimension after subsetting}

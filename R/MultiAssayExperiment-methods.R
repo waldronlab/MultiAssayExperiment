@@ -210,8 +210,9 @@ setMethod("subsetByAssay", c("MultiAssayExperiment", "ANY"), function(x, y) {
 #' @param y Either a \code{numeric}, \code{character} or
 #' \code{logical} object indicating what rownames in the pData to select
 #' for subsetting
-#' @return A \code{\link{MultiAssayExperiment}} object 
+#' @return A \code{\link{MultiAssayExperiment}} object
 setGeneric("subsetByColumn", function(x, y) standardGeneric("subsetByColumn"))
+
 #' @describeIn subsetByColumn Either a \code{numeric} or \code{logical} vector
 #' to apply a column subset of a \code{MultiAssayExperiment} object
 setMethod("subsetByColumn", c("MultiAssayExperiment", "ANY"), function(x, y) {
