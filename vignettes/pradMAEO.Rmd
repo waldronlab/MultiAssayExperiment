@@ -12,12 +12,12 @@ Rpubs HTML <- <a href="https://rpubs.com/schifferl/pradMAEO">https://rpubs.com/s
 
 ```{r, echo=FALSE, eval=FALSE}
 #install RTCGAToolbox
-BiocInstaller::biocLite("LiNk-NY/RTCGAToolbox")
+BiocInstaller::biocLite("LiNk-NY/RTCGAToolbox", force = TRUE)
 library(RTCGAToolbox)
 
 #install biocMultiAssay
-#BiocInstaller::biocLite("vjcitn/biocMultiAssay")
-library(biocMultiAssay)
+BiocInstaller::biocLite("vjcitn/MultiAssayExperiment", force = TRUE)
+library(MultiAssayExperiment)
 ```
 
 Cohort datasets can be generated with the getFirehoseDatasets() method.
