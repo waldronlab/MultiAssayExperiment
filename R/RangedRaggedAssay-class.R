@@ -113,6 +113,7 @@ setMethod("ncol", signature("RangedRaggedAssay"), function(x)
 #' \code{RangedRaggedAssay} class object
 setMethod("nrow", signature("RangedRaggedAssay"), function(x)
   dim(x)[1])
+<<<<<<< HEAD
 
 ### - - - - - - - - - - - - - - - - - - - - - - - -
 ### Validity 
@@ -133,3 +134,5 @@ setMethod("nrow", signature("RangedRaggedAssay"), function(x)
 }
 
 S4Vectors::setValidity2("RangedRaggedAssay", .validRangedRaggedAssay)
+=======
+>>>>>>> vjcitn/master
