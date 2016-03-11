@@ -7,7 +7,7 @@
 #' @param indicator A \code{logical} or \code{character} vector or
 #' \code{GRanges} class object to use for subsetting
 #' @param method A \code{character} vector of length one designating to subset
-#' either by colnames, rownames, or assays
+#' either by columns, rows, or assays
 #' @param drop logical (default FALSE) whether to coerce lowest possible
 #' dimension after subsetting
 #' @param ... Additional arguments to pass to
@@ -18,16 +18,16 @@
 setMethod("subset", "MultiAssayExperiment",
           function(x, indicator, method = NULL, drop = TRUE, ...) {
             if (inherits(indicator, "GRanges")) {
-              method <- "rownames"
+              method <- "rows"
             } else if (is.null(method)) {
               stop("Indicate a subset method")
             } else {
-              method <- match.arg(method, c("colnames", "rownames", "assays"))
+              method <- match.arg(method, c("columns", "rows", "assays"))
             }
-            if (method == "colnames") {
+            if (method == "columns") {
               MultiAssay <- subsetByColumn(x = x,
                                            y = indicator)
-            } else if (method == "rownames") {
+            } else if (method == "rows") {
               MultiAssay <- subsetByRow(x = x,
                                         y = indicator, ...)
             } else if (method == "assays") {
