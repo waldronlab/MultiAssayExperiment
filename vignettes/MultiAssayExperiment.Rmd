@@ -99,13 +99,13 @@ class(sampleMap(empty))   #DataFrame
 
 The `sampleMap` provides an unambiguous map from every experimental observation to *one and only one* row in `pData`. It is, however, permissible for a row of `pData` to be associated with multiple experimental observations or no observations at all.  In other words, there is a "many-to-one" mapping from experimental observations to rows of `pData`, and a "one-to-any-number" mapping from rows of `pData` to experimental observations. `pData` has three columns, with the following column names:
 
-1. **master** provides the "master" sample names.  All values in this column
+1. **primary** provides the "primary" sample names.  All values in this column
 must also be present in the rownames of pData(MultiAssayExperiment).
 In this example, allowable values in this column are "Jack", "Jill",
 "Barbara", and "Bob".
 
 2. **assay** provides the sample names used by experimental datasets, which
-in practice are often different than the master sample names.  For each assay,
+in practice are often different than the primary sample names.  For each assay,
 all column names must be found in this column.  Otherwise, those assays would be 
 orphaned: it would be impossible to match them up to samples in the overall experiment. 
 As mentioned above, duplicated values are allowed, to represent replicates with the same 
@@ -170,7 +170,7 @@ pData(simpleMultiAssay2)
 # Creating a `MultiAssayExperiment` object: a rich example
 
 In this section we demonstrate all core supported data classes, using different
-sample ID conventions for each assay, with master pData. The currently supported
+sample ID conventions for each assay, with primary pData. The currently supported
 classes of datasets are `matrix`, `ExpressionSet`, `RangedSummarizedExperiment`,
 and `RangedRaggedAssay`. 
 
@@ -194,7 +194,7 @@ The following map matches pData sample names to exprdata sample
 names.  Note that row orders aren't initially matched up, and this is OK.
 
 ```{r}
-(exprmap <- data.frame(master=rownames(patient.data)[c(1, 2, 4, 3)],
+(exprmap <- data.frame(primary=rownames(patient.data)[c(1, 2, 4, 3)],
                        assay=c("array1", "array2", "array3", "array4"),
                        stringsAsFactors = FALSE))
 ```
@@ -216,7 +216,7 @@ The following map matches pData sample names to methyldat sample
 names.
 
 ```{r}
-(methylmap <- data.frame(master = c("Jack", "Jack", "Jill", "Barbara", "Bob"),
+(methylmap <- data.frame(primary = c("Jack", "Jack", "Jill", "Barbara", "Bob"),
               assay = c("methyl1", "methyl2", "methyl3", "methyl4", "methyl5"),
               stringsAsFactors = FALSE))
 ```
@@ -237,7 +237,7 @@ And the following map matches pData sample names to microdat
 sample names.
 
 ```{r}
-(micromap <- data.frame(master = c("Jack", "Barbara", "Bob"),
+(micromap <- data.frame(primary = c("Jack", "Barbara", "Bob"),
                         assay = c("micro1", "micro2", "micro3"),
                         stringsAsFactors = FALSE))
 ```
@@ -272,7 +272,7 @@ The following `data.frame` matches pData sample to the
 `GRangesList`:
 
 ```{r}
-(rangemap <- data.frame(master = c("Jack", "Jill", "Jill"),
+(rangemap <- data.frame(primary = c("Jack", "Jill", "Jill"),
                         assay = c("snparray1", "snparray2", "snparray3"),
                         stringsAsFactors = FALSE))
 ```
@@ -297,7 +297,7 @@ rse <- SummarizedExperiment(assays=SimpleList(counts=counts),
 
 ```{r}
 (rangemap2 <-
-   data.frame(master = c("Jack", "Jill", "Bob", "Barbara"), 
+   data.frame(primary = c("Jack", "Jill", "Bob", "Barbara"),
               assay = c("mysnparray1", "mysnparray2", "mysnparray3",
                         "mysnparray4"), stringsAsFactors = FALSE))
 ```
@@ -309,7 +309,7 @@ if a single naming convention is used, but in this example it cannot because we 
 platform-specific sample identifiers (e.g. mysnparray1, etc). So we must provide an ID 
 map that matches the samples of each experiment back to the `pData`, 
 as a three-column `data.frame` or `DataFrame` with three columns named 
-"master", "assay", and "assayname".  Here we start with a list:
+"primary", "assay", and "assayname".  Here we start with a list:
 
 ```{r}
 listmap <- list(exprmap, methylmap, micromap, rangemap, rangemap2)
