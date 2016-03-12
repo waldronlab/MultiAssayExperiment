@@ -12,15 +12,15 @@
   if (all(is.na(matches))) {
     stop("no way to map pData to Elist")
   }
-  master <- Rle(rownames(mPheno)[matches])  
-  autoMap <- S4Vectors::cbind(DataFrame(master), full_map)
-  if (any(is.na(autoMap$master))) {
-    notFound <- autoMap[is.na(autoMap$master), ]
+  primary <- Rle(rownames(mPheno)[matches])
+  autoMap <- S4Vectors::cbind(DataFrame(primary), full_map)
+  if (any(is.na(autoMap$primary))) {
+    notFound <- autoMap[is.na(autoMap$primary), ]
     warning("Data from rows:",
             sprintf("\n %s - %s", notFound[, 2], notFound[, 3]),
             "\ndropped due to missing phenotype data")
   }
-  autoMap <- autoMap[!is.na(autoMap$master), ]
+  autoMap <- autoMap[!is.na(autoMap$primary), ]
   return(autoMap)
 }
 

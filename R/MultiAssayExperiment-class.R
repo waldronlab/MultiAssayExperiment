@@ -101,13 +101,13 @@ setClass("MultiAssayExperiment",
 ## 2.i. See setClass above where pData = "DataFrame"
 
 ## SAMPLEMAP
-## 3.i. all values in the sampleMap "master" column must be found in the
+## 3.i. all values in the sampleMap "primary" column must be found in the
 ## rownames of pData
 .checkSampleMapNames <- function(object) {
   errors <- character()
   if (!(.allIn(
     rownames(pData(object)),
-    as.vector(sampleMap(object)[, "master"])
+    as.vector(sampleMap(object)[, "primary"])
   ))) {
     msg <- "All samples in the sampleMap must be in the pData"
     errors <- c(errors, msg)

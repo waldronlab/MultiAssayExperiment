@@ -28,7 +28,7 @@ masPheno <- data.frame(sex=c("M", "F", "M", "F"),
 aShell <- new("MAEshell", a = rse)
 newShell <- list(myShell = aShell)
 rangemap <-
-   DataFrame(master = c("Jack", "Jill", "Bob", "Barbara"), 
+   DataFrame(primary = c("Jack", "Jill", "Bob", "Barbara"),
               assay = c("mysnparray1", "mysnparray2", "mysnparray3",
                         "mysnparray4"), assayname = Rle("myShell"))
 
