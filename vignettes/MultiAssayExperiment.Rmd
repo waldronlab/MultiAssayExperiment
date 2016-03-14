@@ -404,7 +404,7 @@ integer, a character vector containing rownames of pData, or logical.
 For example using an integer to keep the first two rows of pData:
 
 ```{r}
-subset(myMultiAssay, 1:2, "colnames")
+subset(myMultiAssay, 1:2, "columns")
 ```
 
 Note that the above operation keeps different numbers of columns / samples
@@ -413,12 +413,12 @@ assayed in all experiments, and may have replicates in some.
 Another example using rownames and returning the same result:
 
 ```{r}
-subset(myMultiAssay, c("Jack", "Jill"), "colnames")
+subset(myMultiAssay, c("Jack", "Jill"), "columns")
 ```
 
 And finally, an example using a logical:
 ```{r}
-subset(myMultiAssay, pData(myMultiAssay)$sex=="M", "colnames")
+subset(myMultiAssay, pData(myMultiAssay)$sex=="M", "columns")
 ```
 
 ## Subsetting by assays
@@ -455,7 +455,7 @@ only ENST0000035076 row, and "Mirna" and "CNV gistic" have zero rows:
 (`drop` argument is set to `TRUE` by default)
 
 ```{r}
-featSubsetted0 <- subset(myMultiAssay, "ENST00000355076", "rownames")
+featSubsetted0 <- subset(myMultiAssay, "ENST00000355076", "rows")
 class(featSubsetted0)
 class(Elist(featSubsetted0))
 Elist(featSubsetted0)
@@ -466,7 +466,7 @@ order reversed, and `Methyl 450k` keeps only its second row.
 
 ```{r}
 featSubsetted <-
-  subset(myMultiAssay, c("ENST00000355076", "ENST00000294241"), "rownames")
+  subset(myMultiAssay, c("ENST00000355076", "ENST00000294241"), "rows")
 exprs(Elist(myMultiAssay)[[1]])
 exprs(Elist(featSubsetted)[[1]])
 ```
@@ -487,7 +487,7 @@ subsetting by range. The first three arguments here are for `subset`, the
 rest passed on to `IRanges::subsetByOverlaps` through "...":
 
 ```{r}
-subsetted <- subset(myMultiAssay, gr, "rownames", maxgap = 2L, type = "within")
+subsetted <- subset(myMultiAssay, gr, maxgap = 2L, type = "within")
 Elist(subsetted)
 ```
 
@@ -495,7 +495,7 @@ Elist(subsetted)
 
 The bracket method for the `MultiAssayExperiment` returns a specified subset
 of the data. The positions within the bracket operator, indicate `rownames`,
-`colnames`, and `assays` respectively. 
+`columns`, and `assays` respectively.
 
 Subset by rownames using the bracket `[` method (only character is allowed):
 
