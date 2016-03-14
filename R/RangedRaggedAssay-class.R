@@ -23,14 +23,16 @@ RangedRaggedAssay <- function(x = GRangesList()) {
     x <- GRangesList(x)
   }
   if (inherits(x, "GRangesList")) {
+    metad <- mcols(x)
     if (is.null(rownames(x))) {
       u_obj <- unlist(x, use.names = FALSE)
       names(u_obj) <- seq_len(length(u_obj))
       x <- relist(u_obj, x)
     }
   }
-  x <- .RangedRaggedAssay(x)
-  return(x)
+  newRRA <- .RangedRaggedAssay(x)
+  metadata(newRRA) <- list(mcols = metad)
+  return(newRRA)
 }
 
 
