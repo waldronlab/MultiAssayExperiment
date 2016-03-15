@@ -1,6 +1,6 @@
 ---
 title: "MultiAssayExperiment primary vignette"
-author: "Marcel Ramos, Levi Waldron"
+author: "MultiAssay Special Interest Group"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
 output: 
   html_document: 
@@ -552,15 +552,6 @@ myMultiAssay[, , 3]
 myMultiAssay[, , c(FALSE, FALSE, TRUE, FALSE, FALSE)]
 ```
 
-## rownames and colnames
-
-rownames and colnames return a `CharacterList` of rownames and colnames across all the assays.  A `CharacterList` is just an alternative to `list` when each element contains a character vector, that provides a nice show method:
-
-```{r}
-rownames(myMultiAssay)
-colnames(myMultiAssay)
-```
-
 
 ## the "drop" argument
 
@@ -574,6 +565,15 @@ Using the default `drop=TRUE`, assays with no rows or no columns are removed:
 
 ```{r}
 myMultiAssay["ENST00000355076", , , drop=TRUE]
+```
+
+# rownames and colnames
+
+rownames and colnames return a `CharacterList` of rownames and colnames across all the assays.  A `CharacterList` is just an alternative to `list` when each element contains a character vector, that provides a nice show method:
+
+```{r}
+rownames(myMultiAssay)
+colnames(myMultiAssay)
 ```
 
 # Requirements for support of additional data classes
