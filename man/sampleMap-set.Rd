@@ -4,10 +4,10 @@
 \alias{sampleMap<-}
 \title{Replace a slot value with a given \code{DataFrame}}
 \usage{
-sampleMap(x) <- value
+sampleMap(object) <- value
 }
 \arguments{
-\item{x}{A \code{MultiAssayExperiment} object}
+\item{object}{A \code{MultiAssayExperiment} object}
 
 \item{value}{A \code{DataFrame} object to replace the existing
 \code{sampleMap}}
