@@ -31,7 +31,7 @@ RangedRaggedAssay <- function(x = GRangesList()) {
     }
   }
   newRRA <- .RangedRaggedAssay(x)
-  metadata(newRRA) <- list(mcols = metad)
+  mcols(newRRA) <- metad
   return(newRRA)
 }
 
