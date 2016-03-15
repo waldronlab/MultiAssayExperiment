@@ -384,24 +384,23 @@ colnames(Elist(myMultiAssay)[[4]])
 assay(Elist(myMultiAssay)[[4]])
 ```
 
-# Subsetting
+# Integrated subsetting across experiments
 
 The core functionality of `MultiAssayExperiment` is to allow subsetting by 
 assay, rownames, and colnames, across all experiments simultaneously while 
 guaranteeing continued matching of samples.
 
-## Subsetting by sample / columns
+Subsetting can be performed either using the `subset()` function, or even more simply by square brackets.
 
-Subsetting by column, i.e. columns, will be more obvious after recalling
-the pData:
+## Subsetting by samples / columns
+
+Experimental samples are stored in the rows of pData but the columns of elements of Elist, so when we refer to subsetting by columns, we are referring to columns of the experimental assays.  Subsetting by samples / columns will be more obvious after recalling the pData:
 
 ```{r}
 pData(myMultiAssay)
 ```
 
-Subsetting by samples acts on the pData DataFrame, and can be done using an
-integer, a character vector containing rownames of pData, or logical.
-For example using an integer to keep the first two rows of pData:
+Subsetting by samples identifies the selected samples in rows of the pData DataFrame, then selects all columns of the Elist corresponding to these rows. Here we use an integer to keep the first two rows of pData, and all experimental assays associated to those two primary samples:
 
 ```{r}
 subset(myMultiAssay, 1:2, "columns")
@@ -410,16 +409,40 @@ subset(myMultiAssay, 1:2, "columns")
 Note that the above operation keeps different numbers of columns / samples
 from each assay, reflecting the reality that some samples may not have been
 assayed in all experiments, and may have replicates in some.
-Another example using rownames and returning the same result:
+
+Subsetting the primary identifiers using a character vector corresponding to some rownames of pData returns the same result:
 
 ```{r}
 subset(myMultiAssay, c("Jack", "Jill"), "columns")
 ```
 
-And finally, an example using a logical:
+Columns can be subset using a logical:
 ```{r}
-subset(myMultiAssay, pData(myMultiAssay)$sex=="M", "columns")
+malesMultiAssay <- subset(myMultiAssay, pData(myMultiAssay)$sex=="M", "columns")
+pData(malesMultiAssay)
 ```
+
+Note that selecting male patients from all assays could have been accomplished equivalently using the square bracket:
+
+```{r, results="hide"}
+myMultiAssay[, pData(myMultiAssay)$sex=="M", ]
+```
+
+Finally, for special use cases you can exert detail control of which samples to select using a `list` or `CharacterList`, which is just a convenient form of a list containing character vectors.
+
+```{r}
+allsamples <- colnames(myMultiAssay)
+allsamples
+```
+
+Now let's get rid of the Methyl 450k arrays 3-5, a couple different but equivalent ways (evaluate this chunk once working):
+
+```{r, eval=FALSE}
+allsamples[["Methyl 450k"]] <- allsamples[["Methyl 450k"]][-3:-5]
+subset(myMultiAssay, allsamples, "columns")
+myMultiAssay[, as.list(allsamples), ]
+```
+
 
 ## Subsetting by assays
 
@@ -450,7 +473,7 @@ different identifiers. This operation always returns a `MultiAssayExperiment`
 class, with any `Elist` element not containing the feature having zero rows.
 
 
-Returns MultiAssayExperiment where `Affy` and `Methyl 450k` contain
+Return a MultiAssayExperiment where `Affy` and `Methyl 450k` contain
 only ENST0000035076 row, and "Mirna" and "CNV gistic" have zero rows:
 (`drop` argument is set to `TRUE` by default)
 
@@ -471,7 +494,7 @@ exprs(Elist(myMultiAssay)[[1]])
 exprs(Elist(featSubsetted)[[1]])
 ```
 
-## Subsetting rows / feature by `GenomicRanges`
+## Subsetting rows / features by `GenomicRanges`
 
 For `MultiAssayExperiment` objects containing range-based objects (currently 
 `RangedSummarizedExperiment` and `RangedRaggedAssay`), these can be subset 
@@ -491,21 +514,31 @@ subsetted <- subset(myMultiAssay, gr, maxgap = 2L, type = "within")
 Elist(subsetted)
 ```
 
-# Bracket operations 
+## Subsetting by square bracket `[`
 
-The bracket method for the `MultiAssayExperiment` returns a specified subset
-of the data. The positions within the bracket operator, indicate `rownames`,
-`columns`, and `assays` respectively.
+The bracket method for the `MultiAssayExperiment` is equivalent but more compact than the `subset()` method.  The three positions within the bracket operator indicate rows, columns, and assays, respectively (pseudocode):
 
-Subset by rownames using the bracket `[` method (only character is allowed):
+```{r, eval=FALSE}
+myMultiAssay[rows, columns, assays]
+```
+
+For example, to select the gene ENST00000355076:
 
 ```{r}
 myMultiAssay["ENST00000355076", , ]
 ```
 
+The above operation works across all types of assays, whether ID-based (e.g. matrix, ExpressionSet, SummarizedExperiment) or range-based (e.g. RangedSummarizedExperiment, RangedRaggedAssay). 
+
+You can subset by rows, columns, and assays in a single bracket operation, and they will be performed in that order (rows, then columns, then assays):
+
+```{r}
+myMultiAssay["ENST00000355076", 1:2, c("Affy", "Methyl 450k")]
+```
+
 ## Subsetting by character, integer, and logical
 
-By columns - character, integer, and logical are allowed:
+By columns - character, integer, and logical are all allowed, for example:
 ```{r}
 myMultiAssay[, "Jack", ]
 myMultiAssay[, 1, ]
@@ -518,6 +551,16 @@ myMultiAssay[, , "Mirna"]
 myMultiAssay[, , 3]
 myMultiAssay[, , c(FALSE, FALSE, TRUE, FALSE, FALSE)]
 ```
+
+## rownames and colnames
+
+rownames and colnames return a `CharacterList` of rownames and colnames across all the assays.  A `CharacterList` is just an alternative to `list` when each element contains a character vector, that provides a nice show method:
+
+```{r}
+rownames(myMultiAssay)
+colnames(myMultiAssay)
+```
+
 
 ## the "drop" argument
 
