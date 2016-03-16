@@ -439,17 +439,24 @@ The core functionality of `MultiAssayExperiment` is to allow subsetting by
 assay, rownames, and colnames, across all experiments simultaneously while
 guaranteeing continued matching of samples.
 
-Subsetting can be performed either using the `subset()` function, or even more simply by square brackets.
+Subsetting can be performed either using the `subset()` function, or even more
+simply by square brackets.
 
 ## Subsetting samples / columns
 
-Experimental samples are stored in the rows of pData but the columns of elements of Elist, so when we refer to subsetting by columns, we are referring to columns of the experimental assays.  Subsetting by samples / columns will be more obvious after recalling the pData:
+Experimental samples are stored in the rows of pData but the columns of
+elements of Elist, so when we refer to subsetting by columns, we are referring
+to columns of the experimental assays.  Subsetting by samples / columns will
+be more obvious after recalling the pData:
 
 ```{r}
 pData(myMultiAssay)
 ```
 
-Subsetting by samples identifies the selected samples in rows of the pData DataFrame, then selects all columns of the Elist corresponding to these rows. Here we use an integer to keep the first two rows of pData, and all experimental assays associated to those two primary samples:
+Subsetting by samples identifies the selected samples in rows of the pData
+DataFrame, then selects all columns of the Elist corresponding to these rows.
+Here we use an integer to keep the first two rows of pData, and all
+experimental assays associated to those two primary samples:
 
 ```{r}
 subset(myMultiAssay, 1:2, "columns")
@@ -459,7 +466,8 @@ Note that the above operation keeps different numbers of columns / samples
 from each assay, reflecting the reality that some samples may not have been
 assayed in all experiments, and may have replicates in some.
 
-Subsetting the primary identifiers using a character vector corresponding to some rownames of pData returns the same result:
+Subsetting the primary identifiers using a character vector corresponding to
+some rownames of pData returns the same result:
 
 ```{r}
 subset(myMultiAssay, c("Jack", "Jill"), "columns")
@@ -471,20 +479,24 @@ malesMultiAssay <- subset(myMultiAssay, pData(myMultiAssay)$sex=="M", "columns")
 pData(malesMultiAssay)
 ```
 
-Note that selecting male patients from all assays could have been accomplished equivalently using the square bracket:
+Note that selecting male patients from all assays could have been accomplished
+equivalently using the square bracket:
 
 ```{r}
 myMultiAssay[, pData(myMultiAssay)$sex=="M", ]
 ```
 
-Finally, for special use cases you can exert detail control of which samples to select using a `list` or `CharacterList`, which is just a convenient form of a list containing character vectors.
+Finally, for special use cases you can exert detail control of which samples
+to select using a `list` or `CharacterList`, which is just a convenient form
+of a list containing character vectors.
 
 ```{r}
 allsamples <- colnames(myMultiAssay)
 allsamples
 ```
 
-Now let's get rid of the Methyl 450k arrays 3-5, a couple different but equivalent ways (evaluate this chunk once working):
+Now let's get rid of the Methyl 450k arrays 3-5, a couple different but
+equivalent ways (evaluate this chunk once working):
 
 ```{r, eval=FALSE}
 allsamples[["Methyl 450k"]] <- allsamples[["Methyl 450k"]][-3:-5]
@@ -523,22 +535,27 @@ subset using any of:
 
 - a **character vector** of IDs that will be matched to rownames in each assay
 
-- an **integer vector** that will select rows of this position from each assay. This probably doesn't make sense unless every Elist element represents the same measurements in the same order and will generate an error if any of the integer elements exceeds the number of rows in any Elist element. The most likely use of integer subsetting would as a "head()" function, for example to look at the first 6 rows of each assay.
+- an **integer vector** that will select rows of this position from each assay.
+This probably doesn't make sense unless every Elist element represents the
+same measurements in the same order and will generate an error if any of the
+integer elements exceeds the number of rows in any Elist element. The most
+likely use of integer subsetting would as a "head()" function, for example to
+look at the first 6 rows of each assay.
 
-- a **logical vector** that will be passed directly to the row subsetting operation
-for each assay.  A warning is issued if this results in recycling for any of the
-assays.
+- a **logical vector** that will be passed directly to the row subsetting
+operation for each assay.  A warning is issued if this results in recycling
+for any of the assays.
 
-- a **list** or **CharacterList** of the same length as Elist.  Each element of the
-subsetting list will be passed on exactly to subset rows of the corresponding
-element of Elist.
+- a **list** or **CharacterList** of the same length as Elist.  Each element
+of the subsetting list will be passed on exactly to subset rows of the
+corresponding element of Elist.
 
 Again, this operation always returns a `MultiAssayExperiment` class, unless
 "drop=TRUE" is passed to subset, with any `Elist` element not containing the
 feature having zero rows.
 
-For example, return a MultiAssayExperiment where `Affy` and `Methyl 450k` contain
-only ENST0000035076 row, and "Mirna" and "CNV gistic" have zero rows:
+For example, return a MultiAssayExperiment where `Affy` and `Methyl 450k`
+contain only ENST0000035076 row, and "Mirna" and "CNV gistic" have zero rows:
 (`drop` argument is set to `TRUE` by default)
 
 ```{r}
@@ -580,7 +597,9 @@ Elist(subsetted)
 
 ## Subsetting by square bracket `[`
 
-The bracket method for the `MultiAssayExperiment` is equivalent but more compact than the `subset()` method.  The three positions within the bracket operator indicate rows, columns, and assays, respectively (pseudocode):
+The bracket method for the `MultiAssayExperiment` is equivalent but more
+compact than the `subset()` method. The three positions within the bracket
+operator indicate rows, columns, and assays, respectively (pseudocode):
 
 ```{r, eval=FALSE}
 myMultiAssay[rows, columns, assays]
@@ -592,9 +611,12 @@ For example, to select the gene ENST00000355076:
 myMultiAssay["ENST00000355076", , ]
 ```
 
-The above operation works across all types of assays, whether ID-based (e.g. matrix, ExpressionSet, SummarizedExperiment) or range-based (e.g. RangedSummarizedExperiment, RangedRaggedAssay).
+The above operation works across all types of assays, whether ID-based
+(e.g. matrix, ExpressionSet, SummarizedExperiment) or range-based
+(e.g. RangedSummarizedExperiment, RangedRaggedAssay).
 
-You can subset by rows, columns, and assays in a single bracket operation, and they will be performed in that order (rows, then columns, then assays):
+You can subset by rows, columns, and assays in a single bracket operation,
+and they will be performed in that order (rows, then columns, then assays):
 
 ```{r}
 myMultiAssay["ENST00000355076", 1:2, c("Affy", "Methyl 450k")]
@@ -632,7 +654,9 @@ myMultiAssay["ENST00000355076", , , drop=TRUE]
 
 # rownames and colnames
 
-rownames and colnames return a `CharacterList` of rownames and colnames across all the assays.  A `CharacterList` is just an alternative to `list` when each element contains a character vector, that provides a nice show method:
+rownames and colnames return a `CharacterList` of rownames and colnames across
+all the assays.  A `CharacterList` is just an alternative to `list` when each
+element contains a character vector, that provides a nice show method:
 
 ```{r}
 rownames(myMultiAssay)
