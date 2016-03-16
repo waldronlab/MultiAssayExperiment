@@ -152,6 +152,7 @@ setMethod("getHits", signature("RangedRaggedAssay", "character"),
     isEmptyAssay <- vapply(Elist(x), FUN = .isEmpty, FUN.VALUE = logical(1L))
     if (all(isEmptyAssay)) {
       warning("no data in assays")
+      Elist(x) <- Elist()
     } else if (any(isEmptyAssay)) {
       keeps <- names(isEmptyAssay)[sapply(isEmptyAssay, function(z) !isTRUE(z))]
       x <- x[, , keeps, drop = FALSE]
@@ -296,7 +297,7 @@ setGeneric("subsetByRow", function(x, y, ...) standardGeneric("subsetByRow"))
 setMethod("subsetByRow", c("MultiAssayExperiment", "GRangesORcharacter"),
           function(x, y, ...) {
             hitList <- getHits(x, y, ...)
-            x[hitList, ]
+            x[hitList, , , drop = FALSE]
           })
 
 #' @describeIn subsetByRow Subset MultiAssayExperiment with

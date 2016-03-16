@@ -68,7 +68,7 @@ RangedRaggedAssay <- function(x = GRangesList()) {
       cLL <- relist(names(unlist(x, use.names = FALSE)) %in% i, x)
       x <- callNextMethod(x = x, i = cLL)
     } else if (is.numeric(i) || is.logical(i)) {
-      x <- endoapply(x, function(range){range[i,]})
+      x <- endoapply(x, function(unit) { unit[i, ] })
     } else {
       x <- callNextMethod(x = x, i = i)
     }
