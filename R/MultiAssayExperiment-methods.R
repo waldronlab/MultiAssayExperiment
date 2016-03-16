@@ -217,6 +217,7 @@ setGeneric("subsetByColumn", function(x, y) standardGeneric("subsetByColumn"))
 #' to apply a column subset of a \code{MultiAssayExperiment} object
 setMethod("subsetByColumn", c("MultiAssayExperiment", "ANY"), function(x, y) {
   selectors <- rownames(pData(x))[y]
+  newpData <- pData(x)[selectors, ]
   listMap <- mapToList(sampleMap(x), "assayname")
   listMap <- listMap[order(names(x))]
   listMap <- lapply(listMap, function(assay) {
@@ -229,6 +230,7 @@ setMethod("subsetByColumn", c("MultiAssayExperiment", "ANY"), function(x, y) {
   newSubset <- Elist(newSubset)
   Elist(x) <- newSubset
   sampleMap(x) <- newMap
+  pData(x) <- newpData 
   return(x)
 })
 

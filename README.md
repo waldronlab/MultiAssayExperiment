@@ -4,6 +4,10 @@ MultiAssayExperiment
 [![Build Status](https://api.travis-ci.org/LiNk-NY/MultiAssayExperiment.png?branch=master)](https://travis-ci.org/LiNk-NY/MultiAssayExperiment)
 [![Coverage Status](https://img.shields.io/codecov/c/github/LiNk-NY/MultiAssayExperiment/master.svg)](https://codecov.io/github/MultiAssayExperiment?branch=master)
 
+# Documentation
+
+A good starting point is the vignette, available as an Rmd file in the vignette/ subdirectory, or as a [built html page](http://rpubs.com/lwaldron/MultiAssayExperiment). A definition of the API is available by typing `API()` after loading the MultiAssayExperiment library, which opens the [API wiki](https://github.com/vjcitn/MultiAssayExperiment/wiki/MultiAssayExperiment-API).
+
 # Introduction
 
 This repo is intended to start the Bioconductor special interest group
@@ -12,18 +16,8 @@ to define interfaces allowing efficient selection and combination of
 high-dimensional assays obtained on all or many members of a group of
 samples or patients.
 
-Please take a look look at the [API
-Discussion](https://github.com/vjcitn/MultiAssayExperiment/issues/7), and
-consider joining the [MultiAssayExperiment Google
-Group](https://groups.google.com/forum/#!forum/biocmultiassay) to get
-involved.  
-Here is a [calendar](https://www.google.com/calendar/embed?src=9ar0qc8mpkv6b9intgmdcdf0ss%40group.calendar.google.com&ctz=America/New_York) of upcoming meetings.
-
-# Toy Example - Proof of concept
-
-A vignette describing the creation of the `MultiAssayExperiment` object
-and subsetting can be found in the *vignettes* directory under the name
-*MultiAssayExperiment.Rmd*. 
+If you are interested in joining this interest group, please join the [MultiAssayExperiment Google
+Group](https://groups.google.com/forum/#!forum/biocmultiassay), and see the [calendar](https://www.google.com/calendar/embed?src=9ar0qc8mpkv6b9intgmdcdf0ss%40group.calendar.google.com&ctz=America/New_York) of upcoming meetings.
 
 # Object documentation & Manual Generation
 

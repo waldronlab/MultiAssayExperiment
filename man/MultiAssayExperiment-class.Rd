@@ -13,6 +13,7 @@
 \alias{metadata,MultiAssayExperiment-method}
 \alias{names,MultiAssayExperiment-method}
 \alias{pData,MultiAssayExperiment-method}
+\alias{pData<-,MultiAssayExperiment,DataFrame-method}
 \alias{rownames,MultiAssayExperiment-method}
 \alias{sampleMap,MultiAssayExperiment-method}
 \alias{sampleMap<-,MultiAssayExperiment,DataFrame-method}
@@ -33,9 +34,11 @@
 
 \S4method{names}{MultiAssayExperiment}(x)
 
-\S4method{sampleMap}{MultiAssayExperiment,DataFrame}(x) <- value
+\S4method{sampleMap}{MultiAssayExperiment,DataFrame}(object) <- value
 
-\S4method{Elist}{MultiAssayExperiment,Elist}(x) <- value
+\S4method{Elist}{MultiAssayExperiment,Elist}(object) <- value
+
+\S4method{pData}{MultiAssayExperiment,DataFrame}(object) <- value
 
 \S4method{rownames}{MultiAssayExperiment}(x)
 
@@ -53,8 +56,7 @@
 \item{x}{A \code{MultiAssayExperiment} object for subsetting}
 
 \item{value}{A \code{DataFrame} or \code{Elist} object to replace the
-existing
-\code{sampleMap} or an \code{Elist} slot, respectively}
+existing \code{sampleMap}, \code{Elist}, or \code{pData} slot}
 
 \item{i}{Either a \code{character}, or \code{GRanges} object for subsetting
 by rows}
@@ -89,16 +91,16 @@ with the arguments \code{pData} and \code{sampleMap}.
 \item \code{show}: Show method for a
 \code{MultiAssayExperiment}
 
-\item \code{sampleMap}: Access sampleMap slot from
+\item \code{sampleMap}: Access sampleMap slot from a
 MultiAssayExperiment
 
-\item \code{Elist}: Access Elist class from
+\item \code{Elist}: Access Elist class from a
 MultiAssayExperiment
 
-\item \code{pData}: Access pData slot from
+\item \code{pData}: Access pData slot from a
 MultiAssayExperiment
 
-\item \code{metadata}: Access metadata slot from
+\item \code{metadata}: Access metadata slot from a
 MultiAssayExperiment
 
 \item \code{length}: Get the length of Elist
@@ -110,6 +112,8 @@ representation
 
 \item \code{Elist<-}: value: An \code{Elist} 
 representation
+
+\item \code{pData<-}: value: A \code{DataFrame} of specimen data
 
 \item \code{rownames}: Get all the rownames for a
 MultiAssayExperiment using \code{\link[IRanges]{CharacterList}}

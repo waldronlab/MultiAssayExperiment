@@ -5,10 +5,10 @@
 \title{Replace an \code{Elist} slot value with a given \code{Elist}
 class object}
 \usage{
-Elist(x) <- value
+Elist(object) <- value
 }
 \arguments{
-\item{x}{A \code{MultiAssayExperiment} class object}
+\item{object}{A \code{MultiAssayExperiment} class object}
 
 \item{value}{An \code{Elist} object to replace the existing
 \code{Elist} slot}

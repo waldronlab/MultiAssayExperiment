@@ -192,26 +192,26 @@ setMethod("show", "MultiAssayExperiment", function(object) {
 #' @example inst/scripts/sampleMap-Ex.R
 setGeneric("sampleMap", function(x) standardGeneric("sampleMap"))
 
-#' @describeIn MultiAssayExperiment Access sampleMap slot from
+#' @describeIn MultiAssayExperiment Access sampleMap slot from a
 #' MultiAssayExperiment
 #' @exportMethod sampleMap
 setMethod("sampleMap", "MultiAssayExperiment", function(x)
   getElement(x, "sampleMap"))
 
-#' @describeIn MultiAssayExperiment Access Elist class from
+#' @describeIn MultiAssayExperiment Access Elist class from a
 #' MultiAssayExperiment
 #' @exportMethod Elist
 setMethod("Elist", "MultiAssayExperiment", function(x)
   getElement(x, "Elist"))
 
-#' @describeIn MultiAssayExperiment Access pData slot from
+#' @describeIn MultiAssayExperiment Access pData slot from a
 #' MultiAssayExperiment
 #' @exportMethod pData
 #' @importFrom Biobase pData
 setMethod("pData", "MultiAssayExperiment", function(object)
   getElement(object, "pData"))
 
-#' @describeIn MultiAssayExperiment Access metadata slot from
+#' @describeIn MultiAssayExperiment Access metadata slot from a
 #' MultiAssayExperiment
 #' @exportMethod metadata
 setMethod("metadata", "MultiAssayExperiment", function(x)
@@ -233,30 +233,35 @@ setMethod("names", "MultiAssayExperiment", function(x)
   names(getElement(x, "Elist"))
 )
 
+### - - - - - - - - - - - - - - - - - - - - - - - -
+### Replacers
+###
+
 #' Replace a slot value with a given \code{DataFrame}
 #' 
-#' @param x A \code{MultiAssayExperiment} object
+#' @param object A \code{MultiAssayExperiment} object
 #' @param value A \code{DataFrame} object to replace the existing
 #' \code{sampleMap}
 #' @return A \code{sampleMap} with replacement values
-setGeneric("sampleMap<-", function(x, value) standardGeneric("sampleMap<-"))
+setGeneric("sampleMap<-", function(object, value) {
+  standardGeneric("sampleMap<-")
+})
 
 #' @exportMethod sampleMap<-
 #' @describeIn MultiAssayExperiment value: A \code{DataFrame} sampleMap
 #' representation
 #' @param value A \code{DataFrame} or \code{Elist} object to replace the
-#' existing
-#' \code{sampleMap} or an \code{Elist} slot, respectively
+#' existing \code{sampleMap}, \code{Elist}, or \code{pData} slot
 setReplaceMethod("sampleMap", c("MultiAssayExperiment", "DataFrame"),
-                 function(x, value) {
-                   slot(x, "sampleMap") <- value
-                   return(x)
+                 function(object, value) {
+                   slot(object, "sampleMap") <- value
+                   return(object)
                  })
 
 #' Replace an \code{Elist} slot value with a given \code{Elist}
 #' class object
 #'
-#' @param x A \code{MultiAssayExperiment} class object
+#' @param object A \code{MultiAssayExperiment} class object
 #' @param value An \code{Elist} object to replace the existing
 #' \code{Elist} slot
 #'
@@ -268,13 +273,22 @@ setReplaceMethod("sampleMap", c("MultiAssayExperiment", "DataFrame"),
 #' Elist(myMultiAssayExperiment) <- Elist()
 #'
 #' @return A \code{Elist} class object
-setGeneric("Elist<-", function(x, value) standardGeneric("Elist<-"))
+setGeneric("Elist<-", function(object, value) standardGeneric("Elist<-"))
 
 #' @exportMethod Elist<-
 #' @describeIn MultiAssayExperiment value: An \code{Elist} 
 #' representation
 setReplaceMethod("Elist", c("MultiAssayExperiment", "Elist"),
-                 function(x, value) {
-                   slot(x, "Elist") <- value
-                   return(x)
+                 function(object, value) {
+                   slot(object, "Elist") <- value
+                   return(object)
                  })
+
+#' @exportMethod pData<-
+#' @describeIn MultiAssayExperiment value: A \code{DataFrame} of specimen data
+#' @importFrom Biobase pData<-
+setReplaceMethod("pData", c("MultiAssayExperiment", "DataFrame"),
+                 function(object, value) {
+                   slot(object, "pData") <- value
+                   return(object)
+                   })
