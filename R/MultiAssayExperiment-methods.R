@@ -252,12 +252,12 @@ setMethod("subsetByColumn", c("MultiAssayExperiment", "list"),
               Elist(x) <- Elist(mapply(function(f, j) {
                   f[ ,j , drop =  FALSE]
               }, f = Elist(x), j = y, SIMPLIFY = FALSE))
-              newSamps <- colnames(x)
+              newSamps <- as.list(colnames(x))
               listMap <- mapToList(sampleMap(x), "assayname")
               listMap <- listMap[order(names(x))]
-              newMap <- mapply(function(m, i) {
-                  m[i, , drop = FALSE]
-              }, m = listMap, i = newSamps, simplify = FALSE)
+              newMap <- mapply(function(lMap, nSamps) {
+                lMap[na.omit(match(nSamps, as.character(lMap[, "assay"]))), ]
+              }, lMap = listMap, nSamps = newSamps, SIMPLIFY = FALSE)
               newMap <- listToMap(newMap)
               selectors <- unique(as.character(newMap[,"primary"]))
               pData(x) <- pData(x)[rownames(pData(x)) %in% selectors,]
@@ -271,7 +271,7 @@ setMethod("subsetByColumn", c("MultiAssayExperiment", "list"),
 setMethod("subsetByColumn", c("MultiAssayExperiment", "List"),
           function(x, y) {
             Y <- as.list(y)
-            x[Y, ]
+            x[, Y]
           })
 
 setClassUnion("GRangesORcharacter", c("GRanges", "character"))
