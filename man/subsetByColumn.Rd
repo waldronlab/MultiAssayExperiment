@@ -32,7 +32,7 @@ A \code{\link{MultiAssayExperiment}} object
 \item \code{x = MultiAssayExperiment,y = ANY}: Either a \code{numeric} or \code{logical} vector
 to apply a column subset of a \code{MultiAssayExperiment} object
 
-\item \code{x = MultiAssayExperiment,y = character}: Use a character vector for subsetting column 
+\item \code{x = MultiAssayExperiment,y = character}: Use a character vector for subsetting column
 names
 }}
 
