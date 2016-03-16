@@ -219,8 +219,8 @@ pData(simpleMultiAssay2)
 
 In this section we demonstrate all core supported data classes, using different
 sample ID conventions for each assay, with primary pData. The currently
-supported classes of datasets are `matrix`, `ExpressionSet`,
-`RangedSummarizedExperiment`, and `RangedRaggedAssay`.
+supported classes of datasets are `matrix`, `ExpressionSet`, 
+`SummarizedExperiment`, `RangedSummarizedExperiment`, and `RangedRaggedAssay`.
 
 ## Create toy datasets demonstrating all supported data types
 We have three matrix-like datasets.  First let's say expression data,
@@ -441,7 +441,7 @@ guaranteeing continued matching of samples.
 
 Subsetting can be performed either using the `subset()` function, or even more simply by square brackets.
 
-## Subsetting by samples / columns
+## Subsetting samples / columns
 
 Experimental samples are stored in the rows of pData but the columns of elements of Elist, so when we refer to subsetting by columns, we are referring to columns of the experimental assays.  Subsetting by samples / columns will be more obvious after recalling the pData:
 
@@ -493,7 +493,7 @@ myMultiAssay[, as.list(allsamples), ]
 ```
 
 
-## Subsetting by assays
+## Subsetting assays
 
 You can select certain assays / experiments using subset, by providing a
 character, logical, or integer vector.  An example using character:
@@ -514,15 +514,30 @@ subset(myMultiAssay, which(is.cnv), "assays")
 `MultiAssayExperiment` object. Use `assay(myMultiAssay)` to retrieve the
 experimental data in an ordinary `list` of datasets as their original classes.
 
-## Subsetting by rownames / features IDs
+## Subsetting rows (features) by IDs, integers, or logicals
 
-Rownames (feature IDs) **must be specified as a character vector** - integer
-and logical vectors do not make sense because in general assays may have
-different identifiers. This operation always returns a `MultiAssayExperiment`
-class, with any `Elist` element not containing the feature having zero rows.
+Rows of the assays correspond to assay features or measurements, such as genes.
+Regardless of whether the assay is ID-based (e.g. matrix, ExpressionSet) or
+range-based (e.g. RangedSummarizedExperiment, RangedRaggedAssay), they can be
+subset using any of:
 
+- a **character vector** of IDs that will be matched to rownames in each assay
 
-Return a MultiAssayExperiment where `Affy` and `Methyl 450k` contain
+- an **integer vector** that will select rows of this position from each assay. This probably doesn't make sense unless every Elist element represents the same measurements in the same order and will generate an error if any of the integer elements exceeds the number of rows in any Elist element. The most likely use of integer subsetting would as a "head()" function, for example to look at the first 6 rows of each assay.
+
+- a **logical vector** that will be passed directly to the row subsetting operation
+for each assay.  A warning is issued if this results in recycling for any of the
+assays.
+
+- a **list** or **CharacterList** of the same length as Elist.  Each element of the
+subsetting list will be passed on exactly to subset rows of the corresponding
+element of Elist.
+
+Again, this operation always returns a `MultiAssayExperiment` class, unless
+"drop=TRUE" is passed to subset, with any `Elist` element not containing the
+feature having zero rows.
+
+For example, return a MultiAssayExperiment where `Affy` and `Methyl 450k` contain
 only ENST0000035076 row, and "Mirna" and "CNV gistic" have zero rows:
 (`drop` argument is set to `TRUE` by default)
 
@@ -543,7 +558,7 @@ exprs(Elist(myMultiAssay)[[1]])
 exprs(Elist(featSubsetted)[[1]])
 ```
 
-## Subsetting rows / features by `GenomicRanges`
+## Subsetting rows (features) by `GenomicRanges`
 
 For `MultiAssayExperiment` objects containing range-based objects (currently
 `RangedSummarizedExperiment` and `RangedRaggedAssay`), these can be subset
