@@ -219,8 +219,8 @@ pData(simpleMultiAssay2)
 
 In this section we demonstrate all core supported data classes, using different
 sample ID conventions for each assay, with primary pData. The currently
-supported classes of datasets are `matrix`, `ExpressionSet`,
-`RangedSummarizedExperiment`, and `RangedRaggedAssay`.
+supported classes of datasets are `matrix`, `ExpressionSet`, 
+`SummarizedExperiment`, `RangedSummarizedExperiment`, and `RangedRaggedAssay`.
 
 ## Create toy datasets demonstrating all supported data types
 We have three matrix-like datasets.  First let's say expression data,
