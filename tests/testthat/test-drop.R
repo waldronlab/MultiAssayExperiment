@@ -1,6 +1,6 @@
 context("drop argument for rows works as it should")
 
-example("MultiAssayExperiment", package = "MultiAssayExperiment")
+example("MultiAssayExperiment")
 
 test_that("when drop is TRUE, length of Elist is correct", {
   expect_true(length(myMultiAssayExperiment[FALSE, , , drop = TRUE]) == 0L)
