@@ -5,14 +5,14 @@
 .generateMap <- function(mPheno, exlist) {
   samps <- lapply(exlist, colnames)
   listM <- lapply(seq_along(samps), function(i, x) {
-    S4Vectors::DataFrame(assay = x[[i]], assayname = Rle(names(x)[i]))
+    S4Vectors::DataFrame(assay = x[[i]], assayname = names(x)[i])
   }, x = samps)
   full_map <- do.call(S4Vectors::rbind, listM)
   matches <- match(full_map$assay, rownames(mPheno))
   if (all(is.na(matches))) {
     stop("no way to map pData to Elist")
   }
-  primary <- Rle(rownames(mPheno)[matches])
+  primary <- rownames(mPheno)[matches]
   autoMap <- S4Vectors::cbind(DataFrame(primary), full_map)
   if (any(is.na(autoMap$primary))) {
     notFound <- autoMap[is.na(autoMap$primary), ]

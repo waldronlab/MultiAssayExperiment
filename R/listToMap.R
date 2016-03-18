@@ -9,21 +9,21 @@ listToMap <- function(listmap, type = "colnames") {
   DFmap <- lapply(seq_along(listmap), FUN = function(i, x) {
     if (type == "colnames") {
       if (S4Vectors::isEmpty(x[i])) {
-        S4Vectors::DataFrame(primary = Rle(NA),
+        S4Vectors::DataFrame(primary = NA,
                              assay = NA,
-                             assayname = Rle(names(x)[i]))
+                             assayname = names(x)[i])
       } else {
-        S4Vectors::DataFrame(primary = Rle(x[[i]][, 1]),
+        S4Vectors::DataFrame(primary = x[[i]][, 1],
                              assay = x[[i]][, 2],
-                             assayname = Rle(names(x)[i]))
+                             assayname = names(x)[i])
       }
     } else if (type == "rownames") {
       if (S4Vectors::isEmpty(x[i])) {
         S4Vectors::DataFrame(feature = NA,
-                             assayname = Rle(names(x)[i]))
+                             assayname = names(x)[i])
       } else {
         S4Vectors::DataFrame(feature = x[[i]][, 1],
-                             assayname = Rle(names(x)[i]))
+                             assayname = names(x)[i])
       }
     } else if (type == "assays") {
       S4Vectors::DataFrame(value = x[[i]],
