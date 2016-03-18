@@ -220,9 +220,10 @@ setMethod("subsetByColumn", c("MultiAssayExperiment", "ANY"), function(x, y) {
   selectors <- rownames(pData(x))[y]
   newpData <- pData(x)[selectors, ]
   listMap <- mapToList(sampleMap(x), "assayname")
-  listMap <- listMap[order(names(x))]
+  ## reorder names in the listMap
+  listMap <- listMap[names(x)]
   listMap <- lapply(listMap, function(assay) {
-    assay[which(as.vector(assay[, 1]) %in% selectors),]
+    assay[which(assay[, 1] %in% selectors),]
   })
   newMap <- listToMap(listMap)
   columns <- lapply(listMap, function(mapChunk) {mapChunk[, 2, drop = TRUE]})
@@ -250,12 +251,14 @@ setMethod("subsetByColumn", c("MultiAssayExperiment", "character"),
 #' \code{MultiAssayExperiment}
 setMethod("subsetByColumn", c("MultiAssayExperiment", "list"),
           function(x, y) {
+              y <- y[names(x)]
               Elist(x) <- Elist(mapply(function(f, j) {
                   f[ ,j , drop =  FALSE]
               }, f = Elist(x), j = y, SIMPLIFY = FALSE))
               newSamps <- as.list(colnames(x))
               listMap <- mapToList(sampleMap(x), "assayname")
-              listMap <- listMap[order(names(x))]
+              ## reorder names in the listMap
+              listMap <- listMap[names(x)]
               newMap <- mapply(function(lMap, nSamps) {
                 lMap[na.omit(match(nSamps, as.character(lMap[, "assay"]))), ]
               }, lMap = listMap, nSamps = newSamps, SIMPLIFY = FALSE)
