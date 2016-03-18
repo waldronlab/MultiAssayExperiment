@@ -57,13 +57,13 @@ names(ExpList)[3] <- "CNVgistic"
 example("sampleMap")
 
 ## Create an example phenotype data
-myPheno <- data.frame(sex = c("M", "F", "M", "F"),
+primary <- data.frame(sex = c("M", "F", "M", "F"),
                        age = 38:41,
                        row.names = c("Jack", "Jill", "Bob", "Barbara"))
 
 ## Create a MultiAssayExperiment instance
 myMultiAssayExperiment <- MultiAssayExperiment(Elist = ExpList,
-                                               pData = myPheno,
+                                               pData = primary,
                                                sampleMap = mySampleMap)
 }
 \seealso{

@@ -152,6 +152,7 @@ setMethod("getHits", signature("RangedRaggedAssay", "character"),
     isEmptyAssay <- vapply(Elist(x), FUN = .isEmpty, FUN.VALUE = logical(1L))
     if (all(isEmptyAssay)) {
       warning("no data in assays")
+      Elist(x) <- Elist()
     } else if (any(isEmptyAssay)) {
       keeps <- names(isEmptyAssay)[sapply(isEmptyAssay, function(z) !isTRUE(z))]
       x <- x[, , keeps, drop = FALSE]
@@ -245,6 +246,35 @@ setMethod("subsetByColumn", c("MultiAssayExperiment", "character"),
             callNextMethod(x = x, y = logMatches)
           })
 
+#' @describeIn subsetByColumn Use a list to subset by samples in a
+#' \code{MultiAssayExperiment}
+setMethod("subsetByColumn", c("MultiAssayExperiment", "list"),
+          function(x, y) {
+              Elist(x) <- Elist(mapply(function(f, j) {
+                  f[ ,j , drop =  FALSE]
+              }, f = Elist(x), j = y, SIMPLIFY = FALSE))
+              newSamps <- as.list(colnames(x))
+              listMap <- mapToList(sampleMap(x), "assayname")
+              listMap <- listMap[order(names(x))]
+              newMap <- mapply(function(lMap, nSamps) {
+                lMap[na.omit(match(nSamps, as.character(lMap[, "assay"]))), ]
+              }, lMap = listMap, nSamps = newSamps, SIMPLIFY = FALSE)
+              newMap <- listToMap(newMap)
+              selectors <- unique(as.character(newMap[,"primary"]))
+              pData(x) <- pData(x)[rownames(pData(x)) %in% selectors,]
+              sampleMap(x) <- newMap
+              return(x)
+          })
+
+#' @describeIn subsetByColumn Use an S4 List to subset a MultiAssayExperiment.
+#' The order of the subsetting elements in this list must match that of the
+#' Elist in the MultiAssayExperiment.
+setMethod("subsetByColumn", c("MultiAssayExperiment", "List"),
+          function(x, y) {
+            Y <- as.list(y)
+            x[, Y]
+          })
+
 setClassUnion("GRangesORcharacter", c("GRanges", "character"))
 
 #' Subset MultiAssayExperiment object by Feature
@@ -261,12 +291,13 @@ setClassUnion("GRangesORcharacter", c("GRanges", "character"))
 #' @return A \code{\link{MultiAssayExperiment}} object 
 #' @seealso \code{\link{getHits}}
 setGeneric("subsetByRow", function(x, y, ...) standardGeneric("subsetByRow"))
+
 #' @describeIn subsetByRow Use either a GRanges or character to select the
 #' rows for which to subset for
 setMethod("subsetByRow", c("MultiAssayExperiment", "GRangesORcharacter"),
           function(x, y, ...) {
             hitList <- getHits(x, y, ...)
-            x[hitList, ]
+            x[hitList, , , drop = FALSE]
           })
 
 #' @describeIn subsetByRow Subset MultiAssayExperiment with

@@ -38,6 +38,7 @@ setMethod("subset", "MultiAssayExperiment",
               isEmptyAssay <- vapply(Elist(MultiAssay), FUN = .isEmpty, FUN.VALUE = logical(1L))
               if (all(isEmptyAssay)) {
                 warning("no data in assays")
+                Elist(MultiAssay) <- Elist()
               } else if (any(isEmptyAssay)) {
                 keeps <- names(isEmptyAssay)[sapply(isEmptyAssay, function(z) !isTRUE(z))]
                 MultiAssay <- MultiAssay[, , keeps, drop = FALSE]
