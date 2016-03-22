@@ -115,26 +115,3 @@ setMethod("ncol", signature("RangedRaggedAssay"), function(x)
 #' \code{RangedRaggedAssay} class object
 setMethod("nrow", signature("RangedRaggedAssay"), function(x)
   dim(x)[1])
-<<<<<<< HEAD
-
-### - - - - - - - - - - - - - - - - - - - - - - - -
-### Validity 
-###
-
-## All ranges in the RangedRaggedAssay should be disjoint
-.checkDisjoint <- function(object) {
-  if (!all(GenomicRanges::isDisjoint(object))) {
-    #stop("All ranges in the 'RangedRaggedAssay' must be disjoint")
-  }
-  NULL
-}
-
-.validRangedRaggedAssay <- function(object) {
-  if (length(object) != 0L) {
-    c(.checkDisjoint(object))
-  }
-}
-
-S4Vectors::setValidity2("RangedRaggedAssay", .validRangedRaggedAssay)
-=======
->>>>>>> vjcitn/master
