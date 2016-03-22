@@ -116,17 +116,17 @@ representation
 \item \code{pData<-}: value: A \code{DataFrame} of specimen data
 
 \item \code{rownames}: Get all the rownames for a
-MultiAssayExperiment using \code{\link[IRanges]{CharacterList}}
+\code{MultiAssayExperiment} using a \code{\link[IRanges]{CharacterList}}
 
 \item \code{colnames}: Get all the colnames for a
-MultiAssayExperiment
+\code{MultiAssayExperiment}
 
 \item \code{assay}: Get the raw data from a
-MultiAssayExperiment as a list
+\code{MultiAssayExperiment} as a \code{list}
 
 \item \code{[}: Subset a \code{MultiAssayExperiment} object
 
-\item \code{isEmpty}: Logical value of empty
+\item \code{isEmpty}: A \code{logical} value indicating an empty
 \code{MultiAssayExperiment}
 }}
 \section{Slots}{

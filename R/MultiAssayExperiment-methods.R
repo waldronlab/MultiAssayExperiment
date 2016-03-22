@@ -4,25 +4,35 @@
 #' @import BiocGenerics SummarizedExperiment S4Vectors GenomicRanges methods
 NULL
 
-#' @describeIn RangedRaggedAssay Get feature names from a RangedRaggedAssay
+#' @describeIn RangedRaggedAssay Get feature names from a
+#' \code{RangedRaggedAssay}
 setMethod("rownames", "RangedRaggedAssay", function(x)
   names(unlist(x, use.names = FALSE)))
 
+#' @describeIn Elist Get all the rownames of an \code{Elist}
+setMethod("rownames", "Elist", function(x)
+  IRanges::CharacterList(lapply(x, rownames)))
+
 #' @describeIn MultiAssayExperiment Get all the rownames for a
-#' MultiAssayExperiment using \code{\link[IRanges]{CharacterList}}
+#' \code{MultiAssayExperiment} using a \code{\link[IRanges]{CharacterList}}
 #' @exportMethod rownames
 setMethod("rownames", "MultiAssayExperiment", function(x)
-  IRanges::CharacterList(lapply(Elist(x), rownames)))
+  rownames(Elist(x)))
 
-#' @describeIn RangedRaggedAssay Get sample names from a RangedRaggedAssay
+#' @describeIn RangedRaggedAssay Get sample names from a
+#' \code{RangedRaggedAssay}
 setMethod("colnames", "RangedRaggedAssay", function(x)
   base::names(x))
 
+#' @describeIn Elist Get sample names from an \code{Elist} object
+setMethod("colnames", "Elist", function(x)
+  IRanges::CharacterList(lapply(x, colnames)))
+
 #' @describeIn MultiAssayExperiment Get all the colnames for a
-#' MultiAssayExperiment
+#' \code{MultiAssayExperiment}
 #' @exportMethod colnames
 setMethod("colnames", "MultiAssayExperiment", function(x)
-  IRanges::CharacterList(lapply(Elist(x), colnames)))
+  colnames(Elist(x)))
 
 #' Harmonize exprs to assay of an \code{ExpressionSet} object
 #' @param x An \code{ExpressionSet} object
@@ -36,12 +46,12 @@ setMethod("assay", "ExpressionSet", function(x)
 setMethod("assay", "matrix", function(x) x)
 
 #' @describeIn RangedRaggedAssay Get experiment metadata from a 
-#' RangedRaggedAssay
+#' \code{RangedRaggedAssay}
 setMethod("assay", "RangedRaggedAssay", function(x)
   do.call(rbind, lapply(x, mcols)))
 
 #' @describeIn MultiAssayExperiment Get the raw data from a
-#' MultiAssayExperiment as a list
+#' \code{MultiAssayExperiment} as a \code{list}
 #' @exportMethod assay
 setMethod("assay", "MultiAssayExperiment", function(x)
   lapply(Elist(x), assay))
@@ -67,17 +77,17 @@ setMethod("assay", "MultiAssayExperiment", function(x)
 #' @param ... Additional arguments to findOverlaps
 #' @return Names of matched queries
 #' @example inst/scripts/getHits-Ex.R
-#' @exportMethod getHits
 setGeneric("getHits", function(subject, query, ...) standardGeneric("getHits"))
 
-#' @describeIn getHits Find all matching rownames by character
+#' @describeIn getHits Find all matching rownames by \code{character}
+#' @exportMethod getHits
 setMethod("getHits", signature("MultiAssayExperiment", "character"),
           function(subject, query, ...)
             lapply(Elist(subject), FUN = function(elem, ...) {
   getHits(elem, query, ...)
 }))
 
-#' @describeIn getHits Find all matching rownames by GRanges
+#' @describeIn getHits Find all matching rownames by \code{GRanges}
 setMethod("getHits", signature("MultiAssayExperiment", "GRanges"),
           function(subject, query, ...)
             lapply(Elist(subject), FUN = function(elem, ...) {
@@ -91,7 +101,7 @@ setMethod("getHits", signature("GRanges", "GRanges"),
             names(subject)[queryHits(findOverlaps(subject, query, ...))]
           })
 
-#' @describeIn getHits Find all matching rownames for Range-based objects
+#' @describeIn getHits Find all matching rownames for range-based objects
 setMethod("getHits", signature("ANY", "GRanges"),
           function(subject, query, ...) {
             if (.checkFindOverlaps(class(subject))) {
@@ -104,21 +114,21 @@ setMethod("getHits", signature("ANY", "GRanges"),
             }
           })
 
-#' @describeIn getHits Find rownames for RangedSummarizedExperiment hits 
+#' @describeIn getHits Find rownames for \code{RangedSummarizedExperiment} hits 
 setMethod("getHits", signature("RangedSummarizedExperiment", "GRanges"),
           function(subject, query, ...) {
             subject <- rowRanges(subject)
             getHits(subject, query)
           })
 
-#' @describeIn getHits Find all matching rownames based on character query
+#' @describeIn getHits Find all matching rownames based on \code{character} query
 setMethod("getHits", signature("ANY", "character"),
           function(subject, query, ...) {
             query[query %in% rownames(subject)]
           })
 
-#' @describeIn RangedRaggedAssay Find matching features by character in a 
-#' RangedRaggedAssay
+#' @describeIn RangedRaggedAssay Find matching features by \code{character}
+#' in a \code{RangedRaggedAssay}
 #' @param subject A \code{RangedRaggedAssay} class object
 #' @param query A \code{character} class for searching hits
 setMethod("getHits", signature("RangedRaggedAssay", "character"),
@@ -177,13 +187,13 @@ setMethod("getHits", signature("RangedRaggedAssay", "character"),
 setMethod("[", c("MultiAssayExperiment", "ANY", "ANY", "ANY"),
           .subsetMultiAssayExperiment)
 
-#' @exportMethod isEmpty
-#' @describeIn MultiAssayExperiment Logical value of empty
+#' @describeIn MultiAssayExperiment A \code{logical} value indicating an empty
 #' \code{MultiAssayExperiment}
+#' @exportMethod isEmpty
 setMethod("isEmpty", "MultiAssayExperiment", function(x)
   length(x) == 0L)
 
-#' Subset MultiAssayExperiment object by Assay type
+#' Subset \code{MultiAssayExperiment} object by Assay type
 #' 
 #' Select which assay(s) to obtain from available datasets
 #' 
@@ -192,6 +202,9 @@ setMethod("isEmpty", "MultiAssayExperiment", function(x)
 #' \code{logical} object indicating what assay(s) to select  
 #' @return A \code{\link{MultiAssayExperiment}} object 
 setGeneric("subsetByAssay", function(x, y) standardGeneric("subsetByAssay"))
+
+#' @describeIn subsetByAssay Use either a \code{numeric}, \code{logical}, or
+#' \code{character} vector to subset assays in a \code{MultiAssayExperiment}
 setMethod("subsetByAssay", c("MultiAssayExperiment", "ANY"), function(x, y) {
   newSubset <- Elist(x)[y]
   listMap <- mapToList(sampleMap(x), "assayname")
@@ -202,7 +215,7 @@ setMethod("subsetByAssay", c("MultiAssayExperiment", "ANY"), function(x, y) {
   return(x)
 })
 
-#' Subset MultiAssayExperiment object
+#' Subset \code{MultiAssayExperiment} object
 #' 
 #' \code{subsetByColumn} returns a subsetted 
 #' \code{\linkS4class{MultiAssayExperiment}} object
@@ -236,8 +249,8 @@ setMethod("subsetByColumn", c("MultiAssayExperiment", "ANY"), function(x, y) {
   return(x)
 })
 
-#' @describeIn subsetByColumn Use a character vector for subsetting column
-#' names
+#' @describeIn subsetByColumn Use a \code{character} vector for subsetting
+#' column names
 setMethod("subsetByColumn", c("MultiAssayExperiment", "character"), 
           function(x, y) {
             logMatches <- rownames(pData(x)) %in% y
@@ -247,7 +260,7 @@ setMethod("subsetByColumn", c("MultiAssayExperiment", "character"),
             callNextMethod(x = x, y = logMatches)
           })
 
-#' @describeIn subsetByColumn Use a list to subset by samples in a
+#' @describeIn subsetByColumn Use a \code{list} to subset by samples in a
 #' \code{MultiAssayExperiment}
 setMethod("subsetByColumn", c("MultiAssayExperiment", "list"),
           function(x, y) {
@@ -269,9 +282,10 @@ setMethod("subsetByColumn", c("MultiAssayExperiment", "list"),
               return(x)
           })
 
-#' @describeIn subsetByColumn Use an S4 List to subset a MultiAssayExperiment.
-#' The order of the subsetting elements in this list must match that of the
-#' Elist in the MultiAssayExperiment.
+#' @describeIn subsetByColumn Use an S4 \code{List} to subset a
+#' \code{MultiAssayExperiment}. The order of the subsetting elements in this
+#' \code{List} must match that of the \code{Elist} in the
+#' \code{MultiAssayExperiment}.
 setMethod("subsetByColumn", c("MultiAssayExperiment", "List"),
           function(x, y) {
             Y <- as.list(y)
@@ -280,9 +294,9 @@ setMethod("subsetByColumn", c("MultiAssayExperiment", "List"),
 
 setClassUnion("GRangesORcharacter", c("GRanges", "character"))
 
-#' Subset MultiAssayExperiment object by Feature
+#' Subset \code{MultiAssayExperiment} object by Feature
 #' 
-#' Subset \code{MultiAssayExperiment} class by provided feature names or a 
+#' Subset a \code{MultiAssayExperiment} class by provided feature names or a 
 #' \code{GRanges} object
 #' 
 #' @param x A \code{\link{MultiAssayExperiment}} object
@@ -295,16 +309,16 @@ setClassUnion("GRangesORcharacter", c("GRanges", "character"))
 #' @seealso \code{\link{getHits}}
 setGeneric("subsetByRow", function(x, y, ...) standardGeneric("subsetByRow"))
 
-#' @describeIn subsetByRow Use either a GRanges or character to select the
-#' rows for which to subset for
+#' @describeIn subsetByRow Use either a \code{GRanges} or \code{character} to
+#' select the rows for which to subset for
 setMethod("subsetByRow", c("MultiAssayExperiment", "GRangesORcharacter"),
           function(x, y, ...) {
             hitList <- getHits(x, y, ...)
             x[hitList, , , drop = FALSE]
           })
 
-#' @describeIn subsetByRow Subset MultiAssayExperiment with
-#' GRanges object
+#' @describeIn subsetByRow Subset a \code{MultiAssayExperiment} with
+#' \code{GRanges} object
 setMethod("subsetByRow", c("MultiAssayExperiment", "GRanges"),
           function(x, y, ...) {
             if (is.null(names(y))) {
@@ -313,8 +327,8 @@ setMethod("subsetByRow", c("MultiAssayExperiment", "GRanges"),
             callNextMethod(x = x, y = y, ...)
           })
 
-#' @describeIn subsetByRow Use a logical vector to select rows of a
-#' MultiAssayExperiment
+#' @describeIn subsetByRow Use a \code{logical} vector to select rows of a
+#' \code{MultiAssayExperiment}
 setMethod("subsetByRow", c("MultiAssayExperiment", "logical"), 
           function(x, y) {
             ElistNrows <- vapply(Elist(x), FUN = function(z) {
@@ -330,8 +344,8 @@ setMethod("subsetByRow", c("MultiAssayExperiment", "logical"),
             callNextMethod(x = x, y = y)
           })
 
-#' @describeIn subsetByRow Subset a MultiAssayExperiment with either a
-#' numeric or logical vector
+#' @describeIn subsetByRow Subset a \code{MultiAssayExperiment} with either a
+#' \code{numeric} or \code{logical} vector
 setMethod("subsetByRow", c("MultiAssayExperiment", "ANY"),
           function(x, y) {
             newElist <- S4Vectors::endoapply(Elist(x), 
@@ -340,9 +354,9 @@ setMethod("subsetByRow", c("MultiAssayExperiment", "ANY"),
             return(x)
           })
 
-#' @describeIn subsetByRow Use a list of equal length as the Elist to subset.
-#' The order of the subsetting elements in this list must match that of the
-#' Elist in the MultiAssayExperiment.
+#' @describeIn subsetByRow Use a list of equal length as the \code{Elist}
+#' to subset. The order of the subsetting elements in this list must match
+#' that of the \code{Elist} in the \code{MultiAssayExperiment}.
 setMethod("subsetByRow", c("MultiAssayExperiment", "list"),
           function(x, y) {
             if (length(x) != length(y)) {
@@ -355,9 +369,10 @@ setMethod("subsetByRow", c("MultiAssayExperiment", "list"),
             return(x)
           })
 
-#' @describeIn subsetByRow Use an S4 List to subset a MultiAssayExperiment.
-#' The order of the subsetting elements in this list must match that of the 
-#' Elist in the MultiAssayExperiment.
+#' @describeIn subsetByRow Use an S4 \code{List} to subset a
+#' \code{MultiAssayExperiment}. The order of the subsetting elements in this
+#' \code{List} must match that of the \code{Elist} in the
+#' \code{MultiAssayExperiment}.
 setMethod("subsetByRow", c("MultiAssayExperiment", "List"),
           function(x, y) {
             Y <- as.list(y)

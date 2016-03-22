@@ -42,18 +42,18 @@ Find hits by class type
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{subject = MultiAssayExperiment,query = character}: Find all matching rownames by character
+\item \code{subject = MultiAssayExperiment,query = character}: Find all matching rownames by \code{character}
 
-\item \code{subject = MultiAssayExperiment,query = GRanges}: Find all matching rownames by GRanges
+\item \code{subject = MultiAssayExperiment,query = GRanges}: Find all matching rownames by \code{GRanges}
 
 \item \code{subject = GRanges,query = GRanges}: Find and get corresponding names of two \code{GRanges}
 using \code{findOverlaps}
 
-\item \code{subject = ANY,query = GRanges}: Find all matching rownames for Range-based objects
+\item \code{subject = ANY,query = GRanges}: Find all matching rownames for range-based objects
 
-\item \code{subject = RangedSummarizedExperiment,query = GRanges}: Find rownames for RangedSummarizedExperiment hits
+\item \code{subject = RangedSummarizedExperiment,query = GRanges}: Find rownames for \code{RangedSummarizedExperiment} hits
 
-\item \code{subject = ANY,query = character}: Find all matching rownames based on character query
+\item \code{subject = ANY,query = character}: Find all matching rownames based on \code{character} query
 }}
 \examples{
 ## Load an example MultiAssayExperiment object

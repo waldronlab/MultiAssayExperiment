@@ -7,7 +7,7 @@
 \alias{subsetByColumn,MultiAssayExperiment,List-method}
 \alias{subsetByColumn,MultiAssayExperiment,character-method}
 \alias{subsetByColumn,MultiAssayExperiment,list-method}
-\title{Subset MultiAssayExperiment object}
+\title{Subset \code{MultiAssayExperiment} object}
 \usage{
 subsetByColumn(x, y)
 
@@ -38,14 +38,15 @@ A \code{\link{MultiAssayExperiment}} object
 \item \code{x = MultiAssayExperiment,y = ANY}: Either a \code{numeric} or \code{logical} vector
 to apply a column subset of a \code{MultiAssayExperiment} object
 
-\item \code{x = MultiAssayExperiment,y = character}: Use a character vector for subsetting column
-names
+\item \code{x = MultiAssayExperiment,y = character}: Use a \code{character} vector for subsetting
+column names
 
-\item \code{x = MultiAssayExperiment,y = list}: Use a list to subset by samples in a
+\item \code{x = MultiAssayExperiment,y = list}: Use a \code{list} to subset by samples in a
 \code{MultiAssayExperiment}
 
-\item \code{x = MultiAssayExperiment,y = List}: Use an S4 List to subset a MultiAssayExperiment.
-The order of the subsetting elements in this list must match that of the
-Elist in the MultiAssayExperiment.
+\item \code{x = MultiAssayExperiment,y = List}: Use an S4 \code{List} to subset a
+\code{MultiAssayExperiment}. The order of the subsetting elements in this
+\code{List} must match that of the \code{Elist} in the
+\code{MultiAssayExperiment}.
 }}
 

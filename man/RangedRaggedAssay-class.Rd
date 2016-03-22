@@ -76,15 +76,17 @@ names
 \item \code{nrow}: Get the row length of a
 \code{RangedRaggedAssay} class object
 
-\item \code{rownames}: Get feature names from a RangedRaggedAssay
+\item \code{rownames}: Get feature names from a
+\code{RangedRaggedAssay}
 
-\item \code{colnames}: Get sample names from a RangedRaggedAssay
+\item \code{colnames}: Get sample names from a
+\code{RangedRaggedAssay}
 
 \item \code{assay}: Get experiment metadata from a 
-RangedRaggedAssay
+\code{RangedRaggedAssay}
 
-\item \code{getHits}: Find matching features by character in a 
-RangedRaggedAssay
+\item \code{getHits}: Find matching features by \code{character}
+in a \code{RangedRaggedAssay}
 }}
 \seealso{
 \code{\link[IRanges]{findOverlaps-methods}}
