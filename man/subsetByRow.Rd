@@ -9,7 +9,7 @@
 \alias{subsetByRow,MultiAssayExperiment,List-method}
 \alias{subsetByRow,MultiAssayExperiment,list-method}
 \alias{subsetByRow,MultiAssayExperiment,logical-method}
-\title{Subset MultiAssayExperiment object by Feature}
+\title{Subset \code{MultiAssayExperiment} object by Feature}
 \usage{
 subsetByRow(x, y, ...)
 
@@ -39,30 +39,31 @@ primarily when using a \code{GRanges} object for subsetting
 A \code{\link{MultiAssayExperiment}} object
 }
 \description{
-Subset \code{MultiAssayExperiment} class by provided feature names or a 
+Subset a \code{MultiAssayExperiment} class by provided feature names or a 
 \code{GRanges} object
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{x = MultiAssayExperiment,y = GRangesORcharacter}: Use either a GRanges or character to select the
-rows for which to subset for
+\item \code{x = MultiAssayExperiment,y = GRangesORcharacter}: Use either a \code{GRanges} or \code{character} to
+select the rows for which to subset for
 
-\item \code{x = MultiAssayExperiment,y = GRanges}: Subset MultiAssayExperiment with
-GRanges object
+\item \code{x = MultiAssayExperiment,y = GRanges}: Subset a \code{MultiAssayExperiment} with
+\code{GRanges} object
 
-\item \code{x = MultiAssayExperiment,y = logical}: Use a logical vector to select rows of a
-MultiAssayExperiment
+\item \code{x = MultiAssayExperiment,y = logical}: Use a \code{logical} vector to select rows of a
+\code{MultiAssayExperiment}
 
-\item \code{x = MultiAssayExperiment,y = ANY}: Subset a MultiAssayExperiment with either a
-numeric or logical vector
+\item \code{x = MultiAssayExperiment,y = ANY}: Subset a \code{MultiAssayExperiment} with either a
+\code{numeric} or \code{logical} vector
 
-\item \code{x = MultiAssayExperiment,y = list}: Use a list of equal length as the Elist to subset.
-The order of the subsetting elements in this list must match that of the
-Elist in the MultiAssayExperiment.
+\item \code{x = MultiAssayExperiment,y = list}: Use a list of equal length as the \code{Elist}
+to subset. The order of the subsetting elements in this list must match
+that of the \code{Elist} in the \code{MultiAssayExperiment}.
 
-\item \code{x = MultiAssayExperiment,y = List}: Use an S4 List to subset a MultiAssayExperiment.
-The order of the subsetting elements in this list must match that of the 
-Elist in the MultiAssayExperiment.
+\item \code{x = MultiAssayExperiment,y = List}: Use an S4 \code{List} to subset a
+\code{MultiAssayExperiment}. The order of the subsetting elements in this
+\code{List} must match that of the \code{Elist} in the
+\code{MultiAssayExperiment}.
 }}
 \seealso{
 \code{\link{getHits}}

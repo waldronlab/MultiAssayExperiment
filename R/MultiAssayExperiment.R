@@ -74,6 +74,11 @@ MultiAssayExperiment <-
     if (!is(pData, "DataFrame")) {
       pData <- S4Vectors::DataFrame(pData)
     }
+    if (any(vapply(sampleMap, FUN = function(col) {
+      !is.character(col)
+    }, FUN.VALUE = logical(1L)))) {
+      sampleMap[] <- lapply(sampleMap, as.character)
+    }
     if (!is(sampleMap, "DataFrame")) {
       sampleMap <- S4Vectors::DataFrame(sampleMap)
     }

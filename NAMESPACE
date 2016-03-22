@@ -3,6 +3,7 @@
 export(API)
 export(Elist)
 export(MultiAssayExperiment)
+export(PrepMultiAssay)
 export(RangedRaggedAssay)
 export(hasAssay)
 export(listToMap)
