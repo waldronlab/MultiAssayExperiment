@@ -13,7 +13,7 @@ Rpubs HTML <- <a href="https://rpubs.com/schifferl/pradMAEO">https://rpubs.com/s
 Cohort datasets can be generated with the getFirehoseDatasets() method.
 
 ```{r eval = FALSE}
-ds <- getFirehoseDatasets()[1:4]
+ds <- getFirehoseDatasets()[27]
 ```
 
 Analysis and Running dates can be obtained through the getFirehoseAnalyzeDates() and getFirehoseRunningDates() methods of the RTCGAToolbox.
@@ -38,7 +38,7 @@ newMAEO <- function(ds, rd, ad) {
                               CNV_SNP = TRUE, CNA_Seq = TRUE, CNA_CGH = TRUE, Methylation = TRUE, 
                               Mutation = TRUE, mRNA_Array = TRUE, miRNA_Array = TRUE, RPPA = TRUE, 
                               RNAseqNorm = TRUE, RNAseq2Norm = TRUE, forceDownload = FALSE, 
-                              destdir = "./tmp", fileSizeLimit = 50, getUUIDs = FALSE) #500000
+                              destdir = "./tmp", fileSizeLimit = 500000, getUUIDs = FALSE)
         save(co, file = fp)
     }
     pd <- DataFrame(extract(co, NULL, clinical = TRUE))
