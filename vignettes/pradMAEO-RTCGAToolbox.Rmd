@@ -27,6 +27,10 @@ The <strong>PR</strong>ostate <strong>AD</strong>enocarcinoma dataset is identif
 
 ```{r eval = FALSE}
 newMAEO <- function(ds, rd, ad) {
+  dd <- paste(getwd(), "/data", sep = "")
+  if(!dir.exists(dd)){
+    dir.create(dd)
+  }
   for(i in ds) {
     cn <- tolower(i)
     fp <- paste(getwd(), "/data/", cn, ".Rda", sep = "")
