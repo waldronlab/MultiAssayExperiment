@@ -2,7 +2,7 @@ MultiAssayExperiment
 ==============
 
 [![Build Status](https://api.travis-ci.org/LiNk-NY/MultiAssayExperiment.png?branch=master)](https://travis-ci.org/LiNk-NY/MultiAssayExperiment)
-[![Coverage Status](https://img.shields.io/codecov/c/github/LiNk-NY/MultiAssayExperiment/master.svg)](https://codecov.io/github/MultiAssayExperiment?branch=master)
+[![Coverage Status](https://codecov.io/github/LiNk-NY/MultiAssayExperiment/coverage.svg?branch=master)](https://codecov.io/github/MultiAssayExperiment?branch=master)
 
 # Documentation
 
