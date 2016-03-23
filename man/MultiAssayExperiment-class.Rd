@@ -79,12 +79,15 @@ A \code{MultiAssayExperiment} object
 \description{
 The \code{MultiAssayExperiment} class can be used to manage results of 
 diverse assays on a collection of specimen. Currently,  the class can handle
-assays that are organized instances of \code{RangedSummarizedExperiment}, 
-\code{ExpressionSet}, \code{matrix}, \code{RangedRaggedAssay} 
-(inherits from \code{GRangesList}), and \code{RangedVcfStack}. Create new
-\code{MultiAssayExperiment} instances with the eponymous constructor, 
-minimally with the argument \code{\linkS4class{Elist}}, potentially also
-with the arguments \code{pData} and \code{sampleMap}.
+assays that are organized instances of
+\code{\linkS4class{SummarizedExperiment}},
+\code{\linkS4class{ExpressionSet}},
+\code{matrix}, \code{\link{RangedRaggedAssay}}
+(inherits from \code{\linkS4class{GRangesList}}), and \code{RangedVcfStack}.
+Create new \code{MultiAssayExperiment} instances with the eponymous
+constructor, minimally with the argument \code{\link{Elist}}, potentially
+also with the arguments \code{pData} (see section below) and
+\code{\link{sampleMap}}.
 }
 \section{Methods (by generic)}{
 \itemize{
@@ -132,7 +135,7 @@ representation
 \section{Slots}{
 
 \describe{
-\item{\code{Elist}}{A \code{\linkS4class{Elist}} class object for each assay dataset}
+\item{\code{Elist}}{A \code{\link{Elist}} class object for each assay dataset}
 
 \item{\code{pData}}{A \code{DataFrame} of all clinical data available across
 experiments}
@@ -141,10 +144,30 @@ experiments}
 and participants}
 
 \item{\code{metadata}}{Additional data describing the
-\code{\link{MultiAssayExperiment}} object}
+\code{MultiAssayExperiment} object}
 
 \item{\code{drops}}{A metadata \code{list} of dropped information}
 }}
+\section{pData}{
+
+The \code{pData} slot is a collection of primary specimen data valid across
+all experiments. This slot is strictly of class
+\code{\linkS4class{DataFrame}} but arguments for the constructor function
+allow arguments to be of class \code{data.frame} and subsequently coerced.
+}
+
+\section{Elist}{
+
+The \code{\link{Elist}} slot is designed to contain results from each
+experiment/assay. It contains a \link[S4Vectors]{SimpleList}.
+}
+
+\section{sampleMap}{
+
+The \code{\link{sampleMap}} contains a \code{DataFrame} of translatable
+identifiers of samples and participants or biological units. Standard column
+names of the sampleMap are "primary", "assay", and "assayname".
+}
 \examples{
 MultiAssayExperiment()
 

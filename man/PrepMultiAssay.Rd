@@ -9,18 +9,40 @@ PrepMultiAssay(Elist, pData, sampleMap)
 \arguments{
 \item{Elist}{A \code{list} of all combined experiments}
 
-\item{pData}{A \code{\link[S4Vectors]{DataFrame-class}} of the phenotype
+\item{pData}{A \code{DataFrame} of the phenotype
 data for all participants}
 
 \item{sampleMap}{A \code{DataFrame} of sample identifiers, assay samples,
 and assay names}
 }
 \value{
-Messages and suggestions for creating a MultiAssayExperiment
+A \code{list} containing all the essential components of a
+\code{MultiAssayExperiment} as well as a "drops" element that indicates
+non-matched names.
 }
 \description{
 The purpose of this helper function is to faciltate the creation of a
 MultiAssayExperiment object by detecting any inconsistencies with all types
 of names in either the Elist or the pData.
+}
+\section{Checks}{
+
+The \code{PrepMultiAssay} function checks that all columns in the sampleMap
+are \code{character}.
+
+It checks that all names and lengths match in both the \code{Elist} and
+in the unique assaynames of the \code{sampleMap}.
+
+If \code{Elist} names and assaynames only differ by case and are not
+duplicated, the function will standardize all names to lowercase.
+
+If names cannot be matched between the assay column of the \code{sampleMap}
+and the colnames of the \code{Elist}, those unmatched will be dropped and
+found in the "drops" element of the resulting \code{list}.
+
+Names in the "primary" column of the \code{sampleMap}, will be matched to
+those in the \code{pData}. Unmatched "primary" column rows will be dropped
+from the \code{sampleMap}. Suggestions for name fixes in either the
+\code{Elist} or colnames will be made when necessary.
 }
 
