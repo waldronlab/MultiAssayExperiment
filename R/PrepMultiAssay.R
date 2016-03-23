@@ -47,7 +47,7 @@ PrepMultiAssay <- function(Elist, pData, sampleMap) {
     sampleMap <- S4Vectors::DataFrame(sampleMap)
   }
   if (is.null(names(Elist))) {
-    warning("Elist does not have names, assign names")
+    stop("Elist does not have names, assign names")
   }
   assaynames <- unique(sampleMap[, "assayname"])
   if (length(names(Elist)) != length(assaynames)) {
@@ -71,11 +71,11 @@ PrepMultiAssay <- function(Elist, pData, sampleMap) {
   notFounds <- primaries %in% rownames(pData)
   if (!all(notFounds)) {
     message("Not all names in the primary column of the sampleMap",
-            "\ncould be matched to the pData rownames; see $drops")
-    notF <- setdiff(primaries, rownames(pData))
-    drops <- list(rows = notF)
+            "\n  could be matched to the pData rownames; see $drops")
+    notF <- sampleMap[!notFounds, ]
+    drops <- list(sampleMap_rows = notF)
     sampleMap <- sampleMap[notFounds,]
-    print(Biobase::selectSome(notF))
+    print(notF)
     if (length(unique(sampleMap[, "assayname"])) != length(Elist)) {
       stop("Some assays could not be matched, check primary and pData names")
     }
@@ -94,10 +94,13 @@ PrepMultiAssay <- function(Elist, pData, sampleMap) {
     !(all(g))
   }, FUN.VALUE = logical(1L))
   if (any(whichNotAll)) {
+    message("Not all colnames in the Elist are found in the sampleMap, ",
+            "\n  dropping samples from Elist...")
     Elist <- Elist(mapply(function(x, y) {
       x[, y, drop = FALSE]
     }, x = Elist, y = allThere))
     coldrops <- mapply(function(a, b) {a[!b]}, a = cols, b = allThere)
+    print(Biobase::selectSome(coldrops))
     drops <- c(drops, columns = coldrops)
   }
   return(list(Elist = Elist, pData = pData, sampleMap = sampleMap,
