@@ -1,11 +1,10 @@
 language: r
-sudo: required
+
+r: bioc-devel
+sudo: false
 
 # Strict checks in place
 warnings_are_errors: true
-
-# Flag as Bioconductor package
-bioc_required: true
 
 # Run binary install of testthat
 r_binary_packages: 
@@ -17,15 +16,13 @@ bioc_packages:
   - GenomicRanges
   - SummarizedExperiment
   - Biobase
+  - S4Vectors
   - IRanges
-  - Homo.sapiens
-  - hgu95av2.db
-  - GenomicFeatures
-  - TxDb.Hsapiens.UCSC.hg19.knownGene
-  - hgu133a.db
+  - BiocStyle
 
 # Test code coverage
 r_github_packages:
   - jimhester/covr
+
 after_success:
   - Rscript -e 'library(covr);codecov()'
