@@ -412,6 +412,58 @@ Note that the `Elist` class extends the `SimpleList` class to add some
 validity checks specific to `MultiAssayExperiment`.  It can be used like
 a list.
 
+## Helper function to create a `MultiAssayExperiment` object
+
+The `PrepMultiAssay` function helps diagnose common problems when creating a
+`MultiAssayExperiment` object. It provides error messages and/or warnings in
+instances where names (either `colnames` or `Elist` element names) are
+inconsistent with those found in the sampleMap. Input arguments are the same
+as those in the `MultiAssayExperiment` (i.e., `Elist`, `pData`, `sampleMap`).
+The resulting output of the `PrepMultiAssay` function is a list of inputs
+including a "drops" element for names that were not able to be matched.
+
+Instances where `Elist` is created without names will prompt an error
+from `PrepMultiAssay`. Named `Elist`s are essential for checks in
+`MultiAssayExperiment`.
+
+```{r}
+objlist3 <- objlist
+(names(objlist3) <- NULL)
+PrepMultiAssay(objlist3, patient.data, dfmap)$Elist
+```
+
+Non-matching names may also be present in the `Elist` elements and the
+"assayname" column of the `sampleMap`. If names only differ by case and are
+identical and unique, names will be standardized to lower case and replaced.
+
+```{r}
+names(objlist3) <- toupper(names(objlist))
+names(objlist3)
+unique(dfmap[, "assayname"])
+PrepMultiAssay(objlist3, patient.data, dfmap)$Elist
+```
+
+When `colnames` in the `Elist` cannot be matched back to the primary data
+(`pData`), these will be dropped and added to the drops element. A similar
+operation is performed for checking "primary" sampleMap names and `pData`
+rownames.
+
+```{r}
+exampleMap <- sampleMap(simpleMultiAssay2)
+sapply(doubleExp, colnames)
+exampleMap
+PrepMultiAssay(doubleExp, patient.data, exampleMap)$drops
+```
+
+
+```{r}
+exMap <- rbind(dfmap,
+               DataFrame(primary = "Joe",
+                         assay = "Joe",
+                         assayname = "New methyl"))
+PrepMultiAssay(objlist, patient.data, exMap)$drops
+```
+
 # `RangedRaggedAssay` class
 
 Note that the GRangesList got converted to a `RangedRaggedAssay`, a class

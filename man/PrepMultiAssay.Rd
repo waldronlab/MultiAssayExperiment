@@ -2,47 +2,49 @@
 % Please edit documentation in R/PrepMultiAssay.R
 \name{PrepMultiAssay}
 \alias{PrepMultiAssay}
-\title{Prepare a MultiAssayExperiment instance}
+\title{Prepare a \code{MultiAssayExperiment} instance}
 \usage{
 PrepMultiAssay(Elist, pData, sampleMap)
 }
 \arguments{
 \item{Elist}{A \code{list} of all combined experiments}
 
-\item{pData}{A \code{DataFrame} of the phenotype
+\item{pData}{A \linkS4class{DataFrame} of the phenotype
 data for all participants}
 
-\item{sampleMap}{A \code{DataFrame} of sample identifiers, assay samples,
-and assay names}
+\item{sampleMap}{A \linkS4class{DataFrame} of sample identifiers, assay
+samples, and assay names}
 }
 \value{
 A \code{list} containing all the essential components of a
-\code{MultiAssayExperiment} as well as a "drops" element that indicates
-non-matched names.
+\code{\link{MultiAssayExperiment}} as well as a "drops" element that
+indicates non-matched names.
 }
 \description{
 The purpose of this helper function is to faciltate the creation of a
-MultiAssayExperiment object by detecting any inconsistencies with all types
-of names in either the Elist or the pData.
+\code{\link{MultiAssayExperiment}} object by detecting any inconsistencies
+with all types of names in either the \code{\link{Elist}}, the \code{pData},
+or \code{\link{sampleMap}}.
 }
 \section{Checks}{
 
 The \code{PrepMultiAssay} function checks that all columns in the sampleMap
 are \code{character}.
 
-It checks that all names and lengths match in both the \code{Elist} and
-in the unique assaynames of the \code{sampleMap}.
+It checks that all names and lengths match in both the \code{\link{Elist}}
+and in the unique assaynames of the \code{\link{sampleMap}}.
 
-If \code{Elist} names and assaynames only differ by case and are not
+If \code{\link{Elist}} names and assaynames only differ by case and are not
 duplicated, the function will standardize all names to lowercase.
 
-If names cannot be matched between the assay column of the \code{sampleMap}
-and the colnames of the \code{Elist}, those unmatched will be dropped and
-found in the "drops" element of the resulting \code{list}.
+If names cannot be matched between the assay column of the
+\code{\link{sampleMap}} and the colnames of the \code{Elist}, those
+unmatched will be dropped and found in the "drops" element of the
+resulting \code{list}.
 
-Names in the "primary" column of the \code{sampleMap}, will be matched to
-those in the \code{pData}. Unmatched "primary" column rows will be dropped
-from the \code{sampleMap}. Suggestions for name fixes in either the
-\code{Elist} or colnames will be made when necessary.
+Names in the "primary" column of the \code{\link{sampleMap}}, will be
+matched to those in the \code{pData}. Unmatched "primary" column rows will
+be dropped from the \code{\link{sampleMap}}. Suggestions for name fixes in
+either the \code{\link{Elist}} or colnames will be made when necessary.
 }
 
