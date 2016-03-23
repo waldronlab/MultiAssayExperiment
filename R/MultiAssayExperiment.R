@@ -30,7 +30,7 @@
 #' of data (study, experiments, and samples)
 #' 
 #' @param Elist A \code{list} of all combined experiments
-#' @param pData A \code{\link[S4Vectors]{DataFrame-class}} of the phenotype
+#' @param pData A \code{\link[S4Vectors]{DataFrame}} of the phenotype
 #' data for all participants
 #' @param sampleMap A \code{DataFrame} of sample identifiers, assay samples,
 #' and assay names

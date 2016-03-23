@@ -18,21 +18,40 @@
 #' @description 
 #' The \code{MultiAssayExperiment} class can be used to manage results of 
 #' diverse assays on a collection of specimen. Currently,  the class can handle
-#' assays that are organized instances of \code{RangedSummarizedExperiment}, 
-#' \code{ExpressionSet}, \code{matrix}, \code{RangedRaggedAssay} 
-#' (inherits from \code{GRangesList}), and \code{RangedVcfStack}. Create new
-#' \code{MultiAssayExperiment} instances with the eponymous constructor, 
-#' minimally with the argument \code{\linkS4class{Elist}}, potentially also
-#' with the arguments \code{pData} and \code{sampleMap}.
+#' assays that are organized instances of
+#' \code{\linkS4class{SummarizedExperiment}},
+#' \code{\linkS4class{ExpressionSet}},
+#' \code{matrix}, \code{\link{RangedRaggedAssay}}
+#' (inherits from \code{\linkS4class{GRangesList}}), and \code{RangedVcfStack}.
+#' Create new \code{MultiAssayExperiment} instances with the eponymous
+#' constructor, minimally with the argument \code{\link{Elist}}, potentially
+#' also with the arguments \code{pData} (see section below) and
+#' \code{\link{sampleMap}}.
 #'
-#' @slot Elist A \code{\linkS4class{Elist}} class object for each assay dataset
+#' @section pData:
+#' The \code{pData} slot is a collection of primary specimen data valid across
+#' all experiments. This slot is strictly of class
+#' \code{\linkS4class{DataFrame}} but arguments for the constructor function
+#' allow arguments to be of class \code{data.frame} and subsequently coerced.
+#'
+#' @section Elist:
+#' The \code{\link{Elist}} slot is designed to contain results from each
+#' experiment/assay. It contains a \link[S4Vectors]{SimpleList}.
+#' 
+#' @section sampleMap:
+#' The \code{\link{sampleMap}} contains a \code{DataFrame} of translatable
+#' identifiers of samples and participants or biological units. Standard column
+#' names of the sampleMap are "primary", "assay", and "assayname".
+#' 
+#' @slot Elist A \code{\link{Elist}} class object for each assay dataset
 #' @slot pData A \code{DataFrame} of all clinical data available across
 #' experiments
 #' @slot sampleMap A \code{DataFrame} of translatable identifiers of samples
 #' and participants
 #' @slot metadata Additional data describing the
-#' \code{\link{MultiAssayExperiment}} object
+#' \code{MultiAssayExperiment} object
 #' @slot drops A metadata \code{list} of dropped information
+#' 
 #' @return A \code{MultiAssayExperiment} object
 #' 
 #' @examples

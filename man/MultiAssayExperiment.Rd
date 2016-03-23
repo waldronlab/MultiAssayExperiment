@@ -12,7 +12,7 @@ MultiAssayExperiment(Elist = list(), pData = S4Vectors::DataFrame(),
 \arguments{
 \item{Elist}{A \code{list} of all combined experiments}
 
-\item{pData}{A \code{\link[S4Vectors]{DataFrame-class}} of the phenotype
+\item{pData}{A \code{\link[S4Vectors]{DataFrame}} of the phenotype
 data for all participants}
 
 \item{sampleMap}{A \code{DataFrame} of sample identifiers, assay samples,
