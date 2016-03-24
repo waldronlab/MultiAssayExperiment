@@ -11,7 +11,9 @@
 #' @return Documentation via the GitHub wiki
 #' 
 #' @examples
+#' \dontrun{
 #' API()
+#' }
 #' 
 #' @author Vincent J Carey
 #' 
