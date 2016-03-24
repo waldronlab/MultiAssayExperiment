@@ -99,7 +99,7 @@ setClass("MultiAssayExperiment",
 .checkSampleNames <- function(object) {
   sampMap <- sampleMap(object)
   assayCols <- S4Vectors::split(sampMap[, "assay"],
-                                sampMap[, "assayname"])[order(names(object))]
+                                sampMap[, "assayname"])[names(object)]
   colNams <- colnames(object)
   logicResult <- Map(function(columnNames, assayColumns) {
     columnNames %in% assayColumns
