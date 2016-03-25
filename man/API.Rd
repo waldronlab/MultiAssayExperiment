@@ -17,6 +17,7 @@ Documentation via the GitHub wiki
 \code{API} opens a browser to the API documentation
 }
 \examples{
+## This will open in a browser window
 \dontrun{
 API()
 }

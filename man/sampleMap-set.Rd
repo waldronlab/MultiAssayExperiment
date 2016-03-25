@@ -18,4 +18,12 @@ A \code{sampleMap} with replacement values
 \description{
 Replace a slot value with a given \code{DataFrame}
 }
+\examples{
+## Load example
+example("MultiAssayExperiment")
+
+## Replacement method for a MultiAssayExperiment sampleMap
+sampleMap(myMultiAssayExperiment) <- DataFrame()
+
+}
 

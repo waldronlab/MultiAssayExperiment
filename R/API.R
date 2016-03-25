@@ -11,6 +11,7 @@
 #' @return Documentation via the GitHub wiki
 #' 
 #' @examples
+#' ## This will open in a browser window
 #' \dontrun{
 #' API()
 #' }
