@@ -34,6 +34,17 @@
 #' \code{\link{MultiAssayExperiment}} as well as a "drops" element that
 #' indicates non-matched names.
 #' 
+#' @examples 
+#' ## Run example
+#' example("MultiAssayExperiment")
+#' 
+#' ## Check if there are any inconsistencies within the different names
+#' myPrepMA <- PrepMultiAssay(ExpList, primary, mySampleMap)
+#' 
+#' ## Results in a list of components for the MultiAssayExperiment constructor
+#' ## function
+#' MultiAssayExperiment(myPrepMA$Elist, myPrepMA$pData, myPrepMA$sampleMap)
+#' 
 #' @export PrepMultiAssay
 PrepMultiAssay <- function(Elist, pData, sampleMap) {
   drops <- list()
