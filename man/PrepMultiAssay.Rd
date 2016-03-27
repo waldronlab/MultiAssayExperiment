@@ -47,4 +47,16 @@ matched to those in the \code{pData}. Unmatched "primary" column rows will
 be dropped from the \code{\link{sampleMap}}. Suggestions for name fixes in
 either the \code{\link{Elist}} or colnames will be made when necessary.
 }
+\examples{
+## Run example
+example("MultiAssayExperiment")
+
+## Check if there are any inconsistencies within the different names
+myPrepMA <- PrepMultiAssay(ExpList, primary, mySampleMap)
+
+## Results in a list of components for the MultiAssayExperiment constructor
+## function
+MultiAssayExperiment(myPrepMA$Elist, myPrepMA$pData, myPrepMA$sampleMap)
+
+}
 

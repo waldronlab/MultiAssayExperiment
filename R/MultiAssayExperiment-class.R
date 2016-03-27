@@ -261,6 +261,14 @@ setMethod("names", "MultiAssayExperiment", function(x)
 #' @param object A \code{MultiAssayExperiment} object
 #' @param value A \code{DataFrame} object to replace the existing
 #' \code{sampleMap}
+#' 
+#' @examples
+#' ## Load example
+#' example("MultiAssayExperiment")
+#' 
+#' ## Replacement method for a MultiAssayExperiment sampleMap
+#' sampleMap(myMultiAssayExperiment) <- DataFrame()
+#' 
 #' @return A \code{sampleMap} with replacement values
 setGeneric("sampleMap<-", function(object, value) {
   standardGeneric("sampleMap<-")
