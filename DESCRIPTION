@@ -8,7 +8,7 @@ Description: Develop an integrative environment where multiple assays are
 Suggests:
     BiocStyle,
     testthat,
-    knitr
+    rmarkdown
 Depends:
     R (>= 3.3.0)
 Imports:
@@ -26,7 +26,7 @@ biocViews: Infrastructure, DataRepresentation
 License: Artistic-2.0
 LazyData: true
 LazyLoad: yes
-VignetteBuilder: knitr
+VignetteBuilder: rmarkdown
 Collate:
     'API.R'
     'Elist-class.R'
