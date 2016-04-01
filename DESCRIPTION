@@ -9,8 +9,6 @@ Suggests:
     BiocStyle,
     testthat,
     rmarkdown
-Depends:
-    R (>= 3.3.0)
 Imports:
     methods,
     GenomicRanges,
