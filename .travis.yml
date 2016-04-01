@@ -1,7 +1,10 @@
+# R for travis documentation: https://docs.travis-ci.com/user/languages/r
+
 language: r
+sudo: false
+cache: packages
 
 r: bioc-devel
-sudo: false
 
 # Strict checks in place
 warnings_are_errors: true

@@ -24,7 +24,10 @@ RangedRaggedAssay <- function(x = GRangesList()) {
   }
   if (inherits(x, "GRangesList")) {
     metad <- mcols(x)
-    if (is.null(rownames(x))) {
+    missingRownames <- vapply(X = x, FUN = function(grl) {
+      is.null(names(grl))
+    }, FUN.VALUE = logical(1L))
+    if (all(missingRownames)) {
       u_obj <- unlist(x, use.names = FALSE)
       names(u_obj) <- seq_len(length(u_obj))
       x <- relist(u_obj, x)
