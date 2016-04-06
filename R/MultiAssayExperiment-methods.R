@@ -4,6 +4,11 @@
 #' @import BiocGenerics SummarizedExperiment S4Vectors GenomicRanges methods
 NULL
 
+#' @describeIn RangedRaggedAssay Get feature names from a
+#' \code{RangedRaggedAssay}
+setMethod("rownames", "RangedRaggedAssay", function(x)
+  names(unlist(x, use.names = FALSE)))
+
 #' @describeIn Elist Get all the rownames of an \code{Elist}
 setMethod("rownames", "Elist", function(x)
   IRanges::CharacterList(lapply(x, rownames)))
@@ -13,6 +18,11 @@ setMethod("rownames", "Elist", function(x)
 #' @exportMethod rownames
 setMethod("rownames", "MultiAssayExperiment", function(x)
   rownames(Elist(x)))
+
+#' @describeIn RangedRaggedAssay Get sample names from a
+#' \code{RangedRaggedAssay}
+setMethod("colnames", "RangedRaggedAssay", function(x)
+  base::names(x))
 
 #' @describeIn Elist Get sample names from an \code{Elist} object
 setMethod("colnames", "Elist", function(x)
@@ -190,8 +200,7 @@ setMethod("isEmpty", "MultiAssayExperiment", function(x)
 #' @param x A \code{\link{MultiAssayExperiment}} object
 #' @param y Either a \code{numeric}, \code{character} or
 #' \code{logical} object indicating what assay(s) to select  
-#' @return A \code{\link{MultiAssayExperiment}} object
-#' @seealso `subset,MultiAssayExperiment-method`
+#' @return A \code{\link{MultiAssayExperiment}} object 
 setGeneric("subsetByAssay", function(x, y) standardGeneric("subsetByAssay"))
 
 #' @describeIn subsetByAssay Use either a \code{numeric}, \code{logical}, or

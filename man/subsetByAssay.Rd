@@ -27,7 +27,4 @@ Select which assay(s) to obtain from available datasets
 \item \code{MultiAssayExperiment}: Use either a \code{numeric}, \code{logical}, or
 \code{character} vector to subset assays in a \code{MultiAssayExperiment}
 }}
-\seealso{
-`subset,MultiAssayExperiment-method`
-}
 
