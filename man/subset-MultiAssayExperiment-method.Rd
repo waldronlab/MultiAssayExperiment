@@ -31,4 +31,7 @@ A subsetted \link{MultiAssayExperiment} class object
 The \code{subset} function allows for searching through colnames and
 rownames to obtain the requested subset of data or experiments (assays).
 }
+\seealso{
+subsetByAssay, subsetByColumn, subsetByRow
+}
 
