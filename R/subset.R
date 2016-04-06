@@ -15,6 +15,7 @@
 #' by rownames
 #' @return A subsetted \link{MultiAssayExperiment} class object
 #' @exportMethod subset
+#' @seealso subsetByAssay, subsetByColumn, subsetByRow
 setMethod("subset", "MultiAssayExperiment",
           function(x, indicator, method = NULL, drop = TRUE, ...) {
             if (inherits(indicator, "GRanges")) {
