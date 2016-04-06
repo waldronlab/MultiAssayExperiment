@@ -12,8 +12,8 @@
 *.md
 /vignettes/cache/
 *.vim
+*.Rda
 
-
-*.dcf
-
-/tmp/
+# Don't ignore 
+!NEWS.md
+!README.md
