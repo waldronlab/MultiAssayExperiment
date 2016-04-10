@@ -98,8 +98,7 @@ setClass("MultiAssayExperiment",
 ## of the sampleMap
 .checkSampleNames <- function(object) {
   sampMap <- sampleMap(object)
-  assayCols <- S4Vectors::split(sampMap[, "assay"],
-                                sampMap[, "assayname"])[names(object)]
+  assayCols <- mapToList(sampMap[, c("assay", "assayname")])
   colNams <- colnames(object)
   logicResult <- Map(function(columnNames, assayColumns) {
     columnNames %in% assayColumns
@@ -139,7 +138,7 @@ setClass("MultiAssayExperiment",
 ## "assayname" column, there can be no duplicated values in the "assay" column
 .uniqueNamesInAssays <- function(object) {
   SampMap <- sampleMap(object)
-  lcheckdups <- S4Vectors::split(SampMap[, "assay"], SampMap[, "assayname"])
+  lcheckdups <- mapToList(SampMap[, c("assay", "assayname")])
   logchecks <- any(vapply(lcheckdups, FUN = function(x) {
     as.logical(anyDuplicated(x))
   }, FUN.VALUE = logical(1L)))
