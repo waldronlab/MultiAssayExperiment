@@ -4,11 +4,6 @@
 #' @import BiocGenerics SummarizedExperiment S4Vectors GenomicRanges methods
 NULL
 
-#' @describeIn RangedRaggedAssay Get feature names from a
-#' \code{RangedRaggedAssay}
-setMethod("rownames", "RangedRaggedAssay", function(x)
-  names(unlist(x, use.names = FALSE)))
-
 #' @describeIn Elist Get all the rownames of an \code{Elist}
 setMethod("rownames", "Elist", function(x)
   IRanges::CharacterList(lapply(x, rownames)))
@@ -18,11 +13,6 @@ setMethod("rownames", "Elist", function(x)
 #' @exportMethod rownames
 setMethod("rownames", "MultiAssayExperiment", function(x)
   rownames(Elist(x)))
-
-#' @describeIn RangedRaggedAssay Get sample names from a
-#' \code{RangedRaggedAssay}
-setMethod("colnames", "RangedRaggedAssay", function(x)
-  base::names(x))
 
 #' @describeIn Elist Get sample names from an \code{Elist} object
 setMethod("colnames", "Elist", function(x)
@@ -200,7 +190,8 @@ setMethod("isEmpty", "MultiAssayExperiment", function(x)
 #' @param x A \code{\link{MultiAssayExperiment}} object
 #' @param y Either a \code{numeric}, \code{character} or
 #' \code{logical} object indicating what assay(s) to select  
-#' @return A \code{\link{MultiAssayExperiment}} object 
+#' @return A \code{\link{MultiAssayExperiment}} object
+#' @seealso `subset,MultiAssayExperiment-method`
 setGeneric("subsetByAssay", function(x, y) standardGeneric("subsetByAssay"))
 
 #' @describeIn subsetByAssay Use either a \code{numeric}, \code{logical}, or
@@ -233,13 +224,13 @@ setMethod("subsetByColumn", c("MultiAssayExperiment", "ANY"), function(x, y) {
   selectors <- rownames(pData(x))[y]
   newpData <- pData(x)[selectors, ]
   listMap <- mapToList(sampleMap(x), "assayname")
-  ## reorder names in the listMap
-  listMap <- listMap[names(x)]
-  listMap <- lapply(listMap, function(assay) {
-    assay[which(assay[, 1] %in% selectors),]
+  listMap <- lapply(listMap, function(primary) {
+    primary[which(primary[, 1] %in% selectors),]
   })
   newMap <- listToMap(listMap)
-  columns <- lapply(listMap, function(mapChunk) {mapChunk[, 2, drop = TRUE]})
+  columns <- lapply(listMap, function(mapChunk) {
+    mapChunk[, "assay", drop = TRUE]
+  })
   newSubset <- mapply(function(x, j) {x[, j, drop = FALSE]},
                       x = Elist(x), j = columns, SIMPLIFY = FALSE)
   newSubset <- Elist(newSubset)
@@ -270,8 +261,6 @@ setMethod("subsetByColumn", c("MultiAssayExperiment", "list"),
               }, f = Elist(x), j = y, SIMPLIFY = FALSE))
               newSamps <- as.list(colnames(x))
               listMap <- mapToList(sampleMap(x), "assayname")
-              ## reorder names in the listMap
-              listMap <- listMap[names(x)]
               newMap <- mapply(function(lMap, nSamps) {
                 lMap[na.omit(match(nSamps, as.character(lMap[, "assay"]))), ]
               }, lMap = listMap, nSamps = newSamps, SIMPLIFY = FALSE)
