@@ -1,15 +1,13 @@
 inst/vignettes/downloads
-inst/vignettes/all_data_by_genes.txt.gz
 aux$
 log$
 out$
 sqlite$
 ^.*\.Rproj$
 ^\.Rproj\.user$
-vignettes/OvarDB
-vignettes/OvarDB.sqlite
 txt$
 gz$
 cache$
 .travis.yml
 .gitignore
+ovMAEO.Rda

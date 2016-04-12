@@ -192,6 +192,7 @@ setMethod("isEmpty", "MultiAssayExperiment", function(x)
 #' \code{logical} object indicating what assay(s) to select  
 #' @return A \code{\link{MultiAssayExperiment}} object
 #' @seealso `subset,MultiAssayExperiment-method`
+#' @export subsetByAssay
 setGeneric("subsetByAssay", function(x, y) standardGeneric("subsetByAssay"))
 
 #' @describeIn subsetByAssay Use either a \code{numeric}, \code{logical}, or
@@ -216,6 +217,7 @@ setMethod("subsetByAssay", c("MultiAssayExperiment", "ANY"), function(x, y) {
 #' \code{logical} object indicating what rownames in the pData to select
 #' for subsetting
 #' @return A \code{\link{MultiAssayExperiment}} object
+#' @export subsetByColumn
 setGeneric("subsetByColumn", function(x, y) standardGeneric("subsetByColumn"))
 
 #' @describeIn subsetByColumn Either a \code{numeric} or \code{logical} vector
@@ -296,6 +298,7 @@ setClassUnion("GRangesORcharacter", c("GRanges", "character"))
 #' (via \code{getHits})
 #' @return A \code{\link{MultiAssayExperiment}} object 
 #' @seealso \code{\link{getHits}}
+#' @export subsetByRow
 setGeneric("subsetByRow", function(x, y, ...) standardGeneric("subsetByRow"))
 
 #' @describeIn subsetByRow Use either a \code{GRanges} or \code{character} to
