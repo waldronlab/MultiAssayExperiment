@@ -8,6 +8,6 @@ sqlite$
 txt$
 gz$
 cache$
-.travis.yml
+^\.travis\.yml$
 .gitignore
 ovMAEO.Rda
