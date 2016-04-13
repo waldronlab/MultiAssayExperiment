@@ -1,13 +1,25 @@
-inst/vignettes/downloads
-aux$
-log$
-out$
-sqlite$
+#----------------------------
+# Git and SVN
+#----------------------------
+^\.svn$
+^\.git$
+^\.gitignore$
+
+#----------------------------
+# TravisCI
+#----------------------------
+^\.travis\.yml$
+
+#----------------------------
+# RStudio and R
+#----------------------------
+^\.Rhistory$
 ^.*\.Rproj$
 ^\.Rproj\.user$
-txt$
-gz$
-cache$
-^\.travis\.yml$
-.gitignore
-ovMAEO.Rda
+
+#----------------------------
+# Data files
+#----------------------------
+^ovMAEO\.Rda$
+^NEWS\.md$
+^.*\.tar\.gz$
