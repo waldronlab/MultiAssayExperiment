@@ -14,9 +14,9 @@
 ### ----------------------------------------------
 
 #' An integrative MultiAssay class for experiment data
-#' 
-#' @description 
-#' The \code{MultiAssayExperiment} class can be used to manage results of 
+#'
+#' @description
+#' The \code{MultiAssayExperiment} class can be used to manage results of
 #' diverse assays on a collection of specimen. Currently,  the class can handle
 #' assays that are organized instances of
 #' \code{\linkS4class{SummarizedExperiment}},
@@ -37,12 +37,12 @@
 #' @section Elist:
 #' The \code{\link{Elist}} slot is designed to contain results from each
 #' experiment/assay. It contains a \link[S4Vectors]{SimpleList}.
-#' 
+#'
 #' @section sampleMap:
 #' The \code{\link{sampleMap}} contains a \code{DataFrame} of translatable
 #' identifiers of samples and participants or biological units. Standard column
 #' names of the sampleMap are "primary", "assay", and "assayname".
-#' 
+#'
 #' @slot Elist A \code{\link{Elist}} class object for each assay dataset
 #' @slot pData A \code{DataFrame} of all clinical data available across
 #' experiments
@@ -51,18 +51,18 @@
 #' @slot metadata Additional data describing the
 #' \code{MultiAssayExperiment} object
 #' @slot drops A metadata \code{list} of dropped information
-#' 
+#'
 #' @return A \code{MultiAssayExperiment} object
-#' 
+#'
 #' @examples
 #' MultiAssayExperiment()
-#' 
+#'
 #' @exportClass MultiAssayExperiment
 #' @include Elist-class.R
 setClass("MultiAssayExperiment",
          slots = list(
            Elist = "Elist",
-           pData = "DataFrame", 
+           pData = "DataFrame",
            sampleMap = "DataFrame",
            metadata = "ANY",
            drops = "list"
@@ -70,7 +70,7 @@ setClass("MultiAssayExperiment",
 )
 
 ### - - - - - - - - - - - - - - - - - - - - - - - -
-### Validity 
+### Validity
 ###
 
 ## ELIST
@@ -151,7 +151,7 @@ setClass("MultiAssayExperiment",
 .validMultiAssayExperiment <- function(object) {
   if (length(Elist(object)) != 0L) {
     c(.checkElist(object),
-      .checkSampleMapNames(object), 
+      .checkSampleMapNames(object),
       .uniqueNamesInAssays(object),
       .checkSampleNames(object)
      )
@@ -180,7 +180,7 @@ setMethod("show", "MultiAssayExperiment", function(object) {
       ifelse(o_len == 1L, "experiment", "experiments"),
       "with",
       ifelse(all(o_names == "none"), "no user-defined names",
-             ifelse(length(o_names) == 1L, "a user-defined name", 
+             ifelse(length(o_names) == 1L, "a user-defined name",
                     "user-defined names")),
       ifelse(length(o_len) == 0L, "or", "and"),
       ifelse(length(o_len) == 0L, "classes.",
@@ -189,7 +189,7 @@ setMethod("show", "MultiAssayExperiment", function(object) {
       "\n Containing an ")
   show(Elist(object))
   cat("To access slots use: \n Elist() - to obtain the",
-      sprintf('"%s"', c_elist), 
+      sprintf('"%s"', c_elist),
       "of experiment instances",
       "\n pData() - for the primary/phenotype", sprintf('"%s"', c_mp),
       "\n sampleMap() - for the sample availability", sprintf('"%s"', c_sm),
@@ -240,7 +240,7 @@ setMethod("metadata", "MultiAssayExperiment", function(x)
 ###
 
 #' @exportMethod length
-#' @describeIn MultiAssayExperiment Get the length of Elist 
+#' @describeIn MultiAssayExperiment Get the length of Elist
 setMethod("length", "MultiAssayExperiment", function(x)
   length(getElement(x, "Elist"))
 )
@@ -256,18 +256,18 @@ setMethod("names", "MultiAssayExperiment", function(x)
 ###
 
 #' Replace a slot value with a given \code{DataFrame}
-#' 
+#'
 #' @param object A \code{MultiAssayExperiment} object
 #' @param value A \code{DataFrame} object to replace the existing
 #' \code{sampleMap}
-#' 
+#'
 #' @examples
 #' ## Load example
 #' example("MultiAssayExperiment")
-#' 
+#'
 #' ## Replacement method for a MultiAssayExperiment sampleMap
 #' sampleMap(myMultiAssayExperiment) <- DataFrame()
-#' 
+#'
 #' @return A \code{sampleMap} with replacement values
 setGeneric("sampleMap<-", function(object, value) {
   standardGeneric("sampleMap<-")
@@ -294,7 +294,7 @@ setReplaceMethod("sampleMap", c("MultiAssayExperiment", "DataFrame"),
 #' @examples
 #' ## Load a MultiAssayExperiment
 #' example("MultiAssayExperiment")
-#' 
+#'
 #' ## Replace with an empty Elist
 #' Elist(myMultiAssayExperiment) <- Elist()
 #'
@@ -302,7 +302,7 @@ setReplaceMethod("sampleMap", c("MultiAssayExperiment", "DataFrame"),
 setGeneric("Elist<-", function(object, value) standardGeneric("Elist<-"))
 
 #' @exportMethod Elist<-
-#' @describeIn MultiAssayExperiment value: An \code{Elist} 
+#' @describeIn MultiAssayExperiment value: An \code{Elist}
 #' representation
 setReplaceMethod("Elist", c("MultiAssayExperiment", "Elist"),
                  function(object, value) {
