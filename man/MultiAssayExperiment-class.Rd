@@ -77,7 +77,7 @@ in the \code{Elist}}
 A \code{MultiAssayExperiment} object
 }
 \description{
-The \code{MultiAssayExperiment} class can be used to manage results of 
+The \code{MultiAssayExperiment} class can be used to manage results of
 diverse assays on a collection of specimen. Currently,  the class can handle
 assays that are organized instances of
 \code{\linkS4class{SummarizedExperiment}},
@@ -113,7 +113,7 @@ MultiAssayExperiment
 \item \code{sampleMap<-}: value: A \code{DataFrame} sampleMap
 representation
 
-\item \code{Elist<-}: value: An \code{Elist} 
+\item \code{Elist<-}: value: An \code{Elist}
 representation
 
 \item \code{pData<-}: value: A \code{DataFrame} of specimen data

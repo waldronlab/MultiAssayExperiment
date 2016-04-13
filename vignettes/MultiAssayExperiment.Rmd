@@ -502,9 +502,6 @@ The core functionality of `MultiAssayExperiment` is to allow subsetting by
 assay, rownames, and colnames, across all experiments simultaneously while
 guaranteeing continued matching of samples.
 
-Subsetting can be performed either using the `subset()` function, or even more
-simply by square brackets.
-
 ## Subsetting samples / columns
 
 Experimental samples are stored in the rows of pData but the columns of
@@ -522,7 +519,7 @@ Here we use an integer to keep the first two rows of pData, and all
 experimental assays associated to those two primary samples:
 
 ```{r}
-subset(myMultiAssay, 1:2, "columns")
+subsetByColumn(myMultiAssay, 1:2)
 ```
 
 Note that the above operation keeps different numbers of columns / samples
@@ -533,12 +530,12 @@ Subsetting the primary identifiers using a character vector corresponding to
 some rownames of pData returns the same result:
 
 ```{r}
-subset(myMultiAssay, c("Jack", "Jill"), "columns")
+subsetByColumn(myMultiAssay, c("Jack", "Jill"))
 ```
 
 Columns can be subset using a logical:
 ```{r}
-malesMultiAssay <- subset(myMultiAssay, pData(myMultiAssay)$sex=="M", "columns")
+malesMultiAssay <- subsetByColumn(myMultiAssay, pData(myMultiAssay)$sex=="M")
 pData(malesMultiAssay)
 ```
 
@@ -559,11 +556,10 @@ allsamples
 ```
 
 Now let's get rid of the Methyl 450k arrays 3-5, a couple different but
-equivalent ways (evaluate this chunk once working):
+equivalent ways:
 
-```{r, eval=FALSE}
+```{r}
 allsamples[["Methyl 450k"]] <- allsamples[["Methyl 450k"]][-3:-5]
-subset(myMultiAssay, allsamples, "columns")
 myMultiAssay[, as.list(allsamples), ]
 ```
 
@@ -574,20 +570,21 @@ You can select certain assays / experiments using subset, by providing a
 character, logical, or integer vector.  An example using character:
 
 ```{r}
-subset(myMultiAssay, c("Affy", "CNV gistic"), "assays")
+subsetByAssay(myMultiAssay, c("Affy", "CNV gistic"))
 ```
 
 Examples using logical and integer:
 ```{r}
 is.cnv = grepl("CNV", names(Elist(myMultiAssay)))
 is.cnv
-subset(myMultiAssay, is.cnv, "assays")
-subset(myMultiAssay, which(is.cnv), "assays")
+subsetByAssay(myMultiAssay, is.cnv)
+subsetByAssay(myMultiAssay, which(is.cnv))
 ```
 
-`subset()` is an endogenous operation, in that it always returns another
-`MultiAssayExperiment` object. Use `assay(myMultiAssay)` to retrieve the
-experimental data in an ordinary `list` of datasets as their original classes.
+`subsetByRow`, `subsetByColumn`, and `subsetByAssay` are endogenous operations,
+in that it always returns another `MultiAssayExperiment` object.
+Use `assay(myMultiAssay)` to retrieve the experimental data in an ordinary
+`list` of datasets as their original classes.
 
 ## Subsetting rows (features) by IDs, integers, or logicals
 
@@ -622,7 +619,7 @@ contain only ENST0000035076 row, and "Mirna" and "CNV gistic" have zero rows:
 (`drop` argument is set to `TRUE` by default)
 
 ```{r}
-featSubsetted0 <- subset(myMultiAssay, "ENST00000355076", "rows")
+featSubsetted0 <- subsetByRow(myMultiAssay, "ENST00000355076")
 class(featSubsetted0)
 class(Elist(featSubsetted0))
 Elist(featSubsetted0)
@@ -633,7 +630,7 @@ order reversed, and `Methyl 450k` keeps only its second row.
 
 ```{r}
 featSubsetted <-
-  subset(myMultiAssay, c("ENST00000355076", "ENST00000294241"), "rows")
+  subsetByRow(myMultiAssay, c("ENST00000355076", "ENST00000294241"))
 exprs(Elist(myMultiAssay)[[1]])
 exprs(Elist(featSubsetted)[[1]])
 ```
@@ -654,14 +651,14 @@ subsetting by range. The first three arguments here are for `subset`, the
 rest passed on to `IRanges::subsetByOverlaps` through "...":
 
 ```{r}
-subsetted <- subset(myMultiAssay, gr, maxgap = 2L, type = "within")
+subsetted <- subsetByRow(myMultiAssay, gr, maxgap = 2L, type = "within")
 Elist(subsetted)
 ```
 
 ## Subsetting by square bracket `[`
 
 The bracket method for the `MultiAssayExperiment` is equivalent but more
-compact than the `subset()` method. The three positions within the bracket
+compact than the `subsetBy*()` methods. The three positions within the bracket
 operator indicate rows, columns, and assays, respectively (pseudocode):
 
 ```{r, eval=FALSE}
