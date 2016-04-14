@@ -1,15 +1,25 @@
-inst/vignettes/downloads
-inst/vignettes/all_data_by_genes.txt.gz
-aux$
-log$
-out$
-sqlite$
+#----------------------------
+# Git and SVN
+#----------------------------
+^\.svn$
+^\.git$
+^\.gitignore$
+
+#----------------------------
+# TravisCI
+#----------------------------
+^\.travis\.yml$
+
+#----------------------------
+# RStudio and R
+#----------------------------
+^\.Rhistory$
 ^.*\.Rproj$
 ^\.Rproj\.user$
-vignettes/OvarDB
-vignettes/OvarDB.sqlite
-txt$
-gz$
-cache$
-.travis.yml
-.gitignore
+
+#----------------------------
+# Data files
+#----------------------------
+^ovMAEO\.Rda$
+^NEWS\.md$
+^.*\.tar\.gz$

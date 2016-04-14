@@ -192,6 +192,21 @@ setMethod("isEmpty", "MultiAssayExperiment", function(x)
 #' \code{logical} object indicating what assay(s) to select  
 #' @return A \code{\link{MultiAssayExperiment}} object
 #' @seealso `subset,MultiAssayExperiment-method`
+#' 
+#' @examples
+#' ## Load a MultiAssayExperiment example
+#' example("MultiAssayExperiment")
+#' 
+#' ## Using experiment names
+#' subsetByAssay(myMultiAssayExperiment, "Affy") 
+#' 
+#' ## Using numeric indicators
+#' subsetByAssay(myMultiAssayExperiment, 1:2)
+#' 
+#' ## Using a logical vector
+#' subsetByAssay(myMultiAssayExperiment, c(TRUE, FALSE, TRUE))
+#' 
+#' @export subsetByAssay
 setGeneric("subsetByAssay", function(x, y) standardGeneric("subsetByAssay"))
 
 #' @describeIn subsetByAssay Use either a \code{numeric}, \code{logical}, or
@@ -216,6 +231,21 @@ setMethod("subsetByAssay", c("MultiAssayExperiment", "ANY"), function(x, y) {
 #' \code{logical} object indicating what rownames in the pData to select
 #' for subsetting
 #' @return A \code{\link{MultiAssayExperiment}} object
+#' 
+#' @examples
+#' ## Load a MultiAssayExperiment example
+#' example("MultiAssayExperiment")
+#' 
+#' ## Subset by character vector (Jack)
+#' subsetByColumn(myMultiAssayExperiment, "Jack")
+#' 
+#' ## Subset by numeric index of pData rows (Jack and Bob)
+#' subsetByColumn(myMultiAssayExperiment, c(1, 3))
+#' 
+#' ## Subset by logical indicator of pData rows (Jack and Jill)
+#' subsetByColumn(myMultiAssayExperiment, c(TRUE, TRUE, FALSE, FALSE))
+#' 
+#' @export subsetByColumn
 setGeneric("subsetByColumn", function(x, y) standardGeneric("subsetByColumn"))
 
 #' @describeIn subsetByColumn Either a \code{numeric} or \code{logical} vector
@@ -224,13 +254,13 @@ setMethod("subsetByColumn", c("MultiAssayExperiment", "ANY"), function(x, y) {
   selectors <- rownames(pData(x))[y]
   newpData <- pData(x)[selectors, ]
   listMap <- mapToList(sampleMap(x), "assayname")
-  ## reorder names in the listMap
-  listMap <- listMap[names(x)]
-  listMap <- lapply(listMap, function(assay) {
-    assay[which(assay[, 1] %in% selectors),]
+  listMap <- lapply(listMap, function(primary) {
+    primary[which(primary[, 1] %in% selectors),]
   })
   newMap <- listToMap(listMap)
-  columns <- lapply(listMap, function(mapChunk) {mapChunk[, 2, drop = TRUE]})
+  columns <- lapply(listMap, function(mapChunk) {
+    mapChunk[, "assay", drop = TRUE]
+  })
   newSubset <- mapply(function(x, j) {x[, j, drop = FALSE]},
                       x = Elist(x), j = columns, SIMPLIFY = FALSE)
   newSubset <- Elist(newSubset)
@@ -261,8 +291,6 @@ setMethod("subsetByColumn", c("MultiAssayExperiment", "list"),
               }, f = Elist(x), j = y, SIMPLIFY = FALSE))
               newSamps <- as.list(colnames(x))
               listMap <- mapToList(sampleMap(x), "assayname")
-              ## reorder names in the listMap
-              listMap <- listMap[names(x)]
               newMap <- mapply(function(lMap, nSamps) {
                 lMap[na.omit(match(nSamps, as.character(lMap[, "assay"]))), ]
               }, lMap = listMap, nSamps = newSamps, SIMPLIFY = FALSE)
@@ -298,6 +326,22 @@ setClassUnion("GRangesORcharacter", c("GRanges", "character"))
 #' (via \code{getHits})
 #' @return A \code{\link{MultiAssayExperiment}} object 
 #' @seealso \code{\link{getHits}}
+#' 
+#' @examples 
+#' ## Load a MultiAssayExperiment example
+#' example("MultiAssayExperiment")
+#' 
+#' ## Use a GRanges object to subset rows where ranged data present
+#' egr <- GRanges(seqnames = "chr1", IRanges(start = 1, end = 3), strand = "-")
+#' subsetByRow(myMultiAssayExperiment, egr)
+#' 
+#' ## Use a logical vector (recycling used)
+#' subsetByRow(myMultiAssayExperiment, c(TRUE, FALSE))
+#' 
+#' ## Use a character vector
+#' subsetByRow(myMultiAssayExperiment, "ENST00000355076")
+#' 
+#' @export subsetByRow
 setGeneric("subsetByRow", function(x, y, ...) standardGeneric("subsetByRow"))
 
 #' @describeIn subsetByRow Use either a \code{GRanges} or \code{character} to
@@ -320,7 +364,7 @@ setMethod("subsetByRow", c("MultiAssayExperiment", "GRanges"),
 
 #' @describeIn subsetByRow Use a \code{logical} vector to select rows of a
 #' \code{MultiAssayExperiment}
-setMethod("subsetByRow", c("MultiAssayExperiment", "logical"), 
+setMethod("subsetByRow", c("MultiAssayExperiment", "logical"),
           function(x, y) {
             ElistNrows <- vapply(Elist(x), FUN = function(z) {
               dim(z)[1]
@@ -339,7 +383,7 @@ setMethod("subsetByRow", c("MultiAssayExperiment", "logical"),
 #' \code{numeric} or \code{logical} vector
 setMethod("subsetByRow", c("MultiAssayExperiment", "ANY"),
           function(x, y) {
-            newElist <- S4Vectors::endoapply(Elist(x), 
+            newElist <- S4Vectors::endoapply(Elist(x),
                                              function(z) {z[y,, drop = FALSE]})
             Elist(x) <- newElist
             return(x)

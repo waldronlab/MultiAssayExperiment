@@ -49,4 +49,18 @@ column names
 \code{List} must match that of the \code{Elist} in the
 \code{MultiAssayExperiment}.
 }}
+\examples{
+## Load a MultiAssayExperiment example
+example("MultiAssayExperiment")
+
+## Subset by character vector (Jack)
+subsetByColumn(myMultiAssayExperiment, "Jack")
+
+## Subset by numeric index of pData rows (Jack and Bob)
+subsetByColumn(myMultiAssayExperiment, c(1, 3))
+
+## Subset by logical indicator of pData rows (Jack and Jill)
+subsetByColumn(myMultiAssayExperiment, c(TRUE, TRUE, FALSE, FALSE))
+
+}
 

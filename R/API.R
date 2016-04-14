@@ -20,7 +20,7 @@
 #' 
 #' @import shinydashboard shiny
 #' 
-#' @export
+#' @export API
 API <- function(shiny = FALSE) {
   if (shiny) {
     .apiDash()
