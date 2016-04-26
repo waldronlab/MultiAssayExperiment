@@ -13,6 +13,7 @@
 /vignettes/cache/
 *.vim
 *.Rda
+/tmp
 
 # Don't ignore 
 !NEWS.md
