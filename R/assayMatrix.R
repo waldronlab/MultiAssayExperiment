@@ -60,7 +60,7 @@ assayMatrix <- function(x, ranges = NULL, background = NA, use.names = FALSE) {
   }
   newMatrix <- do.call(cbind, lapply(seq_along(x), function(i, obj) {
     MValues <- ifelse(
-      GenomicRanges::overlapsAny(ranges, obj[[i]], type = "equal"), 
+      IRanges::overlapsAny(ranges, obj[[i]], type = "equal"), 
       as.numeric(metadata(obj)[[i]]$score),
       background
     )
