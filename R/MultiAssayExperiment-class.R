@@ -100,16 +100,11 @@ setClass("MultiAssayExperiment",
   sampMap <- sampleMap(object)
   assayCols <- mapToList(sampMap[, c("assay", "assayname")])
   colNams <- colnames(object)
-  logicResult <- Map(function(columnNames, assayColumns) {
-    columnNames %in% assayColumns
+  logicResult <- mapply(function(columnNames, assayColumns) {
+    identical(sort(columnNames), sort(assayColumns))
   }, columnNames = colNams,
   assayColumns = assayCols)
-  if (length(logicResult) > 1) {
-    loVals <- Reduce(all, logicResult)
-  } else {
-    loVals <- all(unlist(logicResult))
-  }
-  if (!loVals) {
+  if (!all(logicResult)) {
     return("not all samples in the 'Elist' are found in the 'sampleMap'")
   }
   NULL
