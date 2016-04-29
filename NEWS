@@ -1,3 +1,9 @@
+# MultiAssayExperiment 0.99.198
+
+## New Features
+
+* `assayMatrix` function now creates a matrix from the `score` column in the metadata based on matching ranges
+
 # MultiAssayExperiment 0.99.194
 
 ## New Features
