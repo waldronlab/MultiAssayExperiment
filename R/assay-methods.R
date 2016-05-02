@@ -24,11 +24,12 @@
 #' snparray2 = DataFrame(score = 1),
 #' snparray3 = DataFrame(score = 3))
 #' 
-#' assayMatrix(myRRA, background = 2)
+#' assay(myRRA, background = 2)
 #' 
 #' @return A \code{matrix} of values from the score column of the metadata.
-#' @export assayMatrix
-assayMatrix <- function(x, ranges = NULL, background = NA, use.names = FALSE) {
+#' @exportMethod assay
+setMethod("assay", "RangedRaggedAssay",
+          function(x, ranges = NULL, background = NA, use.names = FALSE) {
   if (!all(GenomicRanges::isDisjoint(x))) {
     stop("Matrix can only be created for disjoint ranges")
   }
@@ -69,4 +70,20 @@ assayMatrix <- function(x, ranges = NULL, background = NA, use.names = FALSE) {
   colnames(newMatrix) <- names(x)
   rownames(newMatrix) <- rowNames
   return(newMatrix)
-}
+})
+
+#' @describeIn Elist Get the assay data for the default ANY class
+setMethod("assay", "ANY", function(x) {
+  I(x)
+})
+
+#' @describeIn Elist Get the assay data from each element in the \link{Elist}
+setMethod("assay", "Elist", function(x) {
+  lapply(x, FUN = function(y) {assay(y)})
+})
+
+#' @describeIn MultiAssayExperiment Get the assay data for a
+#' \link{MultiAssayExperiment} as a \code{list}
+setMethod("assay", "MultiAssayExperiment", function(x) {
+  assay(Elist(x))
+})
