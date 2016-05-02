@@ -465,7 +465,7 @@ exMap <- rbind(dfmap,
 PrepMultiAssay(objlist, patient.data, exMap)$drops
 ```
 
-To create a `MultiAssayExperiment` fromt the results of the `PrepMultiAssay`
+To create a `MultiAssayExperiment` from the results of the `PrepMultiAssay`
 function, take each corresponding element from the resulting list and enter
 them as arguments to the `MultiAssayExperiment` constructor function.
 
@@ -493,7 +493,19 @@ in a `MultiAssayExperiment`:
 class(Elist(myMultiAssay)[[4]])
 rownames(Elist(myMultiAssay)[[4]])
 colnames(Elist(myMultiAssay)[[4]])
-assay(Elist(myMultiAssay)[[4]])
+```
+
+One of the requirements for the `assay` method (specifically for this
+`RangedRaggedAssay` `Elist` element) is that the metadata have a `score` column
+from which to obtain values for the resulting assay matrix. Here we add
+ficticious values to such column contained within list elements. See
+`assay,RangedRaggedAssay,ANY-method` documentation.
+
+```{r}
+metadata(Elist(myMultiAssay)[[4]]) <- list(snparray1 = DataFrame(score = 1),
+                                           snparray2 = DataFrame(score = 1),
+                                           snparray3 = DataFrame(score = 3))
+assay(Elist(myMultiAssay)[[4]], background = 2)
 ```
 
 # Integrated subsetting across experiments
