@@ -24,28 +24,6 @@ setMethod("colnames", "Elist", function(x)
 setMethod("colnames", "MultiAssayExperiment", function(x)
   colnames(Elist(x)))
 
-#' Harmonize exprs to assay of an \code{ExpressionSet} object
-#' @param x An \code{ExpressionSet} object
-#' @return A \code{matrix} of data
-setMethod("assay", "ExpressionSet", function(x)
-  Biobase::exprs(x))
-
-#' Harmonize show to assay of a \code{matrix} object
-#' @param x A \code{matrix} object
-#' @return A \code{matrix} of data
-setMethod("assay", "matrix", function(x) x)
-
-#' @describeIn RangedRaggedAssay Get experiment metadata from a 
-#' \code{RangedRaggedAssay}
-setMethod("assay", "RangedRaggedAssay", function(x)
-  do.call(rbind, lapply(x, mcols)))
-
-#' @describeIn MultiAssayExperiment Get the raw data from a
-#' \code{MultiAssayExperiment} as a \code{list}
-#' @exportMethod assay
-setMethod("assay", "MultiAssayExperiment", function(x)
-  lapply(Elist(x), assay))
-
 .checkFindOverlaps <- function(obj_cl) {
   return(
     all(hasMethod("findOverlaps", signature(obj_cl, "GRanges"),

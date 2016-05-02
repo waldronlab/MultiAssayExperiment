@@ -6,7 +6,6 @@
 \alias{RangedRaggedAssay-class}
 \alias{[,RangedRaggedAssay,ANY-method}
 \alias{[,RangedRaggedAssay,GRanges-method}
-\alias{assay,RangedRaggedAssay,ANY-method}
 \alias{colnames,RangedRaggedAssay-method}
 \alias{colnames<-,RangedRaggedAssay,character-method}
 \alias{dim,RangedRaggedAssay-method}
@@ -30,11 +29,7 @@
 
 \S4method{colnames}{RangedRaggedAssay}(x)
 
-\S4method{assay}{RangedRaggedAssay,ANY}(x)
-
 \S4method{colnames}{RangedRaggedAssay,character}(x) <- value
-
-\S4method{assay}{RangedRaggedAssay,ANY}(x)
 
 \S4method{getHits}{RangedRaggedAssay,character}(subject, query, ...)
 }
@@ -89,14 +84,8 @@ names
 \item \code{colnames}: Get sample names from a
 \code{RangedRaggedAssay}
 
-\item \code{assay}: Create a matrix of scores for
-\code{RangedRaggedAssay} with only disjoint ranges.
-
 \item \code{colnames<-}: value: A modified \code{RangedRaggedAssay}
 object
-
-\item \code{assay}: Get experiment metadata from a 
-\code{RangedRaggedAssay}
 
 \item \code{getHits}: Find matching features by \code{character}
 in a \code{RangedRaggedAssay}
