@@ -129,31 +129,6 @@ setMethod("rownames", "RangedRaggedAssay", function(x)
 setMethod("colnames", "RangedRaggedAssay", function(x)
   base::names(x))
 
-#' @describeIn RangedRaggedAssay Create a matrix of scores for
-#' \code{RangedRaggedAssay} with only disjoint ranges. 
-setMethod("assay", "RangedRaggedAssay", function(x) {
-  if (!all(isDisjoint(x))) {
-    stop("Matrix can only be created for disjoint ranges")
-  }
-  if (.uniqueSortIdentical(names(x), names(metadata(x))) &&
-      !identical(names(metadata(x)), names(x))) {
-    metadata(x) <- metadata(x)[match(names(x), names(metadata(x)))]
-  }
-  rangeNames <- unique(as.character(unlist(x, use.names = FALSE)))
-  sampNames <- names(x)
-  newMatrix <- do.call(cbind, lapply(seq_along(x), function(i, obj) {
-    MValues <- ifelse(
-      overlapsAny(as(rangeNames, "GRanges"), obj[[i]], type = "equal"), 
-      as.numeric(metadata(obj)[[i]]$score),
-      NA
-    )
-    return(MValues)
-  }, obj = x))
-  colnames(newMatrix) <- sampNames
-  rownames(newMatrix) <- rangeNames
-  return(newMatrix)  
-})
-
 #' @exportMethod colnames<-
 #' @describeIn RangedRaggedAssay value: A modified \code{RangedRaggedAssay}
 #' object

@@ -1,8 +1,9 @@
-# MultiAssayExperiment 0.99.198
+# MultiAssayExperiment 0.99.202
 
 ## New Features
 
-* `assayMatrix` function now creates a matrix from the `score` column in the metadata based on matching ranges
+* `assay` method available for `RangedRaggedAssay` and other classes.
+Created to obtain raw data from certain classes (see `?assay,(class),ANY-method`).
 
 # MultiAssayExperiment 0.99.194
 

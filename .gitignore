@@ -13,7 +13,11 @@
 /vignettes/cache/
 *.vim
 *.Rda
+<<<<<<< HEAD
 /tmp
+=======
+NEWS
+>>>>>>> vjcitn/master
 
 # Don't ignore 
 !NEWS.md
