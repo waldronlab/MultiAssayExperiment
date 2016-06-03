@@ -8,6 +8,10 @@ MultiAssayExperiment
 
 A good starting point is the vignette, available as an Rmd file in the vignette/ subdirectory, or as a [built html page](http://rpubs.com/lwaldron/MultiAssayExperiment). A definition of the API is available by typing `API()` after loading the MultiAssayExperiment library, which opens the [API wiki](https://github.com/vjcitn/MultiAssayExperiment/wiki/MultiAssayExperiment-API).
 
+# Ready-to-use MultiAssayExperiment objects
+
+See http://tinyurl.com/MAEOurls for some ready-packaged MultiAssayExperiment TCGA and CCLE objects  to try out.
+
 # Introduction
 
 This repo is intended to start the Bioconductor special interest group
