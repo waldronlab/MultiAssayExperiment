@@ -1,0 +1,80 @@
+---
+title: "Using HDF5Array with MultiAssayExperiment"
+author: "MultiAssay Special Interest Group"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+output:
+  html_document:
+    number_sections: yes
+    toc: yes
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{HDF5Array and MultiAssayExperiment}
+  %\VignetteEncoding{UTF-8}
+output:
+  BiocStyle::html_document
+---
+
+
+```{r, echo=FALSE, warning=FALSE}
+suppressPackageStartupMessages(library(MultiAssayExperiment))
+suppressPackageStartupMessages(library(HDF5Array))
+```
+
+# Integrating an HDF5 backend for MultiAssayExperiment
+
+## HDF5Array::DelayedArray Constructor
+
+The `HDF5Array` package provides an on-disk representation of large datasets
+without the need to load them into memory. Convenient lazy evaluation operations
+allow the user to manipulate such large data files based on metadata.
+The `DelayedMatrix` class in the `HDF5Array` package provides a way to
+connect to a large matrix that is stored on disk.
+
+First, we create a small matrix for constructing the `DelayedMatrix` class.
+
+```{r}
+smallMatrix <- matrix(rnorm(10e5), ncol = 20)
+```
+
+We add rownames and column names to the matrix object for compatibility with
+the `MultiAssayExperiment` representation.
+
+```{r}
+rownames(smallMatrix) <- paste0("GENE", seq_len(nrow(smallMatrix)))
+colnames(smallMatrix) <- paste0("SampleID", seq_len(ncol(smallMatrix)))
+```
+
+Here we use the `DelayedArray` constructor function to create a
+`DelayedMatrix` object.
+
+```{r}
+smallMatrix <- DelayedArray(smallMatrix)
+class(smallMatrix)
+head(smallMatrix)
+dim(smallMatrix)
+```
+
+## Importing HDF5 files
+
+Note that a large matrix from an HDF5 file can also be loaded using the
+`HDF5Dataset` function. 
+
+For example: 
+
+```{r}
+dataLocation <- system.file("inst/extdata/exMatrix.h5", package =
+                              "MultiAssayExperiment")
+hdf5Data <- HDF5Dataset(file = dataLocation, name = "exMatrix")
+newDelayedMatrix <- DelayedArray(hdf5Data)
+class(newDelayedMatrix)
+head(newDelayedMatrix)
+```
+
+## Insertting a `DelayedMatrix` into a `MultiAssayExperiment`
+
+```{r}
+HDF5MAE <- MultiAssayExperiment(Elist = list(smallMatrix = smallMatrix))
+sampleMap(HDF5MAE)
+pData(HDF5MAE)
+```
+
