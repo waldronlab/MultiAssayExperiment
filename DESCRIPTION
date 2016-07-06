@@ -8,7 +8,8 @@ Description: Develop an integrative environment where multiple assays are
 Suggests:
     BiocStyle,
     testthat,
-    knitr 
+    knitr,
+    HDF5Array
 Depends:
     R (>= 3.3.0)
 Imports:

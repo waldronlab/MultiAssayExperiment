@@ -22,6 +22,7 @@ bioc_packages:
   - S4Vectors
   - IRanges
   - BiocStyle
+  - HDF5Array
 
 # Test code coverage
 r_github_packages:
@@ -29,3 +30,4 @@ r_github_packages:
 
 after_success:
   - Rscript -e 'library(covr);codecov()'
+
