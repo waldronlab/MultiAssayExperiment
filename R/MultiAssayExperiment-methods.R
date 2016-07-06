@@ -82,14 +82,15 @@ setMethod("getHits", signature("ANY", "GRanges"),
             }
           })
 
-#' @describeIn getHits Find rownames for \code{RangedSummarizedExperiment} hits 
+#' @describeIn getHits Find rownames for \code{RangedSummarizedExperiment} hits
 setMethod("getHits", signature("RangedSummarizedExperiment", "GRanges"),
           function(subject, query, ...) {
             subject <- rowRanges(subject)
             getHits(subject, query)
           })
 
-#' @describeIn getHits Find all matching rownames based on \code{character} query
+#' @describeIn getHits Find all matching rownames based on \code{character}
+#' query
 setMethod("getHits", signature("ANY", "character"),
           function(subject, query, ...) {
             query[query %in% rownames(subject)]
@@ -132,7 +133,8 @@ setMethod("getHits", signature("RangedRaggedAssay", "character"),
       warning("no data in assays")
       Elist(x) <- Elist()
     } else if (any(isEmptyAssay)) {
-      keeps <- names(isEmptyAssay)[sapply(isEmptyAssay, function(z) !isTRUE(z))]
+      keeps <- names(isEmptyAssay)[
+        sapply(isEmptyAssay, function(z) !isTRUE(z))]
       x <- x[, , keeps, drop = FALSE]
     }
   }

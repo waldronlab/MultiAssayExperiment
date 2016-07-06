@@ -188,7 +188,7 @@ setMethod("show", "MultiAssayExperiment", function(object) {
       "of experiment instances",
       "\n pData() - for the primary/phenotype", sprintf('"%s"', c_mp),
       "\n sampleMap() - for the sample availability", sprintf('"%s"', c_sm),
-      "\n metadata() - for the metadata object of 'ANY' class",
+      '\n metadata() - for the metadata object of "ANY" class',
       "\nSee also: subsetByAssay(), subsetByRow(), subsetByColumn()\n")
 })
 
