@@ -62,7 +62,7 @@ setMethod("assay", "RangedRaggedAssay",
   newMatrix <- do.call(cbind, lapply(seq_along(x), function(i, obj) {
     MValues <- ifelse(
       IRanges::overlapsAny(ranges, obj[[i]], type = "equal"), 
-      as.numeric(metadata(obj)[[i]]$score),
+      as.numeric(mcols(obj[[i]])$score),
       background
     )
     return(MValues)
