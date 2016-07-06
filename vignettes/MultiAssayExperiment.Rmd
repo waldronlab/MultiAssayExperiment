@@ -2,16 +2,14 @@
 title: "MultiAssayExperiment primary vignette"
 author: "MultiAssay Special Interest Group"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
-output:
-  html_document:
-    number_sections: yes
-    toc: yes
 vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteIndexEntry{Coordinating Analysis of Multi-Assay Experiments}
   %\VignetteEncoding{UTF-8}
 output:
-  BiocStyle::html_document
+  BiocStyle::html_document:
+    number_sections: yes
+    toc: yes
 ---
 
 A built [html][] version of this vignette is available.
