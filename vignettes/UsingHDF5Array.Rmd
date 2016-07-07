@@ -22,10 +22,10 @@ suppressPackageStartupMessages(library(HDF5Array))
 ## HDF5Array::DelayedArray Constructor
 
 The `HDF5Array` package provides an on-disk representation of large datasets
-without the need to load them into memory. Convenient lazy evaluation operations
-allow the user to manipulate such large data files based on metadata.
-The `DelayedMatrix` class in the `HDF5Array` package provides a way to
-connect to a large matrix that is stored on disk.
+without the need to load them into memory. Convenient lazy evaluation
+operations allow the user to manipulate such large data files based on
+metadata. The `DelayedMatrix` class in the `HDF5Array` package provides a
+way to connect to a large matrix that is stored on disk.
 
 First, we create a small matrix for constructing the `DelayedMatrix` class.
 
@@ -66,6 +66,11 @@ newDelayedMatrix <- DelayedArray(hdf5Data)
 class(newDelayedMatrix)
 head(newDelayedMatrix)
 ```
+### Dimnames from HDF5 file
+
+Currently, the `rhdf5` package does not store `dimnames` in the `h5` file by
+default. A request for this feature has been sent to the maintainer of the
+`rhdf5` package.
 
 ## Insertting a `DelayedMatrix` into a `MultiAssayExperiment`
 
