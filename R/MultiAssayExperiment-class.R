@@ -171,7 +171,7 @@ setMethod("show", "MultiAssayExperiment", function(object) {
   c_elist <- class(experiments(object))
   c_mp <- class(pData(object))
   c_sm <- class(sampleMap(object))
-  cat(sprintf('A "%s"', o_class),
+  cat(sprintf('A %s', o_class),
       "object of", o_len, "listed\n",
       ifelse(o_len == 1L, "experiment", "experiments"),
       "with",
@@ -184,12 +184,11 @@ setMethod("show", "MultiAssayExperiment", function(object) {
                     "respective class.", "respective classes.")),
       "\n Containing an ")
   show(experiments(object))
-  cat("To access slots use: \n experiments() - to obtain the",
-      sprintf('"%s"', c_elist),
-      "of experiment instances",
-      "\n pData() - for the primary/phenotype", sprintf('"%s"', c_mp),
-      "\n sampleMap() - for the sample availability", sprintf('"%s"', c_sm),
-      "\n metadata() - for the metadata object of 'ANY' class",
+  cat("To access: \n experiments() - to obtain the",
+      sprintf('%s', c_elist), "instance",
+      "\n pData() - for the primary/phenotype", sprintf('%s', c_mp),
+      "\n sampleMap() - for the sample availability", sprintf('%s', c_sm),
+      "\n metadata() - for the metadata object of ANY class",
       "\nSee also: subsetByAssay(), subsetByRow(), subsetByColumn()\n")
 })
 

@@ -176,9 +176,9 @@ setMethod("show", "ExperimentList", function(object) {
   sampdim <- vapply(object, FUN = function(obj) {
     dim(obj)[2]
   }, FUN.VALUE = integer(1))
-  cat(sprintf('"%s"', o_class),
+  cat(sprintf('%s', o_class),
       "class object of length",
       paste0(o_len, ':'),
-      sprintf('\n [%i] %s: "%s" - %s rows, %s columns',
-              seq(o_len), o_names, elem_cl, featdim, sampdim), "\n")
+      sprintf('\n [%i] %s: %s x %s %s',
+              seq(o_len), o_names, featdim, sampdim, elem_cl), "\n")
 })

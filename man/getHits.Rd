@@ -26,7 +26,8 @@ getHits(subject, query, ...)
 \S4method{getHits}{ANY,character}(subject, query, ...)
 }
 \arguments{
-\item{subject}{Any valid element from the \code{\linkS4class{ExperimentList}} class}
+\item{subject}{Any valid element from the
+\code{\linkS4class{ExperimentList}} class}
 
 \item{query}{Either a \code{character} vector or
 \code{\linkS4class{GRanges}}

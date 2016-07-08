@@ -59,7 +59,8 @@ to the multi-experiment data container
 
 \item \code{rownames}: Get all the rownames of an \code{ExperimentList}
 
-\item \code{colnames}: Get sample names from an \code{ExperimentList} object
+\item \code{colnames}: Get sample names from an \code{ExperimentList}
+object
 
 \item \code{assay}: Get the assay data for the default ANY class
 

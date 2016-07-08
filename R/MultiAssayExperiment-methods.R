@@ -14,7 +14,8 @@ setMethod("rownames", "ExperimentList", function(x)
 setMethod("rownames", "MultiAssayExperiment", function(x)
   rownames(experiments(x)))
 
-#' @describeIn ExperimentList Get sample names from an \code{ExperimentList} object
+#' @describeIn ExperimentList Get sample names from an \code{ExperimentList}
+#' object
 setMethod("colnames", "ExperimentList", function(x)
   IRanges::CharacterList(lapply(x, colnames)))
 
@@ -38,7 +39,8 @@ setMethod("colnames", "MultiAssayExperiment", function(x)
 
 #' Find hits by class type
 #' 
-#' @param subject Any valid element from the \code{\linkS4class{ExperimentList}} class
+#' @param subject Any valid element from the
+#' \code{\linkS4class{ExperimentList}} class
 #' @param query Either a \code{character} vector or
 #' \code{\linkS4class{GRanges}}
 #' object used to search by name or ranges
@@ -370,9 +372,10 @@ setMethod("subsetByRow", c("MultiAssayExperiment", "ANY"),
             return(x)
           })
 
-#' @describeIn subsetByRow Use a list of equal length as the \code{ExperimentList}
-#' to subset. The order of the subsetting elements in this list must match
-#' that of the \code{ExperimentList} in the \code{MultiAssayExperiment}.
+#' @describeIn subsetByRow Use a list of equal length as the
+#' \code{ExperimentList} to subset. The order of the subsetting elements in
+#' this list must match that of the \code{ExperimentList} in the
+#' \code{MultiAssayExperiment}.
 setMethod("subsetByRow", c("MultiAssayExperiment", "list"),
           function(x, y) {
             if (length(x) != length(y)) {
