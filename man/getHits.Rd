@@ -26,7 +26,7 @@ getHits(subject, query, ...)
 \S4method{getHits}{ANY,character}(subject, query, ...)
 }
 \arguments{
-\item{subject}{Any valid element from the \code{\linkS4class{Elist}} class}
+\item{subject}{Any valid element from the \code{\linkS4class{ExperimentList}} class}
 
 \item{query}{Either a \code{character} vector or
 \code{\linkS4class{GRanges}}
@@ -53,7 +53,8 @@ using \code{findOverlaps}
 
 \item \code{subject = RangedSummarizedExperiment,query = GRanges}: Find rownames for \code{RangedSummarizedExperiment} hits
 
-\item \code{subject = ANY,query = character}: Find all matching rownames based on \code{character} query
+\item \code{subject = ANY,query = character}: Find all matching rownames based on \code{character}
+query
 }}
 \examples{
 ## Load an example MultiAssayExperiment object

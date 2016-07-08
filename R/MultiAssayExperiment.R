@@ -10,7 +10,7 @@
   full_map <- do.call(S4Vectors::rbind, listM)
   matches <- match(full_map$assay, rownames(mPheno))
   if (all(is.na(matches))) {
-    stop("no way to map pData to Elist")
+    stop("no way to map pData to ExperimentList")
   }
   primary <- rownames(mPheno)[matches]
   autoMap <- S4Vectors::cbind(DataFrame(primary), full_map)
@@ -29,7 +29,7 @@
 #' This function combines multiple data elements from the different hierarchies
 #' of data (study, experiments, and samples)
 #' 
-#' @param Elist A \code{list} of all combined experiments
+#' @param ExperimentList A \code{list} of all combined experiments
 #' @param pData A \code{\link[S4Vectors]{DataFrame}} of the phenotype
 #' data for all participants
 #' @param sampleMap A \code{DataFrame} of sample identifiers, assay samples,
@@ -44,31 +44,31 @@
 #' @export MultiAssayExperiment
 #' @seealso MultiAssayExperiment-class
 MultiAssayExperiment <-
-  function(Elist = list(),
+  function(ExperimentList = list(),
            pData = S4Vectors::DataFrame(),
            sampleMap = S4Vectors::DataFrame(),
            drops = list()) {
-    newElist <- Elist(Elist)
+    newExperimentList <- ExperimentList(ExperimentList)
     if (!all(c(length(sampleMap) == 0L,
                length(pData) == 0L,
-               length(Elist) == 0L))) {
+               length(newExperimentList) == 0L))) {
       if ((length(sampleMap) == 0L) && (length(pData) == 0L)) {
         warning("neither sampleMap nor pData provided,",
                 " sampleMap will be generated")
-        allsamps <- unique(unlist(lapply(newElist, colnames)))
+        allsamps <- unique(unlist(lapply(newExperimentList, colnames)))
         pData <- S4Vectors::DataFrame(
           pheno1 = rep(NA, length(allsamps)),
           row.names = allsamps)
-        sampleMap <- .generateMap(pData, newElist)
+        sampleMap <- .generateMap(pData, newExperimentList)
       } else if ((length(sampleMap) == 0L) && (length(pData) != 0L)) {
         warning("sampleMap not provided, trying to generate sampleMap...")
-        sampleMap <- .generateMap(pData, newElist)
+        sampleMap <- .generateMap(pData, newExperimentList)
         validAssays <-
           S4Vectors::split(sampleMap[["assay"]], sampleMap[, "assayname"])
-        newElist <- Map(function(x, y) {
+        newExperimentList <- Map(function(x, y) {
           x[, y]
-        }, newElist, validAssays)
-        newElist <- Elist(newElist)
+        }, newExperimentList, validAssays)
+        newExperimentList <- ExperimentList(newExperimentList)
       }
     }
     if (!is(pData, "DataFrame")) {
@@ -83,7 +83,7 @@ MultiAssayExperiment <-
       sampleMap <- S4Vectors::DataFrame(sampleMap)
     }
     newMultiAssay <- new("MultiAssayExperiment",
-                         Elist = newElist,
+                         ExperimentList = newExperimentList,
                          pData = pData, 
                          sampleMap = sampleMap)
     return(newMultiAssay)

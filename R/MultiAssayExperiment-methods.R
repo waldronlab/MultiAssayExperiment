@@ -1,28 +1,28 @@
 #' @include RangedRaggedAssay-class.R MultiAssayExperiment-class.R 
-#' Elist-class.R MultiAssayView-class.R 
+#' ExperimentList-class.R MultiAssayView-class.R 
 #' 
 #' @import BiocGenerics SummarizedExperiment S4Vectors GenomicRanges methods
 NULL
 
-#' @describeIn Elist Get all the rownames of an \code{Elist}
-setMethod("rownames", "Elist", function(x)
+#' @describeIn ExperimentList Get all the rownames of an \code{ExperimentList}
+setMethod("rownames", "ExperimentList", function(x)
   IRanges::CharacterList(lapply(x, rownames)))
 
 #' @describeIn MultiAssayExperiment Get all the rownames for a
 #' \code{MultiAssayExperiment} using a \code{\link[IRanges]{CharacterList}}
 #' @exportMethod rownames
 setMethod("rownames", "MultiAssayExperiment", function(x)
-  rownames(Elist(x)))
+  rownames(experiments(x)))
 
-#' @describeIn Elist Get sample names from an \code{Elist} object
-setMethod("colnames", "Elist", function(x)
+#' @describeIn ExperimentList Get sample names from an \code{ExperimentList} object
+setMethod("colnames", "ExperimentList", function(x)
   IRanges::CharacterList(lapply(x, colnames)))
 
 #' @describeIn MultiAssayExperiment Get all the colnames for a
 #' \code{MultiAssayExperiment}
 #' @exportMethod colnames
 setMethod("colnames", "MultiAssayExperiment", function(x)
-  colnames(Elist(x)))
+  colnames(experiments(x)))
 
 .checkFindOverlaps <- function(obj_cl) {
   return(
@@ -38,7 +38,7 @@ setMethod("colnames", "MultiAssayExperiment", function(x)
 
 #' Find hits by class type
 #' 
-#' @param subject Any valid element from the \code{\linkS4class{Elist}} class
+#' @param subject Any valid element from the \code{\linkS4class{ExperimentList}} class
 #' @param query Either a \code{character} vector or
 #' \code{\linkS4class{GRanges}}
 #' object used to search by name or ranges
@@ -51,14 +51,14 @@ setGeneric("getHits", function(subject, query, ...) standardGeneric("getHits"))
 #' @exportMethod getHits
 setMethod("getHits", signature("MultiAssayExperiment", "character"),
           function(subject, query, ...)
-            lapply(Elist(subject), FUN = function(elem, ...) {
+            lapply(experiments(subject), FUN = function(elem, ...) {
   getHits(elem, query, ...)
 }))
 
 #' @describeIn getHits Find all matching rownames by \code{GRanges}
 setMethod("getHits", signature("MultiAssayExperiment", "GRanges"),
           function(subject, query, ...)
-            lapply(Elist(subject), FUN = function(elem, ...) {
+            lapply(experiments(subject), FUN = function(elem, ...) {
   getHits(elem, query, ...)
 }))
 
@@ -128,10 +128,11 @@ setMethod("getHits", signature("RangedRaggedAssay", "character"),
     x <- subsetByRow(x, i, ...)
   }
   if (drop) {
-    isEmptyAssay <- vapply(Elist(x), FUN = .isEmpty, FUN.VALUE = logical(1L))
+    isEmptyAssay <- vapply(experiments(x), FUN = .isEmpty,
+                           FUN.VALUE = logical(1L))
     if (all(isEmptyAssay)) {
       warning("no data in assays")
-      Elist(x) <- Elist()
+      experiments(x) <- ExperimentList()
     } else if (any(isEmptyAssay)) {
       keeps <- names(isEmptyAssay)[
         sapply(isEmptyAssay, function(z) !isTRUE(z))]
@@ -152,7 +153,7 @@ setMethod("getHits", signature("RangedRaggedAssay", "character"),
 #' @param ... Additional arguments passed down to \code{getHits} support
 #' function for subsetting by rows
 #' @param drop logical (default TRUE) whether to drop empty assay elements
-#' in the \code{Elist}
+#' in the \code{ExperimentList}
 #' @seealso \code{getHits}
 setMethod("[", c("MultiAssayExperiment", "ANY", "ANY", "ANY"),
           .subsetMultiAssayExperiment)
@@ -192,12 +193,12 @@ setGeneric("subsetByAssay", function(x, y) standardGeneric("subsetByAssay"))
 #' @describeIn subsetByAssay Use either a \code{numeric}, \code{logical}, or
 #' \code{character} vector to subset assays in a \code{MultiAssayExperiment}
 setMethod("subsetByAssay", c("MultiAssayExperiment", "ANY"), function(x, y) {
-  newSubset <- Elist(x)[y]
+  newSubset <- experiments(x)[y]
   listMap <- mapToList(sampleMap(x), "assayname")
   newMap <- listMap[y]
   newMap <- listToMap(newMap)
   sampleMap(x) <- newMap
-  Elist(x) <- newSubset
+  experiments(x) <- newSubset
   return(x)
 })
 
@@ -242,9 +243,9 @@ setMethod("subsetByColumn", c("MultiAssayExperiment", "ANY"), function(x, y) {
     mapChunk[, "assay", drop = TRUE]
   })
   newSubset <- mapply(function(x, j) {x[, j, drop = FALSE]},
-                      x = Elist(x), j = columns, SIMPLIFY = FALSE)
-  newSubset <- Elist(newSubset)
-  Elist(x) <- newSubset
+                      x = experiments(x), j = columns, SIMPLIFY = FALSE)
+  newSubset <- ExperimentList(newSubset)
+  experiments(x) <- newSubset
   sampleMap(x) <- newMap
   pData(x) <- newpData 
   return(x)
@@ -266,9 +267,9 @@ setMethod("subsetByColumn", c("MultiAssayExperiment", "character"),
 setMethod("subsetByColumn", c("MultiAssayExperiment", "list"),
           function(x, y) {
               y <- y[names(x)]
-              Elist(x) <- Elist(mapply(function(f, j) {
-                  f[ ,j , drop =  FALSE]
-              }, f = Elist(x), j = y, SIMPLIFY = FALSE))
+              experiments(x) <- ExperimentList(mapply(function(expList, j) {
+                  expList[ ,j , drop =  FALSE]
+              }, expList = experiments(x), j = y, SIMPLIFY = FALSE))
               newSamps <- as.list(colnames(x))
               listMap <- mapToList(sampleMap(x), "assayname")
               newMap <- mapply(function(lMap, nSamps) {
@@ -283,7 +284,7 @@ setMethod("subsetByColumn", c("MultiAssayExperiment", "list"),
 
 #' @describeIn subsetByColumn Use an S4 \code{List} to subset a
 #' \code{MultiAssayExperiment}. The order of the subsetting elements in this
-#' \code{List} must match that of the \code{Elist} in the
+#' \code{List} must match that of the \code{ExperimentList} in the
 #' \code{MultiAssayExperiment}.
 setMethod("subsetByColumn", c("MultiAssayExperiment", "List"),
           function(x, y) {
@@ -346,15 +347,15 @@ setMethod("subsetByRow", c("MultiAssayExperiment", "GRanges"),
 #' \code{MultiAssayExperiment}
 setMethod("subsetByRow", c("MultiAssayExperiment", "logical"),
           function(x, y) {
-            ElistNrows <- vapply(Elist(x), FUN = function(z) {
+            ExperimentListNrows <- vapply(experiments(x), FUN = function(z) {
               dim(z)[1]
             }, FUN.VALUE = integer(1L))
-            isSameLength <- vapply(ElistNrows, FUN = function(z) {
+            isSameLength <- vapply(ExperimentListNrows, FUN = function(z) {
               z == length(y)
             }, FUN.VALUE = logical(1L))
             if (!all(isSameLength)) {
               warning("the length of logical vector does not match",
-                      " that of all the rows in the Elist")
+                      " that of all the rows in the ExperimentList")
             }
             callNextMethod(x = x, y = y)
           })
@@ -363,30 +364,30 @@ setMethod("subsetByRow", c("MultiAssayExperiment", "logical"),
 #' \code{numeric} or \code{logical} vector
 setMethod("subsetByRow", c("MultiAssayExperiment", "ANY"),
           function(x, y) {
-            newElist <- S4Vectors::endoapply(Elist(x),
+            newExperimentList <- S4Vectors::endoapply(experiments(x),
                                              function(z) {z[y,, drop = FALSE]})
-            Elist(x) <- newElist
+            experiments(x) <- newExperimentList
             return(x)
           })
 
-#' @describeIn subsetByRow Use a list of equal length as the \code{Elist}
+#' @describeIn subsetByRow Use a list of equal length as the \code{ExperimentList}
 #' to subset. The order of the subsetting elements in this list must match
-#' that of the \code{Elist} in the \code{MultiAssayExperiment}.
+#' that of the \code{ExperimentList} in the \code{MultiAssayExperiment}.
 setMethod("subsetByRow", c("MultiAssayExperiment", "list"),
           function(x, y) {
             if (length(x) != length(y)) {
-              stop("list length must be the same as Elist length")
+              stop("list length must be the same as ExperimentList length")
             }
             ## would prefer mendoapply if possible
-            Elist(x) <- Elist(mapply(function(f, g) {
-              f[g, , drop =  FALSE]
-            }, f = Elist(x), g = y, SIMPLIFY = FALSE))
+            experiments(x) <- ExperimentList(mapply(function(expList, i) {
+              expList[i, , drop =  FALSE]
+            }, expList = experiments(x), i = y, SIMPLIFY = FALSE))
             return(x)
           })
 
 #' @describeIn subsetByRow Use an S4 \code{List} to subset a
 #' \code{MultiAssayExperiment}. The order of the subsetting elements in this
-#' \code{List} must match that of the \code{Elist} in the
+#' \code{List} must match that of the \code{ExperimentList} in the
 #' \code{MultiAssayExperiment}.
 setMethod("subsetByRow", c("MultiAssayExperiment", "List"),
           function(x, y) {

@@ -1,3 +1,16 @@
+# MultiAssayExperiment 0.101.36
+
+* `Elist` class renamed to `ExperimentList`
+* `ExperimentList` constructor now called `experiments`
+* `ExperimentList` replacement method is now `experiments<-`
+* Updated vignettes to reflect change of names
+
+# MultiAssayExperiment 0.101.34
+
+* `assay` method for `RangedRaggedAssay` works on inner metadata columns now
+* vignette examples available for `HDF5Array` package
+* Improved outline for main vignette
+
 # MultiAssayExperiment 0.99.202
 
 ## New Features

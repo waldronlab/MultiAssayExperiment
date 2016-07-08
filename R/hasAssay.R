@@ -18,7 +18,7 @@ hasAssay <- function(object) {
                          FUN = "[",
                          FUN.VALUE = character(1), ... = 1L)
   validClasses <- unique(validClasses)
-  all(vapply(Elist(object), FUN = function(element) {
+  all(vapply(experiments(object), FUN = function(element) {
     any(vapply(validClasses, FUN = function(cl) {
       inherits(element, cl)
     }, FUN.VALUE = logical(1)))

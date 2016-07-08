@@ -1,5 +1,5 @@
-## Run the example Elist
-example("Elist")
+## Run the example ExperimentList
+example("ExperimentList")
 
 ## Load example GRangesList object
 example("RangedRaggedAssay")
@@ -17,6 +17,6 @@ primary <- data.frame(sex = c("M", "F", "M", "F"),
                        row.names = c("Jack", "Jill", "Bob", "Barbara"))
 
 ## Create a MultiAssayExperiment instance
-myMultiAssayExperiment <- MultiAssayExperiment(Elist = ExpList,
+myMultiAssayExperiment <- MultiAssayExperiment(ExperimentList = ExpList,
                                                pData = primary,
                                                sampleMap = mySampleMap)

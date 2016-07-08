@@ -75,7 +75,8 @@ default. A request for this feature has been sent to the maintainer of the
 ## Insertting a `DelayedMatrix` into a `MultiAssayExperiment`
 
 ```{r}
-HDF5MAE <- MultiAssayExperiment(Elist = list(smallMatrix = smallMatrix))
+HDF5MAE <- MultiAssayExperiment(ExperimentList =
+                                  list(smallMatrix = smallMatrix))
 sampleMap(HDF5MAE)
 pData(HDF5MAE)
 ```

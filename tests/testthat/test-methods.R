@@ -33,6 +33,6 @@ rangemap <-
                         "mysnparray4"), assayname = Rle("myShell"))
 
 test_that("the methods check out", {
-  expect_true(is(Elist(newShell), "Elist"))
+  expect_true(is(experiments(newShell), "ExperimentList"))
   expect_true(is(MultiAssayExperiment(newShell, masPheno, rangemap), "MultiAssayExperiment"))
 })
