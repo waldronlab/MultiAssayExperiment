@@ -46,7 +46,7 @@ column names
 
 \item \code{x = MultiAssayExperiment,y = List}: Use an S4 \code{List} to subset a
 \code{MultiAssayExperiment}. The order of the subsetting elements in this
-\code{List} must match that of the \code{Elist} in the
+\code{List} must match that of the \code{ExperimentList} in the
 \code{MultiAssayExperiment}.
 }}
 \examples{

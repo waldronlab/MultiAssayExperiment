@@ -62,7 +62,7 @@ setMethod("assay", "RangedRaggedAssay",
   newMatrix <- do.call(cbind, lapply(seq_along(x), function(i, obj) {
     MValues <- ifelse(
       IRanges::overlapsAny(ranges, obj[[i]], type = "equal"), 
-      as.numeric(metadata(obj)[[i]]$score),
+      as.numeric(mcols(obj[[i]])$score),
       background
     )
     return(MValues)
@@ -72,18 +72,19 @@ setMethod("assay", "RangedRaggedAssay",
   return(newMatrix)
 })
 
-#' @describeIn Elist Get the assay data for the default ANY class
+#' @describeIn ExperimentList Get the assay data for the default ANY class
 setMethod("assay", "ANY", function(x) {
   I(x)
 })
 
-#' @describeIn Elist Get the assay data from each element in the \link{Elist}
-setMethod("assay", "Elist", function(x) {
+#' @describeIn ExperimentList Get the assay data from each element in the
+#' \link{ExperimentList}
+setMethod("assay", "ExperimentList", function(x) {
   lapply(x, FUN = function(y) {assay(y)})
 })
 
 #' @describeIn MultiAssayExperiment Get the assay data for a
 #' \link{MultiAssayExperiment} as a \code{list}
 setMethod("assay", "MultiAssayExperiment", function(x) {
-  assay(Elist(x))
+  assay(ExperimentList(x))
 })

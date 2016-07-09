@@ -9,7 +9,7 @@ newSampMap <- rbind(sampleMap(myMultiAssayExperiment)[4:1, ],
                       ])
 sampleMap(myMultiAssayExperiment) <- newSampMap
 
-# Rearrange Elist colnames using sampleMap "assay" column
+# Rearrange ExperimentList colnames using sampleMap "assay" column
 myMultiAssayExperiment <-
   myMultiAssayExperiment[, rownames(pData(myMultiAssayExperiment)), ]
 

@@ -6,11 +6,12 @@
 \alias{MultiAssayExperiment-package}
 \title{MultiAssayExperiment: Build an integrative multi-assay container}
 \usage{
-MultiAssayExperiment(Elist = list(), pData = S4Vectors::DataFrame(),
-  sampleMap = S4Vectors::DataFrame(), drops = list())
+MultiAssayExperiment(ExperimentList = list(),
+  pData = S4Vectors::DataFrame(), sampleMap = S4Vectors::DataFrame(),
+  drops = list())
 }
 \arguments{
-\item{Elist}{A \code{list} of all combined experiments}
+\item{ExperimentList}{A \code{list} of all combined experiments}
 
 \item{pData}{A \code{\link[S4Vectors]{DataFrame}} of the phenotype
 data for all participants}
@@ -43,8 +44,8 @@ The package hierarchy of information:
 }
 }
 \examples{
-## Run the example Elist
-example("Elist")
+## Run the example ExperimentList
+example("ExperimentList")
 
 ## Load example GRangesList object
 example("RangedRaggedAssay")
@@ -62,7 +63,7 @@ primary <- data.frame(sex = c("M", "F", "M", "F"),
                        row.names = c("Jack", "Jill", "Bob", "Barbara"))
 
 ## Create a MultiAssayExperiment instance
-myMultiAssayExperiment <- MultiAssayExperiment(Elist = ExpList,
+myMultiAssayExperiment <- MultiAssayExperiment(ExperimentList = ExpList,
                                                pData = primary,
                                                sampleMap = mySampleMap)
 }
