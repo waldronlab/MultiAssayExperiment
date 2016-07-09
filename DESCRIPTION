@@ -8,14 +8,10 @@ Description: Develop an integrative environment where multiple assays are
 Suggests:
     BiocStyle,
     testthat,
-<<<<<<< HEAD
-    rmarkdown
-=======
     knitr,
     HDF5Array
 Depends:
     R (>= 3.3.0)
->>>>>>> vjcitn/master
 Imports:
     methods,
     GenomicRanges,
