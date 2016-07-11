@@ -14,7 +14,6 @@
 *.vim
 *.Rda
 NEWS
-/tmp
 
 # Don't ignore 
 !NEWS.md
