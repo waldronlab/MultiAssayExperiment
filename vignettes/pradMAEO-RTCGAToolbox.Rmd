@@ -2,19 +2,23 @@
 title: "RTCGAToolbox implementation of pradMAEO - <strong>PR</strong>ostate <strong>AD</strong>enocarcinoma <strong>M</strong>ulti<strong>A</strong>ssay<strong>E</strong>xperiment <strong>O</strong>bject"
 author: "Lucas Schiffer"
 date: "`r doc_date()`"
-output: 
-  BiocStyle::html_document
+output:
+  BiocStyle::html_document:
+    number_sections: yes
+    toc: yes
+abstract: >
+  This vignette displays the processing steps needed in order to create a MultiAssayExperiment object from TCGA (The Cancer Genome Atlas) data. Specifically, the `getFirehoseData()` method of the `r Githubpkg("LiNk-NY/RTCGAToolbox")` package is used to access and read in data; output is then further coerced to fit the MultiAssayExperiment object specifications. A built HTML version of this vignette is available on [RPubs](https://rpubs.com/schifferl/pradMAEO-RTCGAToolbox) and the source is available on [GitHub](https://github.com/schifferl/MultiAssayExperiment/blob/master/vignettes/pradMAEO-RTCGAToolbox.Rmd)
 vignette: >
   %\VignetteIndexEntry{Vignette Title}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
+# Prerequisites
+
 ```{r, include = FALSE}
 knitr::opts_chunk$set(eval = FALSE)
 ```
-
-This vignette displays the processing steps needed in order to create a MultiAssayExperiment object from TCGA (The Cancer Genome Atlas) data. Specifically, the `getFirehoseData()` method of the `r Githubpkg("LiNk-NY/RTCGAToolbox")` package is used to access and read in data; output is then further coerced to fit the MultiAssayExperiment object specifications. A built HTML version of this vignette is available on [RPubs](https://rpubs.com/schifferl/pradMAEO-RTCGAToolbox) and the source is available on [GitHub](https://github.com/schifferl/MultiAssayExperiment/blob/master/vignettes/pradMAEO-RTCGAToolbox.Rmd)
 
 Methods from two packages hosted on GitHub are used in this vignette, the packages are installed as follows.
 
@@ -23,7 +27,7 @@ BiocInstaller::biocLite("LiNk-NY/RTCGAToolbox")
 BiocInstaller::biocLite("waldronlab/BiocInterfaces")
 ```
 
-Other packages available in Bioconductor or CRAN are loaded as follows.
+These and other packages available in Bioconductor or CRAN are loaded as follows.
 
 ```{r}
 library(MultiAssayExperiment)
@@ -31,6 +35,8 @@ library(RTCGAToolbox)
 library(BiocInterfaces)
 library(readr)
 ```
+
+# Argument Definitions
 
 The `r Githubpkg("LiNk-NY/RTCGAToolbox")` package provides the `getFirehoseDatasets()` method for obtaining the names of all 33 cohorts contained within the TCGA data. Beyond the 33 cohorts, there are 5 additional "pan" cohorts where data of multiple cohorts was merged - information about the cohorts is available via the TCGA [website](http://cancergenome.nih.gov/cancersselected). Additionally, the `getFirehoseRunningDates()` and `getFirehoseAnalyzeDates()` methods are used to obtain the most recent running and analysis dates. Finally, a character vector `dd` is created to specify the location of the data directory where output should be saved.
 
@@ -40,6 +46,8 @@ rd <- getFirehoseRunningDates()[1]
 ad <- getFirehoseAnalyzeDates()[1]
 dd <- "data"
 ```
+
+# Function Definition
 
 A function, `newMAEO()`, is defined as shown below for the purpose of creating a new MultiAssayExperiment object with a single line of code. It accepts the arguments defined in the previous chunk and is capable of accepting multiple cohort names (e.g. `ds <- getFirehoseDatasets()[1:5]`). Even though the implementation is not parallel, low-level operations remain vectorized regardless of the for loop. 
 
@@ -97,6 +105,8 @@ newMAEO <- function(ds, rd, ad, dd) {
   }
 }
 ```
+
+# Function Call
 
 Lastly, it is necessary to call the `newMAEO()` function defined above and pass it the arguments defined using the `r Githubpkg("LiNk-NY/RTCGAToolbox")` package. Using this function, a MultiAssayExperiment object for the prostate adenocarcinoma cohort is created with a single call.
 
