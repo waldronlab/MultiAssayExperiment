@@ -53,12 +53,8 @@ MultiAssayExperiment <-
                length(pData) == 0L,
                length(newExperimentList) == 0L))) {
       if ((length(sampleMap) == 0L) && (length(pData) == 0L)) {
-        warning("neither sampleMap nor pData provided,",
-                " sampleMap will be generated")
         allsamps <- unique(unlist(lapply(newExperimentList, colnames)))
-        pData <- S4Vectors::DataFrame(
-          pheno1 = rep(NA, length(allsamps)),
-          row.names = allsamps)
+        pData <- S4Vectors::DataFrame(row.names = allsamps)
         sampleMap <- .generateMap(pData, newExperimentList)
       } else if ((length(sampleMap) == 0L) && (length(pData) != 0L)) {
         warning("sampleMap not provided, trying to generate sampleMap...")
