@@ -9,7 +9,7 @@ output:
 abstract: >
   This vignette displays the processing steps needed in order to create a MultiAssayExperiment object from TCGA (The Cancer Genome Atlas) data. Specifically, the `getFirehoseData()` method of the `r Githubpkg("LiNk-NY/RTCGAToolbox")` package is used to access and read in data; output is then further coerced to fit the MultiAssayExperiment object specifications. A built HTML version of this vignette is available on [RPubs](https://rpubs.com/schifferl/pradMAEO-RTCGAToolbox) and the source is available on [GitHub](https://github.com/schifferl/MultiAssayExperiment/blob/master/vignettes/pradMAEO-RTCGAToolbox.Rmd)
 vignette: >
-  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteIndexEntry{MultiAssayExperiment: Prostate Cancer Data}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
