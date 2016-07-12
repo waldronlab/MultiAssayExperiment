@@ -5,29 +5,31 @@
 #' 
 #' \code{API} opens a browser to the API documentation
 #' 
+#' @param website (logical default TRUE) launch the API website
 #' @param shiny (logical default FALSE) whether to launch the shiny version
 #' of the API (experimental)
 #' 
 #' @return Documentation via the GitHub wiki
 #' 
 #' @examples
-#' ## This will open in a browser window
-#' \dontrun{
-#' API()
-#' }
+#' ## Runnable example does nothing
+#' 
+#' API(website = FALSE)
 #' 
 #' @author Vincent J Carey
 #' 
 #' @import shinydashboard shiny
 #' 
 #' @export API
-API <- function(shiny = FALSE) {
+API <- function(website = TRUE, shiny = FALSE) {
   if (shiny) {
     .apiDash()
-  } else {
+  } else if (website) {
     utils::browseURL(
 "https://github.com/vjcitn/MultiAssayExperiment/wiki/MultiAssayExperiment-API"
     )
+  } else {
+      invisible()
   }
 }
 

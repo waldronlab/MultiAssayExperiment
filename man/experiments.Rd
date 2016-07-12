@@ -17,4 +17,8 @@ A \code{ExperimentList} object of assay data
 Accessor function for the \code{ExperimentList} slot of a
 \code{MultiAssayExperiment} object
 }
+\examples{
+example("MultiAssayExperiment")
+experiments(myMultiAssayExperiment)
+}
 

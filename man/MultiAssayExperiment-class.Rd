@@ -3,7 +3,7 @@
 \docType{class}
 \name{MultiAssayExperiment-class}
 \alias{MultiAssayExperiment-class}
-\alias{[,MultiAssayExperiment,ANY-method}
+\alias{[,MultiAssayExperiment,ANY,ANY,ANY-method}
 \alias{assay,MultiAssayExperiment,ANY-method}
 \alias{colnames,MultiAssayExperiment-method}
 \alias{experiments,MultiAssayExperiment-method}
@@ -44,7 +44,7 @@
 
 \S4method{colnames}{MultiAssayExperiment}(x)
 
-\S4method{[}{MultiAssayExperiment,ANY}(x, i, j, k, ..., drop = TRUE)
+\S4method{[}{MultiAssayExperiment,ANY,ANY,ANY}(x, i, j, k, ..., drop = TRUE)
 
 \S4method{isEmpty}{MultiAssayExperiment}(x)
 

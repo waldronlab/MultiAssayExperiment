@@ -90,7 +90,7 @@ newMAEO <- function(ds, rd, ad, dd) {
                             getUUIDs = FALSE)
       saveRDS(co, file = fp, compress = "bzip2")
     }
-    pd <- co@Clinical
+    pd <- Clinical(co)
     rownames(pd) <- toupper(gsub("\\.", "-", rownames(pd)))
     pd <- type_convert(pd)
     targets <- c(slotNames(co)[c(5:16)], "gistica", "gistict")

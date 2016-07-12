@@ -216,6 +216,9 @@ setMethod("sampleMap", "MultiAssayExperiment", function(x)
 #' 
 #' @param x A \code{MultiAssayExperiment} class object
 #' @return A \code{ExperimentList} object of assay data
+#' @examples 
+#' example("MultiAssayExperiment")
+#' experiments(myMultiAssayExperiment)
 setGeneric("experiments", function(x) standardGeneric("experiments"))
 
 #' @describeIn MultiAssayExperiment Access ExperimentList class from a
