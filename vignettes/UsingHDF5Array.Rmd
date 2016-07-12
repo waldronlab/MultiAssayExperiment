@@ -3,7 +3,7 @@ title: "Using HDF5Array with MultiAssayExperiment"
 author: "MultiAssay Special Interest Group"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
 vignette: >
-  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEngine{knitr::knitr}
   %\VignetteIndexEntry{HDF5Array and MultiAssayExperiment}
   %\VignetteEncoding{UTF-8}
 output:
