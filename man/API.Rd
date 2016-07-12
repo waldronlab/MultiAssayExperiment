@@ -7,7 +7,7 @@
 API(website = TRUE, shiny = FALSE)
 }
 \arguments{
-\item{website}{(logical default TRUE) launch the website for the API}
+\item{website}{(logical default TRUE) launch the API website}
 
 \item{shiny}{(logical default FALSE) whether to launch the shiny version
 of the API (experimental)}

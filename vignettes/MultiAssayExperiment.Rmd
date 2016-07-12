@@ -3,7 +3,7 @@ title: "MultiAssayExperiment primary vignette"
 author: "MultiAssay Special Interest Group"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
 vignette: >
-  %\VignetteEngine{knitr::knitr}
+  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteIndexEntry{Coordinating Analysis of Multi-Assay Experiments}
   %\VignetteEncoding{UTF-8}
 output:
