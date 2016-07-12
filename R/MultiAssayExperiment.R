@@ -48,7 +48,11 @@ MultiAssayExperiment <-
            pData = S4Vectors::DataFrame(),
            sampleMap = S4Vectors::DataFrame(),
            drops = list()) {
+    if (!is(ExperimentList, "list"))
+        stop("ExperimentList must be a list")
     newExperimentList <- ExperimentList(ExperimentList)
+    if (!isEmpty(newExperimentList) && is.null(names(ExperimentList)))
+        stop("ExperimentList must be a named list of experiments")
     if (!all(c(length(sampleMap) == 0L,
                length(pData) == 0L,
                length(newExperimentList) == 0L))) {
