@@ -48,28 +48,28 @@ MultiAssayExperiment <-
            pData = S4Vectors::DataFrame(),
            sampleMap = S4Vectors::DataFrame(),
            drops = list()) {
-    if (!inherits(ExperimentList, "list") ||
-        !inherits(ExperimentList, "SimpleList"))
+      if (inherits(ExperimentList, "list"))
+          ExperimentList <- ExperimentList(ExperimentList)
+      if (!inherits(ExperimentList, "SimpleList"))
         stop("ExperimentList must be a list or ExperimentList")
-    newExperimentList <- ExperimentList(ExperimentList)
-    if (!isEmpty(newExperimentList) && is.null(names(ExperimentList)))
+    if (!isEmpty(ExperimentList) && is.null(names(ExperimentList)))
         stop("ExperimentList must be a named list of experiments")
     if (!all(c(length(sampleMap) == 0L,
                length(pData) == 0L,
-               length(newExperimentList) == 0L))) {
+               length(ExperimentList) == 0L))) {
       if ((length(sampleMap) == 0L) && (length(pData) == 0L)) {
-        allsamps <- unique(unlist(lapply(newExperimentList, colnames)))
+        allsamps <- unique(unlist(lapply(ExperimentList, colnames)))
         pData <- S4Vectors::DataFrame(row.names = allsamps)
-        sampleMap <- .generateMap(pData, newExperimentList)
+        sampleMap <- .generateMap(pData, ExperimentList)
       } else if ((length(sampleMap) == 0L) && (length(pData) != 0L)) {
         warning("sampleMap not provided, trying to generate sampleMap...")
-        sampleMap <- .generateMap(pData, newExperimentList)
+        sampleMap <- .generateMap(pData, ExperimentList)
         validAssays <-
           S4Vectors::split(sampleMap[["assay"]], sampleMap[, "assayname"])
-        newExperimentList <- Map(function(x, y) {
+        ExperimentList <- Map(function(x, y) {
           x[, y]
-        }, newExperimentList, validAssays)
-        newExperimentList <- ExperimentList(newExperimentList)
+        }, ExperimentList, validAssays)
+        ExperimentList <- ExperimentList(ExperimentList)
       }
     }
     if (!is(pData, "DataFrame")) {
@@ -84,7 +84,7 @@ MultiAssayExperiment <-
       sampleMap <- S4Vectors::DataFrame(sampleMap)
     }
     newMultiAssay <- new("MultiAssayExperiment",
-                         ExperimentList = newExperimentList,
+                         ExperimentList = ExperimentList,
                          pData = pData, 
                          sampleMap = sampleMap)
     return(newMultiAssay)
