@@ -13,6 +13,9 @@ warnings_are_errors: true
 r_binary_packages: 
   - testthat
 
+r_packages:
+  - rmarkdown
+
 bioc_packages:
   - BiocGenerics
   - S4Vectors

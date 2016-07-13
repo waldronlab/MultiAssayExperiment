@@ -9,7 +9,8 @@ Suggests:
     BiocStyle,
     testthat,
     knitr,
-    HDF5Array
+    HDF5Array,
+    rmarkdown
 Depends:
     R (>= 3.3.0)
 Imports:
