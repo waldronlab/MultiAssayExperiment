@@ -55,7 +55,7 @@ necessary.
 example("MultiAssayExperiment")
 
 ## Check if there are any inconsistencies within the different names
-preparedMAE <- PrepMultiAssay(ExpList, primary, mySampleMap)
+preparedMAE <- PrepMultiAssay(ExpList, pDat, mySampleMap)
 
 ## Results in a list of components for the MultiAssayExperiment constructor
 ## function

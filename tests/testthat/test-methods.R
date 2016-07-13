@@ -29,9 +29,10 @@ masPheno <- data.frame(sex=c("M", "F", "M", "F"),
 aShell <- new("MAEshell", a = rse)
 newShell <- list(myShell = aShell)
 rangemap <-
-   DataFrame(primary = c("Jack", "Jill", "Bob", "Barbara"),
-              assay = c("mysnparray1", "mysnparray2", "mysnparray3",
-                        "mysnparray4"), assayname = Rle("myShell"))
+    DataFrame(assay = factor("myShell"), 
+              primary = c("Jack", "Jill", "Bob", "Barbara"),
+              colname = c("mysnparray1", "mysnparray2", "mysnparray3",
+                          "mysnparray4"))
 
 test_that("the methods check out", {
   expect_true(is(ExperimentList(newShell), "ExperimentList"))

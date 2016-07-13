@@ -138,8 +138,8 @@ representation
 \item{\code{ExperimentList}}{A \code{\link{ExperimentList}} class object for each
 assay dataset}
 
-\item{\code{pData}}{A \code{DataFrame} of all clinical data available across
-experiments}
+\item{\code{pData}}{A \code{DataFrame} of all clinical/specimen data available
+across experiments}
 
 \item{\code{sampleMap}}{A \code{DataFrame} of translatable identifiers of samples
 and participants}
@@ -167,7 +167,7 @@ each experiment/assay. It contains a \link[S4Vectors]{SimpleList}.
 
 The \code{\link{sampleMap}} contains a \code{DataFrame} of translatable
 identifiers of samples and participants or biological units. Standard column
-names of the sampleMap are "primary", "assay", and "assayname".
+names of the sampleMap are "assay", "primary", and "colname".
 }
 \examples{
 MultiAssayExperiment()

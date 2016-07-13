@@ -11,13 +11,14 @@ MultiAssayExperiment(ExperimentList = list(),
   drops = list())
 }
 \arguments{
-\item{ExperimentList}{A \code{list} of all combined experiments}
+\item{ExperimentList}{A \code{list} or \link{ExperimentList} of all
+combined experiments}
 
-\item{pData}{A \code{\link[S4Vectors]{DataFrame}} of the phenotype
-data for all participants}
+\item{pData}{A \code{\link[S4Vectors]{DataFrame}} or \code{data.frame} of
+the phenotype data for all participants}
 
-\item{sampleMap}{A \code{DataFrame} of sample identifiers, assay samples,
-and assay names}
+\item{sampleMap}{A \code{DataFrame} or \code{data.frame} of assay names,
+sample identifiers, and colname samples}
 
 \item{drops}{A \code{list} of unmatched information
 (included after subsetting)}
@@ -32,8 +33,12 @@ datasets with partially overlapping samples, associated metadata at
 the level of an entire study, and at the level of the "biological unit".
 The biological unit may be a patient, plant, yeast strain, etc.
 
-This function combines multiple data elements from the different hierarchies
-of data (study, experiments, and samples)
+This is the constructor function for the \link{MultiAssayExperiment-class}.
+It combines multiple data elements from the different hierarchies of data
+(study, experiments, and samples). It can create instances where neither
+a \code{sampleMap} or a \code{pData} set is provided. Please see the
+MultiAssayExperiment API documentation for more information by running the
+\code{API} function.
 }
 \details{
 The package hierarchy of information: 
@@ -58,13 +63,13 @@ names(ExpList)[3] <- "CNVgistic"
 example("sampleMap")
 
 ## Create an example phenotype data
-primary <- data.frame(sex = c("M", "F", "M", "F"),
+pDat <- data.frame(sex = c("M", "F", "M", "F"),
                        age = 38:41,
                        row.names = c("Jack", "Jill", "Bob", "Barbara"))
 
 ## Create a MultiAssayExperiment instance
 myMultiAssayExperiment <- MultiAssayExperiment(ExperimentList = ExpList,
-                                               pData = primary,
+                                               pData = pDat,
                                                sampleMap = mySampleMap)
 }
 \seealso{

@@ -7,7 +7,7 @@
 \usage{
 listToMap(listmap, type = "colnames")
 
-mapToList(dfmap, assayCol = "assayname")
+mapToList(dfmap, assayCol = "assay")
 }
 \arguments{
 \item{listmap}{A \code{list} class object containing names of either 

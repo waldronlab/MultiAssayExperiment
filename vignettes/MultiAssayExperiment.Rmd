@@ -125,7 +125,7 @@ patient.data <- data.frame(sex=c("M", "F", "M", "F"),
 patient.data
 ```
 
-## Note on the flexibility of the `DataFrame`
+### Note on the flexibility of the `DataFrame`
 
 For many typical purposes the `DataFrame` and `data.frame` behave equivalently;
 but the `Dataframe` is more flexible as it allows any vector-like data type
@@ -157,22 +157,22 @@ mapping from rows of `pData` to experimental observations.
 
 `pData` has three columns, with the following column names:
 
-1. **primary** provides the "primary" sample names.  All values in this column
+1. **assay** provides the names of the different experiments / assays
+performed. These are user-defined, with the only requirement that the names
+of the `ExperimentList`, where the experimental assays are stored, must be
+contained in this column.
+
+2. **primary** provides the "primary" sample names.  All values in this column
 must also be present in the rownames of pData(MultiAssayExperiment).
 In this example, allowable values in this column are "Jack", "Jill",
 "Barbara", and "Bob".
 
-2. **assay** provides the sample names used by experimental datasets, which
-in practice are often different than the primary sample names.  For each assay,
-all column names must be found in this column.  Otherwise, those assays would
+3. **colname** provides the sample names used by experimental datasets, which
+in practice are often different than the primary sample names. For each assay,
+all column names must be found in this column. Otherwise, those assays would
 be orphaned: it would be impossible to match them up to samples in the overall
 experiment. As mentioned above, duplicated values are allowed, to represent
 replicates with the same overall experiment-level annotation.
-
-3. **assayname** provides the names of the different experiments / assays
-performed. These are user-defined, with the only requirement that the names
-of the `ExperimentList`, where the experimental assays are stored, must be
-contained in this column.
 
 This design is motivated by the following situations:
 
@@ -190,7 +190,7 @@ and re-ordering.
 
 If each assay uses the same colnames (i.e., if the same sample identifiers are
 used for each experiment), a simple list of these datasets is sufficient for
-the `MultiAssayExperiment()` constructor function.  It is not necessary for
+the `MultiAssayExperiment()` constructor function. It is not necessary for
 them to have the same rownames or colnames:
 
 ```{r}
@@ -377,8 +377,8 @@ automatically if a single naming convention is used, but in this example
 it cannot because we used platform-specific sample identifiers
 (e.g. mysnparray1, etc). So we must provide an ID  map that matches the
 samples of each experiment back to the `pData`, as a three-column
-`data.frame` or `DataFrame` with three columns named "primary", "assay",
-and "assayname".  Here we start with a list:
+`data.frame` or `DataFrame` with three columns named "assay", primary", and
+"colname".  Here we start with a list:
 
 ```{r}
 listmap <- list(exprmap, methylmap, micromap, rangemap, rangemap2)
@@ -397,7 +397,7 @@ dfmap
 Note, `dfmap` can be reverted to a list with another provided function:
 
 ```{r, eval=FALSE}
-mapToList(dfmap, "assayname")
+mapToList(dfmap, "assay")
 ```
 
 ## Experimental data as a `list()`
@@ -454,13 +454,13 @@ try(PrepMultiAssay(objlist3, patient.data, dfmap)$ExperimentList)
 ```
 
 Non-matching names may also be present in the `ExperimentList` elements and the
-"assayname" column of the `sampleMap`. If names only differ by case and are
+"assay" column of the `sampleMap`. If names only differ by case and are
 identical and unique, names will be standardized to lower case and replaced.
 
 ```{r}
 names(objlist3) <- toupper(names(objlist))
 names(objlist3)
-unique(dfmap[, "assayname"])
+unique(dfmap[, "assay"])
 PrepMultiAssay(objlist3, patient.data, dfmap)$ExperimentList
 ```
 
@@ -480,9 +480,9 @@ does not have a match in the experimental data.
 
 ```{r}
 exMap <- rbind(dfmap,
-               DataFrame(primary = "Joe",
-                         assay = "Joe",
-                         assayname = "New methyl"))
+               DataFrame(assay = "New methyl",
+                         primary = "Joe",
+                         colname = "Joe"))
 PrepMultiAssay(objlist, patient.data, exMap)$drops
 ```
 

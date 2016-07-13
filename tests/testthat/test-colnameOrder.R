@@ -15,6 +15,6 @@ myMultiAssayExperiment <-
 
 
 test_that("when columns in different order, subset ops will rearrange them", {
-  expect_true(identical(sampleMap(myMultiAssayExperiment)[1:4, "assay"],
+  expect_true(identical(sampleMap(myMultiAssayExperiment)[1:4, "colname"],
                         colnames(myMultiAssayExperiment)[[1]]))
 })

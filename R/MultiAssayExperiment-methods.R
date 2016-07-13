@@ -196,7 +196,7 @@ setGeneric("subsetByAssay", function(x, y) standardGeneric("subsetByAssay"))
 #' \code{character} vector to subset assays in a \code{MultiAssayExperiment}
 setMethod("subsetByAssay", c("MultiAssayExperiment", "ANY"), function(x, y) {
   newSubset <- experiments(x)[y]
-  listMap <- mapToList(sampleMap(x), "assayname")
+  listMap <- mapToList(sampleMap(x), "assay")
   newMap <- listMap[y]
   newMap <- listToMap(newMap)
   sampleMap(x) <- newMap
@@ -236,13 +236,13 @@ setGeneric("subsetByColumn", function(x, y) standardGeneric("subsetByColumn"))
 setMethod("subsetByColumn", c("MultiAssayExperiment", "ANY"), function(x, y) {
   selectors <- rownames(pData(x))[y]
   newpData <- pData(x)[selectors, ]
-  listMap <- mapToList(sampleMap(x), "assayname")
+  listMap <- mapToList(sampleMap(x), "assay")
   listMap <- lapply(listMap, function(primary) {
     primary[which(primary[, 1] %in% selectors),]
   })
   newMap <- listToMap(listMap)
   columns <- lapply(listMap, function(mapChunk) {
-    mapChunk[, "assay", drop = TRUE]
+    mapChunk[, "colname", drop = TRUE]
   })
   newSubset <- mapply(function(x, j) {x[, j, drop = FALSE]},
                       x = experiments(x), j = columns, SIMPLIFY = FALSE)
@@ -273,12 +273,12 @@ setMethod("subsetByColumn", c("MultiAssayExperiment", "list"),
                   expList[ ,j , drop =  FALSE]
               }, expList = experiments(x), j = y, SIMPLIFY = FALSE))
               newSamps <- as.list(colnames(x))
-              listMap <- mapToList(sampleMap(x), "assayname")
+              listMap <- mapToList(sampleMap(x), "assay")
               newMap <- mapply(function(lMap, nSamps) {
-                lMap[na.omit(match(nSamps, as.character(lMap[, "assay"]))), ]
+                lMap[na.omit(match(nSamps, as.character(lMap[["colname"]]))), ]
               }, lMap = listMap, nSamps = newSamps, SIMPLIFY = FALSE)
               newMap <- listToMap(newMap)
-              selectors <- unique(as.character(newMap[,"primary"]))
+              selectors <- unique(as.character(newMap[["primary"]]))
               pData(x) <- pData(x)[rownames(pData(x)) %in% selectors,]
               sampleMap(x) <- newMap
               return(x)
