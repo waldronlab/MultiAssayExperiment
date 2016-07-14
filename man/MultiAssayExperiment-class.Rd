@@ -6,6 +6,7 @@
 \alias{[,MultiAssayExperiment,ANY,ANY,ANY-method}
 \alias{assay,MultiAssayExperiment,ANY-method}
 \alias{colnames,MultiAssayExperiment-method}
+\alias{complete.cases,MultiAssayExperiment-method}
 \alias{experiments,MultiAssayExperiment-method}
 \alias{experiments<-,MultiAssayExperiment,ExperimentList-method}
 \alias{isEmpty,MultiAssayExperiment-method}
@@ -47,6 +48,8 @@
 \S4method{[}{MultiAssayExperiment,ANY,ANY,ANY}(x, i, j, k, ..., drop = TRUE)
 
 \S4method{isEmpty}{MultiAssayExperiment}(x)
+
+\S4method{complete.cases}{MultiAssayExperiment}(...)
 
 \S4method{assay}{MultiAssayExperiment,ANY}(x)
 }
@@ -128,6 +131,9 @@ representation
 
 \item \code{isEmpty}: A \code{logical} value indicating an empty
 \code{MultiAssayExperiment}
+
+\item \code{complete.cases}: Return a logical vector of biological units
+with data across all experiments
 
 \item \code{assay}: Get the assay data for a
 \link{MultiAssayExperiment} as a \code{list}

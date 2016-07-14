@@ -72,10 +72,10 @@ MultiAssayExperiment <-
                 pData <- S4Vectors::DataFrame(row.names = allsamps)
                 sampleMap <- .generateMap(pData, ExperimentList)
             } else if ((length(sampleMap) == 0L) && (length(pData) != 0L)) {
-                warning("sampleMap not provided, trying to generate sampleMap...")
                 sampleMap <- .generateMap(pData, ExperimentList)
                 validAssays <-
-                    S4Vectors::split(sampleMap[["colname"]], sampleMap[, "assay"])
+                    S4Vectors::split(
+                        sampleMap[["colname"]], sampleMap[, "assay"])
                 ExperimentList <- Map(function(x, y) {
                     x[, y]
                 }, ExperimentList, validAssays)
