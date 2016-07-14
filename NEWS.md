@@ -1,3 +1,17 @@
+# MultiAssayExperiment 0.101.37
+
+## New features
+
+* `sampleMap` column names renamed to __assay__ (prev. "assayname"), __primary__,
+and __colname__ (prev. "assay")
+* New vignete available for creating `MultiAssayExperiment` objects with TCGA data
+
+## Bug fixes and minor improvements
+
+* Added informative error to `MultiAssayExperiment` constructor
+* Improved `show` method display
+* Removed warning message when only `ExperimentList` argument provided
+
 # MultiAssayExperiment 0.101.36
 
 * `Elist` class renamed to `ExperimentList`
