@@ -15,7 +15,8 @@ and __colname__ (prev. "assay")
 # MultiAssayExperiment 0.101.36
 
 * `Elist` class renamed to `ExperimentList`
-* `ExperimentList` constructor now called `experiments`
+* `ExperimentList` constructor is homonymous
+* `ExperimentList` accessor now called `experiments`
 * `ExperimentList` replacement method is now `experiments<-`
 * Updated vignettes to reflect change of names
 
