@@ -6,7 +6,8 @@ setMethod("assay", "MAEshell", function(x) {assay(x@a)})
 setMethod("rownames", "MAEshell", function(x) {rownames(x@a)})
 setMethod("colnames", "MAEshell", function(x) {colnames(x@a)})
 setMethod("[", c("MAEshell", "ANY", "ANY"), function(x, i, j) {x@a[i, j]})
-setMethod("dim", "MAEshell", function(x) {c(length(x@a), length(assay(x@a)[1,]))})
+setMethod("dim", "MAEshell", function(x) {c(length(x@a),
+                                            length(assay(x@a)[1,]))})
 
 nrows <- 5; ncols <- 4
 counts <- matrix(runif(nrows * ncols, 1, 1e4), nrows)
@@ -28,11 +29,13 @@ masPheno <- data.frame(sex=c("M", "F", "M", "F"),
 aShell <- new("MAEshell", a = rse)
 newShell <- list(myShell = aShell)
 rangemap <-
-   DataFrame(primary = c("Jack", "Jill", "Bob", "Barbara"),
-              assay = c("mysnparray1", "mysnparray2", "mysnparray3",
-                        "mysnparray4"), assayname = Rle("myShell"))
+    DataFrame(assay = factor("myShell"), 
+              primary = c("Jack", "Jill", "Bob", "Barbara"),
+              colname = c("mysnparray1", "mysnparray2", "mysnparray3",
+                          "mysnparray4"))
 
 test_that("the methods check out", {
-  expect_true(is(Elist(newShell), "Elist"))
-  expect_true(is(MultiAssayExperiment(newShell, masPheno, rangemap), "MultiAssayExperiment"))
+  expect_true(is(ExperimentList(newShell), "ExperimentList"))
+  expect_true(is(MultiAssayExperiment(newShell, masPheno, rangemap),
+                 "MultiAssayExperiment"))
 })

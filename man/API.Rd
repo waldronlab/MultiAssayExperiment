@@ -4,9 +4,11 @@
 \alias{API}
 \title{Refer to the API documentation}
 \usage{
-API(shiny = FALSE)
+API(website = TRUE, shiny = FALSE)
 }
 \arguments{
+\item{website}{(logical default TRUE) launch the API website}
+
 \item{shiny}{(logical default FALSE) whether to launch the shiny version
 of the API (experimental)}
 }
@@ -17,10 +19,9 @@ Documentation via the GitHub wiki
 \code{API} opens a browser to the API documentation
 }
 \examples{
-## This will open in a browser window
-\dontrun{
-API()
-}
+## Runnable example does nothing
+
+API(website = FALSE)
 
 }
 \author{

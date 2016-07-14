@@ -1,5 +1,5 @@
-## Run the example Elist
-example("Elist")
+## Run the example ExperimentList
+example("ExperimentList")
 
 ## Load example GRangesList object
 example("RangedRaggedAssay")
@@ -12,11 +12,11 @@ names(ExpList)[3] <- "CNVgistic"
 example("sampleMap")
 
 ## Create an example phenotype data
-primary <- data.frame(sex = c("M", "F", "M", "F"),
+pDat <- data.frame(sex = c("M", "F", "M", "F"),
                        age = 38:41,
                        row.names = c("Jack", "Jill", "Bob", "Barbara"))
 
 ## Create a MultiAssayExperiment instance
-myMultiAssayExperiment <- MultiAssayExperiment(Elist = ExpList,
-                                               pData = primary,
+myMultiAssayExperiment <- MultiAssayExperiment(ExperimentList = ExpList,
+                                               pData = pDat,
                                                sampleMap = mySampleMap)

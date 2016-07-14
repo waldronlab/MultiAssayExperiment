@@ -30,9 +30,9 @@ exprdat <- Biobase::ExpressionSet(assayData=arraydat, phenoData=arraypdat)
 
 ExpList <- list(myRRA, exprdat)
 names(ExpList) <- c("CNVgistic", "Affy")
-myElist <- Elist(ExpList)
+myExperimentList <- ExperimentList(ExpList)
 
 test_that("the appropriate class is returned", {
   expect_true(is(myRRA, "RangedRaggedAssay"))
-  expect_true(is(myElist, "Elist"))
+  expect_true(is(myExperimentList, "ExperimentList"))
 })
