@@ -6,34 +6,34 @@ NULL
 
 #' @describeIn ExperimentList Get all the rownames of an \code{ExperimentList}
 setMethod("rownames", "ExperimentList", function(x)
-  IRanges::CharacterList(lapply(x, rownames)))
+    IRanges::CharacterList(lapply(x, rownames)))
 
 #' @describeIn MultiAssayExperiment Get all the rownames for a
 #' \code{MultiAssayExperiment} using a \code{\link[IRanges]{CharacterList}}
 #' @exportMethod rownames
 setMethod("rownames", "MultiAssayExperiment", function(x)
-  rownames(experiments(x)))
+    rownames(experiments(x)))
 
 #' @describeIn ExperimentList Get sample names from an \code{ExperimentList}
 #' object
 setMethod("colnames", "ExperimentList", function(x)
-  IRanges::CharacterList(lapply(x, colnames)))
+    IRanges::CharacterList(lapply(x, colnames)))
 
 #' @describeIn MultiAssayExperiment Get all the colnames for a
 #' \code{MultiAssayExperiment}
 #' @exportMethod colnames
 setMethod("colnames", "MultiAssayExperiment", function(x)
-  colnames(experiments(x)))
+    colnames(experiments(x)))
 
 .checkFindOverlaps <- function(obj_cl) {
-  return(
-    all(hasMethod("findOverlaps", signature(obj_cl, "GRanges"),
-                  where = c("package:GenomicRanges", "package:IRanges",
-                            "package:SummarizedExperiment")),
-        hasMethod("subsetByOverlaps", signature(obj_cl, "GRanges"),
-                  where = c("package:GenomicRanges", "package:IRanges", 
-                            "package:SummarizedExperiment")))
-  )
+    return(
+        all(hasMethod("findOverlaps", signature(obj_cl, "GRanges"),
+                      where = c("package:GenomicRanges", "package:IRanges",
+                                "package:SummarizedExperiment")),
+            hasMethod("subsetByOverlaps", signature(obj_cl, "GRanges"),
+                      where = c("package:GenomicRanges", "package:IRanges", 
+                                "package:SummarizedExperiment")))
+    )
 }
 
 
@@ -53,16 +53,18 @@ setGeneric("getHits", function(subject, query, ...) standardGeneric("getHits"))
 #' @exportMethod getHits
 setMethod("getHits", signature("MultiAssayExperiment", "character"),
           function(subject, query, ...)
-            lapply(experiments(subject), FUN = function(elem, ...) {
-  getHits(elem, query, ...)
-}))
+              lapply(experiments(subject), FUN = function(elem, ...) {
+                  getHits(elem, query, ...)
+              })
+)
 
 #' @describeIn getHits Find all matching rownames by \code{GRanges}
 setMethod("getHits", signature("MultiAssayExperiment", "GRanges"),
           function(subject, query, ...)
-            lapply(experiments(subject), FUN = function(elem, ...) {
-  getHits(elem, query, ...)
-}))
+              lapply(experiments(subject), FUN = function(elem, ...) {
+                  getHits(elem, query, ...)
+              })
+)
 
 #' @describeIn getHits Find and get corresponding names of two \code{GRanges}
 #' using \code{findOverlaps}
@@ -113,35 +115,35 @@ setMethod("getHits", signature("RangedRaggedAssay", "character"),
           })
 
 .isEmpty <- function(object) {
-  isTRUE(unname(dim(object)[1]) == 0L | unname(dim(object)[2]) == 0L)
+    isTRUE(unname(dim(object)[1]) == 0L || unname(dim(object)[2]) == 0L)
 }
 
 .subsetMultiAssayExperiment <- function(x, i, j, k, ..., drop = TRUE) {
-  if (missing(i) && missing(j) && missing(k)) {
-    return(x)
-  }
-  if (!missing(k)) {
-    x <- subsetByAssay(x, k)
-  }
-  if (!missing(j)) {
-    x <- subsetByColumn(x, j)
-  }
-  if (!missing(i)) {
-    x <- subsetByRow(x, i, ...)
-  }
-  if (drop) {
-    isEmptyAssay <- vapply(experiments(x), FUN = .isEmpty,
-                           FUN.VALUE = logical(1L))
-    if (all(isEmptyAssay)) {
-      warning("no data in assays")
-      experiments(x) <- ExperimentList()
-    } else if (any(isEmptyAssay)) {
-      keeps <- names(isEmptyAssay)[
-        sapply(isEmptyAssay, function(z) !isTRUE(z))]
-      x <- x[, , keeps, drop = FALSE]
+    if (missing(i) && missing(j) && missing(k)) {
+        return(x)
     }
-  }
-  return(x)
+    if (!missing(k)) {
+        x <- subsetByAssay(x, k)
+    }
+    if (!missing(j)) {
+        x <- subsetByColumn(x, j)
+    }
+    if (!missing(i)) {
+        x <- subsetByRow(x, i, ...)
+    }
+    if (drop) {
+        isEmptyAssay <- vapply(experiments(x), FUN = .isEmpty,
+                               FUN.VALUE = logical(1L))
+        if (all(isEmptyAssay)) {
+            warning("no data in assays")
+            experiments(x) <- ExperimentList()
+        } else if (any(isEmptyAssay)) {
+            keeps <- names(isEmptyAssay)[
+                sapply(isEmptyAssay, function(z) !isTRUE(z))]
+            x <- x[, , keeps, drop = FALSE]
+        }
+    }
+    return(x)
 }
 
 #' @describeIn MultiAssayExperiment Subset a \code{MultiAssayExperiment} object
@@ -164,7 +166,7 @@ setMethod("[", c("MultiAssayExperiment", "ANY", "ANY", "ANY"),
 #' \code{MultiAssayExperiment}
 #' @exportMethod isEmpty
 setMethod("isEmpty", "MultiAssayExperiment", function(x)
-  length(x) == 0L)
+    length(x) == 0L)
 
 #' Subset \code{MultiAssayExperiment} object by Assay type
 #' 
@@ -195,13 +197,13 @@ setGeneric("subsetByAssay", function(x, y) standardGeneric("subsetByAssay"))
 #' @describeIn subsetByAssay Use either a \code{numeric}, \code{logical}, or
 #' \code{character} vector to subset assays in a \code{MultiAssayExperiment}
 setMethod("subsetByAssay", c("MultiAssayExperiment", "ANY"), function(x, y) {
-  newSubset <- experiments(x)[y]
-  listMap <- mapToList(sampleMap(x), "assay")
-  newMap <- listMap[y]
-  newMap <- listToMap(newMap)
-  sampleMap(x) <- newMap
-  experiments(x) <- newSubset
-  return(x)
+    newSubset <- experiments(x)[y]
+    listMap <- mapToList(sampleMap(x), "assay")
+    newMap <- listMap[y]
+    newMap <- listToMap(newMap)
+    sampleMap(x) <- newMap
+    experiments(x) <- newSubset
+    return(x)
 })
 
 #' Subset \code{MultiAssayExperiment} object
@@ -234,65 +236,66 @@ setGeneric("subsetByColumn", function(x, y) standardGeneric("subsetByColumn"))
 #' @describeIn subsetByColumn Either a \code{numeric} or \code{logical} vector
 #' to apply a column subset of a \code{MultiAssayExperiment} object
 setMethod("subsetByColumn", c("MultiAssayExperiment", "ANY"), function(x, y) {
-  selectors <- rownames(pData(x))[y]
-  newpData <- pData(x)[selectors, ]
-  listMap <- mapToList(sampleMap(x), "assay")
-  listMap <- lapply(listMap, function(primary) {
-    primary[which(primary[, 1] %in% selectors),]
-  })
-  newMap <- listToMap(listMap)
-  columns <- lapply(listMap, function(mapChunk) {
-    mapChunk[, "colname", drop = TRUE]
-  })
-  newSubset <- mapply(function(x, j) {x[, j, drop = FALSE]},
-                      x = experiments(x), j = columns, SIMPLIFY = FALSE)
-  newSubset <- ExperimentList(newSubset)
-  experiments(x) <- newSubset
-  sampleMap(x) <- newMap
-  pData(x) <- newpData 
-  return(x)
+    selectors <- rownames(pData(x))[y]
+    newpData <- pData(x)[selectors, ]
+    listMap <- mapToList(sampleMap(x), "assay")
+    listMap <- lapply(listMap, function(primary) {
+        primary[which(primary[, 1] %in% selectors),]
+    })
+    newMap <- listToMap(listMap)
+    columns <- lapply(listMap, function(mapChunk) {
+        mapChunk[, "colname", drop = TRUE]
+    })
+    newSubset <- mapply(function(x, j) {x[, j, drop = FALSE]},
+                        x = experiments(x), j = columns, SIMPLIFY = FALSE)
+    newSubset <- ExperimentList(newSubset)
+    experiments(x) <- newSubset
+    sampleMap(x) <- newMap
+    pData(x) <- newpData 
+    return(x)
 })
 
 #' @describeIn subsetByColumn Use a \code{character} vector for subsetting
 #' column names
 setMethod("subsetByColumn", c("MultiAssayExperiment", "character"), 
           function(x, y) {
-            logMatches <- rownames(pData(x)) %in% y
-            if (!any(logMatches)){
-              stop("No matching identifiers found")
-            }
-            callNextMethod(x = x, y = logMatches)
+              logMatches <- rownames(pData(x)) %in% y
+              if (!any(logMatches)){
+                  stop("No matching identifiers found")
+              }
+              callNextMethod(x = x, y = logMatches)
           })
 
 #' @describeIn subsetByColumn Use a \code{list} to subset by samples in a
 #' \code{MultiAssayExperiment}
-setMethod("subsetByColumn", c("MultiAssayExperiment", "list"),
-          function(x, y) {
-              y <- y[names(x)]
-              experiments(x) <- ExperimentList(mapply(function(expList, j) {
-                  expList[ ,j , drop =  FALSE]
-              }, expList = experiments(x), j = y, SIMPLIFY = FALSE))
-              newSamps <- as.list(colnames(x))
-              listMap <- mapToList(sampleMap(x), "assay")
-              newMap <- mapply(function(lMap, nSamps) {
-                lMap[na.omit(match(nSamps, as.character(lMap[["colname"]]))), ]
-              }, lMap = listMap, nSamps = newSamps, SIMPLIFY = FALSE)
-              newMap <- listToMap(newMap)
-              selectors <- unique(as.character(newMap[["primary"]]))
-              pData(x) <- pData(x)[rownames(pData(x)) %in% selectors,]
-              sampleMap(x) <- newMap
-              return(x)
-          })
+setMethod("subsetByColumn", c("MultiAssayExperiment", "list"), function(x, y)
+{
+    y <- y[names(x)]
+    experiments(x) <- ExperimentList(mapply(function(expList, j) {
+        expList[ ,j , drop =  FALSE]
+    }, expList = experiments(x), j = y, SIMPLIFY = FALSE))
+    newSamps <- as.list(colnames(x))
+    listMap <- mapToList(sampleMap(x), "assay")
+    newMap <- mapply(function(lMap, nSamps) {
+        lMap[na.omit(match(nSamps,
+                           as.character(lMap[["colname"]]))), ]
+    }, lMap = listMap, nSamps = newSamps, SIMPLIFY = FALSE)
+    newMap <- listToMap(newMap)
+    selectors <- unique(as.character(newMap[["primary"]]))
+    pData(x) <- pData(x)[rownames(pData(x)) %in% selectors,]
+    sampleMap(x) <- newMap
+    return(x)
+})
 
 #' @describeIn subsetByColumn Use an S4 \code{List} to subset a
 #' \code{MultiAssayExperiment}. The order of the subsetting elements in this
 #' \code{List} must match that of the \code{ExperimentList} in the
 #' \code{MultiAssayExperiment}.
-setMethod("subsetByColumn", c("MultiAssayExperiment", "List"),
-          function(x, y) {
-            Y <- as.list(y)
-            x[, Y]
-          })
+setMethod("subsetByColumn", c("MultiAssayExperiment", "List"), function(x, y)
+{
+    Y <- as.list(y)
+    x[, Y]
+})
 
 setClassUnion("GRangesORcharacter", c("GRanges", "character"))
 
@@ -366,10 +369,13 @@ setMethod("subsetByRow", c("MultiAssayExperiment", "logical"),
 #' \code{numeric} or \code{logical} vector
 setMethod("subsetByRow", c("MultiAssayExperiment", "ANY"),
           function(x, y) {
-            newExperimentList <- S4Vectors::endoapply(experiments(x),
-                                             function(z) {z[y,, drop = FALSE]})
-            experiments(x) <- newExperimentList
-            return(x)
+              newExperimentList <-
+                  S4Vectors::endoapply(experiments(x),
+                                       function(element) {
+                                           element[y,, drop = FALSE]
+                                       })
+              experiments(x) <- newExperimentList
+              return(x)
           })
 
 #' @describeIn subsetByRow Use a list of equal length as the
@@ -392,8 +398,24 @@ setMethod("subsetByRow", c("MultiAssayExperiment", "list"),
 #' \code{MultiAssayExperiment}. The order of the subsetting elements in this
 #' \code{List} must match that of the \code{ExperimentList} in the
 #' \code{MultiAssayExperiment}.
-setMethod("subsetByRow", c("MultiAssayExperiment", "List"),
-          function(x, y) {
-            Y <- as.list(y)
-            x[Y, ]
-          })
+setMethod("subsetByRow", c("MultiAssayExperiment", "List"), function(x, y)
+{
+    Y <- as.list(y)
+    x[Y, ]
+})
+
+#' @describeIn MultiAssayExperiment Return a logical vector of biological units
+#' with data across all experiments 
+setMethod("complete.cases", "MultiAssayExperiment", function(...) {
+    args <- list(...)
+    if (length(args) == 1L) {
+        oldMap <- sampleMap(args[[1L]])
+        listMap <- mapToList(oldMap)
+        allPrimary <- Reduce(intersect,
+                             lapply(listMap,
+                                    function(element) {
+                                        element[["primary"]]
+                                    }))
+        rownames(pData(args[[1L]])) %in% allPrimary
+    }
+})

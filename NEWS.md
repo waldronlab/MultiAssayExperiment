@@ -1,3 +1,9 @@
+# MultiAssayExperiment 0.101.38
+
+## New features
+
+* `complete.cases` method available for the `MultiAssayExperiment` class
+
 # MultiAssayExperiment 0.101.37
 
 ## New features
