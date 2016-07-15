@@ -36,8 +36,8 @@
 An \code{ExperimentList} class object
 }
 \description{
-The \code{ExperimentList} class is a container that builds on 
-the \code{SimpleList} with additional 
+The \code{ExperimentList} class is a container that builds on
+the \code{SimpleList} with additional
 checks for consistency in experiment names and length.
 It contains a \code{SimpleList} of experiments with sample identifiers.
 One element present per experiment performed.

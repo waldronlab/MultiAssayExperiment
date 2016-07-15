@@ -1,3 +1,10 @@
+# MultiAssayExperiment 0.101.39
+
+## New features
+
+* `updateObject` method now available for old instances of the `MultiAssayExperiment`
+* Users with invalid `MultiAssayExperiments` should update and re-serialize them
+
 # MultiAssayExperiment 0.101.38
 
 ## New features

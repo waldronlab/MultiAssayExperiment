@@ -1,6 +1,6 @@
-#' @include RangedRaggedAssay-class.R MultiAssayExperiment-class.R 
-#' ExperimentList-class.R MultiAssayView-class.R 
-#' 
+#' @include RangedRaggedAssay-class.R MultiAssayExperiment-class.R
+#' ExperimentList-class.R MultiAssayView-class.R
+#'
 #' @import BiocGenerics SummarizedExperiment S4Vectors GenomicRanges methods
 NULL
 
@@ -31,14 +31,14 @@ setMethod("colnames", "MultiAssayExperiment", function(x)
                       where = c("package:GenomicRanges", "package:IRanges",
                                 "package:SummarizedExperiment")),
             hasMethod("subsetByOverlaps", signature(obj_cl, "GRanges"),
-                      where = c("package:GenomicRanges", "package:IRanges", 
+                      where = c("package:GenomicRanges", "package:IRanges",
                                 "package:SummarizedExperiment")))
     )
 }
 
 
 #' Find hits by class type
-#' 
+#'
 #' @param subject Any valid element from the
 #' \code{\linkS4class{ExperimentList}} class
 #' @param query Either a \code{character} vector or
@@ -169,28 +169,28 @@ setMethod("isEmpty", "MultiAssayExperiment", function(x)
     length(x) == 0L)
 
 #' Subset \code{MultiAssayExperiment} object by Assay type
-#' 
+#'
 #' Select which assay(s) to obtain from available datasets
-#' 
+#'
 #' @param x A \code{\link{MultiAssayExperiment}} object
 #' @param y Either a \code{numeric}, \code{character} or
-#' \code{logical} object indicating what assay(s) to select  
+#' \code{logical} object indicating what assay(s) to select
 #' @return A \code{\link{MultiAssayExperiment}} object
 #' @seealso `subset,MultiAssayExperiment-method`
-#' 
+#'
 #' @examples
 #' ## Load a MultiAssayExperiment example
 #' example("MultiAssayExperiment")
-#' 
+#'
 #' ## Using experiment names
-#' subsetByAssay(myMultiAssayExperiment, "Affy") 
-#' 
+#' subsetByAssay(myMultiAssayExperiment, "Affy")
+#'
 #' ## Using numeric indicators
 #' subsetByAssay(myMultiAssayExperiment, 1:2)
-#' 
+#'
 #' ## Using a logical vector
 #' subsetByAssay(myMultiAssayExperiment, c(TRUE, FALSE, TRUE))
-#' 
+#'
 #' @export subsetByAssay
 setGeneric("subsetByAssay", function(x, y) standardGeneric("subsetByAssay"))
 
@@ -207,29 +207,29 @@ setMethod("subsetByAssay", c("MultiAssayExperiment", "ANY"), function(x, y) {
 })
 
 #' Subset \code{MultiAssayExperiment} object
-#' 
-#' \code{subsetByColumn} returns a subsetted 
+#'
+#' \code{subsetByColumn} returns a subsetted
 #' \code{\linkS4class{MultiAssayExperiment}} object
 #'
-#' @param x A \code{\link{MultiAssayExperiment}} object 
+#' @param x A \code{\link{MultiAssayExperiment}} object
 #' @param y Either a \code{numeric}, \code{character} or
 #' \code{logical} object indicating what rownames in the pData to select
 #' for subsetting
 #' @return A \code{\link{MultiAssayExperiment}} object
-#' 
+#'
 #' @examples
 #' ## Load a MultiAssayExperiment example
 #' example("MultiAssayExperiment")
-#' 
+#'
 #' ## Subset by character vector (Jack)
 #' subsetByColumn(myMultiAssayExperiment, "Jack")
-#' 
+#'
 #' ## Subset by numeric index of pData rows (Jack and Bob)
 #' subsetByColumn(myMultiAssayExperiment, c(1, 3))
-#' 
+#'
 #' ## Subset by logical indicator of pData rows (Jack and Jill)
 #' subsetByColumn(myMultiAssayExperiment, c(TRUE, TRUE, FALSE, FALSE))
-#' 
+#'
 #' @export subsetByColumn
 setGeneric("subsetByColumn", function(x, y) standardGeneric("subsetByColumn"))
 
@@ -251,13 +251,13 @@ setMethod("subsetByColumn", c("MultiAssayExperiment", "ANY"), function(x, y) {
     newSubset <- ExperimentList(newSubset)
     experiments(x) <- newSubset
     sampleMap(x) <- newMap
-    pData(x) <- newpData 
+    pData(x) <- newpData
     return(x)
 })
 
 #' @describeIn subsetByColumn Use a \code{character} vector for subsetting
 #' column names
-setMethod("subsetByColumn", c("MultiAssayExperiment", "character"), 
+setMethod("subsetByColumn", c("MultiAssayExperiment", "character"),
           function(x, y) {
               logMatches <- rownames(pData(x)) %in% y
               if (!any(logMatches)){
@@ -300,33 +300,33 @@ setMethod("subsetByColumn", c("MultiAssayExperiment", "List"), function(x, y)
 setClassUnion("GRangesORcharacter", c("GRanges", "character"))
 
 #' Subset \code{MultiAssayExperiment} object by Feature
-#' 
-#' Subset a \code{MultiAssayExperiment} class by provided feature names or a 
+#'
+#' Subset a \code{MultiAssayExperiment} class by provided feature names or a
 #' \code{GRanges} object
-#' 
+#'
 #' @param x A \code{\link{MultiAssayExperiment}} object
 #' @param y A \code{character} vector or \code{GRanges} class object
 #' containing feature names or ranges
-#' @param ... Additional arguments to pass to low level subsetting function 
+#' @param ... Additional arguments to pass to low level subsetting function
 #' primarily when using a \code{GRanges} object for subsetting
 #' (via \code{getHits})
-#' @return A \code{\link{MultiAssayExperiment}} object 
+#' @return A \code{\link{MultiAssayExperiment}} object
 #' @seealso \code{\link{getHits}}
-#' 
-#' @examples 
+#'
+#' @examples
 #' ## Load a MultiAssayExperiment example
 #' example("MultiAssayExperiment")
-#' 
+#'
 #' ## Use a GRanges object to subset rows where ranged data present
 #' egr <- GRanges(seqnames = "chr1", IRanges(start = 1, end = 3), strand = "-")
 #' subsetByRow(myMultiAssayExperiment, egr)
-#' 
+#'
 #' ## Use a logical vector (recycling used)
 #' subsetByRow(myMultiAssayExperiment, c(TRUE, FALSE))
-#' 
+#'
 #' ## Use a character vector
 #' subsetByRow(myMultiAssayExperiment, "ENST00000355076")
-#' 
+#'
 #' @export subsetByRow
 setGeneric("subsetByRow", function(x, y, ...) standardGeneric("subsetByRow"))
 
@@ -404,8 +404,9 @@ setMethod("subsetByRow", c("MultiAssayExperiment", "List"), function(x, y)
     x[Y, ]
 })
 
+#' @exportMethod complete.cases
 #' @describeIn MultiAssayExperiment Return a logical vector of biological units
-#' with data across all experiments 
+#' with data across all experiments
 setMethod("complete.cases", "MultiAssayExperiment", function(...) {
     args <- list(...)
     if (length(args) == 1L) {
