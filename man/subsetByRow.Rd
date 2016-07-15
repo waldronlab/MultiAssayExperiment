@@ -31,7 +31,7 @@ subsetByRow(x, y, ...)
 \item{y}{A \code{character} vector or \code{GRanges} class object
 containing feature names or ranges}
 
-\item{...}{Additional arguments to pass to low level subsetting function 
+\item{...}{Additional arguments to pass to low level subsetting function
 primarily when using a \code{GRanges} object for subsetting
 (via \code{getHits})}
 }
@@ -39,7 +39,7 @@ primarily when using a \code{GRanges} object for subsetting
 A \code{\link{MultiAssayExperiment}} object
 }
 \description{
-Subset a \code{MultiAssayExperiment} class by provided feature names or a 
+Subset a \code{MultiAssayExperiment} class by provided feature names or a
 \code{GRanges} object
 }
 \section{Methods (by class)}{

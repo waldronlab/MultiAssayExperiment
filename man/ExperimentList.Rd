@@ -2,7 +2,7 @@
 % Please edit documentation in R/ExperimentList-class.R
 \name{ExperimentList}
 \alias{ExperimentList}
-\title{experiment Acessor function for the \code{ExperimentList} slot of a 
+\title{experiment Acessor function for the \code{ExperimentList} slot of a
 \code{MultiAssayExperiment} object}
 \usage{
 ExperimentList(x)
@@ -14,7 +14,7 @@ ExperimentList(x)
 A \code{ExperimentList} class object of experiment data
 }
 \description{
-experiment Acessor function for the \code{ExperimentList} slot of a 
+experiment Acessor function for the \code{ExperimentList} slot of a
 \code{MultiAssayExperiment} object
 }
 \examples{

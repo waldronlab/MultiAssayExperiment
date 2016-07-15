@@ -41,13 +41,13 @@
 ### ----------------------------------------------
 
 #' A container for multi-experiment data
-#' 
-#' The \code{ExperimentList} class is a container that builds on 
-#' the \code{SimpleList} with additional 
+#'
+#' The \code{ExperimentList} class is a container that builds on
+#' the \code{SimpleList} with additional
 #' checks for consistency in experiment names and length.
 #' It contains a \code{SimpleList} of experiments with sample identifiers.
-#' One element present per experiment performed.  
-#' 
+#' One element present per experiment performed.
+#'
 #' Convert from \code{SimpleList} or \code{list}
 #' to the multi-experiment data container
 #'
@@ -62,13 +62,13 @@
 ### Builder
 ###
 
-#' experiment Acessor function for the \code{ExperimentList} slot of a 
+#' experiment Acessor function for the \code{ExperimentList} slot of a
 #' \code{MultiAssayExperiment} object
-#' 
+#'
 #' @param x A code{MultiAssayExperiment} class object
 #' @return A \code{ExperimentList} class object of experiment data
-#' 
-#' @example inst/scripts/ExperimentList-Ex.R 
+#'
+#' @example inst/scripts/ExperimentList-Ex.R
 #' @export
 setGeneric("ExperimentList", function(x) standardGeneric("ExperimentList"))
 
@@ -92,7 +92,7 @@ setMethod("ExperimentList", "missing", function(x) {
 })
 
 ### - - - - - - - - - - - - - - - - - - - - - - - -
-### Validity 
+### Validity
 ###
 
 ## Helper function for .checkMethodsTable
@@ -163,22 +163,22 @@ S4Vectors::setValidity2("ExperimentList", .validExperimentList)
 
 #' @describeIn ExperimentList Show method for
 #' \code{\linkS4class{ExperimentList}} class
-#' 
+#'
 #' @param object An \code{\linkS4class{ExperimentList}} class object
 setMethod("show", "ExperimentList", function(object) {
-  o_class <- class(object)
-  elem_cl <- vapply(object, class, character(1))
-  o_len <- length(object)
-  o_names <- names(object)
-  featdim <- vapply(object, FUN = function(obj) {
-    dim(obj)[1]
-  }, FUN.VALUE = integer(1))
-  sampdim <- vapply(object, FUN = function(obj) {
-    dim(obj)[2]
-  }, FUN.VALUE = integer(1))
-  cat(sprintf('%s', o_class),
-      "class object of length",
-      paste0(o_len, ':'),
-      sprintf('\n [%i] %s: %s with %s rows and %s columns',
-              seq(o_len), o_names, elem_cl, featdim, sampdim), "\n")
+    o_class <- class(object)
+    elem_cl <- vapply(object, class, character(1))
+    o_len <- length(object)
+    o_names <- names(object)
+    featdim <- vapply(object, FUN = function(obj) {
+        dim(obj)[1]
+    }, FUN.VALUE = integer(1))
+    sampdim <- vapply(object, FUN = function(obj) {
+        dim(obj)[2]
+    }, FUN.VALUE = integer(1))
+    cat(sprintf('%s', o_class),
+        "class object of length",
+        paste0(o_len, ':'),
+        sprintf('\n [%i] %s: %s with %s rows and %s columns',
+                seq(o_len), o_names, elem_cl, featdim, sampdim), "\n")
 })

@@ -85,7 +85,7 @@ setClass("MultiAssayExperiment",
                       " the sampleMap assay column")
         errors <- c(errors, msg)
     }
-    
+
 ## 1.ii. Element names of the ExperimentList should be found in the
 ## sampleMap "assay" column.
     if (!all(names(experiments(object)) %in% assaynames)) {
@@ -132,7 +132,7 @@ setClass("MultiAssayExperiment",
         NULL else errors
 }
 
-## 3.ii. Within rows of "sampleMap" corresponding to a single value in the 
+## 3.ii. Within rows of "sampleMap" corresponding to a single value in the
 ## "assayname" column, there can be no duplicated values in the "assay" column
 .uniqueNamesInAssays <- function(object) {
     SampMap <- sampleMap(object)
@@ -158,11 +158,19 @@ setClass("MultiAssayExperiment",
 
 S4Vectors::setValidity2("MultiAssayExperiment", .validMultiAssayExperiment)
 
+.hasOldAPI <- function(object) {
+    isTRUE(.hasSlot(object, "Elist"))
+}
+
 #' @exportMethod show
 #' @describeIn MultiAssayExperiment Show method for a
 #' \code{MultiAssayExperiment}
 #' @param object A \code{MultiAssayExperiment} class object
 setMethod("show", "MultiAssayExperiment", function(object) {
+    if (.hasOldAPI(object)) {
+        object <- updateObject(object)
+        warning("MultiAssayExperiment is outdated, please run updateObject()")
+    }
     o_class <- class(object)
     o_len <- length(object)
     o_names <- names(object)
@@ -215,10 +223,10 @@ setMethod("sampleMap", "MultiAssayExperiment", function(x)
 
 #' Accessor function for the \code{ExperimentList} slot of a
 #' \code{MultiAssayExperiment} object
-#' 
+#'
 #' @param x A \code{MultiAssayExperiment} class object
 #' @return A \code{ExperimentList} object of assay data
-#' @examples 
+#' @examples
 #' example("MultiAssayExperiment")
 #' experiments(myMultiAssayExperiment)
 setGeneric("experiments", function(x) standardGeneric("experiments"))
@@ -326,3 +334,30 @@ setReplaceMethod("pData", c("MultiAssayExperiment", "DataFrame"),
                  slot(object, "pData") <- value
                  return(object)
                 })
+
+.rearrangeMap <- function(sampMap) {
+    return(DataFrame(assay = sampMap[["assayname"]],
+                     sampMap[["primary"]],
+                     colname = sampMap[["assay"]]))
+}
+
+#' @exportMethod updateObject
+#' @param verbose (logical default FALSE) whether to output verbose
+#' @describeIn MultiAssayExperiment Update old serialized MultiAssayExperiment
+#' objects to new API
+setMethod("updateObject", "MultiAssayExperiment",
+          function(object, ..., verbose = FALSE)
+          {
+              if (verbose)
+                  message("updateObject(object = 'MultiAssayExperiment')")
+              if (is(try(object@ExperimentList, silent = TRUE), "try-error")) {
+                  object <- new(class(object),
+                                ExperimentList = ExperimentList(
+                                    object@Elist@listData),
+                                pData = pData(object),
+                                sampleMap = .rearrangeMap(sampleMap(object)),
+                                metadata = metadata(object),
+                                drops = object@drops)
+              }
+              return(object)
+          })

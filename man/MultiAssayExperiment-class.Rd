@@ -19,6 +19,7 @@
 \alias{sampleMap,MultiAssayExperiment-method}
 \alias{sampleMap<-,MultiAssayExperiment,DataFrame-method}
 \alias{show,MultiAssayExperiment-method}
+\alias{updateObject,MultiAssayExperiment-method}
 \title{An integrative MultiAssay class for experiment data}
 \usage{
 \S4method{show}{MultiAssayExperiment}(object)
@@ -41,6 +42,8 @@
 
 \S4method{pData}{MultiAssayExperiment,DataFrame}(object) <- value
 
+\S4method{updateObject}{MultiAssayExperiment}(object, ..., verbose = FALSE)
+
 \S4method{rownames}{MultiAssayExperiment}(x)
 
 \S4method{colnames}{MultiAssayExperiment}(x)
@@ -61,6 +64,11 @@
 \item{value}{A \code{DataFrame} or \code{ExperimentList} object to replace
 the existing \code{sampleMap}, \code{ExperimentList}, or \code{pData} slot}
 
+\item{...}{Additional arguments passed down to \code{getHits} support
+function for subsetting by rows}
+
+\item{verbose}{(logical default FALSE) whether to output verbose}
+
 \item{i}{Either a \code{character}, or \code{GRanges} object for subsetting
 by rows}
 
@@ -69,9 +77,6 @@ for subsetting by columns}
 
 \item{k}{Either a \code{character}, \code{logical}, or \code{numeric} vector
 for subsetting by assays}
-
-\item{...}{Additional arguments passed down to \code{getHits} support
-function for subsetting by rows}
 
 \item{drop}{logical (default TRUE) whether to drop empty assay elements
 in the \code{ExperimentList}}
@@ -120,6 +125,9 @@ representation
 representation
 
 \item \code{pData<-}: value: A \code{DataFrame} of specimen data
+
+\item \code{updateObject}: Update old serialized MultiAssayExperiment
+objects to new API
 
 \item \code{rownames}: Get all the rownames for a
 \code{MultiAssayExperiment} using a \code{\link[IRanges]{CharacterList}}

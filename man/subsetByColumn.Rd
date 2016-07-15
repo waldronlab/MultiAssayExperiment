@@ -30,7 +30,7 @@ for subsetting}
 A \code{\link{MultiAssayExperiment}} object
 }
 \description{
-\code{subsetByColumn} returns a subsetted 
+\code{subsetByColumn} returns a subsetted
 \code{\linkS4class{MultiAssayExperiment}} object
 }
 \section{Methods (by class)}{
