@@ -5,6 +5,10 @@
 * `updateObject` method now available for old instances of the `MultiAssayExperiment`
 * Users with invalid `MultiAssayExperiments` should update and re-serialize them
 
+## Bug fixes and minor improvements
+
+* `drop` argument now works as intended when using `List` inherited objects
+
 # MultiAssayExperiment 0.101.38
 
 ## New features

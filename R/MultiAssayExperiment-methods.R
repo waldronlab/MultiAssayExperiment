@@ -82,7 +82,7 @@ setMethod("getHits", signature("ANY", "GRanges"),
                   findOverlaps(query = x, subject = query, ...))]
               })
             } else {
-              character(0)
+              character(0L)
             }
           })
 
@@ -110,7 +110,7 @@ setMethod("getHits", signature("RangedRaggedAssay", "character"),
             if (any(RowNames %in% query)) {
               rownames(subject[relist(RowNames %in% query, subject)])
             } else {
-              character(0)
+              character(0L)
             }
           })
 
@@ -135,12 +135,12 @@ setMethod("getHits", signature("RangedRaggedAssay", "character"),
         isEmptyAssay <- vapply(experiments(x), FUN = .isEmpty,
                                FUN.VALUE = logical(1L))
         if (all(isEmptyAssay)) {
-            warning("no data in assays")
             experiments(x) <- ExperimentList()
         } else if (any(isEmptyAssay)) {
             keeps <- names(isEmptyAssay)[
-                sapply(isEmptyAssay, function(z) !isTRUE(z))]
-            x <- x[, , keeps, drop = FALSE]
+                vapply(isEmptyAssay, function(k) {
+                    !isTRUE(k)}, logical(1L))]
+            x <- x[, , keeps, drop = TRUE]
         }
     }
     return(x)
@@ -272,7 +272,7 @@ setMethod("subsetByColumn", c("MultiAssayExperiment", "list"), function(x, y)
 {
     y <- y[names(x)]
     experiments(x) <- ExperimentList(mapply(function(expList, j) {
-        expList[ ,j , drop =  FALSE]
+        expList[, j, drop = FALSE]
     }, expList = experiments(x), j = y, SIMPLIFY = FALSE))
     newSamps <- as.list(colnames(x))
     listMap <- mapToList(sampleMap(x), "assay")
@@ -291,11 +291,11 @@ setMethod("subsetByColumn", c("MultiAssayExperiment", "list"), function(x, y)
 #' \code{MultiAssayExperiment}. The order of the subsetting elements in this
 #' \code{List} must match that of the \code{ExperimentList} in the
 #' \code{MultiAssayExperiment}.
-setMethod("subsetByColumn", c("MultiAssayExperiment", "List"), function(x, y)
-{
-    Y <- as.list(y)
-    x[, Y]
-})
+setMethod("subsetByColumn", c("MultiAssayExperiment", "List"),
+          function(x, y) {
+              Y <- as.list(y)
+              subsetByColumn(x, Y)
+          })
 
 setClassUnion("GRangesORcharacter", c("GRanges", "character"))
 
@@ -353,15 +353,11 @@ setMethod("subsetByRow", c("MultiAssayExperiment", "GRanges"),
 setMethod("subsetByRow", c("MultiAssayExperiment", "logical"),
           function(x, y) {
             ExperimentListNrows <- vapply(experiments(x), FUN = function(z) {
-              dim(z)[1]
+              dim(z)[1L]
             }, FUN.VALUE = integer(1L))
             isSameLength <- vapply(ExperimentListNrows, FUN = function(z) {
               z == length(y)
             }, FUN.VALUE = logical(1L))
-            if (!all(isSameLength)) {
-              warning("the length of logical vector does not match",
-                      " that of all the rows in the ExperimentList")
-            }
             callNextMethod(x = x, y = y)
           })
 
@@ -372,7 +368,7 @@ setMethod("subsetByRow", c("MultiAssayExperiment", "ANY"),
               newExperimentList <-
                   S4Vectors::endoapply(experiments(x),
                                        function(element) {
-                                           element[y,, drop = FALSE]
+                                           element[y, , drop = FALSE]
                                        })
               experiments(x) <- newExperimentList
               return(x)
@@ -401,7 +397,7 @@ setMethod("subsetByRow", c("MultiAssayExperiment", "list"),
 setMethod("subsetByRow", c("MultiAssayExperiment", "List"), function(x, y)
 {
     Y <- as.list(y)
-    x[Y, ]
+    subsetByRow(x, Y)
 })
 
 #' @exportMethod complete.cases
