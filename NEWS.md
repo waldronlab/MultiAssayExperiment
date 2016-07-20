@@ -1,3 +1,10 @@
+# MultiAssayExperiment 0.101.40
+
+## New features
+
+* Improved `MultiAssayExperiment` constructor with renamed argument "experiments"
+for the `ExperimentList` or `list` input.
+
 # MultiAssayExperiment 0.101.39
 
 ## New features
