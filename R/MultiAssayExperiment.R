@@ -58,8 +58,6 @@ MultiAssayExperiment <-
             experiments <- ExperimentList(experiments)
         else if (!inherits(experiments, "SimpleList"))
             stop("'experiments' must be a list or ExperimentList")
-        if (is.null(names(experiments)))
-            stop("'experiments' must be a named list of experiments")
         if (!is(pData, "DataFrame"))
             pData <- S4Vectors::DataFrame(pData)
         if (!is(sampleMap, "DataFrame"))
