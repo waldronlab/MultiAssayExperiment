@@ -31,7 +31,7 @@ subsetByRow(x, y, ...)
 \item{y}{A \code{character} vector or \code{GRanges} class object
 containing feature names or ranges}
 
-\item{...}{Additional arguments to pass to low level subsetting function 
+\item{...}{Additional arguments to pass to low level subsetting function
 primarily when using a \code{GRanges} object for subsetting
 (via \code{getHits})}
 }
@@ -39,7 +39,7 @@ primarily when using a \code{GRanges} object for subsetting
 A \code{\link{MultiAssayExperiment}} object
 }
 \description{
-Subset a \code{MultiAssayExperiment} class by provided feature names or a 
+Subset a \code{MultiAssayExperiment} class by provided feature names or a
 \code{GRanges} object
 }
 \section{Methods (by class)}{
@@ -56,13 +56,14 @@ select the rows for which to subset for
 \item \code{x = MultiAssayExperiment,y = ANY}: Subset a \code{MultiAssayExperiment} with either a
 \code{numeric} or \code{logical} vector
 
-\item \code{x = MultiAssayExperiment,y = list}: Use a list of equal length as the \code{Elist}
-to subset. The order of the subsetting elements in this list must match
-that of the \code{Elist} in the \code{MultiAssayExperiment}.
+\item \code{x = MultiAssayExperiment,y = list}: Use a list of equal length as the
+\code{ExperimentList} to subset. The order of the subsetting elements in
+this list must match that of the \code{ExperimentList} in the
+\code{MultiAssayExperiment}.
 
 \item \code{x = MultiAssayExperiment,y = List}: Use an S4 \code{List} to subset a
 \code{MultiAssayExperiment}. The order of the subsetting elements in this
-\code{List} must match that of the \code{Elist} in the
+\code{List} must match that of the \code{ExperimentList} in the
 \code{MultiAssayExperiment}.
 }}
 \examples{

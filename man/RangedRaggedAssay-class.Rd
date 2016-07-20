@@ -4,8 +4,8 @@
 \name{RangedRaggedAssay-class}
 \alias{.RangedRaggedAssay}
 \alias{RangedRaggedAssay-class}
-\alias{[,RangedRaggedAssay,ANY-method}
-\alias{[,RangedRaggedAssay,GRanges-method}
+\alias{[,RangedRaggedAssay,ANY,ANY,ANY-method}
+\alias{[,RangedRaggedAssay,GRanges,ANY,ANY-method}
 \alias{colnames,RangedRaggedAssay-method}
 \alias{colnames<-,RangedRaggedAssay,character-method}
 \alias{dim,RangedRaggedAssay-method}
@@ -15,9 +15,9 @@
 \alias{rownames,RangedRaggedAssay-method}
 \title{An extension of the GRangesList class}
 \usage{
-\S4method{[}{RangedRaggedAssay,ANY}(x, i, j, ..., drop = TRUE)
+\S4method{[}{RangedRaggedAssay,ANY,ANY,ANY}(x, i, j, ..., drop = TRUE)
 
-\S4method{[}{RangedRaggedAssay,GRanges}(x, i, j, ..., drop = TRUE)
+\S4method{[}{RangedRaggedAssay,GRanges,ANY,ANY}(x, i, j, ..., drop = TRUE)
 
 \S4method{dim}{RangedRaggedAssay}(x)
 

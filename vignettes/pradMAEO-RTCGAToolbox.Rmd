@@ -1,0 +1,115 @@
+---
+title: "RTCGAToolbox implementation of pradMAEO - <strong>PR</strong>ostate <strong>AD</strong>enocarcinoma <strong>M</strong>ulti<strong>A</strong>ssay<strong>E</strong>xperiment <strong>O</strong>bject"
+author: "Lucas Schiffer"
+date: "`r doc_date()`"
+output:
+  BiocStyle::html_document:
+    number_sections: yes
+    toc: yes
+abstract: >
+  This vignette displays the processing steps needed in order to create a MultiAssayExperiment object from TCGA (The Cancer Genome Atlas) data. Specifically, the `getFirehoseData()` method of the `r Githubpkg("LiNk-NY/RTCGAToolbox")` package is used to access and read in data; output is then further coerced to fit the MultiAssayExperiment object specifications. A built HTML version of this vignette is available on [RPubs](https://rpubs.com/schifferl/pradMAEO-RTCGAToolbox) and the source is available on [GitHub](https://github.com/schifferl/MultiAssayExperiment/blob/master/vignettes/pradMAEO-RTCGAToolbox.Rmd)
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{MultiAssayExperiment: Prostate Cancer Data}
+  %\VignetteEncoding{UTF-8}
+---
+
+# Prerequisites
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(eval = FALSE)
+```
+
+Methods from two packages hosted on GitHub are used in this vignette, the packages are installed as follows.
+
+```{r}
+BiocInstaller::biocLite("LiNk-NY/RTCGAToolbox")
+BiocInstaller::biocLite("waldronlab/BiocInterfaces")
+```
+
+These and other packages available in Bioconductor or CRAN are loaded as follows.
+
+```{r}
+library(MultiAssayExperiment)
+library(RTCGAToolbox)
+library(BiocInterfaces)
+library(readr)
+```
+
+# Argument Definitions
+
+The `r Githubpkg("LiNk-NY/RTCGAToolbox")` package provides the `getFirehoseDatasets()` method for obtaining the names of all 33 cohorts contained within the TCGA data. Beyond the 33 cohorts, there are 5 additional "pan" cohorts where data of multiple cohorts was merged - information about the cohorts is available via the TCGA [website](http://cancergenome.nih.gov/cancersselected). Additionally, the `getFirehoseRunningDates()` and `getFirehoseAnalyzeDates()` methods are used to obtain the most recent running and analysis dates. Finally, a character vector `dd` is created to specify the location of the data directory where output should be saved.
+
+```{r}
+ds <- getFirehoseDatasets()[27]
+rd <- getFirehoseRunningDates()[1]
+ad <- getFirehoseAnalyzeDates()[1]
+dd <- "data"
+```
+
+# Function Definition
+
+A function, `newMAEO()`, is defined as shown below for the purpose of creating a new MultiAssayExperiment object with a single line of code. It accepts the arguments defined in the previous chunk and is capable of accepting multiple cohort names (e.g. `ds <- getFirehoseDatasets()[1:5]`). Even though the implementation is not parallel, low-level operations remain vectorized regardless of the for loop. 
+
+In the first part of the function, the existence of the data directory is checked and it is created if necessary. Then a cohort object is either loaded or serialized from the `getFirehoseData()` method and saved to the data directory. Once serialized, pData is extracted from the clinical slot and the rownames are cleaned by `gsub()` and `type_convert()` functions. 
+
+A named list of extraction targets is then created from the slot names of the cohort object and the `TCGAextract()` method is used within a try statement. The try statement is necessary because each cohort will have some variation in the slots that contain data. Once filtering is done, the `TCGAcleanExpList()` method is used to remove samples that do not have matching pData and the output can be passed to `generateMap()` which will generate a sample map.
+
+Finally, the named list of extracted targets (of class Elist), the pData, and the generated sample map can be passed to the `MultiAssayExperiment()` constructor function. A MultiAssayExperiment will be created, serialized and saved to the data directory, making it easier to return to in the future.
+
+```{r}
+newMAEO <- function(ds, rd, ad, dd) {
+  if(!dir.exists(dd)) {
+    dir.create(dd)
+  }
+  for(i in ds) {
+    cn <- tolower(i)
+    fp <- file.path(dd, paste0(cn, ".rds"))
+    if(file.exists(fp)) {
+      co <- readRDS(fp)
+    } else {
+      co <- getFirehoseData(i, runDate = rd, gistic2_Date = ad,
+                            RNAseq_Gene = TRUE,
+                            Clinic = TRUE,
+                            miRNASeq_Gene = TRUE,
+                            RNAseq2_Gene_Norm = TRUE,
+                            CNA_SNP = TRUE,
+                            CNV_SNP = TRUE,
+                            CNA_Seq = TRUE,
+                            CNA_CGH = TRUE,
+                            Methylation = TRUE,
+                            Mutation = TRUE,
+                            mRNA_Array = TRUE,
+                            miRNA_Array = TRUE,
+                            RPPA_Array = TRUE,
+                            RNAseqNorm = "raw_counts",
+                            RNAseq2Norm = "normalized_count",
+                            forceDownload = FALSE,
+                            destdir = "./tmp",
+                            fileSizeLimit = 500000,
+                            getUUIDs = FALSE)
+      saveRDS(co, file = fp, compress = "bzip2")
+    }
+    pd <- Clinical(co)
+    rownames(pd) <- toupper(gsub("\\.", "-", rownames(pd)))
+    pd <- type_convert(pd)
+    targets <- c(slotNames(co)[c(5:16)], "gistica", "gistict")
+    names(targets) <- targets
+    dataList <- lapply(targets, function(x) {try(TCGAextract(co, x))})
+    dataFull <- Filter(function(x){class(x)!="try-error"}, dataList)
+    ExpList <- Elist(dataFull)
+    NewElist <- TCGAcleanExpList(ExpList, pd)
+    NewMap <- generateMap(NewElist, pd, TCGAbarcode)
+    MAEO <- MultiAssayExperiment(NewElist, pd, NewMap)
+    saveRDS(MAEO, file = file.path(dd, paste0(cn, "MAEO.rds")), compress = "bzip2")
+  }
+}
+```
+
+# Function Call
+
+Lastly, it is necessary to call the `newMAEO()` function defined above and pass it the arguments defined using the `r Githubpkg("LiNk-NY/RTCGAToolbox")` package. Using this function, a MultiAssayExperiment object for the prostate adenocarcinoma cohort is created with a single call.
+
+```{r}
+newMAEO(ds, rd, ad, dd)
+```

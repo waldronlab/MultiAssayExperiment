@@ -1,3 +1,48 @@
+# MultiAssayExperiment 0.101.39
+
+## New features
+
+* `updateObject` method now available for old instances of the `MultiAssayExperiment`
+* Users with invalid `MultiAssayExperiments` should update and re-serialize them
+
+## Bug fixes and minor improvements
+
+* `drop` argument now works as intended when using `List` inherited objects
+
+# MultiAssayExperiment 0.101.38
+
+## New features
+
+* `complete.cases` method available for the `MultiAssayExperiment` class
+
+# MultiAssayExperiment 0.101.37
+
+## New features
+
+* `sampleMap` column names renamed to __assay__ (prev. "assayname"), __primary__,
+and __colname__ (prev. "assay")
+* New vignete available for creating `MultiAssayExperiment` objects with TCGA data
+
+## Bug fixes and minor improvements
+
+* Added informative error to `MultiAssayExperiment` constructor
+* Improved `show` method display
+* Removed warning message when only `ExperimentList` argument provided
+
+# MultiAssayExperiment 0.101.36
+
+* `Elist` class renamed to `ExperimentList`
+* `ExperimentList` constructor is homonymous
+* `ExperimentList` accessor now called `experiments`
+* `ExperimentList` replacement method is now `experiments<-`
+* Updated vignettes to reflect change of names
+
+# MultiAssayExperiment 0.101.34
+
+* `assay` method for `RangedRaggedAssay` works on inner metadata columns now
+* vignette examples available for `HDF5Array` package
+* Improved outline for main vignette
+
 # MultiAssayExperiment 0.99.202
 
 ## New Features

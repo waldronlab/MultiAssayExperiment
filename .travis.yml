@@ -13,6 +13,9 @@ warnings_are_errors: true
 r_binary_packages: 
   - testthat
 
+r_packages:
+  - rmarkdown
+
 bioc_packages:
   - BiocGenerics
   - S4Vectors
@@ -22,6 +25,7 @@ bioc_packages:
   - S4Vectors
   - IRanges
   - BiocStyle
+  - HDF5Array
 
 # Test code coverage
 r_github_packages:
@@ -29,3 +33,4 @@ r_github_packages:
 
 after_success:
   - Rscript -e 'library(covr);codecov()'
+

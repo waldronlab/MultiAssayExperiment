@@ -4,10 +4,10 @@
 \alias{PrepMultiAssay}
 \title{Prepare a \code{MultiAssayExperiment} instance}
 \usage{
-PrepMultiAssay(Elist, pData, sampleMap)
+PrepMultiAssay(ExperimentList, pData, sampleMap)
 }
 \arguments{
-\item{Elist}{A \code{list} of all combined experiments}
+\item{ExperimentList}{A \code{list} of all combined experiments}
 
 \item{pData}{A \linkS4class{DataFrame} of the phenotype
 data for all participants}
@@ -23,40 +23,44 @@ indicates non-matched names.
 \description{
 The purpose of this helper function is to faciltate the creation of a
 \code{\link{MultiAssayExperiment}} object by detecting any inconsistencies
-with all types of names in either the \code{\link{Elist}}, the \code{pData},
-or \code{\link{sampleMap}}.
+with all types of names in either the \code{\link{ExperimentList}},
+the \code{pData}, or \code{\link{sampleMap}}.
 }
 \section{Checks}{
 
 The \code{PrepMultiAssay} function checks that all columns in the sampleMap
 are \code{character}.
 
-It checks that all names and lengths match in both the \code{\link{Elist}}
-and in the unique assaynames of the \code{\link{sampleMap}}.
+It checks that all names and lengths match in both the
+\code{\link{ExperimentList}} and in the unique assaynames of the
+\code{\link{sampleMap}}.
 
-If \code{\link{Elist}} names and assaynames only differ by case and are not
-duplicated, the function will standardize all names to lowercase.
+If \code{\link{ExperimentList}} names and assaynames only differ by case
+and are not #' duplicated, the function will standardize all names to
+lowercase.
 
 If names cannot be matched between the assay column of the
-\code{\link{sampleMap}} and the colnames of the \code{Elist}, those
+\code{\link{sampleMap}} and the colnames of the \code{ExperimentList}, those
 unmatched will be dropped and found in the "drops" element of the
 resulting \code{list}.
 
 Names in the "primary" column of the \code{\link{sampleMap}}, will be
 matched to those in the \code{pData}. Unmatched "primary" column rows will
 be dropped from the \code{\link{sampleMap}}. Suggestions for name fixes in
-either the \code{\link{Elist}} or colnames will be made when necessary.
+either the \code{\link{ExperimentList}} or colnames will be made when
+necessary.
 }
 \examples{
 ## Run example
 example("MultiAssayExperiment")
 
 ## Check if there are any inconsistencies within the different names
-myPrepMA <- PrepMultiAssay(ExpList, primary, mySampleMap)
+preparedMAE <- PrepMultiAssay(ExpList, pDat, mySampleMap)
 
 ## Results in a list of components for the MultiAssayExperiment constructor
 ## function
-MultiAssayExperiment(myPrepMA$Elist, myPrepMA$pData, myPrepMA$sampleMap)
+MultiAssayExperiment(preparedMAE$ExperimentList, preparedMAE$pData,
+preparedMAE$sampleMap)
 
 }
 

@@ -1,13 +1,15 @@
 Package: MultiAssayExperiment
 Title: Create Classes and Functions for Managing Multiple Assays on Sets of
     Samples
-Version: 0.99.203
+Version: 0.101.39
 Author: MultiAssay SIG
 Description: Develop an integrative environment where multiple assays are
     managed and preprocessed for genomic data analysis.
 Suggests:
     BiocStyle,
     testthat,
+    knitr,
+    HDF5Array,
     rmarkdown
 Depends:
     R (>= 3.3.0)
@@ -26,10 +28,10 @@ biocViews: Infrastructure, DataRepresentation
 License: Artistic-2.0
 LazyData: true
 LazyLoad: yes
-VignetteBuilder: rmarkdown
+VignetteBuilder: knitr
 Collate:
     'API.R'
-    'Elist-class.R'
+    'ExperimentList-class.R'
     'MultiAssayExperiment-class.R'
     'RangedRaggedAssay-class.R'
     'MultiAssayExperiment-methods.R'

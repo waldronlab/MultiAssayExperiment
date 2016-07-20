@@ -32,7 +32,7 @@ Select which assay(s) to obtain from available datasets
 example("MultiAssayExperiment")
 
 ## Using experiment names
-subsetByAssay(myMultiAssayExperiment, "Affy") 
+subsetByAssay(myMultiAssayExperiment, "Affy")
 
 ## Using numeric indicators
 subsetByAssay(myMultiAssayExperiment, 1:2)

@@ -12,23 +12,18 @@
 #' @aliases listToMap 
 #' @example inst/scripts/listToMap-Ex.R
 #' @export mapToList
-mapToList <- function(dfmap, assayCol = "assayname") {
-  assayColIndex <- which(names(dfmap) == assayCol)
-  if (is.null(assayCol)) {
-    stop("Provide assaynames column reference")
-  }
-  if (!assayCol %in% colnames(dfmap)) {
-    stop("assayname column not found in dataframe")
-  }
-  if (!is.character(assayCol) | length(assayCol) != 1L) {
-    stop("assayname must be a string")
-  }
-  if (inherits(dfmap, "data.frame")) {
-    dfmap <- S4Vectors::DataFrame(dfmap)
-  }
-  assayOrder <- unique(dfmap[, assayCol])
-  newList <- S4Vectors::split(dfmap[, -assayColIndex], dfmap[, assayCol])
-  ## Preserve the order of the assaynames in the map!
-  newList <- newList[assayOrder]
-  return(newList)
+mapToList <- function(dfmap, assayCol = "assay") {
+    if (!S4Vectors::isSingleString(assayCol))
+        stop("assay column name must be a single string")
+    if (!assayCol %in% colnames(dfmap))
+        stop("assay column not found in dataframe")
+    assayColIndex <- which(names(dfmap) == assayCol)
+    if (inherits(dfmap, "data.frame")) {
+        dfmap <- S4Vectors::DataFrame(dfmap)
+    }
+    assayOrder <- unique(dfmap[[assayCol]])
+    newList <- S4Vectors::split(dfmap[, -assayColIndex], dfmap[[assayCol]])
+    ## Preserve the order of the assaynames in the map!
+    newList <- newList[assayOrder]
+    return(newList)
 } 
