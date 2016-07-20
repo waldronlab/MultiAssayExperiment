@@ -5,12 +5,13 @@
 #' It checks the methods tables of the \code{assay} function for the
 #' specified class of the argument.
 #' 
-#' @param object A \code{MultiAssayExperiment} or \code{list} object instance
+#' @param object A \code{MultiAssayExperiment} or \code{named list}
+#'     object instance
 #' @return A \code{logical} value indicating method availability
 #' 
 #' @examples 
-#' char <- character()
-#' hasAssay(char)
+#' lst <- structure(list(), .Names=character())
+#' hasAssay(lst)
 #' 
 #' @export hasAssay
 hasAssay <- function(object) {

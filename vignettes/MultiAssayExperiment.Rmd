@@ -201,7 +201,7 @@ exprss2 <- matrix(rnorm(12), ncol = 3,
         dimnames = list(sprintf("ENST00000%i", sample(288754:290000, 4)),
                 c("Jack", "Jane", "Bob")))
 doubleExp <- list("methyl 2k"  = exprss1, "methyl 3k" = exprss2)
-simpleMultiAssay <- MultiAssayExperiment(ExperimentList=doubleExp)
+simpleMultiAssay <- MultiAssayExperiment(experiments=doubleExp)
 simpleMultiAssay
 ```
 
@@ -218,7 +218,7 @@ dropped. This is part of ensuring internal validity of the
 `MultiAssayExperiment`.
 
 ```{r}
-simpleMultiAssay2 <- MultiAssayExperiment(ExperimentList=doubleExp,
+simpleMultiAssay2 <- MultiAssayExperiment(experiments=doubleExp,
                                           pData=patient.data)
 simpleMultiAssay2
 pData(simpleMultiAssay2)

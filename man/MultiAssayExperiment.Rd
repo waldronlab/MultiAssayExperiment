@@ -6,12 +6,12 @@
 \alias{MultiAssayExperiment-package}
 \title{MultiAssayExperiment: Build an integrative multi-assay container}
 \usage{
-MultiAssayExperiment(ExperimentList = list(),
+MultiAssayExperiment(experiments = ExperimentList(),
   pData = S4Vectors::DataFrame(), sampleMap = S4Vectors::DataFrame(),
   drops = list())
 }
 \arguments{
-\item{ExperimentList}{A \code{list} or \link{ExperimentList} of all
+\item{experiments}{A \code{list} or \link{ExperimentList} of all
 combined experiments}
 
 \item{pData}{A \code{\link[S4Vectors]{DataFrame}} or \code{data.frame} of
@@ -68,7 +68,7 @@ pDat <- data.frame(sex = c("M", "F", "M", "F"),
                        row.names = c("Jack", "Jill", "Bob", "Barbara"))
 
 ## Create a MultiAssayExperiment instance
-myMultiAssayExperiment <- MultiAssayExperiment(ExperimentList = ExpList,
+myMultiAssayExperiment <- MultiAssayExperiment(experiments = ExpList,
                                                pData = pDat,
                                                sampleMap = mySampleMap)
 }
