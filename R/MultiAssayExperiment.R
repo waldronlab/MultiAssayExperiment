@@ -2,27 +2,25 @@
 ### MultiAssayExperiment constructor
 ### ----------------------------------------------
 
-.generateMap <- function(mPheno, exlist) {
-    samps <- lapply(exlist, colnames)
-    listM <- lapply(seq_along(samps), function(i, x) {
-    S4Vectors::DataFrame(assay = factor(names(x)[i]), colname = x[[i]])
-  }, x = samps)
-  full_map <- do.call(S4Vectors::rbind, listM)
-  matches <- match(full_map$colname, rownames(mPheno))
-  if (all(is.na(matches))) {
-    stop("no way to map pData to ExperimentList")
-  }
-  primary <- rownames(mPheno)[matches]
-  autoMap <- S4Vectors::cbind(full_map["assay"], DataFrame(primary),
-                              full_map["colname"])
-  if (any(is.na(autoMap$primary))) {
-    notFound <- autoMap[is.na(autoMap$primary), ]
-    warning("Data from rows:",
-            sprintf("\n %s - %s", notFound[, 2], notFound[, 3]),
-            "\ndropped due to missing phenotype data")
-  }
-  autoMap <- autoMap[!is.na(autoMap$primary), ]
-  return(autoMap)
+.generateMap <- function(pData, experiments) {
+    samps <- colnames(experiments)
+    assay <- factor(rep(names(samps), lengths(samps)), levels=names(samps))
+    colname <- unlist(samps, use.names=FALSE)
+    matches <- match(colname, rownames(pData))
+    if (length(matches) && all(is.na(matches)))
+        stop("no way to map pData to ExperimentList")
+    primary <- rownames(pData)[matches]
+    autoMap <- S4Vectors::DataFrame(
+        assay=assay, primary=primary, colname=colname)
+
+    if (nrow(autoMap) && any(is.na(autoMap$primary))) {
+        notFound <- autoMap[is.na(autoMap$primary), ]
+        warning("Data from rows:",
+                sprintf("\n %s - %s", notFound[, 2], notFound[, 3]),
+                "\ndropped due to missing phenotype data")
+        autoMap <- autoMap[!is.na(autoMap$primary), ]
+    }
+    autoMap
 }
 
 #' Create a MultiAssayExperiment object 
@@ -62,14 +60,14 @@ MultiAssayExperiment <-
             pData <- S4Vectors::DataFrame(pData)
         if (!is(sampleMap, "DataFrame"))
             sampleMap <- S4Vectors::DataFrame(sampleMap)
-        if (!all(c(length(sampleMap) == 0L,
-                    length(pData) == 0L,
+        if (!all(c(ncol(sampleMap) == 0L,
+                    ncol(pData) == 0L,
                     length(experiments) == 0L))) {
-            if ((length(sampleMap) == 0L) && (length(pData) == 0L)) {
-                allsamps <- unique(unlist(lapply(experiments, colnames)))
+            if ((ncol(sampleMap) == 0L) && (ncol(pData) == 0L)) {
+                allsamps <- unique(unlist(unname(colnames(experiments))))
                 pData <- S4Vectors::DataFrame(row.names = allsamps)
                 sampleMap <- .generateMap(pData, experiments)
-            } else if ((length(sampleMap) == 0L) && (length(pData) != 0L)) {
+            } else if ((ncol(sampleMap) == 0L) && (ncol(pData) != 0L)) {
                 sampleMap <- .generateMap(pData, experiments)
                 validAssays <-
                     S4Vectors::split(
@@ -80,11 +78,7 @@ MultiAssayExperiment <-
                 experiments <- ExperimentList(experiments)
             }
         }
-        if (any(vapply(sampleMap, FUN = function(col) {
-            !is.character(col)
-        }, FUN.VALUE = logical(1L)))) {
-            sampleMap[] <- lapply(sampleMap, as.character)
-        }
+
         newMultiAssay <- new("MultiAssayExperiment",
                              ExperimentList = experiments,
                              pData = pData, 

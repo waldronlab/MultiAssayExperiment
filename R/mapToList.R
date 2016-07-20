@@ -21,9 +21,9 @@ mapToList <- function(dfmap, assayCol = "assay") {
     if (inherits(dfmap, "data.frame")) {
         dfmap <- S4Vectors::DataFrame(dfmap)
     }
-    assayOrder <- unique(dfmap[[assayCol]])
-    newList <- S4Vectors::split(dfmap[, -assayColIndex], dfmap[[assayCol]])
-    ## Preserve the order of the assaynames in the map!
-    newList <- newList[assayOrder]
-    return(newList)
+
+    grp <- dfmap[[assayCol]]
+    if (!is.factor(grp))
+        grp <- factor(grp, levels=unique(grp))
+    S4Vectors::split(dfmap[, -assayColIndex], grp)
 } 
