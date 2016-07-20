@@ -88,7 +88,8 @@ setMethod("ExperimentList", "ANY", function(x) {
 #' @describeIn ExperimentList Create an empty ExperimentList for signature
 #' "missing"
 setMethod("ExperimentList", "missing", function(x) {
-  .ExperimentList(S4Vectors::SimpleList(list()))
+    .ExperimentList(S4Vectors::SimpleList(
+        structure(list(), .Names=character())))
 })
 
 ### - - - - - - - - - - - - - - - - - - - - - - - -
