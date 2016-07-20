@@ -32,7 +32,7 @@
 #' MultiAssayExperiment API documentation for more information by running the
 #' \code{API} function.
 #' 
-#' @param ExperimentList A \code{list} or \link{ExperimentList} of all
+#' @param experiments A \code{list} or \link{ExperimentList} of all
 #' combined experiments
 #' @param pData A \code{\link[S4Vectors]{DataFrame}} or \code{data.frame} of
 #' the phenotype data for all participants

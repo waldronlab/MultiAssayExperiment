@@ -9,6 +9,7 @@ Suggests:
     BiocStyle,
     testthat,
     knitr,
+    GenomicFiles,
     HDF5Array,
     rmarkdown
 Depends:

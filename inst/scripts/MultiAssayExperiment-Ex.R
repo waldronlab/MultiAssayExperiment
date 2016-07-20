@@ -17,6 +17,6 @@ pDat <- data.frame(sex = c("M", "F", "M", "F"),
                        row.names = c("Jack", "Jill", "Bob", "Barbara"))
 
 ## Create a MultiAssayExperiment instance
-myMultiAssayExperiment <- MultiAssayExperiment(ExperimentList = ExpList,
+myMultiAssayExperiment <- MultiAssayExperiment(experiments = ExpList,
                                                pData = pDat,
                                                sampleMap = mySampleMap)

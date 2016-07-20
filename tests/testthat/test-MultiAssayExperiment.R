@@ -7,7 +7,6 @@ test_that("MultiAssayExperiment constructors work", {
     obs <- MultiAssayExperiment(list(m=matrix(0, 0, 0)))
     expect_true(validObject(obs))
 
-
     obs <- MultiAssayExperiment(list(stack=GenomicFiles::VcfStack()))
     expect_true(validObject(obs))
 })
