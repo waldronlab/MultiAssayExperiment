@@ -1,3 +1,9 @@
+# MultiAssayExperiment 0.101.41
+
+## New features
+
+* `metadata<-` set method now available for the `MultiAssayExperiment`
+
 # MultiAssayExperiment 0.101.40
 
 ## New features

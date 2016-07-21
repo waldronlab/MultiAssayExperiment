@@ -340,6 +340,15 @@ setReplaceMethod("pData", c("MultiAssayExperiment", "DataFrame"),
                      colname = sampMap[["assay"]]))
 }
 
+#' @exportMethod metadata<-
+#' @describeIn MultiAssayExperiment value: Data of type "ANY"
+#' @importFrom S4Vectors metadata<-
+setReplaceMethod("metadata", c("MultiAssayExperiment", "ANY"),
+                 function(x, ..., value) {
+                     slot(x, "metadata") <- value
+                     return(x)
+                 })
+
 #' @exportMethod updateObject
 #' @param verbose (logical default FALSE) whether to output verbose
 #' @describeIn MultiAssayExperiment Update old serialized MultiAssayExperiment
