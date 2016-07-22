@@ -23,7 +23,7 @@
     autoMap
 }
 
-#' Create a MultiAssayExperiment object 
+#' Create a MultiAssayExperiment object
 #'
 #' This is the constructor function for the \link{MultiAssayExperiment-class}.
 #' It combines multiple data elements from the different hierarchies of data
@@ -31,26 +31,29 @@
 #' a \code{sampleMap} or a \code{pData} set is provided. Please see the
 #' MultiAssayExperiment API documentation for more information by running the
 #' \code{API} function.
-#' 
+#'
 #' @param experiments A \code{list} or \link{ExperimentList} of all
 #' combined experiments
 #' @param pData A \code{\link[S4Vectors]{DataFrame}} or \code{data.frame} of
 #' the phenotype data for all participants
 #' @param sampleMap A \code{DataFrame} or \code{data.frame} of assay names,
 #' sample identifiers, and colname samples
+#' @param metadata An optional argument of "ANY" class (usually list) for
+#' content describing the overall experiments.
 #' @param drops A \code{list} of unmatched information
-#' (included after subsetting)   
+#' (included after subsetting)
 #' @return A \code{MultiAssayExperiment} data object that stores experiment
 #' and phenotype data
-#' 
+#'
 #' @example inst/scripts/MultiAssayExperiment-Ex.R
-#' 
+#'
 #' @export MultiAssayExperiment
 #' @seealso MultiAssayExperiment-class
 MultiAssayExperiment <-
     function(experiments = ExperimentList(),
             pData = S4Vectors::DataFrame(),
             sampleMap = S4Vectors::DataFrame(),
+            metadata = NULL,
             drops = list()) {
         if (inherits(experiments, "list"))
             experiments <- ExperimentList(experiments)
@@ -81,7 +84,8 @@ MultiAssayExperiment <-
 
         newMultiAssay <- new("MultiAssayExperiment",
                              ExperimentList = experiments,
-                             pData = pData, 
-                             sampleMap = sampleMap)
+                             pData = pData,
+                             sampleMap = sampleMap,
+                             metadata = metadata)
         return(newMultiAssay)
     }

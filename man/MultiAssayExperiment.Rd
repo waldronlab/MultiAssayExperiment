@@ -8,7 +8,7 @@
 \usage{
 MultiAssayExperiment(experiments = ExperimentList(),
   pData = S4Vectors::DataFrame(), sampleMap = S4Vectors::DataFrame(),
-  drops = list())
+  metadata = NULL, drops = list())
 }
 \arguments{
 \item{experiments}{A \code{list} or \link{ExperimentList} of all
@@ -19,6 +19,9 @@ the phenotype data for all participants}
 
 \item{sampleMap}{A \code{DataFrame} or \code{data.frame} of assay names,
 sample identifiers, and colname samples}
+
+\item{metadata}{An optional argument of "ANY" class (usually list) for
+content describing the overall experiments.}
 
 \item{drops}{A \code{list} of unmatched information
 (included after subsetting)}
