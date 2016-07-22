@@ -7,7 +7,8 @@
 hasAssay(object)
 }
 \arguments{
-\item{object}{A \code{MultiAssayExperiment} or \code{list} object instance}
+\item{object}{A \code{MultiAssayExperiment} or \code{named list}
+object instance}
 }
 \value{
 A \code{logical} value indicating method availability
@@ -19,8 +20,8 @@ It checks the methods tables of the \code{assay} function for the
 specified class of the argument.
 }
 \examples{
-char <- character()
-hasAssay(char)
+lst <- structure(list(), .Names=character())
+hasAssay(lst)
 
 }
 

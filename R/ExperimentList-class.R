@@ -78,17 +78,17 @@ setGeneric("ExperimentList", function(x) standardGeneric("ExperimentList"))
 #' @describeIn ExperimentList Create an \code{ExperimentList} object from an
 #' "ANY" class object, mainly \code{list}
 setMethod("ExperimentList", "ANY", function(x) {
-  objList <- lapply(x, .PrepElements)
-  if (inherits(objList, "list")) {
-    objList <- S4Vectors::SimpleList(objList)
-  }
-  return(.ExperimentList(objList))
+    if (is.null(names(x)))
+        stop("ExperimentList elements must be named")
+    x <- lapply(x, .PrepElements)
+    .ExperimentList(S4Vectors::SimpleList(x))
 })
 
 #' @describeIn ExperimentList Create an empty ExperimentList for signature
 #' "missing"
 setMethod("ExperimentList", "missing", function(x) {
-  .ExperimentList(S4Vectors::SimpleList(list()))
+    x <- structure(list(), .Names=character())
+    .ExperimentList(S4Vectors::SimpleList(x))
 })
 
 ### - - - - - - - - - - - - - - - - - - - - - - - -

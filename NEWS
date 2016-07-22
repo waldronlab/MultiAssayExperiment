@@ -1,9 +1,31 @@
+# MultiAssayExperiment 0.101.42
+
+## New features
+
+* `metadata<-` set method now available for the `MultiAssayExperiment`
+
+# Bug fixes and minor improvements
+
+* `metadata` argument available in the `MultiAssayExperiment` constructor function
+* Fix bug when subsetting for unmatched columns (drop = FALSE) in constructor
+
+# MultiAssayExperiment 0.101.40
+
+## New features
+
+* Improved `MultiAssayExperiment` constructor with renamed argument "experiments"
+for the `ExperimentList` or `list` input.
+
 # MultiAssayExperiment 0.101.39
 
 ## New features
 
 * `updateObject` method now available for old instances of the `MultiAssayExperiment`
 * Users with invalid `MultiAssayExperiments` should update and re-serialize them
+
+## Bug fixes and minor improvements
+
+* `drop` argument now works as intended when using `List` inherited objects
 
 # MultiAssayExperiment 0.101.38
 

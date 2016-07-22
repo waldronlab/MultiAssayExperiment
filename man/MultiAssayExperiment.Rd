@@ -6,12 +6,12 @@
 \alias{MultiAssayExperiment-package}
 \title{MultiAssayExperiment: Build an integrative multi-assay container}
 \usage{
-MultiAssayExperiment(ExperimentList = list(),
+MultiAssayExperiment(experiments = ExperimentList(),
   pData = S4Vectors::DataFrame(), sampleMap = S4Vectors::DataFrame(),
-  drops = list())
+  metadata = NULL, drops = list())
 }
 \arguments{
-\item{ExperimentList}{A \code{list} or \link{ExperimentList} of all
+\item{experiments}{A \code{list} or \link{ExperimentList} of all
 combined experiments}
 
 \item{pData}{A \code{\link[S4Vectors]{DataFrame}} or \code{data.frame} of
@@ -19,6 +19,9 @@ the phenotype data for all participants}
 
 \item{sampleMap}{A \code{DataFrame} or \code{data.frame} of assay names,
 sample identifiers, and colname samples}
+
+\item{metadata}{An optional argument of "ANY" class (usually list) for
+content describing the overall experiments.}
 
 \item{drops}{A \code{list} of unmatched information
 (included after subsetting)}
@@ -68,7 +71,7 @@ pDat <- data.frame(sex = c("M", "F", "M", "F"),
                        row.names = c("Jack", "Jill", "Bob", "Barbara"))
 
 ## Create a MultiAssayExperiment instance
-myMultiAssayExperiment <- MultiAssayExperiment(ExperimentList = ExpList,
+myMultiAssayExperiment <- MultiAssayExperiment(experiments = ExpList,
                                                pData = pDat,
                                                sampleMap = mySampleMap)
 }

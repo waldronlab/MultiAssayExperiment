@@ -12,6 +12,7 @@
 \alias{isEmpty,MultiAssayExperiment-method}
 \alias{length,MultiAssayExperiment-method}
 \alias{metadata,MultiAssayExperiment-method}
+\alias{metadata<-,MultiAssayExperiment-method}
 \alias{names,MultiAssayExperiment-method}
 \alias{pData,MultiAssayExperiment-method}
 \alias{pData<-,MultiAssayExperiment,DataFrame-method}
@@ -41,6 +42,8 @@
 \S4method{experiments}{MultiAssayExperiment,ExperimentList}(object) <- value
 
 \S4method{pData}{MultiAssayExperiment,DataFrame}(object) <- value
+
+\S4method{metadata}{MultiAssayExperiment}(x, ...) <- value
 
 \S4method{updateObject}{MultiAssayExperiment}(object, ..., verbose = FALSE)
 
@@ -125,6 +128,8 @@ representation
 representation
 
 \item \code{pData<-}: value: A \code{DataFrame} of specimen data
+
+\item \code{metadata<-}: value: Data of type "ANY"
 
 \item \code{updateObject}: Update old serialized MultiAssayExperiment
 objects to new API
