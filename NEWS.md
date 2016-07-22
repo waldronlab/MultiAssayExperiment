@@ -7,6 +7,7 @@
 # Bug fixes and minor improvements
 
 * `metadata` argument available in the `MultiAssayExperiment` constructor function
+* Fix bug when subsetting for unmatched samples/colnames (drop = FALSE) in constructor
 
 # MultiAssayExperiment 0.101.40
 

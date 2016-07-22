@@ -1,33 +1,33 @@
 #' Prepare a \code{MultiAssayExperiment} instance
-#' 
+#'
 #' The purpose of this helper function is to faciltate the creation of a
 #' \code{\link{MultiAssayExperiment}} object by detecting any inconsistencies
 #' with all types of names in either the \code{\link{ExperimentList}},
 #' the \code{pData}, or \code{\link{sampleMap}}.
-#' 
+#'
 #' @section Checks:
 #' The \code{PrepMultiAssay} function checks that all columns in the sampleMap
 #' are \code{character}.
-#' 
+#'
 #' It checks that all names and lengths match in both the
 #' \code{\link{ExperimentList}} and in the unique assaynames of the
 #' \code{\link{sampleMap}}.
-#' 
+#'
 #' If \code{\link{ExperimentList}} names and assaynames only differ by case
 #' and are not #' duplicated, the function will standardize all names to
 #' lowercase.
-#' 
+#'
 #' If names cannot be matched between the assay column of the
 #' \code{\link{sampleMap}} and the colnames of the \code{ExperimentList}, those
 #' unmatched will be dropped and found in the "drops" element of the
 #' resulting \code{list}.
-#' 
+#'
 #' Names in the "primary" column of the \code{\link{sampleMap}}, will be
 #' matched to those in the \code{pData}. Unmatched "primary" column rows will
 #' be dropped from the \code{\link{sampleMap}}. Suggestions for name fixes in
 #' either the \code{\link{ExperimentList}} or colnames will be made when
 #' necessary.
-#' 
+#'
 #' @param ExperimentList A \code{list} of all combined experiments
 #' @param pData A \linkS4class{DataFrame} of the phenotype
 #' data for all participants
@@ -36,19 +36,19 @@
 #' @return A \code{list} containing all the essential components of a
 #' \code{\link{MultiAssayExperiment}} as well as a "drops" element that
 #' indicates non-matched names.
-#' 
-#' @examples 
+#'
+#' @examples
 #' ## Run example
 #' example("MultiAssayExperiment")
-#' 
+#'
 #' ## Check if there are any inconsistencies within the different names
 #' preparedMAE <- PrepMultiAssay(ExpList, pDat, mySampleMap)
-#' 
+#'
 #' ## Results in a list of components for the MultiAssayExperiment constructor
 #' ## function
 #' MultiAssayExperiment(preparedMAE$ExperimentList, preparedMAE$pData,
 #' preparedMAE$sampleMap)
-#' 
+#'
 #' @export PrepMultiAssay
 PrepMultiAssay <- function(ExperimentList, pData, sampleMap) {
     drops <- list()
@@ -103,7 +103,7 @@ PrepMultiAssay <- function(ExperimentList, pData, sampleMap) {
     listMap <- listMap[names(ExperimentList)]
     allThere <- mapply(function(colnams, sampmap) {
         colnams %in% sampmap[, "colname"]
-    }, colnams = cols, sampmap = listMap)
+    }, colnams = cols, sampmap = listMap, SIMPLIFY = FALSE)
     whichNotAll <- vapply(allThere, FUN = function(logicalVector) {
         !(all(logicalVector))
     }, FUN.VALUE = logical(1L))
@@ -112,10 +112,10 @@ PrepMultiAssay <- function(ExperimentList, pData, sampleMap) {
                 "sampleMap, dropping samples from ExperimentList...")
         ExperimentList <- ExperimentList(mapply(function(x, y) {
             x[, y, drop = FALSE]
-        }, x = ExperimentList, y = allThere))
+        }, x = ExperimentList, y = allThere, SIMPLIFY = FALSE))
         coldrops <- mapply(function(listColnames, logicalList) {
             listColnames[!logicalList]
-        }, listColnames = cols, logicalList = allThere)
+        }, listColnames = cols, logicalList = allThere, SIMPLIFY = FALSE)
         print(Biobase::selectSome(coldrops))
         drops <- c(drops, columns = coldrops)
     }

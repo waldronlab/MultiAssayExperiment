@@ -75,9 +75,9 @@ MultiAssayExperiment <-
                 validAssays <-
                     S4Vectors::split(
                         sampleMap[["colname"]], sampleMap[, "assay"])
-                experiments <- Map(function(x, y) {
-                    x[, y]
-                }, experiments, validAssays)
+                experiments <- mapply(function(x, y) {
+                    x[, y, drop = FALSE]
+                }, experiments, validAssays, SIMPLIFY = FALSE)
                 experiments <- ExperimentList(experiments)
             }
         }
