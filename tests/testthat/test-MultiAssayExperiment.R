@@ -12,10 +12,13 @@ test_that("MultiAssayExperiment constructor works", {
     pData = S4Vectors::DataFrame(row.names=letters[1:4])
     expect_true(validObject(MultiAssayExperiment(pData=pData)))
 
-    # this does not pass right now 
     sampleMap = S4Vectors::DataFrame(assay=factor("m", levels="m"),
         primary=letters, colname=letters)
-    expect_true(validObject(MultiAssayExperiment(sampleMap=sampleMap)))
+    obs <- MultiAssayExperiment(sampleMap=sampleMap)
+    expect_true(validObject(obs))
+    expect_identical(nrow(sampleMap(obs)), 0L)
+    expect_identical(length(experiments(obs)), 0L)
+    expect_identical(dim(pData(obs)), c(0L, 0L))
 
   
 })
@@ -47,9 +50,9 @@ test_that("MultiAssayExperiment .harmonize construction helper works", {
     expect_identical(rownames(pData(obs)), sampleMap(obs)[["primary"]])
 
     # combo
-    # this does not pass right now
-    sampleMap = S4Vectors::DataFrame(assay=factor(c("m","stack") ,
-                                         levels=c("m","stack")), primary=c("a","n"),
+    sampleMap = S4Vectors::DataFrame(
+        assay=factor(c("m","stack"), levels=c("m","stack")),
+        primary=c("a","n"),
         colname=c("a","n"))
     m=matrix(0, 3, 3, dimnames=list(letters[1:3], letters[1:3]))
     experiments=ExperimentList(list(m=m))

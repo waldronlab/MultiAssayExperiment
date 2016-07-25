@@ -24,9 +24,18 @@
 }
 
 .harmonize <- function(experiments, pData, sampleMap) {
+    harmony <- character()
     ## experiment and sampleMap assays need to agree
     assay <- intersect(names(experiments), levels(sampleMap[["assay"]]))
     keep_sampleMap_assay <- sampleMap[["assay"]] %in% assay
+    if (!all(keep_sampleMap_assay)) {
+        sampleMap <- sampleMap[keep_sampleMap_assay, , drop=FALSE]
+        sampleMap[["assay"]] <- factor(sampleMap[["assay"]], levels=assay)
+        harmony <- c(
+            harmony,
+            paste("removing", sum(!keep_sampleMap_assay),
+                  "sampleMap rows not in names(experiments)"))
+    }
 
     ## experiment colnames and sampleMap colname need to agree
     grp <- sampleMap$assay
@@ -34,28 +43,45 @@
     keep = Map(intersect, colnm, colnames(experiments)[names(colnm)])
     keep_sampleMap_colname = logical(nrow(sampleMap))
     split(keep_sampleMap_colname, grp) <- Map("%in%", colnm, keep)
+    if (!all(keep_sampleMap_colname)) {
+        sampleMap <- sampleMap[keep_sampleMap_colname, , drop=FALSE]
+        harmony <- c(
+            harmony,
+            paste("removing", sum(!keep_sampleMap_colname),
+                  "sampleMap rows with 'colname' not in colnames of experiments"))
+    }
 
     ## primary and sampleMap primary need to agree
     primary <- intersect(rownames(pData), sampleMap[["primary"]])
     keep_sampleMap_primary <- sampleMap[["primary"]] %in% primary
-
-    keep_sampleMap <- keep_sampleMap_assay & keep_sampleMap_colname &
-        keep_sampleMap_primary
-    if (!all(keep_sampleMap))
-        ## FIXME: more informative output about what is being dropped")
-        message("harmonizing input; see sampleMap() for retained samples")
+    if (!all(keep_sampleMap_primary)) {
+        sampleMap <- sampleMap[keep_sampleMap_primary,, drop=FALSE]
+        harmony <- c(
+            harmony,
+            paste("removing", sum(!keep_sampleMap_primary),
+                  "sampleMap rows with 'primary' not in pData"))
+    }
 
     ## update objects
-    sampleMap <- sampleMap[keep_sampleMap,]
-    sampleMap[["assay"]] <- factor(sampleMap[["assay"]], levels=assay) # re-level
     assay <- intersect(names(experiments), levels(sampleMap[["assay"]]))
     experiments_columns <- split(sampleMap[["colname"]], sampleMap[["assay"]])
     primary <- intersect(rownames(pData), sampleMap[["primary"]])
+    keep_pData <- rownames(pData) %in% primary
+    if (!all(keep_pData)){
+        pData=pData[keep_pData,]
+        harmony <- c(
+            harmony,
+            paste("removing", sum(!keep_pData),
+                  "pData rownames not in sampleMap 'primary'"))
+    }
 
     experiments <- ExperimentList(Map(function(x, idx) {
         x[, colnames(x) %in% idx, drop=FALSE]
     }, experiments[assay], experiments_columns[assay]))
-    list(experiments=experiments, sampleMap=sampleMap, pData=pData[primary,])
+
+    if (length(harmony))
+        message("harmonizing input:\n  ", paste(harmony, collapse="\n  "))
+    list(experiments=experiments, sampleMap=sampleMap, pData=pData)
 }
 
 #' Create a MultiAssayExperiment object
