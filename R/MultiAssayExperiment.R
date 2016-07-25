@@ -23,7 +23,42 @@
     autoMap
 }
 
-#' Create a MultiAssayExperiment object 
+.harmonize <- function(experiments, pData, sampleMap) {
+    ## experiment and sampleMap assays need to agree
+    assay <- intersect(names(experiments), sampleMap[["assay"]])
+    keep_sampleMap_assay <- sampleMap[["assay"]] %in% assay
+
+    ## experiment colnames and sampleMap colname need to agree
+    grp <- sampleMap$assay
+    colnm = split(sampleMap$colname, grp)
+    keep = Map(intersect, colnm, colnames(experiments)[names(colnm)])
+    keep_sampleMap_colname = logical(nrow(sampleMap))
+    split(keep_sampleMap_colname, grp) <- Map("%in%", colnm, keep)
+
+    ## primary and sampleMap primary need to agree
+    primary <- intersect(rownames(pData), sampleMap[["primary"]])
+    keep_sampleMap_primary <- sampleMap[["primary"]] %in% primary
+
+    keep_sampleMap <- keep_sampleMap_assay & keep_sampleMap_colname &
+        keep_sampleMap_primary
+    if (!all(keep_sampleMap))
+        ## FIXME: more informative output about what is being dropped")
+        message("harmonizing input; see sampleMap() for retained samples")
+
+    ## update objects
+    sampleMap <- sampleMap[keep_sampleMap,]
+    sampleMap[["assay"]] <- factor(sampleMap[["assay"]]) # re-level
+    assay <- intersect(names(experiments), sampleMap[["assay"]])
+    experiments_columns <- split(sampleMap[["colname"]], sampleMap[["assay"]])
+    primary <- intersect(rownames(pData), sampleMap[["primary"]])
+
+    experiments <- ExperimentList(Map(function(x, idx) {
+        x[, idx, drop=FALSE]
+    }, experiments[assay], experiments_columns[assay]))
+    list(experiments=experiments, sampleMap=sampleMap, pData=pData[primary,])
+}
+
+#' Create a MultiAssayExperiment object
 #'
 #' This is the constructor function for the \link{MultiAssayExperiment-class}.
 #' It combines multiple data elements from the different hierarchies of data
@@ -31,7 +66,7 @@
 #' a \code{sampleMap} or a \code{pData} set is provided. Please see the
 #' MultiAssayExperiment API documentation for more information by running the
 #' \code{API} function.
-#' 
+#'
 #' @param experiments A \code{list} or \link{ExperimentList} of all
 #' combined experiments
 #' @param pData A \code{\link[S4Vectors]{DataFrame}} or \code{data.frame} of
@@ -39,12 +74,12 @@
 #' @param sampleMap A \code{DataFrame} or \code{data.frame} of assay names,
 #' sample identifiers, and colname samples
 #' @param drops A \code{list} of unmatched information
-#' (included after subsetting)   
+#' (included after subsetting)
 #' @return A \code{MultiAssayExperiment} data object that stores experiment
 #' and phenotype data
-#' 
+#'
 #' @example inst/scripts/MultiAssayExperiment-Ex.R
-#' 
+#'
 #' @export MultiAssayExperiment
 #' @seealso MultiAssayExperiment-class
 MultiAssayExperiment <-
@@ -52,36 +87,50 @@ MultiAssayExperiment <-
             pData = S4Vectors::DataFrame(),
             sampleMap = S4Vectors::DataFrame(),
             drops = list()) {
-        if (inherits(experiments, "list"))
+
+        if (missing(experiments))
+            experiments = ExperimentList()
+        else
             experiments <- ExperimentList(experiments)
-        else if (!inherits(experiments, "SimpleList"))
-            stop("'experiments' must be a list or ExperimentList")
-        if (!is(pData, "DataFrame"))
+
+
+        if (missing(pData)){
+            allsamps <- unique(unlist(unname(colnames(experiments))))
+            pData <- S4Vectors::DataFrame(row.names = allsamps)
+        } else if (!is(pData, "DataFrame"))
             pData <- S4Vectors::DataFrame(pData)
-        if (!is(sampleMap, "DataFrame"))
+
+
+        if (missing(sampleMap)){
+            sampleMap <- .generateMap(pData, experiments)
+        } else {
             sampleMap <- S4Vectors::DataFrame(sampleMap)
-        if (!all(c(ncol(sampleMap) == 0L,
-                    ncol(pData) == 0L,
-                    length(experiments) == 0L))) {
-            if ((ncol(sampleMap) == 0L) && (ncol(pData) == 0L)) {
-                allsamps <- unique(unlist(unname(colnames(experiments))))
-                pData <- S4Vectors::DataFrame(row.names = allsamps)
-                sampleMap <- .generateMap(pData, experiments)
-            } else if ((ncol(sampleMap) == 0L) && (ncol(pData) != 0L)) {
-                sampleMap <- .generateMap(pData, experiments)
-                validAssays <-
-                    S4Vectors::split(
-                        sampleMap[["colname"]], sampleMap[, "assay"])
-                experiments <- Map(function(x, y) {
-                    x[, y]
-                }, experiments, validAssays)
-                experiments <- ExperimentList(experiments)
+            if (!all(c("assay", "primary", "colname") %in% colnames(sampleMap)))
+                stop("'sampleMap' does not have required columns")
+            if (!is.factor(sampleMap[["assay"]]))
+                sampleMap[["assay"]] <- factor(sampleMap[["assay"]])
+            if (!is.character(sampleMap[["primary"]])) {
+                warning("sampleMap[['primary']] coerced to character()")
+                sampleMap[["primary"]] <- as.character(sampleMap[["primary"]])
+            }
+            if (!is.character(sampleMap[["colname"]])) {
+                warning("sampleMap[['colname']] coerced to character()")
+                sampleMap[["colname"]] <- as.character(sampleMap[["colname"]])
             }
         }
 
+        bliss <- .harmonize(experiments, pData, sampleMap)
+
+        ## validAssays <- S4Vectors::split(
+        ##     sampleMap[["colname"]], sampleMap[, "assay"])
+        ## experiments <- ExperimentList(Map(function(x, y) {
+        ##     x[, y]
+        ## }, experiments, validAssays))
+
+
         newMultiAssay <- new("MultiAssayExperiment",
-                             ExperimentList = experiments,
-                             pData = pData, 
-                             sampleMap = sampleMap)
+                             ExperimentList = bliss[["experiments"]],
+                             pData = bliss[["pData"]],
+                             sampleMap = bliss[["sampleMap"]])
         return(newMultiAssay)
     }
