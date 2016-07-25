@@ -336,7 +336,7 @@ setReplaceMethod("pData", c("MultiAssayExperiment", "DataFrame"),
 
 .rearrangeMap <- function(sampMap) {
     return(DataFrame(assay = sampMap[["assayname"]],
-                     sampMap[["primary"]],
+                     primary = sampMap[["primary"]],
                      colname = sampMap[["assay"]]))
 }
 
