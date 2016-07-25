@@ -5,7 +5,15 @@ setClass("MAEshell", slots = c(a = "RangedSummarizedExperiment"))
 setMethod("assay", "MAEshell", function(x) {assay(x@a)})
 setMethod("rownames", "MAEshell", function(x) {rownames(x@a)})
 setMethod("colnames", "MAEshell", function(x) {colnames(x@a)})
-setMethod("[", c("MAEshell", "ANY", "ANY"), function(x, i, j) {x@a[i, j]})
+setMethod("[", c("MAEshell", "ANY", "ANY"), function(x, i, j, ..., drop=TRUE) {
+    if (!missing(i) && !missing(j))
+        x@a[i, j, drop=drop]
+    else if (missing(i))
+        x@a[,j, drop=drop]
+    else if (missing(j))
+        x@a[i,,drop=drop]
+    else x
+})
 setMethod("dim", "MAEshell", function(x) {c(length(x@a),
                                             length(assay(x@a)[1,]))})
 
