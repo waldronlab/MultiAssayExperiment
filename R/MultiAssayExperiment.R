@@ -25,7 +25,7 @@
 
 .harmonize <- function(experiments, pData, sampleMap) {
     ## experiment and sampleMap assays need to agree
-    assay <- intersect(names(experiments), sampleMap[["assay"]])
+    assay <- intersect(names(experiments), levels(sampleMap[["assay"]]))
     keep_sampleMap_assay <- sampleMap[["assay"]] %in% assay
 
     ## experiment colnames and sampleMap colname need to agree
@@ -47,13 +47,13 @@
 
     ## update objects
     sampleMap <- sampleMap[keep_sampleMap,]
-    sampleMap[["assay"]] <- factor(sampleMap[["assay"]]) # re-level
-    assay <- intersect(names(experiments), sampleMap[["assay"]])
+    sampleMap[["assay"]] <- factor(sampleMap[["assay"]], levels=assay) # re-level
+    assay <- intersect(names(experiments), levels(sampleMap[["assay"]]))
     experiments_columns <- split(sampleMap[["colname"]], sampleMap[["assay"]])
     primary <- intersect(rownames(pData), sampleMap[["primary"]])
 
     experiments <- ExperimentList(Map(function(x, idx) {
-        x[, idx, drop=FALSE]
+        x[, colnames(x) %in% idx, drop=FALSE]
     }, experiments[assay], experiments_columns[assay]))
     list(experiments=experiments, sampleMap=sampleMap, pData=pData[primary,])
 }
