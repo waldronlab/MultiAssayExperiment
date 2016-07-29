@@ -4,6 +4,7 @@
 \name{MultiAssayExperiment-class}
 \alias{MultiAssayExperiment-class}
 \alias{[,MultiAssayExperiment,ANY,ANY,ANY-method}
+\alias{[,MultiAssayExperiment,ANY-method}
 \alias{assay,MultiAssayExperiment,ANY-method}
 \alias{colnames,MultiAssayExperiment-method}
 \alias{complete.cases,MultiAssayExperiment-method}
