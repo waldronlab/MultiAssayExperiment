@@ -5,7 +5,9 @@
 \alias{.RangedRaggedAssay}
 \alias{RangedRaggedAssay-class}
 \alias{[,RangedRaggedAssay,ANY,ANY,ANY-method}
+\alias{[,RangedRaggedAssay,ANY-method}
 \alias{[,RangedRaggedAssay,GRanges,ANY,ANY-method}
+\alias{[,RangedRaggedAssay,GRanges-method}
 \alias{colnames,RangedRaggedAssay-method}
 \alias{colnames<-,RangedRaggedAssay,character-method}
 \alias{dim,RangedRaggedAssay-method}
@@ -39,7 +41,7 @@
 \item{i}{Either a \code{character} or \code{GRanges} class object
 to subset by rows}
 
-\item{j}{Either a \code{character}, \code{numeric}, or \code{logical} 
+\item{j}{Either a \code{character}, \code{numeric}, or \code{logical}
 type for selecting columns (\code{\link[GenomicRanges]{GRangesList}} method)}
 
 \item{...}{Any additional arguments passed on to subsetByOverlaps}
@@ -63,7 +65,7 @@ names
 }
 \section{Methods (by generic)}{
 \itemize{
-\item \code{[}: Subset a \code{RangedRaggedAssay} with either 
+\item \code{[}: Subset a \code{RangedRaggedAssay} with either
 \code{chracter}, \code{numeric}, or \code{logical}
 
 \item \code{[}: Subset a \code{RangedRaggedAssay} using a

@@ -3,7 +3,7 @@
 ### ----------------------------------------------
 
 #' An extension of the GRangesList class
-#' 
+#'
 #' @exportClass RangedRaggedAssay
 #' @name RangedRaggedAssay-class
 .RangedRaggedAssay <- setClass("RangedRaggedAssay", contains = "GRangesList")
@@ -79,28 +79,30 @@ RangedRaggedAssay <- function(x = GRangesList()) {
   return(x)
 }
 
-#' Subset RangedRaggedAssay 
-#' 
-#' @description 
+#' Subset RangedRaggedAssay
+#'
+#' @description
 #' Subsetting a RangedRaggedAssay can be done using either rownames and column
 #' names
-#' 
+#'
 #' @param x A \code{\link{RangedRaggedAssay}} class
 #' @param i Either a \code{character} or \code{GRanges} class object
 #' to subset by rows
-#' @param j Either a \code{character}, \code{numeric}, or \code{logical} 
+#' @param j Either a \code{character}, \code{numeric}, or \code{logical}
 #' type for selecting columns (\code{\link[GenomicRanges]{GRangesList}} method)
 #' @param ... Any additional arguments passed on to subsetByOverlaps
 #' @param drop logical (default TRUE) whether to drop empty columns
 #' @seealso \code{\link[IRanges]{findOverlaps-methods}}
 #' @return A \code{\link{RangedRaggedAssay}} class object
-#' @describeIn RangedRaggedAssay Subset a \code{RangedRaggedAssay} with either 
+#' @describeIn RangedRaggedAssay Subset a \code{RangedRaggedAssay} with either
 #' \code{chracter}, \code{numeric}, or \code{logical}
+#' @aliases [,RangedRaggedAssay,ANY-method
 setMethod("[", c("RangedRaggedAssay", "ANY", "ANY"),
           .sBracketSubsetRRA)
 
 #' @describeIn RangedRaggedAssay Subset a \code{RangedRaggedAssay} using a
 #' \code{GRanges} class object
+#' @aliases [,RangedRaggedAssay,GRanges-method
 setMethod("[", c("RangedRaggedAssay", "GRanges", "ANY"),
           .RangedBracketSubsetRRA)
 

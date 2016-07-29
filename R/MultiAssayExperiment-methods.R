@@ -159,6 +159,7 @@ setMethod("getHits", signature("RangedRaggedAssay", "character"),
 #' @param drop logical (default TRUE) whether to drop empty assay elements
 #' in the \code{ExperimentList}
 #' @seealso \code{getHits}
+#' @aliases [,MultiAssayExperiment,ANY-method
 setMethod("[", c("MultiAssayExperiment", "ANY", "ANY", "ANY"),
           .subsetMultiAssayExperiment)
 
