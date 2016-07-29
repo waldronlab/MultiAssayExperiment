@@ -84,7 +84,7 @@
     list(experiments=experiments, sampleMap=sampleMap, pData=pData)
 }
 
-#' #' Create a MultiAssayExperiment object
+#' Create a MultiAssayExperiment object
 #'
 #' This is the constructor function for the \link{MultiAssayExperiment-class}.
 #' It combines multiple data elements from the different hierarchies of data

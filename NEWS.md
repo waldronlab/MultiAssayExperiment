@@ -1,3 +1,10 @@
+# MultiAssayExperiment 0.101.43
+
+## Bug fixes and minor improvements
+
+* Improved `MultiAssayExperiment` constructor now handles stray assays, colnames,
+pData rownames, and `sampleMap` rows
+
 # MultiAssayExperiment 0.101.42
 
 ## New features
