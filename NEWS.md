@@ -11,7 +11,7 @@ pData rownames, and `sampleMap` rows
 
 * `metadata<-` set method now available for the `MultiAssayExperiment`
 
-# Bug fixes and minor improvements
+## Bug fixes and minor improvements
 
 * `metadata` argument available in the `MultiAssayExperiment` constructor function
 * Fix bug when subsetting for unmatched samples/colnames (drop = FALSE) in constructor
