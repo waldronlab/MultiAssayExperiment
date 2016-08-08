@@ -1,3 +1,9 @@
+# MultiAssayExperiment 0.101.44
+
+## New features
+
+* `$` (DollarSign) method available for `MultiAssayExperiment` to access `pData` column
+
 # MultiAssayExperiment 0.101.43
 
 ## Bug fixes and minor improvements
