@@ -91,7 +91,8 @@ PrepMultiAssay <- function(ExperimentList, pData, sampleMap) {
         sampleMap <- sampleMap[notFounds,]
         print(notF)
         if (length(unique(sampleMap[["assay"]])) != length(ExperimentList)) {
-            stop("Some assays could not be matched, check primary and pData names")
+            stop("Some assays could not be matched,",
+                 " check primary and pData names")
         }
     }
     if (exists("nameErr") && nameErr) {

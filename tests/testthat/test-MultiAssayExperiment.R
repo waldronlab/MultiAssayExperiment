@@ -69,7 +69,8 @@ test_that("MultiAssayExperiment .harmonize construction helper works", {
     expect_identical(rownames(pData(obs)), sampleMap(obs)[["primary"]])
 
     # pData subset by sampleData primary 
-    pData <- S4Vectors::DataFrame(matrix(0, 4, 4, dimnames=list(letters[1:4], letters[1:4])))
+    pData <- S4Vectors::DataFrame(matrix(0, 4, 4, dimnames=list(letters[1:4],
+                                                                letters[1:4])))
     obs <- MultiAssayExperiment(experiments, sampleMap=sampleMap, pData=pData)
     expect_identical(rownames(pData(obs)), sampleMap(obs)[["primary"]])
 
