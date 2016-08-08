@@ -80,6 +80,8 @@ the existing \code{sampleMap}, \code{ExperimentList}, or \code{pData} slot}
 \item{...}{Additional arguments passed down to \code{getHits} support
 function for subsetting by rows}
 
+\item{name}{pData column name}
+
 \item{verbose}{(logical default FALSE) whether to output verbose}
 
 \item{i}{Either a \code{character}, or \code{GRanges} object for subsetting

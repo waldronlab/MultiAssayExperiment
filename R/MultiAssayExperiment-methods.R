@@ -31,6 +31,7 @@ setMethod("colnames", "MultiAssayExperiment", function(x)
 
 #' @describeIn MultiAssayExperiment Access pData column
 #' @aliases $,MultiAssayExperiment-method
+#' @param name pData column name
 #' @exportMethod $
 setMethod("$", "MultiAssayExperiment", function(x, name) {
     pData(x)[[name]]
