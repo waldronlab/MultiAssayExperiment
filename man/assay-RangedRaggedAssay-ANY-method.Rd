@@ -6,11 +6,15 @@
 \alias{assay,RangedRaggedAssay,ANY-method}
 \title{Create a Matrix of score values using a GRanges or own ranges}
 \usage{
-\S4method{assay}{RangedRaggedAssay,ANY}(x, ranges = NULL, background = NA,
-  use.names = FALSE)
+\S4method{assay}{RangedRaggedAssay,ANY}(x, mcolname = "score",
+  ranges = NULL, background = NA, use.names = FALSE)
 }
 \arguments{
 \item{x}{A \linkS4class{RangedRaggedAssay} or \link{GRangesList} class}
+
+\item{mcolname}{A single \code{character} string indicating the inner
+metadata column name to use for creating a matrix (must indicate a numeric
+variable)}
 
 \item{ranges}{A \link{GRanges} class identifying the ranges of interest}
 

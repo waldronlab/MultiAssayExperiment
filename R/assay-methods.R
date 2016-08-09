@@ -10,6 +10,9 @@
 #' uses the \link{overlapsAny} function from the \code{GenomicRanges} package.
 #' 
 #' @param x A \linkS4class{RangedRaggedAssay} or \link{GRangesList} class
+#' @param mcolname A single \code{character} string indicating the inner
+#' metadata column name to use for creating a matrix (must indicate a numeric
+#' variable)
 #' @param ranges A \link{GRanges} class identifying the ranges of interest
 #' @param background A single value for the non-matching background values in
 #' the matrix (e.g., 2 for diploid genomes)
@@ -28,48 +31,47 @@
 #' 
 #' @return A \code{matrix} of values from the score column of the metadata.
 #' @exportMethod assay
-setMethod("assay", "RangedRaggedAssay",
-          function(x, ranges = NULL, background = NA, use.names = FALSE) {
-  if (!all(GenomicRanges::isDisjoint(x))) {
-    stop("Matrix can only be created for disjoint ranges")
-  }
-  if (.uniqueSortIdentical(names(x), names(metadata(x))) &&
-      !identical(names(metadata(x)), names(x))) {
-    metadata(x) <- metadata(x)[match(names(x), names(metadata(x)))]
-  }
-  if (!is.null(ranges)) {
-    if (!inherits(ranges, "GRanges")) {
-      stop("ranges must be a GRanges object")
-    }
-    if (use.names) {
-      rowNames <- names(ranges)
+setMethod("assay", "RangedRaggedAssay", function(x, mcolname = "score",
+                                                 ranges = NULL,
+                                                 background = NA,
+                                                 use.names = FALSE) {
+    if (!all(GenomicRanges::isDisjoint(x)))
+        stop("only disjoint ranges supported")
+    if (!is.numeric(mcols(x[[1]])[[mcolname]]))
+        stop("metadata column is not numeric")
+    if (!is.null(ranges)) {
+        if (!inherits(ranges, "GRanges")) {
+            stop("ranges must be a GRanges object")
+        }
+        if (use.names) {
+            rowNames <- names(ranges)
+        } else {
+            rowNames <- as.character(ranges)
+        }
     } else {
-      rowNames <- as.character(ranges)
+        rangeNames <- unique(as.character(
+            unlist(x, use.names = FALSE)))
+        ranges <- as(rangeNames, "GRanges")
+        if (use.names) {
+            featNames <- names(unlist(x, use.names = FALSE))
+            if (length(unique(featNames)) == length(rangeNames)) {
+                rowNames <- featNames
+            } else {
+                stop("feature names not unique accross ranges")
+            }
+        }
+        rowNames <- rangeNames
     }
-  } else {
-    rangeNames <- unique(as.character(unlist(x, use.names = FALSE)))
-    ranges <- as(rangeNames, "GRanges")
-    if (use.names) {
-      featNames <- names(unlist(x, use.names = FALSE))
-      if (length(unique(featNames)) == length(rangeNames)) {
-        rowNames <- featNames
-      } else {
-        stop("feature names not unique accross ranges")
-      }
-    }
-    rowNames <- rangeNames
-  }
-  newMatrix <- do.call(cbind, lapply(seq_along(x), function(i, obj) {
-    MValues <- ifelse(
-      IRanges::overlapsAny(ranges, obj[[i]], type = "equal"), 
-      as.numeric(mcols(obj[[i]])$score),
-      background
-    )
-    return(MValues)
-  }, obj = x))
-  colnames(newMatrix) <- names(x)
-  rownames(newMatrix) <- rowNames
-  return(newMatrix)
+    newMatrix <- do.call(cbind, lapply(seq_along(x), function(i, obj) {
+        MValues <- ifelse(
+            IRanges::overlapsAny(ranges, obj[[i]], type = "equal"), 
+            as.numeric(mcols(obj[[i]])[[mcolname]]),
+            background)
+        return(MValues)
+    }, obj = x))
+    colnames(newMatrix) <- names(x)
+    rownames(newMatrix) <- rowNames
+    return(newMatrix)
 })
 
 #' @describeIn ExperimentList Get the assay data for the default ANY class

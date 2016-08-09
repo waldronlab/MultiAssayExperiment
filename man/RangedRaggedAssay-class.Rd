@@ -11,12 +11,13 @@
 \alias{[,RangedRaggedAssay,GRanges,ANY,ANY-method}
 \alias{[,RangedRaggedAssay,GRanges-method}
 \alias{colnames,RangedRaggedAssay-method}
-\alias{colnames<-,RangedRaggedAssay,character-method}
 \alias{dim,RangedRaggedAssay-method}
+\alias{dimnames,RangedRaggedAssay-method}
 \alias{getHits,RangedRaggedAssay,character-method}
 \alias{ncol,RangedRaggedAssay-method}
 \alias{nrow,RangedRaggedAssay-method}
 \alias{rownames,RangedRaggedAssay-method}
+\alias{show,RangedRaggedAssay-method}
 \title{An extension of the GRangesList class}
 \usage{
 \S4method{[}{RangedRaggedAssay,ANY,ANY,ANY}(x, i, j, ..., drop = TRUE)
@@ -29,11 +30,13 @@
 
 \S4method{nrow}{RangedRaggedAssay}(x)
 
+\S4method{dimnames}{RangedRaggedAssay}(x)
+
 \S4method{rownames}{RangedRaggedAssay}(x)
 
 \S4method{colnames}{RangedRaggedAssay}(x)
 
-\S4method{colnames}{RangedRaggedAssay,character}(x) <- value
+\S4method{show}{RangedRaggedAssay}(object)
 
 \S4method{getHits}{RangedRaggedAssay,character}(subject, query, ...)
 }
@@ -50,7 +53,7 @@ type for selecting columns (\code{\link[GenomicRanges]{GRangesList}} method)}
 
 \item{drop}{logical (default TRUE) whether to drop empty columns}
 
-\item{value}{A \code{character} vector representing column or sample names}
+\item{object}{A \code{RangedRaggedAssay} class object}
 
 \item{subject}{A \code{RangedRaggedAssay} class object}
 
@@ -82,14 +85,17 @@ names
 \item \code{nrow}: Get the row length of a
 \code{RangedRaggedAssay} class object
 
+\item \code{dimnames}: Get dimension names
+for a \code{RangedRaggedAssay}
+
 \item \code{rownames}: Get feature names from a
 \code{RangedRaggedAssay}
 
 \item \code{colnames}: Get sample names from a
 \code{RangedRaggedAssay}
 
-\item \code{colnames<-}: value: A modified \code{RangedRaggedAssay}
-object
+\item \code{show}: show method for
+the \code{RangedRaggedAssay} class
 
 \item \code{getHits}: Find matching features by \code{character}
 in a \code{RangedRaggedAssay}

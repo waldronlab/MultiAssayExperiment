@@ -353,7 +353,7 @@ setReplaceMethod("metadata", c("MultiAssayExperiment", "ANY"),
 #' @describeIn MultiAssayExperiment value: DataFrame column
 setReplaceMethod("$", "MultiAssayExperiment", function(x, name, value) {
     pData(x)[[name]] <- value
-    x
+    return(x)
 })
 
 #' @exportMethod updateObject
