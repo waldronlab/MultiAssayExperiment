@@ -134,41 +134,51 @@ setMethod("dimnames", "RangedRaggedAssay", function(x) {
 setMethod("rownames", "RangedRaggedAssay", function(x)
     dimnames(x)[[1]])
 
-# setReplaceMethod("rownames", c("RangedRaggedAssay", "character"),
-#                  function(x, value) {
-#                      dimnames(x) <- list(dimnames(x)[[1]], value)
-#                  })
+setReplaceMethod("rownames", c("RangedRaggedAssay", "character"),
+                 function(x, value) {
+                     names(x@unlistData) <- value
+                     return(x)
+                 })
 
 #' @describeIn RangedRaggedAssay Get sample names from a
 #' \code{RangedRaggedAssay}
 setMethod("colnames", "RangedRaggedAssay", function(x)
     dimnames(x)[[2]])
 
+setReplaceMethod("colnames", c("RangedRaggedAssay", "character"),
+                 function(x, value) {
+                     names(x) <- value
+                     return(x)
+                 })
+
 # TODO: dimnames setReplaceMethod
 # @exportMethod dimnames<-
 # @describeIn RangedRaggedAssay value: A modified \code{RangedRaggedAssay}
 # object
 # @param value A \code{list} object of row and column names
-# setReplaceMethod("dimnames", c("RangedRaggedAssay", "list"),
-#                  function(x, value) {
-#                      dimnames(x) <- value
-#                      return(x)
-#                  })
+setReplaceMethod("dimnames", c("RangedRaggedAssay", "list"),
+                 function(x, value) {
+                     rownames(x) <- value[[1]]
+                     colnames(x) <- value[[2]]
+                     return(x)
+                 })
 
 #' @exportMethod show
 #' @describeIn RangedRaggedAssay show method for
 #' the \code{RangedRaggedAssay} class
 #' @param object A \code{RangedRaggedAssay} class object
 setMethod("show", "RangedRaggedAssay", function(object) {
-    if (!all(GenomicRanges::isDisjoint(object)))
+    if (!all(GenomicRanges::isDisjoint(object))) {
+        cat("Non-disjoint RangedRaggedAssay")
         callNextMethod(object)
+    }
     elts <- names(mcols(unlist(object)))
     
     cat(class(object), "with",
         length(dimnames(object)[[1]]), "disjoint ranges,",
         length(dimnames(object)[[2]]), "samples, and",
         length(elts), "data elements\n")
-    # TODO: add messsage: Non-disjoin not shown
+
     for (elt in head(elts, 3)) {
         cat("\n", elt, "\n", sep="")
         x <- assay(object, mcolname = elt)

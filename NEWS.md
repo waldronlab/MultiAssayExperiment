@@ -1,8 +1,13 @@
 # MultiAssayExperiment 0.101.45
 
-* Improved `show` method for the `RangedRaggedAssay` class
+## New features
+
 * `dimnames` method added to `RangedRaggedAssay`
+
+## Bug fixes and minor improvements
+
 * Improved `RangedRaggedAssay` rowname construction
+* Improved `show` method for the `RangedRaggedAssay` class
 
 # MultiAssayExperiment 0.101.44
 

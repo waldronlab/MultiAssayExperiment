@@ -7,7 +7,7 @@
 \title{Create a Matrix of score values using a GRanges or own ranges}
 \usage{
 \S4method{assay}{RangedRaggedAssay,ANY}(x, mcolname = "score",
-  ranges = NULL, background = NA, use.names = FALSE)
+  ranges = NULL, background = NA, make.names = FALSE)
 }
 \arguments{
 \item{x}{A \linkS4class{RangedRaggedAssay} or \link{GRangesList} class}
@@ -21,8 +21,9 @@ variable)}
 \item{background}{A single value for the non-matching background values in
 the matrix (e.g., 2 for diploid genomes)}
 
-\item{use.names}{logical (default FALSE) whether to use names in the
-given ranges argument or in the provided 'x' argument}
+\item{make.names}{logical (default FALSE) whether to automatically create
+names from either the ranges argument (if available) or the
+\code{RangedRaggedAssay} (e.g., "chr1:2-3:+")}
 }
 \value{
 A \code{matrix} of values from the score column of the metadata.

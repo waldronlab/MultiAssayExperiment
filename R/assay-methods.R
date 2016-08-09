@@ -16,8 +16,9 @@
 #' @param ranges A \link{GRanges} class identifying the ranges of interest
 #' @param background A single value for the non-matching background values in
 #' the matrix (e.g., 2 for diploid genomes)
-#' @param use.names logical (default FALSE) whether to use names in the
-#' given ranges argument or in the provided 'x' argument
+#' @param make.names logical (default FALSE) whether to automatically create
+#' names from either the ranges argument (if available) or the
+#' \code{RangedRaggedAssay} (e.g., "chr1:2-3:+")
 #' 
 #' @examples
 #' example("RangedRaggedAssay")
@@ -34,33 +35,29 @@
 setMethod("assay", "RangedRaggedAssay", function(x, mcolname = "score",
                                                  ranges = NULL,
                                                  background = NA,
-                                                 use.names = FALSE) {
+                                                 make.names = FALSE) {
     if (!all(GenomicRanges::isDisjoint(x)))
         stop("only disjoint ranges supported")
     if (!is.numeric(mcols(x[[1]])[[mcolname]]))
         stop("metadata column is not numeric")
     if (!is.null(ranges)) {
-        if (!inherits(ranges, "GRanges")) {
+        if (!inherits(ranges, "GRanges"))
             stop("ranges must be a GRanges object")
-        }
-        if (use.names) {
-            rowNames <- names(ranges)
-        } else {
+        if (make.names) {
             rowNames <- as.character(ranges)
+        } else {
+            rowNames <- names(ranges)
         }
     } else {
-        rangeNames <- unique(as.character(
-            unlist(x, use.names = FALSE)))
-        ranges <- as(rangeNames, "GRanges")
-        if (use.names) {
-            featNames <- names(unlist(x, use.names = FALSE))
-            if (length(unique(featNames)) == length(rangeNames)) {
-                rowNames <- featNames
-            } else {
+        rowNames <- rownames(x)
+        if (make.names) {
+            rangeNames <- unique(as.character(
+                unlist(x, use.names = FALSE)))
+            if (length(unique(rowNames)) != length(rangeNames))
                 stop("feature names not unique accross ranges")
-            }
+            rowNames <- rangeNames
         }
-        rowNames <- rangeNames
+        ranges <- granges(unlist(x, use.names = FALSE))
     }
     newMatrix <- do.call(cbind, lapply(seq_along(x), function(i, obj) {
         MValues <- ifelse(
@@ -69,7 +66,7 @@ setMethod("assay", "RangedRaggedAssay", function(x, mcolname = "score",
             background)
         return(MValues)
     }, obj = x))
-    colnames(newMatrix) <- names(x)
+    colnames(newMatrix) <- colnames(x)
     rownames(newMatrix) <- rowNames
     return(newMatrix)
 })
