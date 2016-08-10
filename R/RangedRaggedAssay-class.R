@@ -129,38 +129,17 @@ setMethod("dimnames", "RangedRaggedAssay", function(x) {
     list(dgr, names(x))
 })
 
-#' @describeIn RangedRaggedAssay Get feature names from a
-#' \code{RangedRaggedAssay}
-setMethod("rownames", "RangedRaggedAssay", function(x)
-    dimnames(x)[[1]])
-
-setReplaceMethod("rownames", c("RangedRaggedAssay", "character"),
-                 function(x, value) {
-                     names(x@unlistData) <- value
-                     return(x)
-                 })
-
-#' @describeIn RangedRaggedAssay Get sample names from a
-#' \code{RangedRaggedAssay}
-setMethod("colnames", "RangedRaggedAssay", function(x)
-    dimnames(x)[[2]])
-
-setReplaceMethod("colnames", c("RangedRaggedAssay", "character"),
-                 function(x, value) {
-                     names(x) <- value
-                     return(x)
-                 })
-
 #' @exportMethod dimnames<-
 #' @describeIn RangedRaggedAssay value: A modified \code{RangedRaggedAssay}
 #' object
 #' @param value A \code{list} object of row and column names
 setReplaceMethod("dimnames", c("RangedRaggedAssay", "list"),
-                 function(x, value) {
-                     rownames(x) <- value[[1]]
-                     colnames(x) <- value[[2]]
-                     return(x)
-                 })
+    function(x, value)
+{
+    names(x@unlistData) <- value[[1]]
+    names(x) <- value[[2]]
+    x
+})
 
 #' @exportMethod show
 #' @describeIn RangedRaggedAssay show method for
