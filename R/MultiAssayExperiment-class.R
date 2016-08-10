@@ -43,12 +43,12 @@
 #' identifiers of samples and participants or biological units. Standard column
 #' names of the sampleMap are "assay", "primary", and "colname".
 #'
-#' @slot ExperimentList A \code{\link{ExperimentList}} class object for each
-#' assay dataset
+#' @slot ExperimentList A \code{\link{ExperimentList}} class object for
+#' each assay dataset
 #' @slot pData A \code{DataFrame} of all clinical/specimen data available
 #' across experiments
-#' @slot sampleMap A \code{DataFrame} of translatable identifiers of samples
-#' and participants
+#' @slot sampleMap A \code{DataFrame} of translatable identifiers
+#' of samples and participants
 #' @slot metadata Additional data describing the
 #' \code{MultiAssayExperiment} object
 #' @slot drops A metadata \code{list} of dropped information
@@ -348,6 +348,13 @@ setReplaceMethod("metadata", c("MultiAssayExperiment", "ANY"),
                      slot(x, "metadata") <- value
                      return(x)
                  })
+
+#' @exportMethod $<-
+#' @describeIn MultiAssayExperiment value: DataFrame column
+setReplaceMethod("$", "MultiAssayExperiment", function(x, name, value) {
+    pData(x)[[name]] <- value
+    return(x)
+})
 
 #' @exportMethod updateObject
 #' @param verbose (logical default FALSE) whether to output verbose

@@ -1,8 +1,12 @@
 MultiAssayExperiment
 ==============
 
+[![Platforms](http://www.bioconductor.org/shields/availability/devel/MultiAssayExperiment.svg)](https://www.bioconductor.org/packages/devel/bioc/html/MultiAssayExperiment.html#archives)
+[![Commits](http://www.bioconductor.org/shields/commits/bioc/MultiAssayExperiment.svg)](https://www.bioconductor.org/packages/devel/bioc/html/MultiAssayExperiment.html#svn_source)
 [![Build Status](https://api.travis-ci.org/LiNk-NY/MultiAssayExperiment.png?branch=master)](https://travis-ci.org/LiNk-NY/MultiAssayExperiment)
 [![Coverage Status](https://codecov.io/github/LiNk-NY/MultiAssayExperiment/coverage.svg?branch=master)](https://codecov.io/github/LiNk-NY/MultiAssayExperiment?branch=master)
+[![Downloads](http://www.bioconductor.org/shields/downloads/MultiAssayExperiment.svg)](https://bioconductor.org/packages/stats/bioc/MultiAssayExperiment)
+
 
 # Documentation
 

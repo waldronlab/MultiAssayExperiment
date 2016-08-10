@@ -19,23 +19,24 @@
 #' @example inst/scripts/RangedRaggedAssay-Ex.R
 #' @export RangedRaggedAssay
 RangedRaggedAssay <- function(x = GRangesList()) {
-  if (inherits(x, "GRanges")) {
-    x <- GRangesList(x)
-  }
-  if (inherits(x, "GRangesList")) {
-    metad <- mcols(x)
-    missingRownames <- vapply(X = x, FUN = function(grl) {
-      is.null(names(grl))
-    }, FUN.VALUE = logical(1L))
-    if (all(missingRownames)) {
-      u_obj <- unlist(x, use.names = FALSE)
-      names(u_obj) <- seq_len(length(u_obj))
-      x <- relist(u_obj, x)
+    if (inherits(x, "GRanges")) {
+        x <- GRangesList(x)
     }
-  }
-  newRRA <- .RangedRaggedAssay(x)
-  mcols(newRRA) <- metad
-  return(newRRA)
+    if (inherits(x, "GRangesList")) {
+        metad <- mcols(x)
+        missingRownames <- vapply(X = x, FUN = function(grl) {
+            is.null(names(grl))
+        }, FUN.VALUE = logical(1L))
+        if (all(missingRownames)) {
+            u_obj <- unlist(x, use.names = FALSE)
+            gre <- granges(u_obj, use.mcols = TRUE)
+            names(gre) <- as.character(gre)
+            x <- relist(gre, x)
+        }
+    }
+    newRRA <- .RangedRaggedAssay(x)
+    mcols(newRRA) <- metad
+    return(newRRA)
 }
 
 
@@ -121,22 +122,70 @@ setMethod("ncol", "RangedRaggedAssay", function(x)
 setMethod("nrow", "RangedRaggedAssay", function(x)
   dim(x)[1])
 
+#' @describeIn RangedRaggedAssay Get dimension names
+#' for a \code{RangedRaggedAssay}
+setMethod("dimnames", "RangedRaggedAssay", function(x) {
+    dgr <- names(unlist(x, use.names = FALSE))
+    list(dgr, names(x))
+})
+
 #' @describeIn RangedRaggedAssay Get feature names from a
 #' \code{RangedRaggedAssay}
 setMethod("rownames", "RangedRaggedAssay", function(x)
-  names(unlist(x, use.names = FALSE)))
+    dimnames(x)[[1]])
+
+setReplaceMethod("rownames", c("RangedRaggedAssay", "character"),
+                 function(x, value) {
+                     names(x@unlistData) <- value
+                     return(x)
+                 })
 
 #' @describeIn RangedRaggedAssay Get sample names from a
 #' \code{RangedRaggedAssay}
 setMethod("colnames", "RangedRaggedAssay", function(x)
-  base::names(x))
+    dimnames(x)[[2]])
 
-#' @exportMethod colnames<-
-#' @describeIn RangedRaggedAssay value: A modified \code{RangedRaggedAssay}
-#' object
-#' @param value A \code{character} vector representing column or sample names
 setReplaceMethod("colnames", c("RangedRaggedAssay", "character"),
                  function(x, value) {
-                   names(x) <- value
-                   return(x)
+                     names(x) <- value
+                     return(x)
                  })
+
+#' @exportMethod dimnames<-
+#' @describeIn RangedRaggedAssay value: A modified \code{RangedRaggedAssay}
+#' object
+#' @param value A \code{list} object of row and column names
+setReplaceMethod("dimnames", c("RangedRaggedAssay", "list"),
+                 function(x, value) {
+                     rownames(x) <- value[[1]]
+                     colnames(x) <- value[[2]]
+                     return(x)
+                 })
+
+#' @exportMethod show
+#' @describeIn RangedRaggedAssay show method for
+#' the \code{RangedRaggedAssay} class
+#' @param object A \code{RangedRaggedAssay} class object
+setMethod("show", "RangedRaggedAssay", function(object) {
+    if (!all(GenomicRanges::isDisjoint(object))) {
+        cat("Non-disjoint RangedRaggedAssay")
+        callNextMethod(object)
+    }
+    elts <- names(mcols(unlist(object)))
+    
+    cat(class(object), "with",
+        length(dimnames(object)[[1]]), "disjoint ranges,",
+        length(dimnames(object)[[2]]), "samples, and",
+        length(elts), "data elements\n")
+
+    for (elt in head(elts, 3)) {
+        cat("\n", elt, "\n", sep="")
+        x <- assay(object, mcolname = elt)
+        print(head(x, 3))
+        if (nrow(x) > 3)
+            cat("...\n")
+    }
+    if (length(elts) > 3)
+        cat("\n...")
+    cat("\n")
+})

@@ -1,3 +1,20 @@
+# MultiAssayExperiment 0.101.45
+
+## New features
+
+* `dimnames` method added to `RangedRaggedAssay`
+
+## Bug fixes and minor improvements
+
+* Improved `RangedRaggedAssay` rowname construction
+* Improved `show` method for the `RangedRaggedAssay` class
+
+# MultiAssayExperiment 0.101.44
+
+## New features
+
+* `$` (DollarSign) method available for `MultiAssayExperiment` to access `pData` column
+
 # MultiAssayExperiment 0.101.43
 
 ## Bug fixes and minor improvements
@@ -11,10 +28,10 @@ pData rownames, and `sampleMap` rows
 
 * `metadata<-` set method now available for the `MultiAssayExperiment`
 
-# Bug fixes and minor improvements
+## Bug fixes and minor improvements
 
 * `metadata` argument available in the `MultiAssayExperiment` constructor function
-* Fixed bug when subsetting for unmatched columns (drop = FALSE) in constructor
+* Fix bug when subsetting for unmatched samples/colnames (drop = FALSE) in constructor
 
 # MultiAssayExperiment 0.101.40
 

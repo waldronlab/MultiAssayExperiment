@@ -48,7 +48,8 @@
         harmony <- c(
             harmony,
             paste("removing", sum(!keep_sampleMap_colname),
-                  "sampleMap rows with 'colname' not in colnames of experiments"))
+                  "sampleMap rows with 'colname'",
+                  "not in colnames of experiments"))
     }
 
     ## primary and sampleMap primary need to agree
