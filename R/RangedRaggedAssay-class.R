@@ -151,11 +151,10 @@ setReplaceMethod("colnames", c("RangedRaggedAssay", "character"),
                      return(x)
                  })
 
-# TODO: dimnames setReplaceMethod
-# @exportMethod dimnames<-
-# @describeIn RangedRaggedAssay value: A modified \code{RangedRaggedAssay}
-# object
-# @param value A \code{list} object of row and column names
+#' @exportMethod dimnames<-
+#' @describeIn RangedRaggedAssay value: A modified \code{RangedRaggedAssay}
+#' object
+#' @param value A \code{list} object of row and column names
 setReplaceMethod("dimnames", c("RangedRaggedAssay", "list"),
                  function(x, value) {
                      rownames(x) <- value[[1]]

@@ -13,6 +13,7 @@
 \alias{colnames,RangedRaggedAssay-method}
 \alias{dim,RangedRaggedAssay-method}
 \alias{dimnames,RangedRaggedAssay-method}
+\alias{dimnames<-,RangedRaggedAssay,list-method}
 \alias{getHits,RangedRaggedAssay,character-method}
 \alias{ncol,RangedRaggedAssay-method}
 \alias{nrow,RangedRaggedAssay-method}
@@ -36,6 +37,8 @@
 
 \S4method{colnames}{RangedRaggedAssay}(x)
 
+\S4method{dimnames}{RangedRaggedAssay,list}(x) <- value
+
 \S4method{show}{RangedRaggedAssay}(object)
 
 \S4method{getHits}{RangedRaggedAssay,character}(subject, query, ...)
@@ -52,6 +55,8 @@ type for selecting columns (\code{\link[GenomicRanges]{GRangesList}} method)}
 \item{...}{Any additional arguments passed on to subsetByOverlaps}
 
 \item{drop}{logical (default TRUE) whether to drop empty columns}
+
+\item{value}{A \code{list} object of row and column names}
 
 \item{object}{A \code{RangedRaggedAssay} class object}
 
@@ -93,6 +98,9 @@ for a \code{RangedRaggedAssay}
 
 \item \code{colnames}: Get sample names from a
 \code{RangedRaggedAssay}
+
+\item \code{dimnames<-}: value: A modified \code{RangedRaggedAssay}
+object
 
 \item \code{show}: show method for
 the \code{RangedRaggedAssay} class
