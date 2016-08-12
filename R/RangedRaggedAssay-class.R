@@ -41,43 +41,43 @@ RangedRaggedAssay <- function(x = GRangesList()) {
 
 
 .RangedBracketSubsetRRA <- function(x, i, j, ..., drop) {
-  if (length(drop) != 1L || (!missing(drop) && drop)) {
-    warning("'drop' ignored '[,", class(x), ",ANY,ANY-method'")
-  }
-  if (!missing(j)) {
-    x <- callNextMethod(x = x, i = j)
-  }
-  if (!missing(i)) {
-    x <- endoapply(x, function(rra) {
-      IRanges::subsetByOverlaps(rra, i, ...)
-      # x <- x[relist(subsetByOverlaps(unlist(x,
-      # use.names = FALSE), i, ...), x)]
-    })
-  }
-  return(x)
+    if (length(drop) != 1L || (!missing(drop) && drop)) {
+        warning("'drop' ignored '[,", class(x), ",ANY,ANY-method'")
+    }
+    if (!missing(j)) {
+        x <- callNextMethod(x = x, i = j)
+    }
+    if (!missing(i)) {
+        x <- endoapply(x, function(rra) {
+            IRanges::subsetByOverlaps(rra, i, ...)
+            # x <- x[relist(subsetByOverlaps(unlist(x,
+            # use.names = FALSE), i, ...), x)]
+        })
+    }
+    return(x)
 }
 
 .sBracketSubsetRRA <- function(x, i, j, ..., drop) {
-  if (length(drop) != 1L || (!missing(drop) && drop)) {
-    warning("'drop' ignored '[,", class(x), ",ANY,ANY-method'")
-  }
-  if (missing(i) && missing(j)) {
-    return(x)
-  }
-  if (!missing(j)) {
-    x <- callNextMethod(x = x, i = j)
-  }
-  if (!missing(i)) {
-    if (is.character(i)) {
-      cLL <- relist(names(unlist(x, use.names = FALSE)) %in% i, x)
-      x <- callNextMethod(x = x, i = cLL)
-    } else if (is.numeric(i) || is.logical(i)) {
-      x <- endoapply(x, function(unit) { unit[i, ] })
-    } else {
-      x <- callNextMethod(x = x, i = i)
+    if (length(drop) != 1L || (!missing(drop) && drop)) {
+        warning("'drop' ignored '[,", class(x), ",ANY,ANY-method'")
     }
-  }
-  return(x)
+    if (missing(i) && missing(j)) {
+        return(x)
+    }
+    if (!missing(j)) {
+        x <- callNextMethod(x = x, i = j)
+    }
+    if (!missing(i)) {
+        if (is.character(i)) {
+            cLL <- relist(names(unlist(x, use.names = FALSE)) %in% i, x)
+            x <- callNextMethod(x = x, i = cLL)
+        } else if (is.numeric(i) || is.logical(i)) {
+            x <- endoapply(x, function(unit) { unit[i, ] })
+        } else {
+            x <- callNextMethod(x = x, i = i)
+        }
+    }
+    return(x)
 }
 
 #' Subset RangedRaggedAssay

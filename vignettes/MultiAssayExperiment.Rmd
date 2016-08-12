@@ -506,7 +506,7 @@ package and inherits from `GRangesList`:
 
 ```{r}
 methods(class="RangedRaggedAssay")
-getMethod("colnames", "RangedRaggedAssay")
+getMethod("dimnames", "RangedRaggedAssay")
 ```
 
 It has some additional methods that are required for any data class contained

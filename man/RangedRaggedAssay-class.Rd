@@ -10,14 +10,12 @@
 \alias{[,RangedRaggedAssay,ANY-method}
 \alias{[,RangedRaggedAssay,GRanges,ANY,ANY-method}
 \alias{[,RangedRaggedAssay,GRanges-method}
-\alias{colnames,RangedRaggedAssay-method}
 \alias{dim,RangedRaggedAssay-method}
 \alias{dimnames,RangedRaggedAssay-method}
 \alias{dimnames<-,RangedRaggedAssay,list-method}
 \alias{getHits,RangedRaggedAssay,character-method}
 \alias{ncol,RangedRaggedAssay-method}
 \alias{nrow,RangedRaggedAssay-method}
-\alias{rownames,RangedRaggedAssay-method}
 \alias{show,RangedRaggedAssay-method}
 \title{An extension of the GRangesList class}
 \usage{
@@ -32,10 +30,6 @@
 \S4method{nrow}{RangedRaggedAssay}(x)
 
 \S4method{dimnames}{RangedRaggedAssay}(x)
-
-\S4method{rownames}{RangedRaggedAssay}(x)
-
-\S4method{colnames}{RangedRaggedAssay}(x)
 
 \S4method{dimnames}{RangedRaggedAssay,list}(x) <- value
 
@@ -92,12 +86,6 @@ names
 
 \item \code{dimnames}: Get dimension names
 for a \code{RangedRaggedAssay}
-
-\item \code{rownames}: Get feature names from a
-\code{RangedRaggedAssay}
-
-\item \code{colnames}: Get sample names from a
-\code{RangedRaggedAssay}
 
 \item \code{dimnames<-}: value: A modified \code{RangedRaggedAssay}
 object
