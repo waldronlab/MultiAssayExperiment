@@ -6,9 +6,10 @@
 ^\.gitignore$
 
 #----------------------------
-# TravisCI
+# Continuous Integration
 #----------------------------
 ^\.travis\.yml$
+^\.appveyor\.yml$
 
 #----------------------------
 # RStudio and R

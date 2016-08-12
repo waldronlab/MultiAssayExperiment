@@ -2,6 +2,7 @@
 #' ExperimentList-class.R MultiAssayView-class.R
 #'
 #' @import BiocGenerics SummarizedExperiment S4Vectors GenomicRanges methods
+#' @importFrom utils .DollarNames
 NULL
 
 ### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -28,6 +29,10 @@ setMethod("colnames", "ExperimentList", function(x)
 #' @exportMethod colnames
 setMethod("colnames", "MultiAssayExperiment", function(x)
     colnames(experiments(x)))
+
+#' @export
+.DollarNames.MultiAssayExperiement <- function(x, pattern = "")
+    grep(pattern, names(pData(x)), value = TRUE)
 
 #' @describeIn MultiAssayExperiment Access pData column
 #' @aliases $,MultiAssayExperiment-method

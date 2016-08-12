@@ -15,6 +15,6 @@
 *.Rda
 NEWS
 
-# Don't ignore 
+# Don't ignore
 !NEWS.md
 !README.md
