@@ -151,7 +151,7 @@ setMethod("show", "RangedRaggedAssay", function(object) {
         callNextMethod(object)
     }
     elts <- names(mcols(unlist(object)))
-    
+
     cat(class(object), "with",
         length(dimnames(object)[[1]]), "disjoint ranges,",
         length(dimnames(object)[[2]]), "samples, and",

@@ -1,5 +1,5 @@
 #' Create a Matrix of score values using a GRanges or own ranges
-#' 
+#'
 #' This function can take a GRanges argument and use each range to check for
 #' overlaps with any of the current ranges in the first argument and return a
 #' score value from the corresponding metadata. This function will only operate
@@ -8,7 +8,7 @@
 #' Please see example on how to add metadata to a
 #' \linkS4class{RangedRaggedAssay} or \link{GRangesList} class. This function
 #' uses the \link{overlapsAny} function from the \code{GenomicRanges} package.
-#' 
+#'
 #' @param x A \linkS4class{RangedRaggedAssay} or \link{GRangesList} class
 #' @param mcolname A single \code{character} string indicating the inner
 #' metadata column name to use for creating a matrix (must indicate a numeric
@@ -19,17 +19,17 @@
 #' @param make.names logical (default FALSE) whether to automatically create
 #' names from either the ranges argument (if available) or the
 #' \code{RangedRaggedAssay} (e.g., "chr1:2-3:+")
-#' 
+#'
 #' @examples
 #' example("RangedRaggedAssay")
-#' 
+#'
 #' ## Add some phony metadata to the RangedRaggedAssay
 #' metadata(myRRA) <- list(snparrray1 = DataFrame(score = 1),
 #' snparray2 = DataFrame(score = 1),
 #' snparray3 = DataFrame(score = 3))
-#' 
+#'
 #' assay(myRRA, background = 2)
-#' 
+#'
 #' @return A \code{matrix} of values from the score column of the metadata.
 #' @exportMethod assay
 setMethod("assay", "RangedRaggedAssay", function(x, mcolname = "score",
@@ -59,10 +59,10 @@ setMethod("assay", "RangedRaggedAssay", function(x, mcolname = "score",
         }
         ranges <- granges(unlist(x, use.names = FALSE))
     }
-    newMatrix <- do.call(cbind, lapply(seq_along(x), function(i, obj) {
+    newMatrix <- do.call(cbind, lapply(seq_along(x), function(j, obj) {
         MValues <- ifelse(
-            IRanges::overlapsAny(ranges, obj[[i]], type = "equal"), 
-            as.numeric(mcols(obj[[i]])[[mcolname]]),
+            IRanges::overlapsAny(ranges, obj[[j]], type = "equal"),
+            as.numeric(mcols(obj[[j]])[[mcolname]]),
             background)
         return(MValues)
     }, obj = x))

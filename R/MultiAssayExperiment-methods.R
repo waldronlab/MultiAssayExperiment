@@ -31,7 +31,7 @@ setMethod("colnames", "MultiAssayExperiment", function(x)
     colnames(experiments(x)))
 
 #' @export
-.DollarNames.MultiAssayExperiement <- function(x, pattern = "")
+.DollarNames.MultiAssayExperiment <- function(x, pattern)
     grep(pattern, names(pData(x)), value = TRUE)
 
 #' @describeIn MultiAssayExperiment Access pData column
