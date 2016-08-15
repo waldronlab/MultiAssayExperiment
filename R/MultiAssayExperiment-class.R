@@ -1,12 +1,12 @@
 ## Helper function for validity checks
 .uniqueSortIdentical <- function(charvec1, charvec2) {
-  listInput <- list(charvec1, charvec2)
-  listInput <- lapply(listInput, function(x) sort(unique(x)))
-  return(identical(listInput[[1]], listInput[[2]]))
+    listInput <- list(charvec1, charvec2)
+    listInput <- lapply(listInput, function(x) sort(unique(x)))
+    return(identical(listInput[[1]], listInput[[2]]))
 }
 
 .allIn <- function(charvec1, charvec2) {
-  return(all(charvec2 %in% charvec1))
+    return(all(charvec2 %in% charvec1))
 }
 
 ### ==============================================

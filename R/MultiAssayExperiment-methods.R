@@ -2,6 +2,7 @@
 #' ExperimentList-class.R MultiAssayView-class.R
 #'
 #' @import BiocGenerics SummarizedExperiment S4Vectors GenomicRanges methods
+#' @importFrom utils .DollarNames
 NULL
 
 ### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -28,6 +29,10 @@ setMethod("colnames", "ExperimentList", function(x)
 #' @exportMethod colnames
 setMethod("colnames", "MultiAssayExperiment", function(x)
     colnames(experiments(x)))
+
+#' @export
+.DollarNames.MultiAssayExperiment <- function(x, pattern = "")
+    grep(pattern, names(pData(x)), value = TRUE)
 
 #' @describeIn MultiAssayExperiment Access pData column
 #' @aliases $,MultiAssayExperiment-method
@@ -350,11 +355,12 @@ setClassUnion("GRangesORcharacter", c("GRanges", "character"))
 #' subsetByRow(myMultiAssayExperiment, "ENST00000355076")
 #'
 #' @export subsetByRow
-setGeneric("subsetByRow", function(x, y, ...) standardGeneric("subsetByRow"))
+setGeneric("subsetByRow", function(x, y, ...)
+    standardGeneric("subsetByRow"))
 
 #' @describeIn subsetByRow Use either a
 #' \code{GRanges} or \code{character} to
-#' select the rows for which to subset for
+#' select the rows for which to subset by
 setMethod("subsetByRow", c("MultiAssayExperiment", "GRangesORcharacter"),
           function(x, y, ...) {
             hitList <- getHits(x, y, ...)
@@ -367,22 +373,9 @@ setMethod("subsetByRow", c("MultiAssayExperiment", "GRangesORcharacter"),
 setMethod("subsetByRow", c("MultiAssayExperiment", "GRanges"),
           function(x, y, ...) {
             if (is.null(names(y))) {
-              names(y) <- seq_along(y)
+              names(y) <- as.character(y)
             }
             callNextMethod(x = x, y = y, ...)
-          })
-
-#' @describeIn subsetByRow Use a \code{logical} vector
-#' to select rows of a \code{MultiAssayExperiment}
-setMethod("subsetByRow", c("MultiAssayExperiment", "logical"),
-          function(x, y) {
-            ExperimentListNrows <- vapply(experiments(x), FUN = function(z) {
-              dim(z)[1L]
-            }, FUN.VALUE = integer(1L))
-            isSameLength <- vapply(ExperimentListNrows, FUN = function(z) {
-              z == length(y)
-            }, FUN.VALUE = logical(1L))
-            callNextMethod(x = x, y = y)
           })
 
 #' @describeIn subsetByRow Subset a

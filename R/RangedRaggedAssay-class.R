@@ -41,43 +41,43 @@ RangedRaggedAssay <- function(x = GRangesList()) {
 
 
 .RangedBracketSubsetRRA <- function(x, i, j, ..., drop) {
-  if (length(drop) != 1L || (!missing(drop) && drop)) {
-    warning("'drop' ignored '[,", class(x), ",ANY,ANY-method'")
-  }
-  if (!missing(j)) {
-    x <- callNextMethod(x = x, i = j)
-  }
-  if (!missing(i)) {
-    x <- endoapply(x, function(rra) {
-      IRanges::subsetByOverlaps(rra, i, ...)
-      # x <- x[relist(subsetByOverlaps(unlist(x,
-      # use.names = FALSE), i, ...), x)]
-    })
-  }
-  return(x)
+    if (length(drop) != 1L || (!missing(drop) && drop)) {
+        warning("'drop' ignored '[,", class(x), ",ANY,ANY-method'")
+    }
+    if (!missing(j)) {
+        x <- callNextMethod(x = x, i = j)
+    }
+    if (!missing(i)) {
+        x <- endoapply(x, function(rra) {
+            IRanges::subsetByOverlaps(rra, i, ...)
+            # x <- x[relist(subsetByOverlaps(unlist(x,
+            # use.names = FALSE), i, ...), x)]
+        })
+    }
+    return(x)
 }
 
 .sBracketSubsetRRA <- function(x, i, j, ..., drop) {
-  if (length(drop) != 1L || (!missing(drop) && drop)) {
-    warning("'drop' ignored '[,", class(x), ",ANY,ANY-method'")
-  }
-  if (missing(i) && missing(j)) {
-    return(x)
-  }
-  if (!missing(j)) {
-    x <- callNextMethod(x = x, i = j)
-  }
-  if (!missing(i)) {
-    if (is.character(i)) {
-      cLL <- relist(names(unlist(x, use.names = FALSE)) %in% i, x)
-      x <- callNextMethod(x = x, i = cLL)
-    } else if (is.numeric(i) || is.logical(i)) {
-      x <- endoapply(x, function(unit) { unit[i, ] })
-    } else {
-      x <- callNextMethod(x = x, i = i)
+    if (length(drop) != 1L || (!missing(drop) && drop)) {
+        warning("'drop' ignored '[,", class(x), ",ANY,ANY-method'")
     }
-  }
-  return(x)
+    if (missing(i) && missing(j)) {
+        return(x)
+    }
+    if (!missing(j)) {
+        x <- callNextMethod(x = x, i = j)
+    }
+    if (!missing(i)) {
+        if (is.character(i)) {
+            cLL <- relist(names(unlist(x, use.names = FALSE)) %in% i, x)
+            x <- callNextMethod(x = x, i = cLL)
+        } else if (is.numeric(i) || is.logical(i)) {
+            x <- endoapply(x, function(unit) { unit[i, ] })
+        } else {
+            x <- callNextMethod(x = x, i = i)
+        }
+    }
+    return(x)
 }
 
 #' Subset RangedRaggedAssay
@@ -110,17 +110,17 @@ setMethod("[", c("RangedRaggedAssay", "GRanges", "ANY"),
 #' @describeIn RangedRaggedAssay Obtain dimension lengths of a
 #' \code{RangedRaggedAssay} class object
 setMethod("dim", "RangedRaggedAssay", function(x)
-  c(length(unlist(x)), length(x)))
+    c(length(unlist(x)), length(x)))
 
 #' @describeIn RangedRaggedAssay Get the column length of a
 #' \code{RangedRaggedAssay} class object
 setMethod("ncol", "RangedRaggedAssay", function(x)
-  dim(x)[2])
+    dim(x)[2])
 
 #' @describeIn RangedRaggedAssay Get the row length of a
 #' \code{RangedRaggedAssay} class object
 setMethod("nrow", "RangedRaggedAssay", function(x)
-  dim(x)[1])
+    dim(x)[1])
 
 #' @describeIn RangedRaggedAssay Get dimension names
 #' for a \code{RangedRaggedAssay}
@@ -129,38 +129,17 @@ setMethod("dimnames", "RangedRaggedAssay", function(x) {
     list(dgr, names(x))
 })
 
-#' @describeIn RangedRaggedAssay Get feature names from a
-#' \code{RangedRaggedAssay}
-setMethod("rownames", "RangedRaggedAssay", function(x)
-    dimnames(x)[[1]])
-
-setReplaceMethod("rownames", c("RangedRaggedAssay", "character"),
-                 function(x, value) {
-                     names(x@unlistData) <- value
-                     return(x)
-                 })
-
-#' @describeIn RangedRaggedAssay Get sample names from a
-#' \code{RangedRaggedAssay}
-setMethod("colnames", "RangedRaggedAssay", function(x)
-    dimnames(x)[[2]])
-
-setReplaceMethod("colnames", c("RangedRaggedAssay", "character"),
-                 function(x, value) {
-                     names(x) <- value
-                     return(x)
-                 })
-
 #' @exportMethod dimnames<-
 #' @describeIn RangedRaggedAssay value: A modified \code{RangedRaggedAssay}
 #' object
 #' @param value A \code{list} object of row and column names
 setReplaceMethod("dimnames", c("RangedRaggedAssay", "list"),
-                 function(x, value) {
-                     rownames(x) <- value[[1]]
-                     colnames(x) <- value[[2]]
-                     return(x)
-                 })
+    function(x, value)
+{
+    names(x@unlistData) <- value[[1]]
+    names(x) <- value[[2]]
+    x
+})
 
 #' @exportMethod show
 #' @describeIn RangedRaggedAssay show method for
@@ -172,7 +151,7 @@ setMethod("show", "RangedRaggedAssay", function(object) {
         callNextMethod(object)
     }
     elts <- names(mcols(unlist(object)))
-    
+
     cat(class(object), "with",
         length(dimnames(object)[[1]]), "disjoint ranges,",
         length(dimnames(object)[[2]]), "samples, and",

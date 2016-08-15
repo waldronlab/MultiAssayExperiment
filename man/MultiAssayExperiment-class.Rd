@@ -10,7 +10,7 @@
 \alias{MultiAssayExperiment-class}
 \alias{[,MultiAssayExperiment,ANY,ANY,ANY-method}
 \alias{[,MultiAssayExperiment,ANY-method}
-\alias{assay,MultiAssayExperiment,ANY-method}
+\alias{assay,MultiAssayExperiment,missing-method}
 \alias{colnames,MultiAssayExperiment-method}
 \alias{complete.cases,MultiAssayExperiment-method}
 \alias{experiments,MultiAssayExperiment-method}
@@ -67,7 +67,7 @@
 
 \S4method{complete.cases}{MultiAssayExperiment}(...)
 
-\S4method{assay}{MultiAssayExperiment,ANY}(x)
+\S4method{assay}{MultiAssayExperiment,missing}(x, i)
 }
 \arguments{
 \item{object}{A \code{MultiAssayExperiment} class object}

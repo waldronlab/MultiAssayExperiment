@@ -1,39 +1,39 @@
 ## Helper functions for check non-NULL rownames
 .getRowNamesErr <- function(object) {
-  if (dim(object)[1] > 0 && is.null(rownames(object))) {
-    msg <- paste(" rownames in", class(object), "are NULL")
-  } else {
-    NULL
-  }
+    if (dim(object)[1] > 0 && is.null(rownames(object))) {
+        msg <- paste(" rownames in", class(object), "are NULL")
+    } else {
+        NULL
+    }
 }
 
 .getColNamesErr <- function(object) {
-  if (dim(object)[2] > 0 && is.null(colnames(object))) {
-    msg <- paste(" colnames in", class(object), "are NULL")
-  } else {
-    NULL
-  }
+    if (dim(object)[2] > 0 && is.null(colnames(object))) {
+        msg <- paste(" colnames in", class(object), "are NULL")
+    } else {
+        NULL
+    }
 }
 
 ## Helper function for .PrepElements in ExperimentList construction
 .createRownames <- function(object) {
-  if (inherits(object, "SummarizedExperiment")) {
-    rownames(object) <- seq_along(object)
-  }
-  return(object)
+    if (inherits(object, "SummarizedExperiment")) {
+        rownames(object) <- seq_along(object)
+    }
+    return(object)
 }
 
 ## Ensure ExperimentList elements are appropriate for the API and rownames
 ## are present
 .PrepElements <- function(object) {
-  ## use is() to exclude RangedRaggedAssay
-  if (inherits(object, "GRangesList") && !is(object, "RangedRaggedAssay")) {
-    object <- RangedRaggedAssay(object)
-  }
-  if (is.null(rownames(object))) {
-    object <- .createRownames(object)
-  }
-  return(object)
+    ## use is() to exclude RangedRaggedAssay
+    if (inherits(object, "GRangesList") && !is(object, "RangedRaggedAssay")) {
+        object <- RangedRaggedAssay(object)
+    }
+    if (is.null(rownames(object))) {
+        object <- .createRownames(object)
+    }
+    return(object)
 }
 
 ### ==============================================
@@ -97,66 +97,66 @@ setMethod("ExperimentList", "missing", function(x) {
 
 ## Helper function for .checkMethodsTable
 .getMethErr <- function(object) {
-  supportedMethods <- c("colnames", "rownames", "[", "dim")
-  methErr <- which(!sapply(supportedMethods, function(x) {
-    hasMethod(f = x, signature = class(object))
-  }))
-  if (any(methErr)) {
-    unsupported <- names(methErr)
-    msg <- paste0("class '", class(object),
-                  "' does not have method(s): ",
-                  paste(unsupported, collapse = ", "))
-    return(msg)
-  }
-  NULL
+    supportedMethods <- c("colnames", "rownames", "[", "dim")
+    methErr <- which(!sapply(supportedMethods, function(x) {
+        hasMethod(f = x, signature = class(object))
+    }))
+    if (any(methErr)) {
+        unsupported <- names(methErr)
+        msg <- paste0("class '", class(object),
+                      "' does not have method(s): ",
+                      paste(unsupported, collapse = ", "))
+        return(msg)
+    }
+    NULL
 }
 
 ## 1.i. Check that [, colnames, rownames and dim methods are possible
 .checkMethodsTable <- function(object) {
-  errors <- character()
-  for (i in seq_along(object)) {
-    coll_err <- .getMethErr(object[[i]])
-    if (!is.null(coll_err)) {
-      errors <- c(errors, paste0("Element [", i, "] of ", coll_err))
+    errors <- character()
+    for (i in seq_along(object)) {
+        coll_err <- .getMethErr(object[[i]])
+        if (!is.null(coll_err)) {
+            errors <- c(errors, paste0("Element [", i, "] of ", coll_err))
+        }
     }
-  }
-  if (length(errors) == 0L) {
-    NULL
-  } else {
-    errors
-  }
+    if (length(errors) == 0L) {
+        NULL
+    } else {
+        errors
+    }
 }
 
 ## 1.ii. Check for null rownames and colnames for each element in the
 ## ExperimentList and duplicated element names
 .checkExperimentListNames <- function(object) {
-  errors <- character()
-  for (i in seq_along(object)) {
-    rowname_err <- .getRowNamesErr(object[[i]])
-    colname_err <- .getColNamesErr(object[[i]])
-    if (!is.null(rowname_err)) {
-      errors <- c(errors, paste0("[", i, "] Element", rowname_err))
+    errors <- character()
+    for (i in seq_along(object)) {
+        rowname_err <- .getRowNamesErr(object[[i]])
+        colname_err <- .getColNamesErr(object[[i]])
+        if (!is.null(rowname_err)) {
+            errors <- c(errors, paste0("[", i, "] Element", rowname_err))
+        }
+        if (!is.null(colname_err)) {
+            errors <- c(errors, paste0("[", i, "] Element", colname_err))
+        }
     }
-    if (!is.null(colname_err)) {
-      errors <- c(errors, paste0("[", i, "] Element", colname_err))
+    if (anyDuplicated(names(object))) {
+        msg <- "Non-unique names provided"
+        errors <- c(errors, msg)
     }
-  }
-  if (anyDuplicated(names(object))) {
-    msg <- "Non-unique names provided"
-    errors <- c(errors, msg)
-  }
-  if (length(errors) == 0L) {
-    NULL
-  } else {
-    errors
-  }
+    if (length(errors) == 0L) {
+        NULL
+    } else {
+        errors
+    }
 }
 
 .validExperimentList <- function(object) {
-  if (length(object) != 0L) {
-    c(.checkMethodsTable(object),
-    .checkExperimentListNames(object))
-  }
+    if (length(object) != 0L) {
+        c(.checkMethodsTable(object),
+          .checkExperimentListNames(object))
+    }
 }
 
 S4Vectors::setValidity2("ExperimentList", .validExperimentList)

@@ -1,7 +1,7 @@
 Package: MultiAssayExperiment
 Title: Create Classes and Functions for Managing Multiple Assays on Sets of
     Samples
-Version: 0.101.45
+Version: 0.101.47
 Author: MultiAssay SIG
 Description: Develop an integrative environment where multiple assays are
     managed and preprocessed for genomic data analysis.
@@ -23,7 +23,8 @@ Imports:
     IRanges,
     Biobase,
     shinydashboard,
-    shiny
+    shiny,
+    utils
 Maintainer: Marcel Ramos <mramos09@gmail.com>
 biocViews: Infrastructure, DataRepresentation
 License: Artistic-2.0
