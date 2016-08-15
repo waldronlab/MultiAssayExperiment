@@ -9,7 +9,6 @@
 \alias{subsetByRow,MultiAssayExperiment,GRangesORcharacter-method}
 \alias{subsetByRow,MultiAssayExperiment,List-method}
 \alias{subsetByRow,MultiAssayExperiment,list-method}
-\alias{subsetByRow,MultiAssayExperiment,logical-method}
 \title{Subset \code{MultiAssayExperiment} object by Feature}
 \usage{
 subsetByRow(x, y, ...)
@@ -17,8 +16,6 @@ subsetByRow(x, y, ...)
 \S4method{subsetByRow}{MultiAssayExperiment,GRangesORcharacter}(x, y, ...)
 
 \S4method{subsetByRow}{MultiAssayExperiment,GRanges}(x, y, ...)
-
-\S4method{subsetByRow}{MultiAssayExperiment,logical}(x, y)
 
 \S4method{subsetByRow}{MultiAssayExperiment,ANY}(x, y)
 
@@ -45,16 +42,12 @@ Subset a \code{MultiAssayExperiment} class by provided feature names or a
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{x = MultiAssayExperiment,y = GRangesORcharacter}: Use either a
-\code{GRanges} or \code{character} to
-select the rows for which to subset for
+\item \code{x = MultiAssayExperiment,y = GRangesORcharacter}: Use a \code{GRanges}
+to select the rows for which to subset by
 
 \item \code{x = MultiAssayExperiment,y = GRanges}: Subset a
 \code{MultiAssayExperiment} with
 \code{GRanges} object
-
-\item \code{x = MultiAssayExperiment,y = logical}: Use a \code{logical} vector
-to select rows of a \code{MultiAssayExperiment}
 
 \item \code{x = MultiAssayExperiment,y = ANY}: Subset a
 \code{MultiAssayExperiment} with either a

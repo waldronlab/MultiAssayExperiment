@@ -9,8 +9,8 @@
 \alias{ExperimentList,ANY-method}
 \alias{ExperimentList,missing-method}
 \alias{ExperimentList-class}
-\alias{assay,ANY,ANY-method}
-\alias{assay,ExperimentList,ANY-method}
+\alias{assay,ANY,missing-method}
+\alias{assay,ExperimentList,missing-method}
 \alias{colnames,ExperimentList-method}
 \alias{rownames,ExperimentList-method}
 \alias{show,ExperimentList-method}
@@ -26,9 +26,9 @@
 
 \S4method{colnames}{ExperimentList}(x)
 
-\S4method{assay}{ANY,ANY}(x)
+\S4method{assay}{ANY,missing}(x, i)
 
-\S4method{assay}{ExperimentList,ANY}(x)
+\S4method{assay}{ExperimentList,missing}(x, i)
 }
 \arguments{
 \item{x}{A \code{list} object}

@@ -9,7 +9,7 @@
 # Continuous Integration
 #----------------------------
 ^\.travis\.yml$
-^\.appveyor\.yml$
+^appveyor\.yml$
 
 #----------------------------
 # RStudio and R
