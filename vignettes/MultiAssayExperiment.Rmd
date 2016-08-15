@@ -500,6 +500,34 @@ preppedMulti <- MultiAssayExperiment(prepped$ExperimentList, prepped$pData,
 preppedMulti
 ```
 
+## Helper functions to create Bioconductor classes from raw data
+
+Recent updates to the `GenomicRanges` and `SummarizedExperiment` packages
+allow the user to create standard _Bioconductor_ classes from raw data. Raw
+data read in as either `data.frame` or `DataFrame` can be converted to
+`GRangesList` or `SummarizedExperiment` classes depending on the type of data.
+The function to create a `GRangesList` from a `data.frame`, called
+`makeGRangesListFromDataFrame` can be found in the `GenomicRanges` package.
+`makeSummarizedExperimentFromDataFrame` is available in the
+`SummarizedExperiment` package. It is also possible to create a
+`RangedSummarizedExperiment` class object from raw data when ranged data is
+available.
+
+A simple example can be obtained from the function documentation in
+`GenomicRanges`:
+
+```{r}
+library(GenomicRanges)
+example("makeGRangesListFromDataFrame")
+```
+
+In the `SummarizedExperiment` package: 
+
+```{r}
+library(SummarizedExperiment)
+example("makeSummarizedExperimentFromDataFrame")
+```
+
 # `RangedRaggedAssay` class
 
 Note that the `GRangesList` got converted to a `RangedRaggedAssay`, a class
