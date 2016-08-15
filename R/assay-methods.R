@@ -78,6 +78,7 @@ setMethod("assay", c("ANY", "missing"), function(x, i) {
 
 #' @describeIn ExperimentList Get the assay data from each element in the
 #' \link{ExperimentList}
+#' @param i missing argument
 #' @aliases assay,ExperimentList,missing-method
 setMethod("assay", c("ExperimentList", "missing"), function(x, i) {
   lapply(x, FUN = function(y) {assay(y)})

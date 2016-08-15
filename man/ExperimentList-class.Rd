@@ -34,6 +34,8 @@
 \item{x}{A \code{list} object}
 
 \item{object}{An \code{\linkS4class{ExperimentList}} class object}
+
+\item{i}{missing argument}
 }
 \value{
 An \code{ExperimentList} class object

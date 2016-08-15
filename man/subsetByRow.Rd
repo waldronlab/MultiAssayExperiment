@@ -42,8 +42,9 @@ Subset a \code{MultiAssayExperiment} class by provided feature names or a
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{x = MultiAssayExperiment,y = GRangesORcharacter}: Use a \code{GRanges}
-to select the rows for which to subset by
+\item \code{x = MultiAssayExperiment,y = GRangesORcharacter}: Use either a
+\code{GRanges} or \code{character} to
+select the rows for which to subset by
 
 \item \code{x = MultiAssayExperiment,y = GRanges}: Subset a
 \code{MultiAssayExperiment} with
