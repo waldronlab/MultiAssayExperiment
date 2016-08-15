@@ -23,7 +23,8 @@ Imports:
     IRanges,
     Biobase,
     shinydashboard,
-    shiny
+    shiny,
+    utils
 Maintainer: Marcel Ramos <mramos09@gmail.com>
 biocViews: Infrastructure, DataRepresentation
 License: Artistic-2.0

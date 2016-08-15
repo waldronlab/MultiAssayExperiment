@@ -110,17 +110,17 @@ setMethod("[", c("RangedRaggedAssay", "GRanges", "ANY"),
 #' @describeIn RangedRaggedAssay Obtain dimension lengths of a
 #' \code{RangedRaggedAssay} class object
 setMethod("dim", "RangedRaggedAssay", function(x)
-  c(length(unlist(x)), length(x)))
+    c(length(unlist(x)), length(x)))
 
 #' @describeIn RangedRaggedAssay Get the column length of a
 #' \code{RangedRaggedAssay} class object
 setMethod("ncol", "RangedRaggedAssay", function(x)
-  dim(x)[2])
+    dim(x)[2])
 
 #' @describeIn RangedRaggedAssay Get the row length of a
 #' \code{RangedRaggedAssay} class object
 setMethod("nrow", "RangedRaggedAssay", function(x)
-  dim(x)[1])
+    dim(x)[1])
 
 #' @describeIn RangedRaggedAssay Get dimension names
 #' for a \code{RangedRaggedAssay}

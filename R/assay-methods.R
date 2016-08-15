@@ -73,7 +73,7 @@ setMethod("assay", "RangedRaggedAssay", function(x, mcolname = "score",
 
 #' @describeIn ExperimentList Get the assay data for the default ANY class
 setMethod("assay", c("ANY", "missing"), function(x, i) {
-  I(x)
+    I(x)
 })
 
 #' @describeIn ExperimentList Get the assay data from each element in the
@@ -81,12 +81,12 @@ setMethod("assay", c("ANY", "missing"), function(x, i) {
 #' @param i missing argument
 #' @aliases assay,ExperimentList,missing-method
 setMethod("assay", c("ExperimentList", "missing"), function(x, i) {
-  lapply(x, FUN = function(y) {assay(y)})
+    lapply(x, FUN = function(y) {assay(y)})
 })
 
 #' @describeIn MultiAssayExperiment Get the assay data for a
 #' \link{MultiAssayExperiment} as a \code{list}
 #' @aliases assay,MultiAssayExperiment,missing-method
 setMethod("assay", c("MultiAssayExperiment", "missing"), function(x, i) {
-  assay(ExperimentList(x))
+    assay(ExperimentList(x))
 })
