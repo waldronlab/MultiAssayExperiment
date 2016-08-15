@@ -1,5 +1,5 @@
 ---
-title: "MultiAssayExperiment primary vignette"
+title: "MultiAssayExperiment: The Integrative Bioconductor Container"
 author: "MultiAssay Special Interest Group"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
 vignette: >
@@ -18,14 +18,16 @@ A built [html][] version of this vignette is available.
 suppressPackageStartupMessages(library(MultiAssayExperiment))
 ```
 
-# API
+# Accessing the `MultiAssayExperiment` Application Programming Interface (API)
 
-See the API wiki by typing:
+To see the `API` wiki document on GitHub, type:
+
 ```{r, eval=FALSE}
 API()
 ```
 
-A Shiny App that browses the API is also available:
+A Shiny app that browses the package `API` is also available via:
+
 ```{r, eval=FALSE}
 API(shiny=TRUE)
 ```
@@ -500,12 +502,13 @@ preppedMulti <- MultiAssayExperiment(prepped$ExperimentList, prepped$pData,
 preppedMulti
 ```
 
-## Helper functions to create Bioconductor classes from raw data
+## Helper functions to create `Bioconductor` classes from raw data
 
 Recent updates to the `GenomicRanges` and `SummarizedExperiment` packages
 allow the user to create standard _Bioconductor_ classes from raw data. Raw
 data read in as either `data.frame` or `DataFrame` can be converted to
 `GRangesList` or `SummarizedExperiment` classes depending on the type of data.
+
 The function to create a `GRangesList` from a `data.frame`, called
 `makeGRangesListFromDataFrame` can be found in the `GenomicRanges` package.
 `makeSummarizedExperimentFromDataFrame` is available in the
@@ -518,14 +521,45 @@ A simple example can be obtained from the function documentation in
 
 ```{r}
 library(GenomicRanges)
-example("makeGRangesListFromDataFrame")
+grldf <- structure(
+    list(chr = structure(c(1L, 1L, 1L, 1L, 1L),
+                         class = "factor", .Label = "chr1"), 
+         start = 11:15, end = 12:16,
+         strand = structure(c(4L, 1L, 4L, 3L, 2L),
+                            .Label = c("-", ".", "*", "+"),
+                            class = "factor"), 
+         score = 1:5, specimen =
+             structure(c(1L, 1L, 2L, 2L, 3L),
+                       .Label = c("a", "b", "c"),
+                       class = "factor"),
+         gene_symbols = structure(1:5, .Label = c("GENEa", "GENEb",
+                                                  "GENEc", "GENEd",
+                                                  "GENEe"),
+                                  class = "factor")),
+    .Names = c("chr", "start", "end", "strand", "score", "specimen",
+               "gene_symbols"),
+    row.names = c(NA, -5L), class = "data.frame")
+makeGRangesListFromDataFrame(grldf, split.field = "specimen",
+                             names.field = "gene_symbols")
 ```
 
 In the `SummarizedExperiment` package: 
 
 ```{r}
 library(SummarizedExperiment)
-example("makeSummarizedExperimentFromDataFrame")
+sedf <- structure(list(chr = structure(c(1L, 1L, 1L, 1L, 1L),
+                                        class = "factor", .Label = "chr2"), 
+                        start = 11:15, end = 12:16,
+                        strand = structure(c(4L, 1L, 4L, 3L, 2L),
+                                           .Label = c("-", ".", "*", "+"),
+                                           class = "factor"), 
+                        expr0 = 3:7, expr1 = 8:12, expr2 = 12:16),
+                   .Names = c("chr", "start", "end", "strand",
+                              "expr0", "expr1", "expr2"),
+                   row.names = c("GENEe", "GENEd", "GENEc", "GENEb", "GENEa"),
+                   class = "data.frame")
+sedf
+makeSummarizedExperimentFromDataFrame(sedf)
 ```
 
 # `RangedRaggedAssay` class
