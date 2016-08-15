@@ -16,9 +16,9 @@ Depends:
     R (>= 3.3.0)
 Imports:
     methods,
-    GenomicRanges,
+    GenomicRanges (>= 1.25.93),
     BiocGenerics,
-    SummarizedExperiment,
+    SummarizedExperiment (>= 1.3.81),
     S4Vectors,
     IRanges,
     Biobase,

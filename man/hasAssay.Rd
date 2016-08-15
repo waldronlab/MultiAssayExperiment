@@ -16,7 +16,7 @@ A \code{logical} value indicating method availability
 }
 \description{
 The \code{hasAssay} function is intended for developers who would like to
-include new classes into a \code{MultiAssayExperiment} instance. 
+include new classes into a \code{MultiAssayExperiment} instance.
 It checks the methods tables of the \code{assay} function for the
 specified class of the argument.
 }
