@@ -74,9 +74,28 @@ default. A request for this feature has been sent to the maintainer of the
 
 ## Insertting a `DelayedMatrix` into a `MultiAssayExperiment`
 
+The `DelayedMatrix` alone conforms to the `MultiAssayExperiment` requirements.
+Shown below, the `DelayedMatrix` can be put into a named `list` and passed into
+the `MultiAssayExperiment` constructor function. 
+
 ```{r}
 HDF5MAE <- MultiAssayExperiment(experiments = list(smallMatrix = smallMatrix))
 sampleMap(HDF5MAE)
 pData(HDF5MAE)
+```
+
+### `SummarizedExperiment` with `DelayedMatrix` backend
+
+A more information rich `DelayedMatrix` can be created when used in conjunction
+with the `SummarizedExperiment` class and it can even include `rowRanges`.
+The flexibility of the `MultiAssayExperiment` API supports classes with
+minimal requirements. Additionally, this `SummarizedExperiment` with the
+`DelayedMatrix` backend can be part of a bigger `MultiAssayExperiment` object.
+Below is a minimal example of how this would work:
+
+```{r}
+HDF5SE <- SummarizedExperiment(assays = smallMatrix)
+assay(HDF5SE)
+MultiAssayExperiment(list(HDF5SE = HDF5SE))
 ```
 
