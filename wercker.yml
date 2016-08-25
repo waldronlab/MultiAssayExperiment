@@ -1,8 +1,8 @@
-box: rocker/hadleyverse
+box: bioconductor/devel_core
 build:
   steps:
     - jimhester/r-dependencies:
-        github_packages: LiNk-NY/GenomicRanges LiNk-NY/SummarizedExperiment
+        github_packages: LiNk-NY/SummarizedExperiment hadley/devtools
     - jimhester/r-check
     - jimhester/r-lint
     - jimhester/r-coverage
