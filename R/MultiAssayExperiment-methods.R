@@ -9,26 +9,19 @@ NULL
 ### Getters
 ###
 
-#' @describeIn ExperimentList Get all the rownames of an \code{ExperimentList}
-setMethod("rownames", "ExperimentList", function(x)
-    IRanges::CharacterList(lapply(x, rownames)))
-
-#' @describeIn MultiAssayExperiment Get all the rownames for a
-#' \code{MultiAssayExperiment} using a \code{\link[IRanges]{CharacterList}}
-#' @exportMethod rownames
-setMethod("rownames", "MultiAssayExperiment", function(x)
-    rownames(experiments(x)))
-
-#' @describeIn ExperimentList Get sample names from an \code{ExperimentList}
-#' object
-setMethod("colnames", "ExperimentList", function(x)
+#' @describeIn ExperimentList Get the dimension names for
+#' a \code{MultiAssayExperiment} using
+#' \code{\link[IRanges]{CharacterList}}
+setMethod("dimnames", "ExperimentList", function(x) {
+    list(IRanges::CharacterList(lapply(x, rownames)),
     IRanges::CharacterList(lapply(x, colnames)))
+})
 
-#' @describeIn MultiAssayExperiment Get all the colnames for a
-#' \code{MultiAssayExperiment}
-#' @exportMethod colnames
-setMethod("colnames", "MultiAssayExperiment", function(x)
-    colnames(experiments(x)))
+#' @describeIn MultiAssayExperiment Get the dimension names
+#' for a \code{MultiAssayExperiment} object
+setMethod("dimnames", "MultiAssayExperiment", function(x) {
+    dimnames(experiments(x))
+})
 
 #' @export
 .DollarNames.MultiAssayExperiment <- function(x, pattern = "")
