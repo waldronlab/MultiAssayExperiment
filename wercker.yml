@@ -1,7 +1,8 @@
 box: rocker/hadleyverse
 build:
   steps:
-    - jimhester/r-dependencies
+    - jimhester/r-dependencies:
+        github_packages: LiNk-NY/GenomicRanges LiNk-NY/SummarizedExperiment
     - jimhester/r-check
     - jimhester/r-lint
     - jimhester/r-coverage
