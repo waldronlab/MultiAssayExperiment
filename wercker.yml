@@ -1,0 +1,7 @@
+box: bioconductor/devel_core
+build:
+  steps:
+    - jimhester/r-dependencies
+    - jimhester/r-check
+    - jimhester/r-lint
+    - jimhester/r-coverage
