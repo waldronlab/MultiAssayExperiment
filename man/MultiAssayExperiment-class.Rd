@@ -11,8 +11,8 @@
 \alias{[,MultiAssayExperiment,ANY,ANY,ANY-method}
 \alias{[,MultiAssayExperiment,ANY-method}
 \alias{assay,MultiAssayExperiment,missing-method}
-\alias{colnames,MultiAssayExperiment-method}
 \alias{complete.cases,MultiAssayExperiment-method}
+\alias{dimnames,MultiAssayExperiment-method}
 \alias{experiments,MultiAssayExperiment-method}
 \alias{experiments<-,MultiAssayExperiment,ExperimentList-method}
 \alias{isEmpty,MultiAssayExperiment-method}
@@ -22,7 +22,6 @@
 \alias{names,MultiAssayExperiment-method}
 \alias{pData,MultiAssayExperiment-method}
 \alias{pData<-,MultiAssayExperiment,DataFrame-method}
-\alias{rownames,MultiAssayExperiment-method}
 \alias{sampleMap,MultiAssayExperiment-method}
 \alias{sampleMap<-,MultiAssayExperiment,DataFrame-method}
 \alias{show,MultiAssayExperiment-method}
@@ -55,9 +54,7 @@
 
 \S4method{updateObject}{MultiAssayExperiment}(object, ..., verbose = FALSE)
 
-\S4method{rownames}{MultiAssayExperiment}(x)
-
-\S4method{colnames}{MultiAssayExperiment}(x)
+\S4method{dimnames}{MultiAssayExperiment}(x)
 
 \S4method{$}{MultiAssayExperiment}(x, name)
 
@@ -148,11 +145,8 @@ representation
 \item \code{updateObject}: Update old serialized MultiAssayExperiment
 objects to new API
 
-\item \code{rownames}: Get all the rownames for a
-\code{MultiAssayExperiment} using a \code{\link[IRanges]{CharacterList}}
-
-\item \code{colnames}: Get all the colnames for a
-\code{MultiAssayExperiment}
+\item \code{dimnames}: Get the dimension names
+for a \code{MultiAssayExperiment} object
 
 \item \code{$}: Access pData column
 

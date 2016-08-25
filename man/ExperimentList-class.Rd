@@ -11,8 +11,7 @@
 \alias{ExperimentList-class}
 \alias{assay,ANY,missing-method}
 \alias{assay,ExperimentList,missing-method}
-\alias{colnames,ExperimentList-method}
-\alias{rownames,ExperimentList-method}
+\alias{dimnames,ExperimentList-method}
 \alias{show,ExperimentList-method}
 \title{A container for multi-experiment data}
 \usage{
@@ -22,9 +21,7 @@
 
 \S4method{show}{ExperimentList}(object)
 
-\S4method{rownames}{ExperimentList}(x)
-
-\S4method{colnames}{ExperimentList}(x)
+\S4method{dimnames}{ExperimentList}(x)
 
 \S4method{assay}{ANY,missing}(x, i)
 
@@ -62,10 +59,9 @@ to the multi-experiment data container
 \item \code{show}: Show method for
 \code{\linkS4class{ExperimentList}} class
 
-\item \code{rownames}: Get all the rownames of an \code{ExperimentList}
-
-\item \code{colnames}: Get sample names from an \code{ExperimentList}
-object
+\item \code{dimnames}: Get the dimension names for
+a \code{MultiAssayExperiment} using
+\code{\link[IRanges]{CharacterList}}
 
 \item \code{assay}: Get the assay data for the default ANY class
 

@@ -1,3 +1,14 @@
+# MultiAssayExperiment 0.101.49
+
+## New features
+
+* Example section added to vignette for converting data frames to Bioconductor
+objects
+
+## Minor improvements
+
+* A proper `dimnames` method added to `MultiAssayExperiment`
+
 # MultiAssayExperiment 0.101.45
 
 ## New features
@@ -13,7 +24,8 @@
 
 ## New features
 
-* `$` (DollarSign) method available for `MultiAssayExperiment` to access `pData` column
+* `$` (DollarSign) method available for `MultiAssayExperiment` to access `pData`
+column
 
 # MultiAssayExperiment 0.101.43
 
@@ -110,7 +122,7 @@ Created to obtain raw data from certain classes (see `?assay,(class),ANY-method`
 
 # MultiAssayExperiment 0.99.14
 
-* NEWS file is now live! 
+* NEWS file is now live!
 * Package now in `Bioc-devel`!
 * More to come!
 
