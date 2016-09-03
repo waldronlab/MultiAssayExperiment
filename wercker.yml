@@ -1,4 +1,4 @@
-box: bioconductor/devel_core
+box: mr148/devel_core:v1
 build:
   steps:
     - jimhester/r-dependencies:
