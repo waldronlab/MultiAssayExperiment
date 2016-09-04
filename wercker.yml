@@ -1,8 +1,7 @@
 box: mr148/devel_core:v1.1
 build:
   steps:
-    - jimhester/r-dependencies:
-        github_packages: LiNk-NY/SummarizedExperiment hadley/devtools
+    - jimhester/r-dependencies
     - jimhester/r-check
     - jimhester/r-lint
     - jimhester/r-coverage
