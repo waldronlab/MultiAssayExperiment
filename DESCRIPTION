@@ -22,8 +22,10 @@ Imports:
     S4Vectors,
     IRanges,
     Biobase,
+    reshape2,
     shinydashboard,
     shiny,
+    tidyr,
     utils
 Maintainer: Marcel Ramos <mramos09@gmail.com>
 biocViews: Infrastructure, DataRepresentation
