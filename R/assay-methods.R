@@ -32,10 +32,12 @@
 #'
 #' @return A \code{matrix} of values from the score column of the metadata.
 #' @exportMethod assay
-setMethod("assay", "RangedRaggedAssay", function(x, mcolname = "score",
-                                                 ranges = NULL,
-                                                 background = NA,
-                                                 make.names = FALSE) {
+setMethod("assay", c("RangedRaggedAssay", "ANY"),
+          function(x, i,
+                   mcolname = "score",
+                   ranges = NULL,
+                   background = NA,
+                   make.names = FALSE) {
     if (!all(GenomicRanges::isDisjoint(x)))
         stop("only disjoint ranges supported")
     if (!is.numeric(mcols(x[[1]])[[mcolname]]))

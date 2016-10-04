@@ -470,7 +470,7 @@ setMethod("extract", "SummarizedExperiment", function(object) {
 #' @describeIn extract \linkS4class{RangedRaggedAssay} class method to return
 #' matrix of selected \dQuote{mcolname} column, defaults to score
 setMethod("extract", "RangedRaggedAssay", function(object) {
-    newMat <- MultiAssayExperiment::assay(object, mcolname = "score")
+    newMat <- MultiAssayExperiment::assay(object, i = 1L, mcolname = "score")
     callNextMethod(newMat)
 })
 

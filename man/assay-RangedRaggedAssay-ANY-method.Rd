@@ -5,7 +5,7 @@
 \alias{assay,RangedRaggedAssay,ANY-method}
 \title{Create a Matrix of score values using a GRanges or own ranges}
 \usage{
-\S4method{assay}{RangedRaggedAssay,ANY}(x, mcolname = "score",
+\S4method{assay}{RangedRaggedAssay,ANY}(x, i, mcolname = "score",
   ranges = NULL, background = NA, make.names = FALSE)
 }
 \arguments{
