@@ -34,21 +34,21 @@ a supported class and to return a uniform data type, matrix.
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{ExpressionSet}: [Biobase::ExpressionSet] class method
+\item \code{ExpressionSet}: \code{\link{ExpressionSet}} class method
 
 \item \code{ANY}: ANY class method, works best with matrices
 
-\item \code{SummarizedExperiment}: [SummarizedExperiment::SummarizedExperiment] class
+\item \code{SummarizedExperiment}: \code{\link{SummarizedExperiment}} class
 method
 
-\item \code{RangedRaggedAssay}: [RangedRaggedAssay] class method to return matrix
-of selected \dQuote{mcolname} column, defaults to score
+\item \code{RangedRaggedAssay}: \linkS4class{RangedRaggedAssay} class method to return
+matrix of selected \dQuote{mcolname} column, defaults to score
 
-\item \code{MultiAssayExperiment}: Overarching [MultiAssayExperiment] class method
+\item \code{MultiAssayExperiment}: Overarching \code{MultiAssayExperiment} class method
 returns list of matrices
 }}
 \examples{
-examples("RangedRaggedAssay")
+example("RangedRaggedAssay")
 extract(myRRA)
 
 }

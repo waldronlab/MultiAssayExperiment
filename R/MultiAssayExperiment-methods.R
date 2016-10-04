@@ -438,14 +438,14 @@ setMethod("complete.cases", "MultiAssayExperiment", function(...) {
 #' @param object Any supported class object
 #' 
 #' @examples
-#' examples("RangedRaggedAssay")
+#' example("RangedRaggedAssay")
 #' extract(myRRA)
 #' 
 #' @return matrix class object
 #' @export extract
 setGeneric("extract", function(object) standardGeneric("extract"))
 
-#' @describeIn extract [Biobase::ExpressionSet] class method
+#' @describeIn extract \code{\link{ExpressionSet}} class method
 setMethod("extract", "ExpressionSet", function(object) {
     newMat <- Biobase::exprs(object)
     callNextMethod(newMat)
@@ -457,24 +457,24 @@ setMethod("extract", "ANY", function(object) {
                    as.is = TRUE)
 })
 
-#' @describeIn extract [SummarizedExperiment::SummarizedExperiment] class
+#' @describeIn extract \code{\link{SummarizedExperiment}} class
 #' method
 setMethod("extract", "SummarizedExperiment", function(object) {
     if (length(rowData(object)) == 1L)
     names(rowData(object)) <- "rowname"
     wideDF <- data.frame(rowData(object), assay(object),
                          stringsAsFactors = FALSE)
-    tidyr::gather(wideDF, colname, value, 2:length(wideDF))
+    tidyr::gather(wideDF, "colname", "value", 2:length(wideDF))
 })
 
-#' @describeIn extract [RangedRaggedAssay] class method to return matrix
-#' of selected \dQuote{mcolname} column, defaults to score
+#' @describeIn extract \linkS4class{RangedRaggedAssay} class method to return
+#' matrix of selected \dQuote{mcolname} column, defaults to score
 setMethod("extract", "RangedRaggedAssay", function(object) {
     newMat <- MultiAssayExperiment::assay(object, mcolname = "score")
     callNextMethod(newMat)
 })
 
-#' @describeIn extract Overarching [MultiAssayExperiment] class method
+#' @describeIn extract Overarching \code{MultiAssayExperiment} class method
 #' returns list of matrices
 setMethod("extract", "MultiAssayExperiment", function(object) {
     dataList <- as.list(experiments(object))
@@ -482,8 +482,9 @@ setMethod("extract", "MultiAssayExperiment", function(object) {
         cbind(assay = names(object)[i], extract(rectangle[[i]]))
     }, rectangle = dataList)
     newList <- BiocGenerics::Filter(function(rectangle) {
-        if (!is.data.frame(rectangle)) warning("Extracted data not a data.frame")
-        else  is.data.frame(rectangle)
+        if (!is.data.frame(rectangle)) {
+            warning("Extracted data not a data.frame")
+        } else { is.data.frame(rectangle) }
     }, dataList)
     do.call(rbind, newList)
 })
