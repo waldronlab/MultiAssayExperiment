@@ -1,4 +1,4 @@
-# box: mr148/devel_core:v1.1
+## box: mr148/devel_core:v1.1
 box: rocker/hadleyverse
 build:
   steps:
@@ -6,8 +6,8 @@ build:
     - jimhester/r-check
     - jimhester/r-lint
     - jimhester/r-coverage
-  after-steps:
-    - install-packages:
-        packages: ruby
-    - wantedly/pretty-slack-notify:
-        webhook_url: $SLACK_WEBHOOK_URL
+#  after-steps:
+#    - install-packages:
+#        packages: ruby
+#    - wantedly/pretty-slack-notify:
+#        webhook_url: $SLACK_WEBHOOK_URL
