@@ -10,6 +10,7 @@
 #' uses the \link{overlapsAny} function from the \code{GenomicRanges} package.
 #'
 #' @param x A \linkS4class{RangedRaggedAssay} or \link{GRangesList} class
+#' @param i Argument from generic (default 1L)
 #' @param mcolname A single \code{character} string indicating the inner
 #' metadata column name to use for creating a matrix (must indicate a numeric
 #' variable)
@@ -32,10 +33,12 @@
 #'
 #' @return A \code{matrix} of values from the score column of the metadata.
 #' @exportMethod assay
-setMethod("assay", "RangedRaggedAssay", function(x, mcolname = "score",
-                                                 ranges = NULL,
-                                                 background = NA,
-                                                 make.names = FALSE) {
+setMethod("assay", c("RangedRaggedAssay", "ANY"),
+          function(x, i = 1L,
+                   mcolname = "score",
+                   ranges = NULL,
+                   background = NA,
+                   make.names = FALSE) {
     if (!all(GenomicRanges::isDisjoint(x)))
         stop("only disjoint ranges supported")
     if (!is.numeric(mcols(x[[1]])[[mcolname]]))

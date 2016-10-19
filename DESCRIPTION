@@ -1,7 +1,7 @@
 Package: MultiAssayExperiment
 Title: Create Classes and Functions for Managing Multiple Assays on Sets of
     Samples
-Version: 1.1.0
+Version: 1.1.1
 Author: MultiAssay SIG
 Description: Develop an integrative environment where multiple assays are
     managed and preprocessed for genomic data analysis.
@@ -22,8 +22,10 @@ Imports:
     S4Vectors,
     IRanges,
     Biobase,
+    reshape2,
     shinydashboard,
     shiny,
+    tidyr,
     utils
 Maintainer: Marcel Ramos <mramos09@gmail.com>
 biocViews: Infrastructure, DataRepresentation
@@ -31,6 +33,9 @@ License: Artistic-2.0
 LazyData: true
 LazyLoad: yes
 VignetteBuilder: knitr
+URL: https://github.com/vjcitn/MultiAssayExperiment/wiki/MultiAssayExperiment-
+    API
+BugReports: https://github.com/vjcitn/MultiAssayExperiment/issues
 Collate:
     'API.R'
     'ExperimentList-class.R'

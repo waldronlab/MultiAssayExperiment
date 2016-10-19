@@ -159,7 +159,7 @@ setMethod("show", "RangedRaggedAssay", function(object) {
 
     for (elt in head(elts, 3)) {
         cat("\n", elt, "\n", sep="")
-        x <- assay(object, mcolname = elt)
+        x <- assay(object, i = 1L, mcolname = elt)
         print(head(x, 3))
         if (nrow(x) > 3)
             cat("...\n")
