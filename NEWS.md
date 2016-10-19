@@ -1,3 +1,15 @@
+# MultiAssayExperiment 1.1.1
+
+## New features
+
+* MultiAssayExperiment now in release!
+* `extract` method not available for common classes - creates `tidy` data.frame
+from data
+
+## Bug fixes and minor improvements 
+
+* Documentation updated with new roxygen version
+
 # MultiAssayExperiment 0.101.49
 
 ## New features
