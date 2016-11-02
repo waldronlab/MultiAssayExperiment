@@ -433,7 +433,7 @@ setMethod("complete.cases", "MultiAssayExperiment", function(...) {
 #' Reshape raw data from an object
 #' 
 #' The gather function works to collect all data from the
-#' \link{\code{ExperimentList}} class and to return a uniform
+#' \code{\link{ExperimentList}} class and to return a uniform
 #' data type, matrix.
 #' 
 #' @param object Any supported class object
@@ -442,7 +442,7 @@ setMethod("complete.cases", "MultiAssayExperiment", function(...) {
 #' example("RangedRaggedAssay")
 #' gather(myRRA)
 #' 
-#' @return matrix class object
+#' @return Tall and skinny data.frame
 #' @export gather
 setGeneric("gather", function(object) standardGeneric("gather"))
 
@@ -458,14 +458,13 @@ setMethod("gather", "ANY", function(object) {
                    as.is = TRUE)
 })
 
-#' @describeIn gather \code{\link{SummarizedExperiment}} class
-#' method
+#' @describeIn gather \linkS4class{SummarizedExperiment} class method
 setMethod("gather", "SummarizedExperiment", function(object) {
     if (length(rowData(object)) == 1L)
     names(rowData(object)) <- "rowname"
     wideDF <- data.frame(rowData(object), assay(object),
                          stringsAsFactors = FALSE)
-    tidyr::gather(wideDF, "colname", "value", 2:length(wideDF))
+    tidyr::gather(wideDF, "colname", "value", seq_along(wideDF)[-1])
 })
 
 #' @describeIn gather \linkS4class{RangedRaggedAssay} class method to return

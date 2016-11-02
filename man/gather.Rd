@@ -26,11 +26,11 @@ gather(object)
 \item{object}{Any supported class object}
 }
 \value{
-matrix class object
+Tall and skinny data.frame
 }
 \description{
 The gather function works to collect all data from the
-\link{\code{ExperimentList}} class and to return a uniform
+\code{\link{ExperimentList}} class and to return a uniform
 data type, matrix.
 }
 \section{Methods (by class)}{
@@ -39,8 +39,7 @@ data type, matrix.
 
 \item \code{ANY}: ANY class method, works best with matrices
 
-\item \code{SummarizedExperiment}: \code{\link{SummarizedExperiment}} class
-method
+\item \code{SummarizedExperiment}: \linkS4class{SummarizedExperiment} class method
 
 \item \code{RangedRaggedAssay}: \linkS4class{RangedRaggedAssay} class method to return
 matrix of selected \dQuote{mcolname} column, defaults to score
