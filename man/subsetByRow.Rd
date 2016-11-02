@@ -3,11 +3,11 @@
 \docType{methods}
 \name{subsetByRow}
 \alias{subsetByRow}
-\alias{subsetByRow,MultiAssayExperiment,ANY-method}
-\alias{subsetByRow,MultiAssayExperiment,GRanges-method}
 \alias{subsetByRow,MultiAssayExperiment,GRangesORcharacter-method}
-\alias{subsetByRow,MultiAssayExperiment,List-method}
+\alias{subsetByRow,MultiAssayExperiment,GRanges-method}
+\alias{subsetByRow,MultiAssayExperiment,ANY-method}
 \alias{subsetByRow,MultiAssayExperiment,list-method}
+\alias{subsetByRow,MultiAssayExperiment,List-method}
 \title{Subset \code{MultiAssayExperiment} object by Feature}
 \usage{
 subsetByRow(x, y, ...)

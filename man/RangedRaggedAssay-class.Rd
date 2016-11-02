@@ -3,19 +3,19 @@
 %   R/MultiAssayExperiment-methods.R
 \docType{class}
 \name{RangedRaggedAssay-class}
-\alias{.RangedRaggedAssay}
 \alias{RangedRaggedAssay-class}
+\alias{.RangedRaggedAssay}
 \alias{[,RangedRaggedAssay,ANY,ANY,ANY-method}
 \alias{[,RangedRaggedAssay,ANY-method}
 \alias{[,RangedRaggedAssay,GRanges,ANY,ANY-method}
 \alias{[,RangedRaggedAssay,GRanges-method}
 \alias{dim,RangedRaggedAssay-method}
-\alias{dimnames,RangedRaggedAssay-method}
-\alias{dimnames<-,RangedRaggedAssay,list-method}
-\alias{getHits,RangedRaggedAssay,character-method}
 \alias{ncol,RangedRaggedAssay-method}
 \alias{nrow,RangedRaggedAssay-method}
+\alias{dimnames,RangedRaggedAssay-method}
+\alias{dimnames<-,RangedRaggedAssay,list-method}
 \alias{show,RangedRaggedAssay-method}
+\alias{getHits,RangedRaggedAssay,character-method}
 \title{An extension of the GRangesList class}
 \usage{
 \S4method{[}{RangedRaggedAssay,ANY,ANY,ANY}(x, i, j, ..., drop = TRUE)
