@@ -430,36 +430,37 @@ setMethod("complete.cases", "MultiAssayExperiment", function(...) {
     }
 })
 
-#' Extract raw data from an object
+#' Reshape raw data from an object
 #' 
-#' The [extract] function works to pull raw data from all the elements of
-#' a supported class and to return a uniform data type, matrix.
+#' The gather function works to collect all data from the
+#' \link{\code{ExperimentList}} class and to return a uniform
+#' data type, matrix.
 #' 
 #' @param object Any supported class object
 #' 
 #' @examples
 #' example("RangedRaggedAssay")
-#' extract(myRRA)
+#' gather(myRRA)
 #' 
 #' @return matrix class object
-#' @export extract
-setGeneric("extract", function(object) standardGeneric("extract"))
+#' @export gather
+setGeneric("gather", function(object) standardGeneric("gather"))
 
-#' @describeIn extract \code{\link{ExpressionSet}} class method
-setMethod("extract", "ExpressionSet", function(object) {
+#' @describeIn gather \code{\link{ExpressionSet}} class method
+setMethod("gather", "ExpressionSet", function(object) {
     newMat <- Biobase::exprs(object)
     callNextMethod(newMat)
 })
 
-#' @describeIn extract ANY class method, works best with matrices
-setMethod("extract", "ANY", function(object) {
+#' @describeIn gather ANY class method, works best with matrices
+setMethod("gather", "ANY", function(object) {
     reshape2::melt(object, varnames = c("rowname", "colname"),
                    as.is = TRUE)
 })
 
-#' @describeIn extract \code{\link{SummarizedExperiment}} class
+#' @describeIn gather \code{\link{SummarizedExperiment}} class
 #' method
-setMethod("extract", "SummarizedExperiment", function(object) {
+setMethod("gather", "SummarizedExperiment", function(object) {
     if (length(rowData(object)) == 1L)
     names(rowData(object)) <- "rowname"
     wideDF <- data.frame(rowData(object), assay(object),
@@ -467,23 +468,23 @@ setMethod("extract", "SummarizedExperiment", function(object) {
     tidyr::gather(wideDF, "colname", "value", 2:length(wideDF))
 })
 
-#' @describeIn extract \linkS4class{RangedRaggedAssay} class method to return
+#' @describeIn gather \linkS4class{RangedRaggedAssay} class method to return
 #' matrix of selected \dQuote{mcolname} column, defaults to score
-setMethod("extract", "RangedRaggedAssay", function(object) {
+setMethod("gather", "RangedRaggedAssay", function(object) {
     newMat <- MultiAssayExperiment::assay(object, i = 1L, mcolname = "score")
     callNextMethod(newMat)
 })
 
-#' @describeIn extract Overarching \code{MultiAssayExperiment} class method
+#' @describeIn gather Overarching \code{MultiAssayExperiment} class method
 #' returns list of matrices
-setMethod("extract", "MultiAssayExperiment", function(object) {
+setMethod("gather", "MultiAssayExperiment", function(object) {
     dataList <- as.list(experiments(object))
     dataList <- lapply(seq_along(dataList), function(i, rectangle) {
-        cbind(assay = names(object)[i], extract(rectangle[[i]]))
+        cbind(assay = names(object)[i], gather(rectangle[[i]]))
     }, rectangle = dataList)
     newList <- BiocGenerics::Filter(function(rectangle) {
         if (!is.data.frame(rectangle)) {
-            warning("Extracted data not a data.frame")
+            warning("gathered data not a data.frame")
         } else { is.data.frame(rectangle) }
     }, dataList)
     do.call(rbind, newList)
