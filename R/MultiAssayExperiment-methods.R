@@ -227,6 +227,15 @@ setMethod("subsetByAssay", c("MultiAssayExperiment", "ANY"), function(x, y) {
     return(x)
 })
 
+.matchReorderSub <- function(assayMap, identifiers) {
+    positions <- unlist(
+        lapply(identifiers,
+               function(ident) {
+                   which(!is.na(match(assayMap[["primary"]], ident)))
+               }))
+    assayMap[positions, ]
+}
+
 #' Subset \code{MultiAssayExperiment} object
 #'
 #' \code{subsetByColumn} returns a subsetted
@@ -258,12 +267,12 @@ setGeneric("subsetByColumn", function(x, y) standardGeneric("subsetByColumn"))
 #' \code{logical} vector to apply a column subset of a
 #' \code{MultiAssayExperiment} object
 setMethod("subsetByColumn", c("MultiAssayExperiment", "ANY"), function(x, y) {
-    selectors <- rownames(pData(x))[y]
-    newpData <- pData(x)[selectors, ]
+    selectors <- y[y %in% rownames(pData(x))]
+    newpData <- pData(x)[match(selectors, rownames(pData(x))), ]
     listMap <- mapToList(sampleMap(x), "assay")
-    listMap <- lapply(listMap, function(primary) {
-        primary[which(primary[, 1] %in% selectors),]
-    })
+    listMap <- lapply(listMap, function(elementMap, keepers) {
+        .matchReorderSub(elementMap, keepers)
+    }, keepers = selectors)
     newMap <- listToMap(listMap)
     columns <- lapply(listMap, function(mapChunk) {
         mapChunk[, "colname", drop = TRUE]
@@ -281,11 +290,12 @@ setMethod("subsetByColumn", c("MultiAssayExperiment", "ANY"), function(x, y) {
 #' vector for subsetting column names
 setMethod("subsetByColumn", c("MultiAssayExperiment", "character"),
           function(x, y) {
-              logMatches <- rownames(pData(x)) %in% y
-              if (!any(logMatches)){
+              y <- unique(y)
+              if (!any(rownames(pData(x)) %in% y))
                   stop("No matching identifiers found")
-              }
-              callNextMethod(x = x, y = logMatches)
+              if (!all(y %in% rownames(pData(x))))
+                  warning("Not all identifiers found in data")
+              callNextMethod(x = x, y = y)
           })
 
 #' @describeIn subsetByColumn Use a \code{list} to subset by
