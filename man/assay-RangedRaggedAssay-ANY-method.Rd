@@ -6,7 +6,7 @@
 \title{Create a Matrix of score values using a GRanges or own ranges}
 \usage{
 \S4method{assay}{RangedRaggedAssay,ANY}(x, i = 1L, mcolname = "score",
-  ranges = NULL, background = NA, make.names = FALSE)
+  ranges = NULL, background = NULL, make.names = NULL)
 }
 \arguments{
 \item{x}{A \linkS4class{RangedRaggedAssay} or \link{GRangesList} class}

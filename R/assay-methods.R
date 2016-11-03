@@ -37,12 +37,20 @@ setMethod("assay", c("RangedRaggedAssay", "ANY"),
           function(x, i = 1L,
                    mcolname = "score",
                    ranges = NULL,
-                   background = NA,
-                   make.names = FALSE) {
+                   background = NULL,
+                   make.names = NULL) {
+
     if (!all(GenomicRanges::isDisjoint(x)))
         stop("only disjoint ranges supported")
+
     if (!is.numeric(mcols(x[[1]])[[mcolname]]))
         stop("metadata column is not numeric")
+
+    if (is.null(background))
+        background <- NA
+    if (is.null(make.names))
+        make.names <- FALSE
+
     if (!is.null(ranges)) {
         if (!inherits(ranges, "GRanges"))
             stop("ranges must be a GRanges object")
