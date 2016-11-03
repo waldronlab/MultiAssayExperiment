@@ -7,26 +7,29 @@
 \alias{gather,ANY-method}
 \alias{gather,SummarizedExperiment-method}
 \alias{gather,RangedRaggedAssay-method}
+\alias{gather,ExperimentList-method}
 \alias{gather,MultiAssayExperiment-method}
 \title{Reshape raw data from an object}
 \usage{
-gather(object)
+gather(object, ...)
 
-\S4method{gather}{ExpressionSet}(object)
+\S4method{gather}{ExpressionSet}(object, ...)
 
 \S4method{gather}{ANY}(object)
 
-\S4method{gather}{SummarizedExperiment}(object)
+\S4method{gather}{SummarizedExperiment}(object, ...)
 
-\S4method{gather}{RangedRaggedAssay}(object)
+\S4method{gather}{RangedRaggedAssay}(object, ...)
 
-\S4method{gather}{MultiAssayExperiment}(object)
+\S4method{gather}{ExperimentList}(object, ...)
+
+\S4method{gather}{MultiAssayExperiment}(object, ...)
 }
 \arguments{
 \item{object}{Any supported class object}
 }
 \value{
-Tall and skinny data.frame
+Tall and skinny \code{\linkS4class{DataFrame}}
 }
 \description{
 The gather function works to collect all data from the
@@ -37,12 +40,15 @@ data type, matrix.
 \itemize{
 \item \code{ExpressionSet}: \code{\link{ExpressionSet}} class method
 
-\item \code{ANY}: ANY class method, works best with matrices
+\item \code{ANY}: ANY class method, works with data.frames
 
 \item \code{SummarizedExperiment}: \linkS4class{SummarizedExperiment} class method
 
 \item \code{RangedRaggedAssay}: \linkS4class{RangedRaggedAssay} class method to return
 matrix of selected \dQuote{mcolname} column, defaults to score
+
+\item \code{ExperimentList}: Gather data from the \code{ExperimentList} class
+returns list of DataFrames
 
 \item \code{MultiAssayExperiment}: Overarching \code{MultiAssayExperiment} class method
 returns list of matrices

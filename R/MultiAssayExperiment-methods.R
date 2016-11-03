@@ -431,60 +431,84 @@ setMethod("complete.cases", "MultiAssayExperiment", function(...) {
 })
 
 #' Reshape raw data from an object
-#' 
+#'
 #' The gather function works to collect all data from the
 #' \code{\link{ExperimentList}} class and to return a uniform
 #' data type, matrix.
-#' 
+#'
 #' @param object Any supported class object
-#' 
+#'
 #' @examples
 #' example("RangedRaggedAssay")
 #' gather(myRRA)
-#' 
-#' @return Tall and skinny data.frame
+#'
+#' @return Tall and skinny \code{\linkS4class{DataFrame}}
 #' @export gather
-setGeneric("gather", function(object) standardGeneric("gather"))
+setGeneric("gather", function(object, ...) standardGeneric("gather"))
 
 #' @describeIn gather \code{\link{ExpressionSet}} class method
-setMethod("gather", "ExpressionSet", function(object) {
+setMethod("gather", "ExpressionSet", function(object, ...) {
     newMat <- Biobase::exprs(object)
-    callNextMethod(newMat)
+    gather(newMat)
 })
-
-#' @describeIn gather ANY class method, works best with matrices
-setMethod("gather", "ANY", function(object) {
-    reshape2::melt(object, varnames = c("rowname", "colname"),
+setMethod("gather", "matrix", function(object, ...) {
+    rectangle <- reshape2::melt(object, varnames = c("rowname", "colname"),
                    as.is = TRUE)
+    callNextMethod(rectangle)
+})
+#' @describeIn gather ANY class method, works with data.frames
+setMethod("gather", "ANY", function(object) {
+    rectangle <- S4Vectors::DataFrame(object)
+    rectangle[, "colname"] <- S4Vectors::Rle(rectangle[["colname"]])
+    rectangle
 })
 
 #' @describeIn gather \linkS4class{SummarizedExperiment} class method
-setMethod("gather", "SummarizedExperiment", function(object) {
+setMethod("gather", "SummarizedExperiment", function(object, ...) {
     if (length(rowData(object)) == 1L)
     names(rowData(object)) <- "rowname"
     wideDF <- data.frame(rowData(object), assay(object),
                          stringsAsFactors = FALSE)
-    tidyr::gather(wideDF, "colname", "value", seq_along(wideDF)[-1])
+    rectangle <- tidyr::gather(wideDF, "colname", "value",
+                               seq_along(wideDF)[-1])
+    callNextMethod(rectangle)
 })
 
 #' @describeIn gather \linkS4class{RangedRaggedAssay} class method to return
 #' matrix of selected \dQuote{mcolname} column, defaults to score
-setMethod("gather", "RangedRaggedAssay", function(object) {
-    newMat <- MultiAssayExperiment::assay(object, i = 1L, mcolname = "score")
-    callNextMethod(newMat)
+setMethod("gather", "RangedRaggedAssay", function(object, ...) {
+    args <- list(...)
+    if (!is.null(args$mcolname))
+        mcolname <- args$mcolname
+    else mcolname <- "score"
+
+    newMat <- MultiAssayExperiment::assay(object, i = 1L, mcolname = mcolname,
+                                          ranges = args$ranges,
+                                          background = args$background)
+    gather(newMat)
+})
+
+#' @describeIn gather Gather data from the \code{ExperimentList} class
+#' returns list of DataFrames
+setMethod("gather", "ExperimentList", function(object, ...) {
+    dataList <- as.list(object)
+    dataList <- lapply(seq_along(object), function(i, flatBox) {
+        S4Vectors::DataFrame(assay = S4Vectors::Rle(names(object)[i]),
+                             gather(flatBox[[i]], ...))
+    }, flatBox = object)
+    dataList
 })
 
 #' @describeIn gather Overarching \code{MultiAssayExperiment} class method
 #' returns list of matrices
-setMethod("gather", "MultiAssayExperiment", function(object) {
-    dataList <- as.list(experiments(object))
-    dataList <- lapply(seq_along(dataList), function(i, rectangle) {
-        cbind(assay = names(object)[i], gather(rectangle[[i]]))
-    }, rectangle = dataList)
-    newList <- BiocGenerics::Filter(function(rectangle) {
-        if (!is.data.frame(rectangle)) {
-            warning("gathered data not a data.frame")
-        } else { is.data.frame(rectangle) }
-    }, dataList)
-    do.call(rbind, newList)
+setMethod("gather", "MultiAssayExperiment", function(object, ...) {
+    dataList <- gather(experiments(object))
+    dataList <- lapply(dataList, function(rectangleDF) {
+        primary <- S4Vectors::Rle(sampleMap(object)[match(rectangleDF[["colname"]],
+                                           sampleMap(object)[["colname"]]),
+                                     "primary"])
+        rectangleDF <- S4Vectors::DataFrame(rectangleDF, primary = primary)
+        rectangleDF[, c("assay", "primary", "rowname", "colname", "value")]
+    })
+    do.call(rbind, dataList)
 })
