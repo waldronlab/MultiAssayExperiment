@@ -437,11 +437,14 @@ setMethod("complete.cases", "MultiAssayExperiment", function(...) {
 #' data type, matrix.
 #'
 #' @param object Any supported class object
+#' @param ... Additional arguments for the \link{RangedRaggedAssay}
+#' \code{assay} method. See below.
 #'
 #' @examples
 #' example("RangedRaggedAssay")
 #' gather(myRRA)
 #'
+#' @seealso \code{\link{assay,RangedRaggedAssay,ANY-method}}
 #' @return Tall and skinny \code{\linkS4class{DataFrame}}
 #' @export gather
 setGeneric("gather", function(object, ...) standardGeneric("gather"))
@@ -451,6 +454,8 @@ setMethod("gather", "ExpressionSet", function(object, ...) {
     newMat <- Biobase::exprs(object)
     gather(newMat)
 })
+
+#' @describeIn gather \code{matrix} class method
 setMethod("gather", "matrix", function(object, ...) {
     rectangle <- reshape2::melt(object, varnames = c("rowname", "colname"),
                    as.is = TRUE)

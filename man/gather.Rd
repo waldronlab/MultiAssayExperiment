@@ -4,6 +4,7 @@
 \name{gather}
 \alias{gather}
 \alias{gather,ExpressionSet-method}
+\alias{gather,matrix-method}
 \alias{gather,ANY-method}
 \alias{gather,SummarizedExperiment-method}
 \alias{gather,RangedRaggedAssay-method}
@@ -14,6 +15,8 @@
 gather(object, ...)
 
 \S4method{gather}{ExpressionSet}(object, ...)
+
+\S4method{gather}{matrix}(object, ...)
 
 \S4method{gather}{ANY}(object)
 
@@ -27,6 +30,9 @@ gather(object, ...)
 }
 \arguments{
 \item{object}{Any supported class object}
+
+\item{...}{Additional arguments for the \link{RangedRaggedAssay}
+\code{assay} method. See below.}
 }
 \value{
 Tall and skinny \code{\linkS4class{DataFrame}}
@@ -39,6 +45,8 @@ data type, matrix.
 \section{Methods (by class)}{
 \itemize{
 \item \code{ExpressionSet}: \code{\link{ExpressionSet}} class method
+
+\item \code{matrix}: \code{matrix} class method
 
 \item \code{ANY}: ANY class method, works with data.frames
 
@@ -57,5 +65,8 @@ returns list of matrices
 example("RangedRaggedAssay")
 gather(myRRA)
 
+}
+\seealso{
+\code{\link{assay,RangedRaggedAssay,ANY-method}}
 }
 
