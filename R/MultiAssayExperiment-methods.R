@@ -493,11 +493,11 @@ setMethod("gather", "SummarizedExperiment", function(object, ...) {
 #' matrix of selected \dQuote{mcolname} column, defaults to score
 setMethod("gather", "RangedRaggedAssay", function(object, ...) {
     args <- list(...)
-    if (!is.null(args$mcolname))
-        mcolname <- args$mcolname
-    else mcolname <- "score"
+    if (is.null(args$mcolname))
+        args$mcolname <- "score"
 
-    newMat <- MultiAssayExperiment::assay(object, i = 1L, mcolname = mcolname,
+    newMat <- MultiAssayExperiment::assay(object, mcolname = args$mcolname,
+                                          make.names = args$make.names,
                                           ranges = args$ranges,
                                           background = args$background)
     gather(newMat)
@@ -517,7 +517,9 @@ setMethod("gather", "ExperimentList", function(object, ...) {
 #' @describeIn gather Overarching \code{MultiAssayExperiment} class method
 #' returns list of matrices
 setMethod("gather", "MultiAssayExperiment", function(object, ...) {
-    dataList <- gather(experiments(object))
+    args <- list(...)
+    addCols <- !is.null(args$pDataCols)
+    dataList <- gather(experiments(object), ...)
     dataList <- lapply(dataList, function(rectangleDF) {
         primary <- S4Vectors::Rle(sampleMap(object)[match(rectangleDF[["colname"]],
                                            sampleMap(object)[["colname"]]),
@@ -525,5 +527,15 @@ setMethod("gather", "MultiAssayExperiment", function(object, ...) {
         rectangleDF <- S4Vectors::DataFrame(rectangleDF, primary = primary)
         rectangleDF[, c("assay", "primary", "rowname", "colname", "value")]
     })
-    do.call(rbind, dataList)
+    longDataFrame <- do.call(rbind, dataList)
+    if (addCols) {
+    extraColumns <- pData(object)[, args$pDataCols, drop = FALSE]
+    rowNameValues <- rownames(extraColumns)
+    rownames(extraColumns) <- NULL
+    matchIdx <- BiocGenerics::match(longDataFrame[["primary"]],
+                                    rowNameValues)
+    longDataFrame <- BiocGenerics::cbind(longDataFrame,
+                                         extraColumns[matchIdx, , drop = FALSE])
+    }
+    longDataFrame
 })
