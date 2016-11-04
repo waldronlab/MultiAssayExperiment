@@ -67,6 +67,6 @@ gather(myRRA)
 
 }
 \seealso{
-\code{\link{assay,RangedRaggedAssay,ANY-method}}
+\code{\link{assay,RangedRaggedAssay,missing-method}}
 }
 

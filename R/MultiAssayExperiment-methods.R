@@ -454,7 +454,7 @@ setMethod("complete.cases", "MultiAssayExperiment", function(...) {
 #' example("RangedRaggedAssay")
 #' gather(myRRA)
 #'
-#' @seealso \code{\link{assay,RangedRaggedAssay,ANY-method}}
+#' @seealso \code{\link{assay,RangedRaggedAssay,missing-method}}
 #' @return Tall and skinny \code{\linkS4class{DataFrame}}
 #' @export gather
 setGeneric("gather", function(object, ...) standardGeneric("gather"))
