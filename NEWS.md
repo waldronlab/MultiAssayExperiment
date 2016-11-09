@@ -1,3 +1,18 @@
+# MultiAssayExperiment 1.1.2
+
+## New features
+
+* `extract` method renamed to `gather`
+* `gather` allows for inclusion of pData columns
+* `gather` method supports common classes; creates a "tidy" DataFrame with
+pData rownames, `ExperimentList` rownames, `ExperimentList` columns,
+assay names, and optional pData columns
+
+## Bug fixes and minor improvements
+
+* Fix `assay` arguments for the `RangedRaggedAssay` method
+* Subsetting by column now arranges `sampleMap` in proper order
+
 # MultiAssayExperiment 1.1.1
 
 ## New features
@@ -6,7 +21,7 @@
 * `extract` method not available for common classes - creates `tidy` data.frame
 from data
 
-## Bug fixes and minor improvements 
+## Bug fixes and minor improvements
 
 * Documentation updated with new roxygen version
 

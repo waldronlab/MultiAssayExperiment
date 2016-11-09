@@ -472,7 +472,7 @@ setMethod("gather", "matrix", function(object, ...) {
     callNextMethod(rectangle)
 })
 #' @describeIn gather ANY class method, works with data.frames
-setMethod("gather", "ANY", function(object) {
+setMethod("gather", "ANY", function(object, ...) {
     rectangle <- S4Vectors::DataFrame(object)
     rectangle[, "colname"] <- S4Vectors::Rle(rectangle[["colname"]])
     rectangle
@@ -485,7 +485,7 @@ setMethod("gather", "SummarizedExperiment", function(object, ...) {
     wideDF <- data.frame(rowData(object), assay(object),
                          stringsAsFactors = FALSE)
     rectangle <- tidyr::gather(wideDF, "colname", "value",
-                               seq_along(wideDF)[-1])
+                               seq_along(wideDF)[-1L])
     callNextMethod(rectangle)
 })
 
