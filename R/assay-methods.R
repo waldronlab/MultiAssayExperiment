@@ -11,15 +11,21 @@
 #'
 #' @param x A \linkS4class{RangedRaggedAssay} or \link{GRangesList} class
 #' @param i Argument from generic (default 1L)
-#' @param mcolname A single \code{character} string indicating the inner
-#' metadata column name to use for creating a matrix (must indicate a numeric
-#' variable)
-#' @param ranges A \link{GRanges} class identifying the ranges of interest
-#' @param background A single value for the non-matching background values in
-#' the matrix (e.g., 2 for diploid genomes)
-#' @param make.names logical (default FALSE) whether to automatically create
-#' names from either the ranges argument (if available) or the
-#' \code{RangedRaggedAssay} (e.g., "chr1:2-3:+")
+#' @param ... Additional arguments, see details for more information.
+#'
+#' @details
+#' The \linkS4class{RangedRaggedAssay} class represents genomic ranges in
+#' matrix shape based on the selected inner metadata column ("mcol"). To
+#' accomplish this, the \code{mcolname} argument can be indicated with a
+#' string. The \code{background} argument can be used to specify a background
+#' value for the resulting matrix (default NA). This usually indicates non-matching
+#' values in the matrix (e.g., 2 for diploid genomes). Users are also able
+#' to provide a \link{GRanges} class object for specifying ranges of
+#' interest in the resulting matrix using the \code{ranges} argument.
+#' The \code{make.names} argument is a logical value  that
+#' allows the user to indicate the automatic creation of automatic names
+#' either from the \code{GRanges} or the \link{RangedRaggedAssay} object in
+#' character format (i.e., "chr1:2-3:+").
 #'
 #' @examples
 #' example("RangedRaggedAssay")
@@ -33,46 +39,57 @@
 #'
 #' @return A \code{matrix} of values from the score column of the metadata.
 #' @exportMethod assay
-setMethod("assay", c("RangedRaggedAssay", "ANY"),
-          function(x, i = 1L,
-                   mcolname = "score",
-                   ranges = NULL,
-                   background = NA,
-                   make.names = FALSE) {
-    if (!all(GenomicRanges::isDisjoint(x)))
-        stop("only disjoint ranges supported")
-    if (!is.numeric(mcols(x[[1]])[[mcolname]]))
-        stop("metadata column is not numeric")
-    if (!is.null(ranges)) {
-        if (!inherits(ranges, "GRanges"))
-            stop("ranges must be a GRanges object")
-        if (make.names) {
-            rowNames <- as.character(ranges)
-        } else {
-            rowNames <- names(ranges)
-        }
-    } else {
-        rowNames <- rownames(x)
-        if (make.names) {
-            rangeNames <- unique(as.character(
-                unlist(x, use.names = FALSE)))
-            if (length(unique(rowNames)) != length(rangeNames))
-                stop("feature names not unique accross ranges")
-            rowNames <- rangeNames
-        }
-        ranges <- granges(unlist(x, use.names = FALSE))
-    }
-    newMatrix <- do.call(cbind, lapply(seq_along(x), function(j, obj) {
-        MValues <- ifelse(
-            IRanges::overlapsAny(ranges, obj[[j]], type = "equal"),
-            as.numeric(mcols(obj[[j]])[[mcolname]]),
-            background)
-        return(MValues)
-    }, obj = x))
-    colnames(newMatrix) <- colnames(x)
-    rownames(newMatrix) <- rowNames
-    return(newMatrix)
-})
+setMethod("assay", c("RangedRaggedAssay", "missing"),
+          function(x, i, ...) {
+              args <- list(...)
+              if (!all(GenomicRanges::isDisjoint(x)))
+                  stop("only disjoint ranges supported")
+
+              if (is.null(args$mcolname))
+                  args$mcolname <- "score"
+              if (!is.numeric(mcols(x[[1L]])[[args$mcolname]]))
+                  stop("metadata column is not numeric")
+              if (is.null(args$background))
+                  args$background <- NA
+              if (is.null(args$make.names))
+                  args$make.names <- FALSE
+
+              if (!is.null(args$ranges)) {
+                  if (!inherits(ranges, "GRanges"))
+                      stop("ranges must be a GRanges object")
+                  if (!is.null(args$make.names)) {
+                      rowNames <- as.character(ranges)
+                  } else {
+                      rowNames <- names(ranges)
+                  }
+              } else {
+                  rowNames <- rownames(x)
+                  if (args$make.names) {
+                      rangeNames <- unique(as.character(
+                          unlist(x, use.names = FALSE)))
+                      if (length(unique(rowNames)) != length(rangeNames))
+                          stop("feature names not unique accross ranges")
+                      rowNames <- rangeNames
+                  }
+                  ranges <- GenomicRanges::GRanges(unlist(x, use.names = FALSE))
+              }
+              newMatrix <-
+                  do.call(cbind,
+                          lapply(seq_along(x),
+                                 function(j, obj) {
+                                     MValues <- ifelse(
+                                         IRanges::overlapsAny(ranges, obj[[j]],
+                                                              type = "equal"),
+                                         as.numeric(mcols(
+                                             obj[[j]])[[args$mcolname]]
+                                         ),
+                                         args$background)
+                                     return(MValues)
+                                 }, obj = x))
+              colnames(newMatrix) <- colnames(x)
+              rownames(newMatrix) <- rowNames
+              return(newMatrix)
+          })
 
 #' @describeIn ExperimentList Get the assay data for the default ANY class
 setMethod("assay", c("ANY", "missing"), function(x, i) {

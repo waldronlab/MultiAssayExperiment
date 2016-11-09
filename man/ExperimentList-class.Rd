@@ -3,14 +3,14 @@
 %   R/MultiAssayExperiment-methods.R, R/assay-methods.R
 \docType{class}
 \name{ExperimentList-class}
+\alias{ExperimentList-class}
 \alias{.ExperimentList}
 \alias{ExperimentList,ANY-method}
 \alias{ExperimentList,missing-method}
-\alias{ExperimentList-class}
+\alias{show,ExperimentList-method}
+\alias{dimnames,ExperimentList-method}
 \alias{assay,ANY,missing-method}
 \alias{assay,ExperimentList,missing-method}
-\alias{dimnames,ExperimentList-method}
-\alias{show,ExperimentList-method}
 \title{A container for multi-experiment data}
 \usage{
 \S4method{ExperimentList}{ANY}(x)

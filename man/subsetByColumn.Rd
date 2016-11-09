@@ -4,9 +4,9 @@
 \name{subsetByColumn}
 \alias{subsetByColumn}
 \alias{subsetByColumn,MultiAssayExperiment,ANY-method}
-\alias{subsetByColumn,MultiAssayExperiment,List-method}
 \alias{subsetByColumn,MultiAssayExperiment,character-method}
 \alias{subsetByColumn,MultiAssayExperiment,list-method}
+\alias{subsetByColumn,MultiAssayExperiment,List-method}
 \title{Subset \code{MultiAssayExperiment} object}
 \usage{
 subsetByColumn(x, y)

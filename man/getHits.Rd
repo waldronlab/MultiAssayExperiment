@@ -3,12 +3,12 @@
 \docType{methods}
 \name{getHits}
 \alias{getHits}
-\alias{getHits,ANY,GRanges-method}
-\alias{getHits,ANY,character-method}
-\alias{getHits,GRanges,GRanges-method}
-\alias{getHits,MultiAssayExperiment,GRanges-method}
 \alias{getHits,MultiAssayExperiment,character-method}
+\alias{getHits,MultiAssayExperiment,GRanges-method}
+\alias{getHits,GRanges,GRanges-method}
+\alias{getHits,ANY,GRanges-method}
 \alias{getHits,RangedSummarizedExperiment,GRanges-method}
+\alias{getHits,ANY,character-method}
 \title{Find hits by class type}
 \usage{
 getHits(subject, query, ...)

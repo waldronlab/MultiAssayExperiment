@@ -110,6 +110,7 @@
 #' @example inst/scripts/MultiAssayExperiment-Ex.R
 #'
 #' @export MultiAssayExperiment
+#' @aliases NULL
 #' @seealso MultiAssayExperiment-class
 MultiAssayExperiment <-
     function(experiments = ExperimentList(),
