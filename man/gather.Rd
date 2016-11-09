@@ -18,7 +18,7 @@ gather(object, ...)
 
 \S4method{gather}{matrix}(object, ...)
 
-\S4method{gather}{ANY}(object)
+\S4method{gather}{ANY}(object, ...)
 
 \S4method{gather}{SummarizedExperiment}(object, ...)
 
