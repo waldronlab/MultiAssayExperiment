@@ -14,9 +14,18 @@
 
 #' Create a RangedRaggedAssay
 #'
+#' Construct an object representing ranged-based data, typically from a
+#' \code{\link{GRangesList}}. The assay method will extract a particular column
+#' from the metadata and represent it in a matrix. See the \code{show} method
+#' for an example.
+#'
 #' @param x A \code{list}, \code{GRanges} or \code{GRangesList} object
 #' @return A \code{\linkS4class{RangedRaggedAssay}} class object
+#'
 #' @example inst/scripts/RangedRaggedAssay-Ex.R
+#'
+#' @seealso \code{\link{assay,RangedRaggedAssay,missing-method}}
+#'
 #' @export RangedRaggedAssay
 RangedRaggedAssay <- function(x = GRangesList()) {
     if (inherits(x, "GRanges")) {
