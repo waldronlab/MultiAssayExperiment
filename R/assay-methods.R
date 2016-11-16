@@ -55,6 +55,7 @@ setMethod("assay", c("RangedRaggedAssay", "missing"),
                   args$make.names <- FALSE
 
               if (!is.null(args$ranges)) {
+                  ranges <- args$ranges
                   if (!inherits(ranges, "GRanges"))
                       stop("ranges must be a GRanges object")
                   if (!is.null(args$make.names)) {
