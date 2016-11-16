@@ -547,7 +547,16 @@ setMethod("gather", "MultiAssayExperiment", function(object, ...) {
 #' MultiAssayExperiment where only complete.cases are returned, replicate measurements
 #' are averaged, and columns are aligned by the row order in pData.
 #' @exportMethod reduce
-setMethod("reduce", "MultiAssayExperiment", function(x, ...) {
+setMethod("reduce", "MultiAssayExperiment",
+        function(x, drop.empty.ranges = FALSE, ...) {
+    args <- list(...)
     ## Under construction
     x <- x[, complete.cases(x), ]
+    listMap <- mapToList(sampleMap(aa))
+    lapply(listMap, function(assayDF) {
+        repeats <- assayDF[["primary"]][duplicated(assayDF[["primary"]])]
+        lapply(repeats, function(primary) {
+            replicates <- assayDF[primary %in% assayDF[["primary"]], "colname"]
+        })
+    })
 })
