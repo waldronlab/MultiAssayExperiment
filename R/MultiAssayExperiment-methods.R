@@ -541,3 +541,13 @@ setMethod("gather", "MultiAssayExperiment", function(object, ...) {
     }
     longDataFrame
 })
+
+#' @importFrom IRanges reduce
+#' @describeIn MultiAssayExperiment Housekeeping method for a
+#' MultiAssayExperiment where only complete.cases are returned, replicate measurements
+#' are averaged, and columns are aligned by the row order in pData.
+#' @exportMethod reduce
+setMethod("reduce", "MultiAssayExperiment", function(x, ...) {
+    ## Under construction
+    x <- x[, complete.cases(x), ]
+})

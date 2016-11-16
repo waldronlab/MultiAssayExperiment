@@ -23,6 +23,7 @@
 \alias{[,MultiAssayExperiment,ANY-method}
 \alias{isEmpty,MultiAssayExperiment-method}
 \alias{complete.cases,MultiAssayExperiment-method}
+\alias{reduce,MultiAssayExperiment-method}
 \alias{assay,MultiAssayExperiment,missing-method}
 \title{An integrative MultiAssay class for experiment data}
 \usage{
@@ -61,6 +62,8 @@
 \S4method{isEmpty}{MultiAssayExperiment}(x)
 
 \S4method{complete.cases}{MultiAssayExperiment}(...)
+
+\S4method{reduce}{MultiAssayExperiment}(x, drop.empty.ranges = FALSE, ...)
 
 \S4method{assay}{MultiAssayExperiment,missing}(x, i)
 }
@@ -155,6 +158,10 @@ for a \code{MultiAssayExperiment} object
 
 \item \code{complete.cases}: Return a logical vector of biological units
 with data across all experiments
+
+\item \code{reduce}: Housekeeping method for a
+MultiAssayExperiment where only complete.cases are returned, replicate measurements
+are averaged, and columns are aligned by the row order in pData.
 
 \item \code{assay}: Get the assay data for a
 \link{MultiAssayExperiment} as a \code{list}
