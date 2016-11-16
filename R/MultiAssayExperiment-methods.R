@@ -267,6 +267,8 @@ setGeneric("subsetByColumn", function(x, y) standardGeneric("subsetByColumn"))
 #' \code{logical} vector to apply a column subset of a
 #' \code{MultiAssayExperiment} object
 setMethod("subsetByColumn", c("MultiAssayExperiment", "ANY"), function(x, y) {
+    if (is.logical(y))
+        y <- rownames(pData(x))[y]
     selectors <- y[y %in% rownames(pData(x))]
     newpData <- pData(x)[match(selectors, rownames(pData(x))), ]
     listMap <- mapToList(sampleMap(x), "assay")
