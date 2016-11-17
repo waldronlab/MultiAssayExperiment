@@ -94,6 +94,8 @@ setMethod("assay", c("RangedRaggedAssay", "missing"),
 
 #' @describeIn ExperimentList Get the assay data for the default ANY class
 setMethod("assay", c("ANY", "missing"), function(x, i) {
+    if (inherits(x, "ExpressionSet"))
+        return(exprs(x))
     I(x)
 })
 
@@ -109,5 +111,5 @@ setMethod("assay", c("ExperimentList", "missing"), function(x, i) {
 #' \link{MultiAssayExperiment} as a \code{list}
 #' @aliases assay,MultiAssayExperiment,missing-method
 setMethod("assay", c("MultiAssayExperiment", "missing"), function(x, i) {
-    assay(ExperimentList(x))
+    assay(experiments(x))
 })
