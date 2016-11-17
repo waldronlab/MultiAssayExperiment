@@ -95,7 +95,7 @@ setMethod("assay", c("RangedRaggedAssay", "missing"),
 #' @describeIn ExperimentList Get the assay data for the default ANY class
 setMethod("assay", c("ANY", "missing"), function(x, i) {
     if (inherits(x, "ExpressionSet"))
-        return(exprs(x))
+        return(Biobase::exprs(x))
     I(x)
 })
 
