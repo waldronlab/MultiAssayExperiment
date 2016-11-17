@@ -3,10 +3,7 @@
 \docType{methods}
 \name{gather}
 \alias{gather}
-\alias{gather,ExpressionSet-method}
-\alias{gather,matrix-method}
 \alias{gather,ANY-method}
-\alias{gather,SummarizedExperiment-method}
 \alias{gather,RangedRaggedAssay-method}
 \alias{gather,ExperimentList-method}
 \alias{gather,MultiAssayExperiment-method}
@@ -14,13 +11,7 @@
 \usage{
 gather(object, ...)
 
-\S4method{gather}{ExpressionSet}(object, ...)
-
-\S4method{gather}{matrix}(object, ...)
-
 \S4method{gather}{ANY}(object, ...)
-
-\S4method{gather}{SummarizedExperiment}(object, ...)
 
 \S4method{gather}{RangedRaggedAssay}(object, ...)
 
@@ -38,19 +29,17 @@ gather(object, ...)
 Tall and skinny \code{\linkS4class{DataFrame}}
 }
 \description{
-The gather function works to collect all data from the
-\code{\link{ExperimentList}} class and to return a uniform
-data type, matrix.
+The gather function collects data from the \code{\link{ExperimentList}}
+in a \code{\link{MultiAssayExperiment}} and returns a uniform
+\code{\link{DataFrame}}. The resulting DataFrame has columns indicating
+primary, rowname, colname and value. This method can optionally include
+pData columns with the \code{pDataCols} argument for a
+\code{MultiAssayExperiment} object.
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{ExpressionSet}: \code{\link{ExpressionSet}} class method
-
-\item \code{matrix}: \code{matrix} class method
-
-\item \code{ANY}: ANY class method, works with data.frames
-
-\item \code{SummarizedExperiment}: \linkS4class{SummarizedExperiment} class method
+\item \code{ANY}: ANY class method, works with ExpressionSet and
+SummarizedExperiment classes as well as matrix
 
 \item \code{RangedRaggedAssay}: \linkS4class{RangedRaggedAssay} class method to return
 matrix of selected \dQuote{mcolname} column, defaults to score
@@ -59,11 +48,12 @@ matrix of selected \dQuote{mcolname} column, defaults to score
 returns list of DataFrames
 
 \item \code{MultiAssayExperiment}: Overarching \code{MultiAssayExperiment} class method
-returns list of matrices
+returns a small and skinny DataFrame. The \code{pDataCols} arguments allows
+the user to append pData columns to the long and skinny DataFrame.
 }}
 \examples{
 example("RangedRaggedAssay")
-gather(myRRA)
+gather(myRRA, background = 0)
 
 }
 \seealso{
