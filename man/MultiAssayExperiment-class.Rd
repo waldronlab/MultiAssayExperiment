@@ -93,6 +93,8 @@ for subsetting by assays}
 
 \item{drop}{logical (default TRUE) whether to drop empty assay elements
 in the \code{ExperimentList}}
+
+\item{drop.empty.ranges}{Only used when reducing RangedRaggedAssay objects}
 }
 \value{
 A \code{MultiAssayExperiment} object

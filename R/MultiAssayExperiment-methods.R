@@ -546,17 +546,37 @@ setMethod("gather", "MultiAssayExperiment", function(object, ...) {
 #' @describeIn MultiAssayExperiment Housekeeping method for a
 #' MultiAssayExperiment where only complete.cases are returned, replicate measurements
 #' are averaged, and columns are aligned by the row order in pData.
+#' @param drop.empty.ranges Only used when reducing RangedRaggedAssay objects
 #' @exportMethod reduce
 setMethod("reduce", "MultiAssayExperiment",
         function(x, drop.empty.ranges = FALSE, ...) {
-    args <- list(...)
     ## Under construction
+    args <- list(...)
     x <- x[, complete.cases(x), ]
-    listMap <- mapToList(sampleMap(aa))
-    lapply(listMap, function(assayDF) {
-        repeats <- assayDF[["primary"]][duplicated(assayDF[["primary"]])]
-        lapply(repeats, function(primary) {
-            replicates <- assayDF[primary %in% assayDF[["primary"]], "colname"]
+    listMap <- mapToList(sampleMap(x))
+    repList <- lapply(listMap, function(assayDF) {
+        repeats <- unique(assayDF[["primary"]][
+            duplicated(assayDF[["primary"]])])
+        repSamps <- lapply(repeats, function(primary) {
+            repLgl <- assayDF[["primary"]] %in% primary
         })
+        names(repSamps) <- repeats
+        repSamps
     })
+    ## Under construction
+    mapply(function(dat, replicates) {
+        if (length(replicates)) {
+        avgCols <- lapply(replicates, function(repl) {
+                repNames <- colnames(dat)[repl]
+                newRep <- rowMeans(dat[, repl, drop = FALSE])
+                newDF <- structure(list(newRep), .Names = repNames[[1L]],
+                          row.names = c(NA, -length(newRep)),
+                          class = "data.frame")
+                newDF
+        })
+        # dat[, !replicates[[1L]], drop=FALSE]
+        }
+        dat
+    }, dat = as.list(experiments(x)), replicates = repList)
+    return(NULL)
 })
