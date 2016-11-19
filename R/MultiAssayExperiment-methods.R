@@ -536,6 +536,12 @@ setMethod("gather", "MultiAssayExperiment", function(object, ...) {
     longDataFrame
 })
 
+.combineCols <- function(rectangle, dupId, FUN=mean, ...) {
+   apply(rectangle[, dupId], 1, function(row) {
+       FUN(row, ...)
+   })
+}
+
 #' @importFrom IRanges reduce
 #' @describeIn MultiAssayExperiment Housekeeping method for a
 #' MultiAssayExperiment where only complete.cases are returned, replicate
@@ -557,19 +563,20 @@ setMethod("reduce", "MultiAssayExperiment",
         repSamps
     })
     ## Under construction
-    mapply(function(dat, replicates) {
+    mapply(function(expList, replicates) {
         if (length(replicates)) {
-        avgCols <- lapply(replicates, function(repl) {
-                repNames <- colnames(dat)[repl]
-                newRep <- rowMeans(dat[, repl, drop = FALSE])
+        newCols <- lapply(replicates, function(repl) {
+                repNames <- colnames(expList)[repl]
+                # .combineCols (expList)
+                newRep <- rowMeans(expList[, repl, drop = FALSE])
                 newDF <- structure(list(newRep), .Names = repNames[[1L]],
                           row.names = c(NA, -length(newRep)),
                           class = "data.frame")
                 newDF
         })
-        # dat[, !replicates[[1L]], drop=FALSE]
+        # expList[, !replicates[[1L]], drop=FALSE]
         }
-        dat
-    }, dat = as.list(experiments(x)), replicates = repList)
+        expList
+    }, expList = as.list(experiments(x)), replicates = repList, SIMPLIFY = FALSE)
     return(NULL)
 })
