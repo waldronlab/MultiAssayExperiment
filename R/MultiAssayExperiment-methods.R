@@ -491,7 +491,6 @@ setMethod("gather", "RangedRaggedAssay", function(object, ...) {
     args <- list(...)
     if (is.null(args$mcolname))
         args$mcolname <- "score"
-
     newMat <- MultiAssayExperiment::assay(object, mcolname = args$mcolname,
                                           make.names = args$make.names,
                                           ranges = args$ranges,
@@ -539,13 +538,12 @@ setMethod("gather", "MultiAssayExperiment", function(object, ...) {
 
 #' @importFrom IRanges reduce
 #' @describeIn MultiAssayExperiment Housekeeping method for a
-#' MultiAssayExperiment where only complete.cases are returned, replicate measurements
-#' are averaged, and columns are aligned by the row order in pData.
+#' MultiAssayExperiment where only complete.cases are returned, replicate
+#' measurements are averaged, and columns are aligned by the row order in pData.
 #' @param drop.empty.ranges Only used when reducing RangedRaggedAssay objects
 #' @exportMethod reduce
 setMethod("reduce", "MultiAssayExperiment",
         function(x, drop.empty.ranges = FALSE, ...) {
-    ## Under construction
     args <- list(...)
     x <- x[, complete.cases(x), ]
     listMap <- mapToList(sampleMap(x))
@@ -553,7 +551,7 @@ setMethod("reduce", "MultiAssayExperiment",
         repeats <- unique(assayDF[["primary"]][
             duplicated(assayDF[["primary"]])])
         repSamps <- lapply(repeats, function(primary) {
-            repLgl <- assayDF[["primary"]] %in% primary
+            assayDF[["primary"]] %in% primary
         })
         names(repSamps) <- repeats
         repSamps

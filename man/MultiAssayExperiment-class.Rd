@@ -162,8 +162,8 @@ for a \code{MultiAssayExperiment} object
 with data across all experiments
 
 \item \code{reduce}: Housekeeping method for a
-MultiAssayExperiment where only complete.cases are returned, replicate measurements
-are averaged, and columns are aligned by the row order in pData.
+MultiAssayExperiment where only complete.cases are returned, replicate
+measurements are averaged, and columns are aligned by the row order in pData.
 
 \item \code{assay}: Get the assay data for a
 \link{MultiAssayExperiment} as a \code{list}
