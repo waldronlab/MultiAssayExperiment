@@ -13,7 +13,10 @@ RangedRaggedAssay(x = GRangesList())
 A \code{\linkS4class{RangedRaggedAssay}} class object
 }
 \description{
-Create a RangedRaggedAssay
+Construct an object representing ranged-based data, typically from a
+\code{\link{GRangesList}}. The assay method will extract a particular column
+from the metadata and represent it in a matrix. See the \code{show} method
+for an example.
 }
 \examples{
 ## Create an example GRangesList object
@@ -35,5 +38,8 @@ names(grl) <- c("snparray1", "snparray2", "snparray3")
 
 ## Create a RangedRaggedAssay object class
 myRRA <- RangedRaggedAssay(grl)
+}
+\seealso{
+\code{\link{assay,RangedRaggedAssay,missing-method}}
 }
 

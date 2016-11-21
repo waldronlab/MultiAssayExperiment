@@ -267,6 +267,8 @@ setGeneric("subsetByColumn", function(x, y) standardGeneric("subsetByColumn"))
 #' \code{logical} vector to apply a column subset of a
 #' \code{MultiAssayExperiment} object
 setMethod("subsetByColumn", c("MultiAssayExperiment", "ANY"), function(x, y) {
+    if (is.logical(y))
+        y <- rownames(pData(x))[y]
     selectors <- y[y %in% rownames(pData(x))]
     newpData <- pData(x)[match(selectors, rownames(pData(x))), ]
     listMap <- mapToList(sampleMap(x), "assay")
@@ -442,9 +444,12 @@ setMethod("complete.cases", "MultiAssayExperiment", function(...) {
 
 #' Reshape raw data from an object
 #'
-#' The gather function works to collect all data from the
-#' \code{\link{ExperimentList}} class and to return a uniform
-#' data type, matrix.
+#' The gather function collects data from the \code{\link{ExperimentList}}
+#' in a \code{\link{MultiAssayExperiment}} and returns a uniform
+#' \code{\link{DataFrame}}. The resulting DataFrame has columns indicating
+#' primary, rowname, colname and value. This method can optionally include
+#' pData columns with the \code{pDataCols} argument for a
+#' \code{MultiAssayExperiment} object.
 #'
 #' @param object Any supported class object
 #' @param ... Additional arguments for the \link{RangedRaggedAssay}
@@ -452,41 +457,32 @@ setMethod("complete.cases", "MultiAssayExperiment", function(...) {
 #'
 #' @examples
 #' example("RangedRaggedAssay")
-#' gather(myRRA)
+#' gather(myRRA, background = 0)
 #'
 #' @seealso \code{\link{assay,RangedRaggedAssay,missing-method}}
 #' @return Tall and skinny \code{\linkS4class{DataFrame}}
 #' @export gather
 setGeneric("gather", function(object, ...) standardGeneric("gather"))
 
-#' @describeIn gather \code{\link{ExpressionSet}} class method
-setMethod("gather", "ExpressionSet", function(object, ...) {
-    newMat <- Biobase::exprs(object)
-    gather(newMat)
-})
-
-#' @describeIn gather \code{matrix} class method
-setMethod("gather", "matrix", function(object, ...) {
-    rectangle <- reshape2::melt(object, varnames = c("rowname", "colname"),
-                   as.is = TRUE)
-    callNextMethod(rectangle)
-})
-#' @describeIn gather ANY class method, works with data.frames
+#' @describeIn gather ANY class method, works with ExpressionSet and
+#' SummarizedExperiment classes as well as matrix
 setMethod("gather", "ANY", function(object, ...) {
+    if (inherits(object, "ExpressionSet"))
+        object <- Biobase::exprs(object)
+    if (is(object, "matrix"))
+        object <- reshape2::melt(object, varnames = c("rowname", "colname"),
+                   as.is = TRUE)
+    if (inherits(object, "SummarizedExperiment")) {
+        if (length(rowData(object)) == 1L)
+            names(rowData(object)) <- "rowname"
+        widedf <- data.frame(rowData(object), assay(object),
+                             stringsAsFactors = FALSE)
+        object <- tidyr::gather(widedf, "colname", "value",
+                                seq_along(widedf)[-1L])
+    }
     rectangle <- S4Vectors::DataFrame(object)
     rectangle[, "colname"] <- S4Vectors::Rle(rectangle[["colname"]])
     rectangle
-})
-
-#' @describeIn gather \linkS4class{SummarizedExperiment} class method
-setMethod("gather", "SummarizedExperiment", function(object, ...) {
-    if (length(rowData(object)) == 1L)
-    names(rowData(object)) <- "rowname"
-    wideDF <- data.frame(rowData(object), assay(object),
-                         stringsAsFactors = FALSE)
-    rectangle <- tidyr::gather(wideDF, "colname", "value",
-                               seq_along(wideDF)[-1L])
-    callNextMethod(rectangle)
 })
 
 #' @describeIn gather \linkS4class{RangedRaggedAssay} class method to return
@@ -495,12 +491,11 @@ setMethod("gather", "RangedRaggedAssay", function(object, ...) {
     args <- list(...)
     if (is.null(args$mcolname))
         args$mcolname <- "score"
-
     newMat <- MultiAssayExperiment::assay(object, mcolname = args$mcolname,
                                           make.names = args$make.names,
                                           ranges = args$ranges,
                                           background = args$background)
-    gather(newMat)
+    callNextMethod(newMat)
 })
 
 #' @describeIn gather Gather data from the \code{ExperimentList} class
@@ -515,7 +510,8 @@ setMethod("gather", "ExperimentList", function(object, ...) {
 })
 
 #' @describeIn gather Overarching \code{MultiAssayExperiment} class method
-#' returns list of matrices
+#' returns a small and skinny DataFrame. The \code{pDataCols} arguments allows
+#' the user to append pData columns to the long and skinny DataFrame.
 setMethod("gather", "MultiAssayExperiment", function(object, ...) {
     args <- list(...)
     addCols <- !is.null(args$pDataCols)
@@ -538,4 +534,49 @@ setMethod("gather", "MultiAssayExperiment", function(object, ...) {
                                          extraColumns[matchIdx, , drop = FALSE])
     }
     longDataFrame
+})
+
+.combineCols <- function(rectangle, dupId, FUN=mean, ...) {
+   apply(rectangle[, dupId], 1, function(row) {
+       FUN(row, ...)
+   })
+}
+
+#' @importFrom IRanges reduce
+#' @describeIn MultiAssayExperiment Housekeeping method for a
+#' MultiAssayExperiment where only complete.cases are returned, replicate
+#' measurements are averaged, and columns are aligned by the row order in pData.
+#' @param drop.empty.ranges Only used when reducing RangedRaggedAssay objects
+#' @exportMethod reduce
+setMethod("reduce", "MultiAssayExperiment",
+        function(x, drop.empty.ranges = FALSE, ...) {
+    args <- list(...)
+    x <- x[, complete.cases(x), ]
+    listMap <- mapToList(sampleMap(x))
+    repList <- lapply(listMap, function(assayDF) {
+        repeats <- unique(assayDF[["primary"]][
+            duplicated(assayDF[["primary"]])])
+        repSamps <- lapply(repeats, function(primary) {
+            assayDF[["primary"]] %in% primary
+        })
+        names(repSamps) <- repeats
+        repSamps
+    })
+    ## Under construction
+    mapply(function(expList, replicates) {
+        if (length(replicates)) {
+        newCols <- lapply(replicates, function(repl) {
+                repNames <- colnames(expList)[repl]
+                # .combineCols (expList)
+                newRep <- rowMeans(expList[, repl, drop = FALSE])
+                newDF <- structure(list(newRep), .Names = repNames[[1L]],
+                          row.names = c(NA, -length(newRep)),
+                          class = "data.frame")
+                newDF
+        })
+        # expList[, !replicates[[1L]], drop=FALSE]
+        }
+        expList
+    }, expList = as.list(experiments(x)), replicates = repList, SIMPLIFY = FALSE)
+    return(NULL)
 })

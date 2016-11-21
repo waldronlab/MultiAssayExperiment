@@ -55,6 +55,7 @@ setMethod("assay", c("RangedRaggedAssay", "missing"),
                   args$make.names <- FALSE
 
               if (!is.null(args$ranges)) {
+                  ranges <- args$ranges
                   if (!inherits(ranges, "GRanges"))
                       stop("ranges must be a GRanges object")
                   if (!is.null(args$make.names)) {
@@ -93,6 +94,8 @@ setMethod("assay", c("RangedRaggedAssay", "missing"),
 
 #' @describeIn ExperimentList Get the assay data for the default ANY class
 setMethod("assay", c("ANY", "missing"), function(x, i) {
+    if (inherits(x, "ExpressionSet"))
+        return(Biobase::exprs(x))
     I(x)
 })
 
@@ -108,5 +111,5 @@ setMethod("assay", c("ExperimentList", "missing"), function(x, i) {
 #' \link{MultiAssayExperiment} as a \code{list}
 #' @aliases assay,MultiAssayExperiment,missing-method
 setMethod("assay", c("MultiAssayExperiment", "missing"), function(x, i) {
-    assay(ExperimentList(x))
+    assay(experiments(x))
 })

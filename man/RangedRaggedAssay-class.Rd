@@ -10,8 +10,6 @@
 \alias{[,RangedRaggedAssay,GRanges,ANY,ANY-method}
 \alias{[,RangedRaggedAssay,GRanges-method}
 \alias{dim,RangedRaggedAssay-method}
-\alias{ncol,RangedRaggedAssay-method}
-\alias{nrow,RangedRaggedAssay-method}
 \alias{dimnames,RangedRaggedAssay-method}
 \alias{dimnames<-,RangedRaggedAssay,list-method}
 \alias{show,RangedRaggedAssay-method}
@@ -23,10 +21,6 @@
 \S4method{[}{RangedRaggedAssay,GRanges,ANY,ANY}(x, i, j, ..., drop = TRUE)
 
 \S4method{dim}{RangedRaggedAssay}(x)
-
-\S4method{ncol}{RangedRaggedAssay}(x)
-
-\S4method{nrow}{RangedRaggedAssay}(x)
 
 \S4method{dimnames}{RangedRaggedAssay}(x)
 
@@ -75,12 +69,6 @@ names
 \code{GRanges} class object
 
 \item \code{dim}: Obtain dimension lengths of a
-\code{RangedRaggedAssay} class object
-
-\item \code{ncol}: Get the column length of a
-\code{RangedRaggedAssay} class object
-
-\item \code{nrow}: Get the row length of a
 \code{RangedRaggedAssay} class object
 
 \item \code{dimnames}: Get dimension names

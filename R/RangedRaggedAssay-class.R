@@ -14,9 +14,18 @@
 
 #' Create a RangedRaggedAssay
 #'
+#' Construct an object representing ranged-based data, typically from a
+#' \code{\link{GRangesList}}. The assay method will extract a particular column
+#' from the metadata and represent it in a matrix. See the \code{show} method
+#' for an example.
+#'
 #' @param x A \code{list}, \code{GRanges} or \code{GRangesList} object
 #' @return A \code{\linkS4class{RangedRaggedAssay}} class object
+#'
 #' @example inst/scripts/RangedRaggedAssay-Ex.R
+#'
+#' @seealso \code{\link{assay,RangedRaggedAssay,missing-method}}
+#'
 #' @export RangedRaggedAssay
 RangedRaggedAssay <- function(x = GRangesList()) {
     if (inherits(x, "GRanges")) {
@@ -112,16 +121,6 @@ setMethod("[", c("RangedRaggedAssay", "GRanges", "ANY"),
 setMethod("dim", "RangedRaggedAssay", function(x)
     c(length(unlist(x)), length(x)))
 
-#' @describeIn RangedRaggedAssay Get the column length of a
-#' \code{RangedRaggedAssay} class object
-setMethod("ncol", "RangedRaggedAssay", function(x)
-    dim(x)[2])
-
-#' @describeIn RangedRaggedAssay Get the row length of a
-#' \code{RangedRaggedAssay} class object
-setMethod("nrow", "RangedRaggedAssay", function(x)
-    dim(x)[1])
-
 #' @describeIn RangedRaggedAssay Get dimension names
 #' for a \code{RangedRaggedAssay}
 setMethod("dimnames", "RangedRaggedAssay", function(x) {
@@ -159,7 +158,7 @@ setMethod("show", "RangedRaggedAssay", function(object) {
 
     for (elt in head(elts, 3)) {
         cat("\n", elt, "\n", sep="")
-        x <- assay(object, i = 1L, mcolname = elt)
+        x <- assay(object, mcolname = elt)
         print(head(x, 3))
         if (nrow(x) > 3)
             cat("...\n")
