@@ -36,10 +36,12 @@ value for the resulting matrix (default NA). This usually indicates non-matching
 values in the matrix (e.g., 2 for diploid genomes). Users are also able
 to provide a \link{GRanges} class object for specifying ranges of
 interest in the resulting matrix using the \code{ranges} argument.
-The \code{make.names} argument is a logical value  that
+The \code{make.names} argument is a logical value (default FALSE) that
 allows the user to indicate the automatic creation of automatic names
 either from the \code{GRanges} or the \link{RangedRaggedAssay} object in
-character format (i.e., "chr1:2-3:+").
+character format (i.e., "chr1:2-3:+"). The user can also include a
+\code{\strong{type}} argument for indicating the type of overlap check
+requested (default "any").
 }
 \examples{
 example("RangedRaggedAssay")
