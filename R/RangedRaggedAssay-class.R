@@ -149,7 +149,12 @@ setMethod("show", "RangedRaggedAssay", function(object) {
         cat("Non-disjoint RangedRaggedAssay")
         callNextMethod(object)
     }
-    elts <- names(mcols(unlist(object)))
+    metacols <- mcols(unlist(object))
+    showable <- vapply(metacols, function(mcol) {
+        (is.numeric(mcol) || is.character(mcol))
+    }, logical(1L))
+    elts <- names(metacols)
+    elts <- elts[showable]
 
     cat(class(object), "with",
         length(dimnames(object)[[1]]), "disjoint ranges,",
