@@ -40,7 +40,7 @@ The \code{make.names} argument is a logical value (default FALSE) that
 allows the user to indicate the automatic creation of automatic names
 either from the \code{GRanges} or the \link{RangedRaggedAssay} object in
 character format (i.e., "chr1:2-3:+"). The user can also include a
-\code{\strong{type}} argument for indicating the type of overlap check
+\code{type} argument for indicating the type of overlap check
 requested (default "any").
 }
 \examples{
