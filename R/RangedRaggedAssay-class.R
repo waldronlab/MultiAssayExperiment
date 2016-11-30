@@ -151,7 +151,7 @@ setMethod("show", "RangedRaggedAssay", function(object) {
     }
     metacols <- mcols(unlist(object))
     showable <- vapply(metacols, function(mcol) {
-        (is.numeric(mcol) || is.character(mcol))
+        is.atomic(mcol)
     }, logical(1L))
     elts <- names(metacols)
     elts <- elts[showable]
