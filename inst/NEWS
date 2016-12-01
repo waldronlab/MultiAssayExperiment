@@ -1,3 +1,16 @@
+# MultiAssayExperiment 1.1.5
+
+## New features
+
+* Added an example `HNSC` dataset
+
+## Bug fixes and minor improvements
+
+* Improve documentation of `assay` method for the `RangedRaggedAssay`
+* Bug fixes for `assay` method
+* Removed method pollution for other Bioconductor classes
+* `assay` method only shows numeric or character data
+
 # MultiAssayExperiment 1.1.2
 
 ## New features

@@ -22,10 +22,12 @@
 #' values in the matrix (e.g., 2 for diploid genomes). Users are also able
 #' to provide a \link{GRanges} class object for specifying ranges of
 #' interest in the resulting matrix using the \code{ranges} argument.
-#' The \code{make.names} argument is a logical value  that
+#' The \code{make.names} argument is a logical value (default FALSE) that
 #' allows the user to indicate the automatic creation of automatic names
 #' either from the \code{GRanges} or the \link{RangedRaggedAssay} object in
-#' character format (i.e., "chr1:2-3:+").
+#' character format (i.e., "chr1:2-3:+"). The user can also include a
+#' \code{type} argument for indicating the type of overlap check
+#' requested (default "any").
 #'
 #' @examples
 #' example("RangedRaggedAssay")
@@ -53,12 +55,14 @@ setMethod("assay", c("RangedRaggedAssay", "missing"),
                   args$background <- NA
               if (is.null(args$make.names))
                   args$make.names <- FALSE
+              if (is.null(args$type))
+                  args$type <- "any"
 
               if (!is.null(args$ranges)) {
                   ranges <- args$ranges
                   if (!inherits(ranges, "GRanges"))
                       stop("ranges must be a GRanges object")
-                  if (!is.null(args$make.names)) {
+                  if (args$make.names || is.null(names(ranges))) {
                       rowNames <- as.character(ranges)
                   } else {
                       rowNames <- names(ranges)
@@ -80,7 +84,7 @@ setMethod("assay", c("RangedRaggedAssay", "missing"),
                                  function(j, obj) {
                                      MValues <- ifelse(
                                          IRanges::overlapsAny(ranges, obj[[j]],
-                                                              type = "equal"),
+                                                              type = args$type),
                                          as.numeric(mcols(
                                              obj[[j]])[[args$mcolname]]
                                          ),
