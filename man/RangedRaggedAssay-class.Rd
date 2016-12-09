@@ -14,6 +14,7 @@
 \alias{dimnames<-,RangedRaggedAssay,list-method}
 \alias{show,RangedRaggedAssay-method}
 \alias{getHits,RangedRaggedAssay,character-method}
+\alias{reduce,RangedRaggedAssay-method}
 \title{An extension of the GRangesList class}
 \usage{
 \S4method{[}{RangedRaggedAssay,ANY,ANY,ANY}(x, i, j, ..., drop = TRUE)
@@ -29,6 +30,8 @@
 \S4method{show}{RangedRaggedAssay}(object)
 
 \S4method{getHits}{RangedRaggedAssay,character}(subject, query, ...)
+
+\S4method{reduce}{RangedRaggedAssay}(x, drop.empty.ranges = FALSE, ...)
 }
 \arguments{
 \item{x}{A \code{\link{RangedRaggedAssay}} class}
@@ -50,6 +53,8 @@ type for selecting columns (\code{\link[GenomicRanges]{GRangesList}} method)}
 \item{subject}{A \code{RangedRaggedAssay} class object}
 
 \item{query}{A \code{character} class for searching hits}
+
+\item{drop.empty.ranges}{Ignored until further notice}
 }
 \value{
 A \code{\link{RangedRaggedAssay}} class object
@@ -82,6 +87,13 @@ the \code{RangedRaggedAssay} class
 
 \item \code{getHits}: Find matching features by \code{character}
 in a \code{RangedRaggedAssay}
+
+\item \code{reduce}: Use metadata column to produce a matrix which
+can then be merged across replicates. Arguments available: replicates -
+logical vector of samples which are duplicated and to be reduced, FUN -
+function for which to apply across samples in question (default rowMeans),
+byRow - logical (default TRUE) denotes whether provided function is
+vectorized. See also: assay,RangedRaggedAssay,missing-method
 }}
 \seealso{
 \code{\link[IRanges]{findOverlaps-methods}}
