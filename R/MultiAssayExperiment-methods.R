@@ -536,10 +536,15 @@ setMethod("gather", "MultiAssayExperiment", function(object, ...) {
     longDataFrame
 })
 
-.combineCols <- function(rectangle, dupId, FUN=mean, ...) {
-   apply(rectangle[, dupId], 1, function(row) {
-       FUN(row, ...)
-   })
+.combineCols <- function(rectangle, dupNames, FUN=rowMeans, byRow = TRUE, ...) {
+    if (!is.logical(byRow))
+        stop("'byRow' argument not logical")
+    if (byRow)
+        FUN(rectangle[, dupNames, drop = FALSE], ...)
+    else
+        apply(rectangle[, dupNames, drop = FALSE], 1, function(row) {
+            FUN(row, ...)
+        })
 }
 
 #' @importFrom IRanges reduce
@@ -551,7 +556,13 @@ setMethod("gather", "MultiAssayExperiment", function(object, ...) {
 setMethod("reduce", "MultiAssayExperiment",
         function(x, drop.empty.ranges = FALSE, ...) {
     args <- list(...)
+    if (is.null(args$FUN))
+        args$FUN <- rowMeans
+    if (is.null(args$byRow))
+        args$byRow <- TRUE
+    ## Select complete cases
     x <- x[, complete.cases(x), ]
+    ## Find replicate measurements (duplicated primary names)
     listMap <- mapToList(sampleMap(x))
     repList <- lapply(listMap, function(assayDF) {
         repeats <- unique(assayDF[["primary"]][
@@ -563,20 +574,85 @@ setMethod("reduce", "MultiAssayExperiment",
         repSamps
     })
     ## Under construction
-    mapply(function(expList, replicates) {
+    experimentList <- mapply(function(expList, replicates, FUN, byRow) {
         if (length(replicates)) {
-        newCols <- lapply(replicates, function(repl) {
+            newCols <- lapply(replicates, function(repl) {
                 repNames <- colnames(expList)[repl]
-                # .combineCols (expList)
-                newRep <- rowMeans(expList[, repl, drop = FALSE])
-                newDF <- structure(list(newRep), .Names = repNames[[1L]],
-                          row.names = c(NA, -length(newRep)),
-                          class = "data.frame")
-                newDF
-        })
-        # expList[, !replicates[[1L]], drop=FALSE]
+                result <- .combineCols(expList, repNames, FUN = FUN,
+                                       byRow = byRow)
+                combDF <- structure(list(result), .Names = repNames[[1L]],
+                                   row.names = c(NA, -length(result)),
+                                   class = "data.frame")
+                keptCols <- !colnames(expList) %in% repNames
+                expList <- expList[, keptCols, drop = FALSE]
+                newExpList <- cbind.data.frame(combDF, expList)
+                newExpList
+            })
         }
         expList
-    }, expList = as.list(experiments(x)), replicates = repList, SIMPLIFY = FALSE)
+    }, expList = as.list(experiments(x)), replicates = repList,
+    MoreArgs = args, SIMPLIFY = FALSE)
+    experiments(x) <- ExperimentList(experimentList)
     return(NULL)
 })
+
+#' @describeIn MultiAssayExperiment Consolidate columns for rectangular
+#' data structures, mainly matrix
+setMethod("reduce", "ANY", function(x, drop.empty.ranges = FALSE, ...) {
+    args <- list(...)
+    if (!is.null(args$replicates)) {
+        replicates <- args$replicates
+        repNames <- colnames(x)[replicates]
+        result <- .combineCols(expList, repNames, FUN = args$FUN,
+                               byRow = args$byRow)
+        combDF <- structure(list(result), .Names = repNames[[1L]],
+                            row.names = c(NA, -length(result)),
+                            class = "data.frame")
+        keptCols <- !colnames(expList) %in% repNames
+        expList <- expList[, keptCols, drop = FALSE]
+        newExpList <- cbind.data.frame(combDF, expList)
+        newExpList
+    } else {
+        return(x)
+    }
+})
+
+#' @describeIn RangedRaggedAssay Use metadata column to produce a matrix which
+#' can then be merged across replicates. Arguments available: replicates -
+#' logical vector of samples which are duplicated and to be reduced, FUN -
+#' function for which to apply across samples in question (default rowMeans),
+#' byRow - logical (default TRUE) denotes whether provided function is
+#' vectorized. See also: assay,RangedRaggedAssay,missing-method
+#' @param drop.empty.ranges Ignored until further notice
+setMethod("reduce", "RangedRaggedAssay",
+          function(x, drop.empty.ranges = FALSE, ...) {
+              args <- list(...)
+              assayArgs <- args[c("mcolname", "background", "type",
+                                  "make.names", "ranges")]
+              assayArgs <- Filter(function(x) !is.null(x), assayArgs)
+              if (!is.null(args$replicates)) {
+                  if (is.null(args$FUN))
+                      args$FUN <- rowMeans
+                  if (is.null(args$byRow))
+                      args$byRow <- TRUE
+                  x <- do.call(assay, c(list(x = x), assayArgs))
+                  repNames <- colnames(x)[args$replicates]
+                  result <- x[, args$replicates, drop = FALSE]
+                  x <- x[, !colnames(x) %in% repNames, drop = FALSE]
+                  result <- .combineCols(result, repNames, FUN = args$FUN,
+                                         byRow = args$byRow)
+                  combMat <- structure(result, .Dim = c(length(result), 1L),
+                                       .Dimnames = list(names(result),
+                                                        repNames[[1L]]))
+                  return(cbind(combMat, x))
+              }
+          })
+
+#' @describeIn ExperimentList Apply the reduce method on the
+#' ExperimentList elements
+#' @param drop.empty.ranges Ignored until further notice
+#' @param ... Additional arguments passed to reduce
+setMethod("reduce", "ExperimentList",
+          function(x, drop.empty.ranges = FALSE, ...) {
+              lapply(x, FUN = function(y) { reduce(y, ...) })
+          })
