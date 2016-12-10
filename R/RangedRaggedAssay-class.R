@@ -95,12 +95,20 @@ RangedRaggedAssay <- function(x = GRangesList()) {
 #' Subsetting a RangedRaggedAssay can be done using either rownames and column
 #' names
 #'
+#' @details
+#' The \code{\ldots} argument allows the user to specify arguments in the
+#' \code{\link{subsetByOverlaps}} function. When calling the \code{reduce}
+#' method, the additional arguments correspond to those in either the
+#' \code{assay} method or the \code{reduce} method. The \code{reduce} arguments
+#' include a function for applying over the rows (FUN) and a \code{byRow}
+#' argument which indicates whether the given function is vectorized or not.
+#'
 #' @param x A \code{\link{RangedRaggedAssay}} class
 #' @param i Either a \code{character} or \code{GRanges} class object
 #' to subset by rows
 #' @param j Either a \code{character}, \code{numeric}, or \code{logical}
 #' type for selecting columns (\code{\link[GenomicRanges]{GRangesList}} method)
-#' @param ... Any additional arguments passed on to subsetByOverlaps
+#' @param ... Additional arguments. See details for more information.
 #' @param drop logical (default TRUE) whether to drop empty columns
 #' @seealso \code{\link[IRanges]{findOverlaps-methods}}
 #' @return A \code{\link{RangedRaggedAssay}} class object

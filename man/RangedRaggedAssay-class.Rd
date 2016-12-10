@@ -42,7 +42,7 @@ to subset by rows}
 \item{j}{Either a \code{character}, \code{numeric}, or \code{logical}
 type for selecting columns (\code{\link[GenomicRanges]{GRangesList}} method)}
 
-\item{...}{Any additional arguments passed on to subsetByOverlaps}
+\item{...}{Additional arguments. See details for more information.}
 
 \item{drop}{logical (default TRUE) whether to drop empty columns}
 
@@ -64,6 +64,14 @@ An extension of the GRangesList class
 
 Subsetting a RangedRaggedAssay can be done using either rownames and column
 names
+}
+\details{
+The \code{\ldots} argument allows the user to specify arguments in the
+\code{\link{subsetByOverlaps}} function. When calling the \code{reduce}
+method, the additional arguments correspond to those in either the
+\code{assay} method or the \code{reduce} method. The \code{reduce} arguments
+include a function for applying over the rows (FUN) and a \code{byRow}
+argument which indicates whether the given function is vectorized or not.
 }
 \section{Methods (by generic)}{
 \itemize{
