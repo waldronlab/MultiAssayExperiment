@@ -61,7 +61,7 @@ example("RangedRaggedAssay")
 
 ## Add the RangedRaggedAssay to the list
 ExpList <- c(ExpList, myRRA)
-names(ExpList)[3] <- "CNVgistic"
+names(ExpList)[4] <- "CNVgistic"
 
 ## Run the sample map example
 example("sampleMap")

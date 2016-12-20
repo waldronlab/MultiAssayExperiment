@@ -21,19 +21,19 @@ test_that("subsettor length is of the same as MultiAssayExperiment", {
 
 test_that("drop argument works", {
   expect_equal(length(
-      experiments(myMultiAssayExperiment[, colList, drop = TRUE])), 2L)
+      experiments(myMultiAssayExperiment[, colList, drop = TRUE])), 3L)
   expect_equal(length(
-      experiments(myMultiAssayExperiment[, colList, drop = FALSE])), 3L)
+      experiments(myMultiAssayExperiment[, colList, drop = FALSE])), 4L)
   expect_equal(length(
-      experiments(myMultiAssayExperiment[rowList, drop = TRUE])), 2L)
+      experiments(myMultiAssayExperiment[rowList, drop = TRUE])), 3L)
   expect_equal(length(
-      experiments(myMultiAssayExperiment[rowList, drop = FALSE])), 3L)
+      experiments(myMultiAssayExperiment[rowList, drop = FALSE])), 4L)
   expect_equal(length(
       experiments(myMultiAssayExperiment[FALSE, drop = TRUE])), 0L)
   expect_equal(length(
-      experiments(myMultiAssayExperiment[FALSE, drop = FALSE])), 3L)
+      experiments(myMultiAssayExperiment[FALSE, drop = FALSE])), 4L)
   expect_equal(length(
       experiments(myMultiAssayExperiment[,FALSE, drop = TRUE])), 0L)
   expect_equal(length(
-      experiments(myMultiAssayExperiment[,FALSE, drop = FALSE])), 3L)
+      experiments(myMultiAssayExperiment[,FALSE, drop = FALSE])), 4L)
 })
