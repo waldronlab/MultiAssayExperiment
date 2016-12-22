@@ -11,23 +11,19 @@
 #'
 #' @param x A \linkS4class{RangedRaggedAssay} or \link{GRangesList} class
 #' @param i Argument from generic (default 1L)
-#' @param ... Additional arguments, see details for more information.
-#'
-#' @details
-#' The \linkS4class{RangedRaggedAssay} class represents genomic ranges in
-#' matrix shape based on the selected inner metadata column ("mcol"). To
-#' accomplish this, the \code{mcolname} argument can be indicated with a
-#' string. The \code{background} argument can be used to specify a background
-#' value for the resulting matrix (default NA). This usually indicates non-matching
-#' values in the matrix (e.g., 2 for diploid genomes). Users are also able
-#' to provide a \link{GRanges} class object for specifying ranges of
-#' interest in the resulting matrix using the \code{ranges} argument.
-#' The \code{make.names} argument is a logical value (default FALSE) that
-#' allows the user to indicate the automatic creation of automatic names
-#' either from the \code{GRanges} or the \link{RangedRaggedAssay} object in
-#' character format (i.e., "chr1:2-3:+"). The user can also include a
-#' \code{type} argument for indicating the type of overlap check
-#' requested (default "any").
+#' @param mcolname A single string indicating the metadata column to use for
+#' the assay conversion
+#' @param background A default background value for the resulting assay matrix
+#' (default NA). This works for non-matching sample and range pairs in the data
+#' and will be imputed in the matrix (e.g., 2 for diploid genomes)
+#' @param make.names logical (default FALSE) whether to create character format
+#' ranges for the rows of the matrix (either from the \code{ranges} argument
+#' or from the \code{RangedRaggedAssay} itself). Example character format:
+#' "chr1:2-3:+"
+#' @param ranges An optional \link{GRanges} object for comparing accross all
+#' sample ranges and for superseding the rows for the resulting matrix
+#' (default NULL)
+#' @param type The type argument from \link{overlapsAny}
 #'
 #' @examples
 #' example("RangedRaggedAssay")
@@ -40,36 +36,28 @@
 #' assay(myRRA, background = 2)
 #'
 #' @return A \code{matrix} of values from the score column of the metadata.
+#' @seealso \link{overlapsAny}
 #' @exportMethod assay
 setMethod("assay", c("RangedRaggedAssay", "missing"),
-          function(x, i, ...) {
-              args <- list(...)
+          function(x, i, mcolname = "score", background = NA,
+                   make.names = FALSE, ranges = NULL, type = "any"){
               if (!all(GenomicRanges::isDisjoint(x)))
                   stop("only disjoint ranges supported")
 
-              if (is.null(args$mcolname))
-                  args$mcolname <- "score"
-              if (!is.numeric(mcols(x[[1L]])[[args$mcolname]]))
+              if (!is.numeric(mcols(x[[1L]])[[mcolname]]))
                   stop("metadata column is not numeric")
-              if (is.null(args$background))
-                  args$background <- NA
-              if (is.null(args$make.names))
-                  args$make.names <- FALSE
-              if (is.null(args$type))
-                  args$type <- "any"
 
-              if (!is.null(args$ranges)) {
-                  ranges <- args$ranges
+              if (!is.null(ranges)) {
                   if (!inherits(ranges, "GRanges"))
                       stop("ranges must be a GRanges object")
-                  if (args$make.names || is.null(names(ranges))) {
+                  if (make.names || is.null(names(ranges))) {
                       rowNames <- as.character(ranges)
                   } else {
                       rowNames <- names(ranges)
                   }
               } else {
                   rowNames <- rownames(x)
-                  if (args$make.names) {
+                  if (make.names) {
                       rangeNames <- unique(as.character(
                           unlist(x, use.names = FALSE)))
                       if (length(unique(rowNames)) != length(rangeNames))
@@ -84,11 +72,11 @@ setMethod("assay", c("RangedRaggedAssay", "missing"),
                                  function(j, obj) {
                                      MValues <- ifelse(
                                          IRanges::overlapsAny(ranges, obj[[j]],
-                                                              type = args$type),
+                                                              type = type),
                                          as.numeric(mcols(
-                                             obj[[j]])[[args$mcolname]]
+                                             obj[[j]])[[mcolname]]
                                          ),
-                                         args$background)
+                                         background)
                                      return(MValues)
                                  }, obj = x))
               colnames(newMatrix) <- colnames(x)
