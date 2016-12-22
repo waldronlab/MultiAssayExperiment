@@ -31,7 +31,8 @@
 
 \S4method{getHits}{RangedRaggedAssay,character}(subject, query, ...)
 
-\S4method{reduce}{RangedRaggedAssay}(x, drop.empty.ranges = FALSE, ...)
+\S4method{reduce}{RangedRaggedAssay}(x, drop.empty.ranges = FALSE,
+  replicates = NULL, ...)
 }
 \arguments{
 \item{x}{A \code{\link{RangedRaggedAssay}} class}
@@ -55,6 +56,9 @@ type for selecting columns (\code{\link[GenomicRanges]{GRangesList}} method)}
 \item{query}{A \code{character} class for searching hits}
 
 \item{drop.empty.ranges}{Ignored until further notice}
+
+\item{replicates}{reduce: A logical vector indicating what columns are duplicated
+in the dataset (default NULL)}
 }
 \value{
 A \code{\link{RangedRaggedAssay}} class object

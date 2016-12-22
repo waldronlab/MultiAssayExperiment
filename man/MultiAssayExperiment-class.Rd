@@ -64,9 +64,10 @@
 
 \S4method{complete.cases}{MultiAssayExperiment}(...)
 
-\S4method{reduce}{MultiAssayExperiment}(x, drop.empty.ranges = FALSE, ...)
+\S4method{reduce}{MultiAssayExperiment}(x, drop.empty.ranges = FALSE,
+  FUN = rowMeans, byRow = TRUE, ...)
 
-\S4method{reduce}{ANY}(x, drop.empty.ranges = FALSE, ...)
+\S4method{reduce}{ANY}(x, drop.empty.ranges = FALSE, replicates = NULL, ...)
 
 \S4method{assay}{MultiAssayExperiment,missing}(x, i)
 }
@@ -98,6 +99,15 @@ for subsetting by assays}
 in the \code{ExperimentList}}
 
 \item{drop.empty.ranges}{Only used when reducing RangedRaggedAssay objects}
+
+\item{FUN}{reduce: function for combining replicate columns/samples
+(default rowMeans)}
+
+\item{byRow}{reduce: logical (default TRUE) whether this function is
+vectorized, optimized for working down the vector pairs}
+
+\item{replicates}{A logical vector indicating what columns are duplicated
+in the dataset (default NULL)}
 }
 \value{
 A \code{MultiAssayExperiment} object

@@ -17,13 +17,15 @@ gather(object, ...)
 
 \S4method{gather}{ExperimentList}(object, ...)
 
-\S4method{gather}{MultiAssayExperiment}(object, ...)
+\S4method{gather}{MultiAssayExperiment}(object, pDataCols = NULL, ...)
 }
 \arguments{
 \item{object}{Any supported class object}
 
 \item{...}{Additional arguments for the \link{RangedRaggedAssay}
 \code{assay} method. See below.}
+
+\item{pDataCols}{selected pData columns to include in the resulting output}
 }
 \value{
 Tall and skinny \code{\linkS4class{DataFrame}}
