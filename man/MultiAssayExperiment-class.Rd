@@ -23,6 +23,7 @@
 \alias{[,MultiAssayExperiment,ANY-method}
 \alias{isEmpty,MultiAssayExperiment-method}
 \alias{complete.cases,MultiAssayExperiment-method}
+\alias{duplicated,MultiAssayExperiment-method}
 \alias{reduce,MultiAssayExperiment-method}
 \alias{reduce,ANY-method}
 \alias{assay,MultiAssayExperiment,missing-method}
@@ -64,10 +65,13 @@
 
 \S4method{complete.cases}{MultiAssayExperiment}(...)
 
-\S4method{reduce}{MultiAssayExperiment}(x, drop.empty.ranges = FALSE,
-  FUN = rowMeans, byRow = TRUE, ...)
+\S4method{duplicated}{MultiAssayExperiment}(x, incomparables = FALSE, ...)
 
-\S4method{reduce}{ANY}(x, drop.empty.ranges = FALSE, replicates = NULL, ...)
+\S4method{reduce}{MultiAssayExperiment}(x, drop.empty.ranges = FALSE,
+  combine = rowMeans, vectorized = TRUE, ...)
+
+\S4method{reduce}{ANY}(x, drop.empty.ranges = FALSE, replicates = NULL,
+  combine = rowMeans, vectorized = TRUE, ...)
 
 \S4method{assay}{MultiAssayExperiment,missing}(x, i)
 }
@@ -98,16 +102,18 @@ for subsetting by assays}
 \item{drop}{logical (default TRUE) whether to drop empty assay elements
 in the \code{ExperimentList}}
 
+\item{incomparables}{duplicated: unused argument}
+
 \item{drop.empty.ranges}{Only used when reducing RangedRaggedAssay objects}
 
-\item{FUN}{reduce: function for combining replicate columns/samples
-(default rowMeans)}
-
-\item{byRow}{reduce: logical (default TRUE) whether this function is
+\item{vectorized}{reduce: logical (default TRUE) whether the combine function is
 vectorized, optimized for working down the vector pairs}
 
 \item{replicates}{A logical vector indicating what columns are duplicated
 in the dataset (default NULL)}
+
+\item{FUN}{reduce: function for combining replicate columns/samples
+(default rowMeans)}
 }
 \value{
 A \code{MultiAssayExperiment} object
@@ -173,6 +179,9 @@ for a \code{MultiAssayExperiment} object
 
 \item \code{complete.cases}: Return a logical vector of biological units
 with data across all experiments
+
+\item \code{duplicated}: Find duplicate columns in the data by
+matching pData rownames
 
 \item \code{reduce}: Housekeeping method for a
 MultiAssayExperiment where only complete.cases are returned, replicate

@@ -32,7 +32,7 @@
 \S4method{getHits}{RangedRaggedAssay,character}(subject, query, ...)
 
 \S4method{reduce}{RangedRaggedAssay}(x, drop.empty.ranges = FALSE,
-  replicates = NULL, ...)
+  replicates = NULL, combine = rowMeans, vectorized = TRUE, ...)
 }
 \arguments{
 \item{x}{A \code{\link{RangedRaggedAssay}} class}
@@ -57,8 +57,14 @@ type for selecting columns (\code{\link[GenomicRanges]{GRangesList}} method)}
 
 \item{drop.empty.ranges}{Ignored until further notice}
 
-\item{replicates}{reduce: A logical vector indicating what columns are duplicated
-in the dataset (default NULL)}
+\item{replicates}{reduce: A logical list where each element represents a
+sample and a vector of repeated experiments for the sample (default NULL)}
+
+\item{combine}{A function for consolidating columns in the matrix
+representation of the data}
+
+\item{vectorized}{logical (default TRUE) whether the \code{combine} function is
+vectorized, optimized for working down the vector pairs}
 }
 \value{
 A \code{\link{RangedRaggedAssay}} class object
@@ -104,7 +110,7 @@ in a \code{RangedRaggedAssay}
 can then be merged across replicates. Arguments available: replicates -
 logical vector of samples which are duplicated and to be reduced, FUN -
 function for which to apply across samples in question (default rowMeans),
-byRow - logical (default TRUE) denotes whether provided function is
+vectorized - logical (default TRUE) denotes whether provided function is
 vectorized. See also: assay,RangedRaggedAssay,missing-method
 }}
 \seealso{
