@@ -567,28 +567,35 @@ setMethod("duplicated", "MultiAssayExperiment",
 #' MultiAssayExperiment where only complete.cases are returned, replicate
 #' measurements are averaged, and columns are aligned by the row order in pData.
 #' @param drop.empty.ranges Only used when reducing RangedRaggedAssay objects
-#' @param FUN reduce: function for combining replicate columns/samples
+#' @param replicates A list of duplicate entries for each biological unit,
+#' see the \code{duplicated} method for MultiAssayExperiment
+#' @param combine reduce: function for combining replicate columns/samples
 #' (default rowMeans)
 #' @param vectorized reduce: logical (default TRUE) whether the combine function is
 #' vectorized, optimized for working down the vector pairs
 #' @exportMethod reduce
 setMethod("reduce", "MultiAssayExperiment",
-        function(x, drop.empty.ranges = FALSE, combine = rowMeans,
-                 vectorized = TRUE, ...) {
+        function(x, drop.empty.ranges = FALSE, replicates = NULL,
+                 combine = rowMeans, vectorized = TRUE, ...) {
     args <- list(...)
     ## Select complete cases
     x <- x[, complete.cases(x), ]
-    ## Find replicate measurements (duplicated primary names)
-    repList <- duplicated(x)
-    ## Under construction
-    experimentList <- reduce(experiments(x), repList)
-    experiments(x) <- ExperimentList(experimentList)
+    if (is.null(replicates))
+        replicates <- duplicated(x)
+    experimentList <- reduce(experiments(x), replicates = replicates,
+                             combine = combine, vectorized = vectorized, ...)
     return(NULL)
 })
 
 #' @describeIn ExperimentList Apply the reduce method on the
 #' ExperimentList elements
 #' @param drop.empty.ranges Ignored until further notice
+#' @param replicates reduce: A logical list where each element represents a
+#' sample and a vector of repeated experiments for the sample (default NULL)
+#' @param combine reduce: A function for consolidating columns in the matrix
+#' representation of the data
+#' @param vectorized reduce: (default TRUE) whether the \code{combine} function
+#' is vectorized, optimized for working down the vector pairs
 #' @param ... Additional arguments passed to reduce
 setMethod("reduce", "ExperimentList",
           function(x, drop.empty.ranges = FALSE, replicates = NULL,
@@ -599,15 +606,13 @@ setMethod("reduce", "ExperimentList",
 
 #' @describeIn MultiAssayExperiment Consolidate columns for rectangular
 #' data structures, mainly matrix
-#' @param replicates A logical vector indicating what columns are duplicated
-#' in the dataset (default NULL)
 setMethod("reduce", "ANY", function(x, drop.empty.ranges = FALSE,
                                     replicates = NULL, combine = rowMeans,
                                     vectorized = TRUE, ...) {
     if (is(x, "SummarizedExperiment"))
         x <- assay(x)
     if (is(x, "ExpressionSet"))
-        x <- exprs(x)
+        x <- Biobase::exprs(x)
     uniqueCols <- apply(as.matrix(replicates), 2, function(cols) { !any(cols) })
     repeatList <- lapply(replicates, function(reps, rectangle, combine, vectorized) {
         if (length(reps)) {
@@ -626,18 +631,15 @@ setMethod("reduce", "ANY", function(x, drop.empty.ranges = FALSE,
 })
 
 #' @describeIn RangedRaggedAssay Use metadata column to produce a matrix which
-#' can then be merged across replicates. Arguments available: replicates -
-#' logical vector of samples which are duplicated and to be reduced, FUN -
-#' function for which to apply across samples in question (default rowMeans),
-#' vectorized - logical (default TRUE) denotes whether provided function is
-#' vectorized. See also: assay,RangedRaggedAssay,missing-method
+#' can then be merged across replicates.
+#' See also: assay,RangedRaggedAssay,missing-method
 #' @param drop.empty.ranges Ignored until further notice
 #' @param replicates reduce: A logical list where each element represents a
 #' sample and a vector of repeated experiments for the sample (default NULL)
 #' @param combine A function for consolidating columns in the matrix
 #' representation of the data
-#' @param vectorized logical (default TRUE) whether the \code{combine} function is
-#' vectorized, optimized for working down the vector pairs
+#' @param vectorized logical (default TRUE) whether the \code{combine} function
+#' is vectorized, optimized for working down the vector pairs
 setMethod("reduce", "RangedRaggedAssay",
           function(x, drop.empty.ranges = FALSE, replicates = NULL,
                    combine = rowMeans, vectorized = TRUE, ...) {

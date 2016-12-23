@@ -68,7 +68,7 @@
 \S4method{duplicated}{MultiAssayExperiment}(x, incomparables = FALSE, ...)
 
 \S4method{reduce}{MultiAssayExperiment}(x, drop.empty.ranges = FALSE,
-  combine = rowMeans, vectorized = TRUE, ...)
+  replicates = NULL, combine = rowMeans, vectorized = TRUE, ...)
 
 \S4method{reduce}{ANY}(x, drop.empty.ranges = FALSE, replicates = NULL,
   combine = rowMeans, vectorized = TRUE, ...)
@@ -106,14 +106,14 @@ in the \code{ExperimentList}}
 
 \item{drop.empty.ranges}{Only used when reducing RangedRaggedAssay objects}
 
+\item{replicates}{A list of duplicate entries for each biological unit,
+see the \code{duplicated} method for MultiAssayExperiment}
+
+\item{combine}{reduce: function for combining replicate columns/samples
+(default rowMeans)}
+
 \item{vectorized}{reduce: logical (default TRUE) whether the combine function is
 vectorized, optimized for working down the vector pairs}
-
-\item{replicates}{A logical vector indicating what columns are duplicated
-in the dataset (default NULL)}
-
-\item{FUN}{reduce: function for combining replicate columns/samples
-(default rowMeans)}
 }
 \value{
 A \code{MultiAssayExperiment} object

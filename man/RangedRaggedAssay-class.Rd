@@ -63,8 +63,8 @@ sample and a vector of repeated experiments for the sample (default NULL)}
 \item{combine}{A function for consolidating columns in the matrix
 representation of the data}
 
-\item{vectorized}{logical (default TRUE) whether the \code{combine} function is
-vectorized, optimized for working down the vector pairs}
+\item{vectorized}{logical (default TRUE) whether the \code{combine} function
+is vectorized, optimized for working down the vector pairs}
 }
 \value{
 A \code{\link{RangedRaggedAssay}} class object
@@ -107,11 +107,8 @@ the \code{RangedRaggedAssay} class
 in a \code{RangedRaggedAssay}
 
 \item \code{reduce}: Use metadata column to produce a matrix which
-can then be merged across replicates. Arguments available: replicates -
-logical vector of samples which are duplicated and to be reduced, FUN -
-function for which to apply across samples in question (default rowMeans),
-vectorized - logical (default TRUE) denotes whether provided function is
-vectorized. See also: assay,RangedRaggedAssay,missing-method
+can then be merged across replicates.
+See also: assay,RangedRaggedAssay,missing-method
 }}
 \seealso{
 \code{\link[IRanges]{findOverlaps-methods}}
