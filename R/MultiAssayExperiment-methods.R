@@ -467,12 +467,12 @@ setGeneric("gather", function(object, ...) standardGeneric("gather"))
 #' @describeIn gather ANY class method, works with ExpressionSet and
 #' SummarizedExperiment classes as well as matrix
 setMethod("gather", "ANY", function(object, ...) {
-    if (inherits(object, "ExpressionSet"))
+    if (is(object, "ExpressionSet"))
         object <- Biobase::exprs(object)
     if (is(object, "matrix"))
         object <- reshape2::melt(object, varnames = c("rowname", "colname"),
                    as.is = TRUE)
-    if (inherits(object, "SummarizedExperiment")) {
+    if (is(object, "SummarizedExperiment")) {
         if (length(rowData(object)) == 1L)
             names(rowData(object)) <- "rowname"
         widedf <- data.frame(rowData(object), assay(object),
