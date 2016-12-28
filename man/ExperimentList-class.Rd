@@ -46,6 +46,8 @@ representation of the data}
 \item{vectorized}{reduce: (default TRUE) whether the \code{combine} function
 is vectorized, optimized for working down the vector pairs}
 
+\item{...}{Additional arguments. See details for more information.}
+
 \item{i}{missing argument}
 }
 \value{
@@ -60,7 +62,9 @@ One element present per experiment performed.
 }
 \details{
 Convert from \code{SimpleList} or \code{list}
-to the multi-experiment data container
+to the multi-experiment data container. When using the reduce method,
+additional arguments are passed to the given \link{combine} function
+argument (e.g., na.rm = TRUE)
 }
 \section{Methods (by generic)}{
 \itemize{

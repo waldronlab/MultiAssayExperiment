@@ -173,10 +173,7 @@ setMethod("getHits", signature("RangedRaggedAssay", "character"),
 #' for subsetting by columns
 #' @param k Either a \code{character}, \code{logical}, or \code{numeric} vector
 #' for subsetting by assays
-#' @param ... Subsetting: Additional arguments passed down to
-#' \link{findOverlaps} calls inside select \link{getHits} methods.
-#' reduce: Additional arguments passed to the given combine function
-#' (e.g., na.rm = TRUE).
+#' @param ... Additional arguments. See details for more information.
 #' @param drop logical (default TRUE) whether to drop empty assay elements
 #' in the \code{ExperimentList}
 #' @seealso \link{getHits}
@@ -602,6 +599,7 @@ setMethod("reduce", "MultiAssayExperiment",
 #' representation of the data
 #' @param vectorized reduce: (default TRUE) whether the \code{combine} function
 #' is vectorized, optimized for working down the vector pairs
+#' @param ... Additional arguments. See details for more information.
 setMethod("reduce", "ExperimentList",
           function(x, drop.empty.ranges = FALSE, replicates = NULL,
                    combine = rowMeans, vectorized = TRUE, ...) {

@@ -83,10 +83,7 @@
 \item{value}{A \code{DataFrame} or \code{ExperimentList} object to replace
 the existing \code{sampleMap}, \code{ExperimentList}, or \code{pData} slot}
 
-\item{...}{Subsetting: Additional arguments passed down to
-\link{findOverlaps} calls inside select \link{getHits} methods.
-reduce: Additional arguments passed to the given combine function
-(e.g., na.rm = TRUE).}
+\item{...}{Additional arguments. See details for more information.}
 
 \item{name}{pData column name}
 
@@ -133,6 +130,14 @@ Create new \code{MultiAssayExperiment} instances with the eponymous
 constructor, minimally with the argument \code{\link{ExperimentList}},
 potentially also with the arguments \code{pData} (see section below) and
 \code{\link{sampleMap}}.
+}
+\details{
+The dots (\code{\ldots}) argument allows the user to specify additional
+arguments in serveral instances. When subsetting a
+\code{MultiAssayExperiment}, the dots allow for additional
+arguments to be sent to \link{findOverlaps}. When using the \code{reduce}
+method, the dots are used to specify arguments for the supplied
+\code{combine} argument and function.
 }
 \section{Methods (by generic)}{
 \itemize{

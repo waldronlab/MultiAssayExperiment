@@ -100,8 +100,9 @@ RangedRaggedAssay <- function(x = GRangesList()) {
 #' \code{\link{subsetByOverlaps}} function. When calling the \code{reduce}
 #' method, the additional arguments correspond to those in either the
 #' \code{assay} method or the \code{reduce} method. The \code{reduce} arguments
-#' include a function for applying over the rows (FUN) and a \code{byRow}
-#' argument which indicates whether the given function is vectorized or not.
+#' include a function for applying over the rows (\code{combine}) and a
+#' \code{vectorized} argument which indicates whether the given function is
+#' vectorized or not.
 #'
 #' @param x A \code{\link{RangedRaggedAssay}} class
 #' @param i Either a \code{character} or \code{GRanges} class object
