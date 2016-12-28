@@ -173,11 +173,10 @@ setMethod("getHits", signature("RangedRaggedAssay", "character"),
 #' for subsetting by columns
 #' @param k Either a \code{character}, \code{logical}, or \code{numeric} vector
 #' for subsetting by assays
-#' @param ... Additional arguments passed down to \code{getHits} support
-#' function for subsetting by rows
+#' @param ... Additional arguments. See details for more information.
 #' @param drop logical (default TRUE) whether to drop empty assay elements
 #' in the \code{ExperimentList}
-#' @seealso \code{getHits}
+#' @seealso \link{getHits}
 #' @aliases [,MultiAssayExperiment,ANY-method
 setMethod("[", c("MultiAssayExperiment", "ANY", "ANY", "ANY"),
           .subsetMultiAssayExperiment)
@@ -267,8 +266,8 @@ setGeneric("subsetByColumn", function(x, y) standardGeneric("subsetByColumn"))
 #' \code{logical} vector to apply a column subset of a
 #' \code{MultiAssayExperiment} object
 setMethod("subsetByColumn", c("MultiAssayExperiment", "ANY"), function(x, y) {
-    if (is.logical(y))
-        y <- rownames(pData(x))[y]
+    if (is.logical(y) || is.numeric(y))
+        y <- unique(rownames(pData(x))[y])
     selectors <- y[y %in% rownames(pData(x))]
     newpData <- pData(x)[match(selectors, rownames(pData(x))), ]
     listMap <- mapToList(sampleMap(x), "assay")
@@ -467,12 +466,12 @@ setGeneric("gather", function(object, ...) standardGeneric("gather"))
 #' @describeIn gather ANY class method, works with ExpressionSet and
 #' SummarizedExperiment classes as well as matrix
 setMethod("gather", "ANY", function(object, ...) {
-    if (inherits(object, "ExpressionSet"))
+    if (is(object, "ExpressionSet"))
         object <- Biobase::exprs(object)
     if (is(object, "matrix"))
         object <- reshape2::melt(object, varnames = c("rowname", "colname"),
                    as.is = TRUE)
-    if (inherits(object, "SummarizedExperiment")) {
+    if (is(object, "SummarizedExperiment")) {
         if (length(rowData(object)) == 1L)
             names(rowData(object)) <- "rowname"
         widedf <- data.frame(rowData(object), assay(object),
@@ -489,12 +488,7 @@ setMethod("gather", "ANY", function(object, ...) {
 #' matrix of selected \dQuote{mcolname} column, defaults to score
 setMethod("gather", "RangedRaggedAssay", function(object, ...) {
     args <- list(...)
-    if (is.null(args$mcolname))
-        args$mcolname <- "score"
-    newMat <- MultiAssayExperiment::assay(object, mcolname = args$mcolname,
-                                          make.names = args$make.names,
-                                          ranges = args$ranges,
-                                          background = args$background)
+    newMat <- do.call(assay, args = c(list(x = object), args))
     callNextMethod(newMat)
 })
 
@@ -512,9 +506,10 @@ setMethod("gather", "ExperimentList", function(object, ...) {
 #' @describeIn gather Overarching \code{MultiAssayExperiment} class method
 #' returns a small and skinny DataFrame. The \code{pDataCols} arguments allows
 #' the user to append pData columns to the long and skinny DataFrame.
-setMethod("gather", "MultiAssayExperiment", function(object, ...) {
-    args <- list(...)
-    addCols <- !is.null(args$pDataCols)
+#' @param pDataCols selected pData columns to include in the resulting output
+setMethod("gather", "MultiAssayExperiment", function(object, pDataCols = NULL,
+                                                     ...) {
+    addCols <- !is.null(pDataCols)
     dataList <- gather(experiments(object), ...)
     dataList <- lapply(dataList, function(rectangleDF) {
         primary <- S4Vectors::Rle(sampleMap(object)[match(rectangleDF[["colname"]],
@@ -525,7 +520,7 @@ setMethod("gather", "MultiAssayExperiment", function(object, ...) {
     })
     longDataFrame <- do.call(rbind, dataList)
     if (addCols) {
-    extraColumns <- pData(object)[, args$pDataCols, drop = FALSE]
+    extraColumns <- pData(object)[, pDataCols, drop = FALSE]
     rowNameValues <- rownames(extraColumns)
     rownames(extraColumns) <- NULL
     matchIdx <- BiocGenerics::match(longDataFrame[["primary"]],
@@ -536,22 +531,22 @@ setMethod("gather", "MultiAssayExperiment", function(object, ...) {
     longDataFrame
 })
 
-.combineCols <- function(rectangle, dupId, FUN=mean, ...) {
-   apply(rectangle[, dupId], 1, function(row) {
-       FUN(row, ...)
-   })
+.combineCols <- function(rectangle, dupNames, combine, vectorized, ...) {
+    if (!is.logical(vectorized))
+        stop("'vectorized' argument not logical")
+    if (vectorized)
+        combine(rectangle[, dupNames, drop = FALSE], ...)
+    else
+        apply(rectangle[, dupNames, drop = FALSE], 1, function(row) {
+            combine(row, ...)
+        })
 }
 
-#' @importFrom IRanges reduce
-#' @describeIn MultiAssayExperiment Housekeeping method for a
-#' MultiAssayExperiment where only complete.cases are returned, replicate
-#' measurements are averaged, and columns are aligned by the row order in pData.
-#' @param drop.empty.ranges Only used when reducing RangedRaggedAssay objects
-#' @exportMethod reduce
-setMethod("reduce", "MultiAssayExperiment",
-        function(x, drop.empty.ranges = FALSE, ...) {
-    args <- list(...)
-    x <- x[, complete.cases(x), ]
+#' @describeIn MultiAssayExperiment Find duplicate columns in the data by
+#' matching pData rownames
+#' @param incomparables duplicated: unused argument
+setMethod("duplicated", "MultiAssayExperiment",
+          function(x, incomparables = FALSE, ...) {
     listMap <- mapToList(sampleMap(x))
     repList <- lapply(listMap, function(assayDF) {
         repeats <- unique(assayDF[["primary"]][
@@ -562,21 +557,114 @@ setMethod("reduce", "MultiAssayExperiment",
         names(repSamps) <- repeats
         repSamps
     })
-    ## Under construction
-    mapply(function(expList, replicates) {
-        if (length(replicates)) {
-        newCols <- lapply(replicates, function(repl) {
-                repNames <- colnames(expList)[repl]
-                # .combineCols (expList)
-                newRep <- rowMeans(expList[, repl, drop = FALSE])
-                newDF <- structure(list(newRep), .Names = repNames[[1L]],
-                          row.names = c(NA, -length(newRep)),
-                          class = "data.frame")
-                newDF
-        })
-        # expList[, !replicates[[1L]], drop=FALSE]
-        }
-        expList
-    }, expList = as.list(experiments(x)), replicates = repList, SIMPLIFY = FALSE)
-    return(NULL)
+    lapply(repList, IRanges::LogicalList)
 })
+
+
+#' @importFrom IRanges reduce
+#' @describeIn MultiAssayExperiment Housekeeping method for a
+#' MultiAssayExperiment where only complete.cases are returned, replicate
+#' measurements are averaged, and columns are aligned by the row order in pData.
+#' @param drop.empty.ranges Only used when reducing RangedRaggedAssay objects
+#' @param replicates reduce: A list of \linkS4class{LogicalList} indicating
+#' duplicate entries for each biological unit, see the \code{duplicated} method
+#' for \code{MultiAssayExperiment}
+#' @param combine reduce: function for combining replicate columns/samples
+#' (default rowMeans)
+#' @param vectorized reduce: logical (default TRUE) whether the combine function is
+#' vectorized, optimized for working down the vector pairs
+#' @exportMethod reduce
+#' @seealso duplicated,MultiAssayExperiment-method
+setMethod("reduce", "MultiAssayExperiment",
+        function(x, drop.empty.ranges = FALSE, replicates = NULL,
+                 combine = rowMeans, vectorized = TRUE, ...) {
+    args <- list(...)
+    ## Select complete cases
+    x <- x[, complete.cases(x), ]
+    if (is.null(replicates))
+        replicates <- duplicated(x)
+    experimentList <- reduce(x = experiments(x), replicates = replicates,
+                             combine = combine, vectorized = vectorized, ...)
+    rebliss <- .harmonize(experimentList, pData(x), sampleMap(x))
+    do.call(MultiAssayExperiment, rebliss)
+})
+
+#' @describeIn ExperimentList Apply the reduce method on the
+#' ExperimentList elements
+#' @param drop.empty.ranges Ignored until further notice
+#' @param replicates reduce: A \code{list} or \linkS4class{LogicalList} where
+#' each element represents a sample and a vector of repeated experiments for
+#' the sample (default NULL)
+#' @param combine reduce: A function for consolidating columns in the matrix
+#' representation of the data
+#' @param vectorized reduce: (default TRUE) whether the \code{combine} function
+#' is vectorized, optimized for working down the vector pairs
+#' @param ... Additional arguments. See details for more information.
+setMethod("reduce", "ExperimentList",
+          function(x, drop.empty.ranges = FALSE, replicates = NULL,
+                   combine = rowMeans, vectorized = TRUE, ...) {
+              idx <- seq_along(x)
+              names(idx) <- names(x)
+              redList <- lapply(idx, function(i, element, replicate,
+                                              combine, vectorized, ...) {
+                  reduce(x = element[[i]], replicates = replicate[[i]], combine = combine,
+                         vectorized = vectorized, ...)
+              }, element = x, replicate = replicates, combine = combine,
+              vectorized = vectorized, ...)
+              ExperimentList(redList)
+          })
+
+#' @describeIn MultiAssayExperiment Consolidate columns for rectangular
+#' data structures, mainly matrix
+setMethod("reduce", "ANY", function(x, drop.empty.ranges = FALSE,
+                                    replicates = NULL, combine = rowMeans,
+                                    vectorized = TRUE, ...) {
+    if (is(x, "SummarizedExperiment"))
+        x <- assay(x)
+    if (is(x, "ExpressionSet"))
+        x <- Biobase::exprs(x)
+    if (!is.null(replicates) && length(replicates) != 0L) {
+        uniqueCols <- apply(as.matrix(replicates), 2, function(cols) { !any(cols) })
+        repeatList <- lapply(replicates, function(reps, rectangle,
+                                                  combine, vectorized) {
+            if (length(reps)) {
+                repNames <- colnames(rectangle)[reps]
+                result <- .combineCols(rectangle, repNames,
+                                       combine = combine,
+                                       vectorized = vectorized, ...)
+                result <- matrix(result, ncol = 1,
+                                 dimnames = list(NULL, repNames[[1L]]))
+                return(result)
+            }
+        }, rectangle = x, combine = combine, vectorized = vectorized)
+        uniqueRectangle <- do.call(cbind, unname(repeatList))
+        x <- cbind(uniqueRectangle, x[, uniqueCols, drop = FALSE])
+    }
+    return(x)
+})
+
+#' @describeIn RangedRaggedAssay Use metadata column to produce a matrix which
+#' can then be merged across replicates.
+#' See also: assay,RangedRaggedAssay,missing-method
+#' @param drop.empty.ranges Ignored until further notice
+#' @param replicates reduce: A logical list where each element represents a
+#' sample and a vector of repeated experiments for the sample (default NULL)
+#' @param combine A function for consolidating columns in the matrix
+#' representation of the data
+#' @param vectorized logical (default TRUE) whether the \code{combine} function
+#' is vectorized, optimized for working down the vector pairs
+setMethod("reduce", "RangedRaggedAssay",
+          function(x, drop.empty.ranges = FALSE, replicates = NULL,
+                   combine = rowMeans, vectorized = TRUE, ...) {
+              args <- list(...)
+              assayArgNames <- c("mcolname", "background", "type",
+                                  "make.names", "ranges")
+              assayArgs <- args[assayArgNames]
+              altArgs <- args[!names(args) %in% assayArgNames]
+              assayArgs <- Filter(function(x) !is.null(x), assayArgs)
+              x <- do.call(assay, c(list(x = x), assayArgs))
+              do.call(reduce, c(list(x = x, replicates = replicates,
+                                     combine = combine,
+                                     vectorized = vectorized),
+                                altArgs))
+          })

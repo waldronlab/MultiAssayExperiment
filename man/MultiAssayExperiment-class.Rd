@@ -23,7 +23,9 @@
 \alias{[,MultiAssayExperiment,ANY-method}
 \alias{isEmpty,MultiAssayExperiment-method}
 \alias{complete.cases,MultiAssayExperiment-method}
+\alias{duplicated,MultiAssayExperiment-method}
 \alias{reduce,MultiAssayExperiment-method}
+\alias{reduce,ANY-method}
 \alias{assay,MultiAssayExperiment,missing-method}
 \title{An integrative MultiAssay class for experiment data}
 \usage{
@@ -63,7 +65,13 @@
 
 \S4method{complete.cases}{MultiAssayExperiment}(...)
 
-\S4method{reduce}{MultiAssayExperiment}(x, drop.empty.ranges = FALSE, ...)
+\S4method{duplicated}{MultiAssayExperiment}(x, incomparables = FALSE, ...)
+
+\S4method{reduce}{MultiAssayExperiment}(x, drop.empty.ranges = FALSE,
+  replicates = NULL, combine = rowMeans, vectorized = TRUE, ...)
+
+\S4method{reduce}{ANY}(x, drop.empty.ranges = FALSE, replicates = NULL,
+  combine = rowMeans, vectorized = TRUE, ...)
 
 \S4method{assay}{MultiAssayExperiment,missing}(x, i)
 }
@@ -75,12 +83,11 @@
 \item{value}{A \code{DataFrame} or \code{ExperimentList} object to replace
 the existing \code{sampleMap}, \code{ExperimentList}, or \code{pData} slot}
 
-\item{...}{Additional arguments passed down to \code{getHits} support
-function for subsetting by rows}
+\item{...}{Additional arguments. See details for more information.}
 
 \item{name}{pData column name}
 
-\item{verbose}{(logical default FALSE) whether to output verbose}
+\item{verbose}{logical (default FALSE) whether to print extra messages}
 
 \item{i}{Either a \code{character}, or \code{GRanges} object for subsetting
 by rows}
@@ -94,7 +101,19 @@ for subsetting by assays}
 \item{drop}{logical (default TRUE) whether to drop empty assay elements
 in the \code{ExperimentList}}
 
+\item{incomparables}{duplicated: unused argument}
+
 \item{drop.empty.ranges}{Only used when reducing RangedRaggedAssay objects}
+
+\item{replicates}{reduce: A list of \linkS4class{LogicalList} indicating
+duplicate entries for each biological unit, see the \code{duplicated} method
+for \code{MultiAssayExperiment}}
+
+\item{combine}{reduce: function for combining replicate columns/samples
+(default rowMeans)}
+
+\item{vectorized}{reduce: logical (default TRUE) whether the combine function is
+vectorized, optimized for working down the vector pairs}
 }
 \value{
 A \code{MultiAssayExperiment} object
@@ -111,6 +130,14 @@ Create new \code{MultiAssayExperiment} instances with the eponymous
 constructor, minimally with the argument \code{\link{ExperimentList}},
 potentially also with the arguments \code{pData} (see section below) and
 \code{\link{sampleMap}}.
+}
+\details{
+The dots (\code{\ldots}) argument allows the user to specify additional
+arguments in serveral instances. When subsetting a
+\code{MultiAssayExperiment}, the dots allow for additional
+arguments to be sent to \link{findOverlaps}. When using the \code{reduce}
+method, the dots are used to specify arguments for the supplied
+\code{combine} argument and function.
 }
 \section{Methods (by generic)}{
 \itemize{
@@ -161,9 +188,15 @@ for a \code{MultiAssayExperiment} object
 \item \code{complete.cases}: Return a logical vector of biological units
 with data across all experiments
 
+\item \code{duplicated}: Find duplicate columns in the data by
+matching pData rownames
+
 \item \code{reduce}: Housekeeping method for a
 MultiAssayExperiment where only complete.cases are returned, replicate
 measurements are averaged, and columns are aligned by the row order in pData.
+
+\item \code{reduce}: Consolidate columns for rectangular
+data structures, mainly matrix
 
 \item \code{assay}: Get the assay data for a
 \link{MultiAssayExperiment} as a \code{list}
@@ -210,6 +243,8 @@ MultiAssayExperiment()
 
 }
 \seealso{
-\code{getHits}
+\link{getHits}
+
+duplicated,MultiAssayExperiment-method
 }
 

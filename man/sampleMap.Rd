@@ -29,13 +29,20 @@ methylmap <- data.frame(
     colname = c("methyl1", "methyl2", "methyl3", "methyl4", "methyl5"),
     stringsAsFactors = FALSE)
 
-rangemap <- data.frame(primary = c("Jack", "Jill", "Jill"),
+rangemap <- data.frame(
+    primary = c("Jack", "Jill", "Jill"),
     colname = c("snparray1", "snparray2", "snparray3"),
     stringsAsFactors = FALSE)
 
+rnamap <- data.frame(
+    primary = c("Jack", "Jill", "Bob", "Barbara"),
+    colname = c("samparray1", "samparray2", "samparray3",
+                               "samparray4"),
+    stringsAsFactors = FALSE)
+
 ## Combine as a named list and convert to a DataFrame
-mylist <- list(exprmap, methylmap, rangemap)
-names(mylist) <- c("Affy", "Methyl450k", "CNVgistic")
+mylist <- list(exprmap, methylmap, rangemap, rnamap)
+names(mylist) <- c("Affy", "Methyl450k", "CNVgistic", "RNASeqGene")
 
 ## Create a sampleMap
 mySampleMap <- listToMap(mylist)

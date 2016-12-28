@@ -15,6 +15,7 @@ output:
 ```{r, echo=FALSE, warning=FALSE}
 suppressPackageStartupMessages(library(MultiAssayExperiment))
 suppressPackageStartupMessages(library(HDF5Array))
+suppressPackageStartupMessages(library(SummarizedExperiment))
 ```
 
 # Integrating an HDF5 backend for MultiAssayExperiment
@@ -61,7 +62,8 @@ For example:
 ```{r}
 dataLocation <- system.file("extdata", "exMatrix.h5", package =
                               "MultiAssayExperiment", mustWork = TRUE)
-hdf5Data <- HDF5Dataset(file = dataLocation, name = "exMatrix")
+h5ls(dataLocation)
+hdf5Data <- HDF5Array(file = dataLocation, name = "exMatrix")
 newDelayedMatrix <- DelayedArray(hdf5Data)
 class(newDelayedMatrix)
 head(newDelayedMatrix)

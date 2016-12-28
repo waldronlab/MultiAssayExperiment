@@ -28,6 +28,14 @@
 #' potentially also with the arguments \code{pData} (see section below) and
 #' \code{\link{sampleMap}}.
 #'
+#' @details
+#' The dots (\code{\ldots}) argument allows the user to specify additional
+#' arguments in serveral instances. When subsetting a
+#' \code{MultiAssayExperiment}, the dots allow for additional
+#' arguments to be sent to \link{findOverlaps}. When using the \code{reduce}
+#' method, the dots are used to specify arguments for the supplied
+#' \code{combine} argument and function.
+#'
 #' @section pData:
 #' The \code{pData} slot is a collection of primary specimen data valid across
 #' all experiments. This slot is strictly of class
@@ -357,7 +365,7 @@ setReplaceMethod("$", "MultiAssayExperiment", function(x, name, value) {
 })
 
 #' @exportMethod updateObject
-#' @param verbose (logical default FALSE) whether to output verbose
+#' @param verbose logical (default FALSE) whether to print extra messages
 #' @describeIn MultiAssayExperiment Update old serialized MultiAssayExperiment
 #' objects to new API
 setMethod("updateObject", "MultiAssayExperiment",

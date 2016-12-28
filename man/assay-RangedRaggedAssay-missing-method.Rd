@@ -5,14 +5,31 @@
 \alias{assay,RangedRaggedAssay,missing-method}
 \title{Create a Matrix of score values using a GRanges or own ranges}
 \usage{
-\S4method{assay}{RangedRaggedAssay,missing}(x, i, ...)
+\S4method{assay}{RangedRaggedAssay,missing}(x, i, mcolname = "score",
+  background = NA, make.names = FALSE, ranges = NULL, type = "any")
 }
 \arguments{
 \item{x}{A \linkS4class{RangedRaggedAssay} or \link{GRangesList} class}
 
 \item{i}{Argument from generic (default 1L)}
 
-\item{...}{Additional arguments, see details for more information.}
+\item{mcolname}{A single string indicating the metadata column to use for
+the assay conversion}
+
+\item{background}{A default background value for the resulting assay matrix
+(default NA). This works for non-matching sample and range pairs in the data
+and will be imputed in the matrix (e.g., 2 for diploid genomes)}
+
+\item{make.names}{logical (default FALSE) whether to create character format
+ranges for the rows of the matrix (either from the \code{ranges} argument
+or from the \code{RangedRaggedAssay} itself). Example character format:
+"chr1:2-3:+"}
+
+\item{ranges}{An optional \link{GRanges} object for comparing accross all
+sample ranges and for superseding the rows for the resulting matrix
+(default NULL)}
+
+\item{type}{The type argument from \link{overlapsAny}}
 }
 \value{
 A \code{matrix} of values from the score column of the metadata.
@@ -27,22 +44,6 @@ Please see example on how to add metadata to a
 \linkS4class{RangedRaggedAssay} or \link{GRangesList} class. This function
 uses the \link{overlapsAny} function from the \code{GenomicRanges} package.
 }
-\details{
-The \linkS4class{RangedRaggedAssay} class represents genomic ranges in
-matrix shape based on the selected inner metadata column ("mcol"). To
-accomplish this, the \code{mcolname} argument can be indicated with a
-string. The \code{background} argument can be used to specify a background
-value for the resulting matrix (default NA). This usually indicates non-matching
-values in the matrix (e.g., 2 for diploid genomes). Users are also able
-to provide a \link{GRanges} class object for specifying ranges of
-interest in the resulting matrix using the \code{ranges} argument.
-The \code{make.names} argument is a logical value (default FALSE) that
-allows the user to indicate the automatic creation of automatic names
-either from the \code{GRanges} or the \link{RangedRaggedAssay} object in
-character format (i.e., "chr1:2-3:+"). The user can also include a
-\code{type} argument for indicating the type of overlap check
-requested (default "any").
-}
 \examples{
 example("RangedRaggedAssay")
 
@@ -53,5 +54,8 @@ snparray3 = DataFrame(score = 3))
 
 assay(myRRA, background = 2)
 
+}
+\seealso{
+\link{overlapsAny}
 }
 

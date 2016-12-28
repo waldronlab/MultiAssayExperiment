@@ -49,7 +49,9 @@
 #' One element present per experiment performed.
 #'
 #' Convert from \code{SimpleList} or \code{list}
-#' to the multi-experiment data container
+#' to the multi-experiment data container. When using the reduce method,
+#' additional arguments are passed to the given \link{combine} function
+#' argument (e.g., na.rm = TRUE)
 #'
 #' @examples
 #' ExperimentList()

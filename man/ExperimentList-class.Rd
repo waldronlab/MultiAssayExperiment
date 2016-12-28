@@ -9,6 +9,7 @@
 \alias{ExperimentList,missing-method}
 \alias{show,ExperimentList-method}
 \alias{dimnames,ExperimentList-method}
+\alias{reduce,ExperimentList-method}
 \alias{assay,ANY,missing-method}
 \alias{assay,ExperimentList,missing-method}
 \title{A container for multi-experiment data}
@@ -21,6 +22,9 @@
 
 \S4method{dimnames}{ExperimentList}(x)
 
+\S4method{reduce}{ExperimentList}(x, drop.empty.ranges = FALSE,
+  replicates = NULL, combine = rowMeans, vectorized = TRUE, ...)
+
 \S4method{assay}{ANY,missing}(x, i)
 
 \S4method{assay}{ExperimentList,missing}(x, i)
@@ -29,6 +33,20 @@
 \item{x}{A \code{list} object}
 
 \item{object}{An \code{\linkS4class{ExperimentList}} class object}
+
+\item{drop.empty.ranges}{Ignored until further notice}
+
+\item{replicates}{reduce: A \code{list} or \linkS4class{LogicalList} where
+each element represents a sample and a vector of repeated experiments for
+the sample (default NULL)}
+
+\item{combine}{reduce: A function for consolidating columns in the matrix
+representation of the data}
+
+\item{vectorized}{reduce: (default TRUE) whether the \code{combine} function
+is vectorized, optimized for working down the vector pairs}
+
+\item{...}{Additional arguments. See details for more information.}
 
 \item{i}{missing argument}
 }
@@ -44,7 +62,9 @@ One element present per experiment performed.
 }
 \details{
 Convert from \code{SimpleList} or \code{list}
-to the multi-experiment data container
+to the multi-experiment data container. When using the reduce method,
+additional arguments are passed to the given \link{combine} function
+argument (e.g., na.rm = TRUE)
 }
 \section{Methods (by generic)}{
 \itemize{
@@ -60,6 +80,9 @@ to the multi-experiment data container
 \item \code{dimnames}: Get the dimension names for
 a \code{MultiAssayExperiment} using
 \code{\link[IRanges]{CharacterList}}
+
+\item \code{reduce}: Apply the reduce method on the
+ExperimentList elements
 
 \item \code{assay}: Get the assay data for the default ANY class
 
