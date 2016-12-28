@@ -83,12 +83,14 @@
 \item{value}{A \code{DataFrame} or \code{ExperimentList} object to replace
 the existing \code{sampleMap}, \code{ExperimentList}, or \code{pData} slot}
 
-\item{...}{Additional arguments passed down to \code{getHits} support
-function for subsetting by rows}
+\item{...}{Subsetting: Additional arguments passed down to
+\link{findOverlaps} calls inside select \link{getHits} methods.
+reduce: Additional arguments passed to the given combine function
+(e.g., na.rm = TRUE).}
 
 \item{name}{pData column name}
 
-\item{verbose}{(logical default FALSE) whether to output verbose}
+\item{verbose}{logical (default FALSE) whether to print extra messages}
 
 \item{i}{Either a \code{character}, or \code{GRanges} object for subsetting
 by rows}
@@ -106,8 +108,9 @@ in the \code{ExperimentList}}
 
 \item{drop.empty.ranges}{Only used when reducing RangedRaggedAssay objects}
 
-\item{replicates}{A list of duplicate entries for each biological unit,
-see the \code{duplicated} method for MultiAssayExperiment}
+\item{replicates}{reduce: A list of \linkS4class{LogicalList} indicating
+duplicate entries for each biological unit, see the \code{duplicated} method
+for \code{MultiAssayExperiment}}
 
 \item{combine}{reduce: function for combining replicate columns/samples
 (default rowMeans)}
@@ -235,6 +238,8 @@ MultiAssayExperiment()
 
 }
 \seealso{
-\code{getHits}
+\link{getHits}
+
+duplicated,MultiAssayExperiment-method
 }
 

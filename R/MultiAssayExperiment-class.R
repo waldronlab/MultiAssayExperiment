@@ -357,7 +357,7 @@ setReplaceMethod("$", "MultiAssayExperiment", function(x, name, value) {
 })
 
 #' @exportMethod updateObject
-#' @param verbose (logical default FALSE) whether to output verbose
+#' @param verbose logical (default FALSE) whether to print extra messages
 #' @describeIn MultiAssayExperiment Update old serialized MultiAssayExperiment
 #' objects to new API
 setMethod("updateObject", "MultiAssayExperiment",

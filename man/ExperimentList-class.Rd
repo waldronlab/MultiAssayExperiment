@@ -36,16 +36,15 @@
 
 \item{drop.empty.ranges}{Ignored until further notice}
 
-\item{replicates}{reduce: A logical list where each element represents a
-sample and a vector of repeated experiments for the sample (default NULL)}
+\item{replicates}{reduce: A \code{list} or \linkS4class{LogicalList} where
+each element represents a sample and a vector of repeated experiments for
+the sample (default NULL)}
 
 \item{combine}{reduce: A function for consolidating columns in the matrix
 representation of the data}
 
 \item{vectorized}{reduce: (default TRUE) whether the \code{combine} function
 is vectorized, optimized for working down the vector pairs}
-
-\item{...}{Additional arguments passed to reduce}
 
 \item{i}{missing argument}
 }

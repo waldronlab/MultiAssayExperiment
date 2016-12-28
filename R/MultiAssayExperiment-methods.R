@@ -173,11 +173,13 @@ setMethod("getHits", signature("RangedRaggedAssay", "character"),
 #' for subsetting by columns
 #' @param k Either a \code{character}, \code{logical}, or \code{numeric} vector
 #' for subsetting by assays
-#' @param ... Additional arguments passed down to \code{getHits} support
-#' function for subsetting by rows
+#' @param ... Subsetting: Additional arguments passed down to
+#' \link{findOverlaps} calls inside select \link{getHits} methods.
+#' reduce: Additional arguments passed to the given combine function
+#' (e.g., na.rm = TRUE).
 #' @param drop logical (default TRUE) whether to drop empty assay elements
 #' in the \code{ExperimentList}
-#' @seealso \code{getHits}
+#' @seealso \link{getHits}
 #' @aliases [,MultiAssayExperiment,ANY-method
 setMethod("[", c("MultiAssayExperiment", "ANY", "ANY", "ANY"),
           .subsetMultiAssayExperiment)
@@ -567,13 +569,15 @@ setMethod("duplicated", "MultiAssayExperiment",
 #' MultiAssayExperiment where only complete.cases are returned, replicate
 #' measurements are averaged, and columns are aligned by the row order in pData.
 #' @param drop.empty.ranges Only used when reducing RangedRaggedAssay objects
-#' @param replicates A list of duplicate entries for each biological unit,
-#' see the \code{duplicated} method for MultiAssayExperiment
+#' @param replicates reduce: A list of \linkS4class{LogicalList} indicating
+#' duplicate entries for each biological unit, see the \code{duplicated} method
+#' for \code{MultiAssayExperiment}
 #' @param combine reduce: function for combining replicate columns/samples
 #' (default rowMeans)
 #' @param vectorized reduce: logical (default TRUE) whether the combine function is
 #' vectorized, optimized for working down the vector pairs
 #' @exportMethod reduce
+#' @seealso duplicated,MultiAssayExperiment-method
 setMethod("reduce", "MultiAssayExperiment",
         function(x, drop.empty.ranges = FALSE, replicates = NULL,
                  combine = rowMeans, vectorized = TRUE, ...) {
@@ -582,26 +586,34 @@ setMethod("reduce", "MultiAssayExperiment",
     x <- x[, complete.cases(x), ]
     if (is.null(replicates))
         replicates <- duplicated(x)
-    experimentList <- reduce(experiments(x), replicates = replicates,
+    experimentList <- reduce(x = experiments(x), replicates = replicates,
                              combine = combine, vectorized = vectorized, ...)
-    return(NULL)
+    rebliss <- .harmonize(experimentList, pData(x), sampleMap(x))
+    do.call(MultiAssayExperiment, rebliss)
 })
 
 #' @describeIn ExperimentList Apply the reduce method on the
 #' ExperimentList elements
 #' @param drop.empty.ranges Ignored until further notice
-#' @param replicates reduce: A logical list where each element represents a
-#' sample and a vector of repeated experiments for the sample (default NULL)
+#' @param replicates reduce: A \code{list} or \linkS4class{LogicalList} where
+#' each element represents a sample and a vector of repeated experiments for
+#' the sample (default NULL)
 #' @param combine reduce: A function for consolidating columns in the matrix
 #' representation of the data
 #' @param vectorized reduce: (default TRUE) whether the \code{combine} function
 #' is vectorized, optimized for working down the vector pairs
-#' @param ... Additional arguments passed to reduce
 setMethod("reduce", "ExperimentList",
           function(x, drop.empty.ranges = FALSE, replicates = NULL,
-                   combine = rowMeans,  vectorized = TRUE, ...) {
-              endoapply(x, FUN = reduce, replicates = replicates,
-                        combine = combine, vectorized = vectorized, ...)
+                   combine = rowMeans, vectorized = TRUE, ...) {
+              idx <- seq_along(x)
+              names(idx) <- names(x)
+              redList <- lapply(idx, function(i, element, replicate,
+                                              combine, vectorized, ...) {
+                  reduce(x = element[[i]], replicates = replicate[[i]], combine = combine,
+                         vectorized = vectorized, ...)
+              }, element = x, replicate = replicates, combine = combine,
+              vectorized = vectorized, ...)
+              ExperimentList(redList)
           })
 
 #' @describeIn MultiAssayExperiment Consolidate columns for rectangular
@@ -613,20 +625,23 @@ setMethod("reduce", "ANY", function(x, drop.empty.ranges = FALSE,
         x <- assay(x)
     if (is(x, "ExpressionSet"))
         x <- Biobase::exprs(x)
-    uniqueCols <- apply(as.matrix(replicates), 2, function(cols) { !any(cols) })
-    repeatList <- lapply(replicates, function(reps, rectangle, combine, vectorized) {
-        if (length(reps)) {
-            repNames <- colnames(rectangle)[reps]
-            result <- .combineCols(rectangle, repNames,
-                                   combine = combine,
-                                   vectorized = vectorized, ...)
-            result <- matrix(result, ncol = 1,
-                             dimnames = list(NULL, repNames[[1L]]))
-            return(result)
-        }
-    }, rectangle = x, combine = combine, vectorized = vectorized)
-    uniqueRectangle <- do.call(cbind, unname(repeatList))
-    x <- cbind(uniqueRectangle, x[, uniqueCols, drop = FALSE])
+    if (!is.null(replicates) && length(replicates) != 0L) {
+        uniqueCols <- apply(as.matrix(replicates), 2, function(cols) { !any(cols) })
+        repeatList <- lapply(replicates, function(reps, rectangle,
+                                                  combine, vectorized) {
+            if (length(reps)) {
+                repNames <- colnames(rectangle)[reps]
+                result <- .combineCols(rectangle, repNames,
+                                       combine = combine,
+                                       vectorized = vectorized, ...)
+                result <- matrix(result, ncol = 1,
+                                 dimnames = list(NULL, repNames[[1L]]))
+                return(result)
+            }
+        }, rectangle = x, combine = combine, vectorized = vectorized)
+        uniqueRectangle <- do.call(cbind, unname(repeatList))
+        x <- cbind(uniqueRectangle, x[, uniqueCols, drop = FALSE])
+    }
     return(x)
 })
 
