@@ -545,6 +545,7 @@ setMethod("gather", "MultiAssayExperiment", function(object, pDataCols = NULL,
 #' @describeIn MultiAssayExperiment Find duplicate columns in the data by
 #' matching pData rownames
 #' @param incomparables duplicated: unused argument
+#' @exportMethod duplicated
 setMethod("duplicated", "MultiAssayExperiment",
           function(x, incomparables = FALSE, ...) {
     listMap <- mapToList(sampleMap(x))

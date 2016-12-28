@@ -13,7 +13,7 @@ Suggests:
     HDF5Array,
     rmarkdown
 Depends:
-    R (>= 3.3.0)
+    R (>= 3.4.0)
 Imports:
     methods,
     GenomicRanges (>= 1.25.93),
