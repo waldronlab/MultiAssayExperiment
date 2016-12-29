@@ -68,8 +68,8 @@
     experiments_columns <- split(sampleMap[["colname"]], sampleMap[["assay"]])
     primary <- intersect(rownames(pData), sampleMap[["primary"]])
     keep_pData <- rownames(pData) %in% primary
-    if (!all(keep_pData)){
-        pData=pData[keep_pData,]
+    if (!all(keep_pData)) {
+        pData <- pData[keep_pData, ]
         harmony <- c(
             harmony,
             paste("removing", sum(!keep_pData),
@@ -125,7 +125,7 @@ MultiAssayExperiment <-
             drops = list()) {
 
         if (missing(experiments))
-            experiments = ExperimentList()
+            experiments <- ExperimentList()
         else
             experiments <- ExperimentList(experiments)
 
