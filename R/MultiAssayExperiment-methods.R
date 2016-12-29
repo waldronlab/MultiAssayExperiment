@@ -54,14 +54,18 @@ setMethod("$", "MultiAssayExperiment", function(x, name) {
 
 #' Find hits by class type
 #'
+#' Submethod used for searching hits from given arguments by class dispatch.
+#' This method is employed by \link{subsetByRow}.
+#'
 #' @param subject Any valid element from the
-#' \code{\linkS4class{ExperimentList}} class
+#' \code{\linkS4class{ExperimentList}} class as well as a
+#' \link{MultiAssayExperiment}
 #' @param query Either a \code{character} vector or
-#' \code{\linkS4class{GRanges}}
-#' object used to search by name or ranges
-#' @param ... Additional arguments to findOverlaps
+#' \code{\linkS4class{GRanges}} object used to search by name or ranges
+#' @param ... Additional arguments to \link{findOverlaps} in IRanges
 #' @return Names of matched queries
 #' @example inst/scripts/getHits-Ex.R
+#' @seealso \link{subsetByOverlaps} in the \code{IRanges} package
 setGeneric("getHits", function(subject, query, ...) standardGeneric("getHits"))
 
 #' @describeIn getHits Find all matching
@@ -176,7 +180,6 @@ setMethod("getHits", signature("RangedRaggedAssay", "character"),
 #' @param ... Additional arguments. See details for more information.
 #' @param drop logical (default TRUE) whether to drop empty assay elements
 #' in the \code{ExperimentList}
-#' @seealso \link{getHits}
 #' @aliases [,MultiAssayExperiment,ANY-method
 setMethod("[", c("MultiAssayExperiment", "ANY", "ANY", "ANY"),
           .subsetMultiAssayExperiment)
@@ -575,7 +578,6 @@ setMethod("duplicated", "MultiAssayExperiment",
 #' @param vectorized reduce: logical (default TRUE) whether the combine function is
 #' vectorized, optimized for working down the vector pairs
 #' @exportMethod reduce
-#' @seealso duplicated,MultiAssayExperiment-method
 setMethod("reduce", "MultiAssayExperiment",
         function(x, drop.empty.ranges = FALSE, replicates = NULL,
                  combine = rowMeans, vectorized = TRUE, ...) {

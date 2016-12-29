@@ -27,19 +27,20 @@ getHits(subject, query, ...)
 }
 \arguments{
 \item{subject}{Any valid element from the
-\code{\linkS4class{ExperimentList}} class}
+\code{\linkS4class{ExperimentList}} class as well as a
+\link{MultiAssayExperiment}}
 
 \item{query}{Either a \code{character} vector or
-\code{\linkS4class{GRanges}}
-object used to search by name or ranges}
+\code{\linkS4class{GRanges}} object used to search by name or ranges}
 
-\item{...}{Additional arguments to findOverlaps}
+\item{...}{Additional arguments to \link{findOverlaps} in IRanges}
 }
 \value{
 Names of matched queries
 }
 \description{
-Find hits by class type
+Submethod used for searching hits from given arguments by class dispatch.
+This method is employed by \link{subsetByRow}.
 }
 \section{Methods (by class)}{
 \itemize{
@@ -68,5 +69,8 @@ example("GRangesList")
 
 ## Find what ranges fit the criteria (see findOverlaps)
 getHits(myMultiAssayExperiment, gr1)
+}
+\seealso{
+\link{subsetByOverlaps} in the \code{IRanges} package
 }
 
