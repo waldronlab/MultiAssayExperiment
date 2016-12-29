@@ -243,8 +243,6 @@ MultiAssayExperiment()
 
 }
 \seealso{
-\link{getHits}
-
-duplicated,MultiAssayExperiment-method
+SubsetByRow method: \link{getHits}
 }
 
