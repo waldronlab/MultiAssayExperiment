@@ -100,9 +100,9 @@ setMethod("ExperimentList", "missing", function(x) {
 ## Helper function for .checkMethodsTable
 .getMethErr <- function(object) {
     supportedMethods <- c("colnames", "rownames", "[", "dim")
-    methErr <- which(!sapply(supportedMethods, function(x) {
+    methErr <- which(!vapply(supportedMethods, function(x) {
         hasMethod(f = x, signature = class(object))
-    }))
+    }, logical(1L)))
     if (any(methErr)) {
         unsupported <- names(methErr)
         msg <- paste0("class '", class(object),
