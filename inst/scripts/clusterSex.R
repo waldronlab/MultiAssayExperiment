@@ -1,18 +1,17 @@
-# Check gender expression against clinical gender
+# Check sex expression against clinical sex
 #
-# New funtion that should output a data.frame that includes, ID of participant,
-# participant's gender from the metadata,
-# the expression value for the three genes, and instead of the gender predicted
-# from the Kmeans algorithm -
-# have the center value for each gene  by cluster (matrix of cluster centres).
+# Function that outputs a data.frame with participant ID, sex,
+# expression value, participant's sex from pData,
+# the expression value for select genes, and the center value for each gene
+# by cluster (matrix of cluster centers).
 #
-# @params MultiAssayExperiment MultiAssayExperiment object
-# @params pDataCols Participant's gender
+# @params MultiAssayExperiment A MultiAssayExperiment object
+# @params pDataCols Select columns from the MultiAssayExperiment pData
 # @params  ExperimentList.rows Genes to be used
-# @params ExperimentList.exp A ExperimentList class onject of experiment data
-# @export genderpred
-genderped <- function(MultiAssayExperiment, pDataCols, ExperimentList.rows,
-                      ExperimentList.exp,seed) {
+# @params ExperimentList.exp A ExperimentList class object of experiment data
+# @export clusterSex
+clusterSex <- function(MultiAssayExperiment, pDataCols, ExperimentList.rows,
+                      ExperimentList.exp, seed) {
     #Subset the MAE by rows(genes) and experiments
     MAE_s <- MAE[ExperimentList.rows,, ExperimentList.exp]
     #Use gather to get a dataframe with the metadata and experiment data
@@ -28,7 +27,7 @@ genderped <- function(MultiAssayExperiment, pDataCols, ExperimentList.rows,
     temp<- matrix(NA ,nrow = nrow(meta_MAEw),
                   ncol = length(ExperimentList.rows)) # temp as a matrix
     #browser()
-    for (i in 1:length(subset)){
+    for (i in seq_along(subset)) {
         temp[,i]<-scale(subset[,i])
     }
 
