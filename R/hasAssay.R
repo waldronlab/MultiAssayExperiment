@@ -15,18 +15,17 @@
 #'
 #' @export hasAssay
 hasAssay <- function(object) {
-    if (inherits(object, "MultiAssayExperiment")) {
+    if (is(object, "MultiAssayExperiment"))
         applyFun <- experiments
-    } else {
+    else
         applyFun <- ExperimentList
-    }
-    validClasses <- vapply(findMethods("assay")@signatures,
+    validClasses <- vapply(X = getElement(findMethods("assay"), "signatures"),
                            FUN = "[",
                            FUN.VALUE = character(1), ... = 1L)
     validClasses <- unique(validClasses)
     all(vapply(applyFun(object), FUN = function(element) {
         any(vapply(validClasses, FUN = function(cl) {
-            inherits(element, cl)
+            is(element, cl)
         }, FUN.VALUE = logical(1)))
     }, FUN.VALUE = logical(1)))
 }

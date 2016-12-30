@@ -17,7 +17,7 @@
 
 ## Helper function for .PrepElements in ExperimentList construction
 .createRownames <- function(object) {
-    if (inherits(object, "SummarizedExperiment")) {
+    if (is(object, "SummarizedExperiment")) {
         rownames(object) <- seq_along(object)
     }
     return(object)
@@ -27,7 +27,7 @@
 ## are present
 .PrepElements <- function(object) {
     ## use is() to exclude RangedRaggedAssay
-    if (inherits(object, "GRangesList") && !is(object, "RangedRaggedAssay")) {
+    if (is(object, "GRangesList") && !is(object, "RangedRaggedAssay")) {
         object <- RangedRaggedAssay(object)
     }
     if (is.null(rownames(object))) {
