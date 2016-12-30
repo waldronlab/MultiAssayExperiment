@@ -87,17 +87,15 @@ setMethod("getHits", signature("MultiAssayExperiment", "GRanges"),
               })
 )
 
-#' @describeIn getHits Find and get corresponding names
-#' of two \code{GRanges} using \code{findOverlaps}
-setMethod("getHits", signature("GRanges", "GRanges"),
-          function(subject, query, ...) {
-            names(subject)[queryHits(findOverlaps(subject, query, ...))]
-          })
-
 #' @describeIn getHits Find all matching rownames for
 #' range-based objects
 setMethod("getHits", signature("ANY", "GRanges"),
           function(subject, query, ...) {
+            if (is(subject, "RangedSummarizedExperiment"))
+                subject <- rowRanges(subject)
+            if (is(subject, "GRanges"))
+                return(names(subject)[queryHits(findOverlaps(subject,
+                                                             query, ...))])
             if (.checkFindOverlaps(class(subject))) {
               lapply(subject, function(x) {
                 names(x)[queryHits(
@@ -106,14 +104,6 @@ setMethod("getHits", signature("ANY", "GRanges"),
             } else {
               character(0L)
             }
-          })
-
-#' @describeIn getHits Find rownames
-#' for \code{RangedSummarizedExperiment} hits
-setMethod("getHits", signature("RangedSummarizedExperiment", "GRanges"),
-          function(subject, query, ...) {
-            subject <- rowRanges(subject)
-            getHits(subject, query)
           })
 
 #' @describeIn getHits Find all matching rownames based
