@@ -20,8 +20,9 @@
 ^\.Rproj\.user$
 
 #----------------------------
-# Data files
+# Data and files
 #----------------------------
-^ovMAEO\.Rda$
+^.*\.Rda$
 ^.*\.tar\.gz$
+^\.lintr$
 ^NEWS\.md$

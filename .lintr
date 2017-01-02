@@ -1,0 +1,6 @@
+linters: with_defaults(
+    camel_case_linter = NULL, # 466
+    closed_curly_linter = NULL, # 33
+    commented_code_linter = NULL, # 30
+    open_curly_linter = NULL
+  )
