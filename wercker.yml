@@ -7,13 +7,8 @@ build:
     - jimhester/r-lint
     - jimhester/r-coverage
 
-# LINTR_COMMENT_BOT = false in wercker environment until BioC
-# configs can be added
-
 after-steps:
   - install-packages:
       packages: ruby
   - wantedly/pretty-slack-notify:
       webhook_url: $SLACK_WEBHOOK_URL
-
-# Wercker.com > Workflows > build > Ignore branches > *
