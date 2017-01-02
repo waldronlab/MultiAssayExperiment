@@ -1,7 +1,7 @@
 ## Helper functions for check non-NULL rownames
 .getRowNamesErr <- function(object) {
     if (dim(object)[1] > 0 && is.null(rownames(object))) {
-        msg <- paste(" rownames in", class(object), "are NULL")
+        paste(" rownames in", class(object), "are NULL")
     } else {
         NULL
     }
@@ -9,7 +9,7 @@
 
 .getColNamesErr <- function(object) {
     if (dim(object)[2] > 0 && is.null(colnames(object))) {
-        msg <- paste(" colnames in", class(object), "are NULL")
+        paste(" colnames in", class(object), "are NULL")
     } else {
         NULL
     }
@@ -89,7 +89,7 @@ setMethod("ExperimentList", "ANY", function(x) {
 #' @describeIn ExperimentList Create an empty ExperimentList for signature
 #' "missing"
 setMethod("ExperimentList", "missing", function(x) {
-    x <- structure(list(), .Names=character())
+    x <- structure(list(), .Names = character())
     .ExperimentList(S4Vectors::SimpleList(x))
 })
 
@@ -178,9 +178,9 @@ setMethod("show", "ExperimentList", function(object) {
     sampdim <- vapply(object, FUN = function(obj) {
         dim(obj)[2]
     }, FUN.VALUE = integer(1))
-    cat(sprintf('%s', o_class),
+    cat(sprintf("%s", o_class),
         "class object of length",
-        paste0(o_len, ':'),
-        sprintf('\n [%i] %s: %s with %s rows and %s columns',
+        paste0(o_len, ":"),
+        sprintf("\n [%i] %s: %s with %s rows and %s columns",
                 seq(o_len), o_names, elem_cl, featdim, sampdim), "\n")
 })

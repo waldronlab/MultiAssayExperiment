@@ -153,7 +153,7 @@ setMethod("getHits", signature("RangedRaggedAssay", "character"),
             keeps <- names(isEmptyAssay)[
                 vapply(isEmptyAssay, function(k) {
                     !isTRUE(k)}, logical(1L))]
-            x <- x[, , keeps, drop = TRUE]
+            x <- x[ , , keeps, drop = TRUE]
         }
     }
     return(x)
@@ -308,7 +308,7 @@ setMethod("subsetByColumn", c("MultiAssayExperiment", "list"), function(x, y)
     }, lMap = listMap, nSamps = newSamps, SIMPLIFY = FALSE)
     newMap <- listToMap(newMap)
     selectors <- unique(as.character(newMap[["primary"]]))
-    pData(x) <- pData(x)[rownames(pData(x)) %in% selectors,]
+    pData(x) <- pData(x)[rownames(pData(x)) %in% selectors, ]
     sampleMap(x) <- newMap
     return(x)
 })
@@ -505,9 +505,10 @@ setMethod("gather", "MultiAssayExperiment", function(object, pDataCols = NULL,
     addCols <- !is.null(pDataCols)
     dataList <- gather(experiments(object), ...)
     dataList <- lapply(dataList, function(rectangleDF) {
-        primary <- S4Vectors::Rle(sampleMap(object)[match(rectangleDF[["colname"]],
-                                           sampleMap(object)[["colname"]]),
-                                     "primary"])
+        primary <- S4Vectors::Rle(sampleMap(object)[match(
+            rectangleDF[["colname"]],
+            sampleMap(object)[["colname"]]),
+            "primary"])
         rectangleDF <- S4Vectors::DataFrame(rectangleDF, primary = primary)
         rectangleDF[, c("assay", "primary", "rowname", "colname", "value")]
     })
@@ -600,7 +601,8 @@ setMethod("reduce", "ExperimentList",
               names(idx) <- names(x)
               redList <- lapply(idx, function(i, element, replicate,
                                               combine, vectorized, ...) {
-                  reduce(x = element[[i]], replicates = replicate[[i]], combine = combine,
+                  reduce(x = element[[i]], replicates = replicate[[i]],
+                         combine = combine,
                          vectorized = vectorized, ...)
               }, element = x, replicate = replicates, combine = combine,
               vectorized = vectorized, ...)
@@ -617,7 +619,9 @@ setMethod("reduce", "ANY", function(x, drop.empty.ranges = FALSE,
     if (is(x, "ExpressionSet"))
         x <- Biobase::exprs(x)
     if (!is.null(replicates) && length(replicates) != 0L) {
-        uniqueCols <- apply(as.matrix(replicates), 2, function(cols) { !any(cols) })
+        uniqueCols <- apply(as.matrix(replicates), 2, function(cols) {
+            !any(cols)
+            })
         repeatList <- lapply(replicates, function(reps, rectangle,
                                                   combine, vectorized) {
             if (length(reps)) {

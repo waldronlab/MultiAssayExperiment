@@ -19,4 +19,3 @@ test_that("when drop is FALSE, length is the same", {
   expect_true(length(myMultiAssayExperiment[, FALSE, , , drop = FALSE])
               == length(myMultiAssayExperiment))
 })
-

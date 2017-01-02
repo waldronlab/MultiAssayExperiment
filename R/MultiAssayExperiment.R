@@ -56,7 +56,7 @@
     primary <- intersect(rownames(pData), sampleMap[["primary"]])
     keep_sampleMap_primary <- sampleMap[["primary"]] %in% primary
     if (!all(keep_sampleMap_primary)) {
-        sampleMap <- sampleMap[keep_sampleMap_primary,, drop=FALSE]
+        sampleMap <- sampleMap[keep_sampleMap_primary, , drop=FALSE]
         harmony <- c(
             harmony,
             paste("removing", sum(!keep_sampleMap_primary),

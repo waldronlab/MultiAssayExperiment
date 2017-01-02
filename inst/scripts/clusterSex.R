@@ -15,16 +15,16 @@ clusterSex <- function(MultiAssayExperiment, pDataCols, ExperimentList.rows,
     #Subset the MAE by rows(genes) and experiments
     MAE_s <- MAE[ExperimentList.rows, , ExperimentList.exp]
     #Use gather to get a dataframe with the metadata and experiment data
-    meta_MAE <- gather(MAE_s,pDataCols = pDataCols)
+    meta_MAE <- gather(MAE_s, pDataCols = pDataCols)
 
     ##LONG TO WIDE
     meta_MAEw <- reshape(as.data.frame(meta_MAE), timevar = "rowname",
-                         idvar= c("primary", "colname", pDataCols),
+                         idvar = c("primary", "colname", pDataCols),
                          drop ="assay", direction = "wide")
 
     #Normalization of values for each experimentList.
-    subset<- meta_MAEw[,sapply(meta_MAEw, is.numeric)]
-    temp<- matrix(NA, nrow = nrow(meta_MAEw),
+    subset <- meta_MAEw[, sapply(meta_MAEw, is.numeric)]
+    temp <- matrix(NA, nrow = nrow(meta_MAEw),
                   ncol = length(ExperimentList.rows)) # temp as a matrix
     #browser()
     for (i in seq_along(subset)) {
@@ -38,13 +38,13 @@ clusterSex <- function(MultiAssayExperiment, pDataCols, ExperimentList.rows,
     meta_MAEw_n$Mgender <- meta_MAEw$gender
 
     set.seed(seed)
-    kma <- kmeans(meta_MAEw_n[, ExperimentList.rows], centers =2)
+    kma <- kmeans(meta_MAEw_n[, ExperimentList.rows], centers = 2)
     meta_MAEw_n$Cluster <- kma$cluster
     centers_a <- kma$centers
     Kcenters <- centers_a[meta_MAEw_n[["Cluster"]], ]
     colnames(Kcenters) <- ExperimentList.rows
 
-    genderscomp <- cbind(meta_MAEw_n[, c("PatientID", "Mgender","Cluster")],
+    genderscomp <- cbind(meta_MAEw_n[, c("PatientID", "Mgender", "Cluster")],
                          Kcenters)
 
     return(genderscomp)

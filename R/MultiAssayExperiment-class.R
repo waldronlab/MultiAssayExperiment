@@ -189,7 +189,7 @@ setMethod("show", "MultiAssayExperiment", function(object) {
     c_elist <- class(experiments(object))
     c_mp <- class(pData(object))
     c_sm <- class(sampleMap(object))
-    cat(sprintf('A %s', o_class),
+    cat(sprintf("A %s", o_class),
         "object of", o_len, "listed\n",
         ifelse(o_len == 1L, "experiment", "experiments"),
         "with",
@@ -203,9 +203,9 @@ setMethod("show", "MultiAssayExperiment", function(object) {
         "\n Containing an ")
     show(experiments(object))
     cat("To access: \n experiments() - to obtain the",
-        sprintf('%s', c_elist), "instance",
-        "\n pData() - for the primary/phenotype", sprintf('%s', c_mp),
-        "\n sampleMap() - for the sample availability", sprintf('%s', c_sm),
+        sprintf("%s", c_elist), "instance",
+        "\n pData() - for the primary/phenotype", sprintf("%s", c_mp),
+        "\n sampleMap() - for the sample availability", sprintf("%s", c_sm),
         "\n metadata() - for the metadata object of ANY class",
         "\nSee also: subsetByAssay(), subsetByRow(), subsetByColumn()\n")
 })
@@ -370,8 +370,7 @@ setReplaceMethod("$", "MultiAssayExperiment", function(x, name, value) {
 #' @describeIn MultiAssayExperiment Update old serialized MultiAssayExperiment
 #' objects to new API
 setMethod("updateObject", "MultiAssayExperiment",
-          function(object, ..., verbose = FALSE)
-          {
+          function(object, ..., verbose = FALSE) {
               if (verbose)
                   message("updateObject(object = 'MultiAssayExperiment')")
               if (is(try(object@ExperimentList, silent = TRUE), "try-error")) {

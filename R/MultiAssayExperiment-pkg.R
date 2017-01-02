@@ -17,4 +17,3 @@
 #' @importFrom IRanges CharacterList
 #' @aliases NULL
 "_PACKAGE"
-

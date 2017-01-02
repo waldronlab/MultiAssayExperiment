@@ -47,7 +47,8 @@ API <- function(website = TRUE, shiny = FALSE) {
                                  value = TRUE, invert = TRUE))
     Mcmeths <- lapply(classes, function(x) utils::methods(class = x))
     names(Mcmeths) <- classes
-    #list(nsElements = nsElements, nsNS = nsNS, classes = classes, cmeths = cmeths)
+    # list(nsElements = nsElements, nsNS = nsNS, classes = classes,
+    # cmeths = cmeths)
     list(classes = classes, Mcmeths = Mcmeths, TmethsWithin = TmethsWithin,
          TmethsWithout = TmethsWithout)
 }
@@ -78,7 +79,7 @@ API <- function(website = TRUE, shiny = FALSE) {
                    shiny::tableOutput("ls1")),
           shiny::tabPanel("Methods(inside)", shiny::tableOutput("ls2")),
           shiny::tabPanel("Methods(outside)", shiny::tableOutput("ls3")),
-          width=9
+          width = 9
         )
       )
     )

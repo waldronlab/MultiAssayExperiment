@@ -10,12 +10,11 @@ head(exMatrix)
 
 h5save(exMatrix,
        file =
-         "~/Documents/GitHub/MultiAssayExperiment/inst/extdata/exMatrix.h5")
+         "inst/extdata/exMatrix.h5")
 H5close()
 
-fpath <- "~/Documents/GitHub/MultiAssayExperiment/inst/extdata/"
+fpath <- "inst/extdata/"
 DelayedArray(HDF5Dataset(file = file.path(fpath, "exMatrix.h5"),
                          name = "exMatrix"))
 
 # file.remove(file.path(fpath, "exMatrix.h5"))
-
