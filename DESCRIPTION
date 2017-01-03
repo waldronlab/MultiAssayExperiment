@@ -1,7 +1,7 @@
 Package: MultiAssayExperiment
 Title: Create Classes and Functions for Managing Multiple Assays on Sets of
     Samples
-Version: 1.1.7
+Version: 1.1.8
 Author: MultiAssay SIG
 Description: Develop an integrative environment where multiple assays are
     managed and preprocessed for genomic data analysis.
@@ -36,7 +36,7 @@ VignetteBuilder: knitr
 URL: https://github.com/vjcitn/MultiAssayExperiment/wiki/MultiAssayExperiment-
     API
 BugReports: https://github.com/vjcitn/MultiAssayExperiment/issues
-Collate:
+Collate: 
     'API.R'
     'ExperimentList-class.R'
     'MultiAssayExperiment-class.R'
@@ -46,6 +46,7 @@ Collate:
     'MultiAssayExperiment.R'
     'PrepMultiAssay.R'
     'assay-methods.R'
+    'clusterSex.R'
     'hasAssay.R'
     'hnsc.R'
     'listToMap.R'
