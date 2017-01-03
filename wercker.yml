@@ -1,5 +1,5 @@
-## box: mr148/devel_core:v1.1
-box: rocker/hadleyverse
+box: mr148/devel_core:latest
+## box: rocker/hadleyverse
 build:
   steps:
     - jimhester/r-dependencies
