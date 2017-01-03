@@ -16,6 +16,8 @@ DataFrame}
 (i.e., a set of gene names)}
 
 \item{experiments}{A ExperimentList class object of experiment data}
+
+\item{seed}{A single integer value passed to \link{set.seed}}
 }
 \value{
 A DataFrame with appended cluster and center values

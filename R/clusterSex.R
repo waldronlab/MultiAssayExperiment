@@ -10,6 +10,7 @@
 #' @param rownames Features to be used for clustering
 #' (i.e., a set of gene names)
 #' @param experiments A ExperimentList class object of experiment data
+#' @param seed A single integer value passed to \link{set.seed}
 #'
 #' @return A DataFrame with appended cluster and center values
 #' @examples
@@ -19,6 +20,7 @@
 #'     experiments = "RNASeqGene", seed = 42L)
 #'
 #' @export clusterSex
+#' @importFrom stats kmeans
 clusterSex <- function(MultiAssayExperiment, pDataCols, rownames,
                       experiments, seed = 1L) {
     MultiAssayExperiment <- MultiAssayExperiment[rownames, , experiments]
