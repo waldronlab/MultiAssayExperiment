@@ -96,6 +96,9 @@ setMethod("getHits", signature("ANY", "GRanges"),
             if (is(subject, "GRanges"))
                 return(names(subject)[queryHits(findOverlaps(subject,
                                                              query, ...))])
+            if (is(subject, "VcfStack"))
+                return(intersect(seqnames(seqinfo(subject)),
+                                 as.character(seqnames(query))))
             if (.checkFindOverlaps(class(subject))) {
               lapply(subject, function(x) {
                 names(x)[queryHits(
