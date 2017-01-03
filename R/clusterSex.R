@@ -12,6 +12,11 @@
 #' @param experiments A ExperimentList class object of experiment data
 #'
 #' @return A DataFrame with appended cluster and center values
+#' @examples
+#' example(MultiAssayExperiment)
+#' clusterSex(myMultiAssayExperiment, pDataCols = "sex",
+#'     rownames = c("XIST", "RPS4Y1", "KDM5D"),
+#'     experiments = "RNASeqGene", seed = 42L)
 #'
 #' @export clusterSex
 clusterSex <- function(MultiAssayExperiment, pDataCols, rownames,
