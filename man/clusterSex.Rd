@@ -13,9 +13,10 @@ clusterSex(MultiAssayExperiment, pDataCols, rownames, experiments, seed = 1L)
 DataFrame}
 
 \item{rownames}{Features to be used for clustering
-(i.e., a set of gene names)}
+(e.g., a set of gene names)}
 
-\item{experiments}{A ExperimentList class object of experiment data}
+\item{experiments}{A \code{character} vector indicating assays of interest
+in the ExperimentList}
 
 \item{seed}{A single integer value passed to \link{set.seed}}
 }

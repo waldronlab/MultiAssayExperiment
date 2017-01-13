@@ -8,8 +8,9 @@
 #' @param pDataCols Select columns from the MultiAssayExperiment pData
 #' DataFrame
 #' @param rownames Features to be used for clustering
-#' (i.e., a set of gene names)
-#' @param experiments A ExperimentList class object of experiment data
+#' (e.g., a set of gene names)
+#' @param experiments A \code{character} vector indicating assays of interest
+#' in the \code{ExperimentList}
 #' @param seed A single integer value passed to \link{set.seed}
 #'
 #' @return A DataFrame with appended cluster and center values

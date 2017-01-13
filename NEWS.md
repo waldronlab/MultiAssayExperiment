@@ -1,3 +1,13 @@
+# MultiAssayExperiment 1.1.9
+
+## New features
+
+* `clusterSex` function available for clustering gender from expression data
+
+## Bug fixes and minor improvements
+
+* Improvements to documentation
+
 # MultiAssayExperiment 1.1.6
 
 ## New features
