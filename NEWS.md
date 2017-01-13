@@ -1,3 +1,9 @@
+# MultiAssayExperiment 1.1.10
+
+## New features 
+
+* Double bracket method for MultiAssayExperiment available
+
 # MultiAssayExperiment 1.1.9
 
 ## New features

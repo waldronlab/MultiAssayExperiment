@@ -222,6 +222,12 @@ setMethod("subsetByAssay", c("MultiAssayExperiment", "ANY"), function(x, y) {
     return(x)
 })
 
+#' @describeIn MultiAssayExperiment Extract the \link{ExperimentList} element
+#' @export
+setMethod("[[", "MultiAssayExperiment", function(x, i, j, ...) {
+    experiments(x)[[i]]
+})
+
 .matchReorderSub <- function(assayMap, identifiers) {
     positions <- unlist(
         lapply(identifiers,
