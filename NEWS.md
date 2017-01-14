@@ -1,3 +1,9 @@
+# MultiAssayExperiment 1.1.11
+
+## New features
+
+* Renamed `gather` function to `collect`
+
 # MultiAssayExperiment 1.1.6
 
 ## New features
