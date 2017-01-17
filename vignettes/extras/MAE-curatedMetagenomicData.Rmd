@@ -1,0 +1,73 @@
+---
+title: "MultiAssayExperiment_CRC"
+author: "Levi Waldron"
+date: "1/11/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Fetch from curatedMetagenomicData
+
+Download the data as a list:
+```{r, cache=FALSE}
+library(curatedMetagenomicData)
+esetlist <- list(taxa = ZellerG_2014.metaphlan_bugs_list.stool()[, 1:10],
+                 pathways = ZellerG_2014.pathabundance_relab.stool())
+## species and strain-level taxa only:
+esetlist$taxa <- esetlist$taxa[grep("s__", rownames(esetlist$taxa)), ]
+## eliminate taxa-specific pathway contributions (only total pathway abundances):
+esetlist$pathways <- esetlist$pathways[grep("g__", 
+                                  rownames(esetlist$pathways), invert=TRUE), ]
+```
+
+Then create the MultiAssayExperiment:
+```{r}
+library(MultiAssayExperiment)
+mae = MultiAssayExperiment(experiments=esetlist, 
+                           pData=pData(esetlist[[2]]))
+mae
+rownames(mae)
+```
+
+## CCA with omicade4
+```{r}
+library(omicade4)
+maesub = mae[, mae$disease %in% c("cancer", "large_adenoma", "small_adenoma"), ]
+##Get rid of rows that are all zero:
+for (i in 1:length(experiments(maesub))){
+  experiments(maesub)[[i]] <- experiments(maesub)[[i]][apply(assay(maesub)[[i]], 1, function(x) sum(x) > 0), ]
+}
+mcoin = mcia(assay(maesub))
+plot(mcoin, phenovec=maesub$disease, sample.lab=FALSE)
+```
+
+## iClusterPlus
+
+Error, "system is computationally singular"
+```{r, eval=FALSE}
+library(iClusterPlus)
+datasets = assay(maesub)
+datasets = lapply(datasets, t)
+iclus = iCluster(datasets=datasets, k=5, lambda=c(0.2, 0.2))
+plotiCluster(fit=iclus, label=maesub$disease)
+```
+
+## sparse CCA
+
+```{r}
+library(PMA)
+mae2 <- reduce(mae)
+mycca = PMA::CCA(x=t(assay(mae)[[1]]), z=t(assay(mae)[[2]]))
+mycca
+```
+
+# Others to try
+```{r, eval=FALSE}
+library(PMA)
+library(made4)
+library(MCIA)
+##library(Rtopper)  #gene set analysis
+```
