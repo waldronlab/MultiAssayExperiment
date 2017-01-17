@@ -5,7 +5,7 @@ gr1 <-
           strand = "+", score = 5L, GC = 0.45)
 gr2 <-
   GRanges(seqnames = c("chr3", "chr3"),
-          ranges = IRanges(c(58493000, 3), width=9000),
+          ranges = IRanges(c(58493000, 3), width = 9000),
           strand = c("+", "-"), score = 3:4, GC = c(0.3, 0.5))
 gr3 <-
   GRanges(seqnames = c("chr1", "chr2"),

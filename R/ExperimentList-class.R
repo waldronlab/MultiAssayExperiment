@@ -1,7 +1,7 @@
 ## Helper functions for check non-NULL rownames
 .getRowNamesErr <- function(object) {
     if (dim(object)[1] > 0 && is.null(rownames(object))) {
-        msg <- paste(" rownames in", class(object), "are NULL")
+        paste(" rownames in", class(object), "are NULL")
     } else {
         NULL
     }
@@ -9,7 +9,7 @@
 
 .getColNamesErr <- function(object) {
     if (dim(object)[2] > 0 && is.null(colnames(object))) {
-        msg <- paste(" colnames in", class(object), "are NULL")
+        paste(" colnames in", class(object), "are NULL")
     } else {
         NULL
     }
@@ -17,7 +17,7 @@
 
 ## Helper function for .PrepElements in ExperimentList construction
 .createRownames <- function(object) {
-    if (inherits(object, "SummarizedExperiment")) {
+    if (is(object, "SummarizedExperiment")) {
         rownames(object) <- seq_along(object)
     }
     return(object)
@@ -27,7 +27,7 @@
 ## are present
 .PrepElements <- function(object) {
     ## use is() to exclude RangedRaggedAssay
-    if (inherits(object, "GRangesList") && !is(object, "RangedRaggedAssay")) {
+    if (is(object, "GRangesList") && !is(object, "RangedRaggedAssay")) {
         object <- RangedRaggedAssay(object)
     }
     if (is.null(rownames(object))) {
@@ -89,7 +89,7 @@ setMethod("ExperimentList", "ANY", function(x) {
 #' @describeIn ExperimentList Create an empty ExperimentList for signature
 #' "missing"
 setMethod("ExperimentList", "missing", function(x) {
-    x <- structure(list(), .Names=character())
+    x <- structure(list(), .Names = character())
     .ExperimentList(S4Vectors::SimpleList(x))
 })
 
@@ -100,9 +100,9 @@ setMethod("ExperimentList", "missing", function(x) {
 ## Helper function for .checkMethodsTable
 .getMethErr <- function(object) {
     supportedMethods <- c("colnames", "rownames", "[", "dim")
-    methErr <- which(!sapply(supportedMethods, function(x) {
+    methErr <- which(!vapply(supportedMethods, function(x) {
         hasMethod(f = x, signature = class(object))
-    }))
+    }, logical(1L)))
     if (any(methErr)) {
         unsupported <- names(methErr)
         msg <- paste0("class '", class(object),
@@ -178,9 +178,9 @@ setMethod("show", "ExperimentList", function(object) {
     sampdim <- vapply(object, FUN = function(obj) {
         dim(obj)[2]
     }, FUN.VALUE = integer(1))
-    cat(sprintf('%s', o_class),
+    cat(sprintf("%s", o_class),
         "class object of length",
-        paste0(o_len, ':'),
-        sprintf('\n [%i] %s: %s with %s rows and %s columns',
+        paste0(o_len, ":"),
+        sprintf("\n [%i] %s: %s with %s rows and %s columns",
                 seq(o_len), o_names, elem_cl, featdim, sampdim), "\n")
 })

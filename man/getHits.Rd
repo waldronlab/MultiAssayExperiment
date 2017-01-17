@@ -5,9 +5,7 @@
 \alias{getHits}
 \alias{getHits,MultiAssayExperiment,character-method}
 \alias{getHits,MultiAssayExperiment,GRanges-method}
-\alias{getHits,GRanges,GRanges-method}
 \alias{getHits,ANY,GRanges-method}
-\alias{getHits,RangedSummarizedExperiment,GRanges-method}
 \alias{getHits,ANY,character-method}
 \title{Find hits by class type}
 \usage{
@@ -17,29 +15,26 @@ getHits(subject, query, ...)
 
 \S4method{getHits}{MultiAssayExperiment,GRanges}(subject, query, ...)
 
-\S4method{getHits}{GRanges,GRanges}(subject, query, ...)
-
 \S4method{getHits}{ANY,GRanges}(subject, query, ...)
-
-\S4method{getHits}{RangedSummarizedExperiment,GRanges}(subject, query, ...)
 
 \S4method{getHits}{ANY,character}(subject, query, ...)
 }
 \arguments{
 \item{subject}{Any valid element from the
-\code{\linkS4class{ExperimentList}} class}
+\code{\linkS4class{ExperimentList}} class as well as a
+\link{MultiAssayExperiment}}
 
 \item{query}{Either a \code{character} vector or
-\code{\linkS4class{GRanges}}
-object used to search by name or ranges}
+\code{\linkS4class{GRanges}} object used to search by name or ranges}
 
-\item{...}{Additional arguments to findOverlaps}
+\item{...}{Additional arguments to \link{findOverlaps} in IRanges}
 }
 \value{
 Names of matched queries
 }
 \description{
-Find hits by class type
+Submethod used for searching hits from given arguments by class dispatch.
+This method is employed by \link{subsetByRow}.
 }
 \section{Methods (by class)}{
 \itemize{
@@ -49,14 +44,8 @@ rownames by \code{character}
 \item \code{subject = MultiAssayExperiment,query = GRanges}: Find all matching
 rownames by \code{GRanges}
 
-\item \code{subject = GRanges,query = GRanges}: Find and get corresponding names
-of two \code{GRanges} using \code{findOverlaps}
-
 \item \code{subject = ANY,query = GRanges}: Find all matching rownames for
 range-based objects
-
-\item \code{subject = RangedSummarizedExperiment,query = GRanges}: Find rownames
-for \code{RangedSummarizedExperiment} hits
 
 \item \code{subject = ANY,query = character}: Find all matching rownames based
 on \code{character} query
@@ -68,5 +57,8 @@ example("GRangesList")
 
 ## Find what ranges fit the criteria (see findOverlaps)
 getHits(myMultiAssayExperiment, gr1)
+}
+\seealso{
+\link{subsetByOverlaps} in the \code{IRanges} package
 }
 

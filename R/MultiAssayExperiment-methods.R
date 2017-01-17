@@ -54,14 +54,18 @@ setMethod("$", "MultiAssayExperiment", function(x, name) {
 
 #' Find hits by class type
 #'
+#' Submethod used for searching hits from given arguments by class dispatch.
+#' This method is employed by \link{subsetByRow}.
+#'
 #' @param subject Any valid element from the
-#' \code{\linkS4class{ExperimentList}} class
+#' \code{\linkS4class{ExperimentList}} class as well as a
+#' \link{MultiAssayExperiment}
 #' @param query Either a \code{character} vector or
-#' \code{\linkS4class{GRanges}}
-#' object used to search by name or ranges
-#' @param ... Additional arguments to findOverlaps
+#' \code{\linkS4class{GRanges}} object used to search by name or ranges
+#' @param ... Additional arguments to \link{findOverlaps} in IRanges
 #' @return Names of matched queries
 #' @example inst/scripts/getHits-Ex.R
+#' @seealso \link{subsetByOverlaps} in the \code{IRanges} package
 setGeneric("getHits", function(subject, query, ...) standardGeneric("getHits"))
 
 #' @describeIn getHits Find all matching
@@ -83,17 +87,18 @@ setMethod("getHits", signature("MultiAssayExperiment", "GRanges"),
               })
 )
 
-#' @describeIn getHits Find and get corresponding names
-#' of two \code{GRanges} using \code{findOverlaps}
-setMethod("getHits", signature("GRanges", "GRanges"),
-          function(subject, query, ...) {
-            names(subject)[queryHits(findOverlaps(subject, query, ...))]
-          })
-
 #' @describeIn getHits Find all matching rownames for
 #' range-based objects
 setMethod("getHits", signature("ANY", "GRanges"),
           function(subject, query, ...) {
+            if (is(subject, "RangedSummarizedExperiment"))
+                subject <- rowRanges(subject)
+            if (is(subject, "GRanges"))
+                return(names(subject)[queryHits(findOverlaps(subject,
+                                                             query, ...))])
+            if (is(subject, "VcfStack"))
+                return(intersect(seqnames(seqinfo(subject)),
+                                 as.character(seqnames(query))))
             if (.checkFindOverlaps(class(subject))) {
               lapply(subject, function(x) {
                 names(x)[queryHits(
@@ -102,14 +107,6 @@ setMethod("getHits", signature("ANY", "GRanges"),
             } else {
               character(0L)
             }
-          })
-
-#' @describeIn getHits Find rownames
-#' for \code{RangedSummarizedExperiment} hits
-setMethod("getHits", signature("RangedSummarizedExperiment", "GRanges"),
-          function(subject, query, ...) {
-            subject <- rowRanges(subject)
-            getHits(subject, query)
           })
 
 #' @describeIn getHits Find all matching rownames based
@@ -159,7 +156,7 @@ setMethod("getHits", signature("RangedRaggedAssay", "character"),
             keeps <- names(isEmptyAssay)[
                 vapply(isEmptyAssay, function(k) {
                     !isTRUE(k)}, logical(1L))]
-            x <- x[, , keeps, drop = TRUE]
+            x <- x[ , , keeps, drop = TRUE]
         }
     }
     return(x)
@@ -176,7 +173,6 @@ setMethod("getHits", signature("RangedRaggedAssay", "character"),
 #' @param ... Additional arguments. See details for more information.
 #' @param drop logical (default TRUE) whether to drop empty assay elements
 #' in the \code{ExperimentList}
-#' @seealso \link{getHits}
 #' @aliases [,MultiAssayExperiment,ANY-method
 setMethod("[", c("MultiAssayExperiment", "ANY", "ANY", "ANY"),
           .subsetMultiAssayExperiment)
@@ -224,6 +220,12 @@ setMethod("subsetByAssay", c("MultiAssayExperiment", "ANY"), function(x, y) {
     sampleMap(x) <- newMap
     experiments(x) <- newSubset
     return(x)
+})
+
+#' @describeIn MultiAssayExperiment Extract the \link{ExperimentList} element
+#' @export
+setMethod("[[", "MultiAssayExperiment", function(x, i, j, ...) {
+    experiments(x)[[i]]
 })
 
 .matchReorderSub <- function(assayMap, identifiers) {
@@ -315,7 +317,7 @@ setMethod("subsetByColumn", c("MultiAssayExperiment", "list"), function(x, y)
     }, lMap = listMap, nSamps = newSamps, SIMPLIFY = FALSE)
     newMap <- listToMap(newMap)
     selectors <- unique(as.character(newMap[["primary"]]))
-    pData(x) <- pData(x)[rownames(pData(x)) %in% selectors,]
+    pData(x) <- pData(x)[rownames(pData(x)) %in% selectors, ]
     sampleMap(x) <- newMap
     return(x)
 })
@@ -443,7 +445,7 @@ setMethod("complete.cases", "MultiAssayExperiment", function(...) {
 
 #' Reshape raw data from an object
 #'
-#' The gather function collects data from the \code{\link{ExperimentList}}
+#' The collect function collects data from the \code{\link{ExperimentList}}
 #' in a \code{\link{MultiAssayExperiment}} and returns a uniform
 #' \code{\link{DataFrame}}. The resulting DataFrame has columns indicating
 #' primary, rowname, colname and value. This method can optionally include
@@ -456,16 +458,16 @@ setMethod("complete.cases", "MultiAssayExperiment", function(...) {
 #'
 #' @examples
 #' example("RangedRaggedAssay")
-#' gather(myRRA, background = 0)
+#' collect(myRRA, background = 0)
 #'
 #' @seealso \code{\link{assay,RangedRaggedAssay,missing-method}}
 #' @return Tall and skinny \code{\linkS4class{DataFrame}}
-#' @export gather
-setGeneric("gather", function(object, ...) standardGeneric("gather"))
+#' @export collect
+setGeneric("collect", function(object, ...) standardGeneric("collect"))
 
-#' @describeIn gather ANY class method, works with ExpressionSet and
+#' @describeIn collect ANY class method, works with ExpressionSet and
 #' SummarizedExperiment classes as well as matrix
-setMethod("gather", "ANY", function(object, ...) {
+setMethod("collect", "ANY", function(object, ...) {
     if (is(object, "ExpressionSet"))
         object <- Biobase::exprs(object)
     if (is(object, "matrix"))
@@ -484,37 +486,38 @@ setMethod("gather", "ANY", function(object, ...) {
     rectangle
 })
 
-#' @describeIn gather \linkS4class{RangedRaggedAssay} class method to return
+#' @describeIn collect \linkS4class{RangedRaggedAssay} class method to return
 #' matrix of selected \dQuote{mcolname} column, defaults to score
-setMethod("gather", "RangedRaggedAssay", function(object, ...) {
+setMethod("collect", "RangedRaggedAssay", function(object, ...) {
     args <- list(...)
     newMat <- do.call(assay, args = c(list(x = object), args))
     callNextMethod(newMat)
 })
 
-#' @describeIn gather Gather data from the \code{ExperimentList} class
+#' @describeIn collect Collect data from the \code{ExperimentList} class
 #' returns list of DataFrames
-setMethod("gather", "ExperimentList", function(object, ...) {
+setMethod("collect", "ExperimentList", function(object, ...) {
     dataList <- as.list(object)
     dataList <- lapply(seq_along(object), function(i, flatBox) {
         S4Vectors::DataFrame(assay = S4Vectors::Rle(names(object)[i]),
-                             gather(flatBox[[i]], ...))
+                             collect(flatBox[[i]], ...))
     }, flatBox = object)
     dataList
 })
 
-#' @describeIn gather Overarching \code{MultiAssayExperiment} class method
+#' @describeIn collect Overarching \code{MultiAssayExperiment} class method
 #' returns a small and skinny DataFrame. The \code{pDataCols} arguments allows
 #' the user to append pData columns to the long and skinny DataFrame.
 #' @param pDataCols selected pData columns to include in the resulting output
-setMethod("gather", "MultiAssayExperiment", function(object, pDataCols = NULL,
+setMethod("collect", "MultiAssayExperiment", function(object, pDataCols = NULL,
                                                      ...) {
     addCols <- !is.null(pDataCols)
-    dataList <- gather(experiments(object), ...)
+    dataList <- collect(experiments(object), ...)
     dataList <- lapply(dataList, function(rectangleDF) {
-        primary <- S4Vectors::Rle(sampleMap(object)[match(rectangleDF[["colname"]],
-                                           sampleMap(object)[["colname"]]),
-                                     "primary"])
+        primary <- S4Vectors::Rle(sampleMap(object)[match(
+            rectangleDF[["colname"]],
+            sampleMap(object)[["colname"]]),
+            "primary"])
         rectangleDF <- S4Vectors::DataFrame(rectangleDF, primary = primary)
         rectangleDF[, c("assay", "primary", "rowname", "colname", "value")]
     })
@@ -545,6 +548,7 @@ setMethod("gather", "MultiAssayExperiment", function(object, pDataCols = NULL,
 #' @describeIn MultiAssayExperiment Find duplicate columns in the data by
 #' matching pData rownames
 #' @param incomparables duplicated: unused argument
+#' @exportMethod duplicated
 setMethod("duplicated", "MultiAssayExperiment",
           function(x, incomparables = FALSE, ...) {
     listMap <- mapToList(sampleMap(x))
@@ -607,7 +611,8 @@ setMethod("reduce", "ExperimentList",
               names(idx) <- names(x)
               redList <- lapply(idx, function(i, element, replicate,
                                               combine, vectorized, ...) {
-                  reduce(x = element[[i]], replicates = replicate[[i]], combine = combine,
+                  reduce(x = element[[i]], replicates = replicate[[i]],
+                         combine = combine,
                          vectorized = vectorized, ...)
               }, element = x, replicate = replicates, combine = combine,
               vectorized = vectorized, ...)
@@ -624,7 +629,9 @@ setMethod("reduce", "ANY", function(x, drop.empty.ranges = FALSE,
     if (is(x, "ExpressionSet"))
         x <- Biobase::exprs(x)
     if (!is.null(replicates) && length(replicates) != 0L) {
-        uniqueCols <- apply(as.matrix(replicates), 2, function(cols) { !any(cols) })
+        uniqueCols <- apply(as.matrix(replicates), 2, function(cols) {
+            !any(cols)
+            })
         repeatList <- lapply(replicates, function(reps, rectangle,
                                                   combine, vectorized) {
             if (length(reps)) {

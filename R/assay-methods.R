@@ -48,7 +48,7 @@ setMethod("assay", c("RangedRaggedAssay", "missing"),
                   stop("metadata column is not numeric")
 
               if (!is.null(ranges)) {
-                  if (!inherits(ranges, "GRanges"))
+                  if (!is(ranges, "GRanges"))
                       stop("ranges must be a GRanges object")
                   if (make.names || is.null(names(ranges))) {
                       rowNames <- as.character(ranges)
@@ -86,7 +86,7 @@ setMethod("assay", c("RangedRaggedAssay", "missing"),
 
 #' @describeIn ExperimentList Get the assay data for the default ANY class
 setMethod("assay", c("ANY", "missing"), function(x, i) {
-    if (inherits(x, "ExpressionSet"))
+    if (is(x, "ExpressionSet"))
         return(Biobase::exprs(x))
     I(x)
 })
@@ -96,7 +96,7 @@ setMethod("assay", c("ANY", "missing"), function(x, i) {
 #' @param i missing argument
 #' @aliases assay,ExperimentList,missing-method
 setMethod("assay", c("ExperimentList", "missing"), function(x, i) {
-    lapply(x, FUN = function(y) { assay(y) })
+    lapply(x, FUN = function(y) assay(y))
 })
 
 #' @describeIn MultiAssayExperiment Get the assay data for a

@@ -39,9 +39,9 @@
 
     ## experiment colnames and sampleMap colname need to agree
     grp <- sampleMap$assay
-    colnm = split(sampleMap$colname, grp)
-    keep = Map(intersect, colnm, colnames(experiments)[names(colnm)])
-    keep_sampleMap_colname = logical(nrow(sampleMap))
+    colnm <- split(sampleMap$colname, grp)
+    keep <- Map(intersect, colnm, colnames(experiments)[names(colnm)])
+    keep_sampleMap_colname <- logical(nrow(sampleMap))
     split(keep_sampleMap_colname, grp) <- Map("%in%", colnm, keep)
     if (!all(keep_sampleMap_colname)) {
         sampleMap <- sampleMap[keep_sampleMap_colname, , drop=FALSE]
@@ -56,7 +56,7 @@
     primary <- intersect(rownames(pData), sampleMap[["primary"]])
     keep_sampleMap_primary <- sampleMap[["primary"]] %in% primary
     if (!all(keep_sampleMap_primary)) {
-        sampleMap <- sampleMap[keep_sampleMap_primary,, drop=FALSE]
+        sampleMap <- sampleMap[keep_sampleMap_primary, , drop=FALSE]
         harmony <- c(
             harmony,
             paste("removing", sum(!keep_sampleMap_primary),
@@ -68,8 +68,8 @@
     experiments_columns <- split(sampleMap[["colname"]], sampleMap[["assay"]])
     primary <- intersect(rownames(pData), sampleMap[["primary"]])
     keep_pData <- rownames(pData) %in% primary
-    if (!all(keep_pData)){
-        pData=pData[keep_pData,]
+    if (!all(keep_pData)) {
+        pData <- pData[keep_pData, ]
         harmony <- c(
             harmony,
             paste("removing", sum(!keep_pData),
@@ -91,7 +91,7 @@
     list(experiments=experiments, sampleMap=sampleMap, pData=pData)
 }
 
-#' Create a MultiAssayExperiment object
+#' Construct a \code{MultiAssayExperiment} object
 #'
 #' This is the constructor function for the \link{MultiAssayExperiment-class}.
 #' It combines multiple data elements from the different hierarchies of data
@@ -110,14 +110,13 @@
 #' content describing the overall experiments.
 #' @param drops A \code{list} of unmatched information
 #' (included after subsetting)
-#' @return A \code{MultiAssayExperiment} data object that stores experiment
-#' and phenotype data
+#' @return A \code{MultiAssayExperiment} object that can store
+#' experiment and phenotype data
 #'
 #' @example inst/scripts/MultiAssayExperiment-Ex.R
 #'
 #' @export MultiAssayExperiment
-#' @aliases NULL
-#' @seealso MultiAssayExperiment-class
+#' @seealso \link{MultiAssayExperiment-class}
 MultiAssayExperiment <-
     function(experiments = ExperimentList(),
             pData = S4Vectors::DataFrame(),
@@ -126,7 +125,7 @@ MultiAssayExperiment <-
             drops = list()) {
 
         if (missing(experiments))
-            experiments = ExperimentList()
+            experiments <- ExperimentList()
         else
             experiments <- ExperimentList(experiments)
 

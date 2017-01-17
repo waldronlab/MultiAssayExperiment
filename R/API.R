@@ -1,6 +1,5 @@
-.cleanC = function(x) gsub(".__C__", "", x)
-.cleanT = function(x) gsub(".__T__", "", x)
-
+.cleanC <- function(x) gsub(".__C__", "", x)
+.cleanT <- function(x) gsub(".__T__", "", x)
 #' Refer to the API documentation
 #'
 #' \code{API} opens a browser to the API documentation
@@ -33,24 +32,25 @@ API <- function(website = TRUE, shiny = FALSE) {
     }
 }
 
-.packageAPI <- function(packname="MultiAssayExperiment") {
-    ns = getNamespace(packname)
-    nsElements = ls(ns, all.names = TRUE)
-    nsNS = get(".__NAMESPACE__.", ns) # probably volatile?
-    classes = .cleanC(grep(".__C__", nsElements, value=TRUE))
-    todrop = sapply(classes, function(x)extends(x, "language"))
-    if (any(todrop)) classes = classes[-which(todrop)]
-    TmethsWithin = .cleanT(grep(packname, grep(".__T__", nsElements,
-                                               value=TRUE),
-                                value=TRUE))
-    TmethsWithout = .cleanT(grep(packname, grep(".__T__", nsElements,
-                                                value=TRUE),
-                                 value=TRUE, invert=TRUE))
-    Mcmeths = lapply(classes, function(x) utils::methods(class=x))
-    names(Mcmeths) = classes
-    #list(nsElements = nsElements, nsNS = nsNS, classes=classes, cmeths=cmeths)
-    list(classes=classes, Mcmeths=Mcmeths, TmethsWithin=TmethsWithin,
-         TmethsWithout=TmethsWithout)
+.packageAPI <- function(packname = "MultiAssayExperiment") {
+    ns <- getNamespace(packname)
+    nsElements <- ls(ns, all.names = TRUE)
+    nsNS <- get(".__NAMESPACE__.", ns) # probably volatile?
+    classes <- .cleanC(grep(".__C__", nsElements, value = TRUE))
+    todrop <- sapply(classes, function(x)extends(x, "language"))
+    if (any(todrop)) classes <- classes[-which(todrop)]
+    TmethsWithin <- .cleanT(grep(packname, grep(".__T__", nsElements,
+                                               value = TRUE),
+                                value = TRUE))
+    TmethsWithout <- .cleanT(grep(packname, grep(".__T__", nsElements,
+                                                value = TRUE),
+                                 value = TRUE, invert = TRUE))
+    Mcmeths <- lapply(classes, function(x) utils::methods(class = x))
+    names(Mcmeths) <- classes
+    # list(nsElements = nsElements, nsNS = nsNS, classes = classes,
+    # cmeths = cmeths)
+    list(classes = classes, Mcmeths = Mcmeths, TmethsWithin = TmethsWithin,
+         TmethsWithout = TmethsWithout)
 }
 
 .apiDash <- function() {
@@ -79,7 +79,7 @@ API <- function(website = TRUE, shiny = FALSE) {
                    shiny::tableOutput("ls1")),
           shiny::tabPanel("Methods(inside)", shiny::tableOutput("ls2")),
           shiny::tabPanel("Methods(outside)", shiny::tableOutput("ls3")),
-          width=9
+          width = 9
         )
       )
     )
@@ -87,15 +87,15 @@ API <- function(website = TRUE, shiny = FALSE) {
 
   server <- function(input, output) {
 
-    getconts = shiny::reactive( {
-      papi = .packageAPI( input$packname )
-      list(classDF = data.frame(classes=papi$classes),
-           methsInDF = data.frame(methsIn=papi$TmethsWithin),
-           methsOutDF = data.frame(methsOut=papi$TmethsWithout))
+    getconts <- shiny::reactive( {
+      papi <- .packageAPI( input$packname )
+      list(classDF = data.frame(classes = papi$classes),
+           methsInDF = data.frame(methsIn = papi$TmethsWithin),
+           methsOutDF = data.frame(methsOut = papi$TmethsWithout))
     })
-    output$ls1 = shiny::renderTable( getconts()$classDF )
-    output$ls2 = shiny::renderTable( getconts()$methsInDF )
-    output$ls3 = shiny::renderTable( getconts()$methsOutDF )
+    output$ls1 <- shiny::renderTable( getconts()$classDF )
+    output$ls2 <- shiny::renderTable( getconts()$methsInDF )
+    output$ls3 <- shiny::renderTable( getconts()$methsOutDF )
   }
 
   shiny::shinyApp(ui, server)

@@ -9,13 +9,13 @@ setMethod("[", c("MAEshell", "ANY", "ANY"), function(x, i, j, ..., drop=TRUE) {
     if (!missing(i) && !missing(j))
         x@a[i, j, drop=drop]
     else if (missing(i))
-        x@a[,j, drop=drop]
+        x@a[, j, drop=drop]
     else if (missing(j))
-        x@a[i,,drop=drop]
+        x@a[i, , drop=drop]
     else x
 })
 setMethod("dim", "MAEshell", function(x) {c(length(x@a),
-                                            length(assay(x@a)[1,]))})
+                                            length(assay(x@a)[1, ]))})
 
 nrows <- 5; ncols <- 4
 counts <- matrix(runif(nrows * ncols, 1, 1e4), nrows)
@@ -37,7 +37,7 @@ masPheno <- data.frame(sex=c("M", "F", "M", "F"),
 aShell <- new("MAEshell", a = rse)
 newShell <- list(myShell = aShell)
 rangemap <-
-    DataFrame(assay = factor("myShell"), 
+    DataFrame(assay = factor("myShell"),
               primary = c("Jack", "Jill", "Bob", "Barbara"),
               colname = c("mysnparray1", "mysnparray2", "mysnparray3",
                           "mysnparray4"))

@@ -28,10 +28,10 @@
 #'
 #' @export RangedRaggedAssay
 RangedRaggedAssay <- function(x = GRangesList()) {
-    if (inherits(x, "GRanges")) {
+    if (is(x, "GRanges")) {
         x <- GRangesList(x)
     }
-    if (inherits(x, "GRangesList")) {
+    if (is(x, "GRangesList")) {
         metad <- mcols(x)
         missingRownames <- vapply(X = x, FUN = function(grl) {
             is.null(names(grl))

@@ -29,7 +29,7 @@ A \code{list} object of DataFrames for each assay
 }
 \description{
 The \code{mapToList} function provides a convenient way of reordering a
-\code{data.frame} to a \code{list}. The \code{listToMap} function does the 
+\code{data.frame} to a \code{list}. The \code{listToMap} function does the
 opposite by taking a \code{list} and converting it to \code{DataFrame}.
 }
 \section{Functions}{

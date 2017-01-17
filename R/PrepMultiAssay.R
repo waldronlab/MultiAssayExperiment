@@ -88,7 +88,7 @@ PrepMultiAssay <- function(ExperimentList, pData, sampleMap) {
                 "\n  could be matched to the pData rownames; see $drops")
         notF <- sampleMap[!notFounds, ]
         drops <- list(sampleMap_rows = notF)
-        sampleMap <- sampleMap[notFounds,]
+        sampleMap <- sampleMap[notFounds, ]
         print(notF)
         if (length(unique(sampleMap[["assay"]])) != length(ExperimentList)) {
             stop("Some assays could not be matched,",

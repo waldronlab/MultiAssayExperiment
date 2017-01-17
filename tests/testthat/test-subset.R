@@ -33,7 +33,7 @@ test_that("drop argument works", {
   expect_equal(length(
       experiments(myMultiAssayExperiment[FALSE, drop = FALSE])), 4L)
   expect_equal(length(
-      experiments(myMultiAssayExperiment[,FALSE, drop = TRUE])), 0L)
+      experiments(myMultiAssayExperiment[, FALSE, drop = TRUE])), 0L)
   expect_equal(length(
-      experiments(myMultiAssayExperiment[,FALSE, drop = FALSE])), 4L)
+      experiments(myMultiAssayExperiment[, FALSE, drop = FALSE])), 4L)
 })

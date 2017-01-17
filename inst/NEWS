@@ -1,4 +1,26 @@
-# MultiAssayExperiment 1.1.5
+# MultiAssayExperiment 1.1.11
+
+## New features
+
+* Renamed `gather` function to `collect`
+
+# MultiAssayExperiment 1.1.10
+
+## New features 
+
+* Double bracket method for MultiAssayExperiment available
+
+# MultiAssayExperiment 1.1.9
+
+## New features
+
+* `clusterSex` function available for clustering gender from expression data
+
+## Bug fixes and minor improvements
+
+* Improvements to documentation
+
+# MultiAssayExperiment 1.1.6
 
 ## New features
 

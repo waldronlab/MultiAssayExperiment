@@ -22,6 +22,7 @@
 \alias{[,MultiAssayExperiment,ANY,ANY,ANY-method}
 \alias{[,MultiAssayExperiment,ANY-method}
 \alias{isEmpty,MultiAssayExperiment-method}
+\alias{[[,MultiAssayExperiment,ANY,ANY-method}
 \alias{complete.cases,MultiAssayExperiment-method}
 \alias{duplicated,MultiAssayExperiment-method}
 \alias{reduce,MultiAssayExperiment-method}
@@ -62,6 +63,8 @@
 \S4method{[}{MultiAssayExperiment,ANY,ANY,ANY}(x, i, j, k, ..., drop = TRUE)
 
 \S4method{isEmpty}{MultiAssayExperiment}(x)
+
+\S4method{[[}{MultiAssayExperiment,ANY,ANY}(x, i, j, ...)
 
 \S4method{complete.cases}{MultiAssayExperiment}(...)
 
@@ -185,6 +188,8 @@ for a \code{MultiAssayExperiment} object
 \item \code{isEmpty}: A \code{logical} value indicating an empty
 \code{MultiAssayExperiment}
 
+\item \code{[[}: Extract the \link{ExperimentList} element
+
 \item \code{complete.cases}: Return a logical vector of biological units
 with data across all experiments
 
@@ -243,8 +248,6 @@ MultiAssayExperiment()
 
 }
 \seealso{
-\link{getHits}
-
-duplicated,MultiAssayExperiment-method
+SubsetByRow method: \link{getHits}
 }
 
