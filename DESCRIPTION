@@ -25,6 +25,7 @@ Imports:
     reshape2,
     shinydashboard,
     shiny,
+    stats,
     tidyr,
     utils
 Maintainer: Marcel Ramos <mramos09@gmail.com>
