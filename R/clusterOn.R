@@ -1,4 +1,4 @@
-#' Check sex expression against clinical sex
+#' Check expression of a given feature against clinical variable
 #'
 #' Function that outputs a \link{DataFrame} with participant ID, sample ID,
 #' the select pData column, the expression values for select rownames,
@@ -16,13 +16,13 @@
 #' @return A DataFrame with appended cluster and center values
 #' @examples
 #' example(MultiAssayExperiment)
-#' clusterSex(myMultiAssayExperiment, pDataCols = "sex",
+#' clusterOn(myMultiAssayExperiment, pDataCols = "sex",
 #'     rownames = c("XIST", "RPS4Y1", "KDM5D"),
 #'     experiments = "RNASeqGene", seed = 42L)
 #'
-#' @export clusterSex
+#' @export clusterOn
 #' @importFrom stats kmeans
-clusterSex <- function(MultiAssayExperiment, pDataCols, rownames,
+clusterOn <- function(MultiAssayExperiment, pDataCols, rownames,
                       experiments, seed = 1L) {
     MultiAssayExperiment <- MultiAssayExperiment[rownames, , experiments]
     longMulti <- collect(MultiAssayExperiment, pDataCols = pDataCols)

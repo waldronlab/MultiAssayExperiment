@@ -445,7 +445,7 @@ setMethod("complete.cases", "MultiAssayExperiment", function(...) {
 
 #' Reshape raw data from an object
 #'
-#' The collect function collects data from the \code{\link{ExperimentList}}
+#' The gather function gathers data from the \code{\link{ExperimentList}}
 #' in a \code{\link{MultiAssayExperiment}} and returns a uniform
 #' \code{\link{DataFrame}}. The resulting DataFrame has columns indicating
 #' primary, rowname, colname and value. This method can optionally include
@@ -458,16 +458,12 @@ setMethod("complete.cases", "MultiAssayExperiment", function(...) {
 #'
 #' @examples
 #' example("RangedRaggedAssay")
-#' collect(myRRA, background = 0)
+#' gather(myRRA, background = 0)
 #'
 #' @seealso \code{\link{assay,RangedRaggedAssay,missing-method}}
 #' @return Tall and skinny \code{\linkS4class{DataFrame}}
-#' @export collect
-setGeneric("collect", function(object, ...) standardGeneric("collect"))
-
-#' @describeIn collect ANY class method, works with ExpressionSet and
-#' SummarizedExperiment classes as well as matrix
-setMethod("collect", "ANY", function(object, ...) {
+#' @export
+gather_.default <- function(object, ...) {
     if (is(object, "ExpressionSet"))
         object <- Biobase::exprs(object)
     if (is(object, "matrix"))
@@ -484,35 +480,34 @@ setMethod("collect", "ANY", function(object, ...) {
     rectangle <- S4Vectors::DataFrame(object)
     rectangle[, "colname"] <- S4Vectors::Rle(rectangle[["colname"]])
     rectangle
-})
+}
 
-#' @describeIn collect \linkS4class{RangedRaggedAssay} class method to return
+#' @describeIn gather \linkS4class{RangedRaggedAssay} class method to return
 #' matrix of selected \dQuote{mcolname} column, defaults to score
-setMethod("collect", "RangedRaggedAssay", function(object, ...) {
+gather_.RangedRaggedAssay <- function(object, ...) {
     args <- list(...)
     newMat <- do.call(assay, args = c(list(x = object), args))
     callNextMethod(newMat)
-})
+}
 
-#' @describeIn collect Collect data from the \code{ExperimentList} class
+#' @describeIn gather Gather data from the \code{ExperimentList} class
 #' returns list of DataFrames
-setMethod("collect", "ExperimentList", function(object, ...) {
+gather_.ExperimentList <- function(object, ...) {
     dataList <- as.list(object)
     dataList <- lapply(seq_along(object), function(i, flatBox) {
         S4Vectors::DataFrame(assay = S4Vectors::Rle(names(object)[i]),
-                             collect(flatBox[[i]], ...))
+                             gather(flatBox[[i]], ...))
     }, flatBox = object)
     dataList
-})
+}
 
-#' @describeIn collect Overarching \code{MultiAssayExperiment} class method
+#' @describeIn gather Overarching \code{MultiAssayExperiment} class method
 #' returns a small and skinny DataFrame. The \code{pDataCols} arguments allows
 #' the user to append pData columns to the long and skinny DataFrame.
 #' @param pDataCols selected pData columns to include in the resulting output
-setMethod("collect", "MultiAssayExperiment", function(object, pDataCols = NULL,
-                                                     ...) {
+gather_.MultiAssayExperiment <- function(object, pDataCols = NULL, ...) {
     addCols <- !is.null(pDataCols)
-    dataList <- collect(experiments(object), ...)
+    dataList <- gather(experiments(object), ...)
     dataList <- lapply(dataList, function(rectangleDF) {
         primary <- S4Vectors::Rle(sampleMap(object)[match(
             rectangleDF[["colname"]],
@@ -532,7 +527,7 @@ setMethod("collect", "MultiAssayExperiment", function(object, pDataCols = NULL,
                                          extraColumns[matchIdx, , drop = FALSE])
     }
     longDataFrame
-})
+}
 
 .combineCols <- function(rectangle, dupNames, combine, vectorized, ...) {
     if (!is.logical(vectorized))

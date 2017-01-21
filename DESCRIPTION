@@ -47,7 +47,7 @@ Collate:
     'MultiAssayExperiment.R'
     'PrepMultiAssay.R'
     'assay-methods.R'
-    'clusterSex.R'
+    'clusterOn.R'
     'hasAssay.R'
     'hnsc.R'
     'listToMap.R'
