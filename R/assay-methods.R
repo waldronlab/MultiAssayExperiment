@@ -40,7 +40,7 @@
 #' @exportMethod assay
 setMethod("assay", c("RangedRaggedAssay", "missing"),
           function(x, i, mcolname = "score", background = NA,
-                   make.names = FALSE, ranges = NULL, type = "any"){
+                   make.names = FALSE, ranges = NULL, type = "any") {
               if (!all(GenomicRanges::isDisjoint(x)))
                   stop("only disjoint ranges supported")
 

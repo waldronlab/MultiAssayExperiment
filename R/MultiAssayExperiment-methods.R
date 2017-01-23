@@ -445,7 +445,7 @@ setMethod("complete.cases", "MultiAssayExperiment", function(...) {
 
 #' Reshape raw data from an object
 #'
-#' The gather function gathers data from the \code{\link{ExperimentList}}
+#' The rearrange function takes data from the \code{\link{ExperimentList}}
 #' in a \code{\link{MultiAssayExperiment}} and returns a uniform
 #' \code{\link{DataFrame}}. The resulting DataFrame has columns indicating
 #' primary, rowname, colname and value. This method can optionally include
@@ -453,17 +453,23 @@ setMethod("complete.cases", "MultiAssayExperiment", function(...) {
 #' \code{MultiAssayExperiment} object.
 #'
 #' @param object Any supported class object
+#' @param shape A single string indicating the shape of the resulting data,
+#' options include \sQuote{long} and \sQuote{wide} (defaults to the former)
 #' @param ... Additional arguments for the \link{RangedRaggedAssay}
 #' \code{assay} method. See below.
 #'
 #' @examples
 #' example("RangedRaggedAssay")
-#' gather(myRRA, background = 0)
+#' rearrange(myRRA, background = 0)
 #'
 #' @seealso \code{\link{assay,RangedRaggedAssay,missing-method}}
-#' @return Tall and skinny \code{\linkS4class{DataFrame}}
-#' @export
-gather_.default <- function(object, ...) {
+#' @return Either a long or wide \code{\linkS4class{DataFrame}}
+#' @export rearrange
+setGeneric("rearrange", function(object, shape, ...) standardGeneric("rearrange"))
+
+#' @describeIn rearrange ANY class method, works with classes such as
+#' \link{ExpressionSet} and \link{SummarizedExperiment} as well as \code{matrix}
+setMethod("rearrange", "ANY", function(object, shape = "long", ...) {
     if (is(object, "ExpressionSet"))
         object <- Biobase::exprs(object)
     if (is(object, "matrix"))
@@ -480,34 +486,40 @@ gather_.default <- function(object, ...) {
     rectangle <- S4Vectors::DataFrame(object)
     rectangle[, "colname"] <- S4Vectors::Rle(rectangle[["colname"]])
     rectangle
-}
+})
 
-#' @describeIn gather \linkS4class{RangedRaggedAssay} class method to return
+#' @describeIn rearrange \linkS4class{RangedRaggedAssay} class method to return
 #' matrix of selected \dQuote{mcolname} column, defaults to score
-gather_.RangedRaggedAssay <- function(object, ...) {
+#' @export
+setMethod("rearrange", "RangedRaggedAssay", function(object,
+                                                     shape = "long", ...) {
     args <- list(...)
     newMat <- do.call(assay, args = c(list(x = object), args))
-    callNextMethod(newMat)
-}
+    callNextMethod(newMat, shape = shape)
+})
 
-#' @describeIn gather Gather data from the \code{ExperimentList} class
+#' @describeIn rearrange Rearrange data from the \code{ExperimentList} class
 #' returns list of DataFrames
-gather_.ExperimentList <- function(object, ...) {
+#' @export
+setMethod("rearrange", "ExperimentList", function(object,
+                                                     shape = "long", ...) {
     dataList <- as.list(object)
     dataList <- lapply(seq_along(object), function(i, flatBox) {
         S4Vectors::DataFrame(assay = S4Vectors::Rle(names(object)[i]),
-                             gather(flatBox[[i]], ...))
+                             rearrange(flatBox[[i]], ...))
     }, flatBox = object)
     dataList
-}
+})
 
-#' @describeIn gather Overarching \code{MultiAssayExperiment} class method
+#' @describeIn rearrange Overarching \code{MultiAssayExperiment} class method
 #' returns a small and skinny DataFrame. The \code{pDataCols} arguments allows
 #' the user to append pData columns to the long and skinny DataFrame.
 #' @param pDataCols selected pData columns to include in the resulting output
-gather_.MultiAssayExperiment <- function(object, pDataCols = NULL, ...) {
+#' @export
+setMethod("rearrange", "MultiAssayExperiment",
+          function(object, shape = "long", pDataCols = NULL, ...) {
     addCols <- !is.null(pDataCols)
-    dataList <- gather(experiments(object), ...)
+    dataList <- rearrange(experiments(object), ...)
     dataList <- lapply(dataList, function(rectangleDF) {
         primary <- S4Vectors::Rle(sampleMap(object)[match(
             rectangleDF[["colname"]],
@@ -527,7 +539,7 @@ gather_.MultiAssayExperiment <- function(object, pDataCols = NULL, ...) {
                                          extraColumns[matchIdx, , drop = FALSE])
     }
     longDataFrame
-}
+})
 
 .combineCols <- function(rectangle, dupNames, combine, vectorized, ...) {
     if (!is.logical(vectorized))
