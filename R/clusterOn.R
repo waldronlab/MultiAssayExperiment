@@ -25,7 +25,7 @@
 clusterOn <- function(MultiAssayExperiment, pDataCols, rownames,
                       experiments, seed = 1L) {
     MultiAssayExperiment <- MultiAssayExperiment[rownames, , experiments]
-    longMulti <- collect(MultiAssayExperiment, pDataCols = pDataCols)
+    longMulti <- rearrange(MultiAssayExperiment, pDataCols = pDataCols)
 
     wideMulti <- tidyr::spread(
         as.data.frame(longMulti)[, -(which(names(longMulti)=="assay"))],
