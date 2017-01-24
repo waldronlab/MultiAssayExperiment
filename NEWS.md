@@ -1,3 +1,10 @@
+# MultiAssayExperiment 1.1.12
+
+## New features 
+
+* `gather`/`collect` function name changed to `rearrange`
+* `clusterSex` now `clusterOn`, works with characteristic of choice
+
 # MultiAssayExperiment 1.1.11
 
 ## New features
