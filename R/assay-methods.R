@@ -88,7 +88,7 @@ setMethod("assay", c("RangedRaggedAssay", "missing"),
 setMethod("assay", c("ANY", "missing"), function(x, i) {
     if (is(x, "ExpressionSet"))
         return(Biobase::exprs(x))
-    I(x)
+    return(x)
 })
 
 #' @describeIn ExperimentList Get the assay data from each element in the
