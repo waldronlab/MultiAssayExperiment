@@ -23,6 +23,7 @@
 \alias{[,MultiAssayExperiment,ANY-method}
 \alias{isEmpty,MultiAssayExperiment-method}
 \alias{[[,MultiAssayExperiment,ANY,ANY-method}
+\alias{[[<-,MultiAssayExperiment,ANY,ANY-method}
 \alias{complete.cases,MultiAssayExperiment-method}
 \alias{duplicated,MultiAssayExperiment-method}
 \alias{reduce,MultiAssayExperiment-method}
@@ -65,6 +66,8 @@
 \S4method{isEmpty}{MultiAssayExperiment}(x)
 
 \S4method{[[}{MultiAssayExperiment,ANY,ANY}(x, i, j, ...)
+
+\S4method{[[}{MultiAssayExperiment,ANY,ANY}(x, i, j, ...) <- value
 
 \S4method{complete.cases}{MultiAssayExperiment}(...)
 
@@ -189,6 +192,10 @@ for a \code{MultiAssayExperiment} object
 \code{MultiAssayExperiment}
 
 \item \code{[[}: Extract the \link{ExperimentList} element
+
+\item \code{[[<-}: Replace the \link{ExperimentList} element
+with a supported class (should have documented dimensions
+in \code{sampleMap})
 
 \item \code{complete.cases}: Return a logical vector of biological units
 with data across all experiments

@@ -228,6 +228,19 @@ setMethod("[[", "MultiAssayExperiment", function(x, i, j, ...) {
     experiments(x)[[i]]
 })
 
+#' @describeIn MultiAssayExperiment Replace the \link{ExperimentList} element
+#' with a supported class (should have documented dimensions
+#' in \code{sampleMap})
+#' @export
+setReplaceMethod("[[", "MultiAssayExperiment", function(x, i, j, ..., value) {
+                         if (!missing(j) || length(list(...)) > 0)
+                             stop("invalid replacement")
+                         origLen <- length(x)
+                         x <- S4Vectors::setListElement(experiments(x),
+                                                        i, value)
+                         x
+})
+
 .matchReorderSub <- function(assayMap, identifiers) {
     positions <- unlist(
         lapply(identifiers,
