@@ -4,7 +4,7 @@
 \alias{clusterOn}
 \title{Check expression of a given feature against clinical variable}
 \usage{
-clusterOn(MultiAssayExperiment, pDataCols, rownames, experiments, seed = 1L)
+clusterOn(MultiAssayExperiment, pDataCols, rownames, experiments, seed = NULL)
 }
 \arguments{
 \item{MultiAssayExperiment}{A MultiAssayExperiment object}
@@ -18,7 +18,7 @@ DataFrame}
 \item{experiments}{A \code{character} vector indicating assays of interest
 in the \code{ExperimentList}}
 
-\item{seed}{A single integer value passed to \link{set.seed}}
+\item{seed}{A single integer value passed to \link{set.seed} (default NULL)}
 }
 \value{
 A DataFrame with appended cluster and center values

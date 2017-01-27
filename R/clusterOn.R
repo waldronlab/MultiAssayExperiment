@@ -11,7 +11,7 @@
 #' (e.g., a set of gene names)
 #' @param experiments A \code{character} vector indicating assays of interest
 #' in the \code{ExperimentList}
-#' @param seed A single integer value passed to \link{set.seed}
+#' @param seed A single integer value passed to \link{set.seed} (default NULL)
 #'
 #' @return A DataFrame with appended cluster and center values
 #' @examples
@@ -23,7 +23,7 @@
 #' @export clusterOn
 #' @importFrom stats kmeans
 clusterOn <- function(MultiAssayExperiment, pDataCols, rownames,
-                      experiments, seed = 1L) {
+                      experiments, seed = NULL) {
     MultiAssayExperiment <- MultiAssayExperiment[rownames, , experiments]
     longMulti <- rearrange(MultiAssayExperiment, pDataCols = pDataCols)
 
@@ -33,8 +33,8 @@ clusterOn <- function(MultiAssayExperiment, pDataCols, rownames,
 
     expSubset <- wideMulti[, rownames]
     scaledExp <- apply(expSubset, 2, scale)
-
-    set.seed(seed)
+    if (!is.null(seed))
+        set.seed(seed)
     kma <- kmeans(scaledExp, centers = 2)
     kcenters <- kma[["centers"]][kma[["cluster"]], ]
     rownames(kcenters) <- NULL
