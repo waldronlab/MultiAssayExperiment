@@ -238,7 +238,9 @@ setReplaceMethod("[[", "MultiAssayExperiment", function(x, i, j, ..., value) {
                          origLen <- length(x)
                          x <- S4Vectors::setListElement(experiments(x),
                                                         i, value)
-                         x
+                         if (origLen < length(x))
+                            stop("replacement length greater than original")
+                         return(x)
 })
 
 .matchReorderSub <- function(assayMap, identifiers) {
