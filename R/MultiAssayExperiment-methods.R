@@ -479,7 +479,7 @@ setMethod("rearrange", "ANY", function(object, shape = "long", ...) {
         if (length(rowData(object)) == 1L)
             names(rowData(object)) <- "rowname"
         widedf <- data.frame(rowData(object), assay(object),
-                             stringsAsFactors = FALSE)
+                             stringsAsFactors = FALSE, check.names = FALSE)
         object <- tidyr::gather(widedf, "colname", "value",
                                 seq_along(widedf)[-1L])
     }
