@@ -6,7 +6,7 @@
 \title{Create a Matrix of score values using a GRanges or own ranges}
 \usage{
 \S4method{assay}{RangedRaggedAssay,missing}(x, i, mcolname = "score",
-  background = NA, make.names = FALSE, ranges = NULL, type = "any")
+  background = NA, make.names = FALSE, ranges = NULL, type = "any", ...)
 }
 \arguments{
 \item{x}{A \linkS4class{RangedRaggedAssay} or \link{GRangesList} class}
@@ -30,6 +30,8 @@ sample ranges and for superseding the rows for the resulting matrix
 (default NULL)}
 
 \item{type}{The type argument from \link{overlapsAny}}
+
+\item{...}{Unused argument}
 }
 \value{
 A \code{matrix} of values from the score column of the metadata.

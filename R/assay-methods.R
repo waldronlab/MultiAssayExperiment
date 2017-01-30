@@ -24,6 +24,7 @@
 #' sample ranges and for superseding the rows for the resulting matrix
 #' (default NULL)
 #' @param type The type argument from \link{overlapsAny}
+#' @param ... Unused argument
 #'
 #' @examples
 #' example("RangedRaggedAssay")
@@ -40,7 +41,7 @@
 #' @exportMethod assay
 setMethod("assay", c("RangedRaggedAssay", "missing"),
           function(x, i, mcolname = "score", background = NA,
-                   make.names = FALSE, ranges = NULL, type = "any") {
+                   make.names = FALSE, ranges = NULL, type = "any", ...) {
               if (!all(GenomicRanges::isDisjoint(x)))
                   stop("only disjoint ranges supported")
 

@@ -25,9 +25,9 @@
 \S4method{reduce}{ExperimentList}(x, drop.empty.ranges = FALSE,
   replicates = NULL, combine = rowMeans, vectorized = TRUE, ...)
 
-\S4method{assay}{ANY,missing}(x, i)
+\S4method{assay}{ANY,missing}(x, i, ...)
 
-\S4method{assay}{ExperimentList,missing}(x, i)
+\S4method{assay}{ExperimentList,missing}(x, i, ...)
 }
 \arguments{
 \item{x}{A \code{list} object}
@@ -62,9 +62,9 @@ One element present per experiment performed.
 }
 \details{
 Convert from \code{SimpleList} or \code{list}
-to the multi-experiment data container. When using the reduce method,
-additional arguments are passed to the given \link{combine} function
-argument (e.g., na.rm = TRUE)
+to the multi-experiment data container. When using the \strong{reduce}
+method, additional arguments are passed to the given \link{combine}
+function argument (e.g., na.rm = TRUE)
 }
 \section{Methods (by generic)}{
 \itemize{

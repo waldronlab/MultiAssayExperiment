@@ -79,7 +79,7 @@
 \S4method{reduce}{ANY}(x, drop.empty.ranges = FALSE, replicates = NULL,
   combine = rowMeans, vectorized = TRUE, ...)
 
-\S4method{assay}{MultiAssayExperiment,missing}(x, i)
+\S4method{assay}{MultiAssayExperiment,missing}(x, i, ...)
 }
 \arguments{
 \item{object}{A \code{MultiAssayExperiment} class object}
