@@ -1,20 +1,31 @@
-# Ignore files
+# Backup Files
 *~
 *.bak
 *.swp
 *.Rhistory
-*.swo
-.Rproj.user
-.Rhistory
-.RData
-*.orig
-*.md
-/vignettes/cache/
-.wercker/
 *.vim
+*.swo
+
+# RStudio Files
+.Rproj.user
+
+# Data Files
+.RData
+/vignettes/cache/
 *.[Rr][Dd][SsAa]
+*.txt
+
+# News Files
 NEWS
+*.md
+
+# Merge residuals
+*.orig
+
+# Cont. Integration
+.wercker/
 
 # Don't ignore
 !NEWS.md
 !README.md
+
