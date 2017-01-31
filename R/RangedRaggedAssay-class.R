@@ -154,10 +154,10 @@ setReplaceMethod("dimnames", c("RangedRaggedAssay", "list"),
 #' the \code{RangedRaggedAssay} class
 #' @param object A \code{RangedRaggedAssay} class object
 setMethod("show", "RangedRaggedAssay", function(object) {
-    if (!all(GenomicRanges::isDisjoint(object))) {
-        cat("Non-disjoint RangedRaggedAssay")
-        callNextMethod(object)
-    }
+    # if (!all(GenomicRanges::isDisjoint(object))) {
+    #     cat("Non-disjoint RangedRaggedAssay")
+    #     callNextMethod(object)
+    # }
     metacols <- mcols(unlist(object))
     showable <- vapply(metacols, function(mcol) {
         is.atomic(mcol)
@@ -168,16 +168,17 @@ setMethod("show", "RangedRaggedAssay", function(object) {
     cat(class(object), "with",
         length(dimnames(object)[[1]]), "disjoint ranges,",
         length(dimnames(object)[[2]]), "samples, and",
-        length(elts), "data elements\n")
+        length(elts), "data elements")
+    # length(elts), "data elements\n")
 
-    for (elt in head(elts, 3)) {
-        cat("\n", elt, "\n", sep="")
-        x <- assay(object, mcolname = elt)
-        print(head(x, 3))
-        if (nrow(x) > 3)
-            cat("...\n")
-    }
-    if (length(elts) > 3)
-        cat("\n...")
+    # for (elt in head(elts, 3)) {
+    #     cat("\n", elt, "\n", sep="")
+    #     x <- assay(object, mcolname = elt)
+    #     print(head(x, 3))
+    #     if (nrow(x) > 3)
+    #         cat("...\n")
+    # }
+    # if (length(elts) > 3)
+    #     cat("\n...")
     cat("\n")
 })
