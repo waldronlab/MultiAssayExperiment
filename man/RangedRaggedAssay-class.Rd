@@ -12,6 +12,7 @@
 \alias{dim,RangedRaggedAssay-method}
 \alias{dimnames,RangedRaggedAssay-method}
 \alias{dimnames<-,RangedRaggedAssay,list-method}
+\alias{disjoin,RangedRaggedAssay-method}
 \alias{show,RangedRaggedAssay-method}
 \alias{getHits,RangedRaggedAssay,character-method}
 \alias{reduce,RangedRaggedAssay-method}
@@ -27,12 +28,15 @@
 
 \S4method{dimnames}{RangedRaggedAssay,list}(x) <- value
 
+\S4method{disjoin}{RangedRaggedAssay}(x, mcolname = NULL, FUN = mean, ...)
+
 \S4method{show}{RangedRaggedAssay}(object)
 
 \S4method{getHits}{RangedRaggedAssay,character}(subject, query, ...)
 
 \S4method{reduce}{RangedRaggedAssay}(x, drop.empty.ranges = FALSE,
-  replicates = NULL, combine = rowMeans, vectorized = TRUE, ...)
+  replicates = NULL, combine = rowMeans, vectorized = TRUE,
+  mcolname = NULL, ...)
 }
 \arguments{
 \item{x}{A \code{\link{RangedRaggedAssay}} class}
@@ -49,6 +53,11 @@ type for selecting columns (\code{\link[GenomicRanges]{GRangesList}} method)}
 
 \item{value}{A \code{list} object of row and column names}
 
+\item{mcolname}{A single character string indicating metadata column to use
+for summaries}
+
+\item{FUN}{A function for summarizing non-disjoint ranges (default mean)}
+
 \item{object}{A \code{RangedRaggedAssay} class object}
 
 \item{subject}{A \code{RangedRaggedAssay} class object}
@@ -61,7 +70,7 @@ type for selecting columns (\code{\link[GenomicRanges]{GRangesList}} method)}
 sample and a vector of repeated experiments for the sample (default NULL)}
 
 \item{combine}{A function for consolidating columns in the matrix
-representation of the data}
+representation of the data (default rowMeans)}
 
 \item{vectorized}{logical (default TRUE) whether the \code{combine} function
 is vectorized, optimized for working down the vector pairs}
@@ -100,6 +109,9 @@ for a \code{RangedRaggedAssay}
 
 \item \code{dimnames<-}: value: A modified \code{RangedRaggedAssay}
 object
+
+\item \code{disjoin}: Separate non-disjoint ranges and merge
+with function
 
 \item \code{show}: show method for
 the \code{RangedRaggedAssay} class

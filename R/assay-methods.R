@@ -12,7 +12,7 @@
 #' @param x A \linkS4class{RangedRaggedAssay} or \link{GRangesList} class
 #' @param i Argument from generic (default 1L)
 #' @param mcolname A single string indicating the metadata column to use for
-#' the assay conversion
+#' the values in the resulting assay matrix
 #' @param background A default background value for the resulting assay matrix
 #' (default NA). This works for non-matching sample and range pairs in the data
 #' and will be imputed in the matrix (e.g., 2 for diploid genomes)

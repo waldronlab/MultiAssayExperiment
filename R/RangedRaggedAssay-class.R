@@ -167,7 +167,8 @@ setReplaceMethod("dimnames", c("RangedRaggedAssay", "list"),
     return(nummcol)
 }
 
-#' @describeIn RangedRaggedAssay
+#' @describeIn RangedRaggedAssay Separate non-disjoint ranges and merge
+#' with function
 #' @param mcolname A single character string indicating metadata column to use
 #' for summaries
 #' @param FUN A function for summarizing non-disjoint ranges (default mean)

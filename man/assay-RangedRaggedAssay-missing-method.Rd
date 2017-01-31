@@ -14,7 +14,7 @@
 \item{i}{Argument from generic (default 1L)}
 
 \item{mcolname}{A single string indicating the metadata column to use for
-the assay conversion}
+the values in the resulting assay matrix}
 
 \item{background}{A default background value for the resulting assay matrix
 (default NA). This works for non-matching sample and range pairs in the data

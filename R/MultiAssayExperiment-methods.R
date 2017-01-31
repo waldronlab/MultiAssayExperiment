@@ -681,8 +681,6 @@ setMethod("reduce", "ANY", function(x, drop.empty.ranges = FALSE,
 #' representation of the data (default rowMeans)
 #' @param vectorized logical (default TRUE) whether the \code{combine} function
 #' is vectorized, optimized for working down the vector pairs
-#' @param mcolname A single string indicating the data column to use for the
-#' resulting matrix
 setMethod("reduce", "RangedRaggedAssay",
           function(x, drop.empty.ranges = FALSE, replicates = NULL,
                    combine = rowMeans, vectorized = TRUE, mcolname=NULL,
