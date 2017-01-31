@@ -678,18 +678,25 @@ setMethod("reduce", "ANY", function(x, drop.empty.ranges = FALSE,
 #' @param replicates reduce: A logical list where each element represents a
 #' sample and a vector of repeated experiments for the sample (default NULL)
 #' @param combine A function for consolidating columns in the matrix
-#' representation of the data
+#' representation of the data (default rowMeans)
 #' @param vectorized logical (default TRUE) whether the \code{combine} function
 #' is vectorized, optimized for working down the vector pairs
+#' @param mcolname A single string indicating the data column to use for the
+#' resulting matrix
 setMethod("reduce", "RangedRaggedAssay",
           function(x, drop.empty.ranges = FALSE, replicates = NULL,
-                   combine = rowMeans, vectorized = TRUE, ...) {
+                   combine = rowMeans, vectorized = TRUE, mcolname=NULL,
+                   ...) {
               args <- list(...)
+              if (is.null(mcolname))
+                  mcolname <- .findNumericMcol(x)
+              x <- disjoin(x, mcolname = mcolname)
               assayArgNames <- c("mcolname", "background", "type",
                                   "make.names", "ranges")
               assayArgs <- args[assayArgNames]
               altArgs <- args[!names(args) %in% assayArgNames]
               assayArgs <- Filter(function(x) !is.null(x), assayArgs)
+              assayArgs$mcolname <- mcolname
               x <- do.call(assay, c(list(x = x), assayArgs))
               do.call(reduce, c(list(x = x, replicates = replicates,
                                      combine = combine,
