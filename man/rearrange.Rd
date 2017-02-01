@@ -9,7 +9,7 @@
 \alias{rearrange,MultiAssayExperiment-method}
 \title{Reshape raw data from an object}
 \usage{
-rearrange(object, shape, ...)
+rearrange(object, shape = "long", ...)
 
 \S4method{rearrange}{ANY}(object, shape = "long", ...)
 

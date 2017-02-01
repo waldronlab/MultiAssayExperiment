@@ -1,3 +1,24 @@
+# MultiAssayExperiment 1.1.16
+
+## New features
+
+* Implement `shape` argument for `rearrange` function: `wide` now available
+
+## Bug fixes and minor improvements
+
+* Updated vignettes: `DelayedMatrix` & PRAD `MultiAssayExperiment` object
+
+# MultiAssayExperiment 1.1.15
+
+## New features
+
+* `disjoin` method for `RangedRaggedAssay` 
+
+## Bug fixes and minor improvements
+
+* `show` method for `RangedRaggedAssay` abbreviated. No longer summarizes data with `assay`
+* Documentation changes for `reduce` and `disjoin` 
+
 # MultiAssayExperiment 1.1.12
 
 ## New features 
