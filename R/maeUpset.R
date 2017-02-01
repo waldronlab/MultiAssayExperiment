@@ -7,6 +7,10 @@
 #' @param order character, either 'freq' or 'degree' to indicate order of intersection size display, as in \code{\link[UpSetR]{upset}}
 #' @param idclip a function that operates on \code{colnames(mae)}, to remove potentially assay-specific token components; use \code{force} if no clipping is needed
 #' @param \dots parameters passed to \code{\link[UpSetR]{upset}}
+#' @examples
+#' example(MultiAssayExperiment)
+#' upset_samples(myMultiAssayExperiment, idclip=function(x) gsub("[a-z]", "", x))
+#'
 #' @export upset_samples
 upset_samples = function(mae, nsets=length(experiments(mae)),
     nintersects=24, order="freq",
