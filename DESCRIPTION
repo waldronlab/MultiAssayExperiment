@@ -1,7 +1,7 @@
 Package: MultiAssayExperiment
 Title: Create Classes and Functions for Managing Multiple Assays on Sets of
     Samples
-Version: 1.1.15
+Version: 1.1.16
 Author: MultiAssay SIG
 Description: Develop an integrative environment where multiple assays are
     managed and preprocessed for genomic data analysis.
@@ -27,6 +27,7 @@ Imports:
     shiny,
     stats,
     tidyr,
+    UpSetR,
     utils
 Maintainer: Marcel Ramos <mramos09@gmail.com>
 biocViews: Infrastructure, DataRepresentation
@@ -52,4 +53,5 @@ Collate:
     'hnsc.R'
     'listToMap.R'
     'mapToList.R'
+    'maeUpset.R'
 RoxygenNote: 5.0.1.9000
