@@ -123,7 +123,7 @@ in a \code{RangedRaggedAssay}
 can then be merged across replicates.
 See also: assay,RangedRaggedAssay,missing-method
 }}
+
 \seealso{
 \code{\link[IRanges]{findOverlaps-methods}}
 }
-

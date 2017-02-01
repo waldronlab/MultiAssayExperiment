@@ -36,6 +36,7 @@ opposite by taking a \code{list} and converting it to \code{DataFrame}.
 \itemize{
 \item \code{listToMap}: Inverse of the listToMap function
 }}
+
 \examples{
 example("sampleMap")
 
@@ -45,4 +46,3 @@ mySampleMap <- listToMap(mylist)
 ## The inverse operation is also available
 mylist <- mapToList(mySampleMap)
 }
-

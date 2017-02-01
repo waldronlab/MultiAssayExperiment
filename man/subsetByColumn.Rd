@@ -50,6 +50,7 @@ a \code{MultiAssayExperiment}. The order of the subsetting
 elements in this \code{List} must match that of the
 \code{ExperimentList} in the \code{MultiAssayExperiment}.
 }}
+
 \examples{
 ## Load a MultiAssayExperiment example
 example("MultiAssayExperiment")
@@ -64,4 +65,3 @@ subsetByColumn(myMultiAssayExperiment, c(1, 3))
 subsetByColumn(myMultiAssayExperiment, c(TRUE, TRUE, FALSE, FALSE))
 
 }
-

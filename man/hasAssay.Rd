@@ -24,4 +24,3 @@ lst <- structure(list(), .Names=character())
 hasAssay(lst)
 
 }
-

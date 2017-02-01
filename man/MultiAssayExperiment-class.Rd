@@ -213,6 +213,7 @@ data structures, mainly matrix
 \item \code{assay}: Get the assay data for a
 \link{MultiAssayExperiment} as a \code{list}
 }}
+
 \section{Slots}{
 
 \describe{
@@ -230,6 +231,7 @@ of samples and participants}
 
 \item{\code{drops}}{A metadata \code{list} of dropped information}
 }}
+
 \section{pData}{
 
 The \code{pData} slot is a collection of primary specimen data valid across
@@ -250,6 +252,7 @@ The \code{\link{sampleMap}} contains a \code{DataFrame} of translatable
 identifiers of samples and participants or biological units. Standard column
 names of the sampleMap are "assay", "primary", and "colname".
 }
+
 \examples{
 MultiAssayExperiment()
 
@@ -257,4 +260,3 @@ MultiAssayExperiment()
 \seealso{
 SubsetByRow method: \link{getHits}
 }
-

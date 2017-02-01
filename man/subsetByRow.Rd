@@ -63,6 +63,7 @@ a \code{MultiAssayExperiment}. The order of the subsetting elements in
 this \code{List} must match that of the \code{ExperimentList} in the
 \code{MultiAssayExperiment}.
 }}
+
 \examples{
 ## Load a MultiAssayExperiment example
 example("MultiAssayExperiment")
@@ -81,4 +82,3 @@ subsetByRow(myMultiAssayExperiment, "ENST00000355076")
 \seealso{
 \code{\link{getHits}}
 }
-

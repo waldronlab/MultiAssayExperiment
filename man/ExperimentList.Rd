@@ -51,4 +51,3 @@ ExpList <- list(exprdat, methyldat, rnadat)
 names(ExpList) <- c("Affy", "Methyl450k", "RNASeqGene")
 myExperimentList <- ExperimentList(ExpList)
 }
-

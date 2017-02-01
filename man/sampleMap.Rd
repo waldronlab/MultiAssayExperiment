@@ -47,4 +47,3 @@ names(mylist) <- c("Affy", "Methyl450k", "CNVgistic", "RNASeqGene")
 ## Create a sampleMap
 mySampleMap <- listToMap(mylist)
 }
-

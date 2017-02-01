@@ -57,6 +57,7 @@ returns list of DataFrames
 returns a small and skinny DataFrame. The \code{pDataCols} arguments allows
 the user to append pData columns to the long and skinny DataFrame.
 }}
+
 \examples{
 example("RangedRaggedAssay")
 rearrange(myRRA, background = 0)
@@ -65,4 +66,3 @@ rearrange(myRRA, background = 0)
 \seealso{
 \code{\link{assay,RangedRaggedAssay,missing-method}}
 }
-
