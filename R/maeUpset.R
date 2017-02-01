@@ -19,7 +19,7 @@ upset_samples = function(mae, nsets=length(experiments(mae)),
   st = idclip(maesn[[1]])
   for (i in 2:length(maesn)) st = union(st, idclip(maesn[[i]]))
   nr = length(st)
-  incid = matrix(0, nr=nr, nc=length(maesn))
+  incid = matrix(0, nrow=nr, ncol=length(maesn))
   rownames(incid) = as.character(st)
   for (i in 1:length(maesn)) 
     incid[,i] = 1*(rownames(incid) %in% idclip(maesn[[i]]))

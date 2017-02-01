@@ -52,6 +52,6 @@ Collate:
     'hasAssay.R'
     'hnsc.R'
     'listToMap.R'
-    'mapToList.R'
     'maeUpset.R'
-RoxygenNote: 5.0.1.9000
+    'mapToList.R'
+RoxygenNote: 5.0.1
