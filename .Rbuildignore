@@ -4,21 +4,18 @@
 ^\.svn$
 ^\.git$
 ^\.gitignore$
-
 #----------------------------
 # Continuous Integration
 #----------------------------
 ^\.travis\.yml$
 ^appveyor\.yml$
 ^wercker\.yml$
-
 #----------------------------
 # RStudio and R
 #----------------------------
 ^\.Rhistory$
 ^.*\.Rproj$
 ^\.Rproj\.user$
-
 #----------------------------
 # Data and files
 #----------------------------

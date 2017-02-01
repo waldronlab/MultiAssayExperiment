@@ -52,4 +52,4 @@ Collate:
     'hnsc.R'
     'listToMap.R'
     'mapToList.R'
-RoxygenNote: 5.0.1.9000
+RoxygenNote: 6.0.0.9000
