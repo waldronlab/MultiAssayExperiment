@@ -1,7 +1,7 @@
 Package: MultiAssayExperiment
 Title: Create Classes and Functions for Managing Multiple Assays on Sets of
     Samples
-Version: 1.1.11
+Version: 1.1.17
 Author: MultiAssay SIG
 Description: Develop an integrative environment where multiple assays are
     managed and preprocessed for genomic data analysis.
@@ -27,6 +27,7 @@ Imports:
     shiny,
     stats,
     tidyr,
+    UpSetR,
     utils
 Maintainer: Marcel Ramos <mramos09@gmail.com>
 biocViews: Infrastructure, DataRepresentation
@@ -34,9 +35,9 @@ License: Artistic-2.0
 LazyData: true
 LazyLoad: yes
 VignetteBuilder: knitr
-URL: https://github.com/vjcitn/MultiAssayExperiment/wiki/MultiAssayExperiment-
+URL: https://github.com/waldronlab/MultiAssayExperiment/wiki/MultiAssayExperiment-
     API
-BugReports: https://github.com/vjcitn/MultiAssayExperiment/issues
+BugReports: https://github.com/waldronlab/MultiAssayExperiment/issues
 Collate:
     'API.R'
     'ExperimentList-class.R'
@@ -47,9 +48,10 @@ Collate:
     'MultiAssayExperiment.R'
     'PrepMultiAssay.R'
     'assay-methods.R'
-    'clusterSex.R'
+    'clusterOn.R'
     'hasAssay.R'
     'hnsc.R'
     'listToMap.R'
     'mapToList.R'
-RoxygenNote: 5.0.1.9000
+    'upsetSamples.R'
+RoxygenNote: 6.0.0.9000

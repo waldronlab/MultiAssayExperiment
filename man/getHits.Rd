@@ -50,6 +50,7 @@ range-based objects
 \item \code{subject = ANY,query = character}: Find all matching rownames based
 on \code{character} query
 }}
+
 \examples{
 ## Load an example MultiAssayExperiment object
 example("MultiAssayExperiment")
@@ -61,4 +62,3 @@ getHits(myMultiAssayExperiment, gr1)
 \seealso{
 \link{subsetByOverlaps} in the \code{IRanges} package
 }
-

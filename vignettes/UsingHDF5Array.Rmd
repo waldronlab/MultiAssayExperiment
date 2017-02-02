@@ -1,5 +1,5 @@
 ---
-title: "Using HDF5Array with MultiAssayExperiment"
+title: "Using DelayedMatrix with MultiAssayExperiment"
 author: "MultiAssay Special Interest Group"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
 vignette: >
@@ -25,7 +25,7 @@ suppressPackageStartupMessages(library(SummarizedExperiment))
 The `HDF5Array` package provides an on-disk representation of large datasets
 without the need to load them into memory. Convenient lazy evaluation
 operations allow the user to manipulate such large data files based on
-metadata. The `DelayedMatrix` class in the `HDF5Array` package provides a
+metadata. The `DelayedMatrix` class in the `DelayedArray` package provides a
 way to connect to a large matrix that is stored on disk.
 
 First, we create a small matrix for constructing the `DelayedMatrix` class.
@@ -55,7 +55,7 @@ dim(smallMatrix)
 ## Importing HDF5 files
 
 Note that a large matrix from an HDF5 file can also be loaded using the
-`HDF5Dataset` function. 
+`HDF5Array` function. 
 
 For example: 
 
@@ -72,7 +72,8 @@ head(newDelayedMatrix)
 
 Currently, the `rhdf5` package does not store `dimnames` in the `h5` file by
 default. A request for this feature has been sent to the maintainer of the
-`rhdf5` package.
+`rhdf5` package and any further development to the `HDF5Array` package is
+contingent on such lower level dimension name storage.
 
 ## Insertting a `DelayedMatrix` into a `MultiAssayExperiment`
 
@@ -100,4 +101,3 @@ HDF5SE <- SummarizedExperiment(assays = smallMatrix)
 assay(HDF5SE)
 MultiAssayExperiment(list(HDF5SE = HDF5SE))
 ```
-

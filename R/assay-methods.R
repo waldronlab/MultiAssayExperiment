@@ -12,7 +12,7 @@
 #' @param x A \linkS4class{RangedRaggedAssay} or \link{GRangesList} class
 #' @param i Argument from generic (default 1L)
 #' @param mcolname A single string indicating the metadata column to use for
-#' the assay conversion
+#' the values in the resulting assay matrix
 #' @param background A default background value for the resulting assay matrix
 #' (default NA). This works for non-matching sample and range pairs in the data
 #' and will be imputed in the matrix (e.g., 2 for diploid genomes)
@@ -24,6 +24,7 @@
 #' sample ranges and for superseding the rows for the resulting matrix
 #' (default NULL)
 #' @param type The type argument from \link{overlapsAny}
+#' @param ... Unused argument
 #'
 #' @examples
 #' example("RangedRaggedAssay")
@@ -40,7 +41,7 @@
 #' @exportMethod assay
 setMethod("assay", c("RangedRaggedAssay", "missing"),
           function(x, i, mcolname = "score", background = NA,
-                   make.names = FALSE, ranges = NULL, type = "any"){
+                   make.names = FALSE, ranges = NULL, type = "any", ...) {
               if (!all(GenomicRanges::isDisjoint(x)))
                   stop("only disjoint ranges supported")
 
@@ -85,23 +86,23 @@ setMethod("assay", c("RangedRaggedAssay", "missing"),
           })
 
 #' @describeIn ExperimentList Get the assay data for the default ANY class
-setMethod("assay", c("ANY", "missing"), function(x, i) {
+setMethod("assay", c("ANY", "missing"), function(x, i, ...) {
     if (is(x, "ExpressionSet"))
         return(Biobase::exprs(x))
-    I(x)
+    return(x)
 })
 
 #' @describeIn ExperimentList Get the assay data from each element in the
 #' \link{ExperimentList}
 #' @param i missing argument
 #' @aliases assay,ExperimentList,missing-method
-setMethod("assay", c("ExperimentList", "missing"), function(x, i) {
+setMethod("assay", c("ExperimentList", "missing"), function(x, i, ...) {
     lapply(x, FUN = function(y) assay(y))
 })
 
 #' @describeIn MultiAssayExperiment Get the assay data for a
 #' \link{MultiAssayExperiment} as a \code{list}
 #' @aliases assay,MultiAssayExperiment,missing-method
-setMethod("assay", c("MultiAssayExperiment", "missing"), function(x, i) {
+setMethod("assay", c("MultiAssayExperiment", "missing"), function(x, i, ...) {
     assay(experiments(x))
 })

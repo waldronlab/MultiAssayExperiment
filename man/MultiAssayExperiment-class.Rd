@@ -23,6 +23,7 @@
 \alias{[,MultiAssayExperiment,ANY-method}
 \alias{isEmpty,MultiAssayExperiment-method}
 \alias{[[,MultiAssayExperiment,ANY,ANY-method}
+\alias{[[<-,MultiAssayExperiment,ANY,ANY-method}
 \alias{complete.cases,MultiAssayExperiment-method}
 \alias{duplicated,MultiAssayExperiment-method}
 \alias{reduce,MultiAssayExperiment-method}
@@ -66,6 +67,8 @@
 
 \S4method{[[}{MultiAssayExperiment,ANY,ANY}(x, i, j, ...)
 
+\S4method{[[}{MultiAssayExperiment,ANY,ANY}(x, i, j, ...) <- value
+
 \S4method{complete.cases}{MultiAssayExperiment}(...)
 
 \S4method{duplicated}{MultiAssayExperiment}(x, incomparables = FALSE, ...)
@@ -76,7 +79,7 @@
 \S4method{reduce}{ANY}(x, drop.empty.ranges = FALSE, replicates = NULL,
   combine = rowMeans, vectorized = TRUE, ...)
 
-\S4method{assay}{MultiAssayExperiment,missing}(x, i)
+\S4method{assay}{MultiAssayExperiment,missing}(x, i, ...)
 }
 \arguments{
 \item{object}{A \code{MultiAssayExperiment} class object}
@@ -190,6 +193,10 @@ for a \code{MultiAssayExperiment} object
 
 \item \code{[[}: Extract the \link{ExperimentList} element
 
+\item \code{[[<-}: Replace the \link{ExperimentList} element
+with a supported class (should have documented dimensions
+in \code{sampleMap})
+
 \item \code{complete.cases}: Return a logical vector of biological units
 with data across all experiments
 
@@ -206,6 +213,7 @@ data structures, mainly matrix
 \item \code{assay}: Get the assay data for a
 \link{MultiAssayExperiment} as a \code{list}
 }}
+
 \section{Slots}{
 
 \describe{
@@ -223,6 +231,7 @@ of samples and participants}
 
 \item{\code{drops}}{A metadata \code{list} of dropped information}
 }}
+
 \section{pData}{
 
 The \code{pData} slot is a collection of primary specimen data valid across
@@ -243,6 +252,7 @@ The \code{\link{sampleMap}} contains a \code{DataFrame} of translatable
 identifiers of samples and participants or biological units. Standard column
 names of the sampleMap are "assay", "primary", and "colname".
 }
+
 \examples{
 MultiAssayExperiment()
 
@@ -250,4 +260,3 @@ MultiAssayExperiment()
 \seealso{
 SubsetByRow method: \link{getHits}
 }
-

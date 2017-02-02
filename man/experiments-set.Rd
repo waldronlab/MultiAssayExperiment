@@ -28,4 +28,3 @@ example("MultiAssayExperiment")
 experiments(myMultiAssayExperiment) <- ExperimentList()
 
 }
-

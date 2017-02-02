@@ -149,15 +149,59 @@ setReplaceMethod("dimnames", c("RangedRaggedAssay", "list"),
     x
 })
 
+.findNumericMcol <- function(rra) {
+    mcolnames <- names(mcols(rra[[1L]]))
+    meanCols <- grepl("mean", mcolnames, ignore.case = TRUE)
+    scoreCol <- grepl("score", mcolnames, ignore.case = TRUE)
+    if (any(meanCols)) {
+        if (length(mcolnames[meanCols]) > 1L)
+            warning("More than one 'mcol' found,",
+                    " selecting the first")
+        nummcol <- mcolnames[meanCols][[1L]]
+    } else if (any(scoreCol)) {
+        nummcol <- mcolnames[scoreCol]
+        stopifnot(S4Vectors::isSingleString(nummcol))
+    } else {
+        stop("No numeric 'mcolname' specified")
+    }
+    return(nummcol)
+}
+
+#' @describeIn RangedRaggedAssay Separate non-disjoint ranges and merge
+#' with function
+#' @param mcolname A single character string indicating metadata column to use
+#' for summaries
+#' @param FUN A function for summarizing non-disjoint ranges (default mean)
+#' @importFrom IRanges disjoin
+setMethod("disjoin", "RangedRaggedAssay", function(x, mcolname = NULL,
+                                                   FUN = mean, ...) {
+    if (is.null(mcolname))
+        mcolname <- .findNumericMcol(x)
+    newX <- lapply(x, function(singleRange, summarizer) {
+        mCols <- mcols(singleRange)
+        mCols <- mCols[, -which(names(mCols) == mcolname),
+                       drop = FALSE]
+        dj <- disjoin(singleRange, with.revmap=TRUE)
+        revMap <- mcols(dj)
+        revMap[, mcolname] <- sapply(dj$revmap, function(i) {
+            summaryScore <- FUN(mcols(singleRange)[[mcolname]][i])
+            summaryScore
+        })
+        mcols(dj) <- revMap
+        return(dj)
+    }, summarizer = FUN)
+    RangedRaggedAssay(GRangesList(newX))
+})
+
 #' @exportMethod show
 #' @describeIn RangedRaggedAssay show method for
 #' the \code{RangedRaggedAssay} class
 #' @param object A \code{RangedRaggedAssay} class object
 setMethod("show", "RangedRaggedAssay", function(object) {
-    if (!all(GenomicRanges::isDisjoint(object))) {
-        cat("Non-disjoint RangedRaggedAssay")
-        callNextMethod(object)
-    }
+    # if (!all(GenomicRanges::isDisjoint(object))) {
+    #     cat("Non-disjoint RangedRaggedAssay")
+    #     callNextMethod(object)
+    # }
     metacols <- mcols(unlist(object))
     showable <- vapply(metacols, function(mcol) {
         is.atomic(mcol)
@@ -168,16 +212,17 @@ setMethod("show", "RangedRaggedAssay", function(object) {
     cat(class(object), "with",
         length(dimnames(object)[[1]]), "disjoint ranges,",
         length(dimnames(object)[[2]]), "samples, and",
-        length(elts), "data elements\n")
+        length(elts), "data elements")
+    # length(elts), "data elements\n")
 
-    for (elt in head(elts, 3)) {
-        cat("\n", elt, "\n", sep="")
-        x <- assay(object, mcolname = elt)
-        print(head(x, 3))
-        if (nrow(x) > 3)
-            cat("...\n")
-    }
-    if (length(elts) > 3)
-        cat("\n...")
+    # for (elt in head(elts, 3)) {
+    #     cat("\n", elt, "\n", sep="")
+    #     x <- assay(object, mcolname = elt)
+    #     print(head(x, 3))
+    #     if (nrow(x) > 3)
+    #         cat("...\n")
+    # }
+    # if (length(elts) > 3)
+    #     cat("\n...")
     cat("\n")
 })

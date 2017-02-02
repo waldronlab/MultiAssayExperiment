@@ -28,6 +28,7 @@ Select which assay(s) to obtain from available datasets
 or \code{character} vector to subset assays in a
 \code{MultiAssayExperiment}
 }}
+
 \examples{
 ## Load a MultiAssayExperiment example
 example("MultiAssayExperiment")
@@ -45,4 +46,3 @@ subsetByAssay(myMultiAssayExperiment, c(TRUE, FALSE, TRUE))
 \seealso{
 `subset,MultiAssayExperiment-method`
 }
-

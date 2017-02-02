@@ -42,4 +42,3 @@ myRRA <- RangedRaggedAssay(grl)
 \seealso{
 \code{\link{assay,RangedRaggedAssay,missing-method}}
 }
-

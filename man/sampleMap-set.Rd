@@ -26,4 +26,3 @@ example("MultiAssayExperiment")
 sampleMap(myMultiAssayExperiment) <- DataFrame()
 
 }
-

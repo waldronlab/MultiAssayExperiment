@@ -228,6 +228,21 @@ setMethod("[[", "MultiAssayExperiment", function(x, i, j, ...) {
     experiments(x)[[i]]
 })
 
+#' @describeIn MultiAssayExperiment Replace the \link{ExperimentList} element
+#' with a supported class (should have documented dimensions
+#' in \code{sampleMap})
+#' @export
+setReplaceMethod("[[", "MultiAssayExperiment", function(x, i, j, ..., value) {
+                         if (!missing(j) || length(list(...)) > 0)
+                             stop("invalid replacement")
+                         origLen <- length(x)
+                         x <- S4Vectors::setListElement(experiments(x),
+                                                        i, value)
+                         if (origLen < length(x))
+                            stop("replacement length greater than original")
+                         return(x)
+})
+
 .matchReorderSub <- function(assayMap, identifiers) {
     positions <- unlist(
         lapply(identifiers,
@@ -445,7 +460,7 @@ setMethod("complete.cases", "MultiAssayExperiment", function(...) {
 
 #' Reshape raw data from an object
 #'
-#' The collect function collects data from the \code{\link{ExperimentList}}
+#' The rearrange function takes data from the \code{\link{ExperimentList}}
 #' in a \code{\link{MultiAssayExperiment}} and returns a uniform
 #' \code{\link{DataFrame}}. The resulting DataFrame has columns indicating
 #' primary, rowname, colname and value. This method can optionally include
@@ -453,31 +468,42 @@ setMethod("complete.cases", "MultiAssayExperiment", function(...) {
 #' \code{MultiAssayExperiment} object.
 #'
 #' @param object Any supported class object
+#' @param shape A single string indicating the shape of the resulting data,
+#' options include \sQuote{long} and \sQuote{wide} (defaults to the former)
 #' @param ... Additional arguments for the \link{RangedRaggedAssay}
 #' \code{assay} method. See below.
 #'
 #' @examples
 #' example("RangedRaggedAssay")
-#' collect(myRRA, background = 0)
+#' rearrange(myRRA, background = 0)
 #'
 #' @seealso \code{\link{assay,RangedRaggedAssay,missing-method}}
-#' @return Tall and skinny \code{\linkS4class{DataFrame}}
-#' @export collect
-setGeneric("collect", function(object, ...) standardGeneric("collect"))
+#' @return Either a long or wide \code{\linkS4class{DataFrame}}
+#' @export rearrange
+setGeneric("rearrange", function(object, shape = "long", ...)
+    standardGeneric("rearrange"))
 
-#' @describeIn collect ANY class method, works with ExpressionSet and
-#' SummarizedExperiment classes as well as matrix
-setMethod("collect", "ANY", function(object, ...) {
+#' @describeIn rearrange ANY class method, works with classes such as
+#' \link{ExpressionSet} and \link{SummarizedExperiment} as well as \code{matrix}
+setMethod("rearrange", "ANY", function(object, shape = "long", ...) {
     if (is(object, "ExpressionSet"))
         object <- Biobase::exprs(object)
     if (is(object, "matrix"))
         object <- reshape2::melt(object, varnames = c("rowname", "colname"),
                    as.is = TRUE)
     if (is(object, "SummarizedExperiment")) {
-        if (length(rowData(object)) == 1L)
+        ## Ensure that rowData DataFrame has a rowname column
+        ## Otherwise, use first column
+        rownameIn <- "rowname" %in% names(rowData(object))
+        if (any(rownameIn)) {
+            rowData(object) <- rowData(object)[rownameIn]
+        } else {
+            warning("'rowname' column not in 'rowData' taking first one")
+            rowData(object) <- rowData(object)[1L]
             names(rowData(object)) <- "rowname"
+        }
         widedf <- data.frame(rowData(object), assay(object),
-                             stringsAsFactors = FALSE)
+                             stringsAsFactors = FALSE, check.names = FALSE)
         object <- tidyr::gather(widedf, "colname", "value",
                                 seq_along(widedf)[-1L])
     }
@@ -486,33 +512,38 @@ setMethod("collect", "ANY", function(object, ...) {
     rectangle
 })
 
-#' @describeIn collect \linkS4class{RangedRaggedAssay} class method to return
+#' @describeIn rearrange \linkS4class{RangedRaggedAssay} class method to return
 #' matrix of selected \dQuote{mcolname} column, defaults to score
-setMethod("collect", "RangedRaggedAssay", function(object, ...) {
+#' @export
+setMethod("rearrange", "RangedRaggedAssay", function(object,
+                                                     shape = "long", ...) {
     args <- list(...)
     newMat <- do.call(assay, args = c(list(x = object), args))
-    callNextMethod(newMat)
+    callNextMethod(newMat, shape = shape)
 })
 
-#' @describeIn collect Collect data from the \code{ExperimentList} class
+#' @describeIn rearrange Rearrange data from the \code{ExperimentList} class
 #' returns list of DataFrames
-setMethod("collect", "ExperimentList", function(object, ...) {
+#' @export
+setMethod("rearrange", "ExperimentList", function(object,
+                                                     shape = "long", ...) {
     dataList <- as.list(object)
     dataList <- lapply(seq_along(object), function(i, flatBox) {
         S4Vectors::DataFrame(assay = S4Vectors::Rle(names(object)[i]),
-                             collect(flatBox[[i]], ...))
+                             rearrange(flatBox[[i]], ...))
     }, flatBox = object)
     dataList
 })
 
-#' @describeIn collect Overarching \code{MultiAssayExperiment} class method
+#' @describeIn rearrange Overarching \code{MultiAssayExperiment} class method
 #' returns a small and skinny DataFrame. The \code{pDataCols} arguments allows
 #' the user to append pData columns to the long and skinny DataFrame.
 #' @param pDataCols selected pData columns to include in the resulting output
-setMethod("collect", "MultiAssayExperiment", function(object, pDataCols = NULL,
-                                                     ...) {
+#' @export
+setMethod("rearrange", "MultiAssayExperiment", function(object, shape = "long",
+                                                        pDataCols = NULL, ...) {
     addCols <- !is.null(pDataCols)
-    dataList <- collect(experiments(object), ...)
+    dataList <- rearrange(experiments(object), ...)
     dataList <- lapply(dataList, function(rectangleDF) {
         primary <- S4Vectors::Rle(sampleMap(object)[match(
             rectangleDF[["colname"]],
@@ -523,15 +554,25 @@ setMethod("collect", "MultiAssayExperiment", function(object, pDataCols = NULL,
     })
     longDataFrame <- do.call(rbind, dataList)
     if (addCols) {
-    extraColumns <- pData(object)[, pDataCols, drop = FALSE]
-    rowNameValues <- rownames(extraColumns)
-    rownames(extraColumns) <- NULL
-    matchIdx <- BiocGenerics::match(longDataFrame[["primary"]],
-                                    rowNameValues)
-    longDataFrame <- BiocGenerics::cbind(longDataFrame,
-                                         extraColumns[matchIdx, , drop = FALSE])
+        extraColumns <- pData(object)[, pDataCols, drop = FALSE]
+        rowNameValues <- rownames(extraColumns)
+        rownames(extraColumns) <- NULL
+        matchIdx <- BiocGenerics::match(longDataFrame[["primary"]],
+                                        rowNameValues)
+        outputDataFrame <- BiocGenerics::cbind(longDataFrame,
+                                               extraColumns[matchIdx, ,
+                                                            drop = FALSE])
     }
-    longDataFrame
+    if (shape == "wide") {
+        outputDataFrame <- as.data.frame(outputDataFrame)
+        outputDataFrame <- outputDataFrame[,
+                                           -which(names(outputDataFrame) ==
+                                                      "colname")]
+        outputDataFrame <- tidyr::spread(outputDataFrame, key = "assay",
+                                         value = "value")
+        outputDataFrame <- DataFrame(outputDataFrame)
+    }
+    return(longDataFrame)
 })
 
 .combineCols <- function(rectangle, dupNames, combine, vectorized, ...) {
@@ -578,7 +619,6 @@ setMethod("duplicated", "MultiAssayExperiment",
 #' @param vectorized reduce: logical (default TRUE) whether the combine function is
 #' vectorized, optimized for working down the vector pairs
 #' @exportMethod reduce
-#' @seealso duplicated,MultiAssayExperiment-method
 setMethod("reduce", "MultiAssayExperiment",
         function(x, drop.empty.ranges = FALSE, replicates = NULL,
                  combine = rowMeans, vectorized = TRUE, ...) {
@@ -657,18 +697,23 @@ setMethod("reduce", "ANY", function(x, drop.empty.ranges = FALSE,
 #' @param replicates reduce: A logical list where each element represents a
 #' sample and a vector of repeated experiments for the sample (default NULL)
 #' @param combine A function for consolidating columns in the matrix
-#' representation of the data
+#' representation of the data (default rowMeans)
 #' @param vectorized logical (default TRUE) whether the \code{combine} function
 #' is vectorized, optimized for working down the vector pairs
 setMethod("reduce", "RangedRaggedAssay",
           function(x, drop.empty.ranges = FALSE, replicates = NULL,
-                   combine = rowMeans, vectorized = TRUE, ...) {
+                   combine = rowMeans, vectorized = TRUE, mcolname=NULL,
+                   ...) {
               args <- list(...)
+              if (is.null(mcolname))
+                  mcolname <- .findNumericMcol(x)
+              x <- disjoin(x, mcolname = mcolname)
               assayArgNames <- c("mcolname", "background", "type",
                                   "make.names", "ranges")
               assayArgs <- args[assayArgNames]
               altArgs <- args[!names(args) %in% assayArgNames]
               assayArgs <- Filter(function(x) !is.null(x), assayArgs)
+              assayArgs$mcolname <- mcolname
               x <- do.call(assay, c(list(x = x), assayArgs))
               do.call(reduce, c(list(x = x, replicates = replicates,
                                      combine = combine,

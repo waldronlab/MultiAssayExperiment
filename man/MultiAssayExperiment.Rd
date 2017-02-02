@@ -63,4 +63,3 @@ myMultiAssayExperiment <- MultiAssayExperiment(experiments = ExpList,
 \seealso{
 \link{MultiAssayExperiment-class}
 }
-
