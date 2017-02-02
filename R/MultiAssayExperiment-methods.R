@@ -480,7 +480,8 @@ setMethod("complete.cases", "MultiAssayExperiment", function(...) {
 #' @seealso \code{\link{assay,RangedRaggedAssay,missing-method}}
 #' @return Either a long or wide \code{\linkS4class{DataFrame}}
 #' @export rearrange
-setGeneric("rearrange", function(object, shape, ...) standardGeneric("rearrange"))
+setGeneric("rearrange", function(object, shape = "long", ...)
+    standardGeneric("rearrange"))
 
 #' @describeIn rearrange ANY class method, works with classes such as
 #' \link{ExpressionSet} and \link{SummarizedExperiment} as well as \code{matrix}
@@ -491,8 +492,16 @@ setMethod("rearrange", "ANY", function(object, shape = "long", ...) {
         object <- reshape2::melt(object, varnames = c("rowname", "colname"),
                    as.is = TRUE)
     if (is(object, "SummarizedExperiment")) {
-        if (length(rowData(object)) == 1L)
+        ## Ensure that rowData DataFrame has a rowname column
+        ## Otherwise, use first column
+        rownameIn <- "rowname" %in% names(rowData(object))
+        if (any(rownameIn)) {
+            rowData(object) <- rowData(object)[rownameIn]
+        } else {
+            warning("'rowname' column not in 'rowData' taking first one")
+            rowData(object) <- rowData(object)[1L]
             names(rowData(object)) <- "rowname"
+        }
         widedf <- data.frame(rowData(object), assay(object),
                              stringsAsFactors = FALSE, check.names = FALSE)
         object <- tidyr::gather(widedf, "colname", "value",
@@ -531,8 +540,8 @@ setMethod("rearrange", "ExperimentList", function(object,
 #' the user to append pData columns to the long and skinny DataFrame.
 #' @param pDataCols selected pData columns to include in the resulting output
 #' @export
-setMethod("rearrange", "MultiAssayExperiment",
-          function(object, shape = "long", pDataCols = NULL, ...) {
+setMethod("rearrange", "MultiAssayExperiment", function(object, shape = "long",
+                                                        pDataCols = NULL, ...) {
     addCols <- !is.null(pDataCols)
     dataList <- rearrange(experiments(object), ...)
     dataList <- lapply(dataList, function(rectangleDF) {
@@ -545,15 +554,25 @@ setMethod("rearrange", "MultiAssayExperiment",
     })
     longDataFrame <- do.call(rbind, dataList)
     if (addCols) {
-    extraColumns <- pData(object)[, pDataCols, drop = FALSE]
-    rowNameValues <- rownames(extraColumns)
-    rownames(extraColumns) <- NULL
-    matchIdx <- BiocGenerics::match(longDataFrame[["primary"]],
-                                    rowNameValues)
-    longDataFrame <- BiocGenerics::cbind(longDataFrame,
-                                         extraColumns[matchIdx, , drop = FALSE])
+        extraColumns <- pData(object)[, pDataCols, drop = FALSE]
+        rowNameValues <- rownames(extraColumns)
+        rownames(extraColumns) <- NULL
+        matchIdx <- BiocGenerics::match(longDataFrame[["primary"]],
+                                        rowNameValues)
+        outputDataFrame <- BiocGenerics::cbind(longDataFrame,
+                                               extraColumns[matchIdx, ,
+                                                            drop = FALSE])
     }
-    longDataFrame
+    if (shape == "wide") {
+        outputDataFrame <- as.data.frame(outputDataFrame)
+        outputDataFrame <- outputDataFrame[,
+                                           -which(names(outputDataFrame) ==
+                                                      "colname")]
+        outputDataFrame <- tidyr::spread(outputDataFrame, key = "assay",
+                                         value = "value")
+        outputDataFrame <- DataFrame(outputDataFrame)
+    }
+    return(longDataFrame)
 })
 
 .combineCols <- function(rectangle, dupNames, combine, vectorized, ...) {

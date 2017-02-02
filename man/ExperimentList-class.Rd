@@ -89,8 +89,8 @@ ExperimentList elements
 \item \code{assay}: Get the assay data from each element in the
 \link{ExperimentList}
 }}
+
 \examples{
 ExperimentList()
 
 }
-

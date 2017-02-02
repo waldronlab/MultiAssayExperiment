@@ -27,4 +27,3 @@ API(website = FALSE)
 \author{
 Vincent J Carey
 }
-

@@ -21,4 +21,3 @@ Accessor function for the \code{ExperimentList} slot of a
 example("MultiAssayExperiment")
 experiments(myMultiAssayExperiment)
 }
-

@@ -21,4 +21,3 @@ A \code{\link{MultiAssayExperiment}} object containing a random sample
 of 20 patients with copy number data. For example purposes only.
 }
 \keyword{datasets}
-

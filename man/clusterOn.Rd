@@ -35,4 +35,3 @@ clusterOn(myMultiAssayExperiment, pDataCols = "sex",
     experiments = "RNASeqGene", seed = 42L)
 
 }
-

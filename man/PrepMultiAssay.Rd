@@ -50,6 +50,7 @@ be dropped from the \code{\link{sampleMap}}. Suggestions for name fixes in
 either the \code{\link{ExperimentList}} or colnames will be made when
 necessary.
 }
+
 \examples{
 ## Run example
 example("MultiAssayExperiment")
@@ -63,4 +64,3 @@ MultiAssayExperiment(preparedMAE$ExperimentList, preparedMAE$pData,
 preparedMAE$sampleMap)
 
 }
-

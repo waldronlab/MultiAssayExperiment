@@ -60,4 +60,3 @@ assay(myRRA, background = 2)
 \seealso{
 \link{overlapsAny}
 }
-
