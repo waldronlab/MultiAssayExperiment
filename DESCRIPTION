@@ -35,9 +35,9 @@ License: Artistic-2.0
 LazyData: true
 LazyLoad: yes
 VignetteBuilder: knitr
-URL: https://github.com/vjcitn/MultiAssayExperiment/wiki/MultiAssayExperiment-
+URL: https://github.com/waldronlab/MultiAssayExperiment/wiki/MultiAssayExperiment-
     API
-BugReports: https://github.com/vjcitn/MultiAssayExperiment/issues
+BugReports: https://github.com/waldronlab/MultiAssayExperiment/issues
 Collate:
     'API.R'
     'ExperimentList-class.R'
@@ -52,6 +52,6 @@ Collate:
     'hasAssay.R'
     'hnsc.R'
     'listToMap.R'
-    'maeUpset.R'
     'mapToList.R'
+    'upsetSamples.R'
 RoxygenNote: 6.0.0.9000

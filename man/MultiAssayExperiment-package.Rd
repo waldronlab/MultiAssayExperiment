@@ -20,9 +20,9 @@ The package hierarchy of information:
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/vjcitn/MultiAssayExperiment/wiki/MultiAssayExperiment-
+  \item \url{https://github.com/waldronlab/MultiAssayExperiment/wiki/MultiAssayExperiment-
 API}
-  \item Report bugs at \url{https://github.com/vjcitn/MultiAssayExperiment/issues}
+  \item Report bugs at \url{https://github.com/waldronlab/MultiAssayExperiment/issues}
 }
 
 }

@@ -1,3 +1,9 @@
+# MultiAssayExperiment 1.1.17
+
+## New features
+
+* `upsetSamples` function implemented
+
 # MultiAssayExperiment 1.1.16
 
 ## New features
