@@ -202,12 +202,16 @@ setMethod("show", "MultiAssayExperiment", function(object) {
                       "respective class.", "respective classes.")),
         "\n Containing an ")
     show(experiments(object))
-    cat("To access: \n experiments() - to obtain the",
+    cat("Features: \n experiments() - obtain the",
         sprintf("%s", c_elist), "instance",
-        "\n pData() - for the primary/phenotype", sprintf("%s", c_mp),
-        "\n sampleMap() - for the sample availability", sprintf("%s", c_sm),
-        "\n metadata() - for the metadata object of ANY class",
-        "\nSee also: subsetByAssay(), subsetByRow(), subsetByColumn()\n")
+        "\n pData() - the primary/phenotype", sprintf("%s", c_mp),
+        "\n sampleMap() - the sample availability", sprintf("%s", c_sm),
+        "\n `$`, `[`, `[[` - extract pData columns, subset, or experiment",
+        "\n reduce() - select complete cases, order columns, disjoin ranges",
+        "\n rearrange() - convert", sprintf("%s", c_elist),
+        "into a long or wide", sprintf("%s", c_mp),
+        "\n assay() - convert", sprintf("%s", c_elist),
+        "to a list of rectangular matrices\n")
 })
 
 
