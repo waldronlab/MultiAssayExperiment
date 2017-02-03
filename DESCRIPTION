@@ -38,7 +38,7 @@ VignetteBuilder: knitr
 URL: https://github.com/waldronlab/MultiAssayExperiment/wiki/MultiAssayExperiment-
     API
 BugReports: https://github.com/waldronlab/MultiAssayExperiment/issues
-Collate:
+Collate: 
     'API.R'
     'ExperimentList-class.R'
     'MultiAssayExperiment-class.R'
@@ -49,8 +49,8 @@ Collate:
     'PrepMultiAssay.R'
     'assay-methods.R'
     'clusterOn.R'
+    'data.R'
     'hasAssay.R'
-    'hnsc.R'
     'listToMap.R'
     'mapToList.R'
     'upsetSamples.R'
