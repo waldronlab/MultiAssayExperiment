@@ -64,7 +64,24 @@
 #' @return A \code{MultiAssayExperiment} object
 #'
 #' @examples
-#' MultiAssayExperiment()
+#' example("MultiAssayExperiment")
+#'
+#' ## Subsetting
+#' # Rows (i) Rows/Features in each experiment
+#' myMultiAssayExperiment[1, , ]
+#' myMultiAssayExperiment[c(TRUE, FALSE), , ]
+#'
+#' # Columns (j) Rows in pData
+#' myMultiAssayExperiment[, rownames(pData(myMultiAssayExperiment))[3:2],  ]
+#'
+#' # Assays (k)
+#' myMultiAssayExperiment[, , "Affy"]
+#'
+#' ## Complete cases (returns logical vector)
+#' completes <- complete.cases(myMultiAssayExperiment)
+#' compMAE <- myMultiAssayExperiment[, completes, ]
+#' compMAE
+#' pData(compMAE)
 #'
 #' @exportClass MultiAssayExperiment
 #' @include ExperimentList-class.R
