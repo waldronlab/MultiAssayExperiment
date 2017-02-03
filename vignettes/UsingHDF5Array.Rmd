@@ -15,7 +15,6 @@ output:
 ```{r, echo=FALSE, warning=FALSE}
 suppressPackageStartupMessages(library(MultiAssayExperiment))
 suppressPackageStartupMessages(library(HDF5Array))
-suppressPackageStartupMessages(library(DelayedArray))
 suppressPackageStartupMessages(library(SummarizedExperiment))
 ```
 
