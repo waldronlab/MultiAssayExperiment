@@ -2,10 +2,14 @@ library(MultiAssayExperiment)
 library(ggplot2)
 library(scales)
 
-download.file("http://s3.amazonaws.com/multiassayexperiments/coadMAEO.rds",
-              destfile="coadMAEO.rds")
-download.file("http://s3.amazonaws.com/multiassayexperiments/brcaMAEO.rds",
-              destfile="brcaMAEO.rds")
+if(!file.exists("coadMAEO.rds")){
+  download.file("http://s3.amazonaws.com/multiassayexperiments/coadMAEO.rds",
+                destfile="coadMAEO.rds")
+}
+if(!file.exists("brcaMAEO.rds")){
+  download.file("http://s3.amazonaws.com/multiassayexperiments/brcaMAEO.rds",
+                destfile="brcaMAEO.rds")
+}
 
 coad <- readRDS("coadMAEO.rds")
 brca <- readRDS("brcaMAEO.rds")
