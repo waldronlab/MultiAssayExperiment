@@ -124,6 +124,12 @@ can then be merged across replicates.
 See also: assay,RangedRaggedAssay,missing-method
 }}
 
+\examples{
+data("hnsc")
+assay(hnsc[[1L]], mcolname = "Segment_Mean")[1:5, 1:3]
+hnsc[[2]] <- disjoin(hnsc[[2L]])
+matrices <- assay(hnsc, mcolname = "Segment_Mean")
+}
 \seealso{
 \code{\link[IRanges]{findOverlaps-methods}}
 }

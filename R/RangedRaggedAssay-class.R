@@ -6,6 +6,12 @@
 #'
 #' @exportClass RangedRaggedAssay
 #' @name RangedRaggedAssay-class
+#'
+#' @examples
+#' data("hnsc")
+#' assay(hnsc[[1L]], mcolname = "Segment_Mean")[1:5, 1:3]
+#' hnsc[[2]] <- disjoin(hnsc[[2L]])
+#' matrices <- assay(hnsc, mcolname = "Segment_Mean")
 .RangedRaggedAssay <- setClass("RangedRaggedAssay", contains = "GRangesList")
 
 ### - - - - - - - - - - - - - - - - - - - - - - - -
