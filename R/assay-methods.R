@@ -97,12 +97,12 @@ setMethod("assay", c("ANY", "missing"), function(x, i, ...) {
 #' @param i missing argument
 #' @aliases assay,ExperimentList,missing-method
 setMethod("assay", c("ExperimentList", "missing"), function(x, i, ...) {
-    lapply(x, FUN = function(y) assay(y))
+    lapply(x, FUN = function(y) assay(y, ...))
 })
 
 #' @describeIn MultiAssayExperiment Get the assay data for a
 #' \link{MultiAssayExperiment} as a \code{list}
 #' @aliases assay,MultiAssayExperiment,missing-method
 setMethod("assay", c("MultiAssayExperiment", "missing"), function(x, i, ...) {
-    assay(experiments(x))
+    assay(experiments(x), ...)
 })
