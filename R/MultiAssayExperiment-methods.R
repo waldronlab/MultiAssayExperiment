@@ -236,8 +236,9 @@ setReplaceMethod("[[", "MultiAssayExperiment", function(x, i, j, ..., value) {
                          if (!missing(j) || length(list(...)) > 0)
                              stop("invalid replacement")
                          origLen <- length(x)
-                         x <- S4Vectors::setListElement(experiments(x),
-                                                        i, value)
+                         experiments(x) <- S4Vectors::setListElement(
+                             experiments(x),
+                             i, value)
                          if (origLen < length(x))
                             stop("replacement length greater than original")
                          return(x)
