@@ -46,4 +46,3 @@ ggplot(allRes, aes(N.of.Mutations, SCNA.level, color=Cancer))+
     theme(legend.position="bottom")+
     scale_colour_manual(values=cbPalette)
 dev.off()
-system("open scna.pdf")
