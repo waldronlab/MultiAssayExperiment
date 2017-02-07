@@ -215,6 +215,7 @@ setGeneric("subsetByAssay", function(x, y) standardGeneric("subsetByAssay"))
 setMethod("subsetByAssay", c("MultiAssayExperiment", "ANY"), function(x, y) {
     newSubset <- experiments(x)[y]
     listMap <- mapToList(sampleMap(x), "assay")
+    ## TODO: Add sensible error message here
     newMap <- listMap[y]
     newMap <- listToMap(newMap)
     sampleMap(x) <- newMap
