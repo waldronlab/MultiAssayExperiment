@@ -8,10 +8,12 @@
 #' @name RangedRaggedAssay-class
 #'
 #' @examples
-#' data("hnsc")
-#' assay(hnsc[[1L]], mcolname = "Segment_Mean")[1:5, 1:3]
-#' hnsc[[2]] <- disjoin(hnsc[[2L]])
-#' matrices <- assay(hnsc, mcolname = "Segment_Mean")
+#' dataFile <- system.file("extdata", "hnscSample.rds",
+#'     package = "MultiAssayExperiment")
+#' hnscSample <- readRDS(dataFile)
+#' assay(hnscSample[[1L]], mcolname = "Segment_Mean")[1:5, 1:3]
+#' hnscSample[[2]] <- disjoin(hnscSample[[2L]])
+#' matrices <- assay(hnscSample, mcolname = "Segment_Mean")
 .RangedRaggedAssay <- setClass("RangedRaggedAssay", contains = "GRangesList")
 
 ### - - - - - - - - - - - - - - - - - - - - - - - -
@@ -179,6 +181,7 @@ setReplaceMethod("dimnames", c("RangedRaggedAssay", "list"),
 #' for summaries
 #' @param FUN A function for summarizing non-disjoint ranges (default mean)
 #' @importFrom IRanges disjoin
+#' @exportMethod disjoin
 setMethod("disjoin", "RangedRaggedAssay", function(x, mcolname = NULL,
                                                    FUN = mean, ...) {
     if (is.null(mcolname))

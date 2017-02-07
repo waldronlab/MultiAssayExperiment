@@ -28,4 +28,4 @@ NEWS
 # Don't ignore
 !NEWS.md
 !README.md
-
+!inst/extdata/hnscSample.rds
