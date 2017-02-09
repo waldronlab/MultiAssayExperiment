@@ -12,8 +12,7 @@ NULL
 ###
 
 #' @describeIn ExperimentList Get the dimension names for
-#' a \code{MultiAssayExperiment} using
-#' \code{\link[IRanges]{CharacterList}}
+#' an \code{ExperimentList} using \code{\link[IRanges]{CharacterList}}
 setMethod("dimnames", "ExperimentList", function(x) {
     list(IRanges::CharacterList(lapply(x, rownames)),
     IRanges::CharacterList(lapply(x, colnames)))
@@ -164,8 +163,8 @@ setMethod("getHits", signature("RangedRaggedAssay", "character"),
 
 #' @describeIn MultiAssayExperiment Subset a \code{MultiAssayExperiment} object
 #' @param x A \code{MultiAssayExperiment} object for subsetting
-#' @param i Either a \code{character}, or \code{GRanges} object for subsetting
-#' by rows
+#' @param i subsetting: Either a \code{character}, or \code{GRanges} object for subsetting
+#' by rows, assay: unused argument (missing)
 #' @param j Either a \code{character}, \code{logical}, or \code{numeric} vector
 #' for subsetting by columns
 #' @param k Either a \code{character}, \code{logical}, or \code{numeric} vector
@@ -612,7 +611,7 @@ setMethod("duplicated", "MultiAssayExperiment",
 #' @describeIn MultiAssayExperiment Housekeeping method for a
 #' MultiAssayExperiment where only complete.cases are returned, replicate
 #' measurements are averaged, and columns are aligned by the row order in pData.
-#' @param drop.empty.ranges Only used when reducing RangedRaggedAssay objects
+#' @param drop.empty.ranges unused generic argument
 #' @param replicates reduce: A list of \linkS4class{LogicalList} indicating
 #' duplicate entries for each biological unit, see the \code{duplicated} method
 #' for \code{MultiAssayExperiment}
@@ -637,7 +636,7 @@ setMethod("reduce", "MultiAssayExperiment",
 
 #' @describeIn ExperimentList Apply the reduce method on the
 #' ExperimentList elements
-#' @param drop.empty.ranges Ignored until further notice
+#' @param drop.empty.ranges unused argument
 #' @param replicates reduce: A \code{list} or \linkS4class{LogicalList} where
 #' each element represents a sample and a vector of repeated experiments for
 #' the sample (default NULL)
@@ -695,7 +694,7 @@ setMethod("reduce", "ANY", function(x, drop.empty.ranges = FALSE,
 #' @describeIn RangedRaggedAssay Use metadata column to produce a matrix which
 #' can then be merged across replicates.
 #' See also: assay,RangedRaggedAssay,missing-method
-#' @param drop.empty.ranges Ignored until further notice
+#' @param drop.empty.ranges unused argument
 #' @param replicates reduce: A logical list where each element represents a
 #' sample and a vector of repeated experiments for the sample (default NULL)
 #' @param combine A function for consolidating columns in the matrix

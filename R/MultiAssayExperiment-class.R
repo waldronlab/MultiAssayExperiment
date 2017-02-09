@@ -13,7 +13,7 @@
 ### MultiAssayExperiment class
 ### ----------------------------------------------
 
-#' An integrative MultiAssay class for experiment data
+#' An integrative multi-assay class for experiment data
 #'
 #' @description
 #' The \code{MultiAssayExperiment} class can be used to manage results of
@@ -30,11 +30,13 @@
 #'
 #' @details
 #' The dots (\code{\ldots}) argument allows the user to specify additional
-#' arguments in serveral instances. When subsetting a
+#' arguments in several instances. When subsetting a
 #' \code{MultiAssayExperiment}, the dots allow for additional
 #' arguments to be sent to \link{findOverlaps}. When using the \code{reduce}
 #' method, the dots are used to specify arguments for the supplied
-#' \code{combine} argument and function.
+#' \code{combine} argument and function. When using the assay method, additional
+#' arguments may be passed to the \code{RangedRaggedAssay} method. See the
+#' link for more information: \link{assay,RangedRaggedAssay,missing-method}.
 #'
 #' @section pData:
 #' The \code{pData} slot is a collection of primary specimen data valid across
