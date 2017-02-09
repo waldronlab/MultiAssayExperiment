@@ -7,13 +7,7 @@
 #' @exportClass RangedRaggedAssay
 #' @name RangedRaggedAssay-class
 #'
-#' @examples
-#' dataFile <- system.file("extdata", "hnscSample.rds",
-#'     package = "MultiAssayExperiment")
-#' hnscSample <- readRDS(dataFile)
-#' assay(hnscSample[[1L]], mcolname = "Segment_Mean")[1:5, 1:3]
-#' hnscSample[[2]] <- disjoin(hnscSample[[2L]])
-#' matrices <- assay(hnscSample, mcolname = "Segment_Mean")
+#' @example inst/scripts/RangedRaggedAssay-class-Ex.R
 .RangedRaggedAssay <- setClass("RangedRaggedAssay", contains = "GRangesList")
 
 ### - - - - - - - - - - - - - - - - - - - - - - - -
