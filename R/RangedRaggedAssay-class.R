@@ -180,6 +180,7 @@ setMethod("disjoin", "RangedRaggedAssay", function(x, mcolname = NULL,
                                                    FUN = mean, ...) {
     if (is.null(mcolname))
         mcolname <- .findNumericMcol(x)
+    if (any(!isDisjoint(x))) {
     newX <- lapply(x, function(singleRange, summarizer) {
         mCols <- mcols(singleRange)
         mCols <- mCols[, -which(names(mCols) == mcolname),
@@ -193,7 +194,9 @@ setMethod("disjoin", "RangedRaggedAssay", function(x, mcolname = NULL,
         mcols(dj) <- revMap
         return(dj)
     }, summarizer = FUN)
-    RangedRaggedAssay(GRangesList(newX))
+    return(RangedRaggedAssay(GRangesList(newX)))
+    }
+    return(x)
 })
 
 #' @exportMethod show

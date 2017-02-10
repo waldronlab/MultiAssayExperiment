@@ -44,8 +44,6 @@ setMethod("assay", c("RangedRaggedAssay", "missing"),
                    make.names = FALSE, ranges = NULL, type = "any", ...) {
               if (!all(GenomicRanges::isDisjoint(x)))
                   stop("only disjoint ranges supported")
-          #    if (!is.numeric(mcols(x[[1L]])[[mcolname]]))
-          #        stop("metadata column is not numeric")
               if (!is.null(ranges)) {
                   if (!is(ranges, "GRanges"))
                       stop("ranges must be a GRanges object")
@@ -63,7 +61,8 @@ setMethod("assay", c("RangedRaggedAssay", "missing"),
                           stop("feature names not unique accross ranges")
                       rowNames <- rangeNames
                   }
-                  ranges <- GenomicRanges::GRanges(unlist(x, use.names = FALSE))
+                  ranges <- GenomicRanges::GRanges(unlist(x,
+                                                          use.names = FALSE))
               }
               newMatrix <-
                   do.call(cbind,
@@ -72,10 +71,7 @@ setMethod("assay", c("RangedRaggedAssay", "missing"),
                                      MValues <- ifelse(
                                          IRanges::overlapsAny(ranges, obj[[j]],
                                                               type = type),
-                                        #  as.numeric(
-                                             mcols(obj[[j]])[[mcolname]]
-                                        # )
-                                         ,
+                                         mcols(obj[[j]])[[mcolname]],
                                          background)
                                      return(MValues)
                                  }, obj = x))
