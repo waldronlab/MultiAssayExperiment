@@ -660,6 +660,15 @@ setMethod("reduce", "ExperimentList",
               ExperimentList(redList)
           })
 
+.splitArgs <- function(args) {
+              assayArgNames <- c("mcolname", "background", "type",
+                                  "make.names", "ranges")
+              assayArgs <- args[assayArgNames]
+              altArgs <- args[!names(args) %in% assayArgNames]
+              assayArgs <- Filter(function(x) !is.null(x), assayArgs)
+              list(assayArgs, altArgs)
+}
+
 #' @describeIn MultiAssayExperiment Consolidate columns for rectangular
 #' data structures, mainly matrix
 setMethod("reduce", "ANY", function(x, drop.empty.ranges = FALSE,
@@ -673,13 +682,18 @@ setMethod("reduce", "ANY", function(x, drop.empty.ranges = FALSE,
         uniqueCols <- apply(as.matrix(replicates), 2, function(cols) {
             !any(cols)
             })
+        args <- list(...)
+        argList <- .splitArgs(args)
         repeatList <- lapply(replicates, function(reps, rectangle,
                                                   combine, vectorized) {
             if (length(reps)) {
                 repNames <- colnames(rectangle)[reps]
-                result <- .combineCols(rectangle, repNames,
-                                       combine = combine,
-                                       vectorized = vectorized, ...)
+                result <- do.call(.combineCols,
+                                  c(list(rectangle = rectangle,
+                                         dupNames = repNames,
+                                         combine = combine,
+                                         vectorized = vectorized),
+                                    argList[[2L]]))
                 result <- matrix(result, ncol = 1,
                                  dimnames = list(NULL, repNames[[1L]]))
                 return(result)
@@ -705,19 +719,16 @@ setMethod("reduce", "RangedRaggedAssay",
           function(x, drop.empty.ranges = FALSE, replicates = NULL,
                    combine = rowMeans, vectorized = TRUE, mcolname=NULL,
                    ...) {
+              x <- x[, lengths(x) > 0L ]
               args <- list(...)
               if (is.null(mcolname))
                   mcolname <- .findNumericMcol(x)
               x <- disjoin(x, mcolname = mcolname)
-              assayArgNames <- c("mcolname", "background", "type",
-                                  "make.names", "ranges")
-              assayArgs <- args[assayArgNames]
-              altArgs <- args[!names(args) %in% assayArgNames]
-              assayArgs <- Filter(function(x) !is.null(x), assayArgs)
-              assayArgs$mcolname <- mcolname
-              x <- do.call(assay, c(list(x = x), assayArgs))
+              argList <- .splitArgs(args)
+              argList[[1L]]$mcolname <- mcolname
+              x <- do.call(assay, c(list(x = x), argList[[1L]]))
               do.call(reduce, c(list(x = x, replicates = replicates,
                                      combine = combine,
                                      vectorized = vectorized),
-                                altArgs))
+                                argList[[2L]]))
           })
