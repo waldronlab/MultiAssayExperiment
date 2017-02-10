@@ -29,7 +29,7 @@
 \alias{reduce,MultiAssayExperiment-method}
 \alias{reduce,ANY-method}
 \alias{assay,MultiAssayExperiment,missing-method}
-\title{An integrative MultiAssay class for experiment data}
+\title{An integrative multi-assay class for experiment data}
 \usage{
 \S4method{show}{MultiAssayExperiment}(object)
 
@@ -95,8 +95,8 @@ the existing \code{sampleMap}, \code{ExperimentList}, or \code{pData} slot}
 
 \item{verbose}{logical (default FALSE) whether to print extra messages}
 
-\item{i}{Either a \code{character}, or \code{GRanges} object for subsetting
-by rows}
+\item{i}{subsetting: Either a \code{character}, or \code{GRanges} object for subsetting
+by rows, assay: unused argument (missing)}
 
 \item{j}{Either a \code{character}, \code{logical}, or \code{numeric} vector
 for subsetting by columns}
@@ -109,7 +109,7 @@ in the \code{ExperimentList}}
 
 \item{incomparables}{duplicated: unused argument}
 
-\item{drop.empty.ranges}{Only used when reducing RangedRaggedAssay objects}
+\item{drop.empty.ranges}{unused generic argument}
 
 \item{replicates}{reduce: A list of \linkS4class{LogicalList} indicating
 duplicate entries for each biological unit, see the \code{duplicated} method
@@ -139,11 +139,13 @@ potentially also with the arguments \code{pData} (see section below) and
 }
 \details{
 The dots (\code{\ldots}) argument allows the user to specify additional
-arguments in serveral instances. When subsetting a
+arguments in several instances. When subsetting a
 \code{MultiAssayExperiment}, the dots allow for additional
 arguments to be sent to \link{findOverlaps}. When using the \code{reduce}
 method, the dots are used to specify arguments for the supplied
-\code{combine} argument and function.
+\code{combine} argument and function. When using the assay method, additional
+arguments may be passed to the \code{RangedRaggedAssay} method. See the
+link for more information: \link{assay,RangedRaggedAssay,missing-method}.
 }
 \section{Methods (by generic)}{
 \itemize{
@@ -254,7 +256,24 @@ names of the sampleMap are "assay", "primary", and "colname".
 }
 
 \examples{
-MultiAssayExperiment()
+example("MultiAssayExperiment")
+
+## Subsetting
+# Rows (i) Rows/Features in each experiment
+myMultiAssayExperiment[1, , ]
+myMultiAssayExperiment[c(TRUE, FALSE), , ]
+
+# Columns (j) Rows in pData
+myMultiAssayExperiment[, rownames(pData(myMultiAssayExperiment))[3:2],  ]
+
+# Assays (k)
+myMultiAssayExperiment[, , "Affy"]
+
+## Complete cases (returns logical vector)
+completes <- complete.cases(myMultiAssayExperiment)
+compMAE <- myMultiAssayExperiment[, completes, ]
+compMAE
+pData(compMAE)
 
 }
 \seealso{

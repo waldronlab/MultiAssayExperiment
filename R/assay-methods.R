@@ -10,7 +10,7 @@
 #' uses the \link{overlapsAny} function from the \code{GenomicRanges} package.
 #'
 #' @param x A \linkS4class{RangedRaggedAssay} or \link{GRangesList} class
-#' @param i Argument from generic (default 1L)
+#' @param i Argument set to missing (not used)
 #' @param mcolname A single string indicating the metadata column to use for
 #' the values in the resulting assay matrix
 #' @param background A default background value for the resulting assay matrix
@@ -44,10 +44,6 @@ setMethod("assay", c("RangedRaggedAssay", "missing"),
                    make.names = FALSE, ranges = NULL, type = "any", ...) {
               if (!all(GenomicRanges::isDisjoint(x)))
                   stop("only disjoint ranges supported")
-
-              if (!is.numeric(mcols(x[[1L]])[[mcolname]]))
-                  stop("metadata column is not numeric")
-
               if (!is.null(ranges)) {
                   if (!is(ranges, "GRanges"))
                       stop("ranges must be a GRanges object")
@@ -65,7 +61,8 @@ setMethod("assay", c("RangedRaggedAssay", "missing"),
                           stop("feature names not unique accross ranges")
                       rowNames <- rangeNames
                   }
-                  ranges <- GenomicRanges::GRanges(unlist(x, use.names = FALSE))
+                  ranges <- GenomicRanges::GRanges(unlist(x,
+                                                          use.names = FALSE))
               }
               newMatrix <-
                   do.call(cbind,
@@ -74,9 +71,7 @@ setMethod("assay", c("RangedRaggedAssay", "missing"),
                                      MValues <- ifelse(
                                          IRanges::overlapsAny(ranges, obj[[j]],
                                                               type = type),
-                                         as.numeric(mcols(
-                                             obj[[j]])[[mcolname]]
-                                         ),
+                                         mcols(obj[[j]])[[mcolname]],
                                          background)
                                      return(MValues)
                                  }, obj = x))
@@ -94,15 +89,15 @@ setMethod("assay", c("ANY", "missing"), function(x, i, ...) {
 
 #' @describeIn ExperimentList Get the assay data from each element in the
 #' \link{ExperimentList}
-#' @param i missing argument
+#' @param i assay: unused argument
 #' @aliases assay,ExperimentList,missing-method
 setMethod("assay", c("ExperimentList", "missing"), function(x, i, ...) {
-    lapply(x, FUN = function(y) assay(y))
+    lapply(x, FUN = function(y) assay(y, ...))
 })
 
 #' @describeIn MultiAssayExperiment Get the assay data for a
 #' \link{MultiAssayExperiment} as a \code{list}
 #' @aliases assay,MultiAssayExperiment,missing-method
 setMethod("assay", c("MultiAssayExperiment", "missing"), function(x, i, ...) {
-    assay(experiments(x))
+    assay(experiments(x), ...)
 })

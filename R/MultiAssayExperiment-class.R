@@ -13,7 +13,7 @@
 ### MultiAssayExperiment class
 ### ----------------------------------------------
 
-#' An integrative MultiAssay class for experiment data
+#' An integrative multi-assay class for experiment data
 #'
 #' @description
 #' The \code{MultiAssayExperiment} class can be used to manage results of
@@ -30,11 +30,13 @@
 #'
 #' @details
 #' The dots (\code{\ldots}) argument allows the user to specify additional
-#' arguments in serveral instances. When subsetting a
+#' arguments in several instances. When subsetting a
 #' \code{MultiAssayExperiment}, the dots allow for additional
 #' arguments to be sent to \link{findOverlaps}. When using the \code{reduce}
 #' method, the dots are used to specify arguments for the supplied
-#' \code{combine} argument and function.
+#' \code{combine} argument and function. When using the assay method, additional
+#' arguments may be passed to the \code{RangedRaggedAssay} method. See the
+#' link for more information: \link{assay,RangedRaggedAssay,missing-method}.
 #'
 #' @section pData:
 #' The \code{pData} slot is a collection of primary specimen data valid across
@@ -64,7 +66,24 @@
 #' @return A \code{MultiAssayExperiment} object
 #'
 #' @examples
-#' MultiAssayExperiment()
+#' example("MultiAssayExperiment")
+#'
+#' ## Subsetting
+#' # Rows (i) Rows/Features in each experiment
+#' myMultiAssayExperiment[1, , ]
+#' myMultiAssayExperiment[c(TRUE, FALSE), , ]
+#'
+#' # Columns (j) Rows in pData
+#' myMultiAssayExperiment[, rownames(pData(myMultiAssayExperiment))[3:2],  ]
+#'
+#' # Assays (k)
+#' myMultiAssayExperiment[, , "Affy"]
+#'
+#' ## Complete cases (returns logical vector)
+#' completes <- complete.cases(myMultiAssayExperiment)
+#' compMAE <- myMultiAssayExperiment[, completes, ]
+#' compMAE
+#' pData(compMAE)
 #'
 #' @exportClass MultiAssayExperiment
 #' @include ExperimentList-class.R
@@ -202,12 +221,16 @@ setMethod("show", "MultiAssayExperiment", function(object) {
                       "respective class.", "respective classes.")),
         "\n Containing an ")
     show(experiments(object))
-    cat("To access: \n experiments() - to obtain the",
+    cat("Features: \n experiments() - obtain the",
         sprintf("%s", c_elist), "instance",
-        "\n pData() - for the primary/phenotype", sprintf("%s", c_mp),
-        "\n sampleMap() - for the sample availability", sprintf("%s", c_sm),
-        "\n metadata() - for the metadata object of ANY class",
-        "\nSee also: subsetByAssay(), subsetByRow(), subsetByColumn()\n")
+        "\n pData() - the primary/phenotype", sprintf("%s", c_mp),
+        "\n sampleMap() - the sample availability", sprintf("%s", c_sm),
+        "\n `$`, `[`, `[[` - extract pData columns, subset, or experiment",
+        "\n reduce() - select complete cases, order columns, disjoin ranges",
+        "\n rearrange() - convert", sprintf("%s", c_elist),
+        "into a long or wide", sprintf("%s", c_mp),
+        "\n assay() - convert", sprintf("%s", c_elist),
+        "to a list of rectangular matrices\n")
 })
 
 

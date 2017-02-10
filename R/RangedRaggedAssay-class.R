@@ -6,6 +6,8 @@
 #'
 #' @exportClass RangedRaggedAssay
 #' @name RangedRaggedAssay-class
+#'
+#' @example inst/scripts/RangedRaggedAssay-class-Ex.R
 .RangedRaggedAssay <- setClass("RangedRaggedAssay", contains = "GRangesList")
 
 ### - - - - - - - - - - - - - - - - - - - - - - - -
@@ -173,10 +175,12 @@ setReplaceMethod("dimnames", c("RangedRaggedAssay", "list"),
 #' for summaries
 #' @param FUN A function for summarizing non-disjoint ranges (default mean)
 #' @importFrom IRanges disjoin
+#' @exportMethod disjoin
 setMethod("disjoin", "RangedRaggedAssay", function(x, mcolname = NULL,
                                                    FUN = mean, ...) {
     if (is.null(mcolname))
         mcolname <- .findNumericMcol(x)
+    if (any(!isDisjoint(x))) {
     newX <- lapply(x, function(singleRange, summarizer) {
         mCols <- mcols(singleRange)
         mCols <- mCols[, -which(names(mCols) == mcolname),
@@ -190,7 +194,9 @@ setMethod("disjoin", "RangedRaggedAssay", function(x, mcolname = NULL,
         mcols(dj) <- revMap
         return(dj)
     }, summarizer = FUN)
-    RangedRaggedAssay(GRangesList(newX))
+    return(RangedRaggedAssay(GRangesList(newX)))
+    }
+    return(x)
 })
 
 #' @exportMethod show

@@ -13,19 +13,19 @@
     autoMap <- S4Vectors::DataFrame(
         assay=assay, primary=primary, colname=colname)
 
-    if (nrow(autoMap) && any(is.na(autoMap$primary))) {
-        notFound <- autoMap[is.na(autoMap$primary), ]
+    if (nrow(autoMap) && any(is.na(autoMap[["primary"]]))) {
+        notFound <- autoMap[is.na(autoMap[["primary"]]), ]
         warning("Data from rows:",
                 sprintf("\n %s - %s", notFound[, 2], notFound[, 3]),
                 "\ndropped due to missing phenotype data")
-        autoMap <- autoMap[!is.na(autoMap$primary), ]
+        autoMap <- autoMap[!is.na(autoMap[["primary"]]), ]
     }
     autoMap
 }
 
 .harmonize <- function(experiments, pData, sampleMap) {
     harmony <- character()
-    ## experiment and sampleMap assays need to agree
+    ## sampleMap assays agree with experiment names
     assay <- intersect(names(experiments), levels(sampleMap[["assay"]]))
     keep_sampleMap_assay <- sampleMap[["assay"]] %in% assay
     if (!all(keep_sampleMap_assay)) {
@@ -37,9 +37,9 @@
                   "sampleMap rows not in names(experiments)"))
     }
 
-    ## experiment colnames and sampleMap colname need to agree
-    grp <- sampleMap$assay
-    colnm <- split(sampleMap$colname, grp)
+    ## sampleMap colname agrees with experiment colnames
+    grp <- sampleMap[["assay"]]
+    colnm <- split(sampleMap[["colname"]], grp)
     keep <- Map(intersect, colnm, colnames(experiments)[names(colnm)])
     keep_sampleMap_colname <- logical(nrow(sampleMap))
     split(keep_sampleMap_colname, grp) <- Map("%in%", colnm, keep)
@@ -52,7 +52,7 @@
                   "not in colnames of experiments"))
     }
 
-    ## primary and sampleMap primary need to agree
+    ## sampleMap primary agrees with primary
     primary <- intersect(rownames(pData), sampleMap[["primary"]])
     keep_sampleMap_primary <- sampleMap[["primary"]] %in% primary
     if (!all(keep_sampleMap_primary)) {
@@ -171,3 +171,4 @@ MultiAssayExperiment <-
                              metadata = metadata)
         return(newMultiAssay)
     }
+

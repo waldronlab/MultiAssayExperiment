@@ -12,8 +12,7 @@ NULL
 ###
 
 #' @describeIn ExperimentList Get the dimension names for
-#' a \code{MultiAssayExperiment} using
-#' \code{\link[IRanges]{CharacterList}}
+#' an \code{ExperimentList} using \code{\link[IRanges]{CharacterList}}
 setMethod("dimnames", "ExperimentList", function(x) {
     list(IRanges::CharacterList(lapply(x, rownames)),
     IRanges::CharacterList(lapply(x, colnames)))
@@ -164,8 +163,8 @@ setMethod("getHits", signature("RangedRaggedAssay", "character"),
 
 #' @describeIn MultiAssayExperiment Subset a \code{MultiAssayExperiment} object
 #' @param x A \code{MultiAssayExperiment} object for subsetting
-#' @param i Either a \code{character}, or \code{GRanges} object for subsetting
-#' by rows
+#' @param i subsetting: Either a \code{character}, or \code{GRanges} object for subsetting
+#' by rows, assay: unused argument (missing)
 #' @param j Either a \code{character}, \code{logical}, or \code{numeric} vector
 #' for subsetting by columns
 #' @param k Either a \code{character}, \code{logical}, or \code{numeric} vector
@@ -215,6 +214,7 @@ setGeneric("subsetByAssay", function(x, y) standardGeneric("subsetByAssay"))
 setMethod("subsetByAssay", c("MultiAssayExperiment", "ANY"), function(x, y) {
     newSubset <- experiments(x)[y]
     listMap <- mapToList(sampleMap(x), "assay")
+    ## TODO: Add sensible error message here
     newMap <- listMap[y]
     newMap <- listToMap(newMap)
     sampleMap(x) <- newMap
@@ -236,8 +236,9 @@ setReplaceMethod("[[", "MultiAssayExperiment", function(x, i, j, ..., value) {
                          if (!missing(j) || length(list(...)) > 0)
                              stop("invalid replacement")
                          origLen <- length(x)
-                         x <- S4Vectors::setListElement(experiments(x),
-                                                        i, value)
+                         experiments(x) <- S4Vectors::setListElement(
+                             experiments(x),
+                             i, value)
                          if (origLen < length(x))
                             stop("replacement length greater than original")
                          return(x)
@@ -610,7 +611,7 @@ setMethod("duplicated", "MultiAssayExperiment",
 #' @describeIn MultiAssayExperiment Housekeeping method for a
 #' MultiAssayExperiment where only complete.cases are returned, replicate
 #' measurements are averaged, and columns are aligned by the row order in pData.
-#' @param drop.empty.ranges Only used when reducing RangedRaggedAssay objects
+#' @param drop.empty.ranges unused generic argument
 #' @param replicates reduce: A list of \linkS4class{LogicalList} indicating
 #' duplicate entries for each biological unit, see the \code{duplicated} method
 #' for \code{MultiAssayExperiment}
@@ -635,7 +636,7 @@ setMethod("reduce", "MultiAssayExperiment",
 
 #' @describeIn ExperimentList Apply the reduce method on the
 #' ExperimentList elements
-#' @param drop.empty.ranges Ignored until further notice
+#' @param drop.empty.ranges unused argument
 #' @param replicates reduce: A \code{list} or \linkS4class{LogicalList} where
 #' each element represents a sample and a vector of repeated experiments for
 #' the sample (default NULL)
@@ -659,6 +660,15 @@ setMethod("reduce", "ExperimentList",
               ExperimentList(redList)
           })
 
+.splitArgs <- function(args) {
+              assayArgNames <- c("mcolname", "background", "type",
+                                  "make.names", "ranges")
+              assayArgs <- args[assayArgNames]
+              altArgs <- args[!names(args) %in% assayArgNames]
+              assayArgs <- Filter(function(x) !is.null(x), assayArgs)
+              list(assayArgs, altArgs)
+}
+
 #' @describeIn MultiAssayExperiment Consolidate columns for rectangular
 #' data structures, mainly matrix
 setMethod("reduce", "ANY", function(x, drop.empty.ranges = FALSE,
@@ -672,13 +682,18 @@ setMethod("reduce", "ANY", function(x, drop.empty.ranges = FALSE,
         uniqueCols <- apply(as.matrix(replicates), 2, function(cols) {
             !any(cols)
             })
+        args <- list(...)
+        argList <- .splitArgs(args)
         repeatList <- lapply(replicates, function(reps, rectangle,
                                                   combine, vectorized) {
             if (length(reps)) {
                 repNames <- colnames(rectangle)[reps]
-                result <- .combineCols(rectangle, repNames,
-                                       combine = combine,
-                                       vectorized = vectorized, ...)
+                result <- do.call(.combineCols,
+                                  c(list(rectangle = rectangle,
+                                         dupNames = repNames,
+                                         combine = combine,
+                                         vectorized = vectorized),
+                                    argList[[2L]]))
                 result <- matrix(result, ncol = 1,
                                  dimnames = list(NULL, repNames[[1L]]))
                 return(result)
@@ -693,7 +708,7 @@ setMethod("reduce", "ANY", function(x, drop.empty.ranges = FALSE,
 #' @describeIn RangedRaggedAssay Use metadata column to produce a matrix which
 #' can then be merged across replicates.
 #' See also: assay,RangedRaggedAssay,missing-method
-#' @param drop.empty.ranges Ignored until further notice
+#' @param drop.empty.ranges unused argument
 #' @param replicates reduce: A logical list where each element represents a
 #' sample and a vector of repeated experiments for the sample (default NULL)
 #' @param combine A function for consolidating columns in the matrix
@@ -704,19 +719,16 @@ setMethod("reduce", "RangedRaggedAssay",
           function(x, drop.empty.ranges = FALSE, replicates = NULL,
                    combine = rowMeans, vectorized = TRUE, mcolname=NULL,
                    ...) {
+              x <- x[, lengths(x) > 0L ]
               args <- list(...)
               if (is.null(mcolname))
                   mcolname <- .findNumericMcol(x)
               x <- disjoin(x, mcolname = mcolname)
-              assayArgNames <- c("mcolname", "background", "type",
-                                  "make.names", "ranges")
-              assayArgs <- args[assayArgNames]
-              altArgs <- args[!names(args) %in% assayArgNames]
-              assayArgs <- Filter(function(x) !is.null(x), assayArgs)
-              assayArgs$mcolname <- mcolname
-              x <- do.call(assay, c(list(x = x), assayArgs))
+              argList <- .splitArgs(args)
+              argList[[1L]]$mcolname <- mcolname
+              x <- do.call(assay, c(list(x = x), argList[[1L]]))
               do.call(reduce, c(list(x = x, replicates = replicates,
                                      combine = combine,
                                      vectorized = vectorized),
-                                altArgs))
+                                argList[[2L]]))
           })

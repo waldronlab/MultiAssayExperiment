@@ -11,7 +11,7 @@
 \arguments{
 \item{x}{A \linkS4class{RangedRaggedAssay} or \link{GRangesList} class}
 
-\item{i}{Argument from generic (default 1L)}
+\item{i}{Argument set to missing (not used)}
 
 \item{mcolname}{A single string indicating the metadata column to use for
 the values in the resulting assay matrix}

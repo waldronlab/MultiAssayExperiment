@@ -2,20 +2,22 @@
 % Please edit documentation in R/ExperimentList-class.R
 \name{ExperimentList}
 \alias{ExperimentList}
-\title{experiment Acessor function for the \code{ExperimentList} slot of a
-\code{MultiAssayExperiment} object}
+\title{Constructor function for the \code{ExperimentList} slot of a
+\code{MultiAssayExperiment} object.}
 \usage{
 ExperimentList(x)
 }
 \arguments{
-\item{x}{A code{MultiAssayExperiment} class object}
+\item{x}{A \code{list} class object}
 }
 \value{
 A \code{ExperimentList} class object of experiment data
 }
 \description{
-experiment Acessor function for the \code{ExperimentList} slot of a
-\code{MultiAssayExperiment} object
+The \code{ExperimentList} class can contain several different types of data.
+The only requirements for an \code{ExperimentList} class are that the
+objects contained have the following set of methods: \code{dim}, \code{[},
+\code{rownames}, \code{colnames}
 }
 \examples{
 ## Create an empty ExperimentList instance

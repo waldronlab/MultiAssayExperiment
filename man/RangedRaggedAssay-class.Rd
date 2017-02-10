@@ -64,7 +64,7 @@ for summaries}
 
 \item{query}{A \code{character} class for searching hits}
 
-\item{drop.empty.ranges}{Ignored until further notice}
+\item{drop.empty.ranges}{unused argument}
 
 \item{replicates}{reduce: A logical list where each element represents a
 sample and a vector of repeated experiments for the sample (default NULL)}
@@ -124,6 +124,23 @@ can then be merged across replicates.
 See also: assay,RangedRaggedAssay,missing-method
 }}
 
+\examples{
+## Load sample MultiAssayExperiment Copy Number data
+dataFile <- system.file("extdata", "hnscSample.rds",
+    package = "MultiAssayExperiment")
+
+hnscSample <- readRDS(dataFile)
+
+## assay method for a RangedRaggedAssay
+assay(hnscSample[[1L]], mcolname = "Segment_Mean")[1:5, 1:3]
+
+hnscSample[[2]] <- disjoin(hnscSample[[2L]])
+
+matrices <- assay(hnscSample, mcolname = "Segment_Mean")
+
+length(matrices)
+class(matrices)
+}
 \seealso{
 \code{\link[IRanges]{findOverlaps-methods}}
 }

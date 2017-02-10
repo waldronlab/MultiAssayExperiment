@@ -63,7 +63,7 @@ For example:
 dataLocation <- system.file("extdata", "exMatrix.h5", package =
                               "MultiAssayExperiment", mustWork = TRUE)
 h5ls(dataLocation)
-hdf5Data <- HDF5Array(file = dataLocation, name = "exMatrix")
+hdf5Data <- HDF5ArraySeed(file = dataLocation, name = "exMatrix")
 newDelayedMatrix <- DelayedArray(hdf5Data)
 class(newDelayedMatrix)
 head(newDelayedMatrix)

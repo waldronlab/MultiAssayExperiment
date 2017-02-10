@@ -30,11 +30,12 @@
 \S4method{assay}{ExperimentList,missing}(x, i, ...)
 }
 \arguments{
-\item{x}{A \code{list} object}
+\item{x}{constructor: A \code{list} object, reduce or assay: an
+\code{ExperimentList} object}
 
-\item{object}{An \code{\linkS4class{ExperimentList}} class object}
+\item{object}{An \code{\linkS4class{ExperimentList}} object}
 
-\item{drop.empty.ranges}{Ignored until further notice}
+\item{drop.empty.ranges}{unused argument}
 
 \item{replicates}{reduce: A \code{list} or \linkS4class{LogicalList} where
 each element represents a sample and a vector of repeated experiments for
@@ -48,10 +49,10 @@ is vectorized, optimized for working down the vector pairs}
 
 \item{...}{Additional arguments. See details for more information.}
 
-\item{i}{missing argument}
+\item{i}{assay: unused argument}
 }
 \value{
-An \code{ExperimentList} class object
+An \code{ExperimentList} object
 }
 \description{
 The \code{ExperimentList} class is a container that builds on
@@ -78,8 +79,7 @@ function argument (e.g., na.rm = TRUE)
 \code{\linkS4class{ExperimentList}} class
 
 \item \code{dimnames}: Get the dimension names for
-a \code{MultiAssayExperiment} using
-\code{\link[IRanges]{CharacterList}}
+an \code{ExperimentList} using \code{\link[IRanges]{CharacterList}}
 
 \item \code{reduce}: Apply the reduce method on the
 ExperimentList elements
