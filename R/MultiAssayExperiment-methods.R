@@ -553,14 +553,14 @@ setMethod("rearrange", "MultiAssayExperiment", function(object, shape = "long",
         rectangleDF <- S4Vectors::DataFrame(rectangleDF, primary = primary)
         rectangleDF[, c("assay", "primary", "rowname", "colname", "value")]
     })
-    longDataFrame <- do.call(rbind, dataList)
+    outputDataFrame <- do.call(rbind, dataList)
     if (addCols) {
         extraColumns <- pData(object)[, pDataCols, drop = FALSE]
         rowNameValues <- rownames(extraColumns)
         rownames(extraColumns) <- NULL
-        matchIdx <- BiocGenerics::match(longDataFrame[["primary"]],
+        matchIdx <- BiocGenerics::match(outputDataFrame[["primary"]],
                                         rowNameValues)
-        outputDataFrame <- BiocGenerics::cbind(longDataFrame,
+        outputDataFrame <- BiocGenerics::cbind(outputDataFrame,
                                                extraColumns[matchIdx, ,
                                                             drop = FALSE])
     }
@@ -573,7 +573,7 @@ setMethod("rearrange", "MultiAssayExperiment", function(object, shape = "long",
                                          value = "value")
         outputDataFrame <- DataFrame(outputDataFrame)
     }
-    return(longDataFrame)
+    return(outputDataFrame)
 })
 
 .combineCols <- function(rectangle, dupNames, combine, vectorized, ...) {
