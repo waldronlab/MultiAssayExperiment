@@ -287,7 +287,7 @@ setMethod("subsetByColumn", c("MultiAssayExperiment", "ANY"), function(x, y) {
     if (is.logical(y) || is.numeric(y))
         y <- unique(rownames(pData(x))[y])
     selectors <- y[y %in% rownames(pData(x))]
-    newpData <- pData(x)[match(selectors, rownames(pData(x))), ]
+    newpData <- pData(x)[match(selectors, rownames(pData(x))), , drop = FALSE]
     listMap <- mapToList(sampleMap(x), "assay")
     listMap <- lapply(listMap, function(elementMap, keepers) {
         .matchReorderSub(elementMap, keepers)
