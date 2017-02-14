@@ -12,8 +12,6 @@ output:
     toc: yes
 ---
 
-A built [html][] version of this vignette is available.
-
 ```{r, echo=FALSE, warning=FALSE}
 suppressPackageStartupMessages(library(MultiAssayExperiment))
 ```
@@ -56,9 +54,7 @@ The elements of the `ExperimentList` can contain **ID-based** and
 **range-based** data. Requirements for all classes in the `ExperimentList`
 are listed in the API.
 
-See `API()` for details on using data classes not listed here. 
-
-The following base and Bioconductor classes are supported: 
+The following base and Bioconductor classes are known to work as elements of the ExperimentList: 
 
 - `base::matrix`: the base class, can be used for ID-based datasets such as
 gene expression summarized per-gene, microRNA, metabolomics, or microbiome
@@ -83,6 +79,8 @@ and different genomic locations in each sample.
 
 #### Class requirements within ExperimentList container
 
+See `API()` for details on requirements for using other data classes. In general, data classes meeting minimum requirements, including support for square bracket `[` subsetting and `dimnames()` will work by default. 
+
 The datasets contained in elements of the `ExperimentList` must have:
 
 * column names
@@ -92,9 +90,7 @@ The column names correspond to samples, and are used to match assay data to
 specimen metadata stored in `pData`. 
 
 The row names can correspond to a variety of features in the data including
-but not limited to gene names, probe IDs, proteins, and named ranges. 
-
-##### Method requirements
+but not limited to gene names, probe IDs, proteins, and named ranges. Note that the existence of "row" names does *not* mean the data must be rectangular or matrix-like. The RangedRaggedAssay class, for example, supports ragged arrays where the number and identifiers of measurements can be different for each sample.
 
 Classes contained in the `ExperimentList` must support the following list of
 methods:
@@ -606,11 +602,67 @@ assay(rra, background = 2)
 
 # Integrated subsetting across experiments
 
-The core functionality of `MultiAssayExperiment` is to allow subsetting by
-assay, rownames, and colnames, across all experiments simultaneously while
-guaranteeing continued matching of samples.
+`MultiAssayExperiment` allows subsetting by "rows", columns, and assays, rownames, and colnames, across all experiments simultaneously while guaranteeing continued matching of samples.
 
-## Subsetting samples / columns
+Subsetting can be done most compactly by the square bracket method, or more verbosely and potentially more flexibly by the `subsetBy*()` methods. 
+
+## Subsetting by square bracket `[`
+
+The three positions within the bracket operator indicate rows, columns, and assays, respectively (pseudocode):
+
+```{r, eval=FALSE}
+myMultiAssay[rows, columns, assays]
+```
+
+For example, to select the gene "ENST00000355076":
+
+```{r}
+myMultiAssay["ENST00000355076", , ]
+```
+
+The above operation works across all types of assays, whether ID-based
+(e.g. matrix, ExpressionSet, SummarizedExperiment) or range-based
+(e.g. RangedSummarizedExperiment, RangedRaggedAssay). Note that when using
+the bracket method `[`, the drop argument is *TRUE* by default.
+
+You can subset by rows, columns, and assays in a single bracket operation,
+and they will be performed in that order (rows, then columns, then assays). The following selects the ENST00000355076 gene across all samples, then the first two samples of each assay, and finally the Affy and Methyl 450k assays:
+
+```{r}
+myMultiAssay["ENST00000355076", 1:2, c("Affy", "Methyl 450k")]
+```
+
+## Subsetting by character, integer, and logical
+
+By columns - character, integer, and logical are all allowed, for example:
+```{r}
+myMultiAssay[, "Jack", ]
+myMultiAssay[, 1, ]
+myMultiAssay[, c(TRUE, FALSE, FALSE, FALSE), ]
+```
+
+By assay - character, integer, and logical are allowed:
+```{r}
+myMultiAssay[, , "Mirna"]
+myMultiAssay[, , 3]
+myMultiAssay[, , c(FALSE, FALSE, TRUE, FALSE, FALSE)]
+```
+
+## the "drop" argument
+
+Specify `drop=FALSE` to keep assays with zero rows or zero columns, e.g.:
+
+```{r}
+myMultiAssay["ENST00000355076", , , drop=FALSE]
+```
+
+Using the default `drop=TRUE`, assays with no rows or no columns are removed:
+
+```{r}
+myMultiAssay["ENST00000355076", , , drop=TRUE]
+```
+
+## More on subsetting by columns
 
 Experimental samples are stored in the rows of `pData` but the columns of
 elements of `ExperimentList`, so when we refer to subsetting by columns, we
@@ -627,50 +679,34 @@ these rows. Here we use an integer to keep the first two rows of pData, and
 all experimental assays associated to those two primary samples:
 
 ```{r}
-subsetByColumn(myMultiAssay, 1:2)
+myMultiAssay[, 1:2]
 ```
 
 Note that the above operation keeps different numbers of columns / samples
 from each assay, reflecting the reality that some samples may not have been
 assayed in all experiments, and may have replicates in some.
 
-Subsetting the primary identifiers using a character vector corresponding to
-some rownames of `pData` returns the same result:
-
-```{r}
-subsetByColumn(myMultiAssay, c("Jack", "Jill"))
-```
-
 Columns can be subset using a logical vector. Here the dollar sign operator
 (`$`) accesses one of the columns in `pData`.
 
 ```{r}
-malesMultiAssay <- subsetByColumn(myMultiAssay, myMultiAssay$sex == "M")
+malesMultiAssay <- myMultiAssay[, myMultiAssay$sex == "M"]
 pData(malesMultiAssay)
 ```
 
-Note that selecting male patients from all assays could have been accomplished
-equivalently using the square bracket:
-
-```{r}
-myMultiAssay[, myMultiAssay$sex == "M", ]
-```
-
-Finally, for special use cases you can exert detail control of which samples
-to select using a `list` or `CharacterList`, which is just a convenient form
-of a list containing character vectors.
+Finally, for special use cases you can exert detailed control of row or column subsetting, by using a `list` or `CharacterList` to subset. The following creates a `CharacterList` of the column names of each assay:
 
 ```{r}
 allsamples <- colnames(myMultiAssay)
 allsamples
 ```
 
-Now let's get rid of the Methyl 450k arrays 3 to 5, a couple different but
-equivalent ways:
+Now let's get rid of three Methyl 450k arrays, those in positions 3, 4, and 5:
 
 ```{r}
 allsamples[["Methyl 450k"]] <- allsamples[["Methyl 450k"]][-3:-5]
 myMultiAssay[, as.list(allsamples), ]
+subsetByColumn(myMultiAssay,  as.list(allsamples))  #equivalent
 ```
 
 ## Subsetting assays
@@ -679,23 +715,17 @@ You can select certain assays / experiments using subset, by providing a
 character, logical, or integer vector.  An example using character:
 
 ```{r}
-subsetByAssay(myMultiAssay, c("Affy", "CNV gistic"))
+myMultiAssay[, , c("Affy", "CNV gistic")]
 ```
 
-Examples using logical and integer:
+You can subset assays also using logical or integer vectors:
 
 ```{r}
 is.cnv = grepl("CNV", names(experiments(myMultiAssay)))
 is.cnv
-subsetByAssay(myMultiAssay, is.cnv)
-subsetByAssay(myMultiAssay, which(is.cnv))
+myMultiAssay[, , is.cnv]  #logical subsetting
+myMultiAssay[, , which(is.cnv)] #integer subsetting
 ```
-
-`subsetByRow`, `subsetByColumn`, and `subsetByAssay` are endogenous operations,
-in that it always returns another `MultiAssayExperiment` object.
-
-Use `assay(myMultiAssay)` to retrieve the experimental data in an ordinary
-`list` of numeric matrices from the different data classes (in progress).
 
 ## Subsetting rows (features) by IDs, integers, or logicals
 
@@ -730,6 +760,7 @@ rows (`drop` argument is set to `FALSE` by default in `subsetBy*`):
 
 ```{r}
 featSubsetted0 <- subsetByRow(myMultiAssay, "ENST00000355076")
+featSubsetted0 <- myMultiAssay["ENST00000355076", , ] #equivalent
 class(featSubsetted0)
 class(experiments(featSubsetted0))
 experiments(featSubsetted0)
@@ -766,62 +797,120 @@ subsetted <- subsetByRow(myMultiAssay, gr, maxgap = 2L, type = "within")
 experiments(subsetted)
 ```
 
-## Subsetting by square bracket `[`
+Square bracket subsetting can still be used here, but passing on arguments to `IRanges::subsetByOverlaps` through "..." is simpler using `subsetByRow()`.
 
-The bracket method for the `MultiAssayExperiment` is equivalent but more
-compact than the `subsetBy*()` methods. The three positions within the bracket
-operator indicate rows, columns, and assays, respectively (pseudocode):
+## Subsetting is endogenous
 
+`subsetByRow`, `subsetByColumn`, `subsetByAssay`, and square bracket subsetting
+are all "endogenous" operations, in that they always returns another `MultiAssayExperiment` object.
+
+## Double-bracket subsetting to select experiments
+
+A double-bracket subset operation refers to an experiment, and will return the object contained within an `ExperimentList` element. It is **not** endogenous. For example, the first `ExperimentList` element is called "Affy" and contains an `ExpressionSet`:
+```{r}
+names(myMultiAssay)
+myMultiAssay[[1]]
+myMultiAssay[["Affy"]]
+```
+
+
+# Helpers for data clean-up and management
+
+## complete.cases()
+
+`complete.cases()` returns a logical identifying which primary units have data for all experiments. Recall that `myMultiAssay` provides data for four individuals:
+
+```{r}
+pData(myMultiAssay)
+```
+
+Of these, only Jack has data for all 5 experiments:
+```{r}
+complete.cases(myMultiAssay)
+```
+But all four have coplete cases for Affy and Methyl 450k:
+```{r}
+complete.cases(myMultiAssay[, , 1:2])
+```
+
+This output can be used to select individuals with complete data:
+```{r}
+myMultiAssay[, complete.cases(myMultiAssay), ]
+```
+
+## duplicated()
+
+The `duplicated()` function returns a list of lists, identifying replicate samples for each individual within each assay:
+```{r}
+duplicated(myMultiAssay)
+```
+
+# "reduce" to clean up a MultiAssayExperiment
+
+A call to `reduce()` by default returns another MultiAssayExperiment where the columns of each element of `ExperimentList` correspond exactly to the rows of `pData`.
+
+It performs a series of clean-up operations, including merging of replicates with a user-defined function (default: mean), disjoining non-disjoint ranges, select individuals with complete cases and re-order columns of each assay to correspond to the same individual. For example, the first three experiments of `myMultiAssay` have three complete cases and some replicates:
+
+```{r}
+colnames(myMultiAssay[, , 1:3])
+```
+
+After a `reduce()` call, replicates are merged and only complete cases remain:
+
+```{r}
+maeredux <- reduce(myMultiAssay[, , 1:3])
+```
+
+It is not obvious from the column names that the ordering of columns is identical:
+```{r}
+colnames(maeredux)
+```
+
+but it is clear from the sample map:
+```{r}
+sampleMap(maeredux)
+```
+
+
+See ?\\`MultiAssayExperiment-class\\`:
 ```{r, eval=FALSE}
-myMultiAssay[rows, columns, assays]
+reduce(x, drop.empty.ranges = FALSE,
+  replicates = NULL, combine = rowMeans, vectorized = TRUE, ...)
 ```
 
-For example, to select the gene "ENST00000355076":
+
+# Extractor functions
+
+Extractor functions convert a `MultiAssayExperiment` into other forms that are
+convenient for analyzing. These would normally be called after any desired 
+subsetting has been performed.
+
+## rearrange()
+
+Produces *long* (default) or *wide* `DataFrame` objects. The following produces a long DataFrame (the default) for the first two assays:
 
 ```{r}
-myMultiAssay["ENST00000355076", , ]
+rearrange(myMultiAssay[, , 1:2])
 ```
 
-The above operation works across all types of assays, whether ID-based
-(e.g. matrix, ExpressionSet, SummarizedExperiment) or range-based
-(e.g. RangedSummarizedExperiment, RangedRaggedAssay). Note that when using
-the bracket method `[`, the drop argument is *TRUE* by default.
-
-You can subset by rows, columns, and assays in a single bracket operation,
-and they will be performed in that order (rows, then columns, then assays):
+This is especially useful for performing regression against patient or sample data from `pData` using the `pDataCols` argument:
 
 ```{r}
-myMultiAssay["ENST00000355076", 1:2, c("Affy", "Methyl 450k")]
+rearrange(myMultiAssay[, , 1:2], pDataCols="age")
 ```
 
-## Subsetting by character, integer, and logical
+The "wide" format is useful for calculating correlations or performing regression against different genomic features. Wide format is in general not possible with replicate measurements, so we demonstrate on the reduced MultiAssayExperiment:
 
-By columns - character, integer, and logical are all allowed, for example:
 ```{r}
-myMultiAssay[, "Jack", ]
-myMultiAssay[, 1, ]
-myMultiAssay[, c(TRUE, FALSE, FALSE, FALSE), ]
+rearrange(maeredux, shape="wide", pDataCols="sex")
 ```
 
-By assay - character, integer, and logical are allowed:
-```{r}
-myMultiAssay[, , "Mirna"]
-myMultiAssay[, , 3]
-myMultiAssay[, , c(FALSE, FALSE, TRUE, FALSE, FALSE)]
-```
+## assay()
 
-## the "drop" argument
-
-Specify `drop=FALSE` to keep assays with zero rows or zero columns, e.g.:
+The `assay()` function returns a list of data matrices from the `ExperimentList`:
 
 ```{r}
-myMultiAssay["ENST00000355076", , , drop=FALSE]
-```
-
-Using the default `drop=TRUE`, assays with no rows or no columns are removed:
-
-```{r}
-myMultiAssay["ENST00000355076", , , drop=TRUE]
+assay(myMultiAssay)
 ```
 
 # rownames and colnames
@@ -878,5 +967,3 @@ methods(class="MultiAssayExperiment")
 ```{r}
 sessionInfo()
 ```
-
-[html]: http://rpubs.com/lwaldron/multiassayexperiment
