@@ -8,30 +8,27 @@ MultiAssayExperiment
 [![Coverage Status](https://codecov.io/github/LiNk-NY/MultiAssayExperiment/coverage.svg?branch=master)](https://codecov.io/github/LiNk-NY/MultiAssayExperiment?branch=master)
 [![Downloads](http://www.bioconductor.org/shields/downloads/MultiAssayExperiment.svg)](https://bioconductor.org/packages/stats/bioc/MultiAssayExperiment)
 
-# Documentation
+# Installation of release and development versions
 
-A good starting point is the vignette, available as an Rmd file in the vignette/ subdirectory, or as a [built html page](http://rpubs.com/lwaldron/MultiAssayExperiment). A definition of the API is available by typing `API()` after loading the MultiAssayExperiment library, which opens the [API wiki](https://github.com/vjcitn/MultiAssayExperiment/wiki/MultiAssayExperiment-API).
+MultiAssayExperiment is under active development, and we highly recommend installing a current development version rather than the release Bioconductor version. This can be done either by installing the [development version of Bioconductor](https://www.bioconductor.org/developers/how-to/useDevel/), or by installing from Github:
+
+`BiocInstaller::biocLite("waldronlab/MultiAssayExperiment")`
 
 # Ready-to-use MultiAssayExperiment objects
 
-See http://tinyurl.com/MAEOurls for some ready-packaged MultiAssayExperiment TCGA and CCLE objects  to try out.
+See http://tinyurl.com/MAEOurls for ready-packaged MultiAssayExperiment TCGA and CCLE objects  to try out.
 
-# Introduction
+# Documentation
 
-This repo is intended to start the Bioconductor special interest group
-on mergeable experiment collections like TCGA.  Our objective is to use R/Bioconductor
-to define interfaces allowing efficient selection and combination of 
-high-dimensional assays obtained on all or many members of a group of
-samples or patients.
+See the 
 
-If you are interested in joining this interest group, please join the [MultiAssayExperiment Google
-Group](https://groups.google.com/forum/#!forum/biocmultiassay), and see the [calendar](https://www.google.com/calendar/embed?src=9ar0qc8mpkv6b9intgmdcdf0ss%40group.calendar.google.com&ctz=America/New_York) of upcoming meetings.
+A definition of the API is available by typing `API()` after loading the MultiAssayExperiment library, which opens the [API wiki](https://github.com/waldronlab/MultiAssayExperiment/wiki/MultiAssayExperiment-API).
 
-# Object documentation & Manual Generation
 
-For convenience, the Roxygen2 package functions are used for documenting
-and generating R objects and manual pages for this package. More information
-can be found at [R Packages](http://r-pkgs.had.co.nz/man.html)
+# The MultiAssayExperiment Bioconductor special interest group
+
+This group meets remotely to discuss this project approximately every 3 weeks. If you are interested, please join the [MultiAssayExperiment Google
+Group](https://groups.google.com/forum/#!forum/biocmultiassay) and see the [calendar](https://www.google.com/calendar/embed?src=9ar0qc8mpkv6b9intgmdcdf0ss%40group.calendar.google.com&ctz=America/New_York) of upcoming meetings.
 
 # Contributor Code of Conduct
 
