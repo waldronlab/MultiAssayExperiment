@@ -17,8 +17,15 @@ test_that("rearrange returns a DataFrame", {
     expect_true(is(RRADF, "DataFrame"))
 })
 
+longDF <- rearrange(myMultiAssayExperiment, pDataCols = "sex")
+wideDF <- rearrange(myMultiAssayExperiment, shape = "wide",
+                    pDataCols = "sex")
+
 test_that("rearrange returns specified pData column", {
-    tidyDF <- rearrange(myMultiAssayExperiment, pDataCols = "sex")
-    expect_true("sex" %in% names(tidyDF))
+    expect_true("sex" %in% names(longDF))
+    expect_true("sex" %in% names(wideDF))
 })
-## TODO: Add test for dims on long and wide DataFrames
+
+test_that("rearrange returns proper dimensions", {
+    expect_equal(nrow(wideDF), nrow(pData(myMultiAssayExperiment)))
+})

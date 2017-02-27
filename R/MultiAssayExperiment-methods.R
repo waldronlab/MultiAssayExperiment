@@ -593,10 +593,9 @@ setMethod("rearrange", "MultiAssayExperiment", function(object, shape = "long",
     }
     if (shape == "wide") {
         outputDataFrame <- as.data.frame(outputDataFrame)
-        outputDataFrame <- outputDataFrame[,
-                                           -which(names(outputDataFrame) ==
-                                                      "colname")]
-        outputDataFrame <- tidyr::spread(outputDataFrame, key = "assay",
+        outputDataFrame <- tidyr::unite_(outputDataFrame, "feature",
+                                         c("assay", "rowname", "colname"))
+        outputDataFrame <- tidyr::spread(outputDataFrame, key = "feature",
                                          value = "value")
         outputDataFrame <- DataFrame(outputDataFrame)
     }
