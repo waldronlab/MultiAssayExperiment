@@ -3,17 +3,11 @@
 \docType{methods}
 \name{subsetByColumn}
 \alias{subsetByColumn}
-\alias{subsetByColumn,MultiAssayExperiment,ANY-method}
-\alias{subsetByColumn,MultiAssayExperiment,character-method}
 \alias{subsetByColumn,MultiAssayExperiment,list-method}
 \alias{subsetByColumn,MultiAssayExperiment,List-method}
 \title{Subset \code{MultiAssayExperiment} object}
 \usage{
 subsetByColumn(x, y)
-
-\S4method{subsetByColumn}{MultiAssayExperiment,ANY}(x, y)
-
-\S4method{subsetByColumn}{MultiAssayExperiment,character}(x, y)
 
 \S4method{subsetByColumn}{MultiAssayExperiment,list}(x, y)
 
@@ -35,13 +29,6 @@ A \code{\link{MultiAssayExperiment}} object
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{x = MultiAssayExperiment,y = ANY}: Either a \code{numeric} or
-\code{logical} vector to apply a column subset of a
-\code{MultiAssayExperiment} object
-
-\item \code{x = MultiAssayExperiment,y = character}: Use a \code{character}
-vector for subsetting column names
-
 \item \code{x = MultiAssayExperiment,y = list}: Use a \code{list} to subset by
 colname in a \code{MultiAssayExperiment}
 
@@ -55,13 +42,11 @@ elements in this \code{List} must match that of the
 ## Load a MultiAssayExperiment example
 example("MultiAssayExperiment")
 
-## Subset by character vector (Jack)
-subsetByColumn(myMultiAssayExperiment, "Jack")
+subsetByColumn(myMultiAssayExperiment, list(Affy = 1:2,
+                Methyl450k = c(3,5,2), RNASeqGene = 2:4, CNVgistic = 1))
 
-## Subset by numeric index of pData rows (Jack and Bob)
-subsetByColumn(myMultiAssayExperiment, c(1, 3))
-
-## Subset by logical indicator of pData rows (Jack and Jill)
-subsetByColumn(myMultiAssayExperiment, c(TRUE, TRUE, FALSE, FALSE))
+subsetWith <- mendoapply(`[`, colnames(myMultiAssayExperiment),
+                        MoreArgs = list(1:2))
+subsetByColumn(myMultiAssayExperiment, subsetWith)
 
 }

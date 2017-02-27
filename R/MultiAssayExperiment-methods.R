@@ -141,7 +141,10 @@ setMethod("getHits", signature("RangedRaggedAssay", "character"),
         x <- subsetByAssay(x, k)
     }
     if (!missing(j)) {
-        x <- subsetByColumn(x, j)
+        if (is(j, "list") || is(j, "List"))
+            x <- subsetByColumn(x, j)
+        else
+            x <- subsetBypData(x, j)
     }
     if (!missing(i)) {
         x <- subsetByRow(x, i, ...)
@@ -253,15 +256,14 @@ setReplaceMethod("[[", "MultiAssayExperiment", function(x, i, j, ..., value) {
     assayMap[positions, ]
 }
 
-#' Subset \code{MultiAssayExperiment} object
+#' Subset \code{MultiAssayExperiment} object by \code{pData} rows
 #'
-#' \code{subsetByColumn} returns a subsetted
-#' \code{\linkS4class{MultiAssayExperiment}} object
+#' Select biological units in a \code{MultiAssayExperiment} with
+#' \code{subsetBypData}
 #'
-#' @param x A \code{\link{MultiAssayExperiment}} object
+#' @param x A \code{MultiAssayExperiment} object
 #' @param y Either a \code{numeric}, \code{character} or
-#' \code{logical} object indicating what rownames in the pData to select
-#' for subsetting
+#' \code{logical} object indicating what \code{pData} rows to select
 #' @return A \code{\link{MultiAssayExperiment}} object
 #'
 #' @examples
@@ -269,21 +271,21 @@ setReplaceMethod("[[", "MultiAssayExperiment", function(x, i, j, ..., value) {
 #' example("MultiAssayExperiment")
 #'
 #' ## Subset by character vector (Jack)
-#' subsetByColumn(myMultiAssayExperiment, "Jack")
+#' subsetBypData(myMultiAssayExperiment, "Jack")
 #'
 #' ## Subset by numeric index of pData rows (Jack and Bob)
-#' subsetByColumn(myMultiAssayExperiment, c(1, 3))
+#' subsetBypData(myMultiAssayExperiment, c(1, 3))
 #'
 #' ## Subset by logical indicator of pData rows (Jack and Jill)
-#' subsetByColumn(myMultiAssayExperiment, c(TRUE, TRUE, FALSE, FALSE))
+#' subsetBypData(myMultiAssayExperiment, c(TRUE, TRUE, FALSE, FALSE))
 #'
-#' @export subsetByColumn
-setGeneric("subsetByColumn", function(x, y) standardGeneric("subsetByColumn"))
+#' @export subsetBypData
+setGeneric("subsetBypData", function(x, y) standardGeneric("subsetBypData"))
 
-#' @describeIn subsetByColumn Either a \code{numeric} or
+#' @describeIn subsetBypData Either a \code{numeric}, \code{character}, or
 #' \code{logical} vector to apply a column subset of a
 #' \code{MultiAssayExperiment} object
-setMethod("subsetByColumn", c("MultiAssayExperiment", "ANY"), function(x, y) {
+setMethod("subsetBypData", c("MultiAssayExperiment", "ANY"), function(x, y) {
     if (is.logical(y) || is.numeric(y))
         y <- unique(rownames(pData(x))[y])
     selectors <- y[y %in% rownames(pData(x))]
@@ -305,9 +307,9 @@ setMethod("subsetByColumn", c("MultiAssayExperiment", "ANY"), function(x, y) {
     return(x)
 })
 
-#' @describeIn subsetByColumn Use a \code{character}
+#' @describeIn subsetBypData Use a \code{character}
 #' vector for subsetting column names
-setMethod("subsetByColumn", c("MultiAssayExperiment", "character"),
+setMethod("subsetBypData", c("MultiAssayExperiment", "character"),
           function(x, y) {
               y <- unique(y)
               if (!any(rownames(pData(x)) %in% y))
@@ -316,6 +318,31 @@ setMethod("subsetByColumn", c("MultiAssayExperiment", "character"),
                   warning("Not all identifiers found in data")
               callNextMethod(x = x, y = y)
           })
+
+#' Subset \code{MultiAssayExperiment} object
+#'
+#' \code{subsetByColumn} returns a subsetted
+#' \code{\linkS4class{MultiAssayExperiment}} object
+#'
+#' @param x A \code{\link{MultiAssayExperiment}} object
+#' @param y Either a \code{numeric}, \code{character} or
+#' \code{logical} object indicating what rownames in the pData to select
+#' for subsetting
+#' @return A \code{\link{MultiAssayExperiment}} object
+#'
+#' @examples
+#' ## Load a MultiAssayExperiment example
+#' example("MultiAssayExperiment")
+#'
+#' subsetByColumn(myMultiAssayExperiment, list(Affy = 1:2,
+#'                 Methyl450k = c(3,5,2), RNASeqGene = 2:4, CNVgistic = 1))
+#'
+#' subsetWith <- mendoapply(`[`, colnames(myMultiAssayExperiment),
+#'                         MoreArgs = list(1:2))
+#' subsetByColumn(myMultiAssayExperiment, subsetWith)
+#'
+#' @export subsetByColumn
+setGeneric("subsetByColumn", function(x, y) standardGeneric("subsetByColumn"))
 
 #' @describeIn subsetByColumn Use a \code{list} to subset by
 #' colname in a \code{MultiAssayExperiment}
