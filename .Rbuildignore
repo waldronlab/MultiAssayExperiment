@@ -4,6 +4,7 @@
 ^\.svn$
 ^\.git$
 ^\.gitignore$
+^\.gitattributes$
 
 #----------------------------
 # Continuous Integration
