@@ -15,7 +15,8 @@
 #' upsetSamples(myMultiAssayExperiment, idclip = function(x) {
 #'     gsub("[a-z]", "", x)
 #'     })
-#'
+#' @return Produces a visualization of set intersections using the UpSet matrix
+#' design
 #' @author Vincent J Carey
 #' @importFrom UpSetR upset
 #' @export upsetSamples
