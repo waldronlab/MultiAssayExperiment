@@ -9,18 +9,24 @@ init:
         Import-Module '..\appveyor-tool.ps1'
 
 install:
-  ps: Bootstrap
+  ps: |
+        Bootstrap
+        InstallRtools
 
 # Adapt as necessary starting from here
 
 build_script:
-  - travis-tool.sh install_bioc GenomeInfoDb
+  - echo Current directory=%CD%
+  - travis-tool.sh install_bioc GenomeInfoDb XVector
   - travis-tool.sh install_bioc_deps
   - travis-tool.sh install_deps
   - travis-tool.sh github_package jimhester/covr
 
 test_script:
   - travis-tool.sh run_tests
+
+after_test:
+  - 7z a all-Rout.zip *.Rcheck\**\*.Rout *.Rcheck\**\*.fail
 
 on_failure:
   - 7z a failure.zip *.Rcheck\*
@@ -57,6 +63,9 @@ artifacts:
 
   - path: '\*_*.zip'
     name: Bits
+
+  - path: all-Rout.zip
+    name: AllRout
 
 cache:
   - C:\RLibrary
