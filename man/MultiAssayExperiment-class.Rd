@@ -291,12 +291,13 @@ pData(compMAE)
 
 example("MultiAssayExperiment")
 
-## Create a mock experiment
-newExperiment <- list(TEST = DataFrame(Barbara = 1:3, Bob = 1:3, Jill = 1:3,
-Jack = 1:3, row.names = rev(tail(LETTERS, 3))))
+## Add an experiment
+test <- myMultiAssayExperiment[[1L]]
+colnames(test) <- rownames(pData(myMultiAssayExperiment))
 
 ## Combine current MultiAssayExperiment with additional experiment
-c(myMultiAssayExperiment, newExperiment)
+## (no sampleMap)
+c(myMultiAssayExperiment, newExperiment = test)
 
 }
 \seealso{
