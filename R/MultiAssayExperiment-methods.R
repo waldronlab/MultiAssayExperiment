@@ -789,18 +789,22 @@ setMethod("reduce", "RangedRaggedAssay",
 #' @examples
 #' example("MultiAssayExperiment")
 #'
-#' ## Create a mock experiment
-#' newExperiment <- list(TEST = DataFrame(Barbara = 1:3, Bob = 1:3, Jill = 1:3,
-#' Jack = 1:3, row.names = rev(tail(LETTERS, 3))))
+#' ## Add an experiment
+#' test <- myMultiAssayExperiment[[1L]]
+#' colnames(test) <- rownames(pData(myMultiAssayExperiment))
 #'
 #' ## Combine current MultiAssayExperiment with additional experiment
-#' c(myMultiAssayExperiment, newExperiment)
+#' ## (no sampleMap)
+#' c(myMultiAssayExperiment, newExperiment = test)
 #'
 #' @return A \code{MultiAssayExperiment} object
 setMethod("c", "MultiAssayExperiment", function(x, ..., sampleMap = NULL) {
     newExperiments <- list(...)
-    if (is.list(newExperiments[[1L]]) || is(newExperiments[[1L]], "List"))
-    newExperiments <- ExperimentList(newExperiments[[1L]])
+    if (is.list(newExperiments[[1L]]) || is(newExperiments[[1L]], "List") &&
+        !is(newExperiments[[1L]], "DataFrame"))
+        newExperiments <- ExperimentList(newExperiments[[1L]])
+    else
+        newExperiments <- ExperimentList(newExperiments)
     if (is.null(names(newExperiments)))
         stop("Additional experiments must be named")
     if (is.null(sampleMap))
