@@ -779,3 +779,32 @@ setMethod("reduce", "RangedRaggedAssay",
                                      vectorized = vectorized),
                                 argList[[2L]]))
           })
+
+#' @describeIn MultiAssayExperiment Add an element to the
+#' \code{ExperimentList} data slot
+#'
+#' @param x A \code{MultiAssayExperiment} object
+#' @param ... Additional objects to add to the \code{ExperimentList}
+#'
+#' @examples
+#' example("MultiAssayExperiment")
+#' newExperiment <- list(TEST = DataFrame(Barbara = 1:3, Bob = 1:3, Jill = 1:3,
+#' Jack = 1:3, row.names = rev(tail(LETTERS, 3))))
+#' c(myMultiAssayExperiment, newExperiment)
+#'
+#' @return A \code{MultiAssayExperiment} object
+setMethod("c", "MultiAssayExperiment", function(x, ..., sampleMap = NULL) {
+    newExperiments <- list(...)
+    if (is.list(newExperiments[[1L]]) || is(newExperiments[[1L]], "List"))
+    newExperiments <- ExperimentList(newExperiments[[1L]])
+    if (is.null(names(newExperiments)))
+        stop("Additional experiments must be named")
+    if (is.null(sampleMap))
+        sampleMap <- .generateMap(pData(x), newExperiments)
+    if (is(sampleMap, "DataFrame"))
+        sampleListMap <- mapToList(sampleMap)
+    newListMap <- c(mapToList(sampleMap(x)), sampleListMap)
+    newSampleMap <- listToMap(newListMap)
+    newExperimentList <- c(experiments(x), newExperiments)
+    MultiAssayExperiment(newExperimentList, pData(x), newSampleMap)
+})

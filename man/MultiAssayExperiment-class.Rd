@@ -28,6 +28,7 @@
 \alias{duplicated,MultiAssayExperiment-method}
 \alias{reduce,MultiAssayExperiment-method}
 \alias{reduce,ANY-method}
+\alias{c,MultiAssayExperiment-method}
 \alias{assay,MultiAssayExperiment,missing-method}
 \title{An integrative multi-assay class for experiment data}
 \usage{
@@ -79,6 +80,8 @@
 \S4method{reduce}{ANY}(x, drop.empty.ranges = FALSE, replicates = NULL,
   combine = rowMeans, vectorized = TRUE, ...)
 
+\S4method{c}{MultiAssayExperiment}(x, ..., sampleMap = NULL)
+
 \S4method{assay}{MultiAssayExperiment,missing}(x, i, ...)
 }
 \arguments{
@@ -120,8 +123,14 @@ for \code{MultiAssayExperiment}}
 
 \item{vectorized}{reduce: logical (default TRUE) whether the combine function is
 vectorized, optimized for working down the vector pairs}
+
+\item{x}{A \code{MultiAssayExperiment} object}
+
+\item{...}{Additional objects to add to the \code{ExperimentList}}
 }
 \value{
+A \code{MultiAssayExperiment} object
+
 A \code{MultiAssayExperiment} object
 }
 \description{
@@ -212,6 +221,9 @@ measurements are averaged, and columns are aligned by the row order in pData.
 \item \code{reduce}: Consolidate columns for rectangular
 data structures, mainly matrix
 
+\item \code{c}: Add an element to the
+\code{ExperimentList} data slot
+
 \item \code{assay}: Get the assay data for a
 \link{MultiAssayExperiment} as a \code{list}
 }}
@@ -274,6 +286,11 @@ completes <- complete.cases(myMultiAssayExperiment)
 compMAE <- myMultiAssayExperiment[, completes, ]
 compMAE
 pData(compMAE)
+
+example("MultiAssayExperiment")
+newExperiment <- list(A = DataFrame(Barbara = 1:3, Bob = 1:3, Jill = 1:3,
+Jack = 1:3, row.names = rev(tail(LETTERS, 3))))
+c(myMultiAssayExperiment, newExperiment)
 
 }
 \seealso{
