@@ -783,8 +783,8 @@ setMethod("reduce", "RangedRaggedAssay",
 #' @describeIn MultiAssayExperiment Add an element to the
 #' \code{ExperimentList} data slot
 #'
-#' @param x A \code{MultiAssayExperiment} object
-#' @param ... Additional objects to add to the \code{ExperimentList}
+#' @param sampleMap \code{c} method: a \code{sampleMap} \code{list} or
+#' \code{DataFrame} to guide merge
 #'
 #' @examples
 #' example("MultiAssayExperiment")

@@ -124,9 +124,8 @@ for \code{MultiAssayExperiment}}
 \item{vectorized}{reduce: logical (default TRUE) whether the combine function is
 vectorized, optimized for working down the vector pairs}
 
-\item{x}{A \code{MultiAssayExperiment} object}
-
-\item{...}{Additional objects to add to the \code{ExperimentList}}
+\item{sampleMap}{\code{c} method: a \code{sampleMap} \code{list} or
+\code{DataFrame} to guide merge}
 }
 \value{
 A \code{MultiAssayExperiment} object
@@ -148,13 +147,16 @@ potentially also with the arguments \code{pData} (see section below) and
 }
 \details{
 The dots (\code{\ldots}) argument allows the user to specify additional
-arguments in several instances. When subsetting a
+arguments in several instances. When subsetting (\strong{[}) a
 \code{MultiAssayExperiment}, the dots allow for additional
-arguments to be sent to \link{findOverlaps}. When using the \code{reduce}
+arguments to be sent to \link{findOverlaps}. When using the \strong{reduce}
 method, the dots are used to specify arguments for the supplied
-\code{combine} argument and function. When using the assay method, additional
-arguments may be passed to the \code{RangedRaggedAssay} method. See the
-link for more information: \link{assay,RangedRaggedAssay,missing-method}.
+\code{combine} argument and function. When using the \strong{assay} method,
+additional arguments may be passed to the \code{RangedRaggedAssay} method.
+See the link for more information:
+\link{assay,RangedRaggedAssay,missing-method}. When using \strong{c} method
+to add experiments to a \code{MultiAssayExperiment}, the dots allow extra
+data classes compatible with the MultiAssayExperiment API. See: \link{API}
 }
 \section{Methods (by generic)}{
 \itemize{
@@ -288,7 +290,7 @@ compMAE
 pData(compMAE)
 
 example("MultiAssayExperiment")
-newExperiment <- list(A = DataFrame(Barbara = 1:3, Bob = 1:3, Jill = 1:3,
+newExperiment <- list(TEST = DataFrame(Barbara = 1:3, Bob = 1:3, Jill = 1:3,
 Jack = 1:3, row.names = rev(tail(LETTERS, 3))))
 c(myMultiAssayExperiment, newExperiment)
 
