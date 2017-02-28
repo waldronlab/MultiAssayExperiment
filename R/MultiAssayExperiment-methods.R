@@ -754,7 +754,7 @@ setMethod("reduce", "ANY", function(x, drop.empty.ranges = FALSE,
 
 #' @describeIn RangedRaggedAssay Use metadata column to produce a matrix which
 #' can then be merged across replicates.
-#' See also: assay,RangedRaggedAssay,missing-method
+#' @seealso \link{assay,RangedRaggedAssay,missing-method}
 #' @param drop.empty.ranges unused argument
 #' @param replicates reduce: A logical list where each element represents a
 #' sample and a vector of repeated experiments for the sample (default NULL)

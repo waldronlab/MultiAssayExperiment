@@ -121,7 +121,6 @@ in a \code{RangedRaggedAssay}
 
 \item \code{reduce}: Use metadata column to produce a matrix which
 can then be merged across replicates.
-See also: assay,RangedRaggedAssay,missing-method
 }}
 
 \examples{
@@ -143,4 +142,6 @@ class(matrices)
 }
 \seealso{
 \code{\link[IRanges]{findOverlaps-methods}}
+
+\link{assay,RangedRaggedAssay,missing-method}
 }
