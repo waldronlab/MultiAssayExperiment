@@ -107,6 +107,31 @@ setMethod("getHits", signature("MultiAssayExperiment", "GRanges"),
               })
 )
 
+.rowIdx <- function(x) {
+    IntegerList(lapply(x, function(exper) seq_len(dim(exper)[[1L]])))
+}
+# .rowIdx(experiments(myMultiAssayExperiment))
+.getHits <- function(expList, i, ...) {
+    IRanges::IntegerList(lapply(expList, function(element) {
+        if (is(i, "Vector")) {
+            if (is(element, "RangedSummarizedExperiment"))
+                element <- rowRanges(element)
+            if (is(element, "VcfStack"))
+                return(intersect(seqnames(seqinfo(element)),
+                                 as.character(seqnames(i))))
+            if (.checkFindOverlaps(class(element)))
+                i <- overlapsAny(element, i, ...)
+        } else if (is.character(i)) {
+            # i <- match(i, rownames(element))
+            i <- na.omit(match(rownames(element), i))
+        } else if (!is.logical(i)) {
+            i <- as.integer(i)
+        }
+        i
+    }))
+}
+# .getHits(experiments(myMultiAssayExperiment), c("XIST", "ENST00000294241"))
+
 #' @describeIn getHits Find all matching rownames for
 #' range-based objects
 setMethod("getHits", signature("ANY", "GRanges"),

@@ -84,6 +84,7 @@ RangedRaggedAssay <- function(x = GRangesList()) {
             x <- callNextMethod(x = x, i = cLL)
         } else if (is.numeric(i) || is.logical(i)) {
             x <- endoapply(x, function(unit) { unit[i, ] })
+            ## Unlist first before subsetting?
         } else {
             x <- callNextMethod(x = x, i = i)
         }
