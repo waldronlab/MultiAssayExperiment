@@ -117,20 +117,19 @@ setMethod("getHits", signature("MultiAssayExperiment", "GRanges"),
             if (is(element, "RangedSummarizedExperiment"))
                 element <- rowRanges(element)
             if (is(element, "VcfStack"))
-                return(intersect(seqnames(seqinfo(element)),
-                                 as.character(seqnames(i))))
+                i <- which(rownames(element) %in% as.character(seqnames(i)))
             if (.checkFindOverlaps(class(element)))
                 i <- overlapsAny(element, i, ...)
         } else if (is.character(i)) {
-            # i <- match(i, rownames(element))
-            i <- na.omit(match(rownames(element), i))
+            i <- which(rownames(element) %in% i)
         } else if (!is.logical(i)) {
             i <- as.integer(i)
         }
         i
     }))
 }
-# .getHits(experiments(myMultiAssayExperiment), c("XIST", "ENST00000294241"))
+# .getHits(experiments(myMultiAssayExperiment), c("XIST", "ENST00000294241",
+# "chr2:4-9:-"))
 
 #' @describeIn getHits Find all matching rownames for
 #' range-based objects
