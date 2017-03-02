@@ -85,7 +85,7 @@ RangedRaggedAssay <- function(x = GRangesList()) {
         } else if (is.numeric(i) || is.logical(i)) {
             sampleFactor <- rep(names(x), lengths(x))[i]
             x <- unlist(x, use.names = FALSE)[i]
-            x <- IRanges::splitAsList(x, sampleFactor)
+            x <- RangedRaggedAssay(IRanges::splitAsList(x, sampleFactor))
         } else {
             x <- callNextMethod(x = x, i = i)
         }
