@@ -24,6 +24,10 @@ install:
         Bootstrap
         InstallRtools
 
+branches:
+  only:
+    - master
+
 # Adapt as necessary starting from here
 
 build_script:

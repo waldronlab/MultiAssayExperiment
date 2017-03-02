@@ -1,5 +1,5 @@
-box: mr148/devel_core:latest
-## box: rocker/hadleyverse
+box: bioconductor/devel_core2
+
 build:
   steps:
     - jimhester/r-dependencies
