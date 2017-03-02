@@ -72,44 +72,10 @@ setMethod("$", "MultiAssayExperiment", function(x, name) {
     )
 }
 
-#' Find hits by class type
-#'
-#' Submethod used for searching hits from given arguments by class dispatch.
-#' This method is employed by \link{subsetByRow}.
-#'
-#' @param subject Any valid element from the
-#' \code{\linkS4class{ExperimentList}} class as well as a
-#' \link{MultiAssayExperiment}
-#' @param query Either a \code{character} vector or
-#' \code{\linkS4class{GRanges}} object used to search by name or ranges
-#' @param ... Additional arguments to \link{findOverlaps} in IRanges
-#' @return Names of matched queries
-#' @example inst/scripts/getHits-Ex.R
-#' @seealso \link{subsetByOverlaps} in the \code{IRanges} package
-setGeneric("getHits", function(subject, query, ...) standardGeneric("getHits"))
-
-#' @describeIn getHits Find all matching
-#' rownames by \code{character}
-#' @exportMethod getHits
-setMethod("getHits", signature("MultiAssayExperiment", "character"),
-          function(subject, query, ...)
-              lapply(experiments(subject), FUN = function(elem, ...) {
-                  getHits(elem, query, ...)
-              })
-)
-
-#' @describeIn getHits Find all matching
-#' rownames by \code{GRanges}
-setMethod("getHits", signature("MultiAssayExperiment", "GRanges"),
-          function(subject, query, ...)
-              lapply(experiments(subject), FUN = function(elem, ...) {
-                  getHits(elem, query, ...)
-              })
-)
-
 .rowIdx <- function(x) {
-    IntegerList(lapply(x, function(exper) seq_len(dim(exper)[[1L]])))
+    IRanges::IntegerList(lapply(x, function(exper) seq_len(dim(exper)[[1L]])))
 }
+
 # .rowIdx(experiments(myMultiAssayExperiment))
 .getHits <- function(expList, i, ...) {
     IRanges::IntegerList(lapply(expList, function(element) {
@@ -119,7 +85,7 @@ setMethod("getHits", signature("MultiAssayExperiment", "GRanges"),
             if (is(element, "VcfStack"))
                 i <- which(rownames(element) %in% as.character(seqnames(i)))
             if (.checkFindOverlaps(class(element)))
-                i <- overlapsAny(element, i, ...)
+                i <- IRanges::overlapsAny(element, i, ...)
         } else if (is.character(i)) {
             i <- which(rownames(element) %in% i)
         } else if (!is.logical(i)) {
@@ -130,49 +96,6 @@ setMethod("getHits", signature("MultiAssayExperiment", "GRanges"),
 }
 # .getHits(experiments(myMultiAssayExperiment), c("XIST", "ENST00000294241",
 # "chr2:4-9:-"))
-
-#' @describeIn getHits Find all matching rownames for
-#' range-based objects
-setMethod("getHits", signature("ANY", "GRanges"),
-          function(subject, query, ...) {
-            if (is(subject, "RangedSummarizedExperiment"))
-                subject <- rowRanges(subject)
-            if (is(subject, "GRanges"))
-                return(names(subject)[queryHits(findOverlaps(subject,
-                                                             query, ...))])
-            if (is(subject, "VcfStack"))
-                return(intersect(seqnames(seqinfo(subject)),
-                                 as.character(seqnames(query))))
-            if (.checkFindOverlaps(class(subject))) {
-              lapply(subject, function(x) {
-                names(x)[queryHits(
-                  findOverlaps(query = x, subject = query, ...))]
-              })
-            } else {
-              character(0L)
-            }
-          })
-
-#' @describeIn getHits Find all matching rownames based
-#' on \code{character} query
-setMethod("getHits", signature("ANY", "character"),
-          function(subject, query, ...) {
-            query[query %in% rownames(subject)]
-          })
-
-#' @describeIn RangedRaggedAssay Find matching features by \code{character}
-#' in a \code{RangedRaggedAssay}
-#' @param subject A \code{RangedRaggedAssay} class object
-#' @param query A \code{character} class for searching hits
-setMethod("getHits", signature("RangedRaggedAssay", "character"),
-          function(subject, query, ...) {
-            RowNames <- names(unlist(subject, use.names = FALSE))
-            if (any(RowNames %in% query)) {
-              rownames(subject[relist(RowNames %in% query, subject)])
-            } else {
-              character(0L)
-            }
-          })
 
 .isEmpty <- function(object) {
     isTRUE(unname(dim(object)[1]) == 0L || unname(dim(object)[2]) == 0L)
@@ -420,8 +343,6 @@ setMethod("subsetByColumn", c("MultiAssayExperiment", "List"),
               subsetByColumn(x, Y)
           })
 
-setClassUnion("GRangesORcharacter", c("GRanges", "character"))
-
 #' Subset \code{MultiAssayExperiment} object by Feature
 #'
 #' Subset a \code{MultiAssayExperiment} class by provided feature names or a
@@ -454,39 +375,21 @@ setClassUnion("GRangesORcharacter", c("GRanges", "character"))
 setGeneric("subsetByRow", function(x, y, ...)
     standardGeneric("subsetByRow"))
 
-#' @describeIn subsetByRow Use either a
-#' \code{GRanges} or \code{character} to
-#' select the rows for which to subset by
-setMethod("subsetByRow", c("MultiAssayExperiment", "GRangesORcharacter"),
-          function(x, y, ...) {
-            hitList <- getHits(x, y, ...)
-            x[hitList, , , drop = FALSE]
-          })
-
-#' @describeIn subsetByRow Subset a
-#' \code{MultiAssayExperiment} with
-#' \code{GRanges} object
-setMethod("subsetByRow", c("MultiAssayExperiment", "GRanges"),
-          function(x, y, ...) {
-            if (is.null(names(y))) {
-              names(y) <- as.character(y)
-            }
-            callNextMethod(x = x, y = y, ...)
-          })
-
 #' @describeIn subsetByRow Subset a
 #' \code{MultiAssayExperiment} with either a
 #' \code{numeric} or \code{logical} vector
-setMethod("subsetByRow", c("MultiAssayExperiment", "ANY"),
-          function(x, y) {
-              newExperimentList <-
-                  S4Vectors::endoapply(experiments(x),
-                                       function(element) {
-                                           element[y, , drop = FALSE]
-                                       })
-              experiments(x) <- newExperimentList
-              return(x)
-          })
+setMethod("subsetByRow", c("MultiAssayExperiment", "ANY"), function(x, y, ...) {
+    rowIds <- .rowIdx(experiments(x))
+    subsetor <- .getHits(experiments(x), y, ...)
+    y <- rowIds[subsetor]
+    newExperimentList <-
+        S4Vectors::endoapply(experiments(x),
+                             function(element) {
+                                 element[y, , drop = FALSE]
+                             })
+    experiments(x) <- newExperimentList
+    return(x)
+})
 
 #' @describeIn subsetByRow Use a list of equal length as
 #' the \code{ExperimentList} to subset. The order of
