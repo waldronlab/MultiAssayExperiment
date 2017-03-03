@@ -72,31 +72,6 @@ setMethod("$", "MultiAssayExperiment", function(x, name) {
     )
 }
 
-.rowIdx <- function(x) {
-    IRanges::IntegerList(lapply(x, function(exper) seq_len(dim(exper)[[1L]])))
-}
-
-# .rowIdx(experiments(myMultiAssayExperiment))
-.getHits <- function(expList, i, ...) {
-    IRanges::IntegerList(lapply(expList, function(element) {
-        if (is(i, "Vector")) {
-            if (is(element, "RangedSummarizedExperiment"))
-                element <- rowRanges(element)
-            if (is(element, "VcfStack"))
-                i <- which(rownames(element) %in% as.character(seqnames(i)))
-            if (.checkFindOverlaps(class(element)))
-                i <- IRanges::overlapsAny(element, i, ...)
-        } else if (is.character(i)) {
-            i <- which(rownames(element) %in% i)
-        } else if (!is.logical(i)) {
-            i <- as.integer(i)
-        }
-        i
-    }))
-}
-# .getHits(experiments(myMultiAssayExperiment), c("XIST", "ENST00000294241",
-# "chr2:4-9:-"))
-
 .isEmpty <- function(object) {
     isTRUE(unname(dim(object)[1]) == 0L || unname(dim(object)[2]) == 0L)
 }
@@ -343,6 +318,30 @@ setMethod("subsetByColumn", c("MultiAssayExperiment", "List"),
               subsetByColumn(x, Y)
           })
 
+.rowIdx <- function(x) {
+    IRanges::IntegerList(lapply(x, function(exper) seq_len(dim(exper)[[1L]])))
+}
+
+.getHits <- function(expList, i, ...) {
+    IRanges::IntegerList(lapply(expList, function(element) {
+        if (is(i, "Vector")) {
+            if (is(element, "RangedSummarizedExperiment"))
+                element <- rowRanges(element)
+            if (is(element, "VcfStack"))
+                i <- which(rownames(element) %in% as.character(seqnames(i)))
+            if (.checkFindOverlaps(class(element)))
+                i <- IRanges::overlapsAny(element, i, ...)
+            else
+                i <- which(rownames(element) %in% as.character(i))
+        } else if (is.character(i)) {
+            i <- which(rownames(element) %in% i)
+        } else if (!is.logical(i)) {
+            i <- as.integer(i)
+        }
+        i
+    }))
+}
+
 #' Subset \code{MultiAssayExperiment} object by Feature
 #'
 #' Subset a \code{MultiAssayExperiment} class by provided feature names or a
@@ -355,7 +354,6 @@ setMethod("subsetByColumn", c("MultiAssayExperiment", "List"),
 #' primarily when using a \code{GRanges} object for subsetting
 #' (via \code{getHits})
 #' @return A \code{\link{MultiAssayExperiment}} object
-#' @seealso \code{\link{getHits}}
 #'
 #' @examples
 #' ## Load a MultiAssayExperiment example
@@ -382,39 +380,38 @@ setMethod("subsetByRow", c("MultiAssayExperiment", "ANY"), function(x, y, ...) {
     rowIds <- .rowIdx(experiments(x))
     subsetor <- .getHits(experiments(x), y, ...)
     y <- rowIds[subsetor]
-    newExperimentList <-
-        S4Vectors::endoapply(experiments(x),
-                             function(element) {
-                                 element[y, , drop = FALSE]
-                             })
-    experiments(x) <- newExperimentList
-    return(x)
+    subsetByRow(x, y)
 })
 
 #' @describeIn subsetByRow Use a list of equal length as
 #' the \code{ExperimentList} to subset. The order of
 #' the subsetting elements in this list must match that of the
 #' \code{ExperimentList} in the \code{MultiAssayExperiment}.
-setMethod("subsetByRow", c("MultiAssayExperiment", "list"),
-          function(x, y) {
-            if (length(x) != length(y)) {
-              stop("list length must be the same as ExperimentList length")
-            }
-            ## would prefer mendoapply if possible
-            experiments(x) <- ExperimentList(mapply(function(expList, i) {
-              expList[i, , drop =  FALSE]
-            }, expList = experiments(x), i = y, SIMPLIFY = FALSE))
-            return(x)
-          })
+setMethod("subsetByRow", c("MultiAssayExperiment", "list"), function(x, y) {
+    if (length(x) != length(y))
+        stop("List length must be the same as ExperimentList length")
+    if (!identical(names(x), names(y)))
+        stop("List input order much match that of the 'ExperimentList'")
+    y <- as(y, "List")
+    subsetByRow(x, y)
+})
 
 #' @describeIn subsetByRow Use an S4 \code{List} to subset
 #' a \code{MultiAssayExperiment}. The order of the subsetting elements in
 #' this \code{List} must match that of the \code{ExperimentList} in the
 #' \code{MultiAssayExperiment}.
-setMethod("subsetByRow", c("MultiAssayExperiment", "List"), function(x, y)
-{
-    Y <- as.list(y)
-    subsetByRow(x, Y)
+setMethod("subsetByRow", c("MultiAssayExperiment", "List"), function(x, y) {
+    if (is(y, "DataFrame"))
+        stop("Provide a list of indices for subsetting")
+    if (is(y, "CharacterList"))
+        y <- IRanges::IntegerList(mapply(function(expList, char) {
+            which(rownames(expList) %in% char)
+        }, expList = experiments(x), char = y))
+    newExpList <- mendoapply(function(explist, i) {
+        explist[i, , drop = FALSE]
+    }, experiments(x), y)
+    experiments(x) <- newExpList
+    return(x)
 })
 
 #' @exportMethod complete.cases
