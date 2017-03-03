@@ -90,7 +90,6 @@
 #'
 #' @exportClass MultiAssayExperiment
 #' @include ExperimentList-class.R
-#' @seealso SubsetByRow method: \link{getHits}
 setClass("MultiAssayExperiment",
          slots = list(
            ExperimentList = "ExperimentList",

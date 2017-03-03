@@ -300,6 +300,3 @@ colnames(test) <- rownames(pData(myMultiAssayExperiment))
 c(myMultiAssayExperiment, newExperiment = test)
 
 }
-\seealso{
-SubsetByRow method: \link{getHits}
-}

@@ -14,7 +14,6 @@
 \alias{dimnames<-,RangedRaggedAssay,list-method}
 \alias{disjoin,RangedRaggedAssay-method}
 \alias{show,RangedRaggedAssay-method}
-\alias{getHits,RangedRaggedAssay,character-method}
 \alias{reduce,RangedRaggedAssay-method}
 \title{An extension of the GRangesList class}
 \usage{
@@ -31,8 +30,6 @@
 \S4method{disjoin}{RangedRaggedAssay}(x, mcolname = NULL, FUN = mean, ...)
 
 \S4method{show}{RangedRaggedAssay}(object)
-
-\S4method{getHits}{RangedRaggedAssay,character}(subject, query, ...)
 
 \S4method{reduce}{RangedRaggedAssay}(x, drop.empty.ranges = FALSE,
   replicates = NULL, combine = rowMeans, vectorized = TRUE,
@@ -59,10 +56,6 @@ for summaries}
 \item{FUN}{A function for summarizing non-disjoint ranges (default mean)}
 
 \item{object}{A \code{RangedRaggedAssay} class object}
-
-\item{subject}{A \code{RangedRaggedAssay} class object}
-
-\item{query}{A \code{character} class for searching hits}
 
 \item{drop.empty.ranges}{unused argument}
 
@@ -115,9 +108,6 @@ with function
 
 \item \code{show}: show method for
 the \code{RangedRaggedAssay} class
-
-\item \code{getHits}: Find matching features by \code{character}
-in a \code{RangedRaggedAssay}
 
 \item \code{reduce}: Use metadata column to produce a matrix which
 can then be merged across replicates.
