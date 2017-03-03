@@ -1,3 +1,21 @@
+# MultiAssayExperiment 1.1.27
+
+## New features
+
+* `c` method implemented for experiments with 1:1 sample matches in `pData` rows
+* `MultiAssayExperiment` show method improved
+* Double bracket `[[` extracts single experiment (replacement also included)
+* Internal `getHits` methods removed and refactored `subsetByRows`
+* `subsetBypData` available
+* `rearrange` method now supports "wide" format outputs
+
+## Bug fixes and minor improvements
+
+* Updates to HDF5 vignette
+* More examples to documentation
+* Numerous bug fixes
+* `mapToList` uses the more efficient `splitAsList` function
+
 # MultiAssayExperiment 1.1.17
 
 ## New features
