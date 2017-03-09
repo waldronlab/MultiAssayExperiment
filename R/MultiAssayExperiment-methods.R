@@ -709,20 +709,27 @@ setMethod("reduce", "RangedRaggedAssay",
 #'
 #' @param sampleMap \code{c} method: a \code{sampleMap} \code{list} or
 #' \code{DataFrame} to guide merge
+#' @param mapFrom Either a \code{logical}, \code{character}, or \code{integer}
+#' vector indicating the experiment(s) that have an identical colname order as
+#' the experiment input(s)
 #'
 #' @examples
 #' example("MultiAssayExperiment")
 #'
 #' ## Add an experiment
-#' test <- myMultiAssayExperiment[[1L]]
-#' colnames(test) <- rownames(pData(myMultiAssayExperiment))
+#' test1 <- myMultiAssayExperiment[[1L]]
+#' colnames(test1) <- rownames(pData(myMultiAssayExperiment))
 #'
 #' ## Combine current MultiAssayExperiment with additional experiment
 #' ## (no sampleMap)
-#' c(myMultiAssayExperiment, newExperiment = test)
+#' c(myMultiAssayExperiment, newExperiment = test1)
+#'
+#' test2 <- myMultiAssayExperiment[[1L]]
+#' c(myMultiAssayExperiment, newExp = test2, mapFrom = 3L)
 #'
 #' @return A \code{MultiAssayExperiment} object
-setMethod("c", "MultiAssayExperiment", function(x, ..., sampleMap = NULL) {
+setMethod("c", "MultiAssayExperiment", function(x, ..., sampleMap = NULL,
+                                                mapFrom = NULL) {
     newExperiments <- list(...)
     if (is.list(newExperiments[[1L]]) || is(newExperiments[[1L]], "List") &&
         !is(newExperiments[[1L]], "DataFrame"))
@@ -731,13 +738,24 @@ setMethod("c", "MultiAssayExperiment", function(x, ..., sampleMap = NULL) {
         newExperiments <- ExperimentList(newExperiments)
     if (is.null(names(newExperiments)))
         stop("Additional experiments must be named")
-    if (is.null(sampleMap))
+    if (is.null(sampleMap)) {
+        if (!is.null(mapFrom)) {
+            addMaps <- mapToList(sampleMap(x))[mapFrom]
+            names(addMaps) <- names(newExperiments)
+            sampleMap <- mapply(function(x, y) {
+                x[["colname"]] <- colnames(y)
+                return(x)
+            }, addMaps, newExperiments)
+        } else {
         sampleMap <- .generateMap(pData(x), newExperiments)
+        }
+    }
     if (is(sampleMap, "DataFrame") || is.data.frame(sampleMap))
         sampleMap <- mapToList(sampleMap)
     else if (!is.list(sampleMap))
         stop("Provided 'sampleMap' must be either a 'DataFrame' or a 'list'")
-    newListMap <- c(mapToList(sampleMap(x)), sampleMap)
+    newListMap <- c(mapToList(sampleMap(x)),
+                    IRanges::SplitDataFrameList(sampleMap))
     sampleMap(x) <- listToMap(newListMap)
     experiments(x) <- c(experiments(x), newExperiments)
     validObject(x)

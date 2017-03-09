@@ -80,7 +80,7 @@
 \S4method{reduce}{ANY}(x, drop.empty.ranges = FALSE, replicates = NULL,
   combine = rowMeans, vectorized = TRUE, ...)
 
-\S4method{c}{MultiAssayExperiment}(x, ..., sampleMap = NULL)
+\S4method{c}{MultiAssayExperiment}(x, ..., sampleMap = NULL, mapFrom = NULL)
 
 \S4method{assay}{MultiAssayExperiment,missing}(x, i, ...)
 }
@@ -126,6 +126,10 @@ vectorized, optimized for working down the vector pairs}
 
 \item{sampleMap}{\code{c} method: a \code{sampleMap} \code{list} or
 \code{DataFrame} to guide merge}
+
+\item{mapFrom}{Either a \code{logical}, \code{character}, or \code{integer}
+vector indicating the experiment(s) that have an identical colname order as
+the experiment input(s)}
 }
 \value{
 A \code{MultiAssayExperiment} object
@@ -292,11 +296,14 @@ pData(compMAE)
 example("MultiAssayExperiment")
 
 ## Add an experiment
-test <- myMultiAssayExperiment[[1L]]
-colnames(test) <- rownames(pData(myMultiAssayExperiment))
+test1 <- myMultiAssayExperiment[[1L]]
+colnames(test1) <- rownames(pData(myMultiAssayExperiment))
 
 ## Combine current MultiAssayExperiment with additional experiment
 ## (no sampleMap)
-c(myMultiAssayExperiment, newExperiment = test)
+c(myMultiAssayExperiment, newExperiment = test1)
+
+test2 <- myMultiAssayExperiment[[1L]]
+c(myMultiAssayExperiment, newExp = test2, mapFrom = 3L)
 
 }
