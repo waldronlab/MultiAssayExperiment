@@ -28,6 +28,7 @@
 \alias{duplicated,MultiAssayExperiment-method}
 \alias{reduce,MultiAssayExperiment-method}
 \alias{reduce,ANY-method}
+\alias{c,MultiAssayExperiment-method}
 \alias{assay,MultiAssayExperiment,missing-method}
 \title{An integrative multi-assay class for experiment data}
 \usage{
@@ -79,6 +80,8 @@
 \S4method{reduce}{ANY}(x, drop.empty.ranges = FALSE, replicates = NULL,
   combine = rowMeans, vectorized = TRUE, ...)
 
+\S4method{c}{MultiAssayExperiment}(x, ..., sampleMap = NULL)
+
 \S4method{assay}{MultiAssayExperiment,missing}(x, i, ...)
 }
 \arguments{
@@ -120,8 +123,13 @@ for \code{MultiAssayExperiment}}
 
 \item{vectorized}{reduce: logical (default TRUE) whether the combine function is
 vectorized, optimized for working down the vector pairs}
+
+\item{sampleMap}{\code{c} method: a \code{sampleMap} \code{list} or
+\code{DataFrame} to guide merge}
 }
 \value{
+A \code{MultiAssayExperiment} object
+
 A \code{MultiAssayExperiment} object
 }
 \description{
@@ -139,13 +147,16 @@ potentially also with the arguments \code{pData} (see section below) and
 }
 \details{
 The dots (\code{\ldots}) argument allows the user to specify additional
-arguments in several instances. When subsetting a
+arguments in several instances. When subsetting (\strong{[}) a
 \code{MultiAssayExperiment}, the dots allow for additional
-arguments to be sent to \link{findOverlaps}. When using the \code{reduce}
+arguments to be sent to \link{findOverlaps}. When using the \strong{reduce}
 method, the dots are used to specify arguments for the supplied
-\code{combine} argument and function. When using the assay method, additional
-arguments may be passed to the \code{RangedRaggedAssay} method. See the
-link for more information: \link{assay,RangedRaggedAssay,missing-method}.
+\code{combine} argument and function. When using the \strong{assay} method,
+additional arguments may be passed to the \code{RangedRaggedAssay} method.
+See the link for more information:
+\link{assay,RangedRaggedAssay,missing-method}. When using \strong{c} method
+to add experiments to a \code{MultiAssayExperiment}, the dots allow extra
+data classes compatible with the MultiAssayExperiment API. See: \link{API}
 }
 \section{Methods (by generic)}{
 \itemize{
@@ -212,6 +223,9 @@ measurements are averaged, and columns are aligned by the row order in pData.
 \item \code{reduce}: Consolidate columns for rectangular
 data structures, mainly matrix
 
+\item \code{c}: Add an element to the
+\code{ExperimentList} data slot
+
 \item \code{assay}: Get the assay data for a
 \link{MultiAssayExperiment} as a \code{list}
 }}
@@ -275,7 +289,14 @@ compMAE <- myMultiAssayExperiment[, completes, ]
 compMAE
 pData(compMAE)
 
-}
-\seealso{
-SubsetByRow method: \link{getHits}
+example("MultiAssayExperiment")
+
+## Add an experiment
+test <- myMultiAssayExperiment[[1L]]
+colnames(test) <- rownames(pData(myMultiAssayExperiment))
+
+## Combine current MultiAssayExperiment with additional experiment
+## (no sampleMap)
+c(myMultiAssayExperiment, newExperiment = test)
+
 }

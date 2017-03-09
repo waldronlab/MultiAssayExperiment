@@ -11,6 +11,7 @@
 #' @return A \code{list} object of DataFrames for each assay
 #' @example inst/scripts/listToMap-Ex.R
 #' @export mapToList
+#' @importFrom IRanges splitAsList
 mapToList <- function(dfmap, assayCol = "assay") {
     if (!S4Vectors::isSingleString(assayCol))
         stop("assay column name must be a single string")
@@ -23,5 +24,5 @@ mapToList <- function(dfmap, assayCol = "assay") {
     grp <- dfmap[[assayCol]]
     if (!is.factor(grp))
         grp <- factor(grp, levels=unique(grp))
-    S4Vectors::split(dfmap[, -assayColIndex], grp)
+    IRanges::splitAsList(dfmap[, -assayColIndex], grp)
 }

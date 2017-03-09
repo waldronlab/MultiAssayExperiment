@@ -116,3 +116,13 @@ test_that("MultiAssayExperiment .harmonize construction helper works", {
                      row.names(pData(obs)))
 
 })
+
+test_that("MultiAssayExperiment replacements work", {
+    pDF <- DataFrame(a = 1:4, b = letters[1:4])
+    obs <- MultiAssayExperiment()
+    pData(obs) <- pDF
+    expect_identical(pData(obs), pDF)
+    pData(obs) <- pData(obs)[, 1, drop = FALSE]
+    expect_true(is(pData(obs), "DataFrame"))
+    expect_error(pData(obs) <- pDF[, 1])
+})

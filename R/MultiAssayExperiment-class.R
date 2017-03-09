@@ -30,13 +30,16 @@
 #'
 #' @details
 #' The dots (\code{\ldots}) argument allows the user to specify additional
-#' arguments in several instances. When subsetting a
+#' arguments in several instances. When subsetting (\strong{[}) a
 #' \code{MultiAssayExperiment}, the dots allow for additional
-#' arguments to be sent to \link{findOverlaps}. When using the \code{reduce}
+#' arguments to be sent to \link{findOverlaps}. When using the \strong{reduce}
 #' method, the dots are used to specify arguments for the supplied
-#' \code{combine} argument and function. When using the assay method, additional
-#' arguments may be passed to the \code{RangedRaggedAssay} method. See the
-#' link for more information: \link{assay,RangedRaggedAssay,missing-method}.
+#' \code{combine} argument and function. When using the \strong{assay} method,
+#' additional arguments may be passed to the \code{RangedRaggedAssay} method.
+#' See the link for more information:
+#' \link{assay,RangedRaggedAssay,missing-method}. When using \strong{c} method
+#' to add experiments to a \code{MultiAssayExperiment}, the dots allow extra
+#' data classes compatible with the MultiAssayExperiment API. See: \link{API}
 #'
 #' @section pData:
 #' The \code{pData} slot is a collection of primary specimen data valid across
@@ -87,7 +90,6 @@
 #'
 #' @exportClass MultiAssayExperiment
 #' @include ExperimentList-class.R
-#' @seealso SubsetByRow method: \link{getHits}
 setClass("MultiAssayExperiment",
          slots = list(
            ExperimentList = "ExperimentList",

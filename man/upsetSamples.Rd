@@ -25,6 +25,10 @@ if no clipping is needed}
 
 \item{...}{parameters passed to \code{\link[UpSetR]{upset}}}
 }
+\value{
+Produces a visualization of set intersections using the UpSet matrix
+design
+}
 \description{
 Create a generalized Venn Diagram analog for sample membership in multiple
 assays, using the upset algorithm in \code{UpSetR}
@@ -34,7 +38,6 @@ example(MultiAssayExperiment)
 upsetSamples(myMultiAssayExperiment, idclip = function(x) {
     gsub("[a-z]", "", x)
     })
-
 }
 \author{
 Vincent J Carey
