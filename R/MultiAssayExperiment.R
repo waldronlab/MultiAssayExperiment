@@ -108,7 +108,6 @@ MultiAssayExperiment <-
         else
             experiments <- ExperimentList(experiments)
 
-
         if (missing(pData)){
             allsamps <- unique(unlist(unname(colnames(experiments))))
             pData <- S4Vectors::DataFrame(row.names = allsamps)

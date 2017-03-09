@@ -585,8 +585,8 @@ One of the requirements for the `assay` method (specifically for this
 Here we have added ficticious values to such column contained within list
 elements. See `assay,RangedRaggedAssay,ANY-method` documentation.
 
-```{r}
-assay(experiments(myMultiAssay)[[4]], background = 2)
+```{r, eval = FALSE}
+assay(myMultiAssay[[4]], background = 2)
 ```
 
 ## Updated `assay` method
