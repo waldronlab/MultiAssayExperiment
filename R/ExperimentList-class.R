@@ -15,23 +15,12 @@
     }
 }
 
-## Helper function for .PrepElements in ExperimentList construction
-.createRownames <- function(object) {
-    if (is(object, "SummarizedExperiment")) {
-        rownames(object) <- seq_along(object)
-    }
-    return(object)
-}
-
 ## Ensure ExperimentList elements are appropriate for the API and rownames
 ## are present
 .PrepElements <- function(object) {
     ## use is() to exclude RangedRaggedAssay
     if (is(object, "GRangesList") && !is(object, "RangedRaggedAssay")) {
         object <- RangedRaggedAssay(object)
-    }
-    if (is.null(rownames(object))) {
-        object <- .createRownames(object)
     }
     return(object)
 }
@@ -140,14 +129,9 @@ setMethod("ExperimentList", "missing", function(x) {
 .checkExperimentListNames <- function(object) {
     errors <- character()
     for (i in seq_along(object)) {
-        rowname_err <- .getRowNamesErr(object[[i]])
         colname_err <- .getColNamesErr(object[[i]])
-        if (!is.null(rowname_err)) {
-            errors <- c(errors, paste0("[", i, "] Element", rowname_err))
-        }
-        if (!is.null(colname_err)) {
+        if (!is.null(colname_err))
             errors <- c(errors, paste0("[", i, "] Element", colname_err))
-        }
     }
     if (anyDuplicated(names(object))) {
         msg <- "Non-unique names provided"
