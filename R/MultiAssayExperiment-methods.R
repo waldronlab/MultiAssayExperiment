@@ -727,6 +727,7 @@ setMethod("reduce", "RangedRaggedAssay",
 #' test2 <- myMultiAssayExperiment[[1L]]
 #' c(myMultiAssayExperiment, newExp = test2, mapFrom = 3L)
 #'
+#' @importFrom IRanges SplitDataFrameList
 #' @return A \code{MultiAssayExperiment} object
 setMethod("c", "MultiAssayExperiment", function(x, ..., sampleMap = NULL,
                                                 mapFrom = NULL) {

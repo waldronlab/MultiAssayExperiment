@@ -3,7 +3,7 @@ box: bioconductor/devel_core2
 build:
   steps:
     - jimhester/r-dependencies:
-        github_packages: hadley/devtools
+        cran_dependencies: devtools
     - jimhester/r-check
     - jimhester/r-lint
     - jimhester/r-coverage
