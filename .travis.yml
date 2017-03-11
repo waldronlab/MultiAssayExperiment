@@ -7,7 +7,7 @@ cache: packages
 r: bioc-devel
 
 # Strict checks in place
-warnings_are_errors: true
+warnings_are_errors: false
 
 branches:
   only:
