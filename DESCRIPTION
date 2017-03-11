@@ -1,7 +1,7 @@
 Package: MultiAssayExperiment
 Title: Create Classes and Functions for Managing Multiple Assays on Sets of
     Samples
-Version: 1.1.30
+Version: 1.1.31
 Author: MultiAssay SIG
 Description: Develop an integrative environment where multiple assays are
     managed and preprocessed for genomic data analysis.
@@ -35,8 +35,7 @@ License: Artistic-2.0
 LazyData: true
 LazyLoad: yes
 VignetteBuilder: knitr
-URL: https://github.com/waldronlab/MultiAssayExperiment/wiki/MultiAssayExperiment-
-    API
+URL: https://github.com/waldronlab/MultiAssayExperiment/wiki/MultiAssayExperiment-API
 BugReports: https://github.com/waldronlab/MultiAssayExperiment/issues
 Collate: 
     'API.R'
