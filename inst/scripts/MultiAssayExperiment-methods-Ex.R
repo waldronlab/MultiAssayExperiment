@@ -1,3 +1,6 @@
+## Load example MultiAssayExperiment
+example(MultiAssayExperiment)
+
 ## Access the sampleMap
 sampleMap(myMultiAssayExperiment)
 

@@ -101,6 +101,9 @@ Setter method values (i.e., '\code{function(x) <- value}'):
 }
 
 \examples{
+## Load example MultiAssayExperiment
+example(MultiAssayExperiment)
+
 ## Access the sampleMap
 sampleMap(myMultiAssayExperiment)
 
