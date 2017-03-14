@@ -72,8 +72,8 @@
 
 #' Construct a \code{MultiAssayExperiment} object
 #'
-#' This is the constructor function for the \link{MultiAssayExperiment-class}.
-#' It combines multiple data elements from the different hierarchies of data
+#' The constructor function for the \link{MultiAssayExperiment-class} combines
+#' multiple data elements from the different hierarchies of data
 #' (study, experiments, and samples). It can create instances where neither
 #' a \code{sampleMap} or a \code{pData} set is provided. Please see the
 #' MultiAssayExperiment API documentation for more information by running the
@@ -86,7 +86,7 @@
 #' @param sampleMap A \code{DataFrame} or \code{data.frame} of assay names,
 #' sample identifiers, and colname samples
 #' @param metadata An optional argument of "ANY" class (usually list) for
-#' content describing the overall experiments.
+#' content describing the experiments
 #' @param drops A \code{list} of unmatched information
 #' (included after subsetting)
 #' @return A \code{MultiAssayExperiment} object that can store

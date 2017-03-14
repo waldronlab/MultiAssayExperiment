@@ -53,8 +53,8 @@
 ### Builder
 ###
 
-#' Constructor function for the \code{ExperimentList} slot of a
-#' \code{MultiAssayExperiment} object.
+#' Construct an \code{ExperimentList} object for the \code{MultiAssayExperiment}
+#' object slot.
 #'
 #' The \code{ExperimentList} class can contain several different types of data.
 #' The only requirements for an \code{ExperimentList} class are that the
