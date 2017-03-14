@@ -2,8 +2,8 @@
 % Please edit documentation in R/ExperimentList-class.R
 \name{ExperimentList}
 \alias{ExperimentList}
-\title{Constructor function for the \code{ExperimentList} slot of a
-\code{MultiAssayExperiment} object.}
+\title{Construct an \code{ExperimentList} object for the \code{MultiAssayExperiment}
+object slot.}
 \usage{
 ExperimentList(x)
 }
@@ -49,7 +49,8 @@ rnadat <- structure(c(46851, 5, 19, 13, 2197, 507, 84318, 126, 17, 21,
                                "samparray4")))
 
 ## Combine to a named list and call the ExperimentList constructor function
-ExpList <- list(exprdat, methyldat, rnadat)
-names(ExpList) <- c("Affy", "Methyl450k", "RNASeqGene")
+ExpList <- list(Affy = exprdat, Methyl450k = methyldat, RNASeqGene = rnadat)
+
+## Use the ExperimentList constructor
 myExperimentList <- ExperimentList(ExpList)
 }

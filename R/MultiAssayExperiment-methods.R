@@ -49,10 +49,9 @@ setMethod("dimnames", "MultiAssayExperiment", function(x) {
 .DollarNames.MultiAssayExperiment <- function(x, pattern = "")
     grep(pattern, names(pData(x)), value = TRUE)
 
-#' @describeIn MultiAssayExperiment Access pData column
 #' @aliases $,MultiAssayExperiment-method
-#' @param name pData column name
 #' @exportMethod $
+#' @rdname MultiAssayExperiment-methods
 setMethod("$", "MultiAssayExperiment", function(x, name) {
     pData(x)[[name]]
 })
@@ -168,16 +167,14 @@ setMethod("subsetByAssay", c("MultiAssayExperiment", "ANY"), function(x, y) {
     return(x)
 })
 
-#' @describeIn MultiAssayExperiment Extract the \link{ExperimentList} element
 #' @export
+#' @rdname MultiAssayExperiment-methods
 setMethod("[[", "MultiAssayExperiment", function(x, i, j, ...) {
     experiments(x)[[i]]
 })
 
-#' @describeIn MultiAssayExperiment Replace the \link{ExperimentList} element
-#' with a supported class (should have documented dimensions
-#' in \code{sampleMap})
 #' @export
+#' @rdname MultiAssayExperiment-methods
 setReplaceMethod("[[", "MultiAssayExperiment", function(x, i, j, ..., value) {
                          if (!missing(j) || length(list(...)) > 0)
                              stop("invalid replacement")
@@ -728,7 +725,6 @@ setMethod("reduce", "RangedRaggedAssay",
 #' c(myMultiAssayExperiment, newExp = test2, mapFrom = 3L)
 #'
 #' @importFrom IRanges SplitDataFrameList
-#' @return A \code{MultiAssayExperiment} object
 setMethod("c", "MultiAssayExperiment", function(x, ..., sampleMap = NULL,
                                                 mapFrom = NULL) {
     newExperiments <- list(...)

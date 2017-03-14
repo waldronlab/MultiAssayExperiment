@@ -1,0 +1,24 @@
+## Access the sampleMap
+sampleMap(myMultiAssayExperiment)
+
+## Replacement method for a MultiAssayExperiment sampleMap
+sampleMap(myMultiAssayExperiment) <- DataFrame()
+
+## Access the ExperimentList
+experiments(myMultiAssayExperiment)
+
+## Replace with an empty ExperimentList
+experiments(myMultiAssayExperiment) <- ExperimentList()
+
+## Access the metadata
+metadata(myMultiAssayExperiment)
+
+## Replace metadata with a list
+metadata(myMultiAssayExperiment) <- list(runDate =
+                                             format(Sys.time(), "%B %d, %Y"))
+
+## Access a column in pData
+myMultiAssayExperiment$age
+
+## Replace a column in pData
+myMultiAssayExperiment$age <- myMultiAssayExperiment$age + 1

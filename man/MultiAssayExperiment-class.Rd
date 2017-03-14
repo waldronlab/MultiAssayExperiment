@@ -5,25 +5,13 @@
 \name{MultiAssayExperiment-class}
 \alias{MultiAssayExperiment-class}
 \alias{show,MultiAssayExperiment-method}
-\alias{sampleMap,MultiAssayExperiment-method}
-\alias{experiments,MultiAssayExperiment-method}
-\alias{pData,MultiAssayExperiment-method}
-\alias{metadata,MultiAssayExperiment-method}
 \alias{length,MultiAssayExperiment-method}
 \alias{names,MultiAssayExperiment-method}
-\alias{sampleMap<-,MultiAssayExperiment,DataFrame-method}
-\alias{experiments<-,MultiAssayExperiment,ExperimentList-method}
-\alias{pData<-,MultiAssayExperiment,DataFrame-method}
-\alias{metadata<-,MultiAssayExperiment-method}
-\alias{$<-,MultiAssayExperiment-method}
 \alias{updateObject,MultiAssayExperiment-method}
 \alias{dimnames,MultiAssayExperiment-method}
-\alias{$,MultiAssayExperiment-method}
 \alias{[,MultiAssayExperiment,ANY,ANY,ANY-method}
 \alias{[,MultiAssayExperiment,ANY-method}
 \alias{isEmpty,MultiAssayExperiment-method}
-\alias{[[,MultiAssayExperiment,ANY,ANY-method}
-\alias{[[<-,MultiAssayExperiment,ANY,ANY-method}
 \alias{complete.cases,MultiAssayExperiment-method}
 \alias{duplicated,MultiAssayExperiment-method}
 \alias{reduce,MultiAssayExperiment-method}
@@ -34,41 +22,17 @@
 \usage{
 \S4method{show}{MultiAssayExperiment}(object)
 
-\S4method{sampleMap}{MultiAssayExperiment}(x)
-
-\S4method{experiments}{MultiAssayExperiment}(x)
-
-\S4method{pData}{MultiAssayExperiment}(object)
-
-\S4method{metadata}{MultiAssayExperiment}(x)
-
 \S4method{length}{MultiAssayExperiment}(x)
 
 \S4method{names}{MultiAssayExperiment}(x)
-
-\S4method{sampleMap}{MultiAssayExperiment,DataFrame}(object) <- value
-
-\S4method{experiments}{MultiAssayExperiment,ExperimentList}(object) <- value
-
-\S4method{pData}{MultiAssayExperiment,DataFrame}(object) <- value
-
-\S4method{metadata}{MultiAssayExperiment}(x, ...) <- value
-
-\S4method{$}{MultiAssayExperiment}(x, name) <- value
 
 \S4method{updateObject}{MultiAssayExperiment}(object, ..., verbose = FALSE)
 
 \S4method{dimnames}{MultiAssayExperiment}(x)
 
-\S4method{$}{MultiAssayExperiment}(x, name)
-
 \S4method{[}{MultiAssayExperiment,ANY,ANY,ANY}(x, i, j, k, ..., drop = TRUE)
 
 \S4method{isEmpty}{MultiAssayExperiment}(x)
-
-\S4method{[[}{MultiAssayExperiment,ANY,ANY}(x, i, j, ...)
-
-\S4method{[[}{MultiAssayExperiment,ANY,ANY}(x, i, j, ...) <- value
 
 \S4method{complete.cases}{MultiAssayExperiment}(...)
 
@@ -89,12 +53,7 @@
 
 \item{x}{A \code{MultiAssayExperiment} object for subsetting}
 
-\item{value}{A \code{DataFrame} or \code{ExperimentList} object to replace
-the existing \code{sampleMap}, \code{ExperimentList}, or \code{pData} slot}
-
 \item{...}{Additional arguments. See details for more information.}
-
-\item{name}{pData column name}
 
 \item{verbose}{logical (default FALSE) whether to print extra messages}
 
@@ -133,8 +92,6 @@ the experiment input(s)}
 }
 \value{
 A \code{MultiAssayExperiment} object
-
-A \code{MultiAssayExperiment} object
 }
 \description{
 The \code{MultiAssayExperiment} class can be used to manage results of
@@ -144,7 +101,7 @@ assays that are organized instances of
 \code{\linkS4class{ExpressionSet}},
 \code{matrix}, \code{\link{RangedRaggedAssay}}
 (inherits from \code{\linkS4class{GRangesList}}), and \code{RangedVcfStack}.
-Create new \code{MultiAssayExperiment} instances with the eponymous
+Create new \code{MultiAssayExperiment} instances with the homonymous
 constructor, minimally with the argument \code{\link{ExperimentList}},
 potentially also with the arguments \code{pData} (see section below) and
 \code{\link{sampleMap}}.
@@ -167,33 +124,9 @@ data classes compatible with the MultiAssayExperiment API. See: \link{API}
 \item \code{show}: Show method for a
 \code{MultiAssayExperiment}
 
-\item \code{sampleMap}: Access sampleMap slot from a
-MultiAssayExperiment
-
-\item \code{experiments}: Access ExperimentList class from a
-MultiAssayExperiment
-
-\item \code{pData}: Access pData slot from a
-MultiAssayExperiment
-
-\item \code{metadata}: Access metadata slot from a
-MultiAssayExperiment
-
 \item \code{length}: Get the length of ExperimentList
 
 \item \code{names}: Get the names of the ExperimentList
-
-\item \code{sampleMap<-}: value: A \code{DataFrame} sampleMap
-representation
-
-\item \code{experiments<-}: value: An \code{ExperimentList}
-representation
-
-\item \code{pData<-}: value: A \code{DataFrame} of specimen data
-
-\item \code{metadata<-}: value: Data of type "ANY"
-
-\item \code{$<-}: value: DataFrame column
 
 \item \code{updateObject}: Update old serialized MultiAssayExperiment
 objects to new API
@@ -201,18 +134,10 @@ objects to new API
 \item \code{dimnames}: Get the dimension names
 for a \code{MultiAssayExperiment} object
 
-\item \code{$}: Access pData column
-
 \item \code{[}: Subset a \code{MultiAssayExperiment} object
 
 \item \code{isEmpty}: A \code{logical} value indicating an empty
 \code{MultiAssayExperiment}
-
-\item \code{[[}: Extract the \link{ExperimentList} element
-
-\item \code{[[<-}: Replace the \link{ExperimentList} element
-with a supported class (should have documented dimensions
-in \code{sampleMap})
 
 \item \code{complete.cases}: Return a logical vector of biological units
 with data across all experiments
@@ -306,4 +231,7 @@ c(myMultiAssayExperiment, newExperiment = test1)
 test2 <- myMultiAssayExperiment[[1L]]
 c(myMultiAssayExperiment, newExp = test2, mapFrom = 3L)
 
+}
+\seealso{
+\link{MultiAssayExperiment-methods} for slot modifying methods
 }
