@@ -598,8 +598,8 @@ setMethod("reduce", "MultiAssayExperiment",
         replicates <- duplicated(x)
     experimentList <- reduce(x = experiments(x), replicates = replicates,
                              combine = combine, vectorized = vectorized, ...)
-    rebliss <- .harmonize(experimentList, pData(x), sampleMap(x))
-    do.call(MultiAssayExperiment, rebliss)
+    experiments(x) <- experimentList
+    x
 })
 
 #' @describeIn ExperimentList Apply the reduce method on the
@@ -728,6 +728,8 @@ setMethod("reduce", "RangedRaggedAssay",
 setMethod("c", "MultiAssayExperiment", function(x, ..., sampleMap = NULL,
                                                 mapFrom = NULL) {
     newExperiments <- list(...)
+    if (!length(newExperiments))
+        stop("No arguments provided")
     if (is.list(newExperiments[[1L]]) || is(newExperiments[[1L]], "List") &&
         !is(newExperiments[[1L]], "DataFrame"))
         newExperiments <- ExperimentList(newExperiments[[1L]])

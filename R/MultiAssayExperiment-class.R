@@ -353,10 +353,17 @@ setGeneric("experiments<-", function(object, value)
 #' @exportMethod experiments<-
 #' @rdname MultiAssayExperiment-methods
 setReplaceMethod("experiments", c("MultiAssayExperiment", "ExperimentList"),
-                function(object, value) {
-                    slot(object, "ExperimentList") <- value
-                    return(object)
-                })
+                 function(object, value) {
+                     slot(object, "ExperimentList") <- value
+                     rebliss <- .harmonize(experiments(object),
+                                           pData(object),
+                                           sampleMap(object))
+                     BiocGenerics:::replaceSlots(object,
+                             ExperimentList = rebliss[["experiments"]],
+                             pData = rebliss[["pData"]],
+                             sampleMap = rebliss[["sampleMap"]],
+                             metadata = metadata(object))
+                 })
 
 #' @exportMethod pData<-
 #' @importFrom Biobase pData<-
