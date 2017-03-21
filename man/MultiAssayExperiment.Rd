@@ -44,8 +44,7 @@ example("ExperimentList")
 example("RangedRaggedAssay")
 
 ## Add the RangedRaggedAssay to the list
-ExpList <- c(ExpList, myRRA)
-names(ExpList)[4] <- "CNVgistic"
+ExpList <- c(ExpList, CNVgistic = myRRA)
 
 ## Create sample maps for each experiment
 exprmap <- data.frame(

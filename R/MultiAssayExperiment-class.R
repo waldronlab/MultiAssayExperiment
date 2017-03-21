@@ -355,6 +355,9 @@ setGeneric("experiments<-", function(object, value)
 setReplaceMethod("experiments", c("MultiAssayExperiment", "ExperimentList"),
                  function(object, value) {
                      slot(object, "ExperimentList") <- value
+                     if (!length(value)) {
+                         return(object)
+                     }
                      rebliss <- .harmonize(experiments(object),
                                            pData(object),
                                            sampleMap(object))
