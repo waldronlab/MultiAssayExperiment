@@ -517,24 +517,11 @@ A simple example can be obtained from the function documentation in
 
 ```{r}
 library(GenomicRanges)
-grldf <- structure(
-    list(chr = structure(c(1L, 1L, 1L, 1L, 1L),
-                         class = "factor", .Label = "chr1"), 
-         start = 11:15, end = 12:16,
-         strand = structure(c(4L, 1L, 4L, 3L, 2L),
-                            .Label = c("-", ".", "*", "+"),
-                            class = "factor"), 
-         score = 1:5, specimen =
-             structure(c(1L, 1L, 2L, 2L, 3L),
-                       .Label = c("a", "b", "c"),
-                       class = "factor"),
-         gene_symbols = structure(1:5, .Label = c("GENEa", "GENEb",
-                                                  "GENEc", "GENEd",
-                                                  "GENEe"),
-                                  class = "factor")),
-    .Names = c("chr", "start", "end", "strand", "score", "specimen",
-               "gene_symbols"),
-    row.names = c(NA, -5L), class = "data.frame")
+grlls <- list(chr = rep("chr1", nrows), start = seq(11, 15),
+              end = seq(12, 16), strand = c("+", "-", "+", "*", "*"),
+              score = seq(1, 5), specimen = c("a", "a", "b", "b", "c"),
+              gene_symbols = paste0("GENE", letters[seq_len(nrows)]))
+grldf <- as.data.frame(grlls, stringsAsFactors = FALSE)
 makeGRangesListFromDataFrame(grldf, split.field = "specimen",
                              names.field = "gene_symbols")
 ```
@@ -543,17 +530,12 @@ In the `SummarizedExperiment` package:
 
 ```{r}
 library(SummarizedExperiment)
-sedf <- structure(list(chr = structure(c(1L, 1L, 1L, 1L, 1L),
-                                        class = "factor", .Label = "chr2"), 
-                        start = 11:15, end = 12:16,
-                        strand = structure(c(4L, 1L, 4L, 3L, 2L),
-                                           .Label = c("-", ".", "*", "+"),
-                                           class = "factor"), 
-                        expr0 = 3:7, expr1 = 8:12, expr2 = 12:16),
-                   .Names = c("chr", "start", "end", "strand",
-                              "expr0", "expr1", "expr2"),
-                   row.names = c("GENEe", "GENEd", "GENEc", "GENEb", "GENEa"),
-                   class = "data.frame")
+sels <- list(chr = rep("chr2", nrows), start = seq(11, 15),
+             end = seq(12, 16), strand = c("+", "-", "+", "*", "*"),
+             expr0 = seq(3, 7), expr1 = seq(8, 12), expr2 = seq(12, 16))
+sedf <- as.data.frame(sels, row.names = paste0("GENE",
+                                               letters[rev(seq_len(nrows))]),
+                      stringsAsFactors = FALSE)
 sedf
 makeSummarizedExperimentFromDataFrame(sedf)
 ```
