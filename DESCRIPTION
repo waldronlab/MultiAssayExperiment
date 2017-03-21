@@ -1,7 +1,7 @@
 Package: MultiAssayExperiment
 Title: Create Classes and Functions for Managing Multiple Assays on Sets of
     Samples
-Version: 1.1.35
+Version: 1.1.36
 Author: MultiAssay SIG
 Description: Develop an integrative environment where multiple assays are
     managed and preprocessed for genomic data analysis.
@@ -11,6 +11,7 @@ Suggests:
     knitr,
     GenomicFiles,
     HDF5Array,
+    RaggedExperiment,
     rmarkdown
 Depends:
     R (>= 3.4.0)
