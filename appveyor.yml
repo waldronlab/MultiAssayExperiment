@@ -35,7 +35,7 @@ build_script:
   - travis-tool.sh install_bioc GenomeInfoDb XVector DelayedArray
   - travis-tool.sh install_bioc_deps
   - travis-tool.sh install_deps
-  - travis-tool.sh github_package jimhester/covr
+  - travis-tool.sh github_package jimhester/covr Bioconductor/RaggedExperiment
 
 test_script:
   - travis-tool.sh run_tests

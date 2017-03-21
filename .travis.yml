@@ -34,6 +34,7 @@ bioc_packages:
 # Test code coverage
 r_github_packages:
   - jimhester/covr
+  - Bioconductor/RaggedExperiment
 
 after_success:
   - Rscript -e 'library(covr);codecov()'
