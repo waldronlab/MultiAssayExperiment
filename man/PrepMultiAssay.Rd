@@ -60,7 +60,10 @@ preparedMAE <- PrepMultiAssay(ExpList, pDat, mySampleMap)
 
 ## Results in a list of components for the MultiAssayExperiment constructor
 ## function
-MultiAssayExperiment(preparedMAE$ExperimentList, preparedMAE$pData,
+MultiAssayExperiment(preparedMAE$experiments, preparedMAE$pData,
 preparedMAE$sampleMap)
+
+## Alternatively, use the do.call function
+do.call(MultiAssayExperiment, preparedMAE)
 
 }

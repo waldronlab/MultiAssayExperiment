@@ -46,8 +46,11 @@
 #'
 #' ## Results in a list of components for the MultiAssayExperiment constructor
 #' ## function
-#' MultiAssayExperiment(preparedMAE$ExperimentList, preparedMAE$pData,
+#' MultiAssayExperiment(preparedMAE$experiments, preparedMAE$pData,
 #' preparedMAE$sampleMap)
+#'
+#' ## Alternatively, use the do.call function
+#' do.call(MultiAssayExperiment, preparedMAE)
 #'
 #' @export PrepMultiAssay
 PrepMultiAssay <- function(ExperimentList, pData, sampleMap) {
@@ -64,10 +67,10 @@ PrepMultiAssay <- function(ExperimentList, pData, sampleMap) {
         stop("ExperimentList does not have names, assign names")
     assaynames <- unique(sampleMap[["assay"]])
     if (length(names(ExperimentList)) != length(assaynames)) {
-        warning("Lengths of names in the ExperimentList and sampleMap",
+        warning("\nLengths of names in the ExperimentList and sampleMap\n",
                 " are not equal")
     } else if (any(!(assaynames %in% names(ExperimentList)))) {
-        message("Names in the ExperimentList do not match sampleMap assaynames",
+        message("\nNames in the ExperimentList do not match sampleMap assaynames",
                 "\nstandardizing will be attempted...")
         nameErr <- TRUE
         if (identical(tolower(assaynames), tolower(names(ExperimentList))) &&
@@ -78,16 +81,16 @@ PrepMultiAssay <- function(ExperimentList, pData, sampleMap) {
             names(ExperimentList) <- tolower(names(ExperimentList))
             nameErr <- FALSE
         } else {
-            warning("ExperimentList and sampleMap assaynames are not equal")
+            warning("\nExperimentList and sampleMap assaynames are not equal")
         }
     }
     primaries <- sampleMap[["primary"]]
     notFounds <- primaries %in% rownames(pData)
     if (!all(notFounds)) {
-        message("Not all names in the primary column of the sampleMap",
-                "\n  could be matched to the pData rownames; see $drops")
+        message("\nNot all names in the primary column of the sampleMap",
+                "\n could be matched to the pData rownames; see $drops")
         notF <- sampleMap[!notFounds, ]
-        drops <- list(sampleMap_rows = notF)
+        drops <- list(sampleMap = notF)
         sampleMap <- sampleMap[notFounds, ]
         print(notF)
         if (length(unique(sampleMap[["assay"]])) != length(ExperimentList)) {
@@ -109,7 +112,7 @@ PrepMultiAssay <- function(ExperimentList, pData, sampleMap) {
         !(all(logicalVector))
     }, FUN.VALUE = logical(1L))
     if (any(whichNotAll)) {
-        message("Not all colnames in the ExperimentList are found in the \n",
+        message("\nNot all colnames in the ExperimentList are found in the \n",
                 "sampleMap, dropping samples from ExperimentList...")
         ExperimentList <- ExperimentList(mapply(function(x, y) {
             x[, y, drop = FALSE]
@@ -120,6 +123,6 @@ PrepMultiAssay <- function(ExperimentList, pData, sampleMap) {
         print(Biobase::selectSome(coldrops))
         drops <- c(drops, columns = coldrops)
     }
-    return(list(ExperimentList = ExperimentList, pData = pData,
-                sampleMap = sampleMap, drops = drops))
+    return(list(experiments = ExperimentList, pData = pData,
+                sampleMap = sampleMap, metadata = list(drops = drops)))
 }
