@@ -493,9 +493,16 @@ them as arguments to the `MultiAssayExperiment` constructor function.
 
 ```{r}
 prepped <- PrepMultiAssay(objlist, patient.data, exMap)
-preppedMulti <- MultiAssayExperiment(prepped$ExperimentList, prepped$pData,
-                                     prepped$sampleMap)
+preppedMulti <- MultiAssayExperiment(prepped$experiments, prepped$pData,
+                                     prepped$sampleMap, prepped$metadata)
 preppedMulti
+```
+
+Alternatively, use the `do.call` function to easily create a `MultiAssayExperiment`
+from the output of `PrepMultiAssay` function:
+
+```{r}
+do.call(MultiAssayExperiment, prepped)
 ```
 
 ## Helper functions to create `Bioconductor` classes from raw data
