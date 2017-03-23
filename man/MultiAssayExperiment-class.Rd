@@ -39,7 +39,7 @@
 \S4method{duplicated}{MultiAssayExperiment}(x, incomparables = FALSE, ...)
 
 \S4method{reduce}{MultiAssayExperiment}(x, drop.empty.ranges = FALSE,
-  simplify = mean, replicates = NULL, ...)
+  simplify = BiocGenerics::mean, replicates = NULL, ...)
 
 \S4method{reduce}{ANY}(x, drop.empty.ranges = FALSE, simplify,
   replicates = NULL, ...)
