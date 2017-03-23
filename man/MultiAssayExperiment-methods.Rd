@@ -78,8 +78,8 @@ Eponymous names for accessing \code{MultiAssayExperiment} slots with the
 exception of the \link{ExperimentList} accessor named \code{experiments}.
 \itemize{
    \item experiments: Access the \link{ExperimentList} slot
-   \item [[: Access the \link{ExperimentList} slot
-   \item $: Access a column in \code{pData}
+   \item `[[`: Access the \link{ExperimentList} slot
+   \item `$`: Access a column in \code{pData}
 }
 }
 
@@ -94,9 +94,9 @@ Setter method values (i.e., '\code{function(x) <- value}'):
     \item pData<-: A \code{\link{DataFrame}} object describing the
     biological units
     \item metadata<-: A \code{list} object of metadata
-    \item [[<-: Equivalent to the '\code{experiments<-}' setter method for
+    \item `[[<-`: Equivalent to the \code{experiments<-} setter method for
     convenience
-    \item $<-: A vector to replace the indicated column in \code{pData}
+    \item `$<-`: A vector to replace the indicated column in \code{pData}
 }
 }
 
