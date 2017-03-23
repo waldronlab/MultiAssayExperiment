@@ -177,7 +177,6 @@ setReplaceMethod("dimnames", c("RangedRaggedAssay", "list"),
 #' with function
 #' @param mcolname A single character string indicating metadata column to use
 #' for summaries
-#' @param simplify A function for summarizing non-disjoint ranges (default mean)
 #' @importFrom IRanges disjoin
 #' @exportMethod disjoin
 setMethod("disjoin", "RangedRaggedAssay",

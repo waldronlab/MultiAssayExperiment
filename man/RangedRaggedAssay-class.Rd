@@ -53,7 +53,7 @@ type for selecting columns (\code{\link[GenomicRanges]{GRangesList}} method)}
 \item{mcolname}{A single character string indicating metadata column to use
 for summaries}
 
-\item{simplify}{A function for summarizing non-disjoint ranges (default mean)}
+\item{simplify}{A function for combining duplicate measurements (e.g., mean)}
 
 \item{object}{A \code{RangedRaggedAssay} class object}
 
@@ -61,8 +61,6 @@ for summaries}
 
 \item{replicates}{reduce: A logical list where each element represents a
 sample and a vector of repeated experiments for the sample (default NULL)}
-
-\item{simplify}{A function for combining duplicate measurements (e.g., mean)}
 }
 \value{
 A \code{\link{RangedRaggedAssay}} class object
