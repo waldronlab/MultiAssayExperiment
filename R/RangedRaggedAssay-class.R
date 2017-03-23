@@ -30,7 +30,8 @@
 #'
 #' @export RangedRaggedAssay
 RangedRaggedAssay <- function(x = GRangesList()) {
-    .Deprecated("RaggedExperiment")
+    # class will be deprecated in the next release
+    # .Deprecated("RaggedExperiment")
     if (is(x, "GRanges")) {
         x <- GRangesList(x)
     }
