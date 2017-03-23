@@ -737,6 +737,8 @@ setMethod("c", "MultiAssayExperiment", function(x, ..., sampleMap = NULL,
         stop("Additional experiments must be named")
     if (is.null(sampleMap)) {
         if (!is.null(mapFrom)) {
+            warning("Assuming column order in the data provided ",
+                    "matches the 'mapFrom' experiment(s)")
             addMaps <- mapToList(sampleMap(x))[mapFrom]
             names(addMaps) <- names(newExperiments)
             sampleMap <- mapply(function(x, y) {
