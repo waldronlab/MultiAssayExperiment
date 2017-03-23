@@ -91,8 +91,9 @@ setMethod("assay", c("ANY", "missing"), function(x, i, ...) {
 #' \link{ExperimentList}
 #' @param i assay: unused argument
 #' @aliases assay,ExperimentList,missing-method
+#' @importFrom IRanges endoapply mendoapply
 setMethod("assay", c("ExperimentList", "missing"), function(x, i, ...) {
-    lapply(x, FUN = function(y) assay(y, ...))
+    IRanges::endoapply(x, FUN = function(y) assay(y, ...))
 })
 
 #' @describeIn MultiAssayExperiment Get the assay data for a
