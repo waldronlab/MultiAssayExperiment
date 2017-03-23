@@ -39,10 +39,10 @@
 \S4method{duplicated}{MultiAssayExperiment}(x, incomparables = FALSE, ...)
 
 \S4method{reduce}{MultiAssayExperiment}(x, drop.empty.ranges = FALSE,
-  replicates = NULL, combine = rowMeans, vectorized = TRUE, ...)
+  simplify = BiocGenerics::mean, replicates = NULL, ...)
 
-\S4method{reduce}{ANY}(x, drop.empty.ranges = FALSE, replicates = NULL,
-  combine = rowMeans, vectorized = TRUE, ...)
+\S4method{reduce}{ANY}(x, drop.empty.ranges = FALSE, simplify,
+  replicates = NULL, ...)
 
 \S4method{c}{MultiAssayExperiment}(x, ..., sampleMap = NULL, mapFrom = NULL)
 
@@ -73,15 +73,12 @@ in the \code{ExperimentList}}
 
 \item{drop.empty.ranges}{unused generic argument}
 
-\item{replicates}{reduce: A list of \linkS4class{LogicalList} indicating
-duplicate entries for each biological unit, see the \code{duplicated} method
+\item{simplify}{A function for merging repeat measurements in experiments
+as indicated by replicates
 for \code{MultiAssayExperiment}}
 
-\item{combine}{reduce: function for combining replicate columns/samples
-(default rowMeans)}
-
-\item{vectorized}{reduce: logical (default TRUE) whether the combine function is
-vectorized, optimized for working down the vector pairs}
+\item{replicates}{reduce: A list of \linkS4class{LogicalList} indicating
+duplicate entries for each biological unit, see the \code{duplicated} method}
 
 \item{sampleMap}{\code{c} method: a \code{sampleMap} \code{list} or
 \code{DataFrame} to guide merge}
@@ -149,8 +146,8 @@ matching pData rownames
 MultiAssayExperiment where only complete.cases are returned, replicate
 measurements are averaged, and columns are aligned by the row order in pData.
 
-\item \code{reduce}: Consolidate columns for rectangular
-data structures, mainly matrix
+\item \code{reduce}: Consolidate duplicate measurements for
+rectangular data structures, returns object of the same class (endomorphic)
 
 \item \code{c}: Add an element to the
 \code{ExperimentList} data slot
