@@ -639,9 +639,12 @@ setMethod("reduce", "ExperimentList",
 
 #' @describeIn MultiAssayExperiment Consolidate duplicate measurements for
 #' rectangular data structures, returns object of the same class (endomorphic)
+#' @importFrom IRanges LogicalList
 setMethod("reduce", "ANY", function(x, drop.empty.ranges = FALSE,
                                     simplify, replicates = NULL, ...) {
     object <- x
+    if (is.list(replicates))
+        replicates <- IRanges::LogicalList(replicates)
     if (is(object, "SummarizedExperiment"))
         x <- assay(x)
     if (is(object, "ExpressionSet"))
