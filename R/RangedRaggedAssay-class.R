@@ -177,11 +177,11 @@ setReplaceMethod("dimnames", c("RangedRaggedAssay", "list"),
 #' with function
 #' @param mcolname A single character string indicating metadata column to use
 #' for summaries
-#' @param FUN A function for summarizing non-disjoint ranges (default mean)
+#' @param simplify A function for summarizing non-disjoint ranges (default mean)
 #' @importFrom IRanges disjoin
 #' @exportMethod disjoin
-setMethod("disjoin", "RangedRaggedAssay", function(x, mcolname = NULL,
-                                                   FUN = mean, ...) {
+setMethod("disjoin", "RangedRaggedAssay",
+          function(x, mcolname = NULL, simplify = BiocGenerics::mean, ...) {
     if (is.null(mcolname))
         mcolname <- .findNumericMcol(x)
     if (any(!isDisjoint(x))) {
@@ -192,12 +192,12 @@ setMethod("disjoin", "RangedRaggedAssay", function(x, mcolname = NULL,
         dj <- disjoin(singleRange, with.revmap=TRUE)
         revMap <- mcols(dj)
         revMap[, mcolname] <- sapply(dj$revmap, function(i) {
-            summaryScore <- FUN(mcols(singleRange)[[mcolname]][i])
+            summaryScore <- summarizer(mcols(singleRange)[[mcolname]][i])
             summaryScore
         })
         mcols(dj) <- revMap
         return(dj)
-    }, summarizer = FUN)
+    }, summarizer = simplify)
     return(RangedRaggedAssay(GRangesList(newX)))
     }
     return(x)
