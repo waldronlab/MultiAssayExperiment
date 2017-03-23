@@ -27,7 +27,8 @@
 
 \S4method{dimnames}{RangedRaggedAssay,list}(x) <- value
 
-\S4method{disjoin}{RangedRaggedAssay}(x, mcolname = NULL, FUN = mean, ...)
+\S4method{disjoin}{RangedRaggedAssay}(x, mcolname = NULL,
+  simplify = BiocGenerics::mean, ...)
 
 \S4method{show}{RangedRaggedAssay}(object)
 
@@ -52,16 +53,16 @@ type for selecting columns (\code{\link[GenomicRanges]{GRangesList}} method)}
 \item{mcolname}{A single character string indicating metadata column to use
 for summaries}
 
-\item{FUN}{A function for summarizing non-disjoint ranges (default mean)}
+\item{simplify}{A function for summarizing non-disjoint ranges (default mean)}
 
 \item{object}{A \code{RangedRaggedAssay} class object}
 
 \item{drop.empty.ranges}{unused argument}
 
-\item{simplify}{A function for combining duplicate measurements (e.g., mean)}
-
 \item{replicates}{reduce: A logical list where each element represents a
 sample and a vector of repeated experiments for the sample (default NULL)}
+
+\item{simplify}{A function for combining duplicate measurements (e.g., mean)}
 }
 \value{
 A \code{\link{RangedRaggedAssay}} class object
