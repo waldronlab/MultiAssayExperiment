@@ -583,14 +583,12 @@ setMethod("duplicated", "MultiAssayExperiment",
 #' @param drop.empty.ranges unused generic argument
 #' @param replicates reduce: A list of \linkS4class{LogicalList} indicating
 #' duplicate entries for each biological unit, see the \code{duplicated} method
+#' @param simplify A function for merging repeat measurements in experiments
+#' as indicated by replicates
 #' for \code{MultiAssayExperiment}
-#' @param combine reduce: function for combining replicate columns/samples
-#' (default rowMeans)
-#' @param vectorized reduce: logical (default TRUE) whether the combine function is
-#' vectorized, optimized for working down the vector pairs
 #' @exportMethod reduce
 setMethod("reduce", "MultiAssayExperiment",
-        function(x, drop.empty.ranges = FALSE, simplify = mean,
+        function(x, drop.empty.ranges = FALSE, simplify = BiocGenerics::mean,
                  replicates = NULL, ...) {
     ## Select complete cases
     x <- x[, complete.cases(x), ]
@@ -605,23 +603,22 @@ setMethod("reduce", "MultiAssayExperiment",
 #' @describeIn ExperimentList Apply the reduce method on the
 #' ExperimentList elements
 #' @param drop.empty.ranges unused argument
+#' @param simplify A function for merging columns where duplicates are indicated
+#' by replicates
 #' @param replicates reduce: A \code{list} or \linkS4class{LogicalList} where
 #' each element represents a sample and a vector of repeated measurements for
 #' the sample (default NULL)
-#' @param combine reduce: A function for consolidating columns in the matrix
-#' representation of the data
-#' @param vectorized reduce: (default TRUE) whether the \code{combine} function
-#' is vectorized, optimized for working down the vector pairs
 #' @param ... Additional arguments. See details for more information.
 setMethod("reduce", "ExperimentList",
-          function(x, drop.empty.ranges = FALSE, simplify, replicates = NULL) {
+          function(x, drop.empty.ranges = FALSE, simplify,
+                   replicates = NULL, ...) {
               idx <- seq_along(x)
               names(idx) <- names(x)
-              redList <- lapply(idx, function(i, element, replicate,
-                                              combine, vectorized, ...) {
-                  reduce(x = element[[i]], simplify = simplify,
-                         replicates = replicate[[i]])
-              }, element = x, simplify = simplify, replicate = replicates, ...)
+              redList <- lapply(idx, function(i, element, simply,
+                                              replicate, ...) {
+                  reduce(x = element[[i]], simplify = simply,
+                         replicates = replicate[[i]], ...)
+              }, element = x, simply = simplify, replicate = replicates, ...)
               ExperimentList(redList)
           })
 
@@ -634,59 +631,52 @@ setMethod("reduce", "ExperimentList",
               list(assayArgs, altArgs)
 }
 
-#' @describeIn MultiAssayExperiment Consolidate columns for rectangular
-#' data structures, mainly matrix
+#' @describeIn MultiAssayExperiment Consolidate duplicate measurements for
+#' rectangular data structures, returns object of the same class (endomorphic)
 setMethod("reduce", "ANY", function(x, drop.empty.ranges = FALSE,
-                                    simplify = simplify, replicates = NULL,
-                                    ...) {
+                                    simplify, replicates = NULL, ...) {
     object <- x
-    if (is(x, "SummarizedExperiment"))
+    if (is(object, "SummarizedExperiment"))
         x <- assay(x)
-    if (is(x, "ExpressionSet"))
+    if (is(object, "ExpressionSet"))
         x <- Biobase::exprs(x)
-    if (is(x, "RangedRaggedAssay")) {
-        message("use the 'assay' method on the 'RangedRaggedAssay' first")
-        return(x)
-    }
     if (!is.null(replicates) && length(replicates) != 0L) {
         uniqueCols <- apply(as.matrix(replicates), 2, function(cols) {
             !any(cols)
         })
-        repeatList <- lapply(replicates, function(reps, rectangle, simplify) {
+        repeatList <- lapply(replicates, function(reps, rectangle) {
             if (length(reps)) {
                 repNames <- colnames(rectangle)[reps]
-                baseList <- as(split(x, nrow(x)), "List")
+                baseList <- as(split(rectangle[, repNames],
+                                     seq_len(nrow(x))), "List")
                 result <- simplify(baseList, ...)
                 result <- matrix(result, ncol = 1,
                                  dimnames = list(NULL, repNames[[1L]]))
                 return(result)
             }
-        }, rectangle = x, simplify = simplify, ...)
+        }, rectangle = x)
         uniqueRectangle <- do.call(cbind, unname(repeatList))
-        x <- cbind(uniqueRectangle, x[, uniqueCols, drop = FALSE])
-        if (is (x, "SummarizedExperiment"))
-            assay(object) <- x
-        if (is(x, "ExpressionSet"))
-            Biobase::exprs(object) <- x
-        x <- object
+        result <- cbind(uniqueRectangle, x[, uniqueCols, drop = FALSE])
+        if (is (object, "SummarizedExperiment"))
+            assay(object) <- result
+        else if (is(object, "ExpressionSet"))
+            Biobase::exprs(object) <- result
+        else
+            return(result)
     }
-    return(x)
+    return(object)
 })
 
 #' @describeIn RangedRaggedAssay Use metadata column to produce a matrix which
 #' can then be merged across replicates.
 #' @seealso \link{assay,RangedRaggedAssay,missing-method}
 #' @param drop.empty.ranges unused argument
+#' @param simplify A function for combining duplicate measurements (e.g., mean)
 #' @param replicates reduce: A logical list where each element represents a
 #' sample and a vector of repeated experiments for the sample (default NULL)
-#' @param combine A function for consolidating columns in the matrix
-#' representation of the data (default rowMeans)
-#' @param vectorized logical (default TRUE) whether the \code{combine} function
-#' is vectorized, optimized for working down the vector pairs
 setMethod("reduce", "RangedRaggedAssay",
-          function(x, drop.empty.ranges = FALSE, replicates = NULL,
-                   combine = rowMeans, vectorized = TRUE, mcolname=NULL,
-                   ...) {
+          function(x, drop.empty.ranges = FALSE, simplify, replicates = NULL,
+                   mcolname=NULL, ...) {
               x <- x[, lengths(x) > 0L ]
               args <- list(...)
               if (is.null(mcolname))
@@ -695,9 +685,8 @@ setMethod("reduce", "RangedRaggedAssay",
               argList <- .splitArgs(args)
               argList[[1L]]$mcolname <- mcolname
               x <- do.call(assay, c(list(x = x), argList[[1L]]))
-              do.call(reduce, c(list(x = x, replicates = replicates,
-                                     combine = combine,
-                                     vectorized = vectorized),
+              do.call(reduce, c(list(x = x, simplify = simplify,
+                                     replicates = replicates),
                                 argList[[2L]]))
           })
 

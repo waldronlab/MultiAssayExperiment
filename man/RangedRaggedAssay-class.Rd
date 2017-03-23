@@ -31,9 +31,8 @@
 
 \S4method{show}{RangedRaggedAssay}(object)
 
-\S4method{reduce}{RangedRaggedAssay}(x, drop.empty.ranges = FALSE,
-  replicates = NULL, combine = rowMeans, vectorized = TRUE,
-  mcolname = NULL, ...)
+\S4method{reduce}{RangedRaggedAssay}(x, drop.empty.ranges = FALSE, simplify,
+  replicates = NULL, mcolname = NULL, ...)
 }
 \arguments{
 \item{x}{A \code{\link{RangedRaggedAssay}} class}
@@ -59,14 +58,10 @@ for summaries}
 
 \item{drop.empty.ranges}{unused argument}
 
+\item{simplify}{A function for combining duplicate measurements (e.g., mean)}
+
 \item{replicates}{reduce: A logical list where each element represents a
 sample and a vector of repeated experiments for the sample (default NULL)}
-
-\item{combine}{A function for consolidating columns in the matrix
-representation of the data (default rowMeans)}
-
-\item{vectorized}{logical (default TRUE) whether the \code{combine} function
-is vectorized, optimized for working down the vector pairs}
 }
 \value{
 A \code{\link{RangedRaggedAssay}} class object

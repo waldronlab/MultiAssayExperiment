@@ -22,8 +22,8 @@
 
 \S4method{dimnames}{ExperimentList}(x)
 
-\S4method{reduce}{ExperimentList}(x, drop.empty.ranges = FALSE,
-  replicates = NULL, combine = rowMeans, vectorized = TRUE, ...)
+\S4method{reduce}{ExperimentList}(x, drop.empty.ranges = FALSE, simplify,
+  replicates = NULL, ...)
 
 \S4method{assay}{ANY,missing}(x, i, ...)
 
@@ -37,15 +37,12 @@
 
 \item{drop.empty.ranges}{unused argument}
 
+\item{simplify}{A function for merging columns where duplicates are indicated
+by replicates}
+
 \item{replicates}{reduce: A \code{list} or \linkS4class{LogicalList} where
-each element represents a sample and a vector of repeated experiments for
+each element represents a sample and a vector of repeated measurements for
 the sample (default NULL)}
-
-\item{combine}{reduce: A function for consolidating columns in the matrix
-representation of the data}
-
-\item{vectorized}{reduce: (default TRUE) whether the \code{combine} function
-is vectorized, optimized for working down the vector pairs}
 
 \item{...}{Additional arguments. See details for more information.}
 
