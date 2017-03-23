@@ -375,6 +375,12 @@ setGeneric("subsetByRow", function(x, y, ...)
 #' \code{numeric} or \code{logical} vector
 setMethod("subsetByRow", c("MultiAssayExperiment", "ANY"), function(x, y, ...) {
     rowIds <- .rowIdx(experiments(x))
+    if (is.integer(y)) {
+        lowerLimit <- min(max(rowIds))
+        if (max(y) > lowerLimit)
+            stop("subscript contains out-of-bounds indices,\n",
+                 " use an ", sQuote("IntegerList"), " index for finer control")
+    }
     subsetor <- .getHits(experiments(x), y, ...)
     y <- rowIds[subsetor]
     subsetByRow(x, y)
