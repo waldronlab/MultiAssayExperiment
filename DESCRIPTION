@@ -5,14 +5,6 @@ Version: 1.1.40
 Author: MultiAssay SIG
 Description: Develop an integrative environment where multiple assays are
     managed and preprocessed for genomic data analysis.
-Suggests:
-    BiocStyle,
-    testthat,
-    knitr,
-    GenomicFiles,
-    HDF5Array,
-    RaggedExperiment,
-    rmarkdown
 Depends:
     R (>= 3.4.0)
 Imports:
@@ -30,6 +22,14 @@ Imports:
     tidyr,
     UpSetR,
     utils
+Suggests:
+    BiocStyle,
+    testthat,
+    knitr,
+    GenomicFiles,
+    HDF5Array,
+    RaggedExperiment,
+    rmarkdown
 Maintainer: Marcel Ramos <mramos09@gmail.com>
 biocViews: Infrastructure, DataRepresentation
 License: Artistic-2.0

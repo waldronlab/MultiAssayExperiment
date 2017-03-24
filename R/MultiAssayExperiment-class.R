@@ -354,11 +354,11 @@ setGeneric("experiments<-", function(object, value)
 #' @rdname MultiAssayExperiment-methods
 setReplaceMethod("experiments", c("MultiAssayExperiment", "ExperimentList"),
                  function(object, value) {
-                     slot(object, "ExperimentList") <- value
                      if (!length(value)) {
+                         slot(object, "ExperimentList") <- value
                          return(object)
                      }
-                     rebliss <- .harmonize(experiments(object),
+                     rebliss <- .harmonize(value,
                                            pData(object),
                                            sampleMap(object))
                      BiocGenerics:::replaceSlots(object,
