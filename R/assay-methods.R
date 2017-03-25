@@ -87,18 +87,49 @@ setMethod("assay", c("ANY", "missing"), function(x, i, ...) {
     return(x)
 })
 
+
 #' @describeIn ExperimentList Get the assay data from each element in the
 #' \link{ExperimentList}
-#' @param i assay: unused argument
+#' @param withDimnames logical (default TRUE) whether to return dimension names
 #' @aliases assay,ExperimentList,missing-method
 #' @importFrom IRanges endoapply mendoapply
-setMethod("assay", c("ExperimentList", "missing"), function(x, i, ...) {
-    IRanges::endoapply(x, FUN = function(y) assay(y, ...))
+setMethod("assays", "ExperimentList", function(x, ..., withDimnames = TRUE) {
+    as(IRanges::endoapply(x, FUN = function(y) assay(y, ...)), "SimpleList")
 })
 
 #' @describeIn MultiAssayExperiment Get the assay data for a
 #' \link{MultiAssayExperiment} as a \code{list}
 #' @aliases assay,MultiAssayExperiment,missing-method
+setMethod("assays", "MultiAssayExperiment", function(x, ..., withDimnames = TRUE) {
+    assays(experiments(x), ..., withDimnames = withDimnames)
+})
+
+setMethod("assay", c("MultiAssayExperiment", "numeric"), function(x, i, ...) {
+    tryCatch({
+    assay(x[[i]], ...)
+    }, error = function(err) {
+        stop("'assay(<", class(x), ">, i=\"numeric\", ...)' ",
+             "invalid subscript 'i'\n", conditionMessage(err))
+    })
+})
+
+setMethod("assay", c("MultiAssayExperiment", "character"), function(x, i, ...) {
+    msg <- paste0("'assay(<", class(x), ">, i=\"character\", ...)' ",
+                  "invalid subscript 'i'")
+    res <- tryCatch({
+        assay(x[[i]], ...)
+    }, error = function(err) {
+        stop(msg, "\n", conditionMessage(err))
+    })
+    if (is.null(res))
+        stop(msg, "\n'i' not in names(<", class(x), ">)")
+    res
+})
+
 setMethod("assay", c("MultiAssayExperiment", "missing"), function(x, i, ...) {
-    assay(experiments(x), ...)
+    assays <- assays(x, ...)
+    if (!length(assays))
+        stop("'assay(<", class(x), ">, i=\"missing\", ...) ",
+             "length(<", class(x), ">) is 0'")
+    assays[[1]]
 })

@@ -17,6 +17,7 @@
 \alias{reduce,MultiAssayExperiment-method}
 \alias{reduce,ANY-method}
 \alias{c,MultiAssayExperiment-method}
+\alias{assays,MultiAssayExperiment-method}
 \alias{assay,MultiAssayExperiment,missing-method}
 \title{An integrative multi-assay class for experiment data}
 \usage{
@@ -46,7 +47,7 @@
 
 \S4method{c}{MultiAssayExperiment}(x, ..., sampleMap = NULL, mapFrom = NULL)
 
-\S4method{assay}{MultiAssayExperiment,missing}(x, i, ...)
+\S4method{assays}{MultiAssayExperiment}(x, ..., withDimnames = TRUE)
 }
 \arguments{
 \item{object}{A \code{MultiAssayExperiment} class object}
@@ -152,7 +153,7 @@ rectangular data structures, returns object of the same class (endomorphic)
 \item \code{c}: Add an element to the
 \code{ExperimentList} data slot
 
-\item \code{assay}: Get the assay data for a
+\item \code{assays}: Get the assay data for a
 \link{MultiAssayExperiment} as a \code{list}
 }}
 

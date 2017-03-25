@@ -11,6 +11,7 @@
 \alias{dimnames,ExperimentList-method}
 \alias{reduce,ExperimentList-method}
 \alias{assay,ANY,missing-method}
+\alias{assays,ExperimentList-method}
 \alias{assay,ExperimentList,missing-method}
 \title{A container for multi-experiment data}
 \usage{
@@ -27,7 +28,7 @@
 
 \S4method{assay}{ANY,missing}(x, i, ...)
 
-\S4method{assay}{ExperimentList,missing}(x, i, ...)
+\S4method{assays}{ExperimentList}(x, ..., withDimnames = TRUE)
 }
 \arguments{
 \item{x}{constructor: A \code{list} object, reduce or assay: an
@@ -46,7 +47,7 @@ the sample (default NULL)}
 
 \item{...}{Additional arguments. See details for more information.}
 
-\item{i}{assay: unused argument}
+\item{withDimnames}{logical (default TRUE) whether to return dimension names}
 }
 \value{
 An \code{ExperimentList} object
@@ -83,7 +84,7 @@ ExperimentList elements
 
 \item \code{assay}: Get the assay data for the default ANY class
 
-\item \code{assay}: Get the assay data from each element in the
+\item \code{assays}: Get the assay data from each element in the
 \link{ExperimentList}
 }}
 
