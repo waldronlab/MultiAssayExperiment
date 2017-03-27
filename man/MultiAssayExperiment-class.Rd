@@ -19,6 +19,8 @@
 \alias{c,MultiAssayExperiment-method}
 \alias{assays,MultiAssayExperiment-method}
 \alias{assay,MultiAssayExperiment,missing-method}
+\alias{assay,MultiAssayExperiment,numeric-method}
+\alias{assay,MultiAssayExperiment,character-method}
 \title{An integrative multi-assay class for experiment data}
 \usage{
 \S4method{show}{MultiAssayExperiment}(object)
@@ -48,6 +50,12 @@
 \S4method{c}{MultiAssayExperiment}(x, ..., sampleMap = NULL, mapFrom = NULL)
 
 \S4method{assays}{MultiAssayExperiment}(x, ..., withDimnames = TRUE)
+
+\S4method{assay}{MultiAssayExperiment,missing}(x, i, ...)
+
+\S4method{assay}{MultiAssayExperiment,numeric}(x, i, ...)
+
+\S4method{assay}{MultiAssayExperiment,character}(x, i, ...)
 }
 \arguments{
 \item{object}{A \code{MultiAssayExperiment} class object}
@@ -87,6 +95,9 @@ duplicate entries for each biological unit, see the \code{duplicated} method}
 \item{mapFrom}{Either a \code{logical}, \code{character}, or \code{integer}
 vector indicating the experiment(s) that have an identical colname order as
 the experiment input(s)}
+
+\item{withDimnames}{logical (default TRUE) whether to return dimension names
+included in the object}
 }
 \value{
 A \code{MultiAssayExperiment} object
@@ -153,8 +164,17 @@ rectangular data structures, returns object of the same class (endomorphic)
 \item \code{c}: Add an element to the
 \code{ExperimentList} data slot
 
-\item \code{assays}: Get the assay data for a
-\link{MultiAssayExperiment} as a \code{list}
+\item \code{assays}: Obtain a \code{\link{SimpleList}} of assay
+data for all available experiments in the object
+
+\item \code{assay}: Convenience function for extracting the
+assay of the first element in the \code{ExperimentList}
+
+\item \code{assay}: Obtain the specified assay from the
+MultiAssayExperiment with a \code{numeric} index
+
+\item \code{assay}: Get the specified assay from the
+MultiAssayExperiment with a \code{character} index
 }}
 
 \section{Slots}{

@@ -894,12 +894,12 @@ The "wide" format is useful for calculating correlations or performing regressio
 rearrange(maeredux, shape="wide", pDataCols="sex")
 ```
 
-## assay()
+## assays()
 
-The `assay()` function returns a list of data matrices from the `ExperimentList`:
+The `assays()` function returns a `SimpleList` of data matrices from the `ExperimentList`:
 
 ```{r}
-assay(myMultiAssay)
+assays(myMultiAssay)
 ```
 
 # rownames and colnames

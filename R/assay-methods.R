@@ -97,23 +97,30 @@ setMethod("assays", "ExperimentList", function(x, ..., withDimnames = TRUE) {
     as(IRanges::endoapply(x, FUN = function(y) assay(y, ...)), "SimpleList")
 })
 
-#' @describeIn MultiAssayExperiment Get the assay data for a
-#' \link{MultiAssayExperiment} as a \code{list}
-#' @aliases assay,MultiAssayExperiment,missing-method
-setMethod("assays", "MultiAssayExperiment", function(x, ..., withDimnames = TRUE) {
-    assays(experiments(x), ..., withDimnames = withDimnames)
+#' @describeIn ExperimentList Convenience function for the assay of the first
+#' element
+#' @param i A scalar \code{character} or \code{integer} index
+setMethod("assay", c("ExperimentList", "missing"), function(x, i, ...) {
+    if (!length(x))
+        stop("'assay(<", class(x), ">, i=\"missing\", ...) ",
+             "length(<", class(x), ">) is 0'")
+    assay(x[[1L]], ...)
 })
 
-setMethod("assay", c("MultiAssayExperiment", "numeric"), function(x, i, ...) {
+#' @describeIn ExperimentList Obtain the specified assay from ExperimentList
+#' with a \code{numeric} index
+setMethod("assay", c("ExperimentList", "numeric"), function(x, i, ...) {
     tryCatch({
-    assay(x[[i]], ...)
+        assay(x[[i]], ...)
     }, error = function(err) {
         stop("'assay(<", class(x), ">, i=\"numeric\", ...)' ",
              "invalid subscript 'i'\n", conditionMessage(err))
     })
 })
 
-setMethod("assay", c("MultiAssayExperiment", "character"), function(x, i, ...) {
+#' @describeIn ExperimentList Get the specified assay from ExperimentList with
+#' a \code{character} index
+setMethod("assay", c("ExperimentList", "character"), function(x, i, ...) {
     msg <- paste0("'assay(<", class(x), ">, i=\"character\", ...)' ",
                   "invalid subscript 'i'")
     res <- tryCatch({
@@ -126,10 +133,30 @@ setMethod("assay", c("MultiAssayExperiment", "character"), function(x, i, ...) {
     res
 })
 
+#' @describeIn MultiAssayExperiment Obtain a \code{\link{SimpleList}} of assay
+#' data for all available experiments in the object
+#' @importFrom SummarizedExperiment assays
+#' @param withDimnames logical (default TRUE) whether to return dimension names
+#' included in the object
+#' @exportMethod assays
+setMethod("assays", "MultiAssayExperiment", function(x, ..., withDimnames = TRUE) {
+    assays(experiments(x), ..., withDimnames = withDimnames)
+})
+
+#' @describeIn MultiAssayExperiment Convenience function for extracting the
+#' assay of the first element in the \code{ExperimentList}
 setMethod("assay", c("MultiAssayExperiment", "missing"), function(x, i, ...) {
-    assays <- assays(x, ...)
-    if (!length(assays))
-        stop("'assay(<", class(x), ">, i=\"missing\", ...) ",
-             "length(<", class(x), ">) is 0'")
-    assays[[1]]
+    assay(experiments(x), ...)
+})
+
+#' @describeIn MultiAssayExperiment Obtain the specified assay from the
+#' MultiAssayExperiment with a \code{numeric} index
+setMethod("assay", c("MultiAssayExperiment", "numeric"), function(x, i, ...) {
+    assay(experiments(x), i = i, ...)
+})
+
+#' @describeIn MultiAssayExperiment Get the specified assay from the
+#' MultiAssayExperiment with a \code{character} index
+setMethod("assay", c("MultiAssayExperiment", "character"), function(x, i, ...) {
+    assay(experiments(x), i = i, ...)
 })
