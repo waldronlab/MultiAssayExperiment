@@ -13,6 +13,9 @@
 \alias{assay,ANY,missing-method}
 \alias{assays,ExperimentList-method}
 \alias{assay,ExperimentList,missing-method}
+\alias{assay,ExperimentList,missing-method}
+\alias{assay,ExperimentList,numeric-method}
+\alias{assay,ExperimentList,character-method}
 \title{A container for multi-experiment data}
 \usage{
 \S4method{ExperimentList}{ANY}(x)
@@ -29,6 +32,12 @@
 \S4method{assay}{ANY,missing}(x, i, ...)
 
 \S4method{assays}{ExperimentList}(x, ..., withDimnames = TRUE)
+
+\S4method{assay}{ExperimentList,missing}(x, i, ...)
+
+\S4method{assay}{ExperimentList,numeric}(x, i, ...)
+
+\S4method{assay}{ExperimentList,character}(x, i, ...)
 }
 \arguments{
 \item{x}{constructor: A \code{list} object, reduce or assay: an
@@ -46,6 +55,8 @@ each element represents a sample and a vector of repeated measurements for
 the sample (default NULL)}
 
 \item{...}{Additional arguments. See details for more information.}
+
+\item{i}{A scalar \code{character} or \code{integer} index}
 
 \item{withDimnames}{logical (default TRUE) whether to return dimension names}
 }
@@ -86,6 +97,15 @@ ExperimentList elements
 
 \item \code{assays}: Get the assay data from each element in the
 \link{ExperimentList}
+
+\item \code{assay}: Convenience function for the assay of the first
+element
+
+\item \code{assay}: Obtain the specified assay from ExperimentList
+with a \code{numeric} index
+
+\item \code{assay}: Get the specified assay from ExperimentList with
+a \code{character} index
 }}
 
 \examples{
