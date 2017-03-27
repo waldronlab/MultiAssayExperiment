@@ -163,7 +163,7 @@ setClass("MultiAssayExperiment",
 }
 
 ## 3.ii. Within rows of "sampleMap" corresponding to a single value in the
-## "assayname" column, there can be no duplicated values in the "assay" column
+## "assay" column, there can be no duplicated values in the "colname" column
 .uniqueNamesInAssays <- function(object) {
     SampMap <- sampleMap(object)
     lcheckdups <- mapToList(SampMap[, c("assay", "colname")])

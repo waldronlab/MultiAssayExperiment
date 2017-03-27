@@ -17,8 +17,9 @@ samples, and assay names}
 }
 \value{
 A \code{list} containing all the essential components of a
-\code{\link{MultiAssayExperiment}} as well as a "drops" element that
-indicates non-matched names.
+\code{\link{MultiAssayExperiment}} as well as a "drops" metadata element that
+indicates non-matched names. The names of the resulting list correspond to
+the arguments of the \code{MultiAssayExperiment} constructor function.
 }
 \description{
 The purpose of this helper function is to faciltate the creation of a
@@ -32,14 +33,14 @@ The \code{PrepMultiAssay} function checks that all columns in the sampleMap
 are \code{character}.
 
 It checks that all names and lengths match in both the
-\code{\link{ExperimentList}} and in the unique assaynames of the
+\code{\link{ExperimentList}} and in the unique assay names of the
 \code{\link{sampleMap}}.
 
-If \code{\link{ExperimentList}} names and assaynames only differ by case
-and are not #' duplicated, the function will standardize all names to
+If \code{\link{ExperimentList}} names and assay names only differ by case
+and are not duplicated, the function will standardize all names to
 lowercase.
 
-If names cannot be matched between the assay column of the
+If names cannot be matched between the colname column of the
 \code{\link{sampleMap}} and the colnames of the \code{ExperimentList}, those
 unmatched will be dropped and found in the "drops" element of the
 resulting \code{list}.
