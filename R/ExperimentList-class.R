@@ -17,10 +17,11 @@
 
 ## Ensure ExperimentList elements are appropriate for the API and rownames
 ## are present
-.PrepElements <- function(object) {
+.checkGRL <- function(object) {
     ## use is() to exclude RangedRaggedAssay
     if (is(object, "GRangesList") && !is(object, "RangedRaggedAssay")) {
-        object <- RangedRaggedAssay(object)
+        stop(sQuote("GRangesList"), " class is not supported, use ",
+             sQuote("RaggedExperiment"), " instead")
     }
     return(object)
 }
@@ -81,7 +82,7 @@ setGeneric("ExperimentList", function(x) standardGeneric("ExperimentList"))
 setMethod("ExperimentList", "ANY", function(x) {
     if (is.null(names(x)))
         stop("ExperimentList elements must be named")
-    x <- lapply(x, .PrepElements)
+    x <- lapply(x, .checkGRL)
     .ExperimentList(S4Vectors::SimpleList(x))
 })
 
