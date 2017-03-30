@@ -4,7 +4,6 @@
 \docType{class}
 \name{ExperimentList-class}
 \alias{ExperimentList-class}
-\alias{.ExperimentList}
 \alias{ExperimentList,ANY-method}
 \alias{ExperimentList,missing-method}
 \alias{show,ExperimentList-method}

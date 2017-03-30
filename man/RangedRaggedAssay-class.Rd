@@ -4,7 +4,6 @@
 \docType{class}
 \name{RangedRaggedAssay-class}
 \alias{RangedRaggedAssay-class}
-\alias{.RangedRaggedAssay}
 \alias{[,RangedRaggedAssay,ANY,ANY,ANY-method}
 \alias{[,RangedRaggedAssay,ANY-method}
 \alias{[,RangedRaggedAssay,GRanges,ANY,ANY-method}

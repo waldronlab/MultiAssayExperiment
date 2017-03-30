@@ -47,6 +47,10 @@
 #'
 #' @exportClass ExperimentList
 #' @name ExperimentList-class
+#' @docType class
+NULL
+
+#' @keywords internal
 .ExperimentList <- setClass("ExperimentList", contains = "SimpleList")
 
 ### - - - - - - - - - - - - - - - - - - - - - - - -

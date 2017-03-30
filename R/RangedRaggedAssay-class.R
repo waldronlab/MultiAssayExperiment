@@ -8,6 +8,10 @@
 #' @name RangedRaggedAssay-class
 #'
 #' @example inst/scripts/RangedRaggedAssay-class-Ex.R
+#' @docType class
+NULL
+
+#' @keywords internal
 .RangedRaggedAssay <- setClass("RangedRaggedAssay", contains = "GRangesList")
 
 ### - - - - - - - - - - - - - - - - - - - - - - - -
