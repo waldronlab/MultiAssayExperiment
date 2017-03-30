@@ -311,8 +311,8 @@ sample names.
 Let's include a `RangedRaggedAssay`, which is defined in this package and
 extends `GRangesList`. This is intended for data such as segmented copy
 number, which provides genomic ranges that may be different for each sample.
-We start with a `GRangesList`, which will later be converted automatically
-by the `MultiAssayExperiment` constructor function.
+We start with a `GRangesList`, which can be converted using the
+`RangedRaggedAssay` constructor function.
 
 ```{r}
 suppressPackageStartupMessages(library(GenomicRanges))
@@ -332,6 +332,9 @@ gr3 <-
 grl <- GRangesList("gr1" = gr1, "gr2" = gr2, "gr3" = gr3)
 names(grl) <- c("snparray1", "snparray2", "snparray3")
 grl
+
+## RangedRaggedAssay constructor function
+rra <- RangedRaggedAssay(grl)
 ```
 
 The following `data.frame` matches `pData` samples to the
@@ -407,7 +410,7 @@ All of these names must be found within in the third column of `dfmap`:
 
 ```{r}
 objlist <- list("Affy" = exprdat, "Methyl 450k" = methyldat,
-                "Mirna" = microdat, "CNV gistic" = grl, "CNV gistic2" = rse)
+                "Mirna" = microdat, "CNV gistic" = rra, "CNV gistic2" = rse)
 ```
 
 ## Creation of the `MultiAssayExperiment` class object
