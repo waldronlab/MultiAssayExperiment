@@ -25,7 +25,7 @@ API <- function(website = TRUE, shiny = FALSE) {
         .apiDash()
     } else if (website) {
         utils::browseURL(
-"https://github.com/vjcitn/MultiAssayExperiment/wiki/MultiAssayExperiment-API"
+"https://github.com/WaldronLab/MultiAssayExperiment/wiki/MultiAssayExperiment-API"
         )
     } else {
         invisible()
