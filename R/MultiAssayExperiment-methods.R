@@ -49,10 +49,9 @@ setMethod("dimnames", "MultiAssayExperiment", function(x) {
 .DollarNames.MultiAssayExperiment <- function(x, pattern = "")
     grep(pattern, names(pData(x)), value = TRUE)
 
-#' @describeIn MultiAssayExperiment Access pData column
 #' @aliases $,MultiAssayExperiment-method
-#' @param name pData column name
 #' @exportMethod $
+#' @rdname MultiAssayExperiment-methods
 setMethod("$", "MultiAssayExperiment", function(x, name) {
     pData(x)[[name]]
 })
@@ -168,16 +167,14 @@ setMethod("subsetByAssay", c("MultiAssayExperiment", "ANY"), function(x, y) {
     return(x)
 })
 
-#' @describeIn MultiAssayExperiment Extract the \link{ExperimentList} element
 #' @export
+#' @rdname MultiAssayExperiment-methods
 setMethod("[[", "MultiAssayExperiment", function(x, i, j, ...) {
     experiments(x)[[i]]
 })
 
-#' @describeIn MultiAssayExperiment Replace the \link{ExperimentList} element
-#' with a supported class (should have documented dimensions
-#' in \code{sampleMap})
 #' @export
+#' @rdname MultiAssayExperiment-methods
 setReplaceMethod("[[", "MultiAssayExperiment", function(x, i, j, ..., value) {
                          if (!missing(j) || length(list(...)) > 0)
                              stop("invalid replacement")
@@ -378,6 +375,12 @@ setGeneric("subsetByRow", function(x, y, ...)
 #' \code{numeric} or \code{logical} vector
 setMethod("subsetByRow", c("MultiAssayExperiment", "ANY"), function(x, y, ...) {
     rowIds <- .rowIdx(experiments(x))
+    if (is.integer(y)) {
+        lowerLimit <- min(max(rowIds))
+        if (max(y) > lowerLimit)
+            stop("subscript contains out-of-bounds indices,\n",
+                 " use an ", sQuote("IntegerList"), " index for finer control")
+    }
     subsetor <- .getHits(experiments(x), y, ...)
     y <- rowIds[subsetor]
     subsetByRow(x, y)
@@ -547,7 +550,8 @@ setMethod("rearrange", "MultiAssayExperiment", function(object, shape = "long",
     return(outputDataFrame)
 })
 
-.combineCols <- function(rectangle, dupNames, combine, vectorized, ...) {
+.combineCols <- function(rectangle, dupNames, combine = IRanges::rowMeans, ...,
+                         vectorized = TRUE) {
     if (!is.logical(vectorized))
         stop("'vectorized' argument not logical")
     if (vectorized)
@@ -585,49 +589,42 @@ setMethod("duplicated", "MultiAssayExperiment",
 #' @param drop.empty.ranges unused generic argument
 #' @param replicates reduce: A list of \linkS4class{LogicalList} indicating
 #' duplicate entries for each biological unit, see the \code{duplicated} method
+#' @param simplify A function for merging repeat measurements in experiments
+#' as indicated by replicates
 #' for \code{MultiAssayExperiment}
-#' @param combine reduce: function for combining replicate columns/samples
-#' (default rowMeans)
-#' @param vectorized reduce: logical (default TRUE) whether the combine function is
-#' vectorized, optimized for working down the vector pairs
 #' @exportMethod reduce
 setMethod("reduce", "MultiAssayExperiment",
-        function(x, drop.empty.ranges = FALSE, replicates = NULL,
-                 combine = rowMeans, vectorized = TRUE, ...) {
-    args <- list(...)
+        function(x, drop.empty.ranges = FALSE, simplify = BiocGenerics::mean,
+                 replicates = NULL, ...) {
     ## Select complete cases
     x <- x[, complete.cases(x), ]
     if (is.null(replicates))
         replicates <- duplicated(x)
-    experimentList <- reduce(x = experiments(x), replicates = replicates,
-                             combine = combine, vectorized = vectorized, ...)
-    rebliss <- .harmonize(experimentList, pData(x), sampleMap(x))
-    do.call(MultiAssayExperiment, rebliss)
+    experimentList <- reduce(x = experiments(x), simplify = simplify,
+                             replicates = replicates, ...)
+    experiments(x) <- experimentList
+    x
 })
 
 #' @describeIn ExperimentList Apply the reduce method on the
 #' ExperimentList elements
 #' @param drop.empty.ranges unused argument
+#' @param simplify A function for merging columns where duplicates are indicated
+#' by replicates
 #' @param replicates reduce: A \code{list} or \linkS4class{LogicalList} where
-#' each element represents a sample and a vector of repeated experiments for
+#' each element represents a sample and a vector of repeated measurements for
 #' the sample (default NULL)
-#' @param combine reduce: A function for consolidating columns in the matrix
-#' representation of the data
-#' @param vectorized reduce: (default TRUE) whether the \code{combine} function
-#' is vectorized, optimized for working down the vector pairs
 #' @param ... Additional arguments. See details for more information.
 setMethod("reduce", "ExperimentList",
-          function(x, drop.empty.ranges = FALSE, replicates = NULL,
-                   combine = rowMeans, vectorized = TRUE, ...) {
+          function(x, drop.empty.ranges = FALSE, simplify,
+                   replicates = NULL, ...) {
               idx <- seq_along(x)
               names(idx) <- names(x)
-              redList <- lapply(idx, function(i, element, replicate,
-                                              combine, vectorized, ...) {
-                  reduce(x = element[[i]], replicates = replicate[[i]],
-                         combine = combine,
-                         vectorized = vectorized, ...)
-              }, element = x, replicate = replicates, combine = combine,
-              vectorized = vectorized, ...)
+              redList <- lapply(idx, function(i, element, simply,
+                                              replicate, ...) {
+                  reduce(x = element[[i]], simplify = simply,
+                         replicates = replicate[[i]], ...)
+              }, element = x, simply = simplify, replicate = replicates, ...)
               ExperimentList(redList)
           })
 
@@ -640,56 +637,56 @@ setMethod("reduce", "ExperimentList",
               list(assayArgs, altArgs)
 }
 
-#' @describeIn MultiAssayExperiment Consolidate columns for rectangular
-#' data structures, mainly matrix
+#' @describeIn MultiAssayExperiment Consolidate duplicate measurements for
+#' rectangular data structures, returns object of the same class (endomorphic)
+#' @importFrom IRanges LogicalList
 setMethod("reduce", "ANY", function(x, drop.empty.ranges = FALSE,
-                                    replicates = NULL, combine = rowMeans,
-                                    vectorized = TRUE, ...) {
-    if (is(x, "SummarizedExperiment"))
+                                    simplify, replicates = NULL, ...) {
+    object <- x
+    if (is.list(replicates))
+        replicates <- IRanges::LogicalList(replicates)
+    if (is(object, "SummarizedExperiment"))
         x <- assay(x)
-    if (is(x, "ExpressionSet"))
+    if (is(object, "ExpressionSet"))
         x <- Biobase::exprs(x)
     if (!is.null(replicates) && length(replicates) != 0L) {
         uniqueCols <- apply(as.matrix(replicates), 2, function(cols) {
             !any(cols)
-            })
-        args <- list(...)
-        argList <- .splitArgs(args)
-        repeatList <- lapply(replicates, function(reps, rectangle,
-                                                  combine, vectorized) {
+        })
+        repeatList <- lapply(replicates, function(reps, rectangle) {
             if (length(reps)) {
                 repNames <- colnames(rectangle)[reps]
-                result <- do.call(.combineCols,
-                                  c(list(rectangle = rectangle,
-                                         dupNames = repNames,
-                                         combine = combine,
-                                         vectorized = vectorized),
-                                    argList[[2L]]))
+                baseList <- as(split(rectangle[, repNames],
+                                     seq_len(nrow(x))), "List")
+                result <- simplify(baseList, ...)
                 result <- matrix(result, ncol = 1,
                                  dimnames = list(NULL, repNames[[1L]]))
                 return(result)
             }
-        }, rectangle = x, combine = combine, vectorized = vectorized)
+        }, rectangle = x)
         uniqueRectangle <- do.call(cbind, unname(repeatList))
-        x <- cbind(uniqueRectangle, x[, uniqueCols, drop = FALSE])
+        result <- cbind(uniqueRectangle, x[, uniqueCols, drop = FALSE])
+        if (is (object, "SummarizedExperiment"))
+            assay(object) <- result
+        else if (is(object, "ExpressionSet"))
+            Biobase::exprs(object) <- result
+        else
+            return(result)
     }
-    return(x)
+    return(object)
 })
 
 #' @describeIn RangedRaggedAssay Use metadata column to produce a matrix which
 #' can then be merged across replicates.
 #' @seealso \link{assay,RangedRaggedAssay,missing-method}
 #' @param drop.empty.ranges unused argument
+#' @param simplify A function for combining duplicate measurements (e.g., mean)
 #' @param replicates reduce: A logical list where each element represents a
 #' sample and a vector of repeated experiments for the sample (default NULL)
-#' @param combine A function for consolidating columns in the matrix
-#' representation of the data (default rowMeans)
-#' @param vectorized logical (default TRUE) whether the \code{combine} function
-#' is vectorized, optimized for working down the vector pairs
 setMethod("reduce", "RangedRaggedAssay",
-          function(x, drop.empty.ranges = FALSE, replicates = NULL,
-                   combine = rowMeans, vectorized = TRUE, mcolname=NULL,
-                   ...) {
+          function(x, drop.empty.ranges = FALSE, simplify, replicates = NULL,
+                   mcolname=NULL, ...) {
+              .Deprecated("RaggedExperiment")
               x <- x[, lengths(x) > 0L ]
               args <- list(...)
               if (is.null(mcolname))
@@ -698,9 +695,8 @@ setMethod("reduce", "RangedRaggedAssay",
               argList <- .splitArgs(args)
               argList[[1L]]$mcolname <- mcolname
               x <- do.call(assay, c(list(x = x), argList[[1L]]))
-              do.call(reduce, c(list(x = x, replicates = replicates,
-                                     combine = combine,
-                                     vectorized = vectorized),
+              do.call(reduce, c(list(x = x, simplify = simplify,
+                                     replicates = replicates),
                                 argList[[2L]]))
           })
 
@@ -709,21 +705,30 @@ setMethod("reduce", "RangedRaggedAssay",
 #'
 #' @param sampleMap \code{c} method: a \code{sampleMap} \code{list} or
 #' \code{DataFrame} to guide merge
+#' @param mapFrom Either a \code{logical}, \code{character}, or \code{integer}
+#' vector indicating the experiment(s) that have an identical colname order as
+#' the experiment input(s)
 #'
 #' @examples
 #' example("MultiAssayExperiment")
 #'
 #' ## Add an experiment
-#' test <- myMultiAssayExperiment[[1L]]
-#' colnames(test) <- rownames(pData(myMultiAssayExperiment))
+#' test1 <- myMultiAssayExperiment[[1L]]
+#' colnames(test1) <- rownames(pData(myMultiAssayExperiment))
 #'
 #' ## Combine current MultiAssayExperiment with additional experiment
 #' ## (no sampleMap)
-#' c(myMultiAssayExperiment, newExperiment = test)
+#' c(myMultiAssayExperiment, newExperiment = test1)
 #'
-#' @return A \code{MultiAssayExperiment} object
-setMethod("c", "MultiAssayExperiment", function(x, ..., sampleMap = NULL) {
+#' test2 <- myMultiAssayExperiment[[1L]]
+#' c(myMultiAssayExperiment, newExp = test2, mapFrom = 3L)
+#'
+#' @importFrom IRanges SplitDataFrameList
+setMethod("c", "MultiAssayExperiment", function(x, ..., sampleMap = NULL,
+                                                mapFrom = NULL) {
     newExperiments <- list(...)
+    if (!length(newExperiments))
+        stop("No arguments provided")
     if (is.list(newExperiments[[1L]]) || is(newExperiments[[1L]], "List") &&
         !is(newExperiments[[1L]], "DataFrame"))
         newExperiments <- ExperimentList(newExperiments[[1L]])
@@ -731,13 +736,26 @@ setMethod("c", "MultiAssayExperiment", function(x, ..., sampleMap = NULL) {
         newExperiments <- ExperimentList(newExperiments)
     if (is.null(names(newExperiments)))
         stop("Additional experiments must be named")
-    if (is.null(sampleMap))
+    if (is.null(sampleMap)) {
+        if (!is.null(mapFrom)) {
+            warning("Assuming column order in the data provided ",
+                    "matches the 'mapFrom' experiment(s)")
+            addMaps <- mapToList(sampleMap(x))[mapFrom]
+            names(addMaps) <- names(newExperiments)
+            sampleMap <- mapply(function(x, y) {
+                x[["colname"]] <- colnames(y)
+                return(x)
+            }, addMaps, newExperiments)
+        } else {
         sampleMap <- .generateMap(pData(x), newExperiments)
+        }
+    }
     if (is(sampleMap, "DataFrame") || is.data.frame(sampleMap))
         sampleMap <- mapToList(sampleMap)
     else if (!is.list(sampleMap))
         stop("Provided 'sampleMap' must be either a 'DataFrame' or a 'list'")
-    newListMap <- c(mapToList(sampleMap(x)), sampleMap)
+    newListMap <- c(mapToList(sampleMap(x)),
+                    IRanges::SplitDataFrameList(sampleMap))
     sampleMap(x) <- listToMap(newListMap)
     experiments(x) <- c(experiments(x), newExperiments)
     validObject(x)

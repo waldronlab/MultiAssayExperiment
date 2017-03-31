@@ -19,7 +19,7 @@ the phenotype data for all participants}
 sample identifiers, and colname samples}
 
 \item{metadata}{An optional argument of "ANY" class (usually list) for
-content describing the overall experiments.}
+content describing the experiments}
 
 \item{drops}{A \code{list} of unmatched information
 (included after subsetting)}
@@ -29,8 +29,8 @@ A \code{MultiAssayExperiment} object that can store
 experiment and phenotype data
 }
 \description{
-This is the constructor function for the \link{MultiAssayExperiment-class}.
-It combines multiple data elements from the different hierarchies of data
+The constructor function for the \link{MultiAssayExperiment-class} combines
+multiple data elements from the different hierarchies of data
 (study, experiments, and samples). It can create instances where neither
 a \code{sampleMap} or a \code{pData} set is provided. Please see the
 MultiAssayExperiment API documentation for more information by running the
@@ -44,12 +44,36 @@ example("ExperimentList")
 example("RangedRaggedAssay")
 
 ## Add the RangedRaggedAssay to the list
-ExpList <- c(ExpList, myRRA)
-names(ExpList)[4] <- "CNVgistic"
+ExpList <- c(ExpList, CNVgistic = myRRA)
 
-## Run the sample map example
-example("sampleMap")
+## Create sample maps for each experiment
+exprmap <- data.frame(
+    primary = c("Jack", "Jill", "Barbara", "Bob"),
+    colname = c("array1", "array2", "array3", "array4"),
+    stringsAsFactors = FALSE)
 
+methylmap <- data.frame(
+    primary = c("Jack", "Jack", "Jill", "Barbara", "Bob"),
+    colname = c("methyl1", "methyl2", "methyl3", "methyl4", "methyl5"),
+    stringsAsFactors = FALSE)
+
+rangemap <- data.frame(
+    primary = c("Jack", "Jill", "Jill"),
+    colname = c("snparray1", "snparray2", "snparray3"),
+    stringsAsFactors = FALSE)
+
+rnamap <- data.frame(
+    primary = c("Jack", "Jill", "Bob", "Barbara"),
+    colname = c("samparray1", "samparray2", "samparray3",
+                               "samparray4"),
+    stringsAsFactors = FALSE)
+
+## Combine as a named list and convert to a DataFrame
+mylist <- list(Affy = exprmap, Methyl450k = methylmap,
+               CNVgistic = rangemap, RNASeqGene = rnamap)
+
+## Create a sampleMap
+mySampleMap <- listToMap(mylist)
 ## Create an example phenotype data
 pDat <- data.frame(sex = c("M", "F", "M", "F"),
                        age = 38:41,

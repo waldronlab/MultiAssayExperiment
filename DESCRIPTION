@@ -1,17 +1,9 @@
 Package: MultiAssayExperiment
-Title: Create Classes and Functions for Managing Multiple Assays on Sets of
-    Samples
-Version: 1.1.29
+Title: Software for the integration of multi-omics experiments in Bioconductor
+Version: 1.1.44
 Author: MultiAssay SIG
 Description: Develop an integrative environment where multiple assays are
     managed and preprocessed for genomic data analysis.
-Suggests:
-    BiocStyle,
-    testthat,
-    knitr,
-    GenomicFiles,
-    HDF5Array,
-    rmarkdown
 Depends:
     R (>= 3.4.0)
 Imports:
@@ -29,14 +21,21 @@ Imports:
     tidyr,
     UpSetR,
     utils
+Suggests:
+    BiocStyle,
+    testthat,
+    knitr,
+    GenomicFiles,
+    HDF5Array,
+    RaggedExperiment,
+    rmarkdown
 Maintainer: Marcel Ramos <mramos09@gmail.com>
 biocViews: Infrastructure, DataRepresentation
 License: Artistic-2.0
 LazyData: true
 LazyLoad: yes
 VignetteBuilder: knitr
-URL: https://github.com/waldronlab/MultiAssayExperiment/wiki/MultiAssayExperiment-
-    API
+URL: https://github.com/waldronlab/MultiAssayExperiment/wiki/MultiAssayExperiment-API
 BugReports: https://github.com/waldronlab/MultiAssayExperiment/issues
 Collate: 
     'API.R'

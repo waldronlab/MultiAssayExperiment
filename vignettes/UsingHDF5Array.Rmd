@@ -13,9 +13,11 @@ output:
 ---
 
 ```{r, echo=FALSE, warning=FALSE}
-suppressPackageStartupMessages(library(MultiAssayExperiment))
-suppressPackageStartupMessages(library(HDF5Array))
-suppressPackageStartupMessages(library(SummarizedExperiment))
+suppressPackageStartupMessages({
+    library(MultiAssayExperiment)
+    library(HDF5Array)
+    library(SummarizedExperiment)
+})
 ```
 
 # Integrating an HDF5 backend for MultiAssayExperiment

@@ -8,6 +8,10 @@
 #' @name RangedRaggedAssay-class
 #'
 #' @example inst/scripts/RangedRaggedAssay-class-Ex.R
+#' @docType class
+NULL
+
+#' @keywords internal
 .RangedRaggedAssay <- setClass("RangedRaggedAssay", contains = "GRangesList")
 
 ### - - - - - - - - - - - - - - - - - - - - - - - -
@@ -21,6 +25,12 @@
 #' from the metadata and represent it in a matrix. See the \code{show} method
 #' for an example.
 #'
+#' @section Deprecated:
+#' The \code{RangedRaggedAssay} class is \strong{deprecated} and defunct by the next
+#' release cycle. Please use the \strong{RaggedExperiment} class to represent
+#' copy number, mutation and other genomic range based data. See
+#' \code{RaggedExperiment} for more detail.
+#'
 #' @param x A \code{list}, \code{GRanges} or \code{GRangesList} object
 #' @return A \code{\linkS4class{RangedRaggedAssay}} class object
 #'
@@ -30,6 +40,7 @@
 #'
 #' @export RangedRaggedAssay
 RangedRaggedAssay <- function(x = GRangesList()) {
+    .Deprecated("RaggedExperiment")
     if (is(x, "GRanges")) {
         x <- GRangesList(x)
     }
@@ -175,11 +186,11 @@ setReplaceMethod("dimnames", c("RangedRaggedAssay", "list"),
 #' with function
 #' @param mcolname A single character string indicating metadata column to use
 #' for summaries
-#' @param FUN A function for summarizing non-disjoint ranges (default mean)
 #' @importFrom IRanges disjoin
 #' @exportMethod disjoin
-setMethod("disjoin", "RangedRaggedAssay", function(x, mcolname = NULL,
-                                                   FUN = mean, ...) {
+setMethod("disjoin", "RangedRaggedAssay",
+          function(x, mcolname = NULL, simplify = BiocGenerics::mean, ...) {
+    .Deprecated("RaggedExperiment")
     if (is.null(mcolname))
         mcolname <- .findNumericMcol(x)
     if (any(!isDisjoint(x))) {
@@ -190,12 +201,12 @@ setMethod("disjoin", "RangedRaggedAssay", function(x, mcolname = NULL,
         dj <- disjoin(singleRange, with.revmap=TRUE)
         revMap <- mcols(dj)
         revMap[, mcolname] <- sapply(dj$revmap, function(i) {
-            summaryScore <- FUN(mcols(singleRange)[[mcolname]][i])
+            summaryScore <- summarizer(mcols(singleRange)[[mcolname]][i])
             summaryScore
         })
         mcols(dj) <- revMap
         return(dj)
-    }, summarizer = FUN)
+    }, summarizer = simplify)
     return(RangedRaggedAssay(GRangesList(newX)))
     }
     return(x)

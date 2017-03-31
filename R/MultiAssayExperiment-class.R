@@ -23,7 +23,7 @@
 #' \code{\linkS4class{ExpressionSet}},
 #' \code{matrix}, \code{\link{RangedRaggedAssay}}
 #' (inherits from \code{\linkS4class{GRangesList}}), and \code{RangedVcfStack}.
-#' Create new \code{MultiAssayExperiment} instances with the eponymous
+#' Create new \code{MultiAssayExperiment} instances with the homonymous
 #' constructor, minimally with the argument \code{\link{ExperimentList}},
 #' potentially also with the arguments \code{pData} (see section below) and
 #' \code{\link{sampleMap}}.
@@ -89,6 +89,7 @@
 #' pData(compMAE)
 #'
 #' @exportClass MultiAssayExperiment
+#' @seealso \link{MultiAssayExperiment-methods} for slot modifying methods
 #' @include ExperimentList-class.R
 setClass("MultiAssayExperiment",
          slots = list(
@@ -162,7 +163,7 @@ setClass("MultiAssayExperiment",
 }
 
 ## 3.ii. Within rows of "sampleMap" corresponding to a single value in the
-## "assayname" column, there can be no duplicated values in the "assay" column
+## "assay" column, there can be no duplicated values in the "colname" column
 .uniqueNamesInAssays <- function(object) {
     SampMap <- sampleMap(object)
     lcheckdups <- mapToList(SampMap[, c("assay", "colname")])
@@ -235,51 +236,82 @@ setMethod("show", "MultiAssayExperiment", function(object) {
         "to a list of rectangular matrices\n")
 })
 
+#' @name MultiAssayExperiment-methods
+#' @title Accessing/modifying slot information
+#'
+#' @description A set of accessor and setter generic functions to extract
+#' either the \code{sampleMap}, the \code{\link{ExperimentList}}, \code{pData},
+#' or \code{metadata} slots of a \code{\link{MultiAssayExperiment}} object
+#'
+#' @section Accessors:
+#' Eponymous names for accessing \code{MultiAssayExperiment} slots with the
+#' exception of the \link{ExperimentList} accessor named \code{experiments}.
+#' \itemize{
+#'    \item experiments: Access the \link{ExperimentList} slot
+#'    \item `[[`: Access the \link{ExperimentList} slot
+#'    \item `$`: Access a column in \code{pData}
+#' }
+#'
+#' @section Setters:
+#' Setter method values (i.e., '\code{function(x) <- value}'):
+#' \itemize{
+#'     \item experiments<-: An \code{\link{ExperimentList}} object
+#'     containing experiment data of supported classes
+#'     \item sampleMap<-: A \code{\link{DataFrame}} object relating
+#'     samples to biological units and assays
+#'     \item pData<-: A \code{\link{DataFrame}} object describing the
+#'     biological units
+#'     \item metadata<-: A \code{list} object of metadata
+#'     \item `[[<-`: Equivalent to the \code{experiments<-} setter method for
+#'     convenience
+#'     \item `$<-`: A vector to replace the indicated column in \code{pData}
+#' }
+#'
+#' @param x A \code{MultiAssayExperiment} object
+#' @param object A \code{MultiAssayExperiment} object
+#' @param name A column in \code{pData}
+#' @param value See details.
+#' @param i A \code{numeric} or \code{character} vector of length 1
+#' @param j Argument not in use
+#' @param ... Argument not in use
+#'
+#' @return Accessors: Either a \code{sampleMap}, \code{ExperimentList}, or
+#' \code{DataFrame} object
+#' @return Setters: A \code{MultiAssayExperiment} object
+#'
+#' @example inst/scripts/MultiAssayExperiment-methods-Ex.R
+#'
+#' @aliases experiments sampleMap experiments<- sampleMap<-
+NULL
 
 ### - - - - - - - - - - - - - - - - - - - - - - -
 ### Accessor methods
 ###
 
-#' Accessor function for the \code{sampleMap} slot of a
-#' \code{MultiAssayExperiment} object
-#'
-#' @param x A \code{MultiAssayExperiment} object
-#' @return A \code{DataFrame} object of sample relationships across experiments
-#' @example inst/scripts/sampleMap-Ex.R
 setGeneric("sampleMap", function(x) standardGeneric("sampleMap"))
 
-#' @describeIn MultiAssayExperiment Access sampleMap slot from a
-#' MultiAssayExperiment
 #' @exportMethod sampleMap
+#' @rdname MultiAssayExperiment-methods
 setMethod("sampleMap", "MultiAssayExperiment", function(x)
     getElement(x, "sampleMap"))
 
-#' Accessor function for the \code{ExperimentList} slot of a
-#' \code{MultiAssayExperiment} object
-#'
-#' @param x A \code{MultiAssayExperiment} class object
-#' @return A \code{ExperimentList} object of assay data
-#' @examples
-#' example("MultiAssayExperiment")
-#' experiments(myMultiAssayExperiment)
+#' @export
 setGeneric("experiments", function(x) standardGeneric("experiments"))
 
-#' @describeIn MultiAssayExperiment Access ExperimentList class from a
-#' MultiAssayExperiment
 #' @exportMethod experiments
+#' @rdname MultiAssayExperiment-methods
 setMethod("experiments", "MultiAssayExperiment", function(x)
     getElement(x, "ExperimentList"))
 
-#' @describeIn MultiAssayExperiment Access pData slot from a
-#' MultiAssayExperiment
 #' @exportMethod pData
+#' @rdname MultiAssayExperiment-methods
+#'
 #' @importFrom Biobase pData
 setMethod("pData", "MultiAssayExperiment", function(object)
     getElement(object, "pData"))
 
-#' @describeIn MultiAssayExperiment Access metadata slot from a
-#' MultiAssayExperiment
 #' @exportMethod metadata
+#' @rdname MultiAssayExperiment-methods
 setMethod("metadata", "MultiAssayExperiment", function(x)
     getElement(x, "metadata"))
 
@@ -303,65 +335,42 @@ setMethod("names", "MultiAssayExperiment", function(x)
 ### Replacers
 ###
 
-#' Replace a slot value with a given \code{DataFrame}
-#'
-#' @param object A \code{MultiAssayExperiment} object
-#' @param value A \code{DataFrame} object to replace the existing
-#' \code{sampleMap}
-#'
-#' @examples
-#' ## Load example
-#' example("MultiAssayExperiment")
-#'
-#' ## Replacement method for a MultiAssayExperiment sampleMap
-#' sampleMap(myMultiAssayExperiment) <- DataFrame()
-#'
-#' @return A \code{sampleMap} with replacement values
 setGeneric("sampleMap<-", function(object, value) {
     standardGeneric("sampleMap<-")
 })
 
 #' @exportMethod sampleMap<-
-#' @describeIn MultiAssayExperiment value: A \code{DataFrame} sampleMap
-#' representation
-#' @param value A \code{DataFrame} or \code{ExperimentList} object to replace
-#' the existing \code{sampleMap}, \code{ExperimentList}, or \code{pData} slot
+#' @rdname MultiAssayExperiment-methods
 setReplaceMethod("sampleMap", c("MultiAssayExperiment", "DataFrame"),
                 function(object, value) {
                     slot(object, "sampleMap") <- value
                     return(object)
                 })
 
-#' Replace an \code{ExperimentList} slot value with a given
-#' \code{ExperimentList} class object
-#'
-#' @param object A \code{MultiAssayExperiment} class object
-#' @param value An \code{ExperimentList} object to replace the existing
-#' \code{ExperimentList} slot
-#'
-#' @examples
-#' ## Load a MultiAssayExperiment
-#' example("MultiAssayExperiment")
-#'
-#' ## Replace with an empty ExperimentList
-#' experiments(myMultiAssayExperiment) <- ExperimentList()
-#'
-#' @return A \code{ExperimentList} class object
 setGeneric("experiments<-", function(object, value)
     standardGeneric("experiments<-"))
 
 #' @exportMethod experiments<-
-#' @describeIn MultiAssayExperiment value: An \code{ExperimentList}
-#' representation
+#' @rdname MultiAssayExperiment-methods
 setReplaceMethod("experiments", c("MultiAssayExperiment", "ExperimentList"),
-                function(object, value) {
-                    slot(object, "ExperimentList") <- value
-                    return(object)
-                })
+                 function(object, value) {
+                     if (!length(value)) {
+                         slot(object, "ExperimentList") <- value
+                         return(object)
+                     }
+                     rebliss <- .harmonize(value,
+                                           pData(object),
+                                           sampleMap(object))
+                     BiocGenerics:::replaceSlots(object,
+                             ExperimentList = rebliss[["experiments"]],
+                             pData = rebliss[["pData"]],
+                             sampleMap = rebliss[["sampleMap"]],
+                             metadata = metadata(object))
+                 })
 
 #' @exportMethod pData<-
-#' @describeIn MultiAssayExperiment value: A \code{DataFrame} of specimen data
 #' @importFrom Biobase pData<-
+#' @rdname MultiAssayExperiment-methods
 setReplaceMethod("pData", c("MultiAssayExperiment", "DataFrame"),
                 function(object, value) {
                  slot(object, "pData") <- value
@@ -375,8 +384,8 @@ setReplaceMethod("pData", c("MultiAssayExperiment", "DataFrame"),
 }
 
 #' @exportMethod metadata<-
-#' @describeIn MultiAssayExperiment value: Data of type "ANY"
 #' @importFrom S4Vectors metadata<-
+#' @rdname MultiAssayExperiment-methods
 setReplaceMethod("metadata", c("MultiAssayExperiment", "ANY"),
                  function(x, ..., value) {
                      slot(x, "metadata") <- value
@@ -384,7 +393,7 @@ setReplaceMethod("metadata", c("MultiAssayExperiment", "ANY"),
                  })
 
 #' @exportMethod $<-
-#' @describeIn MultiAssayExperiment value: DataFrame column
+#' @rdname MultiAssayExperiment-methods
 setReplaceMethod("$", "MultiAssayExperiment", function(x, name, value) {
     pData(x)[[name]] <- value
     return(x)
@@ -406,6 +415,13 @@ setMethod("updateObject", "MultiAssayExperiment",
                                 sampleMap = .rearrangeMap(sampleMap(object)),
                                 metadata = metadata(object),
                                 drops = object@drops)
+              }
+              classes <- vapply(experiments(object), class, character(1L))
+              if (any(classes %in% "RangedRaggedAssay")) {
+                  rraIdx <- which(classes == "RangedRaggedAssay")
+                  for (i in rraIdx) {
+                      object[[i]] <- as(object[[i]], "RaggedExperiment")
+                  }
               }
               return(object)
           })

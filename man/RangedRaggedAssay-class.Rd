@@ -4,7 +4,6 @@
 \docType{class}
 \name{RangedRaggedAssay-class}
 \alias{RangedRaggedAssay-class}
-\alias{.RangedRaggedAssay}
 \alias{[,RangedRaggedAssay,ANY,ANY,ANY-method}
 \alias{[,RangedRaggedAssay,ANY-method}
 \alias{[,RangedRaggedAssay,GRanges,ANY,ANY-method}
@@ -27,13 +26,13 @@
 
 \S4method{dimnames}{RangedRaggedAssay,list}(x) <- value
 
-\S4method{disjoin}{RangedRaggedAssay}(x, mcolname = NULL, FUN = mean, ...)
+\S4method{disjoin}{RangedRaggedAssay}(x, mcolname = NULL,
+  simplify = BiocGenerics::mean, ...)
 
 \S4method{show}{RangedRaggedAssay}(object)
 
-\S4method{reduce}{RangedRaggedAssay}(x, drop.empty.ranges = FALSE,
-  replicates = NULL, combine = rowMeans, vectorized = TRUE,
-  mcolname = NULL, ...)
+\S4method{reduce}{RangedRaggedAssay}(x, drop.empty.ranges = FALSE, simplify,
+  replicates = NULL, mcolname = NULL, ...)
 }
 \arguments{
 \item{x}{A \code{\link{RangedRaggedAssay}} class}
@@ -53,7 +52,7 @@ type for selecting columns (\code{\link[GenomicRanges]{GRangesList}} method)}
 \item{mcolname}{A single character string indicating metadata column to use
 for summaries}
 
-\item{FUN}{A function for summarizing non-disjoint ranges (default mean)}
+\item{simplify}{A function for combining duplicate measurements (e.g., mean)}
 
 \item{object}{A \code{RangedRaggedAssay} class object}
 
@@ -61,12 +60,6 @@ for summaries}
 
 \item{replicates}{reduce: A logical list where each element represents a
 sample and a vector of repeated experiments for the sample (default NULL)}
-
-\item{combine}{A function for consolidating columns in the matrix
-representation of the data (default rowMeans)}
-
-\item{vectorized}{logical (default TRUE) whether the \code{combine} function
-is vectorized, optimized for working down the vector pairs}
 }
 \value{
 A \code{\link{RangedRaggedAssay}} class object

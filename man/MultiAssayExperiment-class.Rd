@@ -5,96 +5,64 @@
 \name{MultiAssayExperiment-class}
 \alias{MultiAssayExperiment-class}
 \alias{show,MultiAssayExperiment-method}
-\alias{sampleMap,MultiAssayExperiment-method}
-\alias{experiments,MultiAssayExperiment-method}
-\alias{pData,MultiAssayExperiment-method}
-\alias{metadata,MultiAssayExperiment-method}
 \alias{length,MultiAssayExperiment-method}
 \alias{names,MultiAssayExperiment-method}
-\alias{sampleMap<-,MultiAssayExperiment,DataFrame-method}
-\alias{experiments<-,MultiAssayExperiment,ExperimentList-method}
-\alias{pData<-,MultiAssayExperiment,DataFrame-method}
-\alias{metadata<-,MultiAssayExperiment-method}
-\alias{$<-,MultiAssayExperiment-method}
 \alias{updateObject,MultiAssayExperiment-method}
 \alias{dimnames,MultiAssayExperiment-method}
-\alias{$,MultiAssayExperiment-method}
 \alias{[,MultiAssayExperiment,ANY,ANY,ANY-method}
 \alias{[,MultiAssayExperiment,ANY-method}
 \alias{isEmpty,MultiAssayExperiment-method}
-\alias{[[,MultiAssayExperiment,ANY,ANY-method}
-\alias{[[<-,MultiAssayExperiment,ANY,ANY-method}
 \alias{complete.cases,MultiAssayExperiment-method}
 \alias{duplicated,MultiAssayExperiment-method}
 \alias{reduce,MultiAssayExperiment-method}
 \alias{reduce,ANY-method}
 \alias{c,MultiAssayExperiment-method}
+\alias{assays,MultiAssayExperiment-method}
 \alias{assay,MultiAssayExperiment,missing-method}
+\alias{assay,MultiAssayExperiment,numeric-method}
+\alias{assay,MultiAssayExperiment,character-method}
 \title{An integrative multi-assay class for experiment data}
 \usage{
 \S4method{show}{MultiAssayExperiment}(object)
-
-\S4method{sampleMap}{MultiAssayExperiment}(x)
-
-\S4method{experiments}{MultiAssayExperiment}(x)
-
-\S4method{pData}{MultiAssayExperiment}(object)
-
-\S4method{metadata}{MultiAssayExperiment}(x)
 
 \S4method{length}{MultiAssayExperiment}(x)
 
 \S4method{names}{MultiAssayExperiment}(x)
 
-\S4method{sampleMap}{MultiAssayExperiment,DataFrame}(object) <- value
-
-\S4method{experiments}{MultiAssayExperiment,ExperimentList}(object) <- value
-
-\S4method{pData}{MultiAssayExperiment,DataFrame}(object) <- value
-
-\S4method{metadata}{MultiAssayExperiment}(x, ...) <- value
-
-\S4method{$}{MultiAssayExperiment}(x, name) <- value
-
 \S4method{updateObject}{MultiAssayExperiment}(object, ..., verbose = FALSE)
 
 \S4method{dimnames}{MultiAssayExperiment}(x)
 
-\S4method{$}{MultiAssayExperiment}(x, name)
-
 \S4method{[}{MultiAssayExperiment,ANY,ANY,ANY}(x, i, j, k, ..., drop = TRUE)
 
 \S4method{isEmpty}{MultiAssayExperiment}(x)
-
-\S4method{[[}{MultiAssayExperiment,ANY,ANY}(x, i, j, ...)
-
-\S4method{[[}{MultiAssayExperiment,ANY,ANY}(x, i, j, ...) <- value
 
 \S4method{complete.cases}{MultiAssayExperiment}(...)
 
 \S4method{duplicated}{MultiAssayExperiment}(x, incomparables = FALSE, ...)
 
 \S4method{reduce}{MultiAssayExperiment}(x, drop.empty.ranges = FALSE,
-  replicates = NULL, combine = rowMeans, vectorized = TRUE, ...)
+  simplify = BiocGenerics::mean, replicates = NULL, ...)
 
-\S4method{reduce}{ANY}(x, drop.empty.ranges = FALSE, replicates = NULL,
-  combine = rowMeans, vectorized = TRUE, ...)
+\S4method{reduce}{ANY}(x, drop.empty.ranges = FALSE, simplify,
+  replicates = NULL, ...)
 
-\S4method{c}{MultiAssayExperiment}(x, ..., sampleMap = NULL)
+\S4method{c}{MultiAssayExperiment}(x, ..., sampleMap = NULL, mapFrom = NULL)
+
+\S4method{assays}{MultiAssayExperiment}(x, ..., withDimnames = TRUE)
 
 \S4method{assay}{MultiAssayExperiment,missing}(x, i, ...)
+
+\S4method{assay}{MultiAssayExperiment,numeric}(x, i, ...)
+
+\S4method{assay}{MultiAssayExperiment,character}(x, i, ...)
 }
 \arguments{
 \item{object}{A \code{MultiAssayExperiment} class object}
 
 \item{x}{A \code{MultiAssayExperiment} object for subsetting}
 
-\item{value}{A \code{DataFrame} or \code{ExperimentList} object to replace
-the existing \code{sampleMap}, \code{ExperimentList}, or \code{pData} slot}
-
 \item{...}{Additional arguments. See details for more information.}
-
-\item{name}{pData column name}
 
 \item{verbose}{logical (default FALSE) whether to print extra messages}
 
@@ -114,22 +82,24 @@ in the \code{ExperimentList}}
 
 \item{drop.empty.ranges}{unused generic argument}
 
-\item{replicates}{reduce: A list of \linkS4class{LogicalList} indicating
-duplicate entries for each biological unit, see the \code{duplicated} method
+\item{simplify}{A function for merging repeat measurements in experiments
+as indicated by replicates
 for \code{MultiAssayExperiment}}
 
-\item{combine}{reduce: function for combining replicate columns/samples
-(default rowMeans)}
-
-\item{vectorized}{reduce: logical (default TRUE) whether the combine function is
-vectorized, optimized for working down the vector pairs}
+\item{replicates}{reduce: A list of \linkS4class{LogicalList} indicating
+duplicate entries for each biological unit, see the \code{duplicated} method}
 
 \item{sampleMap}{\code{c} method: a \code{sampleMap} \code{list} or
 \code{DataFrame} to guide merge}
+
+\item{mapFrom}{Either a \code{logical}, \code{character}, or \code{integer}
+vector indicating the experiment(s) that have an identical colname order as
+the experiment input(s)}
+
+\item{withDimnames}{logical (default TRUE) whether to return dimension names
+included in the object}
 }
 \value{
-A \code{MultiAssayExperiment} object
-
 A \code{MultiAssayExperiment} object
 }
 \description{
@@ -140,7 +110,7 @@ assays that are organized instances of
 \code{\linkS4class{ExpressionSet}},
 \code{matrix}, \code{\link{RangedRaggedAssay}}
 (inherits from \code{\linkS4class{GRangesList}}), and \code{RangedVcfStack}.
-Create new \code{MultiAssayExperiment} instances with the eponymous
+Create new \code{MultiAssayExperiment} instances with the homonymous
 constructor, minimally with the argument \code{\link{ExperimentList}},
 potentially also with the arguments \code{pData} (see section below) and
 \code{\link{sampleMap}}.
@@ -163,33 +133,9 @@ data classes compatible with the MultiAssayExperiment API. See: \link{API}
 \item \code{show}: Show method for a
 \code{MultiAssayExperiment}
 
-\item \code{sampleMap}: Access sampleMap slot from a
-MultiAssayExperiment
-
-\item \code{experiments}: Access ExperimentList class from a
-MultiAssayExperiment
-
-\item \code{pData}: Access pData slot from a
-MultiAssayExperiment
-
-\item \code{metadata}: Access metadata slot from a
-MultiAssayExperiment
-
 \item \code{length}: Get the length of ExperimentList
 
 \item \code{names}: Get the names of the ExperimentList
-
-\item \code{sampleMap<-}: value: A \code{DataFrame} sampleMap
-representation
-
-\item \code{experiments<-}: value: An \code{ExperimentList}
-representation
-
-\item \code{pData<-}: value: A \code{DataFrame} of specimen data
-
-\item \code{metadata<-}: value: Data of type "ANY"
-
-\item \code{$<-}: value: DataFrame column
 
 \item \code{updateObject}: Update old serialized MultiAssayExperiment
 objects to new API
@@ -197,18 +143,10 @@ objects to new API
 \item \code{dimnames}: Get the dimension names
 for a \code{MultiAssayExperiment} object
 
-\item \code{$}: Access pData column
-
 \item \code{[}: Subset a \code{MultiAssayExperiment} object
 
 \item \code{isEmpty}: A \code{logical} value indicating an empty
 \code{MultiAssayExperiment}
-
-\item \code{[[}: Extract the \link{ExperimentList} element
-
-\item \code{[[<-}: Replace the \link{ExperimentList} element
-with a supported class (should have documented dimensions
-in \code{sampleMap})
 
 \item \code{complete.cases}: Return a logical vector of biological units
 with data across all experiments
@@ -220,14 +158,23 @@ matching pData rownames
 MultiAssayExperiment where only complete.cases are returned, replicate
 measurements are averaged, and columns are aligned by the row order in pData.
 
-\item \code{reduce}: Consolidate columns for rectangular
-data structures, mainly matrix
+\item \code{reduce}: Consolidate duplicate measurements for
+rectangular data structures, returns object of the same class (endomorphic)
 
 \item \code{c}: Add an element to the
 \code{ExperimentList} data slot
 
-\item \code{assay}: Get the assay data for a
-\link{MultiAssayExperiment} as a \code{list}
+\item \code{assays}: Obtain a \code{\link{SimpleList}} of assay
+data for all available experiments in the object
+
+\item \code{assay}: Convenience function for extracting the
+assay of the first element in the \code{ExperimentList}
+
+\item \code{assay}: Obtain the specified assay from the
+MultiAssayExperiment with a \code{numeric} index
+
+\item \code{assay}: Get the specified assay from the
+MultiAssayExperiment with a \code{character} index
 }}
 
 \section{Slots}{
@@ -292,11 +239,17 @@ pData(compMAE)
 example("MultiAssayExperiment")
 
 ## Add an experiment
-test <- myMultiAssayExperiment[[1L]]
-colnames(test) <- rownames(pData(myMultiAssayExperiment))
+test1 <- myMultiAssayExperiment[[1L]]
+colnames(test1) <- rownames(pData(myMultiAssayExperiment))
 
 ## Combine current MultiAssayExperiment with additional experiment
 ## (no sampleMap)
-c(myMultiAssayExperiment, newExperiment = test)
+c(myMultiAssayExperiment, newExperiment = test1)
 
+test2 <- myMultiAssayExperiment[[1L]]
+c(myMultiAssayExperiment, newExp = test2, mapFrom = 3L)
+
+}
+\seealso{
+\link{MultiAssayExperiment-methods} for slot modifying methods
 }

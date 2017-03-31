@@ -18,6 +18,14 @@ Construct an object representing ranged-based data, typically from a
 from the metadata and represent it in a matrix. See the \code{show} method
 for an example.
 }
+\section{Deprecated}{
+
+The \code{RangedRaggedAssay} class is \strong{deprecated} and defunct by the next
+release cycle. Please use the \strong{RaggedExperiment} class to represent
+copy number, mutation and other genomic range based data. See
+\code{RaggedExperiment} for more detail.
+}
+
 \examples{
 ## Create an example GRangesList object
 library(GenomicRanges)

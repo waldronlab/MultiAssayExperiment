@@ -1,4 +1,4 @@
-example("sampleMap")
+example("MultiAssayExperiment")
 
 ## Create a sampleMap from a list using the listToMap function
 mySampleMap <- listToMap(mylist)

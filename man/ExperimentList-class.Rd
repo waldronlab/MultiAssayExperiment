@@ -4,14 +4,17 @@
 \docType{class}
 \name{ExperimentList-class}
 \alias{ExperimentList-class}
-\alias{.ExperimentList}
 \alias{ExperimentList,ANY-method}
 \alias{ExperimentList,missing-method}
 \alias{show,ExperimentList-method}
 \alias{dimnames,ExperimentList-method}
 \alias{reduce,ExperimentList-method}
 \alias{assay,ANY,missing-method}
+\alias{assays,ExperimentList-method}
 \alias{assay,ExperimentList,missing-method}
+\alias{assay,ExperimentList,missing-method}
+\alias{assay,ExperimentList,numeric-method}
+\alias{assay,ExperimentList,character-method}
 \title{A container for multi-experiment data}
 \usage{
 \S4method{ExperimentList}{ANY}(x)
@@ -22,12 +25,18 @@
 
 \S4method{dimnames}{ExperimentList}(x)
 
-\S4method{reduce}{ExperimentList}(x, drop.empty.ranges = FALSE,
-  replicates = NULL, combine = rowMeans, vectorized = TRUE, ...)
+\S4method{reduce}{ExperimentList}(x, drop.empty.ranges = FALSE, simplify,
+  replicates = NULL, ...)
 
 \S4method{assay}{ANY,missing}(x, i, ...)
 
+\S4method{assays}{ExperimentList}(x, ..., withDimnames = TRUE)
+
 \S4method{assay}{ExperimentList,missing}(x, i, ...)
+
+\S4method{assay}{ExperimentList,numeric}(x, i, ...)
+
+\S4method{assay}{ExperimentList,character}(x, i, ...)
 }
 \arguments{
 \item{x}{constructor: A \code{list} object, reduce or assay: an
@@ -37,19 +46,18 @@
 
 \item{drop.empty.ranges}{unused argument}
 
+\item{simplify}{A function for merging columns where duplicates are indicated
+by replicates}
+
 \item{replicates}{reduce: A \code{list} or \linkS4class{LogicalList} where
-each element represents a sample and a vector of repeated experiments for
+each element represents a sample and a vector of repeated measurements for
 the sample (default NULL)}
-
-\item{combine}{reduce: A function for consolidating columns in the matrix
-representation of the data}
-
-\item{vectorized}{reduce: (default TRUE) whether the \code{combine} function
-is vectorized, optimized for working down the vector pairs}
 
 \item{...}{Additional arguments. See details for more information.}
 
-\item{i}{assay: unused argument}
+\item{i}{A scalar \code{character} or \code{integer} index}
+
+\item{withDimnames}{logical (default TRUE) whether to return dimension names}
 }
 \value{
 An \code{ExperimentList} object
@@ -86,8 +94,17 @@ ExperimentList elements
 
 \item \code{assay}: Get the assay data for the default ANY class
 
-\item \code{assay}: Get the assay data from each element in the
+\item \code{assays}: Get the assay data from each element in the
 \link{ExperimentList}
+
+\item \code{assay}: Convenience function for the assay of the first
+element
+
+\item \code{assay}: Obtain the specified assay from ExperimentList
+with a \code{numeric} index
+
+\item \code{assay}: Get the specified assay from ExperimentList with
+a \code{character} index
 }}
 
 \examples{
