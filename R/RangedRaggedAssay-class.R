@@ -25,6 +25,12 @@ NULL
 #' from the metadata and represent it in a matrix. See the \code{show} method
 #' for an example.
 #'
+#' @section Deprecated:
+#' The \code{RangedRaggedAssay} class is \strong{deprecated} and defunct by the next
+#' release cycle. Please use the \strong{RaggedExperiment} class to represent
+#' copy number, mutation and other genomic range based data. See
+#' \code{RaggedExperiment} for more detail.
+#'
 #' @param x A \code{list}, \code{GRanges} or \code{GRangesList} object
 #' @return A \code{\linkS4class{RangedRaggedAssay}} class object
 #'
@@ -34,8 +40,7 @@ NULL
 #'
 #' @export RangedRaggedAssay
 RangedRaggedAssay <- function(x = GRangesList()) {
-    # class will be deprecated in the next release
-    # .Deprecated("RaggedExperiment")
+    .Deprecated("RaggedExperiment")
     if (is(x, "GRanges")) {
         x <- GRangesList(x)
     }
@@ -185,6 +190,7 @@ setReplaceMethod("dimnames", c("RangedRaggedAssay", "list"),
 #' @exportMethod disjoin
 setMethod("disjoin", "RangedRaggedAssay",
           function(x, mcolname = NULL, simplify = BiocGenerics::mean, ...) {
+    .Deprecated("RaggedExperiment")
     if (is.null(mcolname))
         mcolname <- .findNumericMcol(x)
     if (any(!isDisjoint(x))) {

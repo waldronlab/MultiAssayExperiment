@@ -686,6 +686,7 @@ setMethod("reduce", "ANY", function(x, drop.empty.ranges = FALSE,
 setMethod("reduce", "RangedRaggedAssay",
           function(x, drop.empty.ranges = FALSE, simplify, replicates = NULL,
                    mcolname=NULL, ...) {
+              .Deprecated("RaggedExperiment")
               x <- x[, lengths(x) > 0L ]
               args <- list(...)
               if (is.null(mcolname))
