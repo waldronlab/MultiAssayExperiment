@@ -401,23 +401,23 @@ a list.
 
 ## Helper function to create a `MultiAssayExperiment` object
 
-The `PrepMultiAssay` function helps diagnose common problems when creating a
+The `prepMultiAssay` function helps diagnose common problems when creating a
 `MultiAssayExperiment` object. It provides error messages and/or warnings in
 instances where names (either `colnames` or `ExperimentList` element names) are
 inconsistent with those found in the sampleMap. Input arguments are the same
 as those in the `MultiAssayExperiment` (i.e., `ExperimentList`, `pData`,
-`sampleMap`). The resulting output of the `PrepMultiAssay` function is a list
+`sampleMap`). The resulting output of the `prepMultiAssay` function is a list
 of inputs including a "metadata$drops" element for names that were not able to be
 matched.
 
 Instances where `ExperimentList` is created without names will prompt an error
-from `PrepMultiAssay`. Named `ExperimentList` elements are essential for checks
+from `prepMultiAssay`. Named `ExperimentList` elements are essential for checks
 in `MultiAssayExperiment`.
 
 ```{r}
 objlist3 <- objlist
 (names(objlist3) <- NULL)
-try(PrepMultiAssay(objlist3, patient.data, dfmap)$experiments)
+try(prepMultiAssay(objlist3, patient.data, dfmap)$experiments)
 ```
 
 Non-matching names may also be present in the `ExperimentList` elements and the
@@ -428,7 +428,7 @@ identical and unique, names will be standardized to lower case and replaced.
 names(objlist3) <- toupper(names(objlist))
 names(objlist3)
 unique(dfmap[, "assay"])
-PrepMultiAssay(objlist3, patient.data, dfmap)$experiments
+prepMultiAssay(objlist3, patient.data, dfmap)$experiments
 ```
 
 When `colnames` in the `ExperimentList` cannot be matched back to the primary
@@ -438,7 +438,7 @@ data (`pData`), these will be dropped and added to the drops element.
 exampleMap <- sampleMap(simpleMultiAssay2)
 sapply(doubleExp, colnames)
 exampleMap
-PrepMultiAssay(doubleExp, patient.data, exampleMap)$metadata$drops
+prepMultiAssay(doubleExp, patient.data, exampleMap)$metadata$drops
 ```
 
 A similar operation is performed for checking "primary" `sampleMap` names and
@@ -450,22 +450,22 @@ exMap <- rbind(dfmap,
                DataFrame(assay = "New methyl",
                          primary = "Joe",
                          colname = "Joe"))
-invisible(PrepMultiAssay(objlist, patient.data, exMap))
+invisible(prepMultiAssay(objlist, patient.data, exMap))
 ```
 
-To create a `MultiAssayExperiment` from the results of the `PrepMultiAssay`
+To create a `MultiAssayExperiment` from the results of the `prepMultiAssay`
 function, take each corresponding element from the resulting list and enter
 them as arguments to the `MultiAssayExperiment` constructor function.
 
 ```{r}
-prepped <- PrepMultiAssay(objlist, patient.data, exMap)
+prepped <- prepMultiAssay(objlist, patient.data, exMap)
 preppedMulti <- MultiAssayExperiment(prepped$experiments, prepped$pData,
                                      prepped$sampleMap, prepped$metadata)
 preppedMulti
 ```
 
 Alternatively, use the `do.call` function to easily create a `MultiAssayExperiment`
-from the output of `PrepMultiAssay` function:
+from the output of `prepMultiAssay` function:
 
 ```{r}
 do.call(MultiAssayExperiment, prepped)

@@ -45,11 +45,11 @@ Collate:
     'MultiAssayExperiment-methods.R'
     'MultiAssayExperiment-pkg.R'
     'MultiAssayExperiment.R'
-    'PrepMultiAssay.R'
     'assay-methods.R'
     'clusterOn.R'
     'hasAssay.R'
     'listToMap.R'
     'mapToList.R'
+    'prepMultiAssay.R'
     'upsetSamples.R'
 RoxygenNote: 6.0.1

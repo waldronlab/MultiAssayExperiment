@@ -1,3 +1,9 @@
+# MultiAssayExperiment 1.1.44
+
+## Bug fixes and minor improvements
+
+* Renamed `PrepMultiAssay` to `prepMultiAssay`
+
 # MultiAssayExperiment 1.1.43
 
 ## New features

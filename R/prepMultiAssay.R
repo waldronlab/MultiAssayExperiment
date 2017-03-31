@@ -6,7 +6,7 @@
 #' the \code{pData}, or \code{\link{sampleMap}}.
 #'
 #' @section Checks:
-#' The \code{PrepMultiAssay} function checks that all columns in the sampleMap
+#' The \code{prepMultiAssay} function checks that all columns in the sampleMap
 #' are \code{character}.
 #'
 #' It checks that all names and lengths match in both the
@@ -43,7 +43,7 @@
 #' example("MultiAssayExperiment")
 #'
 #' ## Check if there are any inconsistencies within the different names
-#' preparedMAE <- PrepMultiAssay(ExpList, pDat, mySampleMap)
+#' preparedMAE <- prepMultiAssay(ExpList, pDat, mySampleMap)
 #'
 #' ## Results in a list of components for the MultiAssayExperiment constructor
 #' ## function
@@ -53,8 +53,8 @@
 #' ## Alternatively, use the do.call function
 #' do.call(MultiAssayExperiment, preparedMAE)
 #'
-#' @export PrepMultiAssay
-PrepMultiAssay <- function(ExperimentList, pData, sampleMap) {
+#' @export prepMultiAssay
+prepMultiAssay <- function(ExperimentList, pData, sampleMap) {
     drops <- list()
     ExperimentList <- ExperimentList(ExperimentList)
     if (any(vapply(sampleMap, FUN = function(col) {
