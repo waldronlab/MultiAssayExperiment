@@ -8,7 +8,6 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 output:
   BiocStyle::html_document:
-    number_sections: yes
     toc: yes
 ---
 
@@ -19,9 +18,14 @@ suppressPackageStartupMessages({
     })
 ```
 
-# Key Features of the MultiAssayExperiment API
+# Key Features of `MultiAssayExperiment`
 
-## pData - biological units
+## Slots
+
+### pData - biological units
+
+A `DataFrame` describing the characteristics of the biological units. In
+[The Cancer Genome Atlas]() data, for example, the biological units are patients.
 
 ```{r}
 pheno <- DataFrame(id = 1:4, type = c("a", "a", "b", "b"),
@@ -29,7 +33,11 @@ pheno <- DataFrame(id = 1:4, type = c("a", "a", "b", "b"),
                    row.names = c("Bob", "Sandy", "Jake", "Lauren"))
 ```
 
-## ExperimentList - experiment data
+### ExperimentList - experiment data
+
+A base `list` or `ExperimentList` object containing the experimental datasets
+for the set of samples collected. This gets converted into a class
+`ExperimentList` during construction.
 
 ```{r}
 dataset1 <- matrix(rnorm(20, 5, 1), ncol = 5,
@@ -43,7 +51,11 @@ expList <- list(exp1 = dataset1, exp2 = dataset2)
 expList
 ```
 
-## sampleMap - relationship graph
+### sampleMap - relationship graph
+
+A `DataFrame` graph representation of the relationship between the experiments
+(`assay` column name), biological units (`primary`), and samples (`colname`).
+Helper functions are available for creating a map from a list. See `?listToMap`
 
 ```{r}
 map1 <- DataFrame(primary = c("Bob", "Jake", "Sandy", "Sandy", "Lauren"),
@@ -55,9 +67,22 @@ sampMap
 ```
 
 
-## MultiAssayExperiment - infrastructure class
+## MultiAssayExperiment - class constructor function
+
+The `MultiAssayExperiment` constructor function can take three arguments:
+
+1. `experiments` - An `ExperimentList` or `list` of data
+2. `pData` - A `DataFrame` describing the biological units
+3. `sampleMap` - A `DataFrame` of `assay`, `primary`, and `colname` identifiers
 
 ```{r}
 MultiAssayExperiment(expList, pheno, sampMap)
 ```
 
+## `prepMultiAssay` - Constructor function helper
+
+The `prepMultiAssay` function allows the user to diagnose typical problems
+when creating a `MultiAssayExperiment` object. See `?prepMultiAssay` for more
+details.
+
+[The Cancer Genome Atlas]: https://cancergenome.nih.gov/
