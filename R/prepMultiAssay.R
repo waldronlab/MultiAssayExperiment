@@ -55,18 +55,30 @@
 #'
 #' @export prepMultiAssay
 prepMultiAssay <- function(ExperimentList, pData, sampleMap) {
-    drops <- list()
-    ExperimentList <- ExperimentList(ExperimentList)
-    if (any(vapply(sampleMap, FUN = function(col) {
-        !is.character(col)
-    }, FUN.VALUE = logical(1L)))) {
-        sampleMap[] <- lapply(sampleMap, as.character)
-    }
     if (!is(sampleMap, "DataFrame"))
         sampleMap <- S4Vectors::DataFrame(sampleMap)
     if (is.null(names(ExperimentList)))
         stop("ExperimentList does not have names, assign names")
-    assays <- unique(sampleMap[["assay"]])
+    drops <- list()
+    ExperimentList <- ExperimentList(ExperimentList)
+    charTypes <- list(assay = is.factor,
+                      primary = is.character,
+                      colname = is.character)
+    correctType <- vapply(seq_along(charTypes),
+                          function(i, sampMap, char) {
+                              char[[i]](sampMap[, i])
+                          }, logical(1L),
+                          sampMap = sampleMap, char = charTypes)
+    if (any(!correctType)) {
+        coerceList <- list(assay = as.factor,
+                           primary = as.character,
+                           colname = as.character)
+        fxIdx <- which(!correctType)
+        for (i in fxIdx) {
+            sampleMap[, i] <- coerceList[[i]](sampleMap[[i]])
+        }
+    }
+    assays <- levels(sampleMap[["assay"]])
     if (length(names(ExperimentList)) != length(assays)) {
         warning("\nLengths of names in the ExperimentList and sampleMap\n",
                 " are not equal")
@@ -93,6 +105,7 @@ prepMultiAssay <- function(ExperimentList, pData, sampleMap) {
         notF <- sampleMap[!notFounds, ]
         drops <- list(sampleMap = notF)
         sampleMap <- sampleMap[notFounds, ]
+        sampleMap[, 1] <- factor(sampleMap[, 1])
         print(notF)
         if (length(unique(sampleMap[["assay"]])) != length(ExperimentList)) {
             stop("Some assay names could not be matched,",
