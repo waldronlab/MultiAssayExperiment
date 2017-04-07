@@ -36,11 +36,11 @@ mylist <- list(Affy = exprmap, Methyl450k = methylmap,
 ## Create a sampleMap
 mySampleMap <- listToMap(mylist)
 ## Create an example phenotype data
-pDat <- data.frame(sex = c("M", "F", "M", "F"),
+colDat <- data.frame(sex = c("M", "F", "M", "F"),
                        age = 38:41,
                        row.names = c("Jack", "Jill", "Bob", "Barbara"))
 
 ## Create a MultiAssayExperiment instance
 myMultiAssayExperiment <- MultiAssayExperiment(experiments = ExpList,
-                                               pData = pDat,
+                                               colData = colDat,
                                                sampleMap = mySampleMap)
