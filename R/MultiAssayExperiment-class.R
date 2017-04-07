@@ -248,9 +248,12 @@ setMethod("show", "MultiAssayExperiment", function(object) {
 #' Eponymous names for accessing \code{MultiAssayExperiment} slots with the
 #' exception of the \link{ExperimentList} accessor named \code{experiments}.
 #' \itemize{
+#'    \item colData: Access the \code{colData} slot
+#'    \item sampleMap: Access the \code{sampleMap} slot
 #'    \item experiments: Access the \link{ExperimentList} slot
 #'    \item `[[`: Access the \link{ExperimentList} slot
 #'    \item `$`: Access a column in \code{colData}
+#'    \item pData: (deprecated) Access the \code{colData} slot
 #' }
 #'
 #' @section Setters:
