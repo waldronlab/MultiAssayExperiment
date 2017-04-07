@@ -8,8 +8,9 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 output:
   BiocStyle::html_document:
-    number_sections: yes
+    number_sections: no
     toc: yes
+    toc_depth: 4
 ---
 
 ```{r, echo=FALSE, warning=FALSE}
@@ -19,9 +20,19 @@ suppressPackageStartupMessages({
     })
 ```
 
-# Key Features of the MultiAssayExperiment API
+# Key Features of `MultiAssayExperiment`
 
-## pData - biological units
+## Component slots
+
+### colData - biological units
+
+A `DataFrame` describing the characteristics of the biological units. In
+[The Cancer Genome Atlas][] data, for example, the biological units are patients.
+
+Key points: 
+
+* One row per patient
+* Zero or more observations in each experiment
 
 ```{r}
 pheno <- DataFrame(id = 1:4, type = c("a", "a", "b", "b"),
@@ -29,7 +40,17 @@ pheno <- DataFrame(id = 1:4, type = c("a", "a", "b", "b"),
                    row.names = c("Bob", "Sandy", "Jake", "Lauren"))
 ```
 
-## ExperimentList - experiment data
+### ExperimentList - experiment data
+
+A base `list` or `ExperimentList` object containing the experimental datasets
+for the set of samples collected. This gets converted into a class
+`ExperimentList` during construction.
+
+Key points:
+
+* Included data classes must support: `[`, `dimnames`, `dim`
+* Genomic range-based or ID-based data
+* Support open-ended set of data clases
 
 ```{r}
 dataset1 <- matrix(rnorm(20, 5, 1), ncol = 5,
@@ -43,7 +64,15 @@ expList <- list(exp1 = dataset1, exp2 = dataset2)
 expList
 ```
 
-## sampleMap - relationship graph
+### sampleMap - relationship graph
+
+A `DataFrame` graph representation of the relationship between the experiments
+(`assay` column name), biological units (`primary`), and samples (`colname`).
+Helper functions are available for creating a map from a list. See `?listToMap`
+
+Key points:
+* relates experimental observations (`colnames`) to `colData`
+* permits experiment-specific sample naming, missing, and replicate observations
 
 ```{r}
 map1 <- DataFrame(primary = c("Bob", "Jake", "Sandy", "Sandy", "Lauren"),
@@ -54,10 +83,163 @@ sampMap <- listToMap(list(exp1 = map1, exp2 = map2))
 sampMap
 ```
 
+<p style="text-align: right;"> <a href="#header">back to top</a> </p>
 
-## MultiAssayExperiment - infrastructure class
+## MultiAssayExperiment - class constructor function
+
+The `MultiAssayExperiment` constructor function can take three arguments:
+
+1. `experiments` - An `ExperimentList` or `list` of data
+2. `colData` - A `DataFrame` describing the biological units
+3. `sampleMap` - A `DataFrame` of `assay`, `primary`, and `colname` identifiers
 
 ```{r}
-MultiAssayExperiment(expList, pheno, sampMap)
+(mae <- MultiAssayExperiment(expList, pheno, sampMap))
 ```
 
+### Subsetting
+
+#### Single bracket `[`
+
+In pseudo code below, the subsetting operations work on the rows of the following indices:
+1. _i_ experimental data rows
+2. _j_ the primary names or the column names (entered as a `list` or `List`)
+3. _k_ assay
+
+```
+multiassayexperiment[i = rownames, j = primary or colnames, k = assay]
+```
+
+Examples:
+
+```{r}
+mae[c("GENE4", "ENST00002"), , ]
+mae[, c("Bob", "Jake", "Sandy"), ]
+mae[, , "exp1"]
+```
+
+
+#### Double bracket `[[`
+
+The "double bracket" method (`[[`) is a convenience function for extracting
+a single element of the `MultiAssayExperiment` `ExperimentList`. It avoids
+the use of `experiments(mae)[[1L]]`. For example:
+
+```{r}
+mae[[1L]]
+```
+
+will extract the first experiment in the `ExperimentList` in the class that
+it was stored in. 
+
+<p style="text-align: right;"> <a href="#header">back to top</a> </p>
+
+### Extraction
+
+#### assay and assays
+
+The `assay` and `assays` methods follow `SummarizedExperiment` convention.
+The `assay` (singular) method will extract the first element of the
+`ExperimentList` and will __return__ a `matrix`. 
+
+```{r}
+assay(mae)
+```
+
+The `assays` (plurar) method will return a `SimpleList` of the data with each
+element being a `matrix`.
+
+```{r}
+assays(mae)
+```
+
+<p style="text-align: right;"> <a href="#header">back to top</a> </p>
+
+#### Slot accession
+
+Each `slot` in the `MultiAssayExperiment` has its convenient accessor function.
+See the table below. 
+
+| Slot | Accessor |
+|------|----------|
+| `ExperimentList` | `experiments`|
+| `colData` | `colData` / `$` * |
+| `sampleMap` | `sampleMap` |
+| `metadata` | `metadata` |
+
+__*__ The `$` operator on a `MultiAssayExperiment` will return a single
+column of `colData`. For example:
+
+```{r}
+mae$sex
+```
+
+### Transformations 
+
+#### `rearrange`
+
+The `rearrange` function will "reshape" and combine your data into one
+`DataFrame`. This is accomplished using either the _long_ or _wide_ format
+for the _shape_ argument. 
+
+```{r}
+rearrange(mae)
+```
+
+For a _wide_ dataset, use the _shape_ argument:
+
+```{r}
+rearrange(mae, shape = "wide")[, 1:4]
+```
+
+#### `c` - combine
+
+The `c` function allows the user to insert an additional experiment into an
+already created `MultiAssayExperiment`.
+
+A `sampleMap` can be provided using in order to map `colData` rows to experiment
+column names. In the following example, the "exp3" experiment contains repeated
+measurements for Bob.
+
+```{r}
+(maec1 <- c(x = mae,
+  exp3 = matrix(rnorm(10), ncol = 5,
+                dimnames = list(paste0("GENE", c("A", "B")),
+                                paste0("sample", LETTERS[1:5]))),
+  sampleMap = DataFrame(assay = "exp3",
+                        primary = c("Bob", "Bob", "Sandy", "Jake", "Lauren"),
+                        colname = paste0("sample", LETTERS[1:5])
+                        )
+  ))
+sampleMap(maec1)
+```
+
+For convenience, the _mapFrom_ argument allows the user to map from a particular
+experiment **provided** that the **order** of the colnames is in the **same**.
+A `warning` will be issued to make the user aware of this assumption.
+
+```{r}
+(maec2 <- c(x = mae,
+  exp3 = matrix(rnorm(10), ncol = 5,
+                dimnames = list(paste0("GENE", c("A", "B")),
+                                paste0("sample", LETTERS[1:5]))),
+  mapFrom = 1L))
+```
+
+## `prepMultiAssay` - Constructor function helper
+
+The `prepMultiAssay` function allows the user to diagnose typical problems
+when creating a `MultiAssayExperiment` object. See `?prepMultiAssay` for more
+details.
+
+<p style="text-align: right;"> <a href="#header">back to top</a> </p>
+
+# Session info
+
+```{r}
+sessionInfo()
+```
+
+<p style="text-align: right;"> <a href="#header">back to top</a> </p>
+
+[The Cancer Genome Atlas]: https://cancergenome.nih.gov/

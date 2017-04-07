@@ -20,8 +20,8 @@ metadata(myMultiAssayExperiment)
 metadata(myMultiAssayExperiment) <- list(runDate =
                                              format(Sys.time(), "%B %d, %Y"))
 
-## Access a column in pData
+## Access a column in colData
 myMultiAssayExperiment$age
 
-## Replace a column in pData
+## Replace a column in colData
 myMultiAssayExperiment$age <- myMultiAssayExperiment$age + 1

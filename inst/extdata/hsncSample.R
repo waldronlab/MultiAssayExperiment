@@ -14,6 +14,6 @@
 ## Script for downloading and extracting HNSC data
 system(paste("aws s3 cp s3://multiassayexperiments/hnscMAEO.rds",
        "/home/$USER/Downloads/"))
-hnsc <- readRDS(file.path(Sys.getenv("HOME"), "Downloads", "hnscMAEO.rds"))
-hnsc <- hnsc[1:20, 1:11, c("CNASNP", "CNVSNP")]
-save(hnsc, file = "inst/extdata/hnscSample.rda", compress = "bzip2")
+hnscSample <- readRDS(file.path(Sys.getenv("HOME"), "Downloads", "hnscMAEO.rds"))
+hnscSample <- hnscSample[1:20, 1:11, c("CNASNP", "CNVSNP")]
+saveRDS(hnscSample, file = "inst/extdata/hnscSample.rds", compress = "bzip2")

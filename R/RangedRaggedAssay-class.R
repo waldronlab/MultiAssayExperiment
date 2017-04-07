@@ -7,7 +7,6 @@
 #' @exportClass RangedRaggedAssay
 #' @name RangedRaggedAssay-class
 #'
-#' @example inst/scripts/RangedRaggedAssay-class-Ex.R
 #' @docType class
 NULL
 

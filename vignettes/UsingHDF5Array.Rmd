@@ -86,7 +86,7 @@ the `MultiAssayExperiment` constructor function.
 ```{r}
 HDF5MAE <- MultiAssayExperiment(experiments = list(smallMatrix = smallMatrix))
 sampleMap(HDF5MAE)
-pData(HDF5MAE)
+colData(HDF5MAE)
 ```
 
 ### `SummarizedExperiment` with `DelayedMatrix` backend

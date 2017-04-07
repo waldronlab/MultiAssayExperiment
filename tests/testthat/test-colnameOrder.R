@@ -11,7 +11,7 @@ sampleMap(myMultiAssayExperiment) <- newSampMap
 
 # Rearrange ExperimentList colnames using sampleMap "assay" column
 myMultiAssayExperiment <-
-  myMultiAssayExperiment[, rownames(pData(myMultiAssayExperiment)), ]
+  myMultiAssayExperiment[, rownames(colData(myMultiAssayExperiment)), ]
 
 
 test_that("when columns in different order, subset ops will rearrange them", {

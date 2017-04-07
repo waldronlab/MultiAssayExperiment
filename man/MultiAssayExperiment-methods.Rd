@@ -11,10 +11,12 @@
 \alias{sampleMap,MultiAssayExperiment-method}
 \alias{experiments,MultiAssayExperiment-method}
 \alias{pData,MultiAssayExperiment-method}
+\alias{colData,MultiAssayExperiment-method}
 \alias{metadata,MultiAssayExperiment-method}
 \alias{sampleMap<-,MultiAssayExperiment,DataFrame-method}
 \alias{experiments<-,MultiAssayExperiment,ExperimentList-method}
 \alias{pData<-,MultiAssayExperiment,DataFrame-method}
+\alias{colData<-,MultiAssayExperiment,DataFrame-method}
 \alias{metadata<-,MultiAssayExperiment-method}
 \alias{$<-,MultiAssayExperiment-method}
 \alias{$,MultiAssayExperiment-method}
@@ -28,6 +30,8 @@
 
 \S4method{pData}{MultiAssayExperiment}(object)
 
+\S4method{colData}{MultiAssayExperiment}(x, ...)
+
 \S4method{metadata}{MultiAssayExperiment}(x)
 
 \S4method{sampleMap}{MultiAssayExperiment,DataFrame}(object) <- value
@@ -35,6 +39,8 @@
 \S4method{experiments}{MultiAssayExperiment,ExperimentList}(object) <- value
 
 \S4method{pData}{MultiAssayExperiment,DataFrame}(object) <- value
+
+\S4method{colData}{MultiAssayExperiment,DataFrame}(x) <- value
 
 \S4method{metadata}{MultiAssayExperiment}(x, ...) <- value
 
@@ -51,11 +57,11 @@
 
 \item{object}{A \code{MultiAssayExperiment} object}
 
-\item{value}{See details.}
-
 \item{...}{Argument not in use}
 
-\item{name}{A column in \code{pData}}
+\item{value}{See details.}
+
+\item{name}{A column in \code{colData}}
 
 \item{i}{A \code{numeric} or \code{character} vector of length 1}
 
@@ -69,17 +75,21 @@ Setters: A \code{MultiAssayExperiment} object
 }
 \description{
 A set of accessor and setter generic functions to extract
-either the \code{sampleMap}, the \code{\link{ExperimentList}}, \code{pData},
-or \code{metadata} slots of a \code{\link{MultiAssayExperiment}} object
+either the \code{sampleMap}, the \code{\link{ExperimentList}},
+\code{colData}, or \code{metadata} slots of a
+\code{\link{MultiAssayExperiment}} object
 }
 \section{Accessors}{
 
 Eponymous names for accessing \code{MultiAssayExperiment} slots with the
 exception of the \link{ExperimentList} accessor named \code{experiments}.
 \itemize{
+   \item colData: Access the \code{colData} slot
+   \item sampleMap: Access the \code{sampleMap} slot
    \item experiments: Access the \link{ExperimentList} slot
    \item `[[`: Access the \link{ExperimentList} slot
-   \item `$`: Access a column in \code{pData}
+   \item `$`: Access a column in \code{colData}
+   \item pData: (deprecated) Access the \code{colData} slot
 }
 }
 
@@ -91,12 +101,12 @@ Setter method values (i.e., '\code{function(x) <- value}'):
     containing experiment data of supported classes
     \item sampleMap<-: A \code{\link{DataFrame}} object relating
     samples to biological units and assays
-    \item pData<-: A \code{\link{DataFrame}} object describing the
+    \item colData<-: A \code{\link{DataFrame}} object describing the
     biological units
     \item metadata<-: A \code{list} object of metadata
     \item `[[<-`: Equivalent to the \code{experiments<-} setter method for
     convenience
-    \item `$<-`: A vector to replace the indicated column in \code{pData}
+    \item `$<-`: A vector to replace the indicated column in \code{colData}
 }
 }
 
@@ -123,9 +133,9 @@ metadata(myMultiAssayExperiment)
 metadata(myMultiAssayExperiment) <- list(runDate =
                                              format(Sys.time(), "\%B \%d, \%Y"))
 
-## Access a column in pData
+## Access a column in colData
 myMultiAssayExperiment$age
 
-## Replace a column in pData
+## Replace a column in colData
 myMultiAssayExperiment$age <- myMultiAssayExperiment$age + 1
 }

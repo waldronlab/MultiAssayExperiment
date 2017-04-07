@@ -3,10 +3,10 @@
 #' The purpose of this helper function is to faciltate the creation of a
 #' \code{\link{MultiAssayExperiment}} object by detecting any inconsistencies
 #' with all types of names in either the \code{\link{ExperimentList}},
-#' the \code{pData}, or \code{\link{sampleMap}}.
+#' the \code{colData}, or \code{\link{sampleMap}}.
 #'
 #' @section Checks:
-#' The \code{PrepMultiAssay} function checks that all columns in the sampleMap
+#' The \code{prepMultiAssay} function checks that all columns in the sampleMap
 #' are \code{character}.
 #'
 #' It checks that all names and lengths match in both the
@@ -23,13 +23,13 @@
 #' resulting \code{list}.
 #'
 #' Names in the "primary" column of the \code{\link{sampleMap}}, will be
-#' matched to those in the \code{pData}. Unmatched "primary" column rows will
+#' matched to those in the \code{colData}. Unmatched "primary" column rows will
 #' be dropped from the \code{\link{sampleMap}}. Suggestions for name fixes in
 #' either the \code{\link{ExperimentList}} or colnames will be made when
 #' necessary.
 #'
 #' @param ExperimentList A \code{list} of all combined experiments
-#' @param pData A \linkS4class{DataFrame} of the phenotype
+#' @param colData A \linkS4class{DataFrame} of the phenotype
 #' data for all participants
 #' @param sampleMap A \linkS4class{DataFrame} of sample identifiers, assay
 #' samples, and assay names
@@ -43,30 +43,42 @@
 #' example("MultiAssayExperiment")
 #'
 #' ## Check if there are any inconsistencies within the different names
-#' preparedMAE <- PrepMultiAssay(ExpList, pDat, mySampleMap)
+#' preparedMAE <- prepMultiAssay(ExpList, colDat, mySampleMap)
 #'
 #' ## Results in a list of components for the MultiAssayExperiment constructor
 #' ## function
-#' MultiAssayExperiment(preparedMAE$experiments, preparedMAE$pData,
+#' MultiAssayExperiment(preparedMAE$experiments, preparedMAE$colData,
 #' preparedMAE$sampleMap)
 #'
 #' ## Alternatively, use the do.call function
 #' do.call(MultiAssayExperiment, preparedMAE)
 #'
-#' @export PrepMultiAssay
-PrepMultiAssay <- function(ExperimentList, pData, sampleMap) {
-    drops <- list()
-    ExperimentList <- ExperimentList(ExperimentList)
-    if (any(vapply(sampleMap, FUN = function(col) {
-        !is.character(col)
-    }, FUN.VALUE = logical(1L)))) {
-        sampleMap[] <- lapply(sampleMap, as.character)
-    }
+#' @export prepMultiAssay
+prepMultiAssay <- function(ExperimentList, colData, sampleMap) {
     if (!is(sampleMap, "DataFrame"))
         sampleMap <- S4Vectors::DataFrame(sampleMap)
     if (is.null(names(ExperimentList)))
         stop("ExperimentList does not have names, assign names")
-    assays <- unique(sampleMap[["assay"]])
+    drops <- list()
+    ExperimentList <- ExperimentList(ExperimentList)
+    charTypes <- list(assay = is.factor,
+                      primary = is.character,
+                      colname = is.character)
+    correctType <- vapply(seq_along(charTypes),
+                          function(i, sampMap, char) {
+                              char[[i]](sampMap[, i])
+                          }, logical(1L),
+                          sampMap = sampleMap, char = charTypes)
+    if (any(!correctType)) {
+        coerceList <- list(assay = as.factor,
+                           primary = as.character,
+                           colname = as.character)
+        fxIdx <- which(!correctType)
+        for (i in fxIdx) {
+            sampleMap[, i] <- coerceList[[i]](sampleMap[[i]])
+        }
+    }
+    assays <- levels(sampleMap[["assay"]])
     if (length(names(ExperimentList)) != length(assays)) {
         warning("\nLengths of names in the ExperimentList and sampleMap\n",
                 " are not equal")
@@ -86,17 +98,18 @@ PrepMultiAssay <- function(ExperimentList, pData, sampleMap) {
         }
     }
     primaries <- sampleMap[["primary"]]
-    notFounds <- primaries %in% rownames(pData)
+    notFounds <- primaries %in% rownames(colData)
     if (!all(notFounds)) {
         message("\nNot all names in the primary column of the sampleMap",
-                "\n could be matched to the pData rownames; see $drops")
+                "\n could be matched to the colData rownames; see $drops")
         notF <- sampleMap[!notFounds, ]
         drops <- list(sampleMap = notF)
         sampleMap <- sampleMap[notFounds, ]
+        sampleMap[, 1] <- factor(sampleMap[, 1])
         print(notF)
         if (length(unique(sampleMap[["assay"]])) != length(ExperimentList)) {
             stop("Some assay names could not be matched,",
-                 " check primary and pData names")
+                 " check primary and colData names")
         }
     }
     if (exists("nameErr") && nameErr) {
@@ -124,6 +137,6 @@ PrepMultiAssay <- function(ExperimentList, pData, sampleMap) {
         print(Biobase::selectSome(coldrops))
         drops <- c(drops, columns = coldrops)
     }
-    return(list(experiments = ExperimentList, pData = pData,
+    return(list(experiments = ExperimentList, colData = colData,
                 sampleMap = sampleMap, metadata = list(drops = drops)))
 }

@@ -2,7 +2,7 @@
 ### MultiAssayExperiment constructor
 ### ----------------------------------------------
 
-.harmonize <- function(experiments, pData, sampleMap) {
+.harmonize <- function(experiments, colData, sampleMap) {
     harmony <- character()
     ## sampleMap assays agree with experiment names
     assay <- intersect(names(experiments), levels(sampleMap[["assay"]]))
@@ -32,27 +32,27 @@
     }
 
     ## sampleMap primary agrees with primary
-    primary <- intersect(rownames(pData), sampleMap[["primary"]])
+    primary <- intersect(rownames(colData), sampleMap[["primary"]])
     keep_sampleMap_primary <- sampleMap[["primary"]] %in% primary
     if (!all(keep_sampleMap_primary)) {
         sampleMap <- sampleMap[keep_sampleMap_primary, , drop=FALSE]
         harmony <- c(
             harmony,
             paste("removing", sum(!keep_sampleMap_primary),
-                  "sampleMap rows with 'primary' not in pData"))
+                  "sampleMap rows with 'primary' not in colData"))
     }
 
     ## update objects
     assay <- intersect(names(experiments), levels(sampleMap[["assay"]]))
     experiments_columns <- split(sampleMap[["colname"]], sampleMap[["assay"]])
-    primary <- intersect(rownames(pData), sampleMap[["primary"]])
-    keep_pData <- rownames(pData) %in% primary
-    if (!all(keep_pData)) {
-        pData <- pData[keep_pData, ]
+    primary <- intersect(rownames(colData), sampleMap[["primary"]])
+    keep_colData <- rownames(colData) %in% primary
+    if (!all(keep_colData)) {
+        colData <- colData[keep_colData, ]
         harmony <- c(
             harmony,
-            paste("removing", sum(!keep_pData),
-                  "pData rownames not in sampleMap 'primary'"))
+            paste("removing", sum(!keep_colData),
+                  "colData rownames not in sampleMap 'primary'"))
     }
 
     experiments <- ExperimentList(Map(function(x, idx) {
@@ -67,7 +67,7 @@
 
     if (length(harmony))
         message("harmonizing input:\n  ", paste(harmony, collapse="\n  "))
-    list(experiments=experiments, sampleMap=sampleMap, pData=pData)
+    list(experiments=experiments, sampleMap=sampleMap, colData=colData)
 }
 
 #' Construct a \code{MultiAssayExperiment} object
@@ -75,14 +75,14 @@
 #' The constructor function for the \link{MultiAssayExperiment-class} combines
 #' multiple data elements from the different hierarchies of data
 #' (study, experiments, and samples). It can create instances where neither
-#' a \code{sampleMap} or a \code{pData} set is provided. Please see the
+#' a \code{sampleMap} or a \code{colData} set is provided. Please see the
 #' MultiAssayExperiment API documentation for more information by running the
 #' \code{API} function.
 #'
 #' @param experiments A \code{list} or \link{ExperimentList} of all
 #' combined experiments
-#' @param pData A \code{\link[S4Vectors]{DataFrame}} or \code{data.frame} of
-#' the phenotype data for all participants
+#' @param colData A \code{\link[S4Vectors]{DataFrame}} or \code{data.frame} of
+#' characteristics for all biological units
 #' @param sampleMap A \code{DataFrame} or \code{data.frame} of assay names,
 #' sample identifiers, and colname samples
 #' @param metadata An optional argument of "ANY" class (usually list) for
@@ -98,7 +98,7 @@
 #' @seealso \link{MultiAssayExperiment-class}
 MultiAssayExperiment <-
     function(experiments = ExperimentList(),
-            pData = S4Vectors::DataFrame(),
+            colData = S4Vectors::DataFrame(),
             sampleMap = S4Vectors::DataFrame(),
             metadata = NULL,
             drops = list()) {
@@ -108,15 +108,15 @@ MultiAssayExperiment <-
         else
             experiments <- ExperimentList(experiments)
 
-        if (missing(pData)){
+        if (missing(colData)){
             allsamps <- unique(unlist(unname(colnames(experiments))))
-            pData <- S4Vectors::DataFrame(row.names = allsamps)
-        } else if (!is(pData, "DataFrame"))
-            pData <- S4Vectors::DataFrame(pData)
+            colData <- S4Vectors::DataFrame(row.names = allsamps)
+        } else if (!is(colData, "DataFrame"))
+            colData <- S4Vectors::DataFrame(colData)
 
 
         if (missing(sampleMap)){
-            sampleMap <- .generateMap(pData, experiments)
+            sampleMap <- .generateMap(colData, experiments)
         } else {
             sampleMap <- S4Vectors::DataFrame(sampleMap)
             if (!all(c("assay", "primary", "colname") %in% colnames(sampleMap)))
@@ -133,7 +133,7 @@ MultiAssayExperiment <-
             }
         }
 
-        bliss <- .harmonize(experiments, pData, sampleMap)
+        bliss <- .harmonize(experiments, colData, sampleMap)
 
         ## validAssays <- S4Vectors::split(
         ##     sampleMap[["colname"]], sampleMap[, "assay"])
@@ -143,7 +143,7 @@ MultiAssayExperiment <-
 
         newMultiAssay <- new("MultiAssayExperiment",
                              ExperimentList = bliss[["experiments"]],
-                             pData = bliss[["pData"]],
+                             colData = bliss[["colData"]],
                              sampleMap = bliss[["sampleMap"]],
                              metadata = metadata)
         return(newMultiAssay)

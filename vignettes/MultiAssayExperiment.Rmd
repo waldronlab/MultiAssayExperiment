@@ -87,7 +87,7 @@ The datasets contained in elements of the `ExperimentList` must have:
 * row names
 
 The column names correspond to samples, and are used to match assay data to
-specimen metadata stored in `pData`. 
+specimen metadata stored in `colData`. 
 
 The row names can correspond to a variety of features in the data including
 but not limited to gene names, probe IDs, proteins, and named ranges.
@@ -104,20 +104,20 @@ columns.
 and experimental samples
 - `dim()`: returns a vector of the number of rows and number of columns
 
-### pData: primary data
+### colData: primary data
 
 The `MultiAssayExperiment` keeps one set of "primary" metadata that describes
 the 'biological unit' which can refer to specimens, experimental subjects,
 patients, etc. In this vignette, we will refer to each experimental subject as
 a *patient*.
 
-#### pData slot requirements
+#### colData slot requirements
 
-The `pData` dataset should be of class `DataFrame` but can accept a
+The `colData` dataset should be of class `DataFrame` but can accept a
 `data.frame` class object that will be coerced.  
 
 In order to relate metadata of the biological unit, the row names of the
-`pData` dataset must contain patient identifiers. 
+`colData` dataset must contain patient identifiers. 
 
 ```{r}
 patient.data <- data.frame(sex=c("M", "F", "M", "F"),
@@ -133,26 +133,26 @@ but the `Dataframe` is more flexible as it allows any vector-like data type
 to be stored in its columns. The flexibility of the `DataFrame` permits, for
 example, storing multiple dose-response values for a single cell line, even
 if the number of doses and responses is not consistent across all cell lines.
-Doses could be stored in one column of `pData` as a `SimpleList`, and
+Doses could be stored in one column of `colData` as a `SimpleList`, and
 responses in another column, also as a `SimpleList`. Or, dose-response values
-could be stored in a single column of `pData` as a two-column matrix for
+could be stored in a single column of `colData` as a two-column matrix for
 each cell line.
 
-### sampleMap: relating pData to multiple assays
+### sampleMap: relating colData to multiple assays
 
 The `sampleMap` is a `DataFrame` that relates the "primary" data
-(`pData`) to the experimental assays:
+(`colData`) to the experimental assays:
 
 ```{r}
 class(sampleMap(empty)) # DataFrame
 ```
 
 The `sampleMap` provides an unambiguous map from every experimental
-observation to *one and only one* row in `pData`. It is, however, permissible
-for a row of `pData` to be associated with multiple experimental observations
+observation to *one and only one* row in `colData`. It is, however, permissible
+for a row of `colData` to be associated with multiple experimental observations
 or no observations at all.  In other words, there is a "many-to-one" mapping
-from experimental observations to rows of `pData`, and a "one-to-any-number"
-mapping from rows of `pData` to experimental observations.
+from experimental observations to rows of `colData`, and a "one-to-any-number"
+mapping from rows of `colData` to experimental observations.
 
 #### sampleMap structure
 
@@ -164,7 +164,7 @@ of the `ExperimentList`, where the experimental assays are stored, must be
 contained in this column.
 
 2. **primary** provides the "primary" sample names. All values in this column
-must also be present in the rownames of `pData(MultiAssayExperiment)`.
+must also be present in the rownames of `colData(MultiAssayExperiment)`.
 In this example, allowable values in this column are "Jack", "Jill",
 "Barbara", and "Bob".
 
@@ -206,23 +206,23 @@ simpleMultiAssay <- MultiAssayExperiment(experiments=doubleExp)
 simpleMultiAssay
 ```
 
-In the above example, the user did not provide the `pData` argument so the
+In the above example, the user did not provide the `colData` argument so the
 constructor function filled it with an empty `DataFrame`:
 
 ```{r}
-pData(simpleMultiAssay)
+colData(simpleMultiAssay)
 ```
 
-But the `pData` can be provided. Here, note that any assay sample (column)
-that cannot be mapped to a corresponding row in the provided `pData` gets
+But the `colData` can be provided. Here, note that any assay sample (column)
+that cannot be mapped to a corresponding row in the provided `colData` gets
 dropped. This is part of ensuring internal validity of the
 `MultiAssayExperiment`.
 
 ```{r}
 simpleMultiAssay2 <- MultiAssayExperiment(experiments=doubleExp,
-                                          pData=patient.data)
+                                          colData=patient.data)
 simpleMultiAssay2
-pData(simpleMultiAssay2)
+colData(simpleMultiAssay2)
 ```
 
 ### metadata
@@ -237,7 +237,7 @@ class(metadata(empty)) # NULL (class "ANY")
 # Creating a `MultiAssayExperiment` object: a rich example
 
 In this section we demonstrate all core supported data classes, using different
-sample ID conventions for each assay, with primary pData. The some 
+sample ID conventions for each assay, with primary `colData`. The some 
 supported classes such as, `matrix`, `ExpressionSet`, 
 `SummarizedExperiment`, and `RangedSummarizedExperiment`.
 
@@ -258,7 +258,7 @@ exprdat <- ExpressionSet(assayData=arraydat, phenoData=arraypdat)
 exprdat
 ```
 
-The following map matches `pData` sample names to `exprdata` sample
+The following map matches `colData` sample names to `exprdata` sample
 names. Note that row orders aren't initially matched up, and this is OK.
 
 ```{r}
@@ -280,7 +280,7 @@ for one of the patients.
                           "methyl4", "methyl5"))))
 ```
 
-The following map matches `pData` sample names to `methyldat` sample
+The following map matches `colData` sample names to `methyldat` sample
 names.
 
 ```{r}
@@ -301,7 +301,7 @@ convention as we did for arrays.
                                   c("micro1", "micro2", "micro3"))))
 ```
 
-And the following map matches `pData` sample names to `microdat` sample names.
+And the following map matches `colData` sample names to `microdat` sample names.
 
 ```{r}
 (micromap <- data.frame(primary = c("Jack", "Barbara", "Bob"),
@@ -327,7 +327,7 @@ rse <- SummarizedExperiment(assays=SimpleList(counts=counts),
                             rowRanges=rowRanges, colData=colData)
 ```
 
-And we map the `pData` samples to the `RangedSummarizedExperiment`: 
+And we map the `colData` samples to the `RangedSummarizedExperiment`: 
 
 ```{r}
 (rangemap <-
@@ -342,7 +342,7 @@ The `MultiAssayExperiment` constructor function can create the `sampleMap`
 automatically if a single naming convention is used, but in this example
 it cannot because we used platform-specific sample identifiers
 (e.g. mysnparray1, etc). So we must provide an ID map that matches the
-samples of each experiment back to the `pData`, as a three-column
+samples of each experiment back to the `colData`, as a three-column
 `data.frame` or `DataFrame` with three columns named "assay", primary", and
 "colname". Here we start with a list:
 
@@ -390,7 +390,7 @@ the object:
 
 ```{r}
 experiments(myMultiAssay)
-pData(myMultiAssay)
+colData(myMultiAssay)
 sampleMap(myMultiAssay)
 metadata(myMultiAssay)
 ```
@@ -401,23 +401,23 @@ a list.
 
 ## Helper function to create a `MultiAssayExperiment` object
 
-The `PrepMultiAssay` function helps diagnose common problems when creating a
+The `prepMultiAssay` function helps diagnose common problems when creating a
 `MultiAssayExperiment` object. It provides error messages and/or warnings in
 instances where names (either `colnames` or `ExperimentList` element names) are
 inconsistent with those found in the sampleMap. Input arguments are the same
-as those in the `MultiAssayExperiment` (i.e., `ExperimentList`, `pData`,
-`sampleMap`). The resulting output of the `PrepMultiAssay` function is a list
+as those in the `MultiAssayExperiment` (i.e., `ExperimentList`, `colData`,
+`sampleMap`). The resulting output of the `prepMultiAssay` function is a list
 of inputs including a "metadata$drops" element for names that were not able to be
 matched.
 
 Instances where `ExperimentList` is created without names will prompt an error
-from `PrepMultiAssay`. Named `ExperimentList` elements are essential for checks
+from `prepMultiAssay`. Named `ExperimentList` elements are essential for checks
 in `MultiAssayExperiment`.
 
 ```{r}
 objlist3 <- objlist
 (names(objlist3) <- NULL)
-try(PrepMultiAssay(objlist3, patient.data, dfmap)$experiments)
+try(prepMultiAssay(objlist3, patient.data, dfmap)$experiments)
 ```
 
 Non-matching names may also be present in the `ExperimentList` elements and the
@@ -428,21 +428,21 @@ identical and unique, names will be standardized to lower case and replaced.
 names(objlist3) <- toupper(names(objlist))
 names(objlist3)
 unique(dfmap[, "assay"])
-PrepMultiAssay(objlist3, patient.data, dfmap)$experiments
+prepMultiAssay(objlist3, patient.data, dfmap)$experiments
 ```
 
 When `colnames` in the `ExperimentList` cannot be matched back to the primary
-data (`pData`), these will be dropped and added to the drops element. 
+data (`colData`), these will be dropped and added to the drops element. 
 
 ```{r}
 exampleMap <- sampleMap(simpleMultiAssay2)
 sapply(doubleExp, colnames)
 exampleMap
-PrepMultiAssay(doubleExp, patient.data, exampleMap)$metadata$drops
+prepMultiAssay(doubleExp, patient.data, exampleMap)$metadata$drops
 ```
 
 A similar operation is performed for checking "primary" `sampleMap` names and
-`pData` rownames. In this example, we add a row corresponding to "Joe" that
+`colData` rownames. In this example, we add a row corresponding to "Joe" that
 does not have a match in the experimental data.
 
 ```{r}
@@ -450,22 +450,22 @@ exMap <- rbind(dfmap,
                DataFrame(assay = "New methyl",
                          primary = "Joe",
                          colname = "Joe"))
-invisible(PrepMultiAssay(objlist, patient.data, exMap))
+invisible(prepMultiAssay(objlist, patient.data, exMap))
 ```
 
-To create a `MultiAssayExperiment` from the results of the `PrepMultiAssay`
+To create a `MultiAssayExperiment` from the results of the `prepMultiAssay`
 function, take each corresponding element from the resulting list and enter
 them as arguments to the `MultiAssayExperiment` constructor function.
 
 ```{r}
-prepped <- PrepMultiAssay(objlist, patient.data, exMap)
-preppedMulti <- MultiAssayExperiment(prepped$experiments, prepped$pData,
+prepped <- prepMultiAssay(objlist, patient.data, exMap)
+preppedMulti <- MultiAssayExperiment(prepped$experiments, prepped$colData,
                                      prepped$sampleMap, prepped$metadata)
 preppedMulti
 ```
 
 Alternatively, use the `do.call` function to easily create a `MultiAssayExperiment`
-from the output of `PrepMultiAssay` function:
+from the output of `prepMultiAssay` function:
 
 ```{r}
 do.call(MultiAssayExperiment, prepped)
@@ -583,18 +583,18 @@ myMultiAssay["ENST00000355076", , , drop=TRUE]
 
 ## More on subsetting by columns
 
-Experimental samples are stored in the rows of `pData` but the columns of
+Experimental samples are stored in the rows of `colData` but the columns of
 elements of `ExperimentList`, so when we refer to subsetting by columns, we
 are referring to columns of the experimental assays. Subsetting by samples /
-columns will be more obvious after recalling the `pData`:
+columns will be more obvious after recalling the `colData`:
 
 ```{r}
-pData(myMultiAssay)
+colData(myMultiAssay)
 ```
 
-Subsetting by samples identifies the selected samples in rows of the pData
+Subsetting by samples identifies the selected samples in rows of the colData
 DataFrame, then selects all columns of the `ExperimentList` corresponding to
-these rows. Here we use an integer to keep the first two rows of pData, and
+these rows. Here we use an integer to keep the first two rows of colData, and
 all experimental assays associated to those two primary samples:
 
 ```{r}
@@ -606,11 +606,11 @@ from each assay, reflecting the reality that some samples may not have been
 assayed in all experiments, and may have replicates in some.
 
 Columns can be subset using a logical vector. Here the dollar sign operator
-(`$`) accesses one of the columns in `pData`.
+(`$`) accesses one of the columns in `colData`.
 
 ```{r}
 malesMultiAssay <- myMultiAssay[, myMultiAssay$sex == "M"]
-pData(malesMultiAssay)
+colData(malesMultiAssay)
 ```
 
 Finally, for special use cases you can exert detailed control of row or column
@@ -752,7 +752,7 @@ for all experiments. Recall that `myMultiAssay` provides data for four
 individuals:
 
 ```{r}
-pData(myMultiAssay)
+colData(myMultiAssay)
 ```
 
 Of these, only Jack has data for all 5 experiments:
@@ -782,7 +782,7 @@ duplicated(myMultiAssay)
 
 A call to `reduce()` by default returns another MultiAssayExperiment where the
 columns of each element of `ExperimentList` correspond exactly to the rows of
-`pData`.
+`colData`.
 
 It performs a series of clean-up operations, including merging of replicates
 with a user-defined function (default: mean), disjoining non-disjoint ranges,
@@ -836,10 +836,10 @@ rearrange(myMultiAssay[, , 1:2])
 ```
 
 This is especially useful for performing regression against patient or sample
-data from `pData` using the `pDataCols` argument:
+data from `colData` using the `pDataCols` argument:
 
 ```{r}
-rearrange(myMultiAssay[, , 1:2], pDataCols="age")
+rearrange(myMultiAssay[, , 1:2], colDataCols="age")
 ```
 
 The "wide" format is useful for calculating correlations or performing
@@ -848,7 +848,7 @@ possible with replicate measurements, so we demonstrate on the reduced
 `MultiAssayExperiment`:
 
 ```{r}
-rearrange(maeredux, shape="wide", pDataCols="sex")
+rearrange(maeredux, shape="wide", colDataCols="sex")
 ```
 
 ## assays()
@@ -901,8 +901,8 @@ methods(class="MultiAssayExperiment")
 
 * `c()` function for adding new assays to existing `MultiAssayExperiment`
     + e.g. c(myMultiAssay, neweset)
-    + require that sample names in the new object match pData sample names
-    + require that sample names in the new object already exist in pData
+    + require that sample names in the new object match colData sample names
+    + require that sample names in the new object already exist in colData
 * "mergeDups" function to merge duplicate samples in any assay
     + For matrix-like objects, it is clear how to do this. Default would be
       simple mean of the columns, but could allow user-specified functions.

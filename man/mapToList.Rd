@@ -10,10 +10,11 @@ listToMap(listmap, type = "colnames")
 mapToList(dfmap, assayCol = "assay")
 }
 \arguments{
-\item{listmap}{A \code{list} class object containing names of either 
-experiments, assays or features.}
+\item{listmap}{A named \code{list} object containing either
+experiments (\code{assay}s), samples (\code{colname}s) or
+features (\code{rowname}s)}
 
-\item{type}{Any of the valid types of maps including colnames, rownames, 
+\item{type}{Any of the valid types of maps including colnames, rownames,
 and assays.}
 
 \item{dfmap}{A \code{data.frame} or \code{DataFrame} object with

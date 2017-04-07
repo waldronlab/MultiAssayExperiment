@@ -17,15 +17,15 @@ test_that("rearrange returns a DataFrame", {
     expect_true(is(RRADF, "DataFrame"))
 })
 
-longDF <- rearrange(myMultiAssayExperiment, pDataCols = "sex")
+longDF <- rearrange(myMultiAssayExperiment, colDataCols = "sex")
 wideDF <- rearrange(myMultiAssayExperiment, shape = "wide",
-                    pDataCols = "sex")
+                    colDataCols = "sex")
 
-test_that("rearrange returns specified pData column", {
+test_that("rearrange returns specified colData column", {
     expect_true("sex" %in% names(longDF))
     expect_true("sex" %in% names(wideDF))
 })
 
 test_that("rearrange returns proper dimensions", {
-    expect_equal(nrow(wideDF), nrow(pData(myMultiAssayExperiment)))
+    expect_equal(nrow(wideDF), nrow(colData(myMultiAssayExperiment)))
 })

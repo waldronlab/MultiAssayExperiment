@@ -18,7 +18,7 @@ rearrange(object, shape = "long", ...)
 \S4method{rearrange}{ExperimentList}(object, shape = "long", ...)
 
 \S4method{rearrange}{MultiAssayExperiment}(object, shape = "long",
-  pDataCols = NULL, ...)
+  colDataCols = NULL, ...)
 }
 \arguments{
 \item{object}{Any supported class object}
@@ -29,7 +29,7 @@ options include \sQuote{long} and \sQuote{wide} (defaults to the former)}
 \item{...}{Additional arguments for the \link{RangedRaggedAssay}
 \code{assay} method. See below.}
 
-\item{pDataCols}{selected pData columns to include in the resulting output}
+\item{colDataCols}{selected colData columns to include in the resulting output}
 }
 \value{
 Either a long or wide \code{\linkS4class{DataFrame}}
@@ -39,7 +39,7 @@ The rearrange function takes data from the \code{\link{ExperimentList}}
 in a \code{\link{MultiAssayExperiment}} and returns a uniform
 \code{\link{DataFrame}}. The resulting DataFrame has columns indicating
 primary, rowname, colname and value. This method can optionally include
-pData columns with the \code{pDataCols} argument for a
+colData columns with the \code{colDataCols} argument for a
 \code{MultiAssayExperiment} object.
 }
 \section{Methods (by class)}{
@@ -54,8 +54,8 @@ matrix of selected \dQuote{mcolname} column, defaults to score
 returns list of DataFrames
 
 \item \code{MultiAssayExperiment}: Overarching \code{MultiAssayExperiment} class method
-returns a small and skinny DataFrame. The \code{pDataCols} arguments allows
-the user to append pData columns to the long and skinny DataFrame.
+returns a small and skinny DataFrame. The \code{colDataCols} arguments allows
+the user to append colData columns to the long and skinny DataFrame.
 }}
 
 \examples{

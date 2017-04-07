@@ -5,7 +5,7 @@ test_that("MultiAssayExperiment constructor works", {
     expect_identical(names(experiments(obs)), character())
     expect_identical(length(experiments(obs)), 0L)
     expect_identical(dim(sampleMap(obs)), c(0L, 3L))
-    expect_identical(dim(pData(obs)), c(0L, 0L))
+    expect_identical(dim(colData(obs)), c(0L, 0L))
 
     expect_error(MultiAssayExperiment(list(matrix(0, 0, 0))),
                  label="unnamed ExperimentList")
@@ -15,15 +15,15 @@ test_that("MultiAssayExperiment constructor works", {
     expect_identical(names(experiments(obs)), "m")
     expect_identical(length(experiments(obs)), 1L)
     expect_identical(dim(sampleMap(obs)), c(0L, 3L))
-    expect_identical(dim(pData(obs)), c(0L, 0L))
+    expect_identical(dim(colData(obs)), c(0L, 0L))
 
-    pData <- S4Vectors::DataFrame(row.names=letters[1:4])
-    obs <- MultiAssayExperiment(pData=pData)
+    colData <- S4Vectors::DataFrame(row.names=letters[1:4])
+    obs <- MultiAssayExperiment(colData=colData)
     expect_true(validObject(obs))
     expect_identical(names(experiments(obs)), character())
     expect_identical(length(experiments(obs)), 0L)
     expect_identical(dim(sampleMap(obs)), c(0L, 3L))
-    expect_identical(dim(pData(obs)), c(0L, 0L))
+    expect_identical(dim(colData(obs)), c(0L, 0L))
 
     sampleMap <- S4Vectors::DataFrame(assay=factor("m", levels="m"),
         primary=letters, colname=letters)
@@ -31,7 +31,7 @@ test_that("MultiAssayExperiment constructor works", {
     expect_true(validObject(obs))
     expect_identical(nrow(sampleMap(obs)), 0L)
     expect_identical(length(experiments(obs)), 0L)
-    expect_identical(dim(pData(obs)), c(0L, 0L))
+    expect_identical(dim(colData(obs)), c(0L, 0L))
 
     # test multiple experiment
     m <- matrix(0, 3, 3, dimnames=list(letters[1:3], letters[1:3]))
@@ -42,7 +42,7 @@ test_that("MultiAssayExperiment constructor works", {
     expect_identical(length(experiments(obs)), 3L)
     expect_identical(levels(sampleMap(obs)[["assay"]]), c("m", "m2", "m3"))
     expect_identical(dim(sampleMap(obs)), c(4L, 3L))
-    expect_identical(rownames(pData(obs)), sampleMap(obs)[["primary"]])
+    expect_identical(rownames(colData(obs)), sampleMap(obs)[["primary"]])
 
 })
 
@@ -57,7 +57,7 @@ test_that("MultiAssayExperiment .harmonize construction helper works", {
     obs <- MultiAssayExperiment(experiments, sampleMap=sampleMap)
     expect_identical(colnames(obs)[[1]], "a")
     expect_identical(sampleMap(obs), sampleMap)
-    expect_identical(row.names(pData(obs)), "a")
+    expect_identical(row.names(colData(obs)), "a")
 
     # removed unused assays in sampleMap
     sampleMap <- S4Vectors::DataFrame(assay=factor("m", levels="m"),
@@ -65,14 +65,14 @@ test_that("MultiAssayExperiment .harmonize construction helper works", {
     obs <- MultiAssayExperiment(experiments, sampleMap=sampleMap)
     expect_identical(colnames(experiments)[[1]], sampleMap(obs)[["colname"]])
     expect_identical(experiments(obs), experiments)
-    expect_identical(colnames(experiments)[[1]], rownames(pData(obs)))
-    expect_identical(rownames(pData(obs)), sampleMap(obs)[["primary"]])
+    expect_identical(colnames(experiments)[[1]], rownames(colData(obs)))
+    expect_identical(rownames(colData(obs)), sampleMap(obs)[["primary"]])
 
-    # pData subset by sampleData primary
-    pData <- S4Vectors::DataFrame(matrix(0, 4, 4, dimnames=list(letters[1:4],
+    # colData subset by sampleData primary
+    colData <- S4Vectors::DataFrame(matrix(0, 4, 4, dimnames=list(letters[1:4],
                                                                 letters[1:4])))
-    obs <- MultiAssayExperiment(experiments, sampleMap=sampleMap, pData=pData)
-    expect_identical(rownames(pData(obs)), sampleMap(obs)[["primary"]])
+    obs <- MultiAssayExperiment(experiments, sampleMap=sampleMap, colData=colData)
+    expect_identical(rownames(colData(obs)), sampleMap(obs)[["primary"]])
 
     # combo subset
     sampleMap <- S4Vectors::DataFrame(
@@ -80,14 +80,14 @@ test_that("MultiAssayExperiment .harmonize construction helper works", {
         primary=c("a", "n"),
         colname=c("a", "n"))
     m <- matrix(0, 3, 3, dimnames=list(letters[1:3], letters[1:3]))
-    pData <- S4Vectors::DataFrame(matrix(0, 4, 4, dimnames=list(letters[1:4],
+    colData <- S4Vectors::DataFrame(matrix(0, 4, 4, dimnames=list(letters[1:4],
                                                                 letters[1:4])))
     experiments <- ExperimentList(list(m=m))
     obs <- MultiAssayExperiment(experiments=experiments,
-                                sampleMap=sampleMap, pData=pData)
+                                sampleMap=sampleMap, colData=colData)
     expect_identical(colnames(obs)[[1]], "a")
     expect_identical(dim(sampleMap(obs)), c(1L, 3L))
-    expect_identical(rownames(pData(obs)), sampleMap(obs)[["primary"]])
+    expect_identical(rownames(colData(obs)), sampleMap(obs)[["primary"]])
 
     # test multiple experiment, combo subsetting
     m <- matrix(0, 3, 3, dimnames=list(letters[1:3], letters[1:3]))
@@ -98,12 +98,12 @@ test_that("MultiAssayExperiment .harmonize construction helper works", {
         assay=factor(c("m", "stack", "m3"), levels=c("m", "stack", "m3")),
         primary=c("a", "n", "d"),
         colname=c("a", "n", "d"))
-    pData <- S4Vectors::DataFrame(matrix(0, 7, 7,
+    colData <- S4Vectors::DataFrame(matrix(0, 7, 7,
                                          dimnames=list(letters[1:7],
                                                        letters[1:7])))
     obs <- MultiAssayExperiment(experiments=experiments,
                                 sampleMap=sampleMap,
-                                pData=pData)
+                                colData=colData)
     expect_true(validObject(obs))
     expect_identical(length(experiments(obs)), 2L)
     expect_identical(dim(experiments(obs)[[1]]), c(3L, 1L))
@@ -111,18 +111,18 @@ test_that("MultiAssayExperiment .harmonize construction helper works", {
     expect_identical(names(experiments(obs)), c("m", "m3"))
     expect_identical(dim(sampleMap(obs)), c(2L, 3L))
     expect_identical(levels(sampleMap(obs)[["assay"]]), c("m", "m3"))
-    expect_identical(rownames(pData(obs)), sampleMap(obs)[["primary"]])
+    expect_identical(rownames(colData(obs)), sampleMap(obs)[["primary"]])
     expect_identical(unlist(colnames(experiments(obs)), use.names=FALSE),
-                     row.names(pData(obs)))
+                     row.names(colData(obs)))
 
 })
 
 test_that("MultiAssayExperiment replacements work", {
     pDF <- DataFrame(a = 1:4, b = letters[1:4])
     obs <- MultiAssayExperiment()
-    pData(obs) <- pDF
-    expect_identical(pData(obs), pDF)
-    pData(obs) <- pData(obs)[, 1, drop = FALSE]
-    expect_true(is(pData(obs), "DataFrame"))
-    expect_error(pData(obs) <- pDF[, 1])
+    colData(obs) <- pDF
+    expect_identical(colData(obs), pDF)
+    colData(obs) <- colData(obs)[, 1, drop = FALSE]
+    expect_true(is(colData(obs), "DataFrame"))
+    expect_error(colData(obs) <- pDF[, 1])
 })

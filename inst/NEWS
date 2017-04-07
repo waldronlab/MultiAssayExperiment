@@ -1,3 +1,22 @@
+# MultiAssayExperiment 1.1.49
+
+## New features
+
+* `pData` deprecated in favor of `colData`
+* Quick start vignette now available
+
+## Bug fixes and minor improvements
+
+* Fixed API function link
+* Removed coercion to old `RangedRaggedAssay` class
+* Improved `listToMap`
+
+# MultiAssayExperiment 1.1.44
+
+## Bug fixes and minor improvements
+
+* Renamed `PrepMultiAssay` to `prepMultiAssay` (lower `p` following convention)
+
 # MultiAssayExperiment 1.1.43
 
 ## New features

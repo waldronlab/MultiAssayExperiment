@@ -80,18 +80,18 @@ regardless of the for loop.
 In the first part of the function, the existence of the data directory is
 checked and it is created if necessary. Then a cohort object is either loaded
 or serialized from the `getFirehoseData()` method and saved to the data
-directory. Once serialized, pData is extracted from the clinical slot and the
-rownames are cleaned by `gsub()` and `type_convert()` functions. 
+directory. Once serialized, `colData` is extracted from the clinical slot and
+the rownames are cleaned by `gsub()` and `type_convert()` functions. 
 
 A named list of extraction targets is then created from the slot names of the
 cohort object and the `TCGAextract()` function is used within a try statement.
 The outputs are then passed to `generateMap()` which will generate a `sampleMap`
 specific to TCGA data.
 
-Finally, the named `ExperimentList` of extracted datasets, the `pData`, and
+Finally, the named `ExperimentList` of extracted datasets, the `colData`, and
 the generated sample map can be passed to the `MultiAssayExperiment()`
 constructor function. The constructor function will ensure that orphaned
-samples, samples that don't match a record in pData, are removed.
+samples, samples that don't match a record in `colData`, are removed.
 A `MultiAssayExperiment` will be created, serialized and saved to the data
 directory, making it easier to return to in the future.
 

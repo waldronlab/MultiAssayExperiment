@@ -1,6 +1,6 @@
 Package: MultiAssayExperiment
 Title: Software for the integration of multi-omics experiments in Bioconductor
-Version: 1.1.44
+Version: 1.1.49
 Author: MultiAssay SIG
 Description: Develop an integrative environment where multiple assays are
     managed and preprocessed for genomic data analysis.
@@ -45,11 +45,11 @@ Collate:
     'MultiAssayExperiment-methods.R'
     'MultiAssayExperiment-pkg.R'
     'MultiAssayExperiment.R'
-    'PrepMultiAssay.R'
     'assay-methods.R'
     'clusterOn.R'
     'hasAssay.R'
     'listToMap.R'
     'mapToList.R'
+    'prepMultiAssay.R'
     'upsetSamples.R'
 RoxygenNote: 6.0.1

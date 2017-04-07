@@ -7,14 +7,14 @@
 #' @importFrom tidyr gather
 NULL
 
-.generateMap <- function(pData, experiments) {
+.generateMap <- function(colData, experiments) {
     samps <- colnames(experiments)
     assay <- factor(rep(names(samps), lengths(samps)), levels=names(samps))
     colname <- unlist(samps, use.names=FALSE)
-    matches <- match(colname, rownames(pData))
+    matches <- match(colname, rownames(colData))
     if (length(matches) && all(is.na(matches)))
-        stop("no way to map pData to ExperimentList")
-    primary <- rownames(pData)[matches]
+        stop("no way to map colData to ExperimentList")
+    primary <- rownames(colData)[matches]
     autoMap <- S4Vectors::DataFrame(
         assay=assay, primary=primary, colname=colname)
 
@@ -47,13 +47,13 @@ setMethod("dimnames", "MultiAssayExperiment", function(x) {
 
 #' @export
 .DollarNames.MultiAssayExperiment <- function(x, pattern = "")
-    grep(pattern, names(pData(x)), value = TRUE)
+    grep(pattern, names(colData(x)), value = TRUE)
 
 #' @aliases $,MultiAssayExperiment-method
 #' @exportMethod $
 #' @rdname MultiAssayExperiment-methods
 setMethod("$", "MultiAssayExperiment", function(x, name) {
-    pData(x)[[name]]
+    colData(x)[[name]]
 })
 
 ### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -86,7 +86,7 @@ setMethod("$", "MultiAssayExperiment", function(x, name) {
         if (is(j, "list") || is(j, "List"))
             x <- subsetByColumn(x, j)
         else
-            x <- subsetBypData(x, j)
+            x <- subsetByColData(x, j)
     }
     if (!missing(i)) {
         x <- subsetByRow(x, i, ...)
@@ -196,14 +196,14 @@ setReplaceMethod("[[", "MultiAssayExperiment", function(x, i, j, ..., value) {
     assayMap[positions, ]
 }
 
-#' Subset \code{MultiAssayExperiment} object by \code{pData} rows
+#' Subset \code{MultiAssayExperiment} object by \code{colData} rows
 #'
 #' Select biological units in a \code{MultiAssayExperiment} with
-#' \code{subsetBypData}
+#' \code{subsetByColData}
 #'
 #' @param x A \code{MultiAssayExperiment} object
 #' @param y Either a \code{numeric}, \code{character} or
-#' \code{logical} object indicating what \code{pData} rows to select
+#' \code{logical} object indicating what \code{colData} rows to select
 #' @return A \code{\link{MultiAssayExperiment}} object
 #'
 #' @examples
@@ -211,25 +211,26 @@ setReplaceMethod("[[", "MultiAssayExperiment", function(x, i, j, ..., value) {
 #' example("MultiAssayExperiment")
 #'
 #' ## Subset by character vector (Jack)
-#' subsetBypData(myMultiAssayExperiment, "Jack")
+#' subsetByColData(myMultiAssayExperiment, "Jack")
 #'
-#' ## Subset by numeric index of pData rows (Jack and Bob)
-#' subsetBypData(myMultiAssayExperiment, c(1, 3))
+#' ## Subset by numeric index of colData rows (Jack and Bob)
+#' subsetByColData(myMultiAssayExperiment, c(1, 3))
 #'
-#' ## Subset by logical indicator of pData rows (Jack and Jill)
-#' subsetBypData(myMultiAssayExperiment, c(TRUE, TRUE, FALSE, FALSE))
+#' ## Subset by logical indicator of colData rows (Jack and Jill)
+#' subsetByColData(myMultiAssayExperiment, c(TRUE, TRUE, FALSE, FALSE))
 #'
-#' @export subsetBypData
-setGeneric("subsetBypData", function(x, y) standardGeneric("subsetBypData"))
+#' @export subsetByColData
+setGeneric("subsetByColData", function(x, y) standardGeneric("subsetByColData"))
 
-#' @describeIn subsetBypData Either a \code{numeric}, \code{character}, or
+#' @describeIn subsetByColData Either a \code{numeric}, \code{character}, or
 #' \code{logical} vector to apply a column subset of a
 #' \code{MultiAssayExperiment} object
-setMethod("subsetBypData", c("MultiAssayExperiment", "ANY"), function(x, y) {
+setMethod("subsetByColData", c("MultiAssayExperiment", "ANY"), function(x, y) {
     if (is.logical(y) || is.numeric(y))
-        y <- unique(rownames(pData(x))[y])
-    selectors <- y[y %in% rownames(pData(x))]
-    newpData <- pData(x)[match(selectors, rownames(pData(x))), , drop = FALSE]
+        y <- unique(rownames(colData(x))[y])
+    selectors <- y[y %in% rownames(colData(x))]
+    newcolData <- colData(x)[
+        match(selectors, rownames(colData(x))), , drop = FALSE]
     listMap <- mapToList(sampleMap(x), "assay")
     listMap <- lapply(listMap, function(elementMap, keepers) {
         .matchReorderSub(elementMap, keepers)
@@ -243,18 +244,18 @@ setMethod("subsetBypData", c("MultiAssayExperiment", "ANY"), function(x, y) {
     newSubset <- ExperimentList(newSubset)
     experiments(x) <- newSubset
     sampleMap(x) <- newMap
-    pData(x) <- newpData
+    colData(x) <- newcolData
     return(x)
 })
 
-#' @describeIn subsetBypData Use a \code{character}
+#' @describeIn subsetByColData Use a \code{character}
 #' vector for subsetting column names
-setMethod("subsetBypData", c("MultiAssayExperiment", "character"),
+setMethod("subsetByColData", c("MultiAssayExperiment", "character"),
           function(x, y) {
               y <- unique(y)
-              if (!any(rownames(pData(x)) %in% y))
+              if (!any(rownames(colData(x)) %in% y))
                   stop("No matching identifiers found")
-              if (!all(y %in% rownames(pData(x))))
+              if (!all(y %in% rownames(colData(x))))
                   warning("Not all identifiers found in data")
               callNextMethod(x = x, y = y)
           })
@@ -266,7 +267,7 @@ setMethod("subsetBypData", c("MultiAssayExperiment", "character"),
 #'
 #' @param x A \code{\link{MultiAssayExperiment}} object
 #' @param y Either a \code{numeric}, \code{character} or
-#' \code{logical} object indicating what rownames in the pData to select
+#' \code{logical} object indicating what rownames in the colData to select
 #' for subsetting
 #' @return A \code{\link{MultiAssayExperiment}} object
 #'
@@ -300,7 +301,7 @@ setMethod("subsetByColumn", c("MultiAssayExperiment", "list"), function(x, y)
     }, lMap = listMap, nSamps = newSamps, SIMPLIFY = FALSE)
     newMap <- listToMap(newMap)
     selectors <- unique(as.character(newMap[["primary"]]))
-    pData(x) <- pData(x)[rownames(pData(x)) %in% selectors, ]
+    colData(x) <- colData(x)[rownames(colData(x)) %in% selectors, ]
     sampleMap(x) <- newMap
     return(x)
 })
@@ -430,7 +431,7 @@ setMethod("complete.cases", "MultiAssayExperiment", function(...) {
                                     function(element) {
                                         element[["primary"]]
                                     }))
-        rownames(pData(args[[1L]])) %in% allPrimary
+        rownames(colData(args[[1L]])) %in% allPrimary
     }
 })
 
@@ -440,7 +441,7 @@ setMethod("complete.cases", "MultiAssayExperiment", function(...) {
 #' in a \code{\link{MultiAssayExperiment}} and returns a uniform
 #' \code{\link{DataFrame}}. The resulting DataFrame has columns indicating
 #' primary, rowname, colname and value. This method can optionally include
-#' pData columns with the \code{pDataCols} argument for a
+#' colData columns with the \code{colDataCols} argument for a
 #' \code{MultiAssayExperiment} object.
 #'
 #' @param object Any supported class object
@@ -512,13 +513,13 @@ setMethod("rearrange", "ExperimentList", function(object,
 })
 
 #' @describeIn rearrange Overarching \code{MultiAssayExperiment} class method
-#' returns a small and skinny DataFrame. The \code{pDataCols} arguments allows
-#' the user to append pData columns to the long and skinny DataFrame.
-#' @param pDataCols selected pData columns to include in the resulting output
+#' returns a small and skinny DataFrame. The \code{colDataCols} arguments allows
+#' the user to append colData columns to the long and skinny DataFrame.
+#' @param colDataCols selected colData columns to include in the resulting output
 #' @export
 setMethod("rearrange", "MultiAssayExperiment", function(object, shape = "long",
-                                                        pDataCols = NULL, ...) {
-    addCols <- !is.null(pDataCols)
+                                                        colDataCols = NULL, ...) {
+    addCols <- !is.null(colDataCols)
     dataList <- rearrange(experiments(object), ...)
     dataList <- lapply(dataList, function(rectangleDF) {
         primary <- S4Vectors::Rle(sampleMap(object)[match(
@@ -530,7 +531,7 @@ setMethod("rearrange", "MultiAssayExperiment", function(object, shape = "long",
     })
     outputDataFrame <- do.call(rbind, dataList)
     if (addCols) {
-        extraColumns <- pData(object)[, pDataCols, drop = FALSE]
+        extraColumns <- colData(object)[, colDataCols, drop = FALSE]
         rowNameValues <- rownames(extraColumns)
         rownames(extraColumns) <- NULL
         matchIdx <- BiocGenerics::match(outputDataFrame[["primary"]],
@@ -563,7 +564,7 @@ setMethod("rearrange", "MultiAssayExperiment", function(object, shape = "long",
 }
 
 #' @describeIn MultiAssayExperiment Find duplicate columns in the data by
-#' matching pData rownames
+#' matching colData rownames
 #' @param incomparables duplicated: unused argument
 #' @exportMethod duplicated
 setMethod("duplicated", "MultiAssayExperiment",
@@ -585,7 +586,7 @@ setMethod("duplicated", "MultiAssayExperiment",
 #' @importFrom IRanges reduce
 #' @describeIn MultiAssayExperiment Housekeeping method for a
 #' MultiAssayExperiment where only complete.cases are returned, replicate
-#' measurements are averaged, and columns are aligned by the row order in pData.
+#' measurements are averaged, and columns are aligned by the row order in colData.
 #' @param drop.empty.ranges unused generic argument
 #' @param replicates reduce: A list of \linkS4class{LogicalList} indicating
 #' duplicate entries for each biological unit, see the \code{duplicated} method
@@ -714,7 +715,7 @@ setMethod("reduce", "RangedRaggedAssay",
 #'
 #' ## Add an experiment
 #' test1 <- myMultiAssayExperiment[[1L]]
-#' colnames(test1) <- rownames(pData(myMultiAssayExperiment))
+#' colnames(test1) <- rownames(colData(myMultiAssayExperiment))
 #'
 #' ## Combine current MultiAssayExperiment with additional experiment
 #' ## (no sampleMap)
@@ -739,7 +740,7 @@ setMethod("c", "MultiAssayExperiment", function(x, ..., sampleMap = NULL,
     if (is.null(sampleMap)) {
         if (!is.null(mapFrom)) {
             warning("Assuming column order in the data provided ",
-                    "matches the 'mapFrom' experiment(s)")
+                    "\n matches the order in 'mapFrom' experiment(s) colnames")
             addMaps <- mapToList(sampleMap(x))[mapFrom]
             names(addMaps) <- names(newExperiments)
             sampleMap <- mapply(function(x, y) {
@@ -747,7 +748,7 @@ setMethod("c", "MultiAssayExperiment", function(x, ..., sampleMap = NULL,
                 return(x)
             }, addMaps, newExperiments)
         } else {
-        sampleMap <- .generateMap(pData(x), newExperiments)
+        sampleMap <- .generateMap(colData(x), newExperiments)
         }
     }
     if (is(sampleMap, "DataFrame") || is.data.frame(sampleMap))

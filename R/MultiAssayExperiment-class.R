@@ -25,7 +25,7 @@
 #' (inherits from \code{\linkS4class{GRangesList}}), and \code{RangedVcfStack}.
 #' Create new \code{MultiAssayExperiment} instances with the homonymous
 #' constructor, minimally with the argument \code{\link{ExperimentList}},
-#' potentially also with the arguments \code{pData} (see section below) and
+#' potentially also with the arguments \code{colData} (see section below) and
 #' \code{\link{sampleMap}}.
 #'
 #' @details
@@ -41,9 +41,9 @@
 #' to add experiments to a \code{MultiAssayExperiment}, the dots allow extra
 #' data classes compatible with the MultiAssayExperiment API. See: \link{API}
 #'
-#' @section pData:
-#' The \code{pData} slot is a collection of primary specimen data valid across
-#' all experiments. This slot is strictly of class
+#' @section colData:
+#' The \code{colData} slot is a collection of primary specimen data valid
+#' across all experiments. This slot is strictly of class
 #' \code{\linkS4class{DataFrame}} but arguments for the constructor function
 #' allow arguments to be of class \code{data.frame} and subsequently coerced.
 #'
@@ -58,7 +58,7 @@
 #'
 #' @slot ExperimentList A \code{\link{ExperimentList}} class object for
 #' each assay dataset
-#' @slot pData A \code{DataFrame} of all clinical/specimen data available
+#' @slot colData A \code{DataFrame} of all clinical/specimen data available
 #' across experiments
 #' @slot sampleMap A \code{DataFrame} of translatable identifiers
 #' of samples and participants
@@ -76,8 +76,8 @@
 #' myMultiAssayExperiment[1, , ]
 #' myMultiAssayExperiment[c(TRUE, FALSE), , ]
 #'
-#' # Columns (j) Rows in pData
-#' myMultiAssayExperiment[, rownames(pData(myMultiAssayExperiment))[3:2],  ]
+#' # Columns (j) Rows in colData
+#' myMultiAssayExperiment[, rownames(colData(myMultiAssayExperiment))[3:2],  ]
 #'
 #' # Assays (k)
 #' myMultiAssayExperiment[, , "Affy"]
@@ -86,7 +86,7 @@
 #' completes <- complete.cases(myMultiAssayExperiment)
 #' compMAE <- myMultiAssayExperiment[, completes, ]
 #' compMAE
-#' pData(compMAE)
+#' colData(compMAE)
 #'
 #' @exportClass MultiAssayExperiment
 #' @seealso \link{MultiAssayExperiment-methods} for slot modifying methods
@@ -94,7 +94,7 @@
 setClass("MultiAssayExperiment",
          slots = list(
            ExperimentList = "ExperimentList",
-           pData = "DataFrame",
+           colData = "DataFrame",
            sampleMap = "DataFrame",
            metadata = "ANY",
            drops = "list"
@@ -143,19 +143,19 @@ setClass("MultiAssayExperiment",
     NULL
 }
 
-## PDATA
-## 2.i. See setClass above where pData = "DataFrame"
+## COLDATA
+## 2.i. See setClass above where colData = "DataFrame"
 
 ## SAMPLEMAP
 ## 3.i. all values in the sampleMap "primary" column must be found in the
-## rownames of pData
+## rownames of colData
 .checkSampleMapNames <- function(object) {
     errors <- character()
     if (!(.allIn(
-        rownames(pData(object)),
+        rownames(colData(object)),
         sampleMap(object)[["primary"]]
     ))) {
-        msg <- "All samples in the sampleMap must be in the pData"
+        msg <- "All samples in the 'sampleMap' must be in the 'colData'"
         errors <- c(errors, msg)
     }
     if (length(errors) == 0L)
@@ -189,7 +189,7 @@ setClass("MultiAssayExperiment",
 S4Vectors::setValidity2("MultiAssayExperiment", .validMultiAssayExperiment)
 
 .hasOldAPI <- function(object) {
-    isTRUE(.hasSlot(object, "Elist"))
+    isTRUE(.hasSlot(object, "Elist")) || isTRUE(.hasSlot(object, "pData"))
 }
 
 #' @exportMethod show
@@ -209,7 +209,7 @@ setMethod("show", "MultiAssayExperiment", function(object) {
     }
     classes <- vapply(experiments(object), class, character(1))
     c_elist <- class(experiments(object))
-    c_mp <- class(pData(object))
+    c_mp <- class(colData(object))
     c_sm <- class(sampleMap(object))
     cat(sprintf("A %s", o_class),
         "object of", o_len, "listed\n",
@@ -226,9 +226,9 @@ setMethod("show", "MultiAssayExperiment", function(object) {
     show(experiments(object))
     cat("Features: \n experiments() - obtain the",
         sprintf("%s", c_elist), "instance",
-        "\n pData() - the primary/phenotype", sprintf("%s", c_mp),
+        "\n colData() - the primary/phenotype", sprintf("%s", c_mp),
         "\n sampleMap() - the sample availability", sprintf("%s", c_sm),
-        "\n `$`, `[`, `[[` - extract pData columns, subset, or experiment",
+        "\n `$`, `[`, `[[` - extract colData columns, subset, or experiment",
         "\n reduce() - select complete cases, order columns, disjoin ranges",
         "\n rearrange() - convert", sprintf("%s", c_elist),
         "into a long or wide", sprintf("%s", c_mp),
@@ -240,16 +240,20 @@ setMethod("show", "MultiAssayExperiment", function(object) {
 #' @title Accessing/modifying slot information
 #'
 #' @description A set of accessor and setter generic functions to extract
-#' either the \code{sampleMap}, the \code{\link{ExperimentList}}, \code{pData},
-#' or \code{metadata} slots of a \code{\link{MultiAssayExperiment}} object
+#' either the \code{sampleMap}, the \code{\link{ExperimentList}},
+#' \code{colData}, or \code{metadata} slots of a
+#' \code{\link{MultiAssayExperiment}} object
 #'
 #' @section Accessors:
 #' Eponymous names for accessing \code{MultiAssayExperiment} slots with the
 #' exception of the \link{ExperimentList} accessor named \code{experiments}.
 #' \itemize{
+#'    \item colData: Access the \code{colData} slot
+#'    \item sampleMap: Access the \code{sampleMap} slot
 #'    \item experiments: Access the \link{ExperimentList} slot
 #'    \item `[[`: Access the \link{ExperimentList} slot
-#'    \item `$`: Access a column in \code{pData}
+#'    \item `$`: Access a column in \code{colData}
+#'    \item pData: (deprecated) Access the \code{colData} slot
 #' }
 #'
 #' @section Setters:
@@ -259,17 +263,17 @@ setMethod("show", "MultiAssayExperiment", function(object) {
 #'     containing experiment data of supported classes
 #'     \item sampleMap<-: A \code{\link{DataFrame}} object relating
 #'     samples to biological units and assays
-#'     \item pData<-: A \code{\link{DataFrame}} object describing the
+#'     \item colData<-: A \code{\link{DataFrame}} object describing the
 #'     biological units
 #'     \item metadata<-: A \code{list} object of metadata
 #'     \item `[[<-`: Equivalent to the \code{experiments<-} setter method for
 #'     convenience
-#'     \item `$<-`: A vector to replace the indicated column in \code{pData}
+#'     \item `$<-`: A vector to replace the indicated column in \code{colData}
 #' }
 #'
 #' @param x A \code{MultiAssayExperiment} object
 #' @param object A \code{MultiAssayExperiment} object
-#' @param name A column in \code{pData}
+#' @param name A column in \code{colData}
 #' @param value See details.
 #' @param i A \code{numeric} or \code{character} vector of length 1
 #' @param j Argument not in use
@@ -307,8 +311,18 @@ setMethod("experiments", "MultiAssayExperiment", function(x)
 #' @rdname MultiAssayExperiment-methods
 #'
 #' @importFrom Biobase pData
-setMethod("pData", "MultiAssayExperiment", function(object)
-    getElement(object, "pData"))
+setMethod("pData", "MultiAssayExperiment", function(object) {
+    .Deprecated("colData")
+    getElement(object, "colData")
+})
+
+#' @exportMethod colData
+#' @rdname MultiAssayExperiment-methods
+#'
+#' @importFrom SummarizedExperiment colData
+setMethod("colData", "MultiAssayExperiment", function(x, ...) {
+    getElement(x, "colData")
+})
 
 #' @exportMethod metadata
 #' @rdname MultiAssayExperiment-methods
@@ -359,11 +373,11 @@ setReplaceMethod("experiments", c("MultiAssayExperiment", "ExperimentList"),
                          return(object)
                      }
                      rebliss <- .harmonize(value,
-                                           pData(object),
+                                           colData(object),
                                            sampleMap(object))
                      BiocGenerics:::replaceSlots(object,
                              ExperimentList = rebliss[["experiments"]],
-                             pData = rebliss[["pData"]],
+                             colData = rebliss[["colData"]],
                              sampleMap = rebliss[["sampleMap"]],
                              metadata = metadata(object))
                  })
@@ -372,10 +386,20 @@ setReplaceMethod("experiments", c("MultiAssayExperiment", "ExperimentList"),
 #' @importFrom Biobase pData<-
 #' @rdname MultiAssayExperiment-methods
 setReplaceMethod("pData", c("MultiAssayExperiment", "DataFrame"),
-                function(object, value) {
-                 slot(object, "pData") <- value
-                 return(object)
-                })
+    function(object, value) {
+        .Deprecated("colData")
+        slot(object, "colData") <- value
+        return(object)
+    })
+
+#' @exportMethod colData<-
+#' @importFrom SummarizedExperiment colData<-
+#' @rdname MultiAssayExperiment-methods
+setReplaceMethod("colData", c("MultiAssayExperiment", "DataFrame"),
+    function(x, value) {
+        slot(x, "colData") <- value
+        return(x)
+    })
 
 .rearrangeMap <- function(sampMap) {
     return(DataFrame(assay = sampMap[["assayname"]],
@@ -395,7 +419,7 @@ setReplaceMethod("metadata", c("MultiAssayExperiment", "ANY"),
 #' @exportMethod $<-
 #' @rdname MultiAssayExperiment-methods
 setReplaceMethod("$", "MultiAssayExperiment", function(x, name, value) {
-    pData(x)[[name]] <- value
+    colData(x)[[name]] <- value
     return(x)
 })
 
@@ -404,24 +428,30 @@ setReplaceMethod("$", "MultiAssayExperiment", function(x, name, value) {
 #' @describeIn MultiAssayExperiment Update old serialized MultiAssayExperiment
 #' objects to new API
 setMethod("updateObject", "MultiAssayExperiment",
-          function(object, ..., verbose = FALSE) {
-              if (verbose)
-                  message("updateObject(object = 'MultiAssayExperiment')")
-              if (is(try(object@ExperimentList, silent = TRUE), "try-error")) {
-                  object <- new(class(object),
-                                ExperimentList = ExperimentList(
-                                    object@Elist@listData),
-                                pData = pData(object),
-                                sampleMap = .rearrangeMap(sampleMap(object)),
-                                metadata = metadata(object),
-                                drops = object@drops)
-              }
-              classes <- vapply(experiments(object), class, character(1L))
-              if (any(classes %in% "RangedRaggedAssay")) {
-                  rraIdx <- which(classes == "RangedRaggedAssay")
-                  for (i in rraIdx) {
-                      object[[i]] <- as(object[[i]], "RaggedExperiment")
-                  }
-              }
-              return(object)
-          })
+    function(object, ..., verbose = FALSE) {
+        if (verbose)
+            message("updateObject(object = 'MultiAssayExperiment')")
+        oldAPI <- try(object@ExperimentList, silent = TRUE)
+        object <- new(class(object),
+                      ExperimentList = if (is(oldAPI, "try-error"))
+                          ExperimentList(object@Elist@listData)
+                      else experiments(object),
+                      colData = if (is(try(object@colData, silent = TRUE),
+                                       "try-error"))
+                          object@pData
+                      else
+                          colData(object),
+                      sampleMap = if (is(oldAPI, "try-error"))
+                          .rearrangeMap(sampleMap(object))
+                      else sampleMap(object),
+                      metadata = metadata(object),
+                      drops = object@drops)
+        classes <- vapply(experiments(object), class, character(1L))
+        if (any(classes %in% "RangedRaggedAssay")) {
+            rraIdx <- which(classes == "RangedRaggedAssay")
+            for (i in rraIdx) {
+                object[[i]] <- as(object[[i]], "RaggedExperiment")
+            }
+        }
+        return(object)
+    })
