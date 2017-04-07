@@ -237,7 +237,7 @@ details.
 # Session info
 
 ```{r}
-devtools::session_info()
+sessionInfo()
 ```
 
 <p style="text-align: right;"> <a href="#header">back to top</a> </p>
