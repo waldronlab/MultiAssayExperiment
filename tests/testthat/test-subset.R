@@ -38,12 +38,12 @@ test_that("subsetByColumns works with lists", {
                  length(affySimple))
 })
 
-test_that("subsetBypData works as intended", {
+test_that("subsetByColData works as intended", {
     trues <- sum(myMultiAssayExperiment$sex == "M")
-    expect_equal(nrow(pData(subsetBypData(myMultiAssayExperiment,
+    expect_equal(nrow(colData(subsetByColData(myMultiAssayExperiment,
                                           myMultiAssayExperiment$sex == "M"))),
                  trues)
-    expect_equal(nrow(pData(
+    expect_equal(nrow(colData(
         myMultiAssayExperiment[, myMultiAssayExperiment$sex == "M"])), trues)
 })
 

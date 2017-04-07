@@ -17,7 +17,7 @@ subsetByColumn(x, y)
 \item{x}{A \code{\link{MultiAssayExperiment}} object}
 
 \item{y}{Either a \code{numeric}, \code{character} or
-\code{logical} object indicating what rownames in the pData to select
+\code{logical} object indicating what rownames in the colData to select
 for subsetting}
 }
 \value{

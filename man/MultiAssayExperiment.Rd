@@ -5,15 +5,15 @@
 \title{Construct a \code{MultiAssayExperiment} object}
 \usage{
 MultiAssayExperiment(experiments = ExperimentList(),
-  pData = S4Vectors::DataFrame(), sampleMap = S4Vectors::DataFrame(),
+  colData = S4Vectors::DataFrame(), sampleMap = S4Vectors::DataFrame(),
   metadata = NULL, drops = list())
 }
 \arguments{
 \item{experiments}{A \code{list} or \link{ExperimentList} of all
 combined experiments}
 
-\item{pData}{A \code{\link[S4Vectors]{DataFrame}} or \code{data.frame} of
-the phenotype data for all participants}
+\item{colData}{A \code{\link[S4Vectors]{DataFrame}} or \code{data.frame} of
+characteristics for all biological units}
 
 \item{sampleMap}{A \code{DataFrame} or \code{data.frame} of assay names,
 sample identifiers, and colname samples}
@@ -32,7 +32,7 @@ experiment and phenotype data
 The constructor function for the \link{MultiAssayExperiment-class} combines
 multiple data elements from the different hierarchies of data
 (study, experiments, and samples). It can create instances where neither
-a \code{sampleMap} or a \code{pData} set is provided. Please see the
+a \code{sampleMap} or a \code{colData} set is provided. Please see the
 MultiAssayExperiment API documentation for more information by running the
 \code{API} function.
 }
@@ -75,13 +75,13 @@ mylist <- list(Affy = exprmap, Methyl450k = methylmap,
 ## Create a sampleMap
 mySampleMap <- listToMap(mylist)
 ## Create an example phenotype data
-pDat <- data.frame(sex = c("M", "F", "M", "F"),
+colDat <- data.frame(sex = c("M", "F", "M", "F"),
                        age = 38:41,
                        row.names = c("Jack", "Jill", "Bob", "Barbara"))
 
 ## Create a MultiAssayExperiment instance
 myMultiAssayExperiment <- MultiAssayExperiment(experiments = ExpList,
-                                               pData = pDat,
+                                               colData = colDat,
                                                sampleMap = mySampleMap)
 }
 \seealso{

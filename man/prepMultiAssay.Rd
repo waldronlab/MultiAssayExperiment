@@ -4,12 +4,12 @@
 \alias{prepMultiAssay}
 \title{Prepare a \code{MultiAssayExperiment} instance}
 \usage{
-prepMultiAssay(ExperimentList, pData, sampleMap)
+prepMultiAssay(ExperimentList, colData, sampleMap)
 }
 \arguments{
 \item{ExperimentList}{A \code{list} of all combined experiments}
 
-\item{pData}{A \linkS4class{DataFrame} of the phenotype
+\item{colData}{A \linkS4class{DataFrame} of the phenotype
 data for all participants}
 
 \item{sampleMap}{A \linkS4class{DataFrame} of sample identifiers, assay
@@ -25,7 +25,7 @@ the arguments of the \code{MultiAssayExperiment} constructor function.
 The purpose of this helper function is to faciltate the creation of a
 \code{\link{MultiAssayExperiment}} object by detecting any inconsistencies
 with all types of names in either the \code{\link{ExperimentList}},
-the \code{pData}, or \code{\link{sampleMap}}.
+the \code{colData}, or \code{\link{sampleMap}}.
 }
 \section{Checks}{
 
@@ -46,7 +46,7 @@ unmatched will be dropped and found in the "drops" element of the
 resulting \code{list}.
 
 Names in the "primary" column of the \code{\link{sampleMap}}, will be
-matched to those in the \code{pData}. Unmatched "primary" column rows will
+matched to those in the \code{colData}. Unmatched "primary" column rows will
 be dropped from the \code{\link{sampleMap}}. Suggestions for name fixes in
 either the \code{\link{ExperimentList}} or colnames will be made when
 necessary.
@@ -57,11 +57,11 @@ necessary.
 example("MultiAssayExperiment")
 
 ## Check if there are any inconsistencies within the different names
-preparedMAE <- prepMultiAssay(ExpList, pDat, mySampleMap)
+preparedMAE <- prepMultiAssay(ExpList, colDat, mySampleMap)
 
 ## Results in a list of components for the MultiAssayExperiment constructor
 ## function
-MultiAssayExperiment(preparedMAE$experiments, preparedMAE$pData,
+MultiAssayExperiment(preparedMAE$experiments, preparedMAE$colData,
 preparedMAE$sampleMap)
 
 ## Alternatively, use the do.call function

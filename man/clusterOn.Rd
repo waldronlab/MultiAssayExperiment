@@ -4,12 +4,13 @@
 \alias{clusterOn}
 \title{Check expression of a given feature against clinical variable}
 \usage{
-clusterOn(MultiAssayExperiment, pDataCols, rownames, experiments, seed = NULL)
+clusterOn(MultiAssayExperiment, colDataCols, rownames, experiments,
+  seed = NULL)
 }
 \arguments{
 \item{MultiAssayExperiment}{A MultiAssayExperiment object}
 
-\item{pDataCols}{Select columns from the MultiAssayExperiment pData
+\item{colDataCols}{Select columns from the MultiAssayExperiment colData
 DataFrame}
 
 \item{rownames}{Features to be used for clustering
@@ -25,12 +26,12 @@ A DataFrame with appended cluster and center values
 }
 \description{
 Function that outputs a \link{DataFrame} with participant ID, sample ID,
-the select pData column, the expression values for select rownames,
+the select colData column, the expression values for select rownames,
 and the center values for each gene by cluster.
 }
 \examples{
 example(MultiAssayExperiment)
-clusterOn(myMultiAssayExperiment, pDataCols = "sex",
+clusterOn(myMultiAssayExperiment, colDataCols = "sex",
     rownames = c("XIST", "RPS4Y1", "KDM5D"),
     experiments = "RNASeqGene", seed = 42L)
 

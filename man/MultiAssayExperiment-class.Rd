@@ -112,7 +112,7 @@ assays that are organized instances of
 (inherits from \code{\linkS4class{GRangesList}}), and \code{RangedVcfStack}.
 Create new \code{MultiAssayExperiment} instances with the homonymous
 constructor, minimally with the argument \code{\link{ExperimentList}},
-potentially also with the arguments \code{pData} (see section below) and
+potentially also with the arguments \code{colData} (see section below) and
 \code{\link{sampleMap}}.
 }
 \details{
@@ -152,11 +152,11 @@ for a \code{MultiAssayExperiment} object
 with data across all experiments
 
 \item \code{duplicated}: Find duplicate columns in the data by
-matching pData rownames
+matching colData rownames
 
 \item \code{reduce}: Housekeeping method for a
 MultiAssayExperiment where only complete.cases are returned, replicate
-measurements are averaged, and columns are aligned by the row order in pData.
+measurements are averaged, and columns are aligned by the row order in colData.
 
 \item \code{reduce}: Consolidate duplicate measurements for
 rectangular data structures, returns object of the same class (endomorphic)
@@ -183,7 +183,7 @@ MultiAssayExperiment with a \code{character} index
 \item{\code{ExperimentList}}{A \code{\link{ExperimentList}} class object for
 each assay dataset}
 
-\item{\code{pData}}{A \code{DataFrame} of all clinical/specimen data available
+\item{\code{colData}}{A \code{DataFrame} of all clinical/specimen data available
 across experiments}
 
 \item{\code{sampleMap}}{A \code{DataFrame} of translatable identifiers
@@ -195,10 +195,10 @@ of samples and participants}
 \item{\code{drops}}{A metadata \code{list} of dropped information}
 }}
 
-\section{pData}{
+\section{colData}{
 
-The \code{pData} slot is a collection of primary specimen data valid across
-all experiments. This slot is strictly of class
+The \code{colData} slot is a collection of primary specimen data valid
+across all experiments. This slot is strictly of class
 \code{\linkS4class{DataFrame}} but arguments for the constructor function
 allow arguments to be of class \code{data.frame} and subsequently coerced.
 }
@@ -224,8 +224,8 @@ example("MultiAssayExperiment")
 myMultiAssayExperiment[1, , ]
 myMultiAssayExperiment[c(TRUE, FALSE), , ]
 
-# Columns (j) Rows in pData
-myMultiAssayExperiment[, rownames(pData(myMultiAssayExperiment))[3:2],  ]
+# Columns (j) Rows in colData
+myMultiAssayExperiment[, rownames(colData(myMultiAssayExperiment))[3:2],  ]
 
 # Assays (k)
 myMultiAssayExperiment[, , "Affy"]
@@ -234,13 +234,13 @@ myMultiAssayExperiment[, , "Affy"]
 completes <- complete.cases(myMultiAssayExperiment)
 compMAE <- myMultiAssayExperiment[, completes, ]
 compMAE
-pData(compMAE)
+colData(compMAE)
 
 example("MultiAssayExperiment")
 
 ## Add an experiment
 test1 <- myMultiAssayExperiment[[1L]]
-colnames(test1) <- rownames(pData(myMultiAssayExperiment))
+colnames(test1) <- rownames(colData(myMultiAssayExperiment))
 
 ## Combine current MultiAssayExperiment with additional experiment
 ## (no sampleMap)
