@@ -24,7 +24,7 @@ suppressPackageStartupMessages({
 
 ## Component slots
 
-### pData - biological units
+### colData - biological units
 
 A `DataFrame` describing the characteristics of the biological units. In
 [The Cancer Genome Atlas][] data, for example, the biological units are patients.
@@ -71,7 +71,7 @@ A `DataFrame` graph representation of the relationship between the experiments
 Helper functions are available for creating a map from a list. See `?listToMap`
 
 Key points:
-* relates experimental observations (`colnames`) to `pData`
+* relates experimental observations (`colnames`) to `colData`
 * permits experiment-specific sample naming, missing, and replicate observations
 
 ```{r}
@@ -90,7 +90,7 @@ sampMap
 The `MultiAssayExperiment` constructor function can take three arguments:
 
 1. `experiments` - An `ExperimentList` or `list` of data
-2. `pData` - A `DataFrame` describing the biological units
+2. `colData` - A `DataFrame` describing the biological units
 3. `sampleMap` - A `DataFrame` of `assay`, `primary`, and `colname` identifiers
 
 ```{r}
@@ -163,12 +163,12 @@ See the table below.
 | Slot | Accessor |
 |------|----------|
 | `ExperimentList` | `experiments`|
-| `pData` | `pData` / `$` * |
+| `colData` | `colData` / `$` * |
 | `sampleMap` | `sampleMap` |
 | `metadata` | `metadata` |
 
 __*__ The `$` operator on a `MultiAssayExperiment` will return a single
-column of `pData`. For example:
+column of `colData`. For example:
 
 ```{r}
 mae$sex
@@ -197,7 +197,7 @@ rearrange(mae, shape = "wide")[, 1:4]
 The `c` function allows the user to insert an additional experiment into an
 already created `MultiAssayExperiment`.
 
-A `sampleMap` can be provided using in order to map `pData` rows to experiment
+A `sampleMap` can be provided using in order to map `colData` rows to experiment
 column names. In the following example, the "exp3" experiment contains repeated
 measurements for Bob.
 

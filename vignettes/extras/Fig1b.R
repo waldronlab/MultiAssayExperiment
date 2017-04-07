@@ -16,7 +16,7 @@ brca <- readRDS("brcaMAEO.rds")
 
 fun <- function(mae){
   mae <- mae[, , c("Mutations", "gistict")]
-  mae <- mae[, !rownames(pData(mae)) %in% names(duplicated(mae)$Mutations), ]
+  mae <- mae[, !rownames(colData(mae)) %in% names(duplicated(mae)$Mutations), ]
   mae <- mae[, complete.cases(mae), ]
   mae$nummuts <- sapply(experiments(mae)$Mutations, length) / 50
   mae$cnload <- colMeans(abs(assay(mae[, , "gistict"])[[1]]))
