@@ -471,9 +471,12 @@ setMethod("rearrange", "ANY", function(object, shape = "long", ...) {
     if (is(object, "SummarizedExperiment")) {
         ## Ensure that rowData DataFrame has a rowname column
         ## Otherwise, use first column
-        rownameIn <- "rowname" %in% names(rowData(object))
+        rowDatNames <- names(rowData(object))
+        rownameIn <- "rowname" %in% rowDatNames
         if (any(rownameIn)) {
             rowData(object) <- rowData(object)[rownameIn]
+        } else if (!length(rowDatNames)) {
+            rowData(object) <- DataFrame(rowname = rownames(assay(object)))
         } else {
             warning("'rowname' column not in 'rowData' taking first one")
             rowData(object) <- rowData(object)[1L]
