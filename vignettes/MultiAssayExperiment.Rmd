@@ -7,9 +7,9 @@ vignette: >
   %\VignetteIndexEntry{Coordinating Analysis of Multi-Assay Experiments}
   %\VignetteEncoding{UTF-8}
 output:
-  BiocStyle::html_document:
+  BiocStyle::html_document2:
     number_sections: yes
-    toc: yes
+    toc: true
 ---
 
 ```{r, echo=FALSE, warning=FALSE}
@@ -19,32 +19,33 @@ suppressPackageStartupMessages({
 })
 ```
 
-# Accessing the `MultiAssayExperiment` Application Programming Interface (API)
+# Installation
 
-To see the `API` wiki document on GitHub, type:
-
-```{r, eval=FALSE}
-API()
+```{r, eval = FALSE}
+source("https://bioconductor.org/biocLite.R")
+BiocInstaller::biocLite("MultiAssayExperiment")
 ```
 
-A Shiny app that browses the package `API` is also available via:
+Loading the packages:
 
-```{r, eval=FALSE}
-API(shiny=TRUE)
+```{r, eval = FALSE}
+library(MultiAssayExperiment)
+library(GenomicRanges)
 ```
 
 # Overview of the `MultiAssayExperiment` class
 
 Here is an overview of the class and its constructors and extractors:
+
 ```{r}
 empty <- MultiAssayExperiment()
 empty
 slotNames(empty)
 ```
 
-## Components of the MultiAssayExperiment
+## Components of the `MultiAssayExperiment`
 
-### ExperimentList: experimental data
+### `ExperimentList`: experimental data
 
 The `ExperimentList` slot and class is the container workhorse for the
 `MultiAssayExperiment` class. It contains all the experimental data. It inherits
@@ -75,16 +76,21 @@ range-based datasets, one set of genomic ranges are assayed for multiple
 samples. It can be used for gene expression, methylation, or other data
 types that refer to genomic positions. 
 
-#### Class requirements within ExperimentList container
+- `RaggedExperiment::RaggedExperiment`: For range-based datasets, such as
+copy number and mutation data, the `RaggedExperiment` class can be used
+to represent measurements by genomic positions.
 
-See `API()` for details on requirements for using other data classes.
-In general, data classes meeting minimum requirements, including support for
-square bracket `[` subsetting and `dimnames()` will work by default. 
+#### Class requirements within `ExperimentList` container
 
-The datasets contained in elements of the `ExperimentList` must have:
+See the [API section](#application-programming-interface-api) for details on
+requirements for using other data classes. In general, data classes meeting
+minimum requirements, including support for square bracket `[` subsetting and
+`dimnames()` will work by default. 
 
-* column names
-* row names
+The datasets contained in elements of the `ExperimentList` can have:
+
+* column names (required)
+* row names (optional)
 
 The column names correspond to samples, and are used to match assay data to
 specimen metadata stored in `colData`. 
@@ -104,14 +110,14 @@ columns.
 and experimental samples
 - `dim()`: returns a vector of the number of rows and number of columns
 
-### colData: primary data
+### `colData`: primary data
 
 The `MultiAssayExperiment` keeps one set of "primary" metadata that describes
 the 'biological unit' which can refer to specimens, experimental subjects,
 patients, etc. In this vignette, we will refer to each experimental subject as
 a *patient*.
 
-#### colData slot requirements
+#### `colData` slot requirements
 
 The `colData` dataset should be of class `DataFrame` but can accept a
 `data.frame` class object that will be coerced.  
@@ -138,7 +144,7 @@ responses in another column, also as a `SimpleList`. Or, dose-response values
 could be stored in a single column of `colData` as a two-column matrix for
 each cell line.
 
-### sampleMap: relating colData to multiple assays
+### `sampleMap`: relating `colData` to multiple assays
 
 The `sampleMap` is a `DataFrame` that relates the "primary" data
 (`colData`) to the experimental assays:
@@ -154,7 +160,7 @@ or no observations at all.  In other words, there is a "many-to-one" mapping
 from experimental observations to rows of `colData`, and a "one-to-any-number"
 mapping from rows of `colData` to experimental observations.
 
-#### sampleMap structure
+#### `sampleMap` structure
 
 The `sampleMap` has three columns, with the following column names:
 
@@ -233,6 +239,8 @@ information. For an empty `MultiAssayExperiment` object, it is NULL.
 ```{r}
 class(metadata(empty)) # NULL (class "ANY")
 ```
+
+<p style="text-align: right;"> <a href="#header">back to top</a> </p>
 
 # Creating a `MultiAssayExperiment` object: a rich example
 
@@ -513,6 +521,8 @@ sedf
 makeSummarizedExperimentFromDataFrame(sedf)
 ```
 
+<p style="text-align: right;"> <a href="#header">back to top</a> </p>
+
 # Integrated subsetting across experiments
 
 `MultiAssayExperiment` allows subsetting by rows, columns, and assays,
@@ -742,43 +752,48 @@ myMultiAssay[[1]]
 myMultiAssay[["Affy"]]
 ```
 
+<p style="text-align: right;"> <a href="#header">back to top</a> </p>
 
 # Helpers for data clean-up and management
 
-## complete.cases()
+## `complete.cases`
 
-`complete.cases()` returns a logical identifying which primary units have data
-for all experiments. Recall that `myMultiAssay` provides data for four
-individuals:
+The `complete.cases` function returns a logical vector identifying which
+primary units have data for all experiments. Recall that `myMultiAssay`
+provides data for four individuals:
 
 ```{r}
 colData(myMultiAssay)
 ```
 
 Of these, only Jack has data for all 5 experiments:
+
 ```{r}
 complete.cases(myMultiAssay)
 ```
+
 But all four have coplete cases for Affy and Methyl 450k:
+
 ```{r}
 complete.cases(myMultiAssay[, , 1:2])
 ```
 
 This output can be used to select individuals with complete data:
+
 ```{r}
 myMultiAssay[, complete.cases(myMultiAssay), ]
 ```
 
-## duplicated()
+## `duplicated`
 
-The `duplicated()` function returns a list of lists, identifying replicate
-samples for each individual within each assay:
+The `duplicated` function returns a list of `LogicalList`s, identifying
+replicate samples for each individual within each assay:
 
 ```{r}
 duplicated(myMultiAssay)
 ```
 
-# "reduce" to clean up a MultiAssayExperiment
+# `reduce` to clean up a `MultiAssayExperiment`
 
 A call to `reduce()` by default returns another MultiAssayExperiment where the
 columns of each element of `ExperimentList` correspond exactly to the rows of
@@ -794,7 +809,7 @@ correspond to the same individual. For example, the first three experiments of
 colnames(myMultiAssay[, , 1:3])
 ```
 
-After a `reduce()` call, replicates are merged and only complete cases remain:
+After a `reduce` call, replicates are merged and only complete cases remain:
 
 ```{r}
 maeredux <- reduce(myMultiAssay[, , 1:3])
@@ -808,17 +823,19 @@ colnames(maeredux)
 ```
 
 but it is clear from the sample map:
+
 ```{r}
 sampleMap(maeredux)
 ```
 
+See `?"MultiAssayExperiment-class"` for more details.
 
-See ?\\`MultiAssayExperiment-class\\`:
 ```{r, eval=FALSE}
-reduce(x, drop.empty.ranges = FALSE,
-  replicates = NULL, combine = rowMeans, vectorized = TRUE, ...)
+reduce(x, drop.empty.ranges = FALSE, simplify,
+  replicates = NULL, ...)
 ```
 
+<p style="text-align: right;"> <a href="#header">back to top</a> </p>
 
 # Extractor functions
 
@@ -826,7 +843,7 @@ Extractor functions convert a `MultiAssayExperiment` into other forms that are
 convenient for analyzing. These would normally be called after any desired 
 subsetting has been performed.
 
-## rearrange()
+## `rearrange`
 
 Produces *long* (default) or *wide* `DataFrame` objects. The following
 produces a long `DataFrame` (the default) for the first two assays:
@@ -845,44 +862,46 @@ rearrange(myMultiAssay[, , 1:2], colDataCols="age")
 The "wide" format is useful for calculating correlations or performing
 regression against different genomic features. Wide format is in general not
 possible with replicate measurements, so we demonstrate on the reduced
-`MultiAssayExperiment`:
+`MultiAssayExperiment` for the first 5 columns:
 
 ```{r}
-rearrange(maeredux, shape="wide", colDataCols="sex")
+rearrange(maeredux, shape="wide", colDataCols="sex")[, 1:5]
 ```
 
-## assays()
+## `assays`
 
-The `assays()` function returns a `SimpleList` of data matrices from the
+The `assays` (plural) function returns a `SimpleList` of data matrices from the
 `ExperimentList`:
 
 ```{r}
 assays(myMultiAssay)
 ```
 
-# rownames and colnames
+# Dimension names: `rownames` and `colnames`
 
-rownames and colnames return a `CharacterList` of rownames and colnames across
-all the assays.  A `CharacterList` is just an alternative to `list` when each
-element contains a character vector, that provides a nice show method:
+`rownames` and `colnames` return a `CharacterList` of row names and column names
+across all the assays.  A `CharacterList` is an efficient alternative to
+`list` used when each element contains a character vector. It also provides a
+nice show method:
 
 ```{r}
 rownames(myMultiAssay)
 colnames(myMultiAssay)
 ```
 
+<p style="text-align: right;"> <a href="#header">back to top</a> </p>
+
 # Requirements for support of additional data classes
 
 Any data classes in the `ExperimentList` object must support the following
 methods:
 
-* `colnames()`
-* `rownames()`
+* `dimnames`
 * `[`
 * `dim()`
 
-
 Here is what happens if one of the methods doesn't:
+
 ```{r}
 objlist2 <- objlist
 objlist2[[2]] <- as.vector(objlist2[[2]])
@@ -890,14 +909,33 @@ invalid.obj <- try(MultiAssayExperiment(objlist2, patient.data, dfmap))
 invalid.obj
 ```
 
+# Application Programming Interface (API)
+
+For more information on the formal API of `MultiAssayExperiment`, please see
+the `API` wiki document on GitHub. From within an R session, type:
+
+```{r, eval=FALSE}
+API()
+```
+
+to produce the webpage for the API or use the "shiny" argument to get a `shiny`
+app that browses the package, such as:
+
+```{r, eval=FALSE}
+API(shiny=TRUE)
+```
+
+<p style="text-align: right;"> <a href="#header">back to top</a> </p>
+
 # Methods for MultiAssayExperiment
 
 The following methods are defined for `MultiAssayExperiment`:
+
 ```{r}
 methods(class="MultiAssayExperiment")
 ```
 
-# Soon to be documented
+# Soon to be documented/developed
 
 * `c()` function for adding new assays to existing `MultiAssayExperiment`
     + e.g. c(myMultiAssay, neweset)
@@ -918,3 +956,5 @@ methods(class="MultiAssayExperiment")
 ```{r}
 sessionInfo()
 ```
+
+<p style="text-align: right;"> <a href="#header">back to top</a> </p>
