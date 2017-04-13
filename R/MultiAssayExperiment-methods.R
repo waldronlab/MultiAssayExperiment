@@ -1,5 +1,5 @@
 #' @include RangedRaggedAssay-class.R MultiAssayExperiment-class.R
-#' ExperimentList-class.R MultiAssayView-class.R
+#' ExperimentList-class.R
 #'
 #' @import BiocGenerics SummarizedExperiment S4Vectors GenomicRanges methods
 #' @importFrom utils .DollarNames
@@ -554,21 +554,8 @@ setMethod("rearrange", "MultiAssayExperiment", function(object, shape = "long",
     return(outputDataFrame)
 })
 
-.combineCols <- function(rectangle, dupNames, combine = IRanges::rowMeans, ...,
-                         vectorized = TRUE) {
-    if (!is.logical(vectorized))
-        stop("'vectorized' argument not logical")
-    if (vectorized)
-        combine(rectangle[, dupNames, drop = FALSE], ...)
-    else
-        apply(rectangle[, dupNames, drop = FALSE], 1, function(row) {
-            combine(row, ...)
-        })
-}
-
-#' @describeIn MultiAssayExperiment Find duplicate columns in the data by
-#' matching colData rownames
-#' @param incomparables duplicated: unused argument
+#' @rdname helpers
+#' @aliases duplicated
 #' @exportMethod duplicated
 setMethod("duplicated", "MultiAssayExperiment",
           function(x, incomparables = FALSE, ...) {
@@ -585,123 +572,168 @@ setMethod("duplicated", "MultiAssayExperiment",
     lapply(repList, IRanges::LogicalList)
 })
 
+#' @name helpers
+#' @title A group of helper functions for manipulating and cleaning a
+#' MultiAssayExperiment
+#' @aliases intersectRows
+#' @description A set of helper functions were created to help clean and
+#' manipulate a MultiAssayExperiment object.
+#'
+#' \itemize{
+#'     \item complete.cases: Returns a logical vector corresponding to 'colData'
+#'     rows that have data across all experiments
+#'     \item duplicated: Returns a 'list' of 'LogicalList's that indicate
+#'     what measurements originate from the same biological unit
+#'     \item intersectRows: Takes all common rows across experiments,
+#'     excludes experiments with empty rownames
+#'     \item intersectPrimary: A wrapper for
+#'     \link[=complete.cases,MultiAssayExperiment-method]{complete.cases} to
+#'     return a MultiAssayExperiment with only those biological units that have
+#'     measurements across all experiments
+#'     \item mergeReplicates: A function that combines duplicated / repeated
+#'     measurements across all experiments and is guided by the duplicated
+#'     return value
+#' }
+#'
+#' @export
+intersectRows <- function(object) {
+    rows <- rownames(object)
+    validRows <- Filter(function(x) length(x), rows)
+    intRows <- Reduce(intersect, validRows)
+    MultiAssayExperiment[intRows, , drop = FALSE]
+}
 
-#' @importFrom IRanges reduce
+#' @rdname helpers
+#' @aliases intersectPrimary
+#'
+#' @export
+intersectPrimary <- function(object) {
+    comps <- complete.cases(object)
+    MultiAssayExperiment[, comps]
+}
+
+#' @export
+setGeneric("mergeReplicates", function(object, replicates = list(),
+                                       simplify = BiocGenerics::mean, ...)
+    standardGeneric("mergeReplicates"))
+
 #' @describeIn MultiAssayExperiment Housekeeping method for a
 #' MultiAssayExperiment where only complete.cases are returned, replicate
 #' measurements are averaged, and columns are aligned by the row order in colData.
-#' @param drop.empty.ranges unused generic argument
-#' @param replicates reduce: A list of \linkS4class{LogicalList} indicating
-#' duplicate entries for each biological unit, see the \code{duplicated} method
+#' @param replicates mergeReplicates: A list of \linkS4class{LogicalList}s
+#' indicating multiple / duplicate entries for each biological unit, see the
+#' \code{duplicated} method
 #' @param simplify A function for merging repeat measurements in experiments
-#' as indicated by replicates
-#' for \code{MultiAssayExperiment}
-#' @exportMethod reduce
-setMethod("reduce", "MultiAssayExperiment",
-        function(x, drop.empty.ranges = FALSE, simplify = BiocGenerics::mean,
-                 replicates = NULL, ...) {
-    ## Select complete cases
-    x <- x[, complete.cases(x), ]
-    if (is.null(replicates))
-        replicates <- duplicated(x)
-    experimentList <- reduce(x = experiments(x), simplify = simplify,
-                             replicates = replicates, ...)
-    experiments(x) <- experimentList
-    x
+#' as indicated by replicates for \code{MultiAssayExperiment}
+#' @exportMethod mergeReplicates
+setMethod("mergeReplicates", "MultiAssayExperiment",
+    function(object, replicates = list(), simplify = BiocGenerics::mean, ...) {
+        if (!length(replicates))
+            replicates <- duplicated(object)
+    experimentList <- mergeReplicates(object = experiments(object),
+                                      replicates = replicates,
+                                      simplify = simplify, ...)
+    experiments(object) <- experimentList
+    object
 })
 
-#' @describeIn ExperimentList Apply the reduce method on the
+#' @describeIn ExperimentList Apply the mergeReplicates method on the
 #' ExperimentList elements
-#' @param drop.empty.ranges unused argument
+#' @param replicates mergeReplicates: A \code{list} or \linkS4class{LogicalList}
+#' where each element represents a sample and a vector of repeated measurements
+#' for the sample
 #' @param simplify A function for merging columns where duplicates are indicated
 #' by replicates
-#' @param replicates reduce: A \code{list} or \linkS4class{LogicalList} where
-#' each element represents a sample and a vector of repeated measurements for
-#' the sample (default NULL)
 #' @param ... Additional arguments. See details for more information.
-setMethod("reduce", "ExperimentList",
-          function(x, drop.empty.ranges = FALSE, simplify,
-                   replicates = NULL, ...) {
-              idx <- seq_along(x)
-              names(idx) <- names(x)
-              redList <- lapply(idx, function(i, element, simply,
-                                              replicate, ...) {
-                  reduce(x = element[[i]], simplify = simply,
-                         replicates = replicate[[i]], ...)
-              }, element = x, simply = simplify, replicate = replicates, ...)
-              ExperimentList(redList)
-          })
+setMethod("mergeReplicates", "ExperimentList",
+    function(object, replicates = list(), simplify = BiocGenerics::mean, ...) {
+        if (!length(replicates))
+            stop("'replicates' must be a 'list' of duplicated column elements",
+                 "\n per biological unit")
+        idx <- seq_along(object)
+        names(idx) <- names(object)
+        redList <- lapply(idx, function(i, element, simply,
+                                        replicate, ...) {
+            mergeReplicates(object = element[[i]], simplify = simply,
+                            replicates = replicate[[i]], ...)
+        }, element = object, simply = simplify,
+        replicate = replicates, ...)
+        ExperimentList(redList)
+    })
 
 .splitArgs <- function(args) {
-              assayArgNames <- c("mcolname", "background", "type",
-                                  "make.names", "ranges")
-              assayArgs <- args[assayArgNames]
-              altArgs <- args[!names(args) %in% assayArgNames]
-              assayArgs <- Filter(function(x) !is.null(x), assayArgs)
-              list(assayArgs, altArgs)
+    assayArgNames <- c("mcolname", "background", "type",
+                       "make.names", "ranges")
+    assayArgs <- args[assayArgNames]
+    altArgs <- args[!names(args) %in% assayArgNames]
+    assayArgs <- Filter(function(x) !is.null(x), assayArgs)
+    list(assayArgs, altArgs)
 }
 
 #' @describeIn MultiAssayExperiment Consolidate duplicate measurements for
 #' rectangular data structures, returns object of the same class (endomorphic)
 #' @importFrom IRanges LogicalList
-setMethod("reduce", "ANY", function(x, drop.empty.ranges = FALSE,
-                                    simplify, replicates = NULL, ...) {
-    object <- x
-    if (is.list(replicates))
-        replicates <- IRanges::LogicalList(replicates)
-    if (is(object, "SummarizedExperiment"))
-        x <- assay(x)
-    if (is(object, "ExpressionSet"))
-        x <- Biobase::exprs(x)
-    if (!is.null(replicates) && length(replicates) != 0L) {
-        uniqueCols <- apply(as.matrix(replicates), 2, function(cols) {
-            !any(cols)
-        })
-        repeatList <- lapply(replicates, function(reps, rectangle) {
-            if (length(reps)) {
-                repNames <- colnames(rectangle)[reps]
-                baseList <- as(split(rectangle[, repNames],
-                                     seq_len(nrow(x))), "List")
-                result <- simplify(baseList, ...)
-                result <- matrix(result, ncol = 1,
-                                 dimnames = list(NULL, repNames[[1L]]))
+setMethod("mergeReplicates", "ANY",
+    function(object, replicates = list(), simplify = BiocGenerics::mean, ...) {
+        x <- object
+        if (is.list(replicates))
+            replicates <- IRanges::LogicalList(replicates)
+        if (is(x, "SummarizedExperiment"))
+            object <- assay(x)
+        if (is(x, "ExpressionSet"))
+            object <- Biobase::exprs(x)
+        if (length(replicates)) {
+            uniqueCols <- apply(as.matrix(replicates), 2, function(cols) {
+                !any(cols)
+            })
+            repeatList <- lapply(replicates, function(reps, rectangle) {
+                if (length(reps)) {
+                    repNames <- colnames(rectangle)[reps]
+                    baseList <- as(split(rectangle[, repNames],
+                                         seq_len(nrow(x))), "List")
+                    result <- simplify(baseList, ...)
+                    result <- matrix(result, ncol = 1,
+                                     dimnames = list(NULL, repNames[[1L]]))
+                    return(result)
+                }
+            }, rectangle = object)
+            uniqueRectangle <- do.call(cbind, unname(repeatList))
+            result <- cbind(uniqueRectangle, object[, uniqueCols, drop = FALSE])
+            if (is (x, "SummarizedExperiment"))
+                assay(x) <- result
+            else if (is(x, "ExpressionSet"))
+                object <- Biobase::assayDataElementReplace(x,
+                                                           "exprs", result,
+                                                           validate = FALSE)
+            else
                 return(result)
-            }
-        }, rectangle = x)
-        uniqueRectangle <- do.call(cbind, unname(repeatList))
-        result <- cbind(uniqueRectangle, x[, uniqueCols, drop = FALSE])
-        if (is (object, "SummarizedExperiment"))
-            assay(object) <- result
-        else if (is(object, "ExpressionSet"))
-            Biobase::exprs(object) <- result
-        else
-            return(result)
-    }
-    return(object)
+        }
+        return(object)
 })
 
-#' @describeIn RangedRaggedAssay Use metadata column to produce a matrix which
-#' can then be merged across replicates.
+#' @describeIn RangedRaggedAssay (deprecated) Use metadata column to produce
+#' a matrix which can then be merged across replicates.
 #' @seealso \link{assay,RangedRaggedAssay,missing-method}
-#' @param drop.empty.ranges unused argument
 #' @param simplify A function for combining duplicate measurements (e.g., mean)
-#' @param replicates reduce: A logical list where each element represents a
-#' sample and a vector of repeated experiments for the sample (default NULL)
-setMethod("reduce", "RangedRaggedAssay",
-          function(x, drop.empty.ranges = FALSE, simplify, replicates = NULL,
+#' @param replicates mergeReplicates: A \code{list} or \code{LogicalList} where
+#' each element represents a sample and a vector of repeated measurements for
+#' that biological unit
+setMethod("mergeReplicates", "RangedRaggedAssay",
+          function(object, replicates = list(), simplify = BiocGenerics::mean,
                    mcolname=NULL, ...) {
               .Deprecated("RaggedExperiment")
-              x <- x[, lengths(x) > 0L ]
+              object <- object[, lengths(object) > 0L ]
               args <- list(...)
               if (is.null(mcolname))
-                  mcolname <- .findNumericMcol(x)
-              x <- disjoin(x, mcolname = mcolname)
+                  mcolname <- .findNumericMcol(object)
+              object <- disjoin(object, mcolname = mcolname)
               argList <- .splitArgs(args)
               argList[[1L]]$mcolname <- mcolname
-              x <- do.call(assay, c(list(x = x), argList[[1L]]))
-              do.call(reduce, c(list(x = x, simplify = simplify,
-                                     replicates = replicates),
-                                argList[[2L]]))
+              object <- do.call(assay, c(list(x = object), argList[[1L]]))
+              do.call(mergeReplicates, c(list(object = object,
+                                              replicates = replicates,
+                                              simplify = simplify),
+                                         argList[[2L]]))
           })
 
 #' @describeIn MultiAssayExperiment Add an element to the

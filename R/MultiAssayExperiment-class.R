@@ -32,11 +32,11 @@
 #' The dots (\code{\ldots}) argument allows the user to specify additional
 #' arguments in several instances. When subsetting (\strong{[}) a
 #' \code{MultiAssayExperiment}, the dots allow for additional
-#' arguments to be sent to \link{findOverlaps}. When using the \strong{reduce}
-#' method, the dots are used to specify arguments for the supplied
-#' \code{combine} argument and function. When using the \strong{assay} method,
-#' additional arguments may be passed to the \code{RangedRaggedAssay} method.
-#' See the link for more information:
+#' arguments to be sent to \link{findOverlaps}. When using the
+#' \code{mergeReplicates} method, the dots are used to specify arguments for
+#' the supplied \code{simplify} argument and function. When using the
+#' \strong{assay} method, additional arguments may be passed to the
+#' \code{RangedRaggedAssay} method. See the link for more information:
 #' \link{assay,RangedRaggedAssay,missing-method}. When using \strong{c} method
 #' to add experiments to a \code{MultiAssayExperiment}, the dots allow extra
 #' data classes compatible with the MultiAssayExperiment API. See: \link{API}
@@ -229,10 +229,9 @@ setMethod("show", "MultiAssayExperiment", function(object) {
         "\n colData() - the primary/phenotype", sprintf("%s", c_mp),
         "\n sampleMap() - the sample availability", sprintf("%s", c_sm),
         "\n `$`, `[`, `[[` - extract colData columns, subset, or experiment",
-        "\n reduce() - select complete cases, order columns, disjoin ranges",
         "\n rearrange() - convert", sprintf("%s", c_elist),
         "into a long or wide", sprintf("%s", c_mp),
-        "\n assay() - convert", sprintf("%s", c_elist),
+        "\n assays() - convert", sprintf("%s", c_elist),
         "to a list of rectangular matrices\n")
 })
 

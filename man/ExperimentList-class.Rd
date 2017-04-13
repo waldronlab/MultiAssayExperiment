@@ -8,7 +8,7 @@
 \alias{ExperimentList,missing-method}
 \alias{show,ExperimentList-method}
 \alias{dimnames,ExperimentList-method}
-\alias{reduce,ExperimentList-method}
+\alias{mergeReplicates,ExperimentList-method}
 \alias{assay,ANY,missing-method}
 \alias{assays,ExperimentList-method}
 \alias{assay,ExperimentList,missing-method}
@@ -25,8 +25,8 @@
 
 \S4method{dimnames}{ExperimentList}(x)
 
-\S4method{reduce}{ExperimentList}(x, drop.empty.ranges = FALSE, simplify,
-  replicates = NULL, ...)
+\S4method{mergeReplicates}{ExperimentList}(object, replicates = list(),
+  simplify = BiocGenerics::mean, ...)
 
 \S4method{assay}{ANY,missing}(x, i, ...)
 
@@ -39,19 +39,17 @@
 \S4method{assay}{ExperimentList,character}(x, i, ...)
 }
 \arguments{
-\item{x}{constructor: A \code{list} object, reduce or assay: an
-\code{ExperimentList} object}
+\item{x}{constructor: A \code{list} object. For mergeReplicates or assay:
+an \code{ExperimentList} object}
 
 \item{object}{An \code{\linkS4class{ExperimentList}} object}
 
-\item{drop.empty.ranges}{unused argument}
+\item{replicates}{mergeReplicates: A \code{list} or \linkS4class{LogicalList}
+where each element represents a sample and a vector of repeated measurements
+for the sample}
 
 \item{simplify}{A function for merging columns where duplicates are indicated
 by replicates}
-
-\item{replicates}{reduce: A \code{list} or \linkS4class{LogicalList} where
-each element represents a sample and a vector of repeated measurements for
-the sample (default NULL)}
 
 \item{...}{Additional arguments. See details for more information.}
 
@@ -71,9 +69,9 @@ One element present per experiment performed.
 }
 \details{
 Convert from \code{SimpleList} or \code{list}
-to the multi-experiment data container. When using the \strong{reduce}
-method, additional arguments are passed to the given \link{combine}
-function argument (e.g., na.rm = TRUE)
+to the multi-experiment data container. When using the
+\strong{mergeReplicates} method, additional arguments are passed to the
+given \link{simplify} function argument (e.g., na.rm = TRUE)
 }
 \section{Methods (by generic)}{
 \itemize{
@@ -89,7 +87,7 @@ function argument (e.g., na.rm = TRUE)
 \item \code{dimnames}: Get the dimension names for
 an \code{ExperimentList} using \code{\link[IRanges]{CharacterList}}
 
-\item \code{reduce}: Apply the reduce method on the
+\item \code{mergeReplicates}: Apply the mergeReplicates method on the
 ExperimentList elements
 
 \item \code{assay}: Get the assay data for the default ANY class

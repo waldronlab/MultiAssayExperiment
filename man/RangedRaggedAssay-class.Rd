@@ -13,7 +13,7 @@
 \alias{dimnames<-,RangedRaggedAssay,list-method}
 \alias{disjoin,RangedRaggedAssay-method}
 \alias{show,RangedRaggedAssay-method}
-\alias{reduce,RangedRaggedAssay-method}
+\alias{mergeReplicates,RangedRaggedAssay-method}
 \title{An extension of the GRangesList class}
 \usage{
 \S4method{[}{RangedRaggedAssay,ANY,ANY,ANY}(x, i, j, ..., drop = TRUE)
@@ -31,8 +31,8 @@
 
 \S4method{show}{RangedRaggedAssay}(object)
 
-\S4method{reduce}{RangedRaggedAssay}(x, drop.empty.ranges = FALSE, simplify,
-  replicates = NULL, mcolname = NULL, ...)
+\S4method{mergeReplicates}{RangedRaggedAssay}(object, replicates = list(),
+  simplify = BiocGenerics::mean, mcolname = NULL, ...)
 }
 \arguments{
 \item{x}{A \code{\link{RangedRaggedAssay}} class}
@@ -56,10 +56,9 @@ for summaries}
 
 \item{object}{A \code{RangedRaggedAssay} class object}
 
-\item{drop.empty.ranges}{unused argument}
-
-\item{replicates}{reduce: A logical list where each element represents a
-sample and a vector of repeated experiments for the sample (default NULL)}
+\item{replicates}{mergeReplicates: A \code{list} or \code{LogicalList} where
+each element represents a sample and a vector of repeated measurements for
+that biological unit}
 }
 \value{
 A \code{\link{RangedRaggedAssay}} class object
@@ -72,12 +71,12 @@ names
 }
 \details{
 The \code{\ldots} argument allows the user to specify arguments in the
-\code{\link{subsetByOverlaps}} function. When calling the \code{reduce}
-method, the additional arguments correspond to those in either the
-\code{assay} method or the \code{reduce} method. The \code{reduce} arguments
-include a function for applying over the rows (\code{combine}) and a
-\code{vectorized} argument which indicates whether the given function is
-vectorized or not.
+\code{\link{subsetByOverlaps}} function. When calling the
+\code{mergeReplicates} method, the additional arguments correspond to those
+in either the \code{assay} method or the \code{mergeReplicates} method.
+The \code{mergeReplicates} arguments include a function for applying over
+the rows (\code{combine}) and a \code{vectorized} argument which indicates
+whether the given function is vectorized or not.
 }
 \section{Methods (by generic)}{
 \itemize{
@@ -102,8 +101,8 @@ with function
 \item \code{show}: show method for
 the \code{RangedRaggedAssay} class
 
-\item \code{reduce}: Use metadata column to produce a matrix which
-can then be merged across replicates.
+\item \code{mergeReplicates}: (deprecated) Use metadata column to produce
+a matrix which can then be merged across replicates.
 }}
 
 \seealso{

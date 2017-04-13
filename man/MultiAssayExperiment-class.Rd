@@ -13,9 +13,8 @@
 \alias{[,MultiAssayExperiment,ANY-method}
 \alias{isEmpty,MultiAssayExperiment-method}
 \alias{complete.cases,MultiAssayExperiment-method}
-\alias{duplicated,MultiAssayExperiment-method}
-\alias{reduce,MultiAssayExperiment-method}
-\alias{reduce,ANY-method}
+\alias{mergeReplicates,MultiAssayExperiment-method}
+\alias{mergeReplicates,ANY-method}
 \alias{c,MultiAssayExperiment-method}
 \alias{assays,MultiAssayExperiment-method}
 \alias{assay,MultiAssayExperiment,missing-method}
@@ -39,13 +38,11 @@
 
 \S4method{complete.cases}{MultiAssayExperiment}(...)
 
-\S4method{duplicated}{MultiAssayExperiment}(x, incomparables = FALSE, ...)
+\S4method{mergeReplicates}{MultiAssayExperiment}(object, replicates = list(),
+  simplify = BiocGenerics::mean, ...)
 
-\S4method{reduce}{MultiAssayExperiment}(x, drop.empty.ranges = FALSE,
-  simplify = BiocGenerics::mean, replicates = NULL, ...)
-
-\S4method{reduce}{ANY}(x, drop.empty.ranges = FALSE, simplify,
-  replicates = NULL, ...)
+\S4method{mergeReplicates}{ANY}(object, replicates = list(),
+  simplify = BiocGenerics::mean, ...)
 
 \S4method{c}{MultiAssayExperiment}(x, ..., sampleMap = NULL, mapFrom = NULL)
 
@@ -78,16 +75,12 @@ for subsetting by assays}
 \item{drop}{logical (default TRUE) whether to drop empty assay elements
 in the \code{ExperimentList}}
 
-\item{incomparables}{duplicated: unused argument}
-
-\item{drop.empty.ranges}{unused generic argument}
+\item{replicates}{mergeReplicates: A list of \linkS4class{LogicalList}s
+indicating multiple / duplicate entries for each biological unit, see the
+\code{duplicated} method}
 
 \item{simplify}{A function for merging repeat measurements in experiments
-as indicated by replicates
-for \code{MultiAssayExperiment}}
-
-\item{replicates}{reduce: A list of \linkS4class{LogicalList} indicating
-duplicate entries for each biological unit, see the \code{duplicated} method}
+as indicated by replicates for \code{MultiAssayExperiment}}
 
 \item{sampleMap}{\code{c} method: a \code{sampleMap} \code{list} or
 \code{DataFrame} to guide merge}
@@ -119,11 +112,11 @@ potentially also with the arguments \code{colData} (see section below) and
 The dots (\code{\ldots}) argument allows the user to specify additional
 arguments in several instances. When subsetting (\strong{[}) a
 \code{MultiAssayExperiment}, the dots allow for additional
-arguments to be sent to \link{findOverlaps}. When using the \strong{reduce}
-method, the dots are used to specify arguments for the supplied
-\code{combine} argument and function. When using the \strong{assay} method,
-additional arguments may be passed to the \code{RangedRaggedAssay} method.
-See the link for more information:
+arguments to be sent to \link{findOverlaps}. When using the
+\code{mergeReplicates} method, the dots are used to specify arguments for
+the supplied \code{simplify} argument and function. When using the
+\strong{assay} method, additional arguments may be passed to the
+\code{RangedRaggedAssay} method. See the link for more information:
 \link{assay,RangedRaggedAssay,missing-method}. When using \strong{c} method
 to add experiments to a \code{MultiAssayExperiment}, the dots allow extra
 data classes compatible with the MultiAssayExperiment API. See: \link{API}
@@ -151,14 +144,11 @@ for a \code{MultiAssayExperiment} object
 \item \code{complete.cases}: Return a logical vector of biological units
 with data across all experiments
 
-\item \code{duplicated}: Find duplicate columns in the data by
-matching colData rownames
-
-\item \code{reduce}: Housekeeping method for a
+\item \code{mergeReplicates}: Housekeeping method for a
 MultiAssayExperiment where only complete.cases are returned, replicate
 measurements are averaged, and columns are aligned by the row order in colData.
 
-\item \code{reduce}: Consolidate duplicate measurements for
+\item \code{mergeReplicates}: Consolidate duplicate measurements for
 rectangular data structures, returns object of the same class (endomorphic)
 
 \item \code{c}: Add an element to the

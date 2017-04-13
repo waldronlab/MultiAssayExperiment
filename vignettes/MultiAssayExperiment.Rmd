@@ -793,46 +793,51 @@ replicate samples for each individual within each assay:
 duplicated(myMultiAssay)
 ```
 
-# `reduce` to clean up a `MultiAssayExperiment`
+# Functions to clean up a `MultiAssayExperiment`
 
-A call to `reduce()` by default returns another MultiAssayExperiment where the
-columns of each element of `ExperimentList` correspond exactly to the rows of
-`colData`.
+A set of helper functions are available for clean-up operations. These include
+`intersectRows`, `intersectPrimary`,`mergeReplicates`, `complete.cases`,
+and `duplicated`.
 
-It performs a series of clean-up operations, including merging of replicates
-with a user-defined function (default: mean), disjoining non-disjoint ranges,
-select individuals with complete cases and re-order columns of each assay to
-correspond to the same individual. For example, the first three experiments of
-`myMultiAssay` have three complete cases and some replicates:
+The `intersectRows` function takes all common rownames across experiments and
+returns a `MultiAssayExperiment` with those rows.
 
 ```{r}
-colnames(myMultiAssay[, , 1:3])
+(noMatches <- intersectRows(myMultiAssay))
 ```
 
-After a `reduce` call, replicates are merged and only complete cases remain:
+`complete.cases` returns a logical vector of `colData` rows that correspond
+to biological units that have data in all elements of the `ExperimentList`
 
 ```{r}
-maeredux <- reduce(myMultiAssay[, , 1:3])
+complete.cases(myMultiAssay)
+colData(myMultiAssay)[complete.cases(myMultiAssay), ]
 ```
 
-It is not obvious from the column names that the ordering of columns is
-identical:
+A call to `intersectPrimary` returns another `MultiAssayExperiment` where the
+columns of each element of the `ExperimentList` correspond exactly to the rows
+of `colData`.
 
 ```{r}
-colnames(maeredux)
+intersectPrimary(myMultiAssay)
 ```
 
-but it is clear from the sample map:
+`duplicated` identifies `primary` column values or biological units that have
+multiple observations per `assay`. It returns a `list` of `LogicalList`s
+that indicate what biological units have one or more duplicated measurements.
+This output is used for merging replicates by default.
 
 ```{r}
-sampleMap(maeredux)
+duplicated(myMultiAssay)
 ```
 
-See `?"MultiAssayExperiment-class"` for more details.
+The `mergeReplicates` function allows the user to specify a function (default:
+`mean`) for combining replicate columns in each assay element. This can be
+combined with `intersectPrimary` to create a `MultiAssayExperiment` object with
+one measurement in each experiment per biological unit. 
 
-```{r, eval=FALSE}
-reduce(x, drop.empty.ranges = FALSE, simplify,
-  replicates = NULL, ...)
+```{r}
+mergeReplicates(intersectPrimary(myMultiAssay))
 ```
 
 <p style="text-align: right;"> <a href="#header">back to top</a> </p>
@@ -865,10 +870,18 @@ possible with replicate measurements, so we demonstrate on the reduced
 `MultiAssayExperiment` for the first 5 columns:
 
 ```{r}
-rearrange(maeredux, shape="wide", colDataCols="sex")[, 1:5]
+maemerge <- mergeReplicates(intersectPrimary(myMultiAssay))
+rearrange(maemerge, shape="wide", colDataCols="sex")[, 1:5]
 ```
 
-## `assays`
+## `assay` / `assays`
+
+The `assay` (singular) function takes a particular experiment and returns
+a matrix. By default, it will return the _first_ experiment as a matrix.
+
+```{r}
+assay(myMultiAssay)
+```
 
 The `assays` (plural) function returns a `SimpleList` of data matrices from the
 `ExperimentList`:
