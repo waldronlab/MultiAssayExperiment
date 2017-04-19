@@ -25,7 +25,7 @@
 
 \S4method{dimnames}{ExperimentList}(x)
 
-\S4method{mergeReplicates}{ExperimentList}(object, replicates = list(),
+\S4method{mergeReplicates}{ExperimentList}(x, replicates = list(),
   simplify = BiocGenerics::mean, ...)
 
 \S4method{assay}{ANY,missing}(x, i, ...)
@@ -71,7 +71,7 @@ One element present per experiment performed.
 Convert from \code{SimpleList} or \code{list}
 to the multi-experiment data container. When using the
 \strong{mergeReplicates} method, additional arguments are passed to the
-given \link{simplify} function argument (e.g., na.rm = TRUE)
+given \code{simplify} function argument (e.g., na.rm = TRUE)
 }
 \section{Methods (by generic)}{
 \itemize{

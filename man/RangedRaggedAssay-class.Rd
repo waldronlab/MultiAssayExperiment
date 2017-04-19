@@ -31,7 +31,7 @@
 
 \S4method{show}{RangedRaggedAssay}(object)
 
-\S4method{mergeReplicates}{RangedRaggedAssay}(object, replicates = list(),
+\S4method{mergeReplicates}{RangedRaggedAssay}(x, replicates = list(),
   simplify = BiocGenerics::mean, mcolname = NULL, ...)
 }
 \arguments{

@@ -41,7 +41,7 @@
 #' Convert from \code{SimpleList} or \code{list}
 #' to the multi-experiment data container. When using the
 #' \strong{mergeReplicates} method, additional arguments are passed to the
-#' given \link{simplify} function argument (e.g., na.rm = TRUE)
+#' given \code{simplify} function argument (e.g., na.rm = TRUE)
 #'
 #' @examples
 #' ExperimentList()

@@ -1,3 +1,8 @@
+# MultiAssayExperiment 1.1.52
+
+* `reduce` removed and broken up into `mergeReplicates` and `intersectColumns`
+* Additional helper introduced: `intersectRows`
+
 # MultiAssayExperiment 1.1.49
 
 ## New features

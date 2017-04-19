@@ -3,7 +3,7 @@ context("helper methods")
 test_that("merging replicates orders columns of each experiment the same", {
 
 check_mergeReps_colorder <- function(mae) {
-    maeredux = mergeReplicates(intersectPrimary(mae))
+    maeredux = mergeReplicates(intersectColumns(mae))
     maeassay = assays(maeredux)
     matchednames <- lapply(maeassay, function(x) {
       sampleMap(maeredux)[match(colnames(x),

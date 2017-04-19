@@ -796,7 +796,7 @@ duplicated(myMultiAssay)
 # Functions to clean up a `MultiAssayExperiment`
 
 A set of helper functions are available for clean-up operations. These include
-`intersectRows`, `intersectPrimary`,`mergeReplicates`, `complete.cases`,
+`intersectRows`, `intersectColumns`,`mergeReplicates`, `complete.cases`,
 and `duplicated`.
 
 The `intersectRows` function takes all common rownames across experiments and
@@ -814,12 +814,12 @@ complete.cases(myMultiAssay)
 colData(myMultiAssay)[complete.cases(myMultiAssay), ]
 ```
 
-A call to `intersectPrimary` returns another `MultiAssayExperiment` where the
+A call to `intersectColumns` returns another `MultiAssayExperiment` where the
 columns of each element of the `ExperimentList` correspond exactly to the rows
 of `colData`.
 
 ```{r}
-intersectPrimary(myMultiAssay)
+intersectColumns(myMultiAssay)
 ```
 
 `duplicated` identifies `primary` column values or biological units that have
@@ -833,11 +833,11 @@ duplicated(myMultiAssay)
 
 The `mergeReplicates` function allows the user to specify a function (default:
 `mean`) for combining replicate columns in each assay element. This can be
-combined with `intersectPrimary` to create a `MultiAssayExperiment` object with
+combined with `intersectColumns` to create a `MultiAssayExperiment` object with
 one measurement in each experiment per biological unit. 
 
 ```{r}
-mergeReplicates(intersectPrimary(myMultiAssay))
+mergeReplicates(intersectColumns(myMultiAssay))
 ```
 
 <p style="text-align: right;"> <a href="#header">back to top</a> </p>
@@ -866,11 +866,11 @@ rearrange(myMultiAssay[, , 1:2], colDataCols="age")
 
 The "wide" format is useful for calculating correlations or performing
 regression against different genomic features. Wide format is in general not
-possible with replicate measurements, so we demonstrate on the reduced
+possible with replicate measurements, so we demonstrate on the cleaned
 `MultiAssayExperiment` for the first 5 columns:
 
 ```{r}
-maemerge <- mergeReplicates(intersectPrimary(myMultiAssay))
+maemerge <- mergeReplicates(intersectColumns(myMultiAssay))
 rearrange(maemerge, shape="wide", colDataCols="sex")[, 1:5]
 ```
 

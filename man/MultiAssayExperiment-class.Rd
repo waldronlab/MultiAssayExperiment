@@ -13,8 +13,6 @@
 \alias{[,MultiAssayExperiment,ANY-method}
 \alias{isEmpty,MultiAssayExperiment-method}
 \alias{complete.cases,MultiAssayExperiment-method}
-\alias{mergeReplicates,MultiAssayExperiment-method}
-\alias{mergeReplicates,ANY-method}
 \alias{c,MultiAssayExperiment-method}
 \alias{assays,MultiAssayExperiment-method}
 \alias{assay,MultiAssayExperiment,missing-method}
@@ -37,12 +35,6 @@
 \S4method{isEmpty}{MultiAssayExperiment}(x)
 
 \S4method{complete.cases}{MultiAssayExperiment}(...)
-
-\S4method{mergeReplicates}{MultiAssayExperiment}(object, replicates = list(),
-  simplify = BiocGenerics::mean, ...)
-
-\S4method{mergeReplicates}{ANY}(object, replicates = list(),
-  simplify = BiocGenerics::mean, ...)
 
 \S4method{c}{MultiAssayExperiment}(x, ..., sampleMap = NULL, mapFrom = NULL)
 
@@ -74,13 +66,6 @@ for subsetting by assays}
 
 \item{drop}{logical (default TRUE) whether to drop empty assay elements
 in the \code{ExperimentList}}
-
-\item{replicates}{mergeReplicates: A list of \linkS4class{LogicalList}s
-indicating multiple / duplicate entries for each biological unit, see the
-\code{duplicated} method}
-
-\item{simplify}{A function for merging repeat measurements in experiments
-as indicated by replicates for \code{MultiAssayExperiment}}
 
 \item{sampleMap}{\code{c} method: a \code{sampleMap} \code{list} or
 \code{DataFrame} to guide merge}
@@ -143,13 +128,6 @@ for a \code{MultiAssayExperiment} object
 
 \item \code{complete.cases}: Return a logical vector of biological units
 with data across all experiments
-
-\item \code{mergeReplicates}: Housekeeping method for a
-MultiAssayExperiment where only complete.cases are returned, replicate
-measurements are averaged, and columns are aligned by the row order in colData.
-
-\item \code{mergeReplicates}: Consolidate duplicate measurements for
-rectangular data structures, returns object of the same class (endomorphic)
 
 \item \code{c}: Add an element to the
 \code{ExperimentList} data slot
