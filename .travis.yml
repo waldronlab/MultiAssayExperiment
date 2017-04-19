@@ -30,11 +30,11 @@ bioc_packages:
   - IRanges
   - BiocStyle
   - HDF5Array
+  - RaggedExperiment
 
 # Test code coverage
 r_github_packages:
   - jimhester/covr
-  - Bioconductor/RaggedExperiment
 
 after_success:
   - Rscript -e 'library(covr);codecov()'
