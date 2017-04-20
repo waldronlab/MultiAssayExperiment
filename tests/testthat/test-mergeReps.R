@@ -1,6 +1,6 @@
-context("reduce methods")
+context("mergeReplicates methods")
 
-test_that("matrix reduce returns a matrix", {
+test_that("mergeReplicates on a matrix returns a matrix", {
     valueData <- matrix(1:100, ncol = 20,
                         dimnames = list(NULL, letters[1:20]))
 
@@ -13,10 +13,10 @@ test_that("matrix reduce returns a matrix", {
 
     LL <- IRanges::LogicalList(pt1 = test1, pt2 = test2, pt3 = test3)
     nCOLS <- sum(apply(as.matrix(LL), 2, function(x) !any(x)), length(LL))
-    reducedObj <- reduce(valueData, simplify = BiocGenerics::mean,
-                         replicates = LL)
+    mergedObj <- mergeReplicates(valueData, replicates = LL,
+                                  simplify = BiocGenerics::mean)
 
-    expect_true(is(reducedObj, "matrix"))
-    expect_identical(ncol(reducedObj), nCOLS)
+    expect_true(is(mergedObj, "matrix"))
+    expect_identical(ncol(mergedObj), nCOLS)
 
 })

@@ -39,9 +39,9 @@
 #' One element present per experiment performed.
 #'
 #' Convert from \code{SimpleList} or \code{list}
-#' to the multi-experiment data container. When using the \strong{reduce}
-#' method, additional arguments are passed to the given \link{combine}
-#' function argument (e.g., na.rm = TRUE)
+#' to the multi-experiment data container. When using the
+#' \strong{mergeReplicates} method, additional arguments are passed to the
+#' given \code{simplify} function argument (e.g., na.rm = TRUE)
 #'
 #' @examples
 #' ExperimentList()
@@ -77,8 +77,8 @@ setGeneric("ExperimentList", function(x) standardGeneric("ExperimentList"))
 #' @exportMethod ExperimentList
 #' @describeIn ExperimentList Create an \code{ExperimentList} object from an
 #' "ANY" class object, mainly \code{list}
-#' @param x constructor: A \code{list} object, reduce or assay: an
-#' \code{ExperimentList} object
+#' @param x constructor: A \code{list} object. For mergeReplicates or assay:
+#' an \code{ExperimentList} object
 setMethod("ExperimentList", "ANY", function(x) {
     if (is.null(names(x)))
         stop("ExperimentList elements must be named")

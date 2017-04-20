@@ -111,12 +111,12 @@ RangedRaggedAssay <- function(x = GRangesList()) {
 #'
 #' @details
 #' The \code{\ldots} argument allows the user to specify arguments in the
-#' \code{\link{subsetByOverlaps}} function. When calling the \code{reduce}
-#' method, the additional arguments correspond to those in either the
-#' \code{assay} method or the \code{reduce} method. The \code{reduce} arguments
-#' include a function for applying over the rows (\code{combine}) and a
-#' \code{vectorized} argument which indicates whether the given function is
-#' vectorized or not.
+#' \code{\link{subsetByOverlaps}} function. When calling the
+#' \code{mergeReplicates} method, the additional arguments correspond to those
+#' in either the \code{assay} method or the \code{mergeReplicates} method.
+#' The \code{mergeReplicates} arguments include a function for applying over
+#' the rows (\code{combine}) and a \code{vectorized} argument which indicates
+#' whether the given function is vectorized or not.
 #'
 #' @param x A \code{\link{RangedRaggedAssay}} class
 #' @param i Either a \code{character} or \code{GRanges} class object

@@ -59,7 +59,7 @@ plotiCluster(fit=iclus, label=maesub$disease)
 
 ```{r}
 library(PMA)
-mae2 <- reduce(mae)
+mae2 <- mergeReplicates(intersectColumns(mae))
 mycca = PMA::CCA(x=t(assay(mae)[[1]]), z=t(assay(mae)[[2]]))
 mycca
 ```
