@@ -164,29 +164,23 @@ setGeneric("longFormat", function(object, ...) standardGeneric("longFormat"))
 #' \link{ExpressionSet} and \link{SummarizedExperiment} as well as \code{matrix}
 #' to provide a consistent long and skinny \link{DataFrame}.
 setMethod("longFormat", "ANY", function(object, ...) {
+    rowNAMES <- rownames(object)
+    nullROWS <- is.null(rowNAMES)
+    if (nullROWS)
+        rowNAMES <- rep(NA_character_, nrow(object))
     if (is(object, "ExpressionSet"))
         object <- Biobase::exprs(object)
-    if (is(object, "matrix"))
+    if (is(object, "SummarizedExperiment"))
+        object <- assay(object)
+    if (is(object, "matrix") && !nullROWS) {
         object <- reshape2::melt(object, varnames = c("rowname", "colname"),
                    as.is = TRUE)
-    if (is(object, "SummarizedExperiment")) {
-        ## Ensure that rowData DataFrame has a rowname column
-        ## Otherwise, use first column
-        rowDatNames <- names(rowData(object))
-        rownameIn <- "rowname" %in% rowDatNames
-        if (any(rownameIn)) {
-            rowData(object) <- rowData(object)[rownameIn]
-        } else if (!length(rowDatNames)) {
-            rowData(object) <- DataFrame(rowname = rownames(assay(object)))
-        } else {
-            warning("'rowname' column not in 'rowData' taking first one")
-            rowData(object) <- rowData(object)[1L]
-            names(rowData(object)) <- "rowname"
-        }
-        widedf <- data.frame(rowData(object), assay(object),
-                             stringsAsFactors = FALSE, check.names = FALSE)
-        object <- tidyr::gather(widedf, "colname", "value",
-                                seq_along(widedf)[-1L])
+    } else {
+    object <- data.frame(rowname = rowNAMES, object,
+                         stringsAsFactors = FALSE, check.names = FALSE,
+                         row.names = NULL)
+    object <- tidyr::gather(object, "colname", "value",
+                            seq_along(object)[-1L])
     }
     rectangle <- S4Vectors::DataFrame(object)
     rectangle[, "colname"] <- S4Vectors::Rle(rectangle[["colname"]])
@@ -218,7 +212,7 @@ setMethod("longFormat", "MultiAssayExperiment",
         rectangleDF <- S4Vectors::DataFrame(rectangleDF, primary = primary)
         rectangleDF[, c("assay", "primary", "rowname", "colname", "value")]
     })
-    outputDataFrame <- do.call(rbind, dataList)
+    outputDataFrame <- BiocGenerics::do.call(rbind, dataList)
     if (addCols) {
         extraColumns <- colData(object)[, colDataCols, drop = FALSE]
         rowNameValues <- rownames(extraColumns)
