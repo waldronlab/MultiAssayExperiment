@@ -176,20 +176,20 @@ mae$sex
 
 ### Transformations 
 
-#### `rearrange`
+#### `longFormat` & `wideFormat`
 
-The `rearrange` function will "reshape" and combine your data into one
-`DataFrame`. This is accomplished using either the _long_ or _wide_ format
-for the _shape_ argument. 
+The `longFormat` or `wideFormat` functions will "reshape" and combine your data
+into one `DataFrame`. This is accomplished using either the _long_ or _wide_
+format function.
 
 ```{r}
-rearrange(mae)
+longFormat(mae)
 ```
 
-For a _wide_ dataset, use the _shape_ argument:
+For a _wide_ dataset, use the `wideFormat` function.
 
 ```{r}
-rearrange(mae, shape = "wide")[, 1:4]
+wideFormat(mae)[, 1:4]
 ```
 
 #### `c` - combine
