@@ -331,9 +331,9 @@ setMethod("subsetByColumn", c("MultiAssayExperiment", "List"),
             if (.checkFindOverlaps(class(element)))
                 i <- IRanges::overlapsAny(element, i, ...)
             else
-                i <- which(rownames(element) %in% as.character(i))
+                i <- match(rownames(element), as.character(i))
         } else if (is.character(i)) {
-            i <- which(rownames(element) %in% i)
+            i <- match(rownames(element), i)
         } else if (!is.logical(i)) {
             i <- as.integer(i)
         }
