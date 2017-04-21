@@ -229,7 +229,7 @@ setMethod("show", "MultiAssayExperiment", function(object) {
         "\n colData() - the primary/phenotype", sprintf("%s", c_mp),
         "\n sampleMap() - the sample availability", sprintf("%s", c_sm),
         "\n `$`, `[`, `[[` - extract colData columns, subset, or experiment",
-        "\n rearrange() - convert", sprintf("%s", c_elist),
+        "\n *Format() - convert", sprintf("%s", c_elist),
         "into a long or wide", sprintf("%s", c_mp),
         "\n assays() - convert", sprintf("%s", c_elist),
         "to a list of rectangular matrices\n")

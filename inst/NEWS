@@ -1,3 +1,15 @@
+# MultiAssayExperiment 1.1.59
+
+* `rearrange` is now broken up into `longFormat` and `wideFormat` functions.
+* Helper functions now have a dedicated man page, see: `?'MultiAssayExperiment-helpers'`
+
+## Bug fixes and minor improvements
+
+* A subset can affect the order of rows (previously it didn't)
+* `rownames` are exclusively used to create `longFormat` `DataFrame`s
+* The `longFormat,ExperimentList-method` now returns a long DataFrame
+* Minor improvements to tests
+
 # MultiAssayExperiment 1.1.52
 
 * `reduce` removed and broken up into `mergeReplicates` and `intersectColumns`

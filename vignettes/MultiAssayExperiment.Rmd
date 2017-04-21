@@ -848,20 +848,20 @@ Extractor functions convert a `MultiAssayExperiment` into other forms that are
 convenient for analyzing. These would normally be called after any desired 
 subsetting has been performed.
 
-## `rearrange`
+## `longFormat` & `wideFormat`
 
 Produces *long* (default) or *wide* `DataFrame` objects. The following
 produces a long `DataFrame` (the default) for the first two assays:
 
 ```{r}
-rearrange(myMultiAssay[, , 1:2])
+longFormat(myMultiAssay[, , 1:2])
 ```
 
 This is especially useful for performing regression against patient or sample
 data from `colData` using the `pDataCols` argument:
 
 ```{r}
-rearrange(myMultiAssay[, , 1:2], colDataCols="age")
+longFormat(myMultiAssay[, , 1:2], colDataCols="age")
 ```
 
 The "wide" format is useful for calculating correlations or performing
@@ -871,7 +871,7 @@ possible with replicate measurements, so we demonstrate on the cleaned
 
 ```{r}
 maemerge <- mergeReplicates(intersectColumns(myMultiAssay))
-rearrange(maemerge, shape="wide", colDataCols="sex")[, 1:5]
+wideFormat(maemerge, shape="wide", colDataCols="sex")[, 1:5]
 ```
 
 ## `assay` / `assays`
