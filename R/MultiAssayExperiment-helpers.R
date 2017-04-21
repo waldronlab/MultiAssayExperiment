@@ -190,12 +190,11 @@ setMethod("longFormat", "ANY", function(object, ...) {
 #' @rdname MultiAssayExperiment-helpers
 #' @exportMethod longFormat
 setMethod("longFormat", "ExperimentList", function(object, ...) {
-    dataList <- as.list(object)
     dataList <- lapply(seq_along(object), function(i, flatBox) {
         S4Vectors::DataFrame(assay = S4Vectors::Rle(names(object)[i]),
                              longFormat(flatBox[[i]], ...))
     }, flatBox = object)
-    dataList
+    do.call(rbind, dataList)
 })
 
 #' @rdname MultiAssayExperiment-helpers
@@ -203,27 +202,24 @@ setMethod("longFormat", "ExperimentList", function(object, ...) {
 setMethod("longFormat", "MultiAssayExperiment",
           function(object, colDataCols = NULL, ...) {
     addCols <- !is.null(colDataCols)
-    dataList <- longFormat(experiments(object), ...)
-    dataList <- lapply(dataList, function(rectangleDF) {
-        primary <- S4Vectors::Rle(sampleMap(object)[match(
-            rectangleDF[["colname"]],
-            sampleMap(object)[["colname"]]),
-            "primary"])
-        rectangleDF <- S4Vectors::DataFrame(rectangleDF, primary = primary)
-        rectangleDF[, c("assay", "primary", "rowname", "colname", "value")]
-    })
-    outputDataFrame <- BiocGenerics::do.call(rbind, dataList)
+    longDataFrame <- longFormat(experiments(object), ...)
+    primary <- S4Vectors::Rle(
+        sampleMap(object)[match(longDataFrame[["colname"]],
+                                sampleMap(object)[["colname"]]),
+                          "primary"])
+    longDataFrame <- S4Vectors::DataFrame(longDataFrame, primary = primary)
+    longDataFrame[, c("assay", "primary", "rowname", "colname", "value")]
     if (addCols) {
         extraColumns <- colData(object)[, colDataCols, drop = FALSE]
         rowNameValues <- rownames(extraColumns)
         rownames(extraColumns) <- NULL
-        matchIdx <- BiocGenerics::match(outputDataFrame[["primary"]],
+        matchIdx <- BiocGenerics::match(longDataFrame[["primary"]],
                                         rowNameValues)
-        outputDataFrame <- BiocGenerics::cbind(outputDataFrame,
+        longDataFrame <- BiocGenerics::cbind(longDataFrame,
                                                extraColumns[matchIdx, ,
                                                             drop = FALSE])
     }
-    return(outputDataFrame)
+    return(longDataFrame)
 })
 
 #' @rdname MultiAssayExperiment-helpers
@@ -241,14 +237,14 @@ setGeneric("wideFormat", function(object, ...) standardGeneric("wideFormat"))
 #' "ANY" method returns a wide format \code{DataFrame}.
 setMethod("wideFormat", "MultiAssayExperiment",
     function(object, colDataCols = NULL, ...) {
-        outputDataFrame <- longFormat(object, colDataCols = colDataCols, ...)
-        outputDataFrame <- as.data.frame(outputDataFrame)
-        outputDataFrame <- tidyr::unite_(outputDataFrame, "feature",
+        longDataFrame <- longFormat(object, colDataCols = colDataCols, ...)
+        longDataFrame <- as.data.frame(longDataFrame)
+        longDataFrame <- tidyr::unite_(longDataFrame, "feature",
                                          c("assay", "rowname", "colname"))
-        outputDataFrame <- tidyr::spread(outputDataFrame, key = "feature",
+        wideDataFrame <- tidyr::spread(longDataFrame, key = "feature",
                                          value = "value")
-        outputDataFrame <- DataFrame(outputDataFrame)
-        outputDataFrame
+        wideDataFrame <- S4Vectors::DataFrame(wideDataFrame)
+        return(wideDataFrame)
     })
 
 #' @rdname MultiAssayExperiment-helpers
@@ -273,7 +269,7 @@ setMethod("wideFormat", "ANY", function(object, ...) {
         if (any(rownameIn)) {
             rowData(object) <- rowData(object)[rownameIn]
         } else if (!is.null(rowNAMES) || !length(rowDatNames)) {
-            rowData(object) <- DataFrame(rowname = rowNAMES)
+            rowData(object) <- S4Vectors::DataFrame(rowname = rowNAMES)
         } else {
             warning("'rowname' column not in 'rowData' taking first one")
             rowData(object) <- rowData(object)[1L]
@@ -283,7 +279,7 @@ setMethod("wideFormat", "ANY", function(object, ...) {
                              stringsAsFactors = FALSE, check.names = FALSE,
                              row.names = NULL)
     }
-    DataFrame(object)
+    S4Vectors::DataFrame(object)
 })
 
 #' @describeIn ExperimentList Apply the mergeReplicates method on the
