@@ -33,13 +33,11 @@ NULL
 #' @param x A \code{list}, \code{GRanges} or \code{GRangesList} object
 #' @return A \code{\linkS4class{RangedRaggedAssay}} class object
 #'
-#' @example inst/scripts/RangedRaggedAssay-Ex.R
-#'
 #' @seealso \code{\link{assay,RangedRaggedAssay,missing-method}}
 #'
 #' @export RangedRaggedAssay
 RangedRaggedAssay <- function(x = GRangesList()) {
-    .Deprecated("RaggedExperiment")
+    .Defunct("RaggedExperiment")
     if (is(x, "GRanges")) {
         x <- GRangesList(x)
     }
@@ -62,6 +60,7 @@ RangedRaggedAssay <- function(x = GRangesList()) {
 
 
 .RangedBracketSubsetRRA <- function(x, i, j, ..., drop) {
+    .Defunct("RaggedExperiment")
     if (length(drop) != 1L || (!missing(drop) && drop)) {
         warning("'drop' ignored '[,", class(x), ",ANY,ANY-method'")
     }
@@ -79,6 +78,7 @@ RangedRaggedAssay <- function(x = GRangesList()) {
 }
 
 .sBracketSubsetRRA <- function(x, i, j, ..., drop) {
+    .Defunct("RaggedExperiment")
     if (length(drop) != 1L || (!missing(drop) && drop)) {
         warning("'drop' ignored '[,", class(x), ",ANY,ANY-method'")
     }
@@ -189,7 +189,7 @@ setReplaceMethod("dimnames", c("RangedRaggedAssay", "list"),
 #' @exportMethod disjoin
 setMethod("disjoin", "RangedRaggedAssay",
           function(x, mcolname = NULL, simplify = BiocGenerics::mean, ...) {
-    .Deprecated("RaggedExperiment")
+    .Defunct("RaggedExperiment")
     if (is.null(mcolname))
         mcolname <- .findNumericMcol(x)
     if (any(!isDisjoint(x))) {

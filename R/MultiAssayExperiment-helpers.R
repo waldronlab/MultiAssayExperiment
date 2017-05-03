@@ -329,7 +329,7 @@ setMethod("longFormat", "RangedRaggedAssay", function(object, ...) {
 setMethod("mergeReplicates", "RangedRaggedAssay",
 function(x, replicates = list(), simplify = BiocGenerics::mean,
          mcolname=NULL, ...) {
-    .Deprecated("RaggedExperiment")
+    .Defunct("RaggedExperiment")
     x <- x[, lengths(x) > 0L ]
     args <- list(...)
     if (is.null(mcolname))

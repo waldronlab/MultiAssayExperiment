@@ -26,22 +26,13 @@
 #' @param type The type argument from \link{overlapsAny}
 #' @param ... Unused argument
 #'
-#' @examples
-#' example("RangedRaggedAssay")
-#'
-#' ## Add some phony metadata to the RangedRaggedAssay
-#' metadata(myRRA) <- list(snparrray1 = DataFrame(score = 1),
-#' snparray2 = DataFrame(score = 1),
-#' snparray3 = DataFrame(score = 3))
-#'
-#' assay(myRRA, background = 2)
-#'
 #' @return A \code{matrix} of values from the score column of the metadata.
 #' @seealso \link{overlapsAny}
 #' @exportMethod assay
 setMethod("assay", c("RangedRaggedAssay", "missing"),
           function(x, i, mcolname = "score", background = NA,
                    make.names = FALSE, ranges = NULL, type = "any", ...) {
+              .Defunct("RaggedExperiment")
               if (!all(GenomicRanges::isDisjoint(x)))
                   stop("only disjoint ranges supported")
               if (!is.null(ranges)) {

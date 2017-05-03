@@ -311,7 +311,7 @@ setMethod("experiments", "MultiAssayExperiment", function(x)
 #'
 #' @importFrom Biobase pData
 setMethod("pData", "MultiAssayExperiment", function(object) {
-    .Deprecated("colData")
+    .Defunct("colData")
     getElement(object, "colData")
 })
 
@@ -386,7 +386,7 @@ setReplaceMethod("experiments", c("MultiAssayExperiment", "ExperimentList"),
 #' @rdname MultiAssayExperiment-methods
 setReplaceMethod("pData", c("MultiAssayExperiment", "DataFrame"),
     function(object, value) {
-        .Deprecated("colData")
+        .Defunct("colData")
         slot(object, "colData") <- value
         return(object)
     })
