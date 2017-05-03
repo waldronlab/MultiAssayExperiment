@@ -46,17 +46,6 @@ Please see example on how to add metadata to a
 \linkS4class{RangedRaggedAssay} or \link{GRangesList} class. This function
 uses the \link{overlapsAny} function from the \code{GenomicRanges} package.
 }
-\examples{
-example("RangedRaggedAssay")
-
-## Add some phony metadata to the RangedRaggedAssay
-metadata(myRRA) <- list(snparrray1 = DataFrame(score = 1),
-snparray2 = DataFrame(score = 1),
-snparray3 = DataFrame(score = 3))
-
-assay(myRRA, background = 2)
-
-}
 \seealso{
 \link{overlapsAny}
 }
