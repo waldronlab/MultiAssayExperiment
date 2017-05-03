@@ -78,7 +78,6 @@ RangedRaggedAssay <- function(x = GRangesList()) {
 }
 
 .sBracketSubsetRRA <- function(x, i, j, ..., drop) {
-    .Defunct("RaggedExperiment")
     if (length(drop) != 1L || (!missing(drop) && drop)) {
         warning("'drop' ignored '[,", class(x), ",ANY,ANY-method'")
     }

@@ -118,7 +118,7 @@ example(MultiAssayExperiment)
 sampleMap(myMultiAssayExperiment)
 
 ## Replacement method for a MultiAssayExperiment sampleMap
-sampleMap(myMultiAssayExperiment) <- DataFrame()
+sampleMap(myMultiAssayExperiment) <- S4Vectors::DataFrame()
 
 ## Access the ExperimentList
 experiments(myMultiAssayExperiment)
