@@ -279,7 +279,7 @@ setMethod("subsetByColData", c("MultiAssayExperiment", "character"),
 #' subsetByColumn(myMultiAssayExperiment, list(Affy = 1:2,
 #'                 Methyl450k = c(3,5,2), RNASeqGene = 2:4, CNVgistic = 1))
 #'
-#' subsetWith <- mendoapply(`[`, colnames(myMultiAssayExperiment),
+#' subsetWith <- IRanges::mendoapply(`[`, colnames(myMultiAssayExperiment),
 #'                         MoreArgs = list(1:2))
 #' subsetByColumn(myMultiAssayExperiment, subsetWith)
 #'
@@ -359,7 +359,8 @@ setMethod("subsetByColumn", c("MultiAssayExperiment", "List"),
 #' example("MultiAssayExperiment")
 #'
 #' ## Use a GRanges object to subset rows where ranged data present
-#' egr <- GRanges(seqnames = "chr1", IRanges(start = 1, end = 3), strand = "-")
+#' egr <- GenomicRanges::GRanges(seqnames = "chr1",
+#'     IRanges::IRanges(start = 1, end = 3), strand = "-")
 #' subsetByRow(myMultiAssayExperiment, egr)
 #'
 #' ## Use a logical vector (recycling used)
@@ -412,7 +413,7 @@ setMethod("subsetByRow", c("MultiAssayExperiment", "List"), function(x, y) {
         y <- IRanges::IntegerList(mapply(function(expList, char) {
             which(rownames(expList) %in% char)
         }, expList = experiments(x), char = y))
-    newExpList <- mendoapply(function(explist, i) {
+    newExpList <- IRanges::mendoapply(function(explist, i) {
         explist[i, , drop = FALSE]
     }, experiments(x), y)
     experiments(x) <- newExpList
