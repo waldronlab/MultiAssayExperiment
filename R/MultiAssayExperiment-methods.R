@@ -1,11 +1,17 @@
 #' @include RangedRaggedAssay-class.R MultiAssayExperiment-class.R
 #' ExperimentList-class.R
 #'
-#' @import BiocGenerics SummarizedExperiment S4Vectors GenomicRanges methods
+#' @import BiocGenerics S4Vectors methods
+#' @importFrom BiocGenerics duplicated
 #' @importFrom utils .DollarNames
+#' @importFrom stats kmeans
 #' @importFrom reshape2 melt
 #' @importFrom tidyr gather
-#' @importFrom IRanges SplitDataFrameList
+#' @importFrom GenomicRanges GRanges
+#' @importFrom IRanges IRanges findOverlaps subsetByOverlaps
+#' @importFrom IRanges splitAsList SplitDataFrameList endoapply mendoapply
+#' @importFrom IRanges IntegerList CharacterList LogicalList
+#' @importFrom SummarizedExperiment findOverlaps assays
 NULL
 
 .generateMap <- function(colData, experiments) {

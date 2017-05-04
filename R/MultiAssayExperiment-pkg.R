@@ -12,8 +12,5 @@
 #' \item samples
 #' }
 #'
-#' @import BiocGenerics SummarizedExperiment S4Vectors GenomicRanges methods
-#' @importFrom Biobase pData
-#' @importFrom IRanges CharacterList
 #' @aliases NULL
 "_PACKAGE"

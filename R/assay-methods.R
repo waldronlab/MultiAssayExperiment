@@ -83,7 +83,6 @@ setMethod("assay", c("ANY", "missing"), function(x, i, ...) {
 #' \link{ExperimentList}
 #' @param withDimnames logical (default TRUE) whether to return dimension names
 #' @aliases assay,ExperimentList,missing-method
-#' @importFrom IRanges endoapply mendoapply
 setMethod("assays", "ExperimentList", function(x, ..., withDimnames = TRUE) {
     as(IRanges::endoapply(x, FUN = function(y) assay(y, ...)), "SimpleList")
 })
@@ -126,7 +125,6 @@ setMethod("assay", c("ExperimentList", "character"), function(x, i, ...) {
 
 #' @describeIn MultiAssayExperiment Obtain a \code{\link{SimpleList}} of assay
 #' data for all available experiments in the object
-#' @importFrom SummarizedExperiment assays
 #' @param withDimnames logical (default TRUE) whether to return dimension names
 #' included in the object
 #' @exportMethod assays

@@ -1,3 +1,10 @@
+#' @import BiocGenerics SummarizedExperiment S4Vectors GenomicRanges methods
+#' @importFrom Biobase pData
+#' @importFrom SummarizedExperiment colData colData<-
+#' @importFrom Biobase pData<-
+#' @importFrom S4Vectors metadata<-
+NULL
+
 ## Helper function for validity checks
 .uniqueSortIdentical <- function(charvec1, charvec2) {
     listInput <- list(charvec1, charvec2)
@@ -308,8 +315,6 @@ setMethod("experiments", "MultiAssayExperiment", function(x)
 
 #' @exportMethod pData
 #' @rdname MultiAssayExperiment-methods
-#'
-#' @importFrom Biobase pData
 setMethod("pData", "MultiAssayExperiment", function(object) {
     .Defunct("colData")
     getElement(object, "colData")
@@ -317,8 +322,6 @@ setMethod("pData", "MultiAssayExperiment", function(object) {
 
 #' @exportMethod colData
 #' @rdname MultiAssayExperiment-methods
-#'
-#' @importFrom SummarizedExperiment colData
 setMethod("colData", "MultiAssayExperiment", function(x, ...) {
     getElement(x, "colData")
 })
@@ -382,7 +385,6 @@ setReplaceMethod("experiments", c("MultiAssayExperiment", "ExperimentList"),
                  })
 
 #' @exportMethod pData<-
-#' @importFrom Biobase pData<-
 #' @rdname MultiAssayExperiment-methods
 setReplaceMethod("pData", c("MultiAssayExperiment", "DataFrame"),
     function(object, value) {
@@ -392,7 +394,6 @@ setReplaceMethod("pData", c("MultiAssayExperiment", "DataFrame"),
     })
 
 #' @exportMethod colData<-
-#' @importFrom SummarizedExperiment colData<-
 #' @rdname MultiAssayExperiment-methods
 setReplaceMethod("colData", c("MultiAssayExperiment", "DataFrame"),
     function(x, value) {
@@ -407,7 +408,6 @@ setReplaceMethod("colData", c("MultiAssayExperiment", "DataFrame"),
 }
 
 #' @exportMethod metadata<-
-#' @importFrom S4Vectors metadata<-
 #' @rdname MultiAssayExperiment-methods
 setReplaceMethod("metadata", c("MultiAssayExperiment", "ANY"),
                  function(x, ..., value) {

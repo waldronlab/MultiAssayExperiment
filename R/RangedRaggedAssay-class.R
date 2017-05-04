@@ -184,7 +184,6 @@ setReplaceMethod("dimnames", c("RangedRaggedAssay", "list"),
 #' with function
 #' @param mcolname A single character string indicating metadata column to use
 #' for summaries
-#' @importFrom IRanges disjoin
 #' @exportMethod disjoin
 setMethod("disjoin", "RangedRaggedAssay",
           function(x, mcolname = NULL, simplify = BiocGenerics::mean, ...) {

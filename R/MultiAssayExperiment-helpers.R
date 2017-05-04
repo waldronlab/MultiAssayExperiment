@@ -1,7 +1,4 @@
 #' @include MultiAssayExperiment-methods.R
-#'
-#' @importFrom BiocGenerics duplicated
-#' @importFrom IRanges LogicalList
 NULL
 
 #' @name MultiAssayExperiment-helpers
