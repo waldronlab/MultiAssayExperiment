@@ -15,7 +15,7 @@
 \alias{show,RangedRaggedAssay-method}
 \alias{longFormat,RangedRaggedAssay-method}
 \alias{mergeReplicates,RangedRaggedAssay-method}
-\title{An extension of the GRangesList class}
+\title{An extension of the GRangesList class (DEFUNCT)}
 \usage{
 \S4method{[}{RangedRaggedAssay,ANY,ANY,ANY}(x, i, j, ..., drop = TRUE)
 
@@ -67,7 +67,7 @@ that biological unit}
 A \code{\link{RangedRaggedAssay}} class object
 }
 \description{
-An extension of the GRangesList class
+An extension of the GRangesList class (DEFUNCT)
 
 Subsetting a RangedRaggedAssay can be done using either rownames and column
 names
