@@ -1,4 +1,4 @@
-#' Create a Matrix of score values using a GRanges or own ranges
+#' Create a Matrix of score values using a GRanges or own ranges (DEFUNCT)
 #'
 #' This function can take a GRanges argument and use each range to check for
 #' overlaps with any of the current ranges in the first argument and return a

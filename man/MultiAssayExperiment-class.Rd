@@ -86,7 +86,7 @@ diverse assays on a collection of specimen. Currently,  the class can handle
 assays that are organized instances of
 \code{\linkS4class{SummarizedExperiment}},
 \code{\linkS4class{ExpressionSet}},
-\code{matrix}, \code{\link{RangedRaggedAssay}}
+\code{matrix}, \code{\linkS4class{RaggedExperiment}}
 (inherits from \code{\linkS4class{GRangesList}}), and \code{RangedVcfStack}.
 Create new \code{MultiAssayExperiment} instances with the homonymous
 constructor, minimally with the argument \code{\link{ExperimentList}},
@@ -100,9 +100,7 @@ arguments in several instances. When subsetting (\strong{[}) a
 arguments to be sent to \link{findOverlaps}. When using the
 \code{mergeReplicates} method, the dots are used to specify arguments for
 the supplied \code{simplify} argument and function. When using the
-\strong{assay} method, additional arguments may be passed to the
-\code{RangedRaggedAssay} method. See the link for more information:
-\link{assay,RangedRaggedAssay,missing-method}. When using \strong{c} method
+\strong{assay} method. When using \strong{c} method
 to add experiments to a \code{MultiAssayExperiment}, the dots allow extra
 data classes compatible with the MultiAssayExperiment API. See: \link{API}
 }

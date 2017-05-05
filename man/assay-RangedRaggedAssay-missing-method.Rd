@@ -3,7 +3,7 @@
 \docType{methods}
 \name{assay,RangedRaggedAssay,missing-method}
 \alias{assay,RangedRaggedAssay,missing-method}
-\title{Create a Matrix of score values using a GRanges or own ranges}
+\title{Create a Matrix of score values using a GRanges or own ranges (DEFUNCT)}
 \usage{
 \S4method{assay}{RangedRaggedAssay,missing}(x, i, mcolname = "score",
   background = NA, make.names = FALSE, ranges = NULL, type = "any", ...)

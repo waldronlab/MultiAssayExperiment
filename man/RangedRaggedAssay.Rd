@@ -2,7 +2,7 @@
 % Please edit documentation in R/RangedRaggedAssay-class.R
 \name{RangedRaggedAssay}
 \alias{RangedRaggedAssay}
-\title{Create a RangedRaggedAssay}
+\title{Create a RangedRaggedAssay (DEFUNCT)}
 \usage{
 RangedRaggedAssay(x = GRangesList())
 }
@@ -10,7 +10,7 @@ RangedRaggedAssay(x = GRangesList())
 \item{x}{A \code{list}, \code{GRanges} or \code{GRangesList} object}
 }
 \value{
-A \code{\linkS4class{RangedRaggedAssay}} class object
+A \code{RangedRaggedAssay} class object
 }
 \description{
 Construct an object representing ranged-based data, typically from a
@@ -18,12 +18,12 @@ Construct an object representing ranged-based data, typically from a
 from the metadata and represent it in a matrix. See the \code{show} method
 for an example.
 }
-\section{Deprecated}{
+\section{DEFUNCT}{
 
-The \code{RangedRaggedAssay} class is \strong{deprecated} and defunct by the next
-release cycle. Please use the \strong{RaggedExperiment} class to represent
-copy number, mutation and other genomic range based data. See
-\code{RaggedExperiment} for more detail.
+The \code{RangedRaggedAssay} class is \strong{defunct} and to be removed by
+the next release cycle. Please use the \strong{RaggedExperiment} class to
+represent copy number, mutation and other genomic range based data. See
+\code{\linkS4class{RaggedExperiment}} for more detail.
 }
 
 \seealso{
