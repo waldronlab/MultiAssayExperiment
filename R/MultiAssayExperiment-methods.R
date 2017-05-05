@@ -67,14 +67,14 @@ setMethod("$", "MultiAssayExperiment", function(x, name) {
 ### Subsetting
 ###
 
-.checkFindOverlaps <- function(obj_cl) {
+.checkOverlapsAny <- function(obj_cl) {
     return(
-        all(hasMethod("findOverlaps", signature(obj_cl, "GRanges"),
-                      where = c("package:GenomicRanges", "package:IRanges",
-                                "package:SummarizedExperiment")),
-            hasMethod("subsetByOverlaps", signature(obj_cl, "GRanges"),
-                      where = c("package:GenomicRanges", "package:IRanges",
-                                "package:SummarizedExperiment")))
+        any(hasMethod("overlapsAny", signature(obj_cl, "GRanges"),
+                      getNamespace("GenomicRanges")),
+            hasMethod("overlapsAny", signature(obj_cl, "GRanges"),
+                      getNamespace("SummarizedExperiment")),
+            hasMethod("overlapsAny", signature(obj_cl, "GRanges"),
+                      getNamespace("IRanges")))
     )
 }
 
@@ -334,7 +334,7 @@ setMethod("subsetByColumn", c("MultiAssayExperiment", "List"),
                 element <- rowRanges(element)
             if (is(element, "VcfStack"))
                 i <- which(rownames(element) %in% as.character(seqnames(i)))
-            if (.checkFindOverlaps(class(element)))
+            if (.checkOverlapsAny(class(element)))
                 i <- IRanges::overlapsAny(element, i, ...)
             else
                 i <- na.omit(match(rownames(element), as.character(i)))
@@ -363,11 +363,10 @@ setMethod("subsetByColumn", c("MultiAssayExperiment", "List"),
 #' @examples
 #' ## Load a MultiAssayExperiment example
 #' example("MultiAssayExperiment")
-#' library(GenomicRanges)
-#' library(IRanges)
 #'
 #' ## Use a GRanges object to subset rows where ranged data present
-#' egr <- GRanges(seqnames = "chr1", IRanges(start = 1, end = 3), strand = "-")
+#' egr <- GenomicRanges::GRanges(seqnames = "chr1",
+#'     IRanges::IRanges(start = 1, end = 3), strand = "-")
 #' subsetByRow(myMultiAssayExperiment, egr)
 #'
 #' ## Use a logical vector (recycling used)
