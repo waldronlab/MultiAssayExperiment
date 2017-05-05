@@ -2,7 +2,7 @@
 ### RangedRaggedAssay class (DEFUNCT)
 ### ----------------------------------------------
 
-#' An extension of the GRangesList class
+#' An extension of the GRangesList class (DEFUNCT)
 #'
 #' @exportClass RangedRaggedAssay
 #' @name RangedRaggedAssay-class
@@ -28,7 +28,7 @@ NULL
 #' The \code{RangedRaggedAssay} class is \strong{defunct} and to be removed by
 #' the next release cycle. Please use the \strong{RaggedExperiment} class to
 #' represent copy number, mutation and other genomic range based data. See
-#' \code{\linkS4class{RaggedExperiment}} for more detail.
+#' \code{\link[RaggedExperiment]{RaggedExperiment}} for more detail.
 #'
 #' @param x A \code{list}, \code{GRanges} or \code{GRangesList} object
 #' @return A \code{RangedRaggedAssay} class object

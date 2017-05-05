@@ -28,7 +28,7 @@ NULL
 #' assays that are organized instances of
 #' \code{\linkS4class{SummarizedExperiment}},
 #' \code{\linkS4class{ExpressionSet}},
-#' \code{matrix}, \code{\linkS4class{RaggedExperiment}}
+#' \code{matrix}, \code{\link[RaggedExperiment]{RaggedExperiment}}
 #' (inherits from \code{\linkS4class{GRangesList}}), and \code{RangedVcfStack}.
 #' Create new \code{MultiAssayExperiment} instances with the homonymous
 #' constructor, minimally with the argument \code{\link{ExperimentList}},
