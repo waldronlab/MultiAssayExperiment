@@ -53,10 +53,11 @@ this \code{List} must match that of the \code{ExperimentList} in the
 \examples{
 ## Load a MultiAssayExperiment example
 example("MultiAssayExperiment")
+library(GenomicRanges)
+library(IRanges)
 
 ## Use a GRanges object to subset rows where ranged data present
-egr <- GenomicRanges::GRanges(seqnames = "chr1",
-    IRanges::IRanges(start = 1, end = 3), strand = "-")
+egr <- GRanges(seqnames = "chr1", IRanges(start = 1, end = 3), strand = "-")
 subsetByRow(myMultiAssayExperiment, egr)
 
 ## Use a logical vector (recycling used)
