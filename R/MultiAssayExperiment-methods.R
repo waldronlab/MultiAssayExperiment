@@ -416,7 +416,7 @@ setMethod("subsetByRow", c("MultiAssayExperiment", "List"), function(x, y) {
     if (is(y, "DataFrame"))
         stop("Provide a list of indices for subsetting")
     if (is(y, "CharacterList"))
-        y <- IRanges::IntegerList(mapply(function(expList, char) {
+        y <- IRanges::IntegerList(Map(function(expList, char) {
             which(rownames(expList) %in% char)
         }, expList = experiments(x), char = y))
     newExpList <- IRanges::mendoapply(function(explist, i) {
