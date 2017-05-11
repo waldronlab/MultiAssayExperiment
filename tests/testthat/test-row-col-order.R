@@ -11,7 +11,7 @@ check_mergeReps_colorder <- function(mae) {
                           "primary"]
     })
     for (i in seq_along(2:length(matchednames)))
-      testthat::expect_equal(matchednames[[i]], matchednames[[1]])
+        expect_equal(matchednames[[i]], matchednames[[1]])
 }
 
     example("MultiAssayExperiment")
@@ -20,4 +20,17 @@ check_mergeReps_colorder <- function(mae) {
     check_mergeReps_colorder(myMultiAssayExperiment[, , 1:2])
     check_mergeReps_colorder(myMultiAssayExperiment[, , 1:3])
 
+})
+
+test_that("row order identical after matching", {
+    example("MultiAssayExperiment")
+    introws <- Reduce(intersect, rownames(myMultiAssayExperiment))
+    intMultiRow <- rownames(intersectRows(myMultiAssayExperiment))
+    expect_true(
+        all(vapply(intMultiRow,
+            function(assayDat) {
+                identical(assayDat, introws)
+            }, logical(1L))
+        )
+    )
 })
