@@ -237,7 +237,7 @@ setMethod("show", "MultiAssayExperiment", function(object) {
         "\n *Format() - convert", sprintf("%s", c_elist),
         "into a long or wide", sprintf("%s", c_mp),
         "\n assays() - convert", sprintf("%s", c_elist),
-        "to a list of rectangular matrices\n")
+        "to a SimpleList of matrices\n")
 })
 
 #' @name MultiAssayExperiment-methods

@@ -42,7 +42,7 @@ intersectRows <- function(x) {
 #' @export
 intersectColumns <- function(x) {
     comps <- complete.cases(x)
-    x[, comps]
+    x[, comps, drop = FALSE]
 }
 
 #' @rdname MultiAssayExperiment-helpers
