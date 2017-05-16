@@ -232,14 +232,21 @@ setGeneric("wideFormat", function(object, ...) standardGeneric("wideFormat"))
 #' can be added to the data output. The \code{wideFormat} method for an
 #' \code{ExperimentList} returns a list of wideFormat \code{DataFrames}. The
 #' "ANY" method returns a wide format \code{DataFrame}.
+#' @param key name of column whose values will used as variables in
+#' the wide dataset from \link[tidyr]{spread}. If none are specified, assay,
+#' rowname, and colname will be combined
 setMethod("wideFormat", "MultiAssayExperiment",
-    function(object, colDataCols = NULL, ...) {
+    function(object, colDataCols = NULL, key = NULL, ...) {
         longDataFrame <- longFormat(object, colDataCols = colDataCols, ...)
         longDataFrame <- as.data.frame(longDataFrame)
+        if (is.null(key)) {
         longDataFrame <- tidyr::unite_(longDataFrame, "feature",
                                          c("assay", "rowname", "colname"))
         wideDataFrame <- tidyr::spread(longDataFrame, key = "feature",
                                          value = "value")
+        } else {
+        wideDataFrame <- tidyr::spread_(longDataFrame, key = key, value = "value")
+        }
         wideDataFrame <- S4Vectors::DataFrame(wideDataFrame)
         return(wideDataFrame)
     })
