@@ -21,7 +21,6 @@
 #'     experiments = "RNASeqGene", seed = 42L)
 #'
 #' @export clusterOn
-#' @importFrom stats kmeans
 clusterOn <- function(MultiAssayExperiment, colDataCols, rownames,
                       experiments, seed = NULL) {
     MultiAssayExperiment <- MultiAssayExperiment[rownames, , experiments]

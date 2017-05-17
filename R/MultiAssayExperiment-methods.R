@@ -1,11 +1,17 @@
 #' @include RangedRaggedAssay-class.R MultiAssayExperiment-class.R
 #' ExperimentList-class.R
 #'
-#' @import BiocGenerics SummarizedExperiment S4Vectors GenomicRanges methods
+#' @import BiocGenerics S4Vectors methods
+#' @importFrom BiocGenerics duplicated
 #' @importFrom utils .DollarNames
+#' @importFrom stats kmeans
 #' @importFrom reshape2 melt
 #' @importFrom tidyr gather
-#' @importFrom IRanges SplitDataFrameList
+#' @importFrom GenomicRanges GRanges
+#' @importFrom IRanges IRanges findOverlaps subsetByOverlaps
+#' @importFrom IRanges splitAsList SplitDataFrameList endoapply mendoapply
+#' @importFrom IRanges IntegerList CharacterList LogicalList
+#' @importFrom SummarizedExperiment findOverlaps assays
 NULL
 
 .generateMap <- function(colData, experiments) {
@@ -61,14 +67,14 @@ setMethod("$", "MultiAssayExperiment", function(x, name) {
 ### Subsetting
 ###
 
-.checkFindOverlaps <- function(obj_cl) {
+.checkOverlapsAny <- function(obj_cl) {
     return(
-        all(hasMethod("findOverlaps", signature(obj_cl, "GRanges"),
-                      where = c("package:GenomicRanges", "package:IRanges",
-                                "package:SummarizedExperiment")),
-            hasMethod("subsetByOverlaps", signature(obj_cl, "GRanges"),
-                      where = c("package:GenomicRanges", "package:IRanges",
-                                "package:SummarizedExperiment")))
+        any(hasMethod("overlapsAny", signature(obj_cl, "GRanges"),
+                      getNamespace("GenomicRanges")),
+            hasMethod("overlapsAny", signature(obj_cl, "GRanges"),
+                      getNamespace("SummarizedExperiment")),
+            hasMethod("overlapsAny", signature(obj_cl, "GRanges"),
+                      getNamespace("IRanges")))
     )
 }
 
@@ -279,7 +285,7 @@ setMethod("subsetByColData", c("MultiAssayExperiment", "character"),
 #' subsetByColumn(myMultiAssayExperiment, list(Affy = 1:2,
 #'                 Methyl450k = c(3,5,2), RNASeqGene = 2:4, CNVgistic = 1))
 #'
-#' subsetWith <- mendoapply(`[`, colnames(myMultiAssayExperiment),
+#' subsetWith <- IRanges::mendoapply(`[`, colnames(myMultiAssayExperiment),
 #'                         MoreArgs = list(1:2))
 #' subsetByColumn(myMultiAssayExperiment, subsetWith)
 #'
@@ -328,12 +334,15 @@ setMethod("subsetByColumn", c("MultiAssayExperiment", "List"),
                 element <- rowRanges(element)
             if (is(element, "VcfStack"))
                 i <- which(rownames(element) %in% as.character(seqnames(i)))
-            if (.checkFindOverlaps(class(element)))
+            if (.checkOverlapsAny(class(element)))
                 i <- IRanges::overlapsAny(element, i, ...)
             else
-                i <- na.omit(match(rownames(element), as.character(i)))
+                i <- match(intersect(as.character(i), rownames(element)),
+                           rownames(element))
+                # i <- na.omit(match(rownames(element), as.character(i)))
         } else if (is.character(i)) {
-            i <- na.omit(match(rownames(element), i))
+            i <- match(intersect(i, rownames(element)), rownames(element))
+            # i <- na.omit(match(rownames(element), i))
         } else if (!is.logical(i)) {
             i <- as.integer(i)
         }
@@ -359,7 +368,8 @@ setMethod("subsetByColumn", c("MultiAssayExperiment", "List"),
 #' example("MultiAssayExperiment")
 #'
 #' ## Use a GRanges object to subset rows where ranged data present
-#' egr <- GRanges(seqnames = "chr1", IRanges(start = 1, end = 3), strand = "-")
+#' egr <- GenomicRanges::GRanges(seqnames = "chr1",
+#'     IRanges::IRanges(start = 1, end = 3), strand = "-")
 #' subsetByRow(myMultiAssayExperiment, egr)
 #'
 #' ## Use a logical vector (recycling used)
@@ -409,10 +419,10 @@ setMethod("subsetByRow", c("MultiAssayExperiment", "List"), function(x, y) {
     if (is(y, "DataFrame"))
         stop("Provide a list of indices for subsetting")
     if (is(y, "CharacterList"))
-        y <- IRanges::IntegerList(mapply(function(expList, char) {
+        y <- IRanges::IntegerList(Map(function(expList, char) {
             which(rownames(expList) %in% char)
         }, expList = experiments(x), char = y))
-    newExpList <- mendoapply(function(explist, i) {
+    newExpList <- IRanges::mendoapply(function(explist, i) {
         explist[i, , drop = FALSE]
     }, experiments(x), y)
     experiments(x) <- newExpList

@@ -45,7 +45,7 @@ example("MultiAssayExperiment")
 subsetByColumn(myMultiAssayExperiment, list(Affy = 1:2,
                 Methyl450k = c(3,5,2), RNASeqGene = 2:4, CNVgistic = 1))
 
-subsetWith <- mendoapply(`[`, colnames(myMultiAssayExperiment),
+subsetWith <- IRanges::mendoapply(`[`, colnames(myMultiAssayExperiment),
                         MoreArgs = list(1:2))
 subsetByColumn(myMultiAssayExperiment, subsetWith)
 

@@ -233,12 +233,25 @@ colData(simpleMultiAssay2)
 
 ### metadata
 
+Metadata can be added at different levels of the `MultiAssayExperiment`.
+
 Can be of *ANY* class, for storing study-wide metadata, such as citation
 information. For an empty `MultiAssayExperiment` object, it is NULL. 
 
 ```{r}
 class(metadata(empty)) # NULL (class "ANY")
 ```
+
+At the `ExperimentList` level, the `metadata` function would allow the user to
+enter metadata as a `list`.
+
+```{r}
+metadata(experiments(empty))
+```
+
+At the individual assay level, certain classes _may_ support metadata, for
+example, `metadata` and `mcols` for a `SummarizedExperiment`. It is recommended
+to use `metadata` at the `ExperimentList` level.
 
 <p style="text-align: right;"> <a href="#header">back to top</a> </p>
 

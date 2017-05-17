@@ -1,4 +1,4 @@
-#' Create a Matrix of score values using a GRanges or own ranges
+#' Create a Matrix of score values using a GRanges or own ranges (DEFUNCT)
 #'
 #' This function can take a GRanges argument and use each range to check for
 #' overlaps with any of the current ranges in the first argument and return a
@@ -26,22 +26,13 @@
 #' @param type The type argument from \link{overlapsAny}
 #' @param ... Unused argument
 #'
-#' @examples
-#' example("RangedRaggedAssay")
-#'
-#' ## Add some phony metadata to the RangedRaggedAssay
-#' metadata(myRRA) <- list(snparrray1 = DataFrame(score = 1),
-#' snparray2 = DataFrame(score = 1),
-#' snparray3 = DataFrame(score = 3))
-#'
-#' assay(myRRA, background = 2)
-#'
 #' @return A \code{matrix} of values from the score column of the metadata.
 #' @seealso \link{overlapsAny}
 #' @exportMethod assay
 setMethod("assay", c("RangedRaggedAssay", "missing"),
           function(x, i, mcolname = "score", background = NA,
                    make.names = FALSE, ranges = NULL, type = "any", ...) {
+              .Defunct("RaggedExperiment")
               if (!all(GenomicRanges::isDisjoint(x)))
                   stop("only disjoint ranges supported")
               if (!is.null(ranges)) {
@@ -92,7 +83,6 @@ setMethod("assay", c("ANY", "missing"), function(x, i, ...) {
 #' \link{ExperimentList}
 #' @param withDimnames logical (default TRUE) whether to return dimension names
 #' @aliases assay,ExperimentList,missing-method
-#' @importFrom IRanges endoapply mendoapply
 setMethod("assays", "ExperimentList", function(x, ..., withDimnames = TRUE) {
     as(IRanges::endoapply(x, FUN = function(y) assay(y, ...)), "SimpleList")
 })
@@ -135,7 +125,6 @@ setMethod("assay", c("ExperimentList", "character"), function(x, i, ...) {
 
 #' @describeIn MultiAssayExperiment Obtain a \code{\link{SimpleList}} of assay
 #' data for all available experiments in the object
-#' @importFrom SummarizedExperiment assays
 #' @param withDimnames logical (default TRUE) whether to return dimension names
 #' included in the object
 #' @exportMethod assays

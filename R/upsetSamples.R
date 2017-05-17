@@ -18,12 +18,13 @@
 #' @return Produces a visualization of set intersections using the UpSet matrix
 #' design
 #' @author Vincent J Carey
-#' @importFrom UpSetR upset
 #' @export upsetSamples
 upsetSamples <- function(MultiAssayExperiment,
                          nsets=length(MultiAssayExperiment),
                          nintersects = 24, order.by = "freq",
                          idclip = function(x) substr(x, 1, 12), ... ) {
+    if (!requireNamespace("UpSetR"))
+        stop("Please install the 'UpSetR' package to make venn diagrams")
     maesn <- colnames(MultiAssayExperiment)
     st <- idclip(maesn[[1L]])
     for (i in seq_along(maesn)[-1])

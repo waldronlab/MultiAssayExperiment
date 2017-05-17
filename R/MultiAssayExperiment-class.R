@@ -1,3 +1,10 @@
+#' @import BiocGenerics SummarizedExperiment S4Vectors GenomicRanges methods
+#' @importFrom Biobase pData
+#' @importFrom SummarizedExperiment colData colData<-
+#' @importFrom Biobase pData<-
+#' @importFrom S4Vectors metadata<-
+NULL
+
 ## Helper function for validity checks
 .uniqueSortIdentical <- function(charvec1, charvec2) {
     listInput <- list(charvec1, charvec2)
@@ -21,7 +28,7 @@
 #' assays that are organized instances of
 #' \code{\linkS4class{SummarizedExperiment}},
 #' \code{\linkS4class{ExpressionSet}},
-#' \code{matrix}, \code{\link{RangedRaggedAssay}}
+#' \code{matrix}, \code{\link[RaggedExperiment]{RaggedExperiment}}
 #' (inherits from \code{\linkS4class{GRangesList}}), and \code{RangedVcfStack}.
 #' Create new \code{MultiAssayExperiment} instances with the homonymous
 #' constructor, minimally with the argument \code{\link{ExperimentList}},
@@ -35,9 +42,7 @@
 #' arguments to be sent to \link{findOverlaps}. When using the
 #' \code{mergeReplicates} method, the dots are used to specify arguments for
 #' the supplied \code{simplify} argument and function. When using the
-#' \strong{assay} method, additional arguments may be passed to the
-#' \code{RangedRaggedAssay} method. See the link for more information:
-#' \link{assay,RangedRaggedAssay,missing-method}. When using \strong{c} method
+#' \strong{assay} method. When using \strong{c} method
 #' to add experiments to a \code{MultiAssayExperiment}, the dots allow extra
 #' data classes compatible with the MultiAssayExperiment API. See: \link{API}
 #'
@@ -232,7 +237,7 @@ setMethod("show", "MultiAssayExperiment", function(object) {
         "\n *Format() - convert", sprintf("%s", c_elist),
         "into a long or wide", sprintf("%s", c_mp),
         "\n assays() - convert", sprintf("%s", c_elist),
-        "to a list of rectangular matrices\n")
+        "to a SimpleList of matrices\n")
 })
 
 #' @name MultiAssayExperiment-methods
@@ -308,17 +313,13 @@ setMethod("experiments", "MultiAssayExperiment", function(x)
 
 #' @exportMethod pData
 #' @rdname MultiAssayExperiment-methods
-#'
-#' @importFrom Biobase pData
 setMethod("pData", "MultiAssayExperiment", function(object) {
-    .Deprecated("colData")
+    .Defunct("colData")
     getElement(object, "colData")
 })
 
 #' @exportMethod colData
 #' @rdname MultiAssayExperiment-methods
-#'
-#' @importFrom SummarizedExperiment colData
 setMethod("colData", "MultiAssayExperiment", function(x, ...) {
     getElement(x, "colData")
 })
@@ -382,17 +383,15 @@ setReplaceMethod("experiments", c("MultiAssayExperiment", "ExperimentList"),
                  })
 
 #' @exportMethod pData<-
-#' @importFrom Biobase pData<-
 #' @rdname MultiAssayExperiment-methods
 setReplaceMethod("pData", c("MultiAssayExperiment", "DataFrame"),
     function(object, value) {
-        .Deprecated("colData")
+        .Defunct("colData")
         slot(object, "colData") <- value
         return(object)
     })
 
 #' @exportMethod colData<-
-#' @importFrom SummarizedExperiment colData<-
 #' @rdname MultiAssayExperiment-methods
 setReplaceMethod("colData", c("MultiAssayExperiment", "DataFrame"),
     function(x, value) {
@@ -407,7 +406,6 @@ setReplaceMethod("colData", c("MultiAssayExperiment", "DataFrame"),
 }
 
 #' @exportMethod metadata<-
-#' @importFrom S4Vectors metadata<-
 #' @rdname MultiAssayExperiment-methods
 setReplaceMethod("metadata", c("MultiAssayExperiment", "ANY"),
                  function(x, ..., value) {
@@ -445,9 +443,10 @@ setMethod("updateObject", "MultiAssayExperiment",
                       else sampleMap(object),
                       metadata = metadata(object),
                       drops = object@drops)
-        classes <- vapply(experiments(object), class, character(1L))
-        if (any(classes %in% "RangedRaggedAssay")) {
-            rraIdx <- which(classes == "RangedRaggedAssay")
+        isRRA <- vapply(experiments(object), is, logical(1L),
+                        "RangedRaggedAssay")
+        if (any(isRRA)) {
+            rraIdx <- which(isRRA)
             for (i in rraIdx) {
                 object[[i]] <- as(object[[i]], "RaggedExperiment")
             }
