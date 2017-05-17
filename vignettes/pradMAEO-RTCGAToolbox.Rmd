@@ -73,7 +73,7 @@ In the first part of the function, the existence of the data directory is
 checked and it is created if necessary. Then a cohort object is either loaded
 or serialized from the `getFirehoseData()` method and saved to the data
 directory. Once serialized, `colData` is extracted from the clinical slot and
-the rownames are cleaned by `gsub()` and `readr::type_convert()` functions. 
+the rownames are cleaned by `gsub()` and `type.convert()` functions. 
 
 A named list of extraction targets is then created from the slot names of the
 cohort object and the `TCGAextract()` function is used within a try statement.
@@ -122,7 +122,7 @@ buildMultiAssayExperiment <- function(TCGAcode, runDate, analyzeDate) {
     clinical.data <- Clinical(cancer.object)
     rownames(clinical.data) <- toupper(gsub("\\.", "-",
                                             rownames(clinical.data)))
-    clincal.data <- readr::type_convert(clincal.data)
+    clincal.data[] <- apply(clinical.data, 2, type.convert)
     
     ## slotNames in FirehoseData RTCGAToolbox class
     targets <- c("RNASeqGene", "RNASeq2GeneNorm", "miRNASeqGene",
