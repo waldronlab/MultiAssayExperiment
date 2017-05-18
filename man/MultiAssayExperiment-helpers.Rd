@@ -47,7 +47,8 @@ longFormat(object, ...)
 
 wideFormat(object, ...)
 
-\S4method{wideFormat}{MultiAssayExperiment}(object, colDataCols = NULL, ...)
+\S4method{wideFormat}{MultiAssayExperiment}(object, colDataCols = NULL,
+  key = NULL, ...)
 
 \S4method{wideFormat}{ExperimentList}(object, ...)
 
@@ -70,6 +71,10 @@ as indicated by replicates for \code{MultiAssayExperiment}}
 \item{object}{Any supported class object}
 
 \item{colDataCols}{selected colData columns to include in the output}
+
+\item{key}{name of column whose values will used as variables in
+the wide dataset from \link[tidyr]{spread}. If none are specified, assay,
+rowname, and colname will be combined}
 }
 \description{
 A set of helper functions were created to help clean and

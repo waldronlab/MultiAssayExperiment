@@ -237,11 +237,20 @@ setGeneric("wideFormat", function(object, ...) standardGeneric("wideFormat"))
 #' rowname, and colname will be combined
 setMethod("wideFormat", "MultiAssayExperiment",
     function(object, colDataCols = NULL, key = NULL, ...) {
+        onetoone <- all(!lengths(duplicated(object)))
         longDataFrame <- longFormat(object, colDataCols = colDataCols, ...)
         longDataFrame <- as.data.frame(longDataFrame)
         if (is.null(key)) {
+            if (onetoone) {
+        longDataFrame <- tidyr::unite_(longDataFrame, "feature",
+                                         c("assay", "rowname"))
+        longDataFrame <- longDataFrame[, colnames(longDataFrame) != "colname"]
+            } else {
+        message("See ?mergeReplicates to combine replicated observations",
+                "\n  to get one column per variable")
         longDataFrame <- tidyr::unite_(longDataFrame, "feature",
                                          c("assay", "rowname", "colname"))
+            }
         wideDataFrame <- tidyr::spread(longDataFrame, key = "feature",
                                          value = "value")
         } else {
