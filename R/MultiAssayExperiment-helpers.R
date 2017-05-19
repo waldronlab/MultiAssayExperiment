@@ -205,7 +205,8 @@ setMethod("longFormat", "MultiAssayExperiment",
                                 sampleMap(object)[["colname"]]),
                           "primary"])
     longDataFrame <- S4Vectors::DataFrame(longDataFrame, primary = primary)
-    longDataFrame[, c("assay", "primary", "rowname", "colname", "value")]
+    longDataFrame <-
+        longDataFrame[, c("assay", "primary", "rowname", "colname", "value")]
     if (addCols) {
         extraColumns <- colData(object)[, colDataCols, drop = FALSE]
         rowNameValues <- rownames(extraColumns)
