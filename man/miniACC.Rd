@@ -57,10 +57,9 @@ wideFormat(miniACC["MAPK3", , ], colDataCols = c("vital_status", "days_to_death"
     library(RaggedExperiment) #needed for RaggedExperiment objects by updateObject()
     acc <- readRDS("~/Downloads/accMAEO.rds")
     acc <- updateObject(acc)
-    protmap <-
-        read.csv(
-            "http://genomeportal.stanford.edu/pan-tcga/target_selection_send_data?filename=Allprotein.txt",
-            as.is = TRUE
+    protmap <- read.csv(paste0("http://genomeportal.stanford.edu/",
+                        "target_selection_send_data",
+                        "?filename=Allprotein.txt"), as.is = TRUE
         )
 
     RPPAgenes <- protmap$Genes
@@ -90,7 +89,9 @@ wideFormat(miniACC["MAPK3", , ], colDataCols = c("vital_status", "days_to_death"
             title = "Comprehensive Pan-Genomic Characterization of Adrenocortical Carcinoma",
             PMID = "27165744",
             sourceURL = "http://s3.amazonaws.com/multiassayexperiments/accMAEO.rds",
-            RPPAfeatureDataURL = "http://genomeportal.stanford.edu/pan-tcga/show_target_selection_file?filename=Allprotein.txt",
+            RPPAfeatureDataURL = paste0("http://genomeportal.stanford.edu/",
+                                        "pan-tcga/show_target_selection_file",
+                                        "?filename=Allprotein.txt"),
             colDataExtrasURL = "http://www.cell.com/cms/attachment/2062093088/2063584534/mmc3.xlsx"
         )
     metadata(miniACC) <- md
