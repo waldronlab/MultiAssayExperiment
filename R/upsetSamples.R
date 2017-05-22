@@ -19,13 +19,14 @@ upsetSamples <- function(MultiAssayExperiment,
                          nintersects = 24, order.by = "freq", ... ) {
     if (!requireNamespace("UpSetR"))
         stop("Please install the 'UpSetR' package to make venn diagrams")
-    maesn <- split(sampleMap(MultiAssayExperiment)$primary, sampleMap(MultiAssayExperiment)$assay)
-    st <- unique(sampleMap(MultiAssayExperiment)$primary)
+    maesn <- split(sampleMap(MultiAssayExperiment)[["primary"]],
+        sampleMap(MultiAssayExperiment)[["assay"]])
+    st <- unique(sampleMap(MultiAssayExperiment)[["primary"]])
     nr <- length(st)
-    incid <- matrix(0, nrow = nr, ncol = length(maesn))
+    incid <- matrix(0L, nrow = nr, ncol = length(maesn))
     rownames(incid) <- as.character(st)
     for (i in seq_along(maesn))
-        incid[, i] <- 1*(rownames(incid) %in% maesn[[i]])
+        incid[, i] <- 1L*(rownames(incid) %in% maesn[[i]])
     colnames(incid) <- names(MultiAssayExperiment)
     UpSetR::upset(data.frame(incid), nsets = nsets, nintersects = nintersects,
                   sets = colnames(incid), order.by = order.by, ...)
