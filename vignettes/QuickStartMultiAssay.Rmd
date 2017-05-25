@@ -146,7 +146,7 @@ The `assay` (singular) method will extract the first element of the
 assay(mae)
 ```
 
-The `assays` (plurar) method will return a `SimpleList` of the data with each
+The `assays` (plural) method will return a `SimpleList` of the data with each
 element being a `matrix`.
 
 ```{r}
