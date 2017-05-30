@@ -94,14 +94,14 @@ wideFormat(miniACC["MAPK3", , ], colDataCols = c("vital_status", "days_to_death"
     metadata(miniACC) <- md
 
     mirna <- acc[["miRNASeqGene"]]
-    mirna <- mirna[rowSums(assay(mirna) >= 5) >= 5,]
+    mirna <- mirna[rowSums(assay(mirna) >= 5) >= 5, ]
     experimentData(mirna)@abstract <-
         "Note: Rows not having at least 5 counts in at least 5 samples were removed."
     miniACC <- c(miniACC,
                  list(miRNASeqGene = mirna),
                  sampleMap = sampleMap(acc)[sampleMap(acc)$assay == "miRNASeqGene",])
 
-    save(miniACC, file = "miniACC.RData", compress = "bzip2")
+    save(miniACC, file = "data/miniACC.RData", compress = "bzip2")
 }
 }
 \references{
