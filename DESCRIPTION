@@ -28,7 +28,9 @@ Suggests:
     HDF5Array,
     RaggedExperiment,
     rmarkdown,
-    UpSetR
+    UpSetR,
+    survival,
+    survminer
 Maintainer: Marcel Ramos <marcel.ramosperez@roswellpark.org>
 biocViews: Infrastructure, DataRepresentation
 License: Artistic-2.0
