@@ -22,6 +22,14 @@ suppressPackageStartupMessages({
 
 # Integrating an HDF5 backend for MultiAssayExperiment
 
+Dependencies
+
+```{r, eval = FALSE}
+library(MultiAssayExperiment)
+library(HDF5Array)
+library(SummarizedExperiment)
+```
+
 ## HDF5Array::DelayedArray Constructor
 
 The `HDF5Array` package provides an on-disk representation of large datasets
@@ -70,6 +78,7 @@ newDelayedMatrix <- DelayedArray(hdf5Data)
 class(newDelayedMatrix)
 head(newDelayedMatrix)
 ```
+
 ### Dimnames from HDF5 file
 
 Currently, the `rhdf5` package does not store `dimnames` in the `h5` file by
@@ -77,9 +86,9 @@ default. A request for this feature has been sent to the maintainer of the
 `rhdf5` package and any further development to the `HDF5Array` package is
 contingent on such lower level dimension name storage.
 
-## Insertting a `DelayedMatrix` into a `MultiAssayExperiment`
+## Using a `DelayedMatrix` with `MultiAssayExperiment`
 
-The `DelayedMatrix` alone conforms to the `MultiAssayExperiment` requirements.
+A `DelayedMatrix` alone conforms to the `MultiAssayExperiment` API requirements.
 Shown below, the `DelayedMatrix` can be put into a named `list` and passed into
 the `MultiAssayExperiment` constructor function. 
 
@@ -103,3 +112,7 @@ HDF5SE <- SummarizedExperiment(assays = smallMatrix)
 assay(HDF5SE)
 MultiAssayExperiment(list(HDF5SE = HDF5SE))
 ```
+
+Additional scenarios are currently in development where an `HDF5Matrix` is
+hosted remotely. Many opportunities exist when considering on-disk and off-disk
+representations of data with `MultiAssayExperiment`.

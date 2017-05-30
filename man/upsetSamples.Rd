@@ -6,8 +6,7 @@
 assays, using the upset algorithm in \code{UpSetR}}
 \usage{
 upsetSamples(MultiAssayExperiment, nsets = length(MultiAssayExperiment),
-  nintersects = 24, order.by = "freq", idclip = function(x) substr(x, 1,
-  12), ...)
+  nintersects = 24, order.by = "freq", ...)
 }
 \arguments{
 \item{MultiAssayExperiment}{instance of
@@ -18,10 +17,6 @@ upsetSamples(MultiAssayExperiment, nsets = length(MultiAssayExperiment),
 \item{nintersects}{Number of intersections to plot. If set to NA, all intersections will be plotted.}
 
 \item{order.by}{How the intersections in the matrix should be ordered by. Options include frequency (entered as "freq"), degree, or both in any order.}
-
-\item{idclip}{A function that operates on \code{colnames(MultiAssayExperiment)},
-to remove potentially assay-specific token components; use \code{force}
-if no clipping is needed}
 
 \item{...}{parameters passed to \code{\link[UpSetR]{upset}}}
 }
@@ -34,10 +29,8 @@ Create a generalized Venn Diagram analog for sample membership in multiple
 assays, using the upset algorithm in \code{UpSetR}
 }
 \examples{
-example(MultiAssayExperiment)
-upsetSamples(myMultiAssayExperiment, idclip = function(x) {
-    gsub("[a-z]", "", x)
-    })
+data(miniACC)
+upsetSamples(miniACC)
 }
 \author{
 Vincent J Carey
