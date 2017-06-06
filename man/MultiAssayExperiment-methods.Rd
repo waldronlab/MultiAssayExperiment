@@ -20,8 +20,6 @@
 \alias{metadata<-,MultiAssayExperiment-method}
 \alias{$<-,MultiAssayExperiment-method}
 \alias{$,MultiAssayExperiment-method}
-\alias{[[,MultiAssayExperiment,ANY,ANY-method}
-\alias{[[<-,MultiAssayExperiment,ANY,ANY-method}
 \title{Accessing/modifying slot information}
 \usage{
 \S4method{sampleMap}{MultiAssayExperiment}(x)
@@ -47,10 +45,6 @@
 \S4method{$}{MultiAssayExperiment}(x, name) <- value
 
 \S4method{$}{MultiAssayExperiment}(x, name)
-
-\S4method{[[}{MultiAssayExperiment,ANY,ANY}(x, i, j, ...)
-
-\S4method{[[}{MultiAssayExperiment,ANY,ANY}(x, i, j, ...) <- value
 }
 \arguments{
 \item{x}{A \code{MultiAssayExperiment} object}
@@ -62,10 +56,6 @@
 \item{value}{See details.}
 
 \item{name}{A column in \code{colData}}
-
-\item{i}{A \code{numeric} or \code{character} vector of length 1}
-
-\item{j}{Argument not in use}
 }
 \value{
 Accessors: Either a \code{sampleMap}, \code{ExperimentList}, or

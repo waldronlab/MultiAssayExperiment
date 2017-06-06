@@ -9,8 +9,6 @@
 \alias{names,MultiAssayExperiment-method}
 \alias{updateObject,MultiAssayExperiment-method}
 \alias{dimnames,MultiAssayExperiment-method}
-\alias{[,MultiAssayExperiment,ANY,ANY,ANY-method}
-\alias{[,MultiAssayExperiment,ANY-method}
 \alias{isEmpty,MultiAssayExperiment-method}
 \alias{complete.cases,MultiAssayExperiment-method}
 \alias{c,MultiAssayExperiment-method}
@@ -30,8 +28,6 @@
 
 \S4method{dimnames}{MultiAssayExperiment}(x)
 
-\S4method{[}{MultiAssayExperiment,ANY,ANY,ANY}(x, i, j, k, ..., drop = TRUE)
-
 \S4method{isEmpty}{MultiAssayExperiment}(x)
 
 \S4method{complete.cases}{MultiAssayExperiment}(...)
@@ -49,23 +45,11 @@
 \arguments{
 \item{object}{A \code{MultiAssayExperiment} class object}
 
-\item{x}{A \code{MultiAssayExperiment} object for subsetting}
+\item{x}{A \code{MultiAssayExperiment} object}
 
-\item{...}{Additional arguments. See details for more information.}
+\item{...}{Additional arguments for supporting functions. See details.}
 
 \item{verbose}{logical (default FALSE) whether to print extra messages}
-
-\item{i}{subsetting: Either a \code{character}, or \code{GRanges} object for subsetting
-by rows, assay: unused argument (missing)}
-
-\item{j}{Either a \code{character}, \code{logical}, or \code{numeric} vector
-for subsetting by columns}
-
-\item{k}{Either a \code{character}, \code{logical}, or \code{numeric} vector
-for subsetting by assays}
-
-\item{drop}{logical (default TRUE) whether to drop empty assay elements
-in the \code{ExperimentList}}
 
 \item{sampleMap}{\code{c} method: a \code{sampleMap} \code{list} or
 \code{DataFrame} to guide merge}
@@ -76,6 +60,8 @@ the experiment input(s)}
 
 \item{withDimnames}{logical (default TRUE) whether to return dimension names
 included in the object}
+
+\item{i}{An integer or character scalar indicating the assay to return}
 }
 \value{
 A \code{MultiAssayExperiment} object
@@ -118,8 +104,6 @@ objects to new API
 
 \item \code{dimnames}: Get the dimension names
 for a \code{MultiAssayExperiment} object
-
-\item \code{[}: Subset a \code{MultiAssayExperiment} object
 
 \item \code{isEmpty}: A \code{logical} value indicating an empty
 \code{MultiAssayExperiment}
