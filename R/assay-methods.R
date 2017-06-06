@@ -140,6 +140,7 @@ setMethod("assay", c("MultiAssayExperiment", "missing"), function(x, i, ...) {
 
 #' @describeIn MultiAssayExperiment Obtain the specified assay from the
 #' MultiAssayExperiment with a \code{numeric} index
+#' @param i An integer or character scalar indicating the assay to return
 setMethod("assay", c("MultiAssayExperiment", "numeric"), function(x, i, ...) {
     assay(experiments(x), i = i, ...)
 })
