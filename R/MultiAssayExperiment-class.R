@@ -71,6 +71,9 @@ NULL
 #' \code{MultiAssayExperiment} object
 #' @slot drops A metadata \code{list} of dropped information
 #'
+#' @param x A \code{MultiAssayExperiment} object
+#' @param ... Additional arguments for supporting functions. See details.
+#'
 #' @return A \code{MultiAssayExperiment} object
 #'
 #' @examples
@@ -279,8 +282,6 @@ setMethod("show", "MultiAssayExperiment", function(object) {
 #' @param object A \code{MultiAssayExperiment} object
 #' @param name A column in \code{colData}
 #' @param value See details.
-#' @param i A \code{numeric} or \code{character} vector of length 1
-#' @param j Argument not in use
 #' @param ... Argument not in use
 #'
 #' @return Accessors: Either a \code{sampleMap}, \code{ExperimentList}, or
