@@ -1,6 +1,6 @@
 Package: MultiAssayExperiment
 Title: Software for the integration of multi-omics experiments in Bioconductor
-Version: 1.3.23
+Version: 1.3.24
 Author: MultiAssay SIG
 Description: Develop an integrative environment where multiple assays are
     managed and preprocessed for genomic data analysis.

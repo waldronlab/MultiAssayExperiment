@@ -315,7 +315,7 @@ setMethod("experiments", "MultiAssayExperiment", function(x)
 #' @rdname MultiAssayExperiment-methods
 setMethod("pData", "MultiAssayExperiment", function(object) {
     .Defunct("colData")
-    getElement(object, "colData")
+    colData(object)
 })
 
 #' @exportMethod colData
@@ -336,13 +336,13 @@ setMethod("metadata", "MultiAssayExperiment", function(x)
 #' @exportMethod length
 #' @describeIn MultiAssayExperiment Get the length of ExperimentList
 setMethod("length", "MultiAssayExperiment", function(x)
-    length(getElement(x, "ExperimentList"))
+    length(experiments(x))
 )
 
 #' @exportMethod names
 #' @describeIn MultiAssayExperiment Get the names of the ExperimentList
 setMethod("names", "MultiAssayExperiment", function(x)
-    names(getElement(x, "ExperimentList"))
+    names(experiments(x))
 )
 
 ### - - - - - - - - - - - - - - - - - - - - - - - -
