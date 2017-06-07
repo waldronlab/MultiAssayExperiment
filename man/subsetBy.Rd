@@ -12,8 +12,6 @@
 \alias{[,MultiAssayExperiment,ANY,ANY,ANY-method}
 \alias{[[,MultiAssayExperiment,ANY,ANY-method}
 \alias{[[<-,MultiAssayExperiment,ANY,ANY-method}
-\alias{subsetByAssay}
-\alias{subsetByAssay,MultiAssayExperiment-method}
 \alias{subsetByColData}
 \alias{subsetByColData,MultiAssayExperiment,ANY-method}
 \alias{subsetByColData,MultiAssayExperiment,character-method}
@@ -25,6 +23,8 @@
 \alias{subsetByRow,MultiAssayExperiment,logical-method}
 \alias{subsetByRow,MultiAssayExperiment,list-method}
 \alias{subsetByRow,MultiAssayExperiment,List-method}
+\alias{subsetByAssay}
+\alias{subsetByAssay,MultiAssayExperiment-method}
 \title{Subsetting a MultiAssayExperiment object}
 \usage{
 \S4method{[}{MultiAssayExperiment,ANY,ANY,ANY}(x, i, j, k, ..., drop = TRUE)
@@ -32,10 +32,6 @@
 \S4method{[[}{MultiAssayExperiment,ANY,ANY}(x, i, j, ...)
 
 \S4method{[[}{MultiAssayExperiment,ANY,ANY}(x, i, j, ...) <- value
-
-subsetByAssay(x, y)
-
-\S4method{subsetByAssay}{MultiAssayExperiment}(x, y)
 
 subsetByColData(x, y)
 
@@ -58,6 +54,10 @@ subsetByRow(x, y, ...)
 \S4method{subsetByRow}{MultiAssayExperiment,list}(x, y)
 
 \S4method{subsetByRow}{MultiAssayExperiment,List}(x, y)
+
+subsetByAssay(x, y)
+
+\S4method{subsetByAssay}{MultiAssayExperiment}(x, y)
 }
 \arguments{
 \item{x}{A \code{MultiAssayExperiment}}
@@ -96,10 +96,10 @@ The order of the subsetting elements in the
 \code{MultiAssayExperiment}.
 
 \itemize{
-\item subsetByRow
 \item subsetBycolData: Select biological units by vector input types
-\item subsetByColumn
-\item subsetByAssay
+\item subsetByColumn: Select observations by assay or for each assay
+\item subsetByRow: Select rows by assay or for each assay
+\item subsetByAssay: Select experiments
 }
 }
 \examples{
