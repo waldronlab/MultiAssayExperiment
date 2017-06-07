@@ -166,8 +166,7 @@ setClass("MultiAssayExperiment",
         msg <- "All samples in the 'sampleMap' must be in the 'colData'"
         errors <- c(errors, msg)
     }
-    if (length(errors) == 0L)
-        NULL else errors
+    if (!length(errors)) NULL else errors
 }
 
 ## 3.ii. Within rows of "sampleMap" corresponding to a single value in the
@@ -454,3 +453,31 @@ setMethod("updateObject", "MultiAssayExperiment",
         }
         return(object)
     })
+
+### ==============================================
+### MatchedAssayExperiment class
+### ----------------------------------------------
+
+#' An integrative and matched-samples class for experiment data
+#'
+#' @description
+#' This class supports the use of matched samples where an equal number
+#' of observations are present in all assays.
+#'
+#' @exportClass MatchedAssayExperiment
+setClass("MatchedAssayExperiment",
+    contains="MultiAssayExperiment")
+
+.validMatchedAssayExperiment <- function(x) {
+    c(.checkEqualColumnLengths(x))
+}
+
+.checkEqualColumnLengths <- function(object) {
+    errors <- vector("character")
+    assayNcols <- unique(lengths(colnames(object)))
+    if (!S4Vectors::isSingleInteger(assayNcols))
+        "All experiments must have equal number of columns"
+    else
+        NULL
+}
+
