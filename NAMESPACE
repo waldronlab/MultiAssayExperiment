@@ -3,6 +3,7 @@
 S3method(.DollarNames,MultiAssayExperiment)
 export(API)
 export(ExperimentList)
+export(MatchedAssayExperiment)
 export(MultiAssayExperiment)
 export(RangedRaggedAssay)
 export(clusterOn)

@@ -43,7 +43,7 @@
 \S4method{assay}{MultiAssayExperiment,character}(x, i, ...)
 }
 \arguments{
-\item{object}{A \code{MultiAssayExperiment} class object}
+\item{object}{A \code{MultiAssayExperiment} object}
 
 \item{x}{A \code{MultiAssayExperiment} object}
 
