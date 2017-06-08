@@ -202,7 +202,7 @@ S4Vectors::setValidity2("MultiAssayExperiment", .validMultiAssayExperiment)
 #' @exportMethod show
 #' @describeIn MultiAssayExperiment Show method for a
 #' \code{MultiAssayExperiment}
-#' @param object A \code{MultiAssayExperiment} class object
+#' @param object A \code{MultiAssayExperiment} object
 setMethod("show", "MultiAssayExperiment", function(object) {
     if (.hasOldAPI(object)) {
         object <- updateObject(object)
@@ -462,22 +462,77 @@ setMethod("updateObject", "MultiAssayExperiment",
 #'
 #' @description
 #' This class supports the use of matched samples where an equal number
-#' of observations are present in all assays.
+#' of observations per biological unit are present in all assays.
+#'
+#' @return A \code{MatchedAssayExperiment} object
 #'
 #' @exportClass MatchedAssayExperiment
-setClass("MatchedAssayExperiment",
-    contains="MultiAssayExperiment")
+#' @seealso MultiAssayExperiment
+setClass("MatchedAssayExperiment", contains="MultiAssayExperiment")
 
-.validMatchedAssayExperiment <- function(x) {
-    c(.checkEqualColumnLengths(x))
-}
-
-.checkEqualColumnLengths <- function(object) {
-    errors <- vector("character")
-    assayNcols <- unique(lengths(colnames(object)))
-    if (!S4Vectors::isSingleInteger(assayNcols))
-        "All experiments must have equal number of columns"
+.checkEqualPrimaries <- function(object) {
+    listMap <- mapToList(sampleMap(object))
+    primaryIDs <- lapply(listMap, function(x) x[["primary"]])
+    allIDsEqual <- all(vapply(seq_along(primaryIDs)[-1], function(i, prim) {
+        identical(prim[[1L]], prim[[i]])
+    }, FUN.VALUE = logical(1L), prim = primaryIDs))
+    if (!allIDsEqual)
+        "Primary identifiers are not equal across assays"
     else
         NULL
 }
 
+.checkPrimaryOrder <- function(object) {
+    colPrimary <- rownames(colData(object))
+    listMap <- mapToList(sampleMap(object))
+    primaryIDs <- lapply(listMap, function(x) x[["primary"]])
+    allOrdered <- all(vapply(primaryIDs, function(prim) {
+        identical(colPrimary, prim)
+    }, logical(1L)))
+    if (!allOrdered)
+        "colData row identifiers not identical to sampleMap primary column"
+    else
+        NULL
+}
+
+.validMatchedAssayExperiment <- function(object) {
+    if (length(object) != 0L) {
+    c(.checkEqualPrimaries(object),
+      .checkPrimaryOrder(object))
+    }
+}
+
+S4Vectors::setValidity2("MatchedAssayExperiment", .validMatchedAssayExperiment)
+
+#' @export MatchedAssayExperiment
+#'
+#' @describeIn MatchedAssayExperiment-class Construct a
+#' \code{MatchedAssayExperiment} class from \linkS4class{MultiAssayExperiment}
+#' inputs.
+#'
+#' @inheritParams MultiAssayExperiment
+#'
+#' @examples
+#' MatchedAssayExperiment()
+#'
+#' @aliases MatchedAssayExperiment
+MatchedAssayExperiment <- function(experiments = ExperimentList(),
+    colData = S4Vectors::DataFrame(), sampleMap =
+        S4Vectors::DataFrame(assay = factor(), primary = character(),
+                             colname = character()),
+    metadata = NULL, drops = list()) {
+    matched <- MultiAssayExperiment(experiments = experiments, colData = colData,
+                             sampleMap = sampleMap, metadata = metadata,
+                             drops = drops)
+    if (!isEmpty(matched))
+        matched <- as(matched, "MatchedAssayExperiment")
+    return(matched)
+}
+
+setAs("MultiAssayExperiment", "MatchedAssayExperiment", function(from) {
+    from <- intersectColumns(from)
+    if (length(Filter(length, duplicated(from))))
+        stop("Resolve replicate columns")
+    newMatched <- new("MatchedAssayExperiment", from)
+    return(newMatched)
+})

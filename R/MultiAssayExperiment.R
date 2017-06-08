@@ -99,7 +99,9 @@
 MultiAssayExperiment <-
     function(experiments = ExperimentList(),
             colData = S4Vectors::DataFrame(),
-            sampleMap = S4Vectors::DataFrame(),
+            sampleMap = S4Vectors::DataFrame(assay = factor(),
+                                             primary = character(),
+                                             colname = character()),
             metadata = NULL,
             drops = list()) {
 
@@ -135,12 +137,6 @@ MultiAssayExperiment <-
 
         bliss <- .harmonize(experiments, colData, sampleMap)
 
-        ## validAssays <- S4Vectors::split(
-        ##     sampleMap[["colname"]], sampleMap[, "assay"])
-        ## experiments <- ExperimentList(Map(function(x, y) {
-        ##     x[, y]
-        ## }, experiments, validAssays))
-
         newMultiAssay <- new("MultiAssayExperiment",
                              ExperimentList = bliss[["experiments"]],
                              colData = bliss[["colData"]],
@@ -148,4 +144,3 @@ MultiAssayExperiment <-
                              metadata = metadata)
         return(newMultiAssay)
     }
-
