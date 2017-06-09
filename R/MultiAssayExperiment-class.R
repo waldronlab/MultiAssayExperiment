@@ -504,8 +504,6 @@ setClass("MatchedAssayExperiment", contains="MultiAssayExperiment")
 
 S4Vectors::setValidity2("MatchedAssayExperiment", .validMatchedAssayExperiment)
 
-#' @export MatchedAssayExperiment
-#'
 #' @describeIn MatchedAssayExperiment-class Construct a
 #' \code{MatchedAssayExperiment} class from \linkS4class{MultiAssayExperiment}
 #' inputs.
@@ -513,9 +511,12 @@ S4Vectors::setValidity2("MatchedAssayExperiment", .validMatchedAssayExperiment)
 #' @inheritParams MultiAssayExperiment
 #'
 #' @examples
-#' MatchedAssayExperiment()
+#' data("miniACC")
+#' acc <- as(miniACC, "MatchedAssayExperiment")
+#' acc
 #'
 #' @aliases MatchedAssayExperiment
+#' @export MatchedAssayExperiment
 MatchedAssayExperiment <- function(experiments = ExperimentList(),
     colData = S4Vectors::DataFrame(), sampleMap =
         S4Vectors::DataFrame(assay = factor(), primary = character(),
