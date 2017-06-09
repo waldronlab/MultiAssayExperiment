@@ -42,7 +42,9 @@ inputs.
 }}
 
 \examples{
-MatchedAssayExperiment()
+data("miniACC")
+acc <- as(miniACC, "MatchedAssayExperiment")
+acc
 
 }
 \seealso{
