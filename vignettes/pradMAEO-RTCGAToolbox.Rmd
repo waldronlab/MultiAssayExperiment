@@ -90,9 +90,9 @@ directory, making it easier to return to in the future.
 ```{r}
 buildMultiAssayExperiment <- function(TCGAcode, runDate, analyzeDate) {
     message("\n######\n", "\nProcessing ", TCGAcode, " : )\n", "\n######\n")
-    serialpath <- file.path("data", paste0(TCGAcode, ".rds"))
-    if (file.exists(serialpath)) {
-        cancer.object <- readRDS(serialpath)
+    serialPath <- file.path("data", paste0(TCGAcode, ".rds"))
+    if (file.exists(serialPath)) {
+        cancer.object <- readRDS(serialPath)
     } else {
         cancer.object <- getFirehoseData(TCGAcode, runDate = runDate,
                                          gistic2_Date = analyzeDate,
