@@ -157,13 +157,18 @@ setClass("MultiAssayExperiment",
 ## SAMPLEMAP
 ## 3.i. all values in the sampleMap "primary" column must be found in the
 ## rownames of colData
-.checkSampleMapNames <- function(object) {
+## 3.i.a sampleMap assay column must be a factor
+.checkSampleMapNamesClass <- function(object) {
     errors <- character()
     if (!(.allIn(
         rownames(colData(object)),
         sampleMap(object)[["primary"]]
     ))) {
         msg <- "All samples in the 'sampleMap' must be in the 'colData'"
+        errors <- c(errors, msg)
+    }
+    if (!is.factor(sampleMap(object)[["assay"]])) {
+        msg <- "'sampleMap' assay column not a factor"
         errors <- c(errors, msg)
     }
     if (!length(errors)) NULL else errors
@@ -186,7 +191,7 @@ setClass("MultiAssayExperiment",
 .validMultiAssayExperiment <- function(object) {
     if (length(experiments(object)) != 0L) {
         c(.checkExperimentList(object),
-          .checkSampleMapNames(object),
+          .checkSampleMapNamesClass(object),
           .uniqueNamesInAssays(object),
           .checkSampleNames(object)
         )
@@ -400,7 +405,7 @@ setReplaceMethod("colData", c("MultiAssayExperiment", "DataFrame"),
     })
 
 .rearrangeMap <- function(sampMap) {
-    return(DataFrame(assay = sampMap[["assayname"]],
+    return(DataFrame(assay = factor(sampMap[["assayname"]]),
                      primary = sampMap[["primary"]],
                      colname = sampMap[["assay"]]))
 }
