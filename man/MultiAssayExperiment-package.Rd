@@ -25,3 +25,17 @@ Useful links:
 }
 
 }
+\author{
+\strong{Maintainer}: Marcel Ramos \email{marcel.ramos@roswellpark.org}
+
+Authors:
+\itemize{
+  \item Levi Waldron \email{lwaldron.research@gmail.com}
+}
+
+Other contributors:
+\itemize{
+  \item MultiAssay SIG \email{biocmultiassay@googlegroups.com} [contributor]
+}
+
+}

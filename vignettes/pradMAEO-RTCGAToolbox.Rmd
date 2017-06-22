@@ -2,7 +2,7 @@
 title: "**pradMAEO**: The **PR**ostate **AD**enocarcinoma
 **M**ulti**A**ssay**E**xperiment **O**bject using data from _RTCGAToolbox_"
 author: "Lucas Schiffer"
-date: "`r doc_date()`"
+date: "`r BiocStyle::doc_date()`"
 output:
   BiocStyle::html_document:
     number_sections: yes
@@ -11,8 +11,9 @@ abstract: >
   This vignette generates a
   MultiAssayExperiment object from TCGA (The Cancer Genome Atlas) data using 
   Specifically, the `getFirehoseData()` method of the
-  `r Githubpkg("LiNk-NY/RTCGAToolbox")` package (the fork available from https://www.github.com/LiNk-NY/RTCGAToolbox) is used to access and read in
-  data; output is then further coerced to fit the MultiAssayExperiment object
+  `r BiocStyle::Githubpkg("LiNk-NY/RTCGAToolbox")` package (the fork available
+  from https://www.github.com/LiNk-NY/RTCGAToolbox) is used to access and read
+  in data; output is then further coerced to fit the MultiAssayExperiment object
   specifications. 
 vignette: >
   %\VignetteEngine{knitr::rmarkdown}
@@ -46,7 +47,7 @@ library(RaggedExperiment)
 
 # Argument Definitions
 
-The `r Githubpkg("LiNk-NY/RTCGAToolbox")` package provides the
+The `r BiocStyle::Githubpkg("LiNk-NY/RTCGAToolbox")` package provides the
 `getFirehoseDatasets()` method for obtaining the names of all 33 cohorts
 contained within the TCGA data. Beyond the 33 cohorts, there are 5 additional
 "pan" cohorts where data of multiple cohorts was merged - information about the
@@ -152,7 +153,7 @@ buildMultiAssayExperiment <- function(TCGAcode, runDate, analyzeDate) {
 
 Lastly, it is necessary to call the `buildMultiAssayExperiment()` function
 defined above and pass it the arguments defined using the
-`r Githubpkg("LiNk-NY/RTCGAToolbox")` package. Using this function, a
+`r BiocStyle::Githubpkg("LiNk-NY/RTCGAToolbox")` package. Using this function, a
 `MultiAssayExperiment` object for the prostate
 adenocarcinoma cohort (`PRAD`) is created with a single call.
 
@@ -160,4 +161,3 @@ adenocarcinoma cohort (`PRAD`) is created with a single call.
 mae <- buildMultiAssayExperiment(TCGAcode=dataset, runDate=runDate,
                                   analyzeDate=analyzeDate)
 ```
-

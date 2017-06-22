@@ -56,7 +56,7 @@ environment:
     USE_RTOOLS: true ## to be able to use Remotes (i.e. packages from non-CRAN sources)
 
   matrix:
-    - R_VERSION: 3.4.0
+    - R_VERSION: release
       R_ARCH: x64
       GCC_PATH: mingw_64
 
