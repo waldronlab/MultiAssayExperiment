@@ -1,0 +1,44 @@
+# R for travis documentation: https://docs.travis-ci.com/user/languages/r
+
+language: r
+sudo: false
+cache: packages
+
+r: bioc-devel
+
+# Strict checks in place
+warnings_are_errors: false
+
+branches:
+  only:
+    - master
+
+# Run binary install of testthat
+r_binary_packages:
+  - testthat
+
+r_packages:
+  - rmarkdown
+
+bioc_packages:
+  - BiocGenerics
+  - S4Vectors
+  - GenomicRanges
+  - SummarizedExperiment
+  - Biobase
+  - S4Vectors
+  - IRanges
+  - BiocStyle
+  - HDF5Array
+  - RaggedExperiment
+
+# Test code coverage
+r_github_packages:
+  - jimhester/covr
+
+after_success:
+  - Rscript -e 'library(covr);codecov()'
+
+notifications:
+  slack:
+    secure: KsPOuXMfMyvBPysZ2CbxbarX46VolTZJ9R8tw0ZXlMYjj5liJA6hkuCq/kKW2A3hsKRAciwh23ofxJMXEQujkJSHjADtbUh5ydG9n69w9EOY8cCtDyQ8C0EygyGd4nWODZ2nI7HvITtlG4YFUoFm3HbXuQaysWddUBHpNSmBDNf33hUiSH3UrKD9C4+RaaP4BMyp9EUpUu6ehWIJbUNbCC/OdLgyp2FcdDo94608/u1oKsQ4kOfAR8UpLx2A/G5Tp81VWva0xS8GPKg4TxBgocBle7vkL8WzglTg8Gi4ThDH23eI4BzJRbwIj16Xf24r0e9QNJAPU07MkxAKgr0K2ogvPx+kDtdIAOmWl08NLu2vt8xKMXdX/a+vz5JFsdh4ZjTU+mH3s1SbesmYSdSum05JY1Z1XWu/AjU8wz2vBI6LFmwROcoDtPwW5ZtBcdXqbgyyoVna/EChD+OfS3oKOVJyaq2HqiCwlfOx9RUgarOkhmWXoA83xgf+slGGOrwW//BrjV1ba1BHHfMNckcsJ76HmowWfWu8F9R+yy3g2V48XFd7WMP/6l3ue9M1A/V1rVhaWYktyQmJw9u4C6tHw/yznBdZm0TgutUpqAslU0BCeEZGDUvZH9oPwebDYvMLCNu8Ljy44QnwhpONbfZFeKrfy6x5ahAlZhpsygV46CQ=

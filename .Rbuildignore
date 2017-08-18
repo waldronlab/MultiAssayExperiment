@@ -1,0 +1,30 @@
+#----------------------------
+# Git
+#----------------------------
+^\.git$
+^\.gitignore$
+^\.gitattributes$
+
+#----------------------------
+# Continuous Integration
+#----------------------------
+^\.travis\.yml$
+^appveyor\.yml$
+^wercker\.yml$
+
+#----------------------------
+# RStudio and R
+#----------------------------
+^\.Rhistory$
+^.*\.Rproj$
+^\.Rproj\.user$
+
+#----------------------------
+# Data and files
+#----------------------------
+^.*\.rda$
+^.*\.tar\.gz$
+^\.lintr$
+^NEWS\.md$
+^README\.md$
+
