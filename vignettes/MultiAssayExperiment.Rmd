@@ -806,6 +806,24 @@ replicate samples for each individual within each assay:
 duplicated(myMultiAssay)
 ```
 
+## combine `c`
+
+The combine `c` function allows the user to append an experiment to the list
+of experiments already present in `MultiAssayExperiment`.
+In the case that additional observations on the same set of samples were
+performed, the `c` function can conveniently be referenced to an existing assay
+that contains the same ordering of sample measurements. 
+
+Here we introduce a toy dataset created on the fly:
+
+```{r}
+c(myMultiAssay, ExpScores = matrix(1:8, ncol = 4,
+dim = list(c("ENSMBL0001", "ENSMBL0002"), paste0("pt", 1:4))),
+mapFrom = 1L)
+```
+
+_Note_: Alternatively, a `sampleMap` for the additional dataset can be provided.
+
 # Functions to clean up a `MultiAssayExperiment`
 
 A set of helper functions are available for clean-up operations. These include
