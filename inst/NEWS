@@ -43,7 +43,7 @@
 instead.
 * `reduce` function simplified
 * `mapFrom` convenience argument added to the `c,MultiAssayExperiment-method`
-* `assay` and `assays` methods have been revised to conform to 
+* `assay` and `assays` methods have been revised to conform to
 `SummarizedExperiment` standards
 
 ## Bug fixes and minor improvements
@@ -94,16 +94,16 @@ instead.
 
 ## New features
 
-* `disjoin` method for `RangedRaggedAssay` 
+* `disjoin` method for `RangedRaggedAssay`
 
 ## Bug fixes and minor improvements
 
 * `show` method for `RangedRaggedAssay` abbreviated. No longer summarizes data with `assay`
-* Documentation changes for `reduce` and `disjoin` 
+* Documentation changes for `reduce` and `disjoin`
 
 # MultiAssayExperiment 1.1.12
 
-## New features 
+## New features
 
 * `gather`/`collect` function name changed to `rearrange`
 * `clusterSex` now `clusterOn`, works with characteristic of choice
@@ -116,7 +116,7 @@ instead.
 
 # MultiAssayExperiment 1.1.10
 
-## New features 
+## New features
 
 * Double bracket method for MultiAssayExperiment available
 
