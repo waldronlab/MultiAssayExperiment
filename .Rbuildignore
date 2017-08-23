@@ -27,4 +27,5 @@
 ^\.lintr$
 ^NEWS\.md$
 ^README\.md$
+^docs$
 
