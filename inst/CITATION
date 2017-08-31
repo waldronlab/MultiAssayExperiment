@@ -1,0 +1,21 @@
+citHeader("To cite MultiAssayExperiment in publications use:")
+
+citEntry(entry = "Article",
+    title = "Software For The Integration Of Multi-Omics Experiments In Bioconductor",
+    author = personList(as.person("Marcel Ramos"), as.person("Lucas Schiffer"),
+        as.person("Angela Re"), as.person("Rimsha Azhar"), as.person("Azfar Basunia"),
+        as.person("Carmen Rodriguez Cabrera"), as.person("Tiffany Chan"),
+        as.person("Philip Chapman"), as.person("Sean Davis"),
+        as.person("David Gomez-Cabrero"), as.person("Aedin C. Culhane"),
+        as.person("Benjamin Haibe-Kains"), as.person("Kasper Hansen"),
+        as.person("Hanish Kodali"), as.person("Marie Stephie Louis"),
+        as.person("Arvind Singh Mer"), as.person("Markus Reister"),
+        as.person("Martin Morgan"), as.person("Vincent Carey"),
+        as.person("Levi Waldron")),
+    journal = "Cancer Research",
+    year = "2017",
+    textVersion =
+    paste("Marcel Ramos et al. (2017).",
+          "Software For The Integration Of Multi-Omics Experiments In Bioconductor",
+          "Cancer Research, In Press.")
+)
