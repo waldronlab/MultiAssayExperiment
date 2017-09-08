@@ -54,6 +54,7 @@ from class `S4Vectors::SimpleList` with one element/component per data type.
 ```{r}
 class(experiments(empty)) # ExperimentList
 ```
+
 The elements of the `ExperimentList` can contain **ID-based** and
 **range-based** data. Requirements for all classes in the `ExperimentList`
 are listed in the API.
@@ -516,11 +517,22 @@ grlls <- list(chr = rep("chr1", nrows), start = seq(11, 15),
               score = seq(1, 5), specimen = c("a", "a", "b", "b", "c"),
               gene_symbols = paste0("GENE", letters[seq_len(nrows)]))
 grldf <- as.data.frame(grlls, stringsAsFactors = FALSE)
-makeGRangesListFromDataFrame(grldf, split.field = "specimen",
+GRL <- makeGRangesListFromDataFrame(grldf, split.field = "specimen",
                              names.field = "gene_symbols")
 ```
 
-In the `SummarizedExperiment` package: 
+This can then be converted to a `RaggedExperiment` object for a
+rectangular representation that will conform more easily to the
+`MultiAssayExperiment` API requirements.
+
+```{r}
+library(RaggedExperiment)
+RaggedExperiment(GRL)
+```
+
+_Note_. See the `RaggedExperiment` vignette for more details.
+
+In the `SummarizedExperiment` package:
 
 ```{r}
 library(SummarizedExperiment)
@@ -902,7 +914,7 @@ possible with replicate measurements, so we demonstrate on the cleaned
 
 ```{r}
 maemerge <- mergeReplicates(intersectColumns(myMultiAssay))
-wideFormat(maemerge, shape="wide", colDataCols="sex")[, 1:5]
+wideFormat(maemerge, colDataCols="sex")[, 1:5]
 ```
 
 ## `assay` / `assays`
