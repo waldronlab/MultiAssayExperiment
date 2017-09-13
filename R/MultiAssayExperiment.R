@@ -48,7 +48,7 @@
     primary <- intersect(rownames(colData), sampleMap[["primary"]])
     keep_colData <- rownames(colData) %in% primary
     if (!all(keep_colData)) {
-        colData <- colData[keep_colData, ]
+        colData <- colData[keep_colData, , drop = FALSE]
         harmony <- c(
             harmony,
             paste("removing", sum(!keep_colData),
