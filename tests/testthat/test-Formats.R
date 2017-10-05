@@ -23,3 +23,11 @@ test_that("longFormat returns specified colData column and proper dimensions", {
     expect_true("sex" %in% names(wideDF))
     expect_equal(nrow(wideDF), nrow(colData(myMultiAssayExperiment)))
 })
+
+test_that("wideFormat returns primary column order identical to colData rownames", {
+    data("miniACC")
+    acc <- miniACC["EZH2", , ]
+    wideacc <- wideFormat(acc)
+    expect_true(identical(rownames(colData(acc)),
+        as.character(wideacc[["primary"]])))
+    })

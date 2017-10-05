@@ -15,7 +15,6 @@
 * `drop = FALSE` in single column subset of colData
 * default sampleMap representation as empty DataFrame with colnames
 * added combine `c` vignette section for adding experiments to an existing
-MultiAssayExperiment
 
 # MultiAssayExperiment 1.1.59
 
