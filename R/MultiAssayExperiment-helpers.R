@@ -128,13 +128,18 @@ setMethod("mergeReplicates", "ANY",
             }, rectangle = x)
             uniqueRectangle <- do.call(cbind, unname(repeatList))
             result <- cbind(uniqueRectangle, x[, uniqueCols, drop = FALSE])
-            if (is(object, "SummarizedExperiment"))
-                assay(object) <- result
-            else if (is(object, "ExpressionSet"))
+            if (is(object, "SummarizedExperiment")) {
+                # Keep only first replicate row in colData
+                colDatIdx <- c(unname(min(which(replicates))),
+                    which(uniqueCols))
+                newColDat <- colData(object)[colDatIdx, , drop = FALSE]
+                object <- initialize(object,
+                    assays = Assays(SimpleList(result)), colData = newColDat)
+            } else if (is(object, "ExpressionSet")) {
                 object <- Biobase::assayDataElementReplace(object,
                                                            "exprs", result,
                                                            validate = FALSE)
-            else
+            } else
                 return(result)
         }
         return(object)
