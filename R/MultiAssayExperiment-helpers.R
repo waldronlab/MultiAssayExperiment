@@ -136,9 +136,8 @@ setMethod("mergeReplicates", "ANY",
                 object <- initialize(object,
                     assays = Assays(SimpleList(result)), colData = newColDat)
             } else if (is(object, "ExpressionSet")) {
-                object <- Biobase::assayDataElementReplace(object,
-                                                           "exprs", result,
-                                                           validate = FALSE)
+                # phenoData of ExpressionSet is lost
+                object <- initialize(object, exprs = result)
             } else
                 return(result)
         }
