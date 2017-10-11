@@ -758,17 +758,17 @@ rowRanges(subsetted[[4]])
 Square bracket subsetting can still be used here, but passing on arguments to
 `IRanges::subsetByOverlaps` through "..." is simpler using `subsetByRow()`.
 
-## Subsetting is endogenous
+## Subsetting is endomorphic
 
 `subsetByRow`, `subsetByColumn`, `subsetByAssay`, and square bracket subsetting
-are all "endogenous" operations, in that they always returns another
+are all "endomorphic" operations, in that they always returns another
 `MultiAssayExperiment` object.
 
 ## Double-bracket subsetting to select experiments
 
 A double-bracket subset operation refers to an experiment, and will return
 the object contained within an `ExperimentList` element. It is **not**
-endogenous. For example, the first `ExperimentList` element is called "Affy"
+endomorphic. For example, the first `ExperimentList` element is called "Affy"
 and contains an `ExpressionSet`:
 
 ```{r}
