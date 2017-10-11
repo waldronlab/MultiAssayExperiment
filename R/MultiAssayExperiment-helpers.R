@@ -252,11 +252,13 @@ setMethod("wideFormat", "MultiAssayExperiment",
         longDataFrame <- tidyr::unite_(longDataFrame, "feature",
                                          c("assay", "rowname", "colname"))
             }
-        wideDataFrame <- tidyr::spread(longDataFrame, key = "feature",
+        wideDataFrame <- tidyr::spread_(longDataFrame, key = "feature",
                                          value = "value")
         } else {
         wideDataFrame <- tidyr::spread_(longDataFrame, key = key, value = "value")
         }
+        wideDataFrame <- wideDataFrame[match(rownames(colData(object)),
+            wideDataFrame[["primary"]]), ]
         wideDataFrame <- S4Vectors::DataFrame(wideDataFrame)
         return(wideDataFrame)
     })

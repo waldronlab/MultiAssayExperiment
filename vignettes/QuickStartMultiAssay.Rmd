@@ -385,9 +385,9 @@ Choose the *EZH2* gene for demonstration. This subsetting will drop assays with
 no row named EZH2:
 
 ```{r}
-wideacc = wideFormat(miniACC["EZH2", , ], 
-    colDataCols=c("vital_status", "days_to_death", "pathology_N_stage"))
-wideacc$y = Surv(wideacc$days_to_death, wideacc$vital_status)
+wideacc <- wideFormat(miniACC["EZH2", , ], 
+    colDataCols = c("vital_status", "days_to_death", "pathology_N_stage"))
+wideacc$y <- Surv(wideacc$days_to_death, wideacc$vital_status)
 head(wideacc)
 ```
 

@@ -1,3 +1,21 @@
+# MultiAssayExperiment 1.1.37
+
+## New features
+
+* `MatchedAssayExperiment` subclass added for matched samples in all assays
+* Supply mini ACC dataset `data(miniACC)`
+* Provide reference table for methods in package, see vignettes
+* Merge with GitHub development version
+
+## Bug fixes and minor improvements
+
+* ensure assay column in sampleMap is a factor
+* rearrange long DataFrame correctly
+* remove support for RangedRaggedAssay - deprecate
+* `drop = FALSE` in single column subset of colData
+* default sampleMap representation as empty DataFrame with colnames
+* added combine `c` vignette section for adding experiments to an existing
+
 # MultiAssayExperiment 1.1.59
 
 * `rearrange` is now broken up into `longFormat` and `wideFormat` functions.
