@@ -1,7 +1,11 @@
 ---
 title: "**pradMAEO**: The **PR**ostate **AD**enocarcinoma
 **M**ulti**A**ssay**E**xperiment **O**bject using data from _RTCGAToolbox_"
-author: "Lucas Schiffer"
+author:
+- name: Lucas Schiffer
+  affiliation: CUNY Graduate School of Public Health and Health Policy
+- name: Marcel Ramos
+  affiliation: CUNY Graduate School of Public Health and Health Policy
 date: "`r BiocStyle::doc_date()`"
 output:
   BiocStyle::html_document:
@@ -24,25 +28,36 @@ vignette: >
 # Prerequisites
 
 ```{r, include = FALSE}
-knitr::opts_chunk$set(eval = FALSE)
+suppressMessages({
+    BiocInstaller::biocLite("waldronlab/TCGAutils")
+})
+suppressPackageStartupMessages({
+    library(RTCGAToolbox)
+    library(TCGAutils)
+})
 ```
 
-Note that this vignette *requires* the LiNk-NY version of RTCGAToolbox, not the version on Bioconductor, and that TCGAutils is currently only available on Github.
+Note: This vignette *requires* `TCGAutils` which currently only available on Github.
 
-```{r}
-BiocInstaller::biocLite("LiNk-NY/RTCGAToolbox")
-BiocInstaller::biocLite("waldronlab/TCGAutils")
+```{r, eval=FALSE}
+library(RTCGAToolbox)
+## Download and install GitHub resource
+if (!require(TCGAutils, quietly = TRUE)) {
+    BiocInstaller::biocLite("waldronlab/TCGAutils", suppressAutoUpdate = TRUE,
+        suppressUpdates = TRUE)
+}
+library(TCGAutils)
 ```
 
 These and other packages available in Bioconductor or CRAN are loaded as
 follows.
 
 ```{r}
+# BIOCONDUCTOR
 library(MultiAssayExperiment)
-library(RTCGAToolbox)
-library(TCGAutils)
-library(readr)
 library(RaggedExperiment)
+# CRAN
+library(readr)
 ```
 
 # Argument Definitions
@@ -59,8 +74,8 @@ to obtain the most recent running and analysis dates.
 ```{r}
 dataset <- getFirehoseDatasets()[27] # PRAD
 stopifnot(identical(dataset, "PRAD"))
-runDate <- getFirehoseRunningDates()[1]
-analyzeDate <- getFirehoseAnalyzeDates()[1]
+runDate <- getFirehoseRunningDates(last = 1)
+analyzeDate <- getFirehoseAnalyzeDates(last = 1)
 ```
 
 # Function Definition
@@ -77,7 +92,7 @@ directory. Once serialized, `colData` is extracted from the clinical slot and
 the rownames are cleaned by `gsub()` and `type.convert()` functions. 
 
 A named list of extraction targets is then created from the slot names of the
-cohort object and the `TCGAextract()` function is used within a try statement.
+cohort object and the `biocExtract()` function is used within a `try` call.
 The outputs are then passed to `generateMap()` which will generate a `sampleMap`
 specific to TCGA data.
 
@@ -89,61 +104,63 @@ A `MultiAssayExperiment` will be created, serialized and saved to the data
 directory, making it easier to return to in the future.
 
 ```{r}
-buildMultiAssayExperiment <- function(TCGAcode, runDate, analyzeDate) {
+buildMultiAssayExperiment <- function(TCGAcode, runDate, analyzeDate, dataType=
+    c("RNASeqGene", "RNASeq2GeneNorm", "miRNASeqGene", "CNASNP", "CNVSNP",
+    "CNASeq", "CNACGH", "Methylation", "mRNAArray", "miRNAArray", "RPPAArray",
+    "Mutation", "GISTIC"), dataDirectory = "/tmp", force = FALSE) {
+        if (!dir.exists(dataDirectory))
+            dir.create(dataDirectory)
+    
     message("\n######\n", "\nProcessing ", TCGAcode, " : )\n", "\n######\n")
-    serialPath <- file.path("data", paste0(TCGAcode, ".rds"))
+    serialPath <- file.path(dataDirectory, paste0(TCGAcode, ".rds"))
+    
+    targets <- c("RNASeqGene", "RNASeq2GeneNorm", "miRNASeqGene",
+                     "CNASNP", "CNVSNP", "CNASeq", "CNACGH", "Methylation",
+                     "mRNAArray", "miRNAArray", "RPPAArray", "Mutation",
+                     "GISTIC")
+    names(targets) <- targets
+    
+    dataType <- match.arg(dataType, targets, several.ok = TRUE)
+    names(dataType) <- dataType
+    dataType <- rep(TRUE, length(dataType))
+    
     if (file.exists(serialPath)) {
         cancer.object <- readRDS(serialPath)
     } else {
-        cancer.object <- getFirehoseData(TCGAcode, runDate = runDate,
-                                         gistic2_Date = analyzeDate,
-                                         RNAseq_Gene = TRUE,
-                                         Clinic = TRUE,
-                                         miRNASeq_Gene = TRUE,
-                                         RNAseq2_Gene_Norm = TRUE,
-                                         CNA_SNP = TRUE,
-                                         CNV_SNP = TRUE,
-                                         CNA_Seq = TRUE,
-                                         CNA_CGH = TRUE,
-                                         Methylation = FALSE,
-                                         Mutation = TRUE,
-                                         mRNA_Array = TRUE,
-                                         miRNA_Array = TRUE,
-                                         RPPA_Array = TRUE,
-                                         RNAseqNorm = "raw_counts",
-                                         RNAseq2Norm =
-                                             "normalized_count",
-                                         forceDownload = FALSE,
-                                         destdir = "./tmp",
-                                         fileSizeLimit = 500000,
-                                         getUUIDs = FALSE)
-        saveRDS(cancer.object, file = serialPath, compress = "bzip2")
+        cancer.object <- do.call(getFirehoseData,
+            args = c(list(dataset = TCGAcode,
+                runDate = runDate,
+                gistic2Date = analyzeDate,
+                RNAseqNorm = "raw_counts",
+                RNAseq2Norm =
+                    "normalized_count",
+                forceDownload = FALSE,
+                destdir = dataDirectory,
+                fileSizeLimit = 500000,
+                getUUIDs = FALSE), as.list(dataType))
+            )
+        # Uncomment to save to your directory
+        # saveRDS(cancer.object, file = serialPath, compress = "bzip2")
     }
     ## Add clinical data from RTCGAToolbox
-    clinical.data <- Clinical(cancer.object)
+    clinical.data <- selectType(cancer.object, "clinical")
     rownames(clinical.data) <- toupper(gsub("\\.", "-",
                                             rownames(clinical.data)))
-    clincal.data[] <- apply(clinical.data, 2, type.convert)
+    clinical.data[] <- apply(clinical.data, 2, type.convert)
     
-    ## slotNames in FirehoseData RTCGAToolbox class
-    targets <- c("RNASeqGene", "RNASeq2GeneNorm", "miRNASeqGene",
-                 "CNASNP", "CNVSNP", "CNAseq", "CNACGH", "Methylation",
-                 "mRNAArray", "miRNAArray", "RPPAArray", "Mutations",
-                 "gistica", "gistict")
-    names(targets) <- targets
     dataList <- lapply(targets, function(datType) {
-        tryCatch({TCGAutils::TCGAextract(cancer.object, datType)},
+        tryCatch({biocExtract(cancer.object, datType)},
                  error = function(e) {
                      message(datType, " does not contain any data!")
                  })
     })
-    data.full <- Filter(function(x) {!is.null(x)}, dataList)
-    for (i in seq_along(data.full)){
-        if(is(data.full[[i]], "GRangesList")){
-            data.full[[i]] <- RaggedExperiment::RaggedExperiment(data.full[[i]])
-        }
-    }
-    newmap <- generateMap(data.full, clinical.data, TCGAutils::TCGAbarcode)
+    data.full <- Filter(length, dataList)
+    
+    isList <- vapply(data.full, is.list, logical(1L))
+    unlisted <- unlist(data.full[isList])
+    data.full <- c(data.full[!isList], unlisted)
+    newmap <- TCGAutils::generateMap(data.full, clinical.data,
+        TCGAutils::TCGAbarcode)
     mae <- MultiAssayExperiment(data.full, clinical.data, newmap)
     return( mae )
 }
@@ -158,6 +175,6 @@ defined above and pass it the arguments defined using the
 adenocarcinoma cohort (`PRAD`) is created with a single call.
 
 ```{r}
-mae <- buildMultiAssayExperiment(TCGAcode=dataset, runDate=runDate,
-                                  analyzeDate=analyzeDate)
+buildMultiAssayExperiment(TCGAcode=dataset, runDate=runDate,
+    analyzeDate=analyzeDate, dataType = "miRNASeqGene", dataDirectory = "tmp")
 ```

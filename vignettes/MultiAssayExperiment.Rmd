@@ -7,7 +7,7 @@ vignette: >
   %\VignetteIndexEntry{Coordinating Analysis of Multi-Assay Experiments}
   %\VignetteEncoding{UTF-8}
 output:
-  BiocStyle::html_document2:
+  BiocStyle::html_document:
     number_sections: yes
     toc: true
 ---
