@@ -210,8 +210,7 @@ S4Vectors::setValidity2("MultiAssayExperiment", .validMultiAssayExperiment)
 #' @param object A \code{MultiAssayExperiment} object
 setMethod("show", "MultiAssayExperiment", function(object) {
     if (.hasOldAPI(object)) {
-        object <- updateObject(object)
-        warning("MultiAssayExperiment is outdated, please run updateObject()")
+        stop("MultiAssayExperiment is outdated, please run updateObject()")
     }
     o_class <- class(object)
     o_len <- length(object)
