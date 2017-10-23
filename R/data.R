@@ -41,5 +41,5 @@
 #' longFormat(miniACC["MAPK3", , ], colDataCols = c("vital_status", "days_to_death"))
 #' wideFormat(miniACC["MAPK3", , ], colDataCols = c("vital_status", "days_to_death"))
 #'
-#' @example inst/extdata/miniACC.R
+#' @example inst/scripts/miniACC-Ex.R
 "miniACC"
