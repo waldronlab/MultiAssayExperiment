@@ -54,5 +54,12 @@
                  list(miRNASeqGene = mirna),
                  sampleMap = sampleMap(acc)[sampleMap(acc)$assay == "miRNASeqGene",])
 
+     miniACC[["RNASeq2GeneNorm"]] <-
+         as(miniACC[["RNASeq2GeneNorm"]], "SummarizedExperiment")
+     miniACC[["RPPAArray"]] <-
+         as(miniACC[["RPPAArray"]], "SummarizedExperiment")
+     miniACC[["miRNASeqGene"]] <-
+         as(miniACC[["miRNASeqGene"]], "SummarizedExperiment")
+
     save(miniACC, file = "data/miniACC.RData", compress = "bzip2")
 }
