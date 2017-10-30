@@ -1,20 +1,3 @@
-## Helper functions for check non-NULL rownames
-.getRowNamesErr <- function(object) {
-    if (dim(object)[1] > 0 && is.null(rownames(object))) {
-        paste(" rownames in", class(object), "are NULL")
-    } else {
-        NULL
-    }
-}
-
-.getColNamesErr <- function(object) {
-    if (is.null(colnames(object)) || !length(colnames(object))) {
-        paste(" colnames in", class(object), "are empty or NULL")
-    } else {
-        NULL
-    }
-}
-
 ## Ensure ExperimentList elements are appropriate for the API and rownames
 ## are present
 .checkGRL <- function(object) {
@@ -97,7 +80,7 @@ setMethod("ExperimentList", "missing", function(x) {
 ### Validity
 ###
 
-## Helper function for .checkMethodsTable
+## Helper function for .testMethodsTable
 .getMethErr <- function(object) {
     supportedMethods <- c("colnames", "rownames", "[", "dim")
     methErr <- vapply(supportedMethods, function(x) {
@@ -114,7 +97,7 @@ setMethod("ExperimentList", "missing", function(x) {
 }
 
 ## 1.i. Check that [, colnames, rownames and dim methods are possible
-.checkMethodsTable <- function(object) {
+.testMethodsTable <- function(object) {
     errors <- character()
     for (i in seq_along(object)) {
         coll_err <- .getMethErr(object[[i]])
@@ -133,11 +116,6 @@ setMethod("ExperimentList", "missing", function(x) {
 ## ExperimentList and duplicated element names
 .checkExperimentListNames <- function(object) {
     errors <- character()
-    for (i in seq_along(object)) {
-        colname_err <- .getColNamesErr(object[[i]])
-        if (!is.null(colname_err))
-            errors <- c(errors, paste0("[", i, "] Element", colname_err))
-    }
     if (anyDuplicated(names(object))) {
         msg <- "Non-unique names provided"
         errors <- c(errors, msg)
@@ -151,7 +129,7 @@ setMethod("ExperimentList", "missing", function(x) {
 
 .validExperimentList <- function(object) {
     if (length(object) != 0L) {
-        c(.checkMethodsTable(object),
+        c(.testMethodsTable(object),
           .checkExperimentListNames(object))
     }
 }
