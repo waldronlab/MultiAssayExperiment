@@ -8,8 +8,8 @@
 }
 
 .getColNamesErr <- function(object) {
-    if (dim(object)[2] > 0 && is.null(colnames(object))) {
-        paste(" colnames in", class(object), "are NULL")
+    if (is.null(colnames(object)) || !length(colnames(object))) {
+        paste(" colnames in", class(object), "are empty or NULL")
     } else {
         NULL
     }
