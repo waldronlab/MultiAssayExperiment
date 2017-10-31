@@ -5,8 +5,6 @@
 \docType{class}
 \name{ExperimentList-class}
 \alias{ExperimentList-class}
-\alias{ExperimentList,ANY-method}
-\alias{ExperimentList,missing-method}
 \alias{show,ExperimentList-method}
 \alias{dimnames,ExperimentList-method}
 \alias{mergeReplicates,ExperimentList-method}
@@ -18,10 +16,6 @@
 \alias{assay,ExperimentList,character-method}
 \title{A container for multi-experiment data}
 \usage{
-\S4method{ExperimentList}{ANY}(x)
-
-\S4method{ExperimentList}{missing}(x)
-
 \S4method{show}{ExperimentList}(object)
 
 \S4method{dimnames}{ExperimentList}(x)
@@ -40,10 +34,7 @@
 \S4method{assay}{ExperimentList,character}(x, i, ...)
 }
 \arguments{
-\item{x}{constructor: A \code{list} object. For mergeReplicates or assay:
-an \code{ExperimentList} object}
-
-\item{object}{An \code{\linkS4class{ExperimentList}} object}
+\item{object, x}{An \code{\linkS4class{ExperimentList}} object}
 
 \item{replicates}{mergeReplicates: A \code{list} or \linkS4class{LogicalList}
 where each element represents a sample and a vector of repeated measurements
@@ -57,9 +48,6 @@ by replicates}
 \item{i}{A scalar \code{character} or \code{integer} index}
 
 \item{withDimnames}{logical (default TRUE) whether to return dimension names}
-}
-\value{
-An \code{ExperimentList} object
 }
 \description{
 The \code{ExperimentList} class is a container that builds on
@@ -76,12 +64,6 @@ given \code{simplify} function argument (e.g., na.rm = TRUE)
 }
 \section{Methods (by generic)}{
 \itemize{
-\item \code{ExperimentList}: Create an \code{ExperimentList} object from an
-"ANY" class object, mainly \code{list}
-
-\item \code{ExperimentList}: Create an empty ExperimentList for signature
-"missing"
-
 \item \code{show}: Show method for
 \code{\linkS4class{ExperimentList}} class
 

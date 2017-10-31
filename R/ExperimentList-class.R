@@ -1,20 +1,3 @@
-## Helper functions for check non-NULL rownames
-.getRowNamesErr <- function(object) {
-    if (dim(object)[1] > 0 && is.null(rownames(object))) {
-        paste(" rownames in", class(object), "are NULL")
-    } else {
-        NULL
-    }
-}
-
-.getColNamesErr <- function(object) {
-    if (dim(object)[2] > 0 && is.null(colnames(object))) {
-        paste(" colnames in", class(object), "are NULL")
-    } else {
-        NULL
-    }
-}
-
 ## Ensure ExperimentList elements are appropriate for the API and rownames
 ## are present
 .checkGRL <- function(object) {
@@ -49,13 +32,10 @@
 #' @exportClass ExperimentList
 #' @name ExperimentList-class
 #' @docType class
-NULL
-
-#' @keywords internal
-.ExperimentList <- setClass("ExperimentList", contains = "SimpleList")
+setClass("ExperimentList", contains = "SimpleList")
 
 ### - - - - - - - - - - - - - - - - - - - - - - - -
-### Builder
+### Constructor
 ###
 
 #' Construct an \code{ExperimentList} object for the \code{MultiAssayExperiment}
@@ -64,47 +44,40 @@ NULL
 #' The \code{ExperimentList} class can contain several different types of data.
 #' The only requirements for an \code{ExperimentList} class are that the
 #' objects contained have the following set of methods: \code{dim}, \code{[},
-#' \code{rownames}, \code{colnames}
+#' \code{dimnames}
 #'
-#' @param x A \code{list} class object
+#' @param ... A named \code{list} class object
 #' @return A \code{ExperimentList} class object of experiment data
 #'
 #' @example inst/scripts/ExperimentList-Ex.R
 #' @export
-setGeneric("ExperimentList", function(x) standardGeneric("ExperimentList"))
-
-#' @return An \code{ExperimentList} object
-#' @exportMethod ExperimentList
-#' @describeIn ExperimentList Create an \code{ExperimentList} object from an
-#' "ANY" class object, mainly \code{list}
-#' @param x constructor: A \code{list} object. For mergeReplicates or assay:
-#' an \code{ExperimentList} object
-setMethod("ExperimentList", "ANY", function(x) {
-    if (is.null(names(x)))
-        stop("ExperimentList elements must be named")
-    x <- lapply(x, .checkGRL)
-    .ExperimentList(S4Vectors::SimpleList(x))
-})
-
-#' @describeIn ExperimentList Create an empty ExperimentList for signature
-#' "missing"
-setMethod("ExperimentList", "missing", function(x) {
-    x <- structure(list(), .Names = character())
-    .ExperimentList(S4Vectors::SimpleList(x))
-})
+ExperimentList <- function(...) {
+    listData <- list(...)
+    if (length(listData) == 1L) {
+        listData <- listData[[1L]]
+        listData <- lapply(listData, .checkGRL)
+        new("ExperimentList", SimpleList(listData))
+    } else if (length(listData) == 0L) {
+        new("ExperimentList",
+            S4Vectors::SimpleList(structure(list(), .Names = character())))
+    } else {
+        new("ExperimentList", S4Vectors::SimpleList(listData))
+    }
+}
 
 ### - - - - - - - - - - - - - - - - - - - - - - - -
 ### Validity
 ###
 
-## Helper function for .checkMethodsTable
+## Helper function for .testMethodsTable
 .getMethErr <- function(object) {
-    supportedMethods <- c("colnames", "rownames", "[", "dim")
-    methErr <- which(!vapply(supportedMethods, function(x) {
-        hasMethod(f = x, signature = class(object))
-    }, logical(1L)))
+    supportedMethodFUN <- list(dimnames = dimnames, `[` =
+        function(x) {x[integer(0L), ]}, dim = dim)
+    methErr <- vapply(supportedMethodFUN, function(f) {
+        class(try(f(object), silent = TRUE)) == "try-error"
+    }, logical(1L))
     if (any(methErr)) {
-        unsupported <- names(methErr)
+        unsupported <- names(which(methErr))
         msg <- paste0("class '", class(object),
                       "' does not have method(s): ",
                       paste(unsupported, collapse = ", "))
@@ -114,7 +87,7 @@ setMethod("ExperimentList", "missing", function(x) {
 }
 
 ## 1.i. Check that [, colnames, rownames and dim methods are possible
-.checkMethodsTable <- function(object) {
+.testMethodsTable <- function(object) {
     errors <- character()
     for (i in seq_along(object)) {
         coll_err <- .getMethErr(object[[i]])
@@ -133,10 +106,9 @@ setMethod("ExperimentList", "missing", function(x) {
 ## ExperimentList and duplicated element names
 .checkExperimentListNames <- function(object) {
     errors <- character()
-    for (i in seq_along(object)) {
-        colname_err <- .getColNamesErr(object[[i]])
-        if (!is.null(colname_err))
-            errors <- c(errors, paste0("[", i, "] Element", colname_err))
+    if (is.null(names(object))) {
+        msg <- "ExperimentList elements must be named"
+        errors <- c(errors, msg)
     }
     if (anyDuplicated(names(object))) {
         msg <- "Non-unique names provided"
@@ -151,7 +123,7 @@ setMethod("ExperimentList", "missing", function(x) {
 
 .validExperimentList <- function(object) {
     if (length(object) != 0L) {
-        c(.checkMethodsTable(object),
+        c(.testMethodsTable(object),
           .checkExperimentListNames(object))
     }
 }
@@ -161,7 +133,7 @@ S4Vectors::setValidity2("ExperimentList", .validExperimentList)
 #' @describeIn ExperimentList Show method for
 #' \code{\linkS4class{ExperimentList}} class
 #'
-#' @param object An \code{\linkS4class{ExperimentList}} object
+#' @param object,x An \code{\linkS4class{ExperimentList}} object
 setMethod("show", "ExperimentList", function(object) {
     o_class <- class(object)
     elem_cl <- vapply(object, class, character(1))
