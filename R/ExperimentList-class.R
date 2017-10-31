@@ -32,13 +32,10 @@
 #' @exportClass ExperimentList
 #' @name ExperimentList-class
 #' @docType class
-NULL
-
-#' @keywords internal
-.ExperimentList <- setClass("ExperimentList", contains = "SimpleList")
+setClass("ExperimentList", contains = "SimpleList")
 
 ### - - - - - - - - - - - - - - - - - - - - - - - -
-### Builder
+### Constructor
 ###
 
 #' Construct an \code{ExperimentList} object for the \code{MultiAssayExperiment}
@@ -47,34 +44,26 @@ NULL
 #' The \code{ExperimentList} class can contain several different types of data.
 #' The only requirements for an \code{ExperimentList} class are that the
 #' objects contained have the following set of methods: \code{dim}, \code{[},
-#' \code{rownames}, \code{colnames}
+#' \code{dimnames}
 #'
-#' @param x A \code{list} class object
+#' @param ... A named \code{list} class object
 #' @return A \code{ExperimentList} class object of experiment data
 #'
 #' @example inst/scripts/ExperimentList-Ex.R
 #' @export
-setGeneric("ExperimentList", function(x) standardGeneric("ExperimentList"))
-
-#' @return An \code{ExperimentList} object
-#' @exportMethod ExperimentList
-#' @describeIn ExperimentList Create an \code{ExperimentList} object from an
-#' "ANY" class object, mainly \code{list}
-#' @param x constructor: A \code{list} object. For mergeReplicates or assay:
-#' an \code{ExperimentList} object
-setMethod("ExperimentList", "ANY", function(x) {
-    if (is.null(names(x)))
-        stop("ExperimentList elements must be named")
-    x <- lapply(x, .checkGRL)
-    .ExperimentList(S4Vectors::SimpleList(x))
-})
-
-#' @describeIn ExperimentList Create an empty ExperimentList for signature
-#' "missing"
-setMethod("ExperimentList", "missing", function(x) {
-    x <- structure(list(), .Names = character())
-    .ExperimentList(S4Vectors::SimpleList(x))
-})
+ExperimentList <- function(...) {
+    listData <- list(...)
+    if (length(listData) == 1L) {
+        listData <- listData[[1L]]
+        listData <- lapply(listData, .checkGRL)
+        new("ExperimentList", SimpleList(listData))
+    } else if (length(listData) == 0L) {
+        new("ExperimentList",
+            S4Vectors::SimpleList(structure(list(), .Names = character())))
+    } else {
+        new("ExperimentList", S4Vectors::SimpleList(listData))
+    }
+}
 
 ### - - - - - - - - - - - - - - - - - - - - - - - -
 ### Validity
@@ -139,7 +128,7 @@ S4Vectors::setValidity2("ExperimentList", .validExperimentList)
 #' @describeIn ExperimentList Show method for
 #' \code{\linkS4class{ExperimentList}} class
 #'
-#' @param object An \code{\linkS4class{ExperimentList}} object
+#' @param object,x An \code{\linkS4class{ExperimentList}} object
 setMethod("show", "ExperimentList", function(object) {
     o_class <- class(object)
     elem_cl <- vapply(object, class, character(1))
