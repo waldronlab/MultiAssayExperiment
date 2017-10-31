@@ -5,10 +5,10 @@
 \title{Construct an \code{ExperimentList} object for the \code{MultiAssayExperiment}
 object slot.}
 \usage{
-ExperimentList(x)
+ExperimentList(...)
 }
 \arguments{
-\item{x}{A \code{list} class object}
+\item{...}{A named \code{list} class object}
 }
 \value{
 A \code{ExperimentList} class object of experiment data
@@ -17,7 +17,7 @@ A \code{ExperimentList} class object of experiment data
 The \code{ExperimentList} class can contain several different types of data.
 The only requirements for an \code{ExperimentList} class are that the
 objects contained have the following set of methods: \code{dim}, \code{[},
-\code{rownames}, \code{colnames}
+\code{dimnames}
 }
 \examples{
 ## Create an empty ExperimentList instance
