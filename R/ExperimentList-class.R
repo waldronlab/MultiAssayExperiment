@@ -71,12 +71,13 @@ ExperimentList <- function(...) {
 
 ## Helper function for .testMethodsTable
 .getMethErr <- function(object) {
-    supportedMethods <- c("colnames", "rownames", "[", "dim")
-    methErr <- vapply(supportedMethods, function(x) {
-        inherits(try(do.call(x, list(object)), silent = TRUE), "try-error")
+    supportedMethodFUN <- list(dimnames = dimnames, `[` =
+        function(x) {x[integer(0L), ]}, dim = dim)
+    methErr <- vapply(supportedMethodFUN, function(f) {
+        class(try(f(object), silent = TRUE)) == "try-error"
     }, logical(1L))
     if (any(methErr)) {
-        unsupported <- names(methErr)
+        unsupported <- names(which(methErr))
         msg <- paste0("class '", class(object),
                       "' does not have method(s): ",
                       paste(unsupported, collapse = ", "))
