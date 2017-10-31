@@ -106,6 +106,10 @@ ExperimentList <- function(...) {
 ## ExperimentList and duplicated element names
 .checkExperimentListNames <- function(object) {
     errors <- character()
+    if (is.null(names(object))) {
+        msg <- "ExperimentList elements must be named"
+        errors <- c(errors, msg)
+    }
     if (anyDuplicated(names(object))) {
         msg <- "Non-unique names provided"
         errors <- c(errors, msg)
