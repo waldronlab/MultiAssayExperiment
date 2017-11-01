@@ -433,29 +433,20 @@ setMethod("updateObject", "MultiAssayExperiment",
         if (verbose)
             message("updateObject(object = 'MultiAssayExperiment')")
         oldAPI <- try(object@ExperimentList, silent = TRUE)
-        object <- new(class(object),
-                      ExperimentList = if (is(oldAPI, "try-error"))
-                          ExperimentList(object@Elist@listData)
-                      else experiments(object),
-                      colData = if (is(try(object@colData, silent = TRUE),
-                                       "try-error"))
-                          object@pData
-                      else
-                          colData(object),
-                      sampleMap = if (is(oldAPI, "try-error"))
-                          .rearrangeMap(sampleMap(object))
-                      else sampleMap(object),
-                      metadata = metadata(object),
-                      drops = object@drops)
-        isRRA <- vapply(experiments(object), is, logical(1L),
-                        "RangedRaggedAssay")
-        if (any(isRRA)) {
-            rraIdx <- which(isRRA)
-            for (i in rraIdx) {
-                object[[i]] <- as(object[[i]], "RaggedExperiment")
-            }
-        }
-        return(object)
+        new(class(object),
+            ExperimentList = if (is(oldAPI, "try-error"))
+                ExperimentList(object@Elist@listData)
+            else experiments(object),
+            colData = if (is(try(object@colData, silent = TRUE),
+                             "try-error"))
+                object@pData
+            else
+                colData(object),
+            sampleMap = if (is(oldAPI, "try-error"))
+                .rearrangeMap(sampleMap(object))
+            else sampleMap(object),
+            metadata = metadata(object),
+            drops = object@drops)
     })
 
 ### ==============================================

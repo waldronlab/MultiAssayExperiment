@@ -325,39 +325,3 @@ setMethod("mergeReplicates", "ExperimentList",
         replicate = replicates, ...)
         ExperimentList(redList)
     })
-
-###
-## Remove Later
-###
-
-#' @describeIn RangedRaggedAssay \linkS4class{RangedRaggedAssay} class method
-#' to return a DataFrame of selected \dQuote{mcolname} column, defaults to score
-#' @export
-setMethod("longFormat", "RangedRaggedAssay", function(object, ...) {
-    args <- list(...)
-    newMat <- do.call(assay, args = c(list(x = object), args))
-    callNextMethod(newMat)
-})
-
-#' @describeIn RangedRaggedAssay (deprecated) Use metadata column to produce
-#' a matrix which can then be merged across replicates.
-#' @seealso \link{assay,RangedRaggedAssay,missing-method}
-#' @param simplify A function for combining duplicate measurements (e.g., mean)
-#' @param replicates mergeReplicates: A \code{list} or \code{LogicalList} where
-#' each element represents a sample and a vector of repeated measurements for
-#' that biological unit
-setMethod("mergeReplicates", "RangedRaggedAssay",
-function(x, replicates = list(), simplify = BiocGenerics::mean,
-         mcolname=NULL, ...) {
-    .Defunct("RaggedExperiment")
-    x <- x[, lengths(x) > 0L ]
-    args <- list(...)
-    if (is.null(mcolname))
-        mcolname <- .findNumericMcol(x)
-    x <- disjoin(x, mcolname = mcolname)
-    argList <- .splitArgs(args)
-    argList[[1L]]$mcolname <- mcolname
-    x <- do.call(assay, c(list(x = x), argList[[1L]]))
-    do.call(mergeReplicates, c(list(x = x, replicates = replicates,
-                                    simplify = simplify), argList[[2L]]))
-})

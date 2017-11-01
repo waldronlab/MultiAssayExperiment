@@ -1,5 +1,4 @@
-#' @include RangedRaggedAssay-class.R MultiAssayExperiment-class.R
-#' ExperimentList-class.R
+#' @include MultiAssayExperiment-class.R ExperimentList-class.R
 #'
 #' @import BiocGenerics S4Vectors methods
 #' @importFrom BiocGenerics duplicated
