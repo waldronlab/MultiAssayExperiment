@@ -826,6 +826,11 @@ In the case that additional observations on the same set of samples were
 performed, the `c` function can conveniently be referenced to an existing assay
 that contains the same ordering of sample measurements. 
 
+The `mapFrom` argument indicates what experiment has the exact same
+organization of samples that will be introduced by the new experiment
+dataset. If the number of columns in the new experiment do not match
+those in the reference experiment, an error will be thrown.
+
 Here we introduce a toy dataset created on the fly:
 
 ```{r}
@@ -990,22 +995,6 @@ The following methods are defined for `MultiAssayExperiment`:
 ```{r}
 methods(class="MultiAssayExperiment")
 ```
-
-# Soon to be documented/developed
-
-* `c()` function for adding new assays to existing `MultiAssayExperiment`
-    + e.g. c(myMultiAssay, neweset)
-    + require that sample names in the new object match colData sample names
-    + require that sample names in the new object already exist in colData
-* "mergeDups" function to merge duplicate samples in any assay
-    + For matrix-like objects, it is clear how to do this. Default would be
-      simple mean of the columns, but could allow user-specified functions.
-    + For GRangesList, it's not obvious how to merge duplicates.
-      Just concatenate?
-    
-# Wishlist
-
-* Figure out how to support a "long-and-skinny" SQL database
 
 # sessionInfo()
 
