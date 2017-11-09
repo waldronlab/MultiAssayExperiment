@@ -783,9 +783,9 @@ myMultiAssay[["Affy"]]
 
 ## `complete.cases`
 
-The `complete.cases` function returns a logical vector identifying which
-primary units have data for all experiments. Recall that `myMultiAssay`
-provides data for four individuals:
+The `complete.cases` function returns a logical vector of `colData` rows
+identifying which primary units have data for all experiments. Recall that
+`myMultiAssay` provides data for four individuals:
 
 ```{r}
 colData(myMultiAssay)
@@ -797,7 +797,7 @@ Of these, only Jack has data for all 5 experiments:
 complete.cases(myMultiAssay)
 ```
 
-But all four have coplete cases for Affy and Methyl 450k:
+But all four have complete cases for Affy and Methyl 450k:
 
 ```{r}
 complete.cases(myMultiAssay[, , 1:2])
@@ -811,11 +811,44 @@ myMultiAssay[, complete.cases(myMultiAssay), ]
 
 ## `duplicated`
 
-The `duplicated` function returns a list of `LogicalList`s, identifying
-replicate samples for each individual within each assay:
+The `duplicated` function identifies `primary` column values or biological units
+that have multiple observations per `assay`. It returns a `list` of
+`LogicalList`s that indicate what biological units have one or more duplicated
+measurements. This output is used for merging replicates by default.
 
 ```{r}
 duplicated(myMultiAssay)
+```
+
+## `intersectRows`
+
+The `intersectRows` function takes all common rownames across all experiments
+and returns a `MultiAssayExperiment` with those rows.
+
+```{r}
+(noMatches <- intersectRows(myMultiAssay))
+```
+
+## `intersectColumns`
+
+A call to `intersectColumns` returns another `MultiAssayExperiment` where the
+columns of each element of the `ExperimentList` correspond exactly to the rows
+of `colData`. In many cases, this operation returns a 1-to-1 correspondence of samples to
+patients for each experiment assay unless replicates are present in the data.
+
+```{r}
+intersectColumns(myMultiAssay)
+```
+
+## `mergeReplicates`
+
+The `mergeReplicates` function allows the user to specify a function (default:
+`mean`) for combining replicate columns in each assay element. This can be
+combined with `intersectColumns` to create a `MultiAssayExperiment` object with
+one measurement in each experiment per biological unit. 
+
+```{r}
+mergeReplicates(intersectColumns(myMultiAssay))
 ```
 
 ## combine `c`
@@ -840,53 +873,6 @@ mapFrom = 1L)
 ```
 
 _Note_: Alternatively, a `sampleMap` for the additional dataset can be provided.
-
-# Functions to clean up a `MultiAssayExperiment`
-
-A set of helper functions are available for clean-up operations. These include
-`intersectRows`, `intersectColumns`,`mergeReplicates`, `complete.cases`,
-and `duplicated`.
-
-The `intersectRows` function takes all common rownames across experiments and
-returns a `MultiAssayExperiment` with those rows.
-
-```{r}
-(noMatches <- intersectRows(myMultiAssay))
-```
-
-`complete.cases` returns a logical vector of `colData` rows that correspond
-to biological units that have data in all elements of the `ExperimentList`
-
-```{r}
-complete.cases(myMultiAssay)
-colData(myMultiAssay)[complete.cases(myMultiAssay), ]
-```
-
-A call to `intersectColumns` returns another `MultiAssayExperiment` where the
-columns of each element of the `ExperimentList` correspond exactly to the rows
-of `colData`.
-
-```{r}
-intersectColumns(myMultiAssay)
-```
-
-`duplicated` identifies `primary` column values or biological units that have
-multiple observations per `assay`. It returns a `list` of `LogicalList`s
-that indicate what biological units have one or more duplicated measurements.
-This output is used for merging replicates by default.
-
-```{r}
-duplicated(myMultiAssay)
-```
-
-The `mergeReplicates` function allows the user to specify a function (default:
-`mean`) for combining replicate columns in each assay element. This can be
-combined with `intersectColumns` to create a `MultiAssayExperiment` object with
-one measurement in each experiment per biological unit. 
-
-```{r}
-mergeReplicates(intersectColumns(myMultiAssay))
-```
 
 <p style="text-align: right;"> <a href="#header">back to top</a> </p>
 
