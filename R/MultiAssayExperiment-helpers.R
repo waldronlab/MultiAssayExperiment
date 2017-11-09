@@ -49,6 +49,8 @@ intersectColumns <- function(x) {
 #' @param x A MultiAssayExperiment
 #' @param incomparables unused argument
 #' @exportMethod duplicated
+#' @details For the \code{duplicated} function, the "incomparables" and the
+#' ellipsis \code{\ldots} is not used.
 setMethod("duplicated", "MultiAssayExperiment",
           function(x, incomparables = FALSE, ...) {
     listMap <- mapToList(sampleMap(x))
@@ -101,7 +103,8 @@ setMethod("mergeReplicates", "MultiAssayExperiment",
 #' @rdname MultiAssayExperiment-helpers
 #' @details The \code{mergeReplicates} "ANY" method consolidates duplicate
 #' measurements for rectangular data structures, returns object of the same
-#' class (endomorphic)
+#' class (endomorphic). The ellipsis or \code{\ldots} argument allows the
+#' user to provide additional arguments to the simplify function.
 setMethod("mergeReplicates", "ANY",
     function(x, replicates = list(), simplify = BiocGenerics::mean, ...) {
         object <- x
@@ -145,6 +148,7 @@ setMethod("mergeReplicates", "ANY",
 })
 
 #' @rdname MultiAssayExperiment-helpers
+#'
 #' @aliases longFormat
 #' @section longFormat:
 #' The longFormat method takes data from the \code{\link{ExperimentList}}
