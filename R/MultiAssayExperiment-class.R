@@ -1,7 +1,5 @@
 #' @import BiocGenerics SummarizedExperiment S4Vectors GenomicRanges methods
-#' @importFrom Biobase pData
 #' @importFrom SummarizedExperiment colData colData<-
-#' @importFrom Biobase pData<-
 #' @importFrom S4Vectors metadata<-
 NULL
 
@@ -263,7 +261,6 @@ setMethod("show", "MultiAssayExperiment", function(object) {
 #'    \item experiments: Access the \link{ExperimentList} slot
 #'    \item `[[`: Access the \link{ExperimentList} slot
 #'    \item `$`: Access a column in \code{colData}
-#'    \item pData: (deprecated) Access the \code{colData} slot
 #' }
 #'
 #' @section Setters:
@@ -315,12 +312,6 @@ setGeneric("experiments", function(x) standardGeneric("experiments"))
 setMethod("experiments", "MultiAssayExperiment", function(x)
     getElement(x, "ExperimentList"))
 
-#' @exportMethod pData
-#' @rdname MultiAssayExperiment-methods
-setMethod("pData", "MultiAssayExperiment", function(object) {
-    .Defunct("colData")
-    colData(object)
-})
 
 #' @exportMethod colData
 #' @rdname MultiAssayExperiment-methods
@@ -385,15 +376,6 @@ setReplaceMethod("experiments", c("MultiAssayExperiment", "ExperimentList"),
                              sampleMap = rebliss[["sampleMap"]],
                              metadata = metadata(object))
                  })
-
-#' @exportMethod pData<-
-#' @rdname MultiAssayExperiment-methods
-setReplaceMethod("pData", c("MultiAssayExperiment", "DataFrame"),
-    function(object, value) {
-        .Defunct("colData")
-        slot(object, "colData") <- value
-        return(object)
-    })
 
 #' @exportMethod colData<-
 #' @rdname MultiAssayExperiment-methods

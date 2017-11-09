@@ -10,12 +10,10 @@
 \alias{sampleMap<-}
 \alias{sampleMap,MultiAssayExperiment-method}
 \alias{experiments,MultiAssayExperiment-method}
-\alias{pData,MultiAssayExperiment-method}
 \alias{colData,MultiAssayExperiment-method}
 \alias{metadata,MultiAssayExperiment-method}
 \alias{sampleMap<-,MultiAssayExperiment,DataFrame-method}
 \alias{experiments<-,MultiAssayExperiment,ExperimentList-method}
-\alias{pData<-,MultiAssayExperiment,DataFrame-method}
 \alias{colData<-,MultiAssayExperiment,DataFrame-method}
 \alias{metadata<-,MultiAssayExperiment-method}
 \alias{$<-,MultiAssayExperiment-method}
@@ -26,8 +24,6 @@
 
 \S4method{experiments}{MultiAssayExperiment}(x)
 
-\S4method{pData}{MultiAssayExperiment}(object)
-
 \S4method{colData}{MultiAssayExperiment}(x, ...)
 
 \S4method{metadata}{MultiAssayExperiment}(x)
@@ -35,8 +31,6 @@
 \S4method{sampleMap}{MultiAssayExperiment,DataFrame}(object) <- value
 
 \S4method{experiments}{MultiAssayExperiment,ExperimentList}(object) <- value
-
-\S4method{pData}{MultiAssayExperiment,DataFrame}(object) <- value
 
 \S4method{colData}{MultiAssayExperiment,DataFrame}(x) <- value
 
@@ -49,9 +43,9 @@
 \arguments{
 \item{x}{A \code{MultiAssayExperiment} object}
 
-\item{object}{A \code{MultiAssayExperiment} object}
-
 \item{...}{Argument not in use}
+
+\item{object}{A \code{MultiAssayExperiment} object}
 
 \item{value}{See details.}
 
@@ -79,7 +73,6 @@ exception of the \link{ExperimentList} accessor named \code{experiments}.
    \item experiments: Access the \link{ExperimentList} slot
    \item `[[`: Access the \link{ExperimentList} slot
    \item `$`: Access a column in \code{colData}
-   \item pData: (deprecated) Access the \code{colData} slot
 }
 }
 
