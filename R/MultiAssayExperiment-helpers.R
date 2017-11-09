@@ -199,21 +199,23 @@ setGeneric("longFormat", function(object, ...) standardGeneric("longFormat"))
 setMethod("longFormat", "ANY", function(object, ...) {
     rowNAMES <- rownames(object)
     nullROWS <- is.null(rowNAMES)
+    args <- list(...)
     if (nullROWS)
         rowNAMES <- rep(NA_character_, nrow(object))
     if (is(object, "ExpressionSet"))
         object <- Biobase::exprs(object)
-    if (is(object, "SummarizedExperiment"))
-        object <- assay(object)
+    if (is(object, "SummarizedExperiment")) {
+        object <- assay(object,
+            i = if (!is.null(args[["i"]])) { args[["i"]] } else { 1L })
+    }
     if (is(object, "matrix") && !nullROWS) {
         object <- reshape2::melt(object, varnames = c("rowname", "colname"),
-                   as.is = TRUE)
+            as.is = TRUE)
     } else {
-    object <- data.frame(rowname = rowNAMES, object,
-                         stringsAsFactors = FALSE, check.names = FALSE,
-                         row.names = NULL)
+    object <- data.frame(rowname = rowNAMES, object, stringsAsFactors = FALSE,
+        check.names = FALSE, row.names = NULL)
     object <- tidyr::gather(object, "colname", "value",
-                            seq_along(object)[-1L])
+        seq_along(object)[-1L])
     }
     rectangle <- S4Vectors::DataFrame(object)
     rectangle[, "colname"] <- S4Vectors::Rle(rectangle[["colname"]])
