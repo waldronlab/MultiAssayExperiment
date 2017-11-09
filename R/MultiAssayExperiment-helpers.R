@@ -66,6 +66,8 @@ setMethod("duplicated", "MultiAssayExperiment",
     lapply(repList, IRanges::LogicalList)
 })
 
+# mergeReplicates function ------------------------------------------------
+
 #' @rdname MultiAssayExperiment-helpers
 #' @export
 setGeneric("mergeReplicates", function(x, replicates = list(),
@@ -99,6 +101,30 @@ setMethod("mergeReplicates", "MultiAssayExperiment",
     experiments(x) <- experimentList
     x
 })
+
+#' @describeIn ExperimentList Apply the mergeReplicates method on the
+#' ExperimentList elements
+#' @param replicates mergeReplicates: A \code{list} or \linkS4class{LogicalList}
+#' where each element represents a sample and a vector of repeated measurements
+#' for the sample
+#' @param simplify A function for merging columns where duplicates are indicated
+#' by replicates
+#' @param ... Additional arguments. See details for more information.
+setMethod("mergeReplicates", "ExperimentList",
+    function(x, replicates = list(), simplify = BiocGenerics::mean, ...) {
+        if (!length(replicates))
+            stop("'replicates' must be a 'list' of duplicated column elements",
+                 "\n per biological unit")
+        idx <- seq_along(x)
+        names(idx) <- names(x)
+        redList <- lapply(idx, function(i, element, simply,
+                                        replicate, ...) {
+            mergeReplicates(x = element[[i]], simplify = simply,
+                            replicates = replicate[[i]], ...)
+        }, element = x, simply = simplify,
+        replicate = replicates, ...)
+        ExperimentList(redList)
+    })
 
 #' @rdname MultiAssayExperiment-helpers
 #' @details The \code{mergeReplicates} "ANY" method consolidates duplicate
@@ -146,6 +172,8 @@ setMethod("mergeReplicates", "ANY",
         }
         return(object)
 })
+
+# longFormat function -----------------------------------------------------
 
 #' @rdname MultiAssayExperiment-helpers
 #'
@@ -228,6 +256,8 @@ setMethod("longFormat", "MultiAssayExperiment",
     return(longDataFrame)
 })
 
+# wideformat function -----------------------------------------------------
+
 #' @rdname MultiAssayExperiment-helpers
 #' @aliases wideFormat
 #' @export
@@ -305,27 +335,3 @@ setMethod("wideFormat", "ANY", function(object, ...) {
     }
     S4Vectors::DataFrame(object)
 })
-
-#' @describeIn ExperimentList Apply the mergeReplicates method on the
-#' ExperimentList elements
-#' @param replicates mergeReplicates: A \code{list} or \linkS4class{LogicalList}
-#' where each element represents a sample and a vector of repeated measurements
-#' for the sample
-#' @param simplify A function for merging columns where duplicates are indicated
-#' by replicates
-#' @param ... Additional arguments. See details for more information.
-setMethod("mergeReplicates", "ExperimentList",
-    function(x, replicates = list(), simplify = BiocGenerics::mean, ...) {
-        if (!length(replicates))
-            stop("'replicates' must be a 'list' of duplicated column elements",
-                 "\n per biological unit")
-        idx <- seq_along(x)
-        names(idx) <- names(x)
-        redList <- lapply(idx, function(i, element, simply,
-                                        replicate, ...) {
-            mergeReplicates(x = element[[i]], simplify = simply,
-                            replicates = replicate[[i]], ...)
-        }, element = x, simply = simplify,
-        replicate = replicates, ...)
-        ExperimentList(redList)
-    })
