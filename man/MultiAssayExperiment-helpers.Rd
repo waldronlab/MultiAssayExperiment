@@ -100,8 +100,8 @@ manipulate a MultiAssayExperiment object.
 }
 }
 \details{
-For the \code{duplicated} function, the "incomparables" and the
-ellipsis \code{\ldots} is not used.
+For the \code{duplicated} function, the \code{incomparables} and
+ellipsis \code{\ldots} arguments are not used.
 
 The \code{mergeReplicates} function is a house-keeping method
 for a \code{MultiAssayExperiment} where only \code{complete.cases} are
@@ -112,7 +112,8 @@ passed on to the \code{simplify} function.
 The \code{mergeReplicates} "ANY" method consolidates duplicate
 measurements for rectangular data structures, returns object of the same
 class (endomorphic). The ellipsis or \code{\ldots} argument allows the
-user to provide additional arguments to the simplify function.
+user to provide additional arguments to the \code{simplify} functional
+argument.
 
 The \code{longFormat} "ANY" class method, works with classes such as
 \link{ExpressionSet} and \link{SummarizedExperiment} as well as \code{matrix}
