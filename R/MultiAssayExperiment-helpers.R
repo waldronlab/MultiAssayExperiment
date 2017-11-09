@@ -304,11 +304,6 @@ setMethod("wideFormat", "MultiAssayExperiment",
     })
 
 #' @rdname MultiAssayExperiment-helpers
-setMethod("wideFormat", "ExperimentList", function(object, ...) {
-    lapply(object, wideFormat)
-})
-
-#' @rdname MultiAssayExperiment-helpers
 setMethod("wideFormat", "ANY", function(object, ...) {
     if (is(object, "ExpressionSet"))
         object <- Biobase::exprs(object)

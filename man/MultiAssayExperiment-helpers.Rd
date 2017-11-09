@@ -18,7 +18,6 @@
 \alias{longFormat,MultiAssayExperiment-method}
 \alias{wideFormat}
 \alias{wideFormat,MultiAssayExperiment-method}
-\alias{wideFormat,ExperimentList-method}
 \alias{wideFormat,ANY-method}
 \title{A group of helper functions for manipulating and cleaning a
 MultiAssayExperiment}
@@ -49,8 +48,6 @@ wideFormat(object, ...)
 
 \S4method{wideFormat}{MultiAssayExperiment}(object, colDataCols = NULL,
   key = NULL, ...)
-
-\S4method{wideFormat}{ExperimentList}(object, ...)
 
 \S4method{wideFormat}{ANY}(object, ...)
 }
