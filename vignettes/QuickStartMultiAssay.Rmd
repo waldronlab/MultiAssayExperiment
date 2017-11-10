@@ -7,7 +7,7 @@ vignette: >
   %\VignetteIndexEntry{Quick-start Guide}
   %\VignetteEncoding{UTF-8}
 output:
-  BiocStyle::html_document2:
+  BiocStyle::html_document:
     number_sections: no
     toc: yes
     toc_depth: 4
