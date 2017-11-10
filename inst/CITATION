@@ -14,8 +14,10 @@ citEntry(entry = "Article",
         as.person("Levi Waldron")),
     journal = "Cancer Research",
     year = "2017",
+    volume = "77(21); e39-42"
     textVersion =
-    paste("Marcel Ramos et al. (2017).",
-          "Software For The Integration Of Multi-Omics Experiments In Bioconductor",
-          "Cancer Research, In Press.")
+    paste("Marcel Ramos et al.",
+        "Software For The Integration Of Multi-Omics Experiments In Bioconductor.",
+        "Cancer Research, 2017 November 1; 77(21); e39-42.",
+        "DOI: 10.1158/0008-5472.CAN-17-0344")
 )
