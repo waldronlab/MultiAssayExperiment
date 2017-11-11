@@ -14,7 +14,7 @@ citEntry(entry = "Article",
         as.person("Levi Waldron")),
     journal = "Cancer Research",
     year = "2017",
-    volume = "77(21); e39-42"
+    volume = "77(21); e39-42",
     textVersion =
     paste("Marcel Ramos et al.",
         "Software For The Integration Of Multiomics Experiments In Bioconductor.",
