@@ -981,6 +981,14 @@ The following methods are defined for `MultiAssayExperiment`:
 ```{r}
 methods(class="MultiAssayExperiment")
 ```
+# Citing MultiAssayExperiment
+
+We are excited to announce the official citation for MultiAssayExperiment
+in *Cancer Research*.
+
+```{r}
+citation("MultiAssayExperiment")
+```
 
 # sessionInfo()
 
