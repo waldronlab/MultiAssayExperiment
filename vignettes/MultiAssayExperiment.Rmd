@@ -33,6 +33,20 @@ library(MultiAssayExperiment)
 library(GenomicRanges)
 ```
 
+# A Brief Description
+
+`MultiAssayExperiment` offers a data structure for representing and
+analyzing multi-omics experiments: a biological analysis approach utilizing
+multiple types of observations, such as DNA mutations and abundance of RNA
+and proteins, in the same biological specimens.
+
+## Choosing the appropriate data structure
+
+For assays with different numbers of rows and even columns,
+`MultiAssayExperiment` is recommended. For sets of assays with the same
+information across all rows (e.g., genes or genomic ranges),
+`SummarizedExperiment` is the recommended data structure.
+
 # Overview of the `MultiAssayExperiment` class
 
 Here is an overview of the class and its constructors and extractors:
