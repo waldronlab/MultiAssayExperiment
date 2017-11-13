@@ -28,9 +28,10 @@ vignette: >
 # Prerequisites
 
 ```{r, include = FALSE}
-suppressMessages({
-    BiocInstaller::biocLite("waldronlab/TCGAutils")
-})
+if (!require(TCGAutils, quietly = TRUE)) {
+    BiocInstaller::biocLite("waldronlab/TCGAutils", suppressAutoUpdate = TRUE,
+        suppressUpdates = TRUE)
+}
 suppressPackageStartupMessages({
     library(RTCGAToolbox)
     library(TCGAutils)
@@ -121,8 +122,9 @@ buildMultiAssayExperiment <- function(TCGAcode, runDate, analyzeDate, dataType=
     names(targets) <- targets
     
     dataType <- match.arg(dataType, targets, several.ok = TRUE)
-    names(dataType) <- dataType
+    datanames <- dataType
     dataType <- rep(TRUE, length(dataType))
+    names(dataType) <- datanames
     
     if (file.exists(serialPath)) {
         cancer.object <- readRDS(serialPath)
