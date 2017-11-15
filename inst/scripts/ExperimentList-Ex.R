@@ -9,13 +9,12 @@ arraydat <- matrix(data = seq(101, length.out = 20), ncol = 4,
         c("array1", "array2", "array3", "array4")
     ))
 
-arraypdat <- as(data.frame(
-    slope53 = rnorm(4),
-    row.names = c("array1", "array2", "array3", "array4")),
-    "AnnotatedDataFrame")
+colDat <- data.frame(slope53 = rnorm(4),
+    row.names = c("array1", "array2", "array3", "array4"))
 
-## ExpressionSet constructor
-exprdat <- Biobase::ExpressionSet(assayData = arraydat, phenoData = arraypdat)
+## SummarizedExperiment constructor
+exprdat <- SummarizedExperiment::SummarizedExperiment(arraydat,
+    colData = colDat)
 
 ## Create a sample methylation dataset
 methyldat <- matrix(data = seq(1, length.out = 25), ncol = 5,
@@ -36,8 +35,17 @@ rnadat <- matrix(
         c("samparray1", "samparray2", "samparray3", "samparray4")
     ))
 
+## Create a mock RangedSummarizedExperiment from a data.frame
+rangedat <- data.frame(chr="chr2", start = 11:15, end = 12:16,
+    strand = c("+", "-", "+", "*", "."),
+    samp0 = c(0,0,1,1,1), samp1 = c(1,0,1,0,1), samp2 = c(0,1,0,1,0),
+    row.names = paste0("GENE", letters[5:1]))
+
+rangeSE <- SummarizedExperiment::makeSummarizedExperimentFromDataFrame(rangedat)
+
 ## Combine to a named list and call the ExperimentList constructor function
-ExpList <- list(Affy = exprdat, Methyl450k = methyldat, RNASeqGene = rnadat)
+ExpList <- list(Affy = exprdat, Methyl450k = methyldat, RNASeqGene = rnadat,
+                GISTIC = rangeSE)
 
 ## Use the ExperimentList constructor
 myExperimentList <- ExperimentList(ExpList)
