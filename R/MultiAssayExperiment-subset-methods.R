@@ -7,7 +7,7 @@
 #' @importFrom reshape2 melt
 #' @importFrom tidyr gather
 #' @importFrom GenomicRanges GRanges
-#' @importFrom IRanges IRanges findOverlaps subsetByOverlaps
+#' @importFrom IRanges IRanges findOverlaps subsetByOverlaps overlapsAny
 #' @importFrom IRanges splitAsList SplitDataFrameList endoapply mendoapply
 #' @importFrom IRanges IntegerList CharacterList LogicalList
 #' @importFrom SummarizedExperiment findOverlaps assays
@@ -122,15 +122,15 @@ NULL
 #' subsetByColData(myMultiAssayExperiment, c(TRUE, TRUE, FALSE, FALSE))
 #'
 #' subsetByColumn(myMultiAssayExperiment, list(Affy = 1:2,
-#'                 Methyl450k = c(3,5,2), RNASeqGene = 2:4, CNVgistic = 1))
+#'     Methyl450k = c(3,5,2), RNASeqGene = 2:4, GISTIC = 1))
 #'
 #' subsetWith <- IRanges::mendoapply(`[`, colnames(myMultiAssayExperiment),
-#'                         MoreArgs = list(1:2))
+#'     MoreArgs = list(1:2))
 #' subsetByColumn(myMultiAssayExperiment, subsetWith)
 #'
 #' ## Use a GRanges object to subset rows where ranged data present
-#' egr <- GenomicRanges::GRanges(seqnames = "chr1",
-#'     IRanges::IRanges(start = 1, end = 3), strand = "-")
+#' egr <- GenomicRanges::GRanges(seqnames = "chr2",
+#'     IRanges::IRanges(start = 11, end = 13), strand = "-")
 #' subsetByRow(myMultiAssayExperiment, egr)
 #'
 #' ## Use a logical vector (recycling used)
