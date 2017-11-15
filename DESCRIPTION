@@ -1,6 +1,6 @@
 Package: MultiAssayExperiment
 Title: Software for the integration of multi-omics experiments in Bioconductor
-Version: 1.5.20
+Version: 1.5.21
 Authors@R: c(person("Marcel", "Ramos", email = "marcel.ramos@roswellpark.org",
     role = c("aut", "cre")),
     person("Levi", "Waldron", email = "lwaldron.research@gmail.com",
@@ -59,7 +59,6 @@ Collate:
     'MultiAssayExperiment-methods.R'
     'MultiAssayExperiment-helpers.R'
     'MultiAssayExperiment-pkg.R'
-    'MultiAssayExperiment.R'
     'assay-methods.R'
     'clusterOn.R'
     'data.R'
