@@ -54,24 +54,27 @@ methylmap <- data.frame(
 
 rnamap <- data.frame(
     primary = c("Jack", "Jill", "Bob", "Barbara"),
-    colname = c("samparray1", "samparray2", "samparray3",
-                               "samparray4"),
+    colname = c("samparray1", "samparray2", "samparray3", "samparray4"),
+    stringsAsFactors = FALSE)
+
+gistmap <- data.frame(
+    primary = c("Jack", "Bob", "Jill"),
+    colname = c("samp0", "samp1", "samp2"),
     stringsAsFactors = FALSE)
 
 ## Combine as a named list and convert to a DataFrame
-mylist <- list(Affy = exprmap, Methyl450k = methylmap, RNASeqGene = rnamap)
+mylist <- list(Affy = exprmap, Methyl450k = methylmap,
+    RNASeqGene = rnamap, GISTIC = gistmap)
 
 ## Create a sampleMap
 mySampleMap <- listToMap(mylist)
 ## Create an example phenotype data
-colDat <- data.frame(sex = c("M", "F", "M", "F"),
-                       age = 38:41,
-                       row.names = c("Jack", "Jill", "Bob", "Barbara"))
+colDat <- data.frame(sex = c("M", "F", "M", "F"), age = 38:41,
+    row.names = c("Jack", "Jill", "Bob", "Barbara"))
 
 ## Create a MultiAssayExperiment instance
 myMultiAssayExperiment <- MultiAssayExperiment(experiments = ExpList,
-                                               colData = colDat,
-                                               sampleMap = mySampleMap)
+    colData = colDat, sampleMap = mySampleMap)
 }
 \seealso{
 \link{MultiAssayExperiment-class}
