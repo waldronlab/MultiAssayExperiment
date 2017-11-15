@@ -257,7 +257,8 @@ setMethod("subsetByColumn", c("MultiAssayExperiment", "List"),
                 element <- rowRanges(element)
             if (is(element, "VcfStack"))
                 i <- which(rownames(element) %in% as.character(seqnames(i)))
-            if (.checkOverlapsAny(class(element)))
+            if (.checkOverlapsAny(class(element)) &&
+                !is(element, "SummarizedExperiment"))
                 i <- which(IRanges::overlapsAny(element, i, ...))
             else
                 i <- match(intersect(as.character(i), rownames(element)),
