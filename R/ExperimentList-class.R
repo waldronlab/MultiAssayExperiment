@@ -56,13 +56,12 @@ ExperimentList <- function(...) {
     if (length(listData) == 1L) {
         listData <- listData[[1L]]
         listData <- lapply(listData, .checkGRL)
-        new("ExperimentList", SimpleList(listData))
-    } else if (length(listData) == 0L) {
-        new("ExperimentList",
+    } else if (!length(listData)) {
+        return(new("ExperimentList",
             S4Vectors::SimpleList(structure(list(), .Names = character())))
-    } else {
-        new("ExperimentList", S4Vectors::SimpleList(listData))
+        )
     }
+    new("ExperimentList", S4Vectors::SimpleList(listData))
 }
 
 ### - - - - - - - - - - - - - - - - - - - - - - - -

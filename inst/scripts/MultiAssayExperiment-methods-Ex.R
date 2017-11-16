@@ -18,7 +18,10 @@ metadata(myMultiAssayExperiment)
 
 ## Replace metadata with a list
 metadata(myMultiAssayExperiment) <- list(runDate =
-                                             format(Sys.time(), "%B %d, %Y"))
+    format(Sys.time(), "%B %d, %Y"))
+
+## Access the colData
+colData(myMultiAssayExperiment)
 
 ## Access a column in colData
 myMultiAssayExperiment$age

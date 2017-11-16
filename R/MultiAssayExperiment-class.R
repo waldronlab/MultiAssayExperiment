@@ -460,6 +460,7 @@ setMethod("experiments", "MultiAssayExperiment", function(x)
     getElement(x, "ExperimentList"))
 
 
+#' @export
 #' @exportMethod colData
 #' @rdname MultiAssayExperiment-methods
 setMethod("colData", "MultiAssayExperiment", function(x, ...) {
