@@ -27,6 +27,7 @@ install:
 branches:
   only:
     - master
+    - RELEASE_3_6
 
 # Adapt as necessary starting from here
 
