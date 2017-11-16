@@ -4,7 +4,7 @@ MultiAssayExperiment
 [![Platforms](http://www.bioconductor.org/shields/availability/devel/MultiAssayExperiment.svg)](https://www.bioconductor.org/packages/devel/bioc/html/MultiAssayExperiment.html#archives)
 [![Commits](http://www.bioconductor.org/shields/commits/bioc/MultiAssayExperiment.svg)](https://www.bioconductor.org/packages/devel/bioc/html/MultiAssayExperiment.html#svn_source)
 [![Travis Build Status](https://api.travis-ci.org/LiNk-NY/MultiAssayExperiment.png?branch=master)](https://travis-ci.org/LiNk-NY/MultiAssayExperiment)
-[![Build status](https://ci.appveyor.com/api/projects/status/2j9w8mub8to3vhid/branch/master?svg=true)](https://ci.appveyor.com/project/LiNk-NY/multiassayexperiment/branch/master)
+[![Build status](https://ci.appveyor.com/api/projects/status/2j9w8mub8to3vhid/branch/RELEASE_3_6?svg=true)](https://ci.appveyor.com/project/LiNk-NY/multiassayexperiment/branch/RELEASE_3_6)
 [![Coverage Status](https://codecov.io/github/LiNk-NY/MultiAssayExperiment/coverage.svg?branch=master)](https://codecov.io/github/LiNk-NY/MultiAssayExperiment?branch=master)
 [![Downloads](http://www.bioconductor.org/shields/downloads/MultiAssayExperiment.svg)](https://bioconductor.org/packages/stats/bioc/MultiAssayExperiment)
 
