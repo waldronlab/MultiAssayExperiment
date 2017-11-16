@@ -1,4 +1,4 @@
-#' @include MultiAssayExperiment-subset-methods.R
+#' @include MultiAssayExperiment-subset.R
 NULL
 
 .generateMap <- function(colData, experiments) {
