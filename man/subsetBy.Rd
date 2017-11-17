@@ -140,7 +140,7 @@ subsetByColData(myMultiAssayExperiment, c(TRUE, TRUE, FALSE, FALSE))
 subsetByColumn(myMultiAssayExperiment, list(Affy = 1:2,
     Methyl450k = c(3,5,2), RNASeqGene = 2:4, GISTIC = 1))
 
-subsetWith <- IRanges::mendoapply(`[`, colnames(myMultiAssayExperiment),
+subsetWith <- S4Vectors::mendoapply(`[`, colnames(myMultiAssayExperiment),
     MoreArgs = list(1:2))
 subsetByColumn(myMultiAssayExperiment, subsetWith)
 

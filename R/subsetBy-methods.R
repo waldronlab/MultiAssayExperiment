@@ -8,8 +8,9 @@
 #' @importFrom tidyr gather
 #' @importFrom GenomicRanges GRanges
 #' @importFrom IRanges IRanges findOverlaps subsetByOverlaps overlapsAny
-#' @importFrom IRanges splitAsList SplitDataFrameList endoapply mendoapply
+#' @importFrom IRanges splitAsList SplitDataFrameList
 #' @importFrom IRanges IntegerList CharacterList LogicalList
+#' @importFrom S4Vectors endoapply mendoapply
 #' @importFrom SummarizedExperiment findOverlaps assays
 NULL
 
@@ -122,7 +123,7 @@ NULL
 #' subsetByColumn(myMultiAssayExperiment, list(Affy = 1:2,
 #'     Methyl450k = c(3,5,2), RNASeqGene = 2:4, GISTIC = 1))
 #'
-#' subsetWith <- IRanges::mendoapply(`[`, colnames(myMultiAssayExperiment),
+#' subsetWith <- S4Vectors::mendoapply(`[`, colnames(myMultiAssayExperiment),
 #'     MoreArgs = list(1:2))
 #' subsetByColumn(myMultiAssayExperiment, subsetWith)
 #'

@@ -1,6 +1,6 @@
 Package: MultiAssayExperiment
 Title: Software for the integration of multi-omics experiments in Bioconductor
-Version: 1.5.24
+Version: 1.5.25
 Authors@R: c(person("Marcel", "Ramos", email = "marcel.ramos@roswellpark.org",
     role = c("aut", "cre")),
     person("Levi", "Waldron", email = "lwaldron.research@gmail.com",
@@ -21,7 +21,7 @@ Imports:
     GenomicRanges (>= 1.25.93),
     BiocGenerics,
     SummarizedExperiment (>= 1.3.81),
-    S4Vectors,
+    S4Vectors (>= 0.17.5),
     IRanges,
     Biobase,
     reshape2,
