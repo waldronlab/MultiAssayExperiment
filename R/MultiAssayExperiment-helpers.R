@@ -6,7 +6,8 @@ NULL
 #' MultiAssayExperiment
 #' @aliases intersectRows intersectColumns mergeReplicates duplicated
 #' @description A set of helper functions were created to help clean and
-#' manipulate a MultiAssayExperiment object.
+#' manipulate a MultiAssayExperiment object. \code{intersectRows} also works
+#' for \code{ExperimentList} objects.
 #'
 #' \itemize{
 #'     \item complete.cases: Returns a logical vector corresponding to 'colData'
@@ -35,7 +36,12 @@ intersectRows <- function(x) {
     rows <- rownames(x)
     validRows <- Filter(length, rows)
     intRows <- Reduce(intersect, validRows)
-    x[intRows, , drop = FALSE]
+    if (is(x, "MultiAssayExperiment"))
+        x[intRows, , drop = FALSE]
+    else if (is(x, "ExperimentList"))
+        x[CharacterList(rep(list(intRows), length(validRows)))]
+    else
+        stop("Provide a valid class: ", class(x))
 }
 
 #' @rdname MultiAssayExperiment-helpers

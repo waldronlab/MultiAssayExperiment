@@ -75,7 +75,8 @@ rowname, and colname will be combined}
 }
 \description{
 A set of helper functions were created to help clean and
-manipulate a MultiAssayExperiment object.
+manipulate a MultiAssayExperiment object. \code{intersectRows} also works
+for \code{ExperimentList} objects.
 
 \itemize{
     \item complete.cases: Returns a logical vector corresponding to 'colData'
