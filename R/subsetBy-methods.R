@@ -78,8 +78,8 @@ NULL
 #' @param drop logical (default TRUE) whether to drop empty assay elements
 #' in the \code{ExperimentList}
 #'
-#' @aliases [,MultiAssayExperiment,ANY-method subsetByColData subsetByRows
-#' subsetByColumns subsetByAssay subset subsetBy
+#' @aliases [,MultiAssayExperiment,ANY-method subsetByColData subsetByRow
+#' subsetByColumn subsetByAssay subset subsetBy
 #'
 #' @details
 #' Subsetting a MultiAssayExperiment by the \strong{j} index can yield a call
@@ -163,7 +163,7 @@ setGeneric("subsetByAssay", function(x, y) standardGeneric("subsetByAssay"))
 .subsetCOLS <- function(object, cutter) {
     mendoapply(function(x, j) {
         x[, j, drop = FALSE]
-    }, x = object, MoreArgs = list(j = cutter))
+    }, x = object, j = cutter)
 }
 .subsetROWS <- function(object, cutter) {
     mendoapply(function(x, i) {
@@ -189,29 +189,28 @@ setMethod("subsetByRow", c("ExperimentList", "ANY"), function(x, y, ...) {
 
 #' @rdname subsetBy
 setMethod("subsetByRow", c("ExperimentList", "list"), function(x, y) {
-    if (length(x) != length(y))
-        stop("List length must be the same as ExperimentList length")
-    if (!identical(names(x), names(y)))
-        stop("List input order much match that of the 'ExperimentList'")
-    Y <- as(y, "List")
-    subsetByRow(x, Y)
-})
-
-#' @rdname subsetBy
-setMethod("subsetByRow", c("ExperimentList", "logical"), function(x, y) {
-    Y <- endoapply(rownames(x), `[`, y)
-    subsetByRow(x, Y)
+    if (!all(names(y) %in% names(x)))
+        stop("list-like subscript has names not in list-like object to subset")
+    inNames <- names(x) %in% names(y)
+    x[inNames] <- x[y]
+    x
 })
 
 #' @rdname subsetBy
 setMethod("subsetByRow", c("ExperimentList", "List"), function(x, y) {
+    if (!all(names(y) %in% names(x)))
+        stop("list-like subscript has names not in list-like object to subset")
     if (is(y, "DataFrame"))
         stop("Provide a list of indices for subsetting")
-    if (is(y, "CharacterList"))
-        y <- LogicalList(Map(function(expList, char) {
-            rownames(expList) %in% char
-        }, expList = x, char = y))
-    .subsetROWS(x, y)
+    inNames <- names(x) %in% names(y)
+    x[inNames] <- x[y]
+    x
+})
+
+#' @rdname subsetBy
+setMethod("subsetByRow", c("ExperimentList", "logical"), function(x, y) {
+    logi <- LogicalList(rep(list(y), length(x)))
+    x[logi]
 })
 
 # subsetByColumn,ExperimentList-methods -----------------------------------

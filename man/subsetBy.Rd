@@ -6,8 +6,8 @@
 \alias{subsetBy}
 \alias{[,MultiAssayExperiment,ANY-method}
 \alias{subsetByColData}
-\alias{subsetByRows}
-\alias{subsetByColumns}
+\alias{subsetByRow}
+\alias{subsetByColumn}
 \alias{subsetByAssay}
 \alias{subset}
 \alias{subsetByRow}
@@ -16,8 +16,8 @@
 \alias{subsetByAssay}
 \alias{subsetByRow,ExperimentList,ANY-method}
 \alias{subsetByRow,ExperimentList,list-method}
-\alias{subsetByRow,ExperimentList,logical-method}
 \alias{subsetByRow,ExperimentList,List-method}
+\alias{subsetByRow,ExperimentList,logical-method}
 \alias{subsetByColumn,ExperimentList,list-method}
 \alias{subsetByColumn,ExperimentList,List-method}
 \alias{subsetByColumn,ExperimentList,logical-method}
@@ -44,9 +44,9 @@ subsetByAssay(x, y)
 
 \S4method{subsetByRow}{ExperimentList,list}(x, y)
 
-\S4method{subsetByRow}{ExperimentList,logical}(x, y)
-
 \S4method{subsetByRow}{ExperimentList,List}(x, y)
+
+\S4method{subsetByRow}{ExperimentList,logical}(x, y)
 
 \S4method{subsetByColumn}{ExperimentList,list}(x, y)
 
