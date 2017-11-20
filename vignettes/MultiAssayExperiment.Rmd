@@ -82,11 +82,12 @@ the ExperimentList:
 gene expression summarized per-gene, microRNA, metabolomics, or microbiome
 data. 
 
-- `Biobase::ExpressionSet`: A richer representation of ID-based datasets
-capable of storing additional assay-level metadata.
+- `SummarizedExperiment::SummarizedExperiment`: A richer representation compared
+to a ordinary matrix of ID-based datasets capable of storing additional assay-
+level metadata.
 
-- `SummarizedExperiment::SummarizedExperiment`: Also provides a rich
-representation of ID-based matrix-like datasets.
+- `Biobase::ExpressionSet`: A *legacy* representation of ID-based datasets,
+supported for convenience and supplanted by `SummarizedExperiment`.
 
 - `SummarizedExperiment::RangedSummarizedExperiment`: For rectangular
 range-based datasets, one set of genomic ranges are assayed for multiple
@@ -276,23 +277,22 @@ to use `metadata` at the `ExperimentList` level.
 
 In this section we demonstrate all core supported data classes, using different
 sample ID conventions for each assay, with primary `colData`. The some 
-supported classes such as, `matrix`, `ExpressionSet`, 
-`SummarizedExperiment`, and `RangedSummarizedExperiment`.
+supported classes such as, `matrix`, `SummarizedExperiment`, and `RangedSummarizedExperiment`.
 
 ## Create toy datasets demonstrating all supported data types
 
 We have three matrix-like datasets. First, let's represent expression data as
-an `ExpressionSet`:
+a `SummarizedExperiment`:
 
 ```{r, message=FALSE}
-library(Biobase)
 (arraydat <- matrix(seq(101, 108), ncol=4,
-                    dimnames=list(c("ENST00000294241", "ENST00000355076"),
-                                  c("array1", "array2", "array3", "array4"))))
-arraypdat <- as(data.frame(slope53=rnorm(4),
-                           row.names=c("array1", "array2", "array3",
-                                       "array4")), "AnnotatedDataFrame")
-exprdat <- ExpressionSet(assayData=arraydat, phenoData=arraypdat)
+    dimnames=list(c("ENST00000294241", "ENST00000355076"),
+    c("array1", "array2", "array3", "array4"))))
+
+coldat <- data.frame(slope53=rnorm(4),
+    row.names=c("array1", "array2", "array3", "array4"))
+
+exprdat <- SummarizedExperiment(arraydat, colData=coldat)
 exprdat
 ```
 
@@ -737,7 +737,7 @@ class(experiments(featSubsetted0))
 experiments(featSubsetted0)
 ```
 
-In the following, `Affy` ExpressionSet keeps both rows but with their
+In the following, `Affy` `SummarizedExperiment` keeps both rows but with their
 order reversed, and `Methyl 450k` keeps only its second row.
 
 ```{r}
@@ -784,7 +784,7 @@ are all "endomorphic" operations, in that they always returns another
 A double-bracket subset operation refers to an experiment, and will return
 the object contained within an `ExperimentList` element. It is **not**
 endomorphic. For example, the first `ExperimentList` element is called "Affy"
-and contains an `ExpressionSet`:
+and contains a `SummarizedExperiment`:
 
 ```{r}
 names(myMultiAssay)
