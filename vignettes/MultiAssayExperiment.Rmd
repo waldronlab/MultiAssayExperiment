@@ -841,7 +841,8 @@ The `intersectRows` function takes all common rownames across all experiments
 and returns a `MultiAssayExperiment` with those rows.
 
 ```{r}
-(noMatches <- intersectRows(myMultiAssay))
+(ensmblMatches <- intersectRows(myMultiAssay[, , 1:2]))
+rownames(ensmblMatches)
 ```
 
 ## `intersectColumns`
