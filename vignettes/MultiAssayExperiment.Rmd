@@ -16,6 +16,7 @@ output:
 suppressPackageStartupMessages({
     library(MultiAssayExperiment)
     library(GenomicRanges)
+    library(SummarizedExperiment)
 })
 ```
 
@@ -31,6 +32,7 @@ Loading the packages:
 ```{r, eval = FALSE}
 library(MultiAssayExperiment)
 library(GenomicRanges)
+library(SummarizedExperiment)
 ```
 
 # A Brief Description
@@ -348,7 +350,6 @@ And the following map matches `colData` sample names to `microdat` sample names.
 Finally, we create a dataset of class `RangedSummarizedExperiment`:
 
 ```{r}
-library(SummarizedExperiment)
 nrows <- 5; ncols <- 4
 counts <- matrix(runif(nrows * ncols, 1, 1e4), nrows)
 rowRanges <- GRanges(rep(c("chr1", "chr2"), c(2, nrows - 2)),
