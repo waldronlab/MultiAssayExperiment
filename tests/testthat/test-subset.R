@@ -2,14 +2,37 @@ context("Subset tests")
 
 example("MultiAssayExperiment")
 
-test_that("subsettor length is of the same as MultiAssayExperiment", {
-    rowSubsettor <- lapply(rownames(myMultiAssayExperiment)[1:2],
-                           function(a) { sample(a, 1) })
+test_that("MultiAssayExperiment length remains the same after subset with list",
+{
+    rowSubsettor <- rownames(myMultiAssayExperiment)[
+        LogicalList(c(TRUE, FALSE), c(FALSE, TRUE))]
     subsettor2 <- rownames(myMultiAssayExperiment)
 
-    expect_false(length(rowSubsettor) == length(myMultiAssayExperiment))
-    expect_error(myMultiAssayExperiment[rowSubsettor, ])
+    expect_true(length(rowSubsettor) !=
+        length(myMultiAssayExperiment[rowSubsettor, ]))
     expect_equal(myMultiAssayExperiment[subsettor2, ], myMultiAssayExperiment)
+})
+
+test_that("subsetByRow works with lists", {
+    rowSubsettor <- rownames(myMultiAssayExperiment)[
+        LogicalList(c(TRUE, FALSE), c(FALSE, TRUE))]
+    noAffy <- list(noAffy = 1:5)
+    expect_error(subsetByRow(experiments(myMultiAssayExperiment), noAffy))
+    ## list-like subsets will preserve the original length of the object
+    expect_equal(length(subsetByRow(myMultiAssayExperiment, rowSubsettor)),
+        length(myMultiAssayExperiment))
+})
+
+test_that("assay subsets work", {
+    noAffy <- list(noAffy = 1:5)
+    expect_error(experiments(myMultiAssayExperiment)[noAffy])
+    expect_error(subsetByAssay(myMultiAssayExperiment, noAffy))
+    expect_equal(length(subsetByAssay(myMultiAssayExperiment, "Affy")),
+        length("Affy"))
+    ## check order
+    expect_identical(names(subsetByAssay(myMultiAssayExperiment,
+        rev(names(myMultiAssayExperiment)))),
+        rev(names(myMultiAssayExperiment)))
 })
 
 test_that("drop argument works", {
@@ -37,11 +60,15 @@ test_that("drop argument works", {
                  fullLength)
 })
 
-test_that("subsetByColumns works with lists", {
+test_that("subsetByColumn works with lists", {
     affySub <- list(Affy = 1:2)
     affySimple <- List(affySub)
     expect_equal(length(myMultiAssayExperiment[, affySub, ]), length(affySub))
     expect_equal(length(myMultiAssayExperiment[, affySimple, ]),
+                 length(affySimple))
+    expect_equal(length(experiments(myMultiAssayExperiment)[affySub]),
+                 length(affySub))
+    expect_equal(length(experiments(myMultiAssayExperiment)[affySimple]),
                  length(affySimple))
 })
 
