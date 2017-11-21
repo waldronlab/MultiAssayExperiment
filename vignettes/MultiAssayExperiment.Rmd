@@ -692,7 +692,7 @@ myMultiAssay[, , c("Affy", "CNV gistic")]
 You can subset assays also using logical or integer vectors:
 
 ```{r}
-is.cnv = grepl("CNV", names(experiments(myMultiAssay)))
+is.cnv <- grepl("CNV", names(experiments(myMultiAssay)))
 is.cnv
 myMultiAssay[, , is.cnv]  #logical subsetting
 myMultiAssay[, , which(is.cnv)] #integer subsetting
@@ -717,12 +717,24 @@ as a `head` function, for example to look at the first 6 rows of each assay.
 - a **logical vector** that will be passed directly to the row subsetting
 operation for each assay.
 
-- a **list** or **CharacterList** of the same length as ExperimentList. Each
-element of the subsetting list will be passed on exactly to subset rows of the
-corresponding element of the `ExperimentList`.
+- a **list** or **List** with element names matching those in the 
+`ExperimentList`. Each element of the subsetting list will be passed on exactly
+to subset rows of the corresponding element of the `ExperimentList`.
 
-Again, this operation always returns a `MultiAssayExperiment` class, unless
-"drop=TRUE" is passed to the `[` backet subset, with any `ExperimentList`
+Any `list` or `List` input allows for selective subsetting. The subsetting is
+applied only to the matching element names in the `ExperimentList`. For
+example, to only take the first two rows of the microRNA dataset, we use a
+named `list` to indicate what element we want to subset along with the
+`drop = FALSE` argument.
+
+```{r}
+myMultiAssay[list(Mirna = 1:2), , ]
+## equivalently
+subsetByRow(myMultiAssay, list(Mirna = 1:2))
+```
+
+Again, these operations always return a `MultiAssayExperiment` class, unless
+`drop=TRUE` is passed to the `[` backet subset, with any `ExperimentList`
 element not containing the feature having zero rows.
 
 For example, return a MultiAssayExperiment where `Affy` and `Methyl 450k`
@@ -730,11 +742,12 @@ contain only "ENST0000035076"" row, and "Mirna" and "CNV gistic" have zero
 rows (`drop` argument is set to `FALSE` by default in `subsetBy*`):
 
 ```{r}
-featSubsetted0 <- subsetByRow(myMultiAssay, "ENST00000355076")
-featSubsetted0 <- myMultiAssay["ENST00000355076", , ] #equivalent
-class(featSubsetted0)
-class(experiments(featSubsetted0))
-experiments(featSubsetted0)
+featSub0 <- subsetByRow(myMultiAssay, "ENST00000355076")
+featSub1 <- myMultiAssay["ENST00000355076", , drop = FALSE] #equivalent
+all.equal(featSub0, featSub1)
+class(featSub1)
+class(experiments(featSub1))
+experiments(featSub1)
 ```
 
 In the following, `Affy` `SummarizedExperiment` keeps both rows but with their
@@ -743,8 +756,8 @@ order reversed, and `Methyl 450k` keeps only its second row.
 ```{r}
 featSubsetted <-
   subsetByRow(myMultiAssay, c("ENST00000355076", "ENST00000294241"))
-exprs(experiments(myMultiAssay)[[1]])
-exprs(experiments(featSubsetted)[[1]])
+assay(myMultiAssay, 1L)
+assay(featSubsetted, 1L)
 ```
 
 ## Subsetting rows (features) by `GenomicRanges`
@@ -754,8 +767,8 @@ For `MultiAssayExperiment` objects containing range-based objects (currently
 using a `GRanges` object, for example:
 
 ```{r}
-gr <- GRanges(seqnames = c("chr1", "chr1", "chr2"), strand = c("+", "+", "+"),
-              ranges = IRanges(start = c(330602, 443625, 934533),
+gr <- GRanges(seqnames = c("chr1", "chr1", "chr2"), strand = c("-", "+", "+"),
+              ranges = IRanges(start = c(230602, 443625, 934533),
                                end = c(330701, 443724, 934632)))
 ```
 
@@ -776,7 +789,7 @@ Square bracket subsetting can still be used here, but passing on arguments to
 ## Subsetting is endomorphic
 
 `subsetByRow`, `subsetByColumn`, `subsetByAssay`, and square bracket subsetting
-are all "endomorphic" operations, in that they always returns another
+are all "endomorphic" operations, in that they always return another
 `MultiAssayExperiment` object.
 
 ## Double-bracket subsetting to select experiments
