@@ -28,6 +28,7 @@ vignette: >
 # Prerequisites
 
 ```{r, include = FALSE}
+knitr::opts_knit$set(eval = FALSE)
 if (!require(TCGAutils, quietly = TRUE)) {
     BiocInstaller::biocLite("waldronlab/TCGAutils", suppressAutoUpdate = TRUE,
         suppressUpdates = TRUE)
@@ -57,8 +58,6 @@ follows.
 # BIOCONDUCTOR
 library(MultiAssayExperiment)
 library(RaggedExperiment)
-# CRAN
-library(readr)
 ```
 
 # Argument Definitions
