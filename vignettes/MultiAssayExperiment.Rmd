@@ -17,6 +17,7 @@ suppressPackageStartupMessages({
     library(MultiAssayExperiment)
     library(GenomicRanges)
     library(SummarizedExperiment)
+    library(RaggedExperiment)
 })
 ```
 
@@ -33,6 +34,7 @@ Loading the packages:
 library(MultiAssayExperiment)
 library(GenomicRanges)
 library(SummarizedExperiment)
+library(RaggedExperiment)
 ```
 
 # A Brief Description
@@ -526,7 +528,6 @@ A simple example can be obtained from the function documentation in
 `GenomicRanges`:
 
 ```{r}
-library(GenomicRanges)
 grlls <- list(chr = rep("chr1", nrows), start = seq(11, 15),
               end = seq(12, 16), strand = c("+", "-", "+", "*", "*"),
               score = seq(1, 5), specimen = c("a", "a", "b", "b", "c"),
@@ -541,7 +542,6 @@ rectangular representation that will conform more easily to the
 `MultiAssayExperiment` API requirements.
 
 ```{r}
-library(RaggedExperiment)
 RaggedExperiment(GRL)
 ```
 
@@ -550,7 +550,6 @@ _Note_. See the `RaggedExperiment` vignette for more details.
 In the `SummarizedExperiment` package:
 
 ```{r}
-library(SummarizedExperiment)
 sels <- list(chr = rep("chr2", nrows), start = seq(11, 15),
              end = seq(12, 16), strand = c("+", "-", "+", "*", "*"),
              expr0 = seq(3, 7), expr1 = seq(8, 12), expr2 = seq(12, 16))
@@ -951,6 +950,18 @@ The `assays` (plural) function returns a `SimpleList` of data matrices from the
 
 ```{r}
 assays(myMultiAssay)
+```
+
+# The Cancer Genome Atlas and MultiAssayExperiment
+
+Our most recent efforts include the release of the experiment data package,
+`curatedTCGAData`. This package will allow users to selectively download
+cancer datasets from The Cancer Genome Atlas (TCGA) and represent the data
+as `MultiAssayExperiment` objects. Please see the package vignette for more
+details.
+
+```{r, eval = FALSE}
+BiocInstaller::biocLite("curatedTCGAData")
 ```
 
 # Dimension names: `rownames` and `colnames`
