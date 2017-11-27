@@ -32,9 +32,9 @@ branches:
 
 build_script:
   - echo Current directory=%CD%
+  - travis-tool.sh github_package jimhester/covr hadley/devtools
   - travis-tool.sh install_bioc_deps
   - travis-tool.sh install_deps
-  - travis-tool.sh github_package jimhester/covr
 
 test_script:
   - travis-tool.sh run_tests
