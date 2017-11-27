@@ -84,7 +84,7 @@ artifacts:
     name: AllRout
 
 cache:
-  - C:\RLibrary
+  - C:\RLibrary -> appveyor.yml
 
 notifications:
   - provider: Slack
