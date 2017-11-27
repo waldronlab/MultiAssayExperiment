@@ -235,7 +235,7 @@ setMethod("subsetByColumn", c("MultiAssayExperiment", "list"), function(x, y)
     }, lMap = listMap, nSamps = newSamps, SIMPLIFY = FALSE)
     newMap <- listToMap(newMap)
     selectors <- unique(as.character(newMap[["primary"]]))
-    colData(x) <- colData(x)[rownames(colData(x)) %in% selectors, ]
+    colData(x) <- colData(x)[rownames(colData(x)) %in% selectors, , drop = FALSE]
     sampleMap(x) <- newMap
     return(x)
 })
