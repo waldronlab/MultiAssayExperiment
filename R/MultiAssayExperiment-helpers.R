@@ -208,7 +208,7 @@ setMethod("longFormat", "ANY", function(object, ...) {
     nullROWS <- is.null(rowNAMES)
     args <- list(...)
     if (nullROWS)
-        rowNAMES <- rep(NA_character_, nrow(object))
+        rowNAMES <- as.character(seq_len(nrow(object)))
     if (is(object, "ExpressionSet"))
         object <- Biobase::exprs(object)
     if (is(object, "SummarizedExperiment")) {
@@ -288,6 +288,8 @@ setMethod("wideFormat", "MultiAssayExperiment",
         onetoone <- all(!lengths(duplicated(object)))
         longDataFrame <- longFormat(object, colDataCols = colDataCols, ...)
         longDataFrame <- as.data.frame(longDataFrame)
+        check.names <- list(...)[["check.names"]]
+        if (is.null(check.names)) check.names <- TRUE
         if (is.null(key)) {
             if (onetoone) {
         longDataFrame <- tidyr::unite_(longDataFrame, "feature",
@@ -306,7 +308,8 @@ setMethod("wideFormat", "MultiAssayExperiment",
         }
         wideDataFrame <- wideDataFrame[match(rownames(colData(object)),
             wideDataFrame[["primary"]]), ]
-        wideDataFrame <- S4Vectors::DataFrame(wideDataFrame)
+        wideDataFrame <- S4Vectors::DataFrame(wideDataFrame,
+            check.names = check.names)
         return(wideDataFrame)
     })
 
