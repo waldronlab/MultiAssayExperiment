@@ -27,16 +27,14 @@ install:
 branches:
   only:
     - master
-    - RELEASE_3_6
 
 # Adapt as necessary starting from here
 
 build_script:
   - echo Current directory=%CD%
-  - travis-tool.sh install_bioc GenomeInfoDb XVector DelayedArray
   - travis-tool.sh install_bioc_deps
   - travis-tool.sh install_deps
-  - travis-tool.sh github_package jimhester/covr Bioconductor/RaggedExperiment
+  - travis-tool.sh github_package jimhester/covr
 
 test_script:
   - travis-tool.sh run_tests
@@ -57,7 +55,7 @@ environment:
     USE_RTOOLS: true ## to be able to use Remotes (i.e. packages from non-CRAN sources)
 
   matrix:
-    - R_VERSION: release
+    - R_VERSION: devel
       R_ARCH: x64
       GCC_PATH: mingw_64
 
