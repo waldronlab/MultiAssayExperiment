@@ -32,8 +32,7 @@ branches:
 
 build_script:
   - echo Current directory=%CD%
-  - travis-tool.sh install_devtools
-  - travis-tool.sh github_package jimhester/covr
+  - travis-tool.sh github_package jimhester/covr hadley/devtools
   - travis-tool.sh install_r matrixStats
   - travis-tool.sh install_bioc GenomicRanges BiocGenerics SummarizedExperiment
     S4Vectors IRanges Biobase BiocStyle GenomicFiles HDF5Array RaggedExperiment
