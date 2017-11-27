@@ -34,6 +34,9 @@ build_script:
   - echo Current directory=%CD%
   - travis-tool.sh github_package jimhester/covr hadley/devtools
   - travis-tool.sh install_bioc_deps
+  - travis-tool.sh install_bioc GenomicRanges BiocGenerics SummarizedExperiment
+    S4Vectors IRanges Biobase BiocStyle GenomicFiles HDF5Array RaggedExperiment
+    RTCGAToolbox
   - travis-tool.sh install_deps
 
 test_script:
