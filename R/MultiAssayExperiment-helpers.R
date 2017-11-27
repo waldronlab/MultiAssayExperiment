@@ -81,21 +81,25 @@ setGeneric("mergeReplicates", function(x, replicates = list(),
     standardGeneric("mergeReplicates"))
 
 #' @rdname MultiAssayExperiment-helpers
+#'
 #' @details The \code{mergeReplicates} function is a house-keeping method
 #' for a \code{MultiAssayExperiment} where only \code{complete.cases} are
 #' returned, replicate measurements are averaged (by default), and columns are
 #' aligned by the row order in \code{colData}. Additional arguments can be
 #' passed on to the \code{simplify} function.
+#'
 #' @section mergeReplicates:
 #' The \code{mergeReplicates} function makes use of the output from
 #' \code{duplicated} which will point out the duplicate measurements by
 #' biological unit in the \code{MultiAssayExperiment}. This function will return
 #' a \code{MultiAssayExperiment} with merged replicates.
+#'
 #' @param replicates A list of \linkS4class{LogicalList}s
 #' indicating multiple / duplicate entries for each biological unit, see the
 #' \code{duplicated} output
 #' @param simplify A function for merging repeat measurements in experiments
 #' as indicated by replicates for \code{MultiAssayExperiment}
+#'
 #' @exportMethod mergeReplicates
 setMethod("mergeReplicates", "MultiAssayExperiment",
     function(x, replicates = list(), simplify = BiocGenerics::mean, ...) {
@@ -191,7 +195,9 @@ setMethod("mergeReplicates", "ANY",
 #' \code{\link{DataFrame}}. The resulting DataFrame has columns indicating
 #' primary, rowname, colname and value. This method can optionally include
 #' colData columns with the \code{colDataCols} argument
-#' (\code{MultiAssayExperiment} method only).
+#' (\code{MultiAssayExperiment} method only). The \code{\ldots} argument
+#' allows the user to specify the assay value for the
+#' \linkS4class{SummarizedExperiment} assay function's \code{i} argument.
 #'
 #' @param object Any supported class object
 #' @param ... Additional arguments. See details.
@@ -273,13 +279,20 @@ setMethod("longFormat", "MultiAssayExperiment",
 setGeneric("wideFormat", function(object, ...) standardGeneric("wideFormat"))
 
 #' @rdname MultiAssayExperiment-helpers
+#'
 #' @section wideFormat:
 #' The \code{wideFormat} \code{MultiAssayExperiment} method returns standardized
 #' wide \link{DataFrame} where each row represents an observation or biological
 #' unit as represented in \code{colData}. Optionally, \code{colData} columns
 #' can be added to the data output. The \code{wideFormat} method for an
-#' \code{ExperimentList} returns a list of wideFormat \code{DataFrames}. The
-#' "ANY" method returns a wide format \code{DataFrame}.
+#' \code{ExperimentList} returns a list of wideFormat \code{DataFrames}. The \code{\ldots}
+#' argument allows the user to specify the assay number for
+#' \linkS4class{SummarizedExperiment} assay extractor (i.e., \code{i} argument).
+#' Additionally, the user may also specify \code{check.names} argument for the
+#' resulting \code{DataFrame}. \strong{Note}. The "ANY" method returns a
+#' slightly different wide format \code{DataFrame} due to missing biological
+#' units information.
+#'
 #' @param key name of column whose values will used as variables in
 #' the wide dataset from \link[tidyr]{spread}. If none are specified, assay,
 #' rowname, and colname will be combined
@@ -314,13 +327,22 @@ setMethod("wideFormat", "MultiAssayExperiment",
     })
 
 #' @rdname MultiAssayExperiment-helpers
+#'
+#' @details The \code{wideFormat} method provides a representation of
+#' \code{MultiAssayExperiment} where each row represents a particular
+#' biological unit.
 setMethod("wideFormat", "ANY", function(object, ...) {
+    check.names <- list(...)[["check.names"]]
+    if (is.null(check.names)) check.names <- TRUE
+    args <- list(...)
     if (is(object, "ExpressionSet"))
         object <- Biobase::exprs(object)
+    if (is.matrix(object) && is.null(rownames(object)))
+        rownames(object) <- as.character(seq_len(object))
     if (!is.null(rownames(object)) && !is(object, "SummarizedExperiment"))
         object <- data.frame(rowname = rownames(object), object,
-                             stringsAsFactors = FALSE, check.names = FALSE,
-                             row.names = NULL)
+            stringsAsFactors = FALSE, check.names = check.names,
+            row.names = NULL)
     if (is(object, "SummarizedExperiment")) {
         ## Ensure that rowData DataFrame has a rowname column
         ## Otherwise, use the rownames or first column
@@ -336,9 +358,11 @@ setMethod("wideFormat", "ANY", function(object, ...) {
             rowData(object) <- rowData(object)[1L]
             names(rowData(object)) <- "rowname"
         }
-        object <- data.frame(rowname = rowData(object), object,
-                             stringsAsFactors = FALSE, check.names = FALSE,
-                             row.names = NULL)
+        assayDat <- assay(object,
+            i = if (!is.null(args[["i"]])) { args[["i"]] } else { 1L })
+        object <- data.frame(rowname = rowData(object), assayDat,
+            stringsAsFactors = FALSE, check.names = check.names,
+            row.names = NULL)
     }
     S4Vectors::DataFrame(object)
 })

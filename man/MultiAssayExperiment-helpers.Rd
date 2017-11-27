@@ -119,6 +119,10 @@ argument.
 The \code{longFormat} "ANY" class method, works with classes such as
 \link{ExpressionSet} and \link{SummarizedExperiment} as well as \code{matrix}
 to provide a consistent long and skinny \link{DataFrame}.
+
+The \code{wideFormat} method provides a representation of
+\code{MultiAssayExperiment} where each row represents a particular
+biological unit.
 }
 \section{mergeReplicates}{
 
@@ -135,7 +139,9 @@ in a \code{\link{MultiAssayExperiment}} and returns a uniform
 \code{\link{DataFrame}}. The resulting DataFrame has columns indicating
 primary, rowname, colname and value. This method can optionally include
 colData columns with the \code{colDataCols} argument
-(\code{MultiAssayExperiment} method only).
+(\code{MultiAssayExperiment} method only). The \code{\ldots} argument
+allows the user to specify the assay value for the
+\linkS4class{SummarizedExperiment} assay function's \code{i} argument.
 }
 
 \section{wideFormat}{
@@ -144,7 +150,12 @@ The \code{wideFormat} \code{MultiAssayExperiment} method returns standardized
 wide \link{DataFrame} where each row represents an observation or biological
 unit as represented in \code{colData}. Optionally, \code{colData} columns
 can be added to the data output. The \code{wideFormat} method for an
-\code{ExperimentList} returns a list of wideFormat \code{DataFrames}. The
-"ANY" method returns a wide format \code{DataFrame}.
+\code{ExperimentList} returns a list of wideFormat \code{DataFrames}. The \code{\ldots}
+argument allows the user to specify the assay number for
+\linkS4class{SummarizedExperiment} assay extractor (i.e., \code{i} argument).
+Additionally, the user may also specify \code{check.names} argument for the
+resulting \code{DataFrame}. \strong{Note}. The "ANY" method returns a
+slightly different wide format \code{DataFrame} due to missing biological
+units information.
 }
 
