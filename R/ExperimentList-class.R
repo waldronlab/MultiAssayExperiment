@@ -54,8 +54,11 @@ setClass("ExperimentList", contains = "SimpleList")
 ExperimentList <- function(...) {
     listData <- list(...)
     if (length(listData) == 1L) {
+        if (is.list(listData[[1L]]) || (is(listData[[1L]], "List") &&
+            !is(listData[[1L]], "DataFrame"))) {
         listData <- listData[[1L]]
         listData <- lapply(listData, .checkGRL)
+        }
     } else if (!length(listData)) {
         return(new("ExperimentList",
             S4Vectors::SimpleList(structure(list(), .Names = character())))
