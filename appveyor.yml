@@ -32,12 +32,13 @@ branches:
 
 build_script:
   - echo Current directory=%CD%
-  - travis-tool.sh github_package jimhester/covr hadley/devtools
-  - travis-tool.sh install_bioc_deps
+  - travis-tool.sh install_devtools
+  - travis-tool.sh github_package jimhester/covr
+  - travis-tool.sh install_r matrixStats
   - travis-tool.sh install_bioc GenomicRanges BiocGenerics SummarizedExperiment
     S4Vectors IRanges Biobase BiocStyle GenomicFiles HDF5Array RaggedExperiment
-    RTCGAToolbox
-  - travis-tool.sh install_deps
+    RTCGAToolbox DelayedArray
+  - travis-tool.sh install_bioc_deps
 
 test_script:
   - travis-tool.sh run_tests
