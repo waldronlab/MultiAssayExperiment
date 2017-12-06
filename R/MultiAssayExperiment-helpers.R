@@ -366,3 +366,39 @@ setMethod("wideFormat", "ANY", function(object, ...) {
     }
     S4Vectors::DataFrame(object)
 })
+
+.tryRowRanges <- function(obj) {
+    res <- try(rowRanges(obj), silent = TRUE)
+    if (!is(res, "try-error"))
+        is(res, "GRanges")
+    else
+        FALSE
+}
+
+#' @rdname MultiAssayExperiment-helpers
+#'
+#' @aliases hasRowRanges
+#' @section hasRowRanges:
+#' The \code{hasRowRanges} method identifies assays with associated ranged
+#' row data by directly testing the method on the object. The result from the
+#' test must be a \linkS4class{GRanges} class object to satisfy the test.
+#'
+#' @param x Any supported class object
+#'
+#' @export hasRowRanges
+setGeneric("hasRowRanges", function(x) standardGeneric("hasRowRanges"))
+
+#' @rdname MultiAssayExperiment-helpers
+#'
+#' @details The \code{hasRowRanges} method identifies assays that support
+#' a \link[SummarizedExperiment]{rowRanges} method \emph{and} return a
+#' \linkS4class{GRanges} object.
+setMethod("hasRowRanges", "MultiAssayExperiment", function(x) {
+    hasRowRanges(experiments(x))
+})
+
+#' @rdname MultiAssayExperiment-helpers
+#' @exportMethod hasRowRanges
+setMethod("hasRowRanges", "ExperimentList", function(x) {
+    vapply(x, .tryRowRanges, logical(1L))
+})

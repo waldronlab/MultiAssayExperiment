@@ -19,6 +19,9 @@
 \alias{wideFormat}
 \alias{wideFormat,MultiAssayExperiment-method}
 \alias{wideFormat,ANY-method}
+\alias{hasRowRanges}
+\alias{hasRowRanges,MultiAssayExperiment-method}
+\alias{hasRowRanges,ExperimentList-method}
 \title{A group of helper functions for manipulating and cleaning a
 MultiAssayExperiment}
 \usage{
@@ -50,6 +53,12 @@ wideFormat(object, ...)
   key = NULL, ...)
 
 \S4method{wideFormat}{ANY}(object, ...)
+
+hasRowRanges(x)
+
+\S4method{hasRowRanges}{MultiAssayExperiment}(x)
+
+\S4method{hasRowRanges}{ExperimentList}(x)
 }
 \arguments{
 \item{x}{A MultiAssayExperiment}
@@ -72,6 +81,8 @@ as indicated by replicates for \code{MultiAssayExperiment}}
 \item{key}{name of column whose values will used as variables in
 the wide dataset from \link[tidyr]{spread}. If none are specified, assay,
 rowname, and colname will be combined}
+
+\item{x}{Any supported class object}
 }
 \description{
 A set of helper functions were created to help clean and
@@ -123,6 +134,10 @@ to provide a consistent long and skinny \link{DataFrame}.
 The \code{wideFormat} method provides a representation of
 \code{MultiAssayExperiment} where each row represents a particular
 biological unit.
+
+The \code{hasRowRanges} method identifies assays that support
+a \link[SummarizedExperiment]{rowRanges} method \emph{and} return a
+\linkS4class{GRanges} object.
 }
 \section{mergeReplicates}{
 
@@ -157,5 +172,12 @@ Additionally, the user may also specify \code{check.names} argument for the
 resulting \code{DataFrame}. \strong{Note}. The "ANY" method returns a
 slightly different wide format \code{DataFrame} due to missing biological
 units information.
+}
+
+\section{hasRowRanges}{
+
+The \code{hasRowRanges} method identifies assays with associated ranged
+row data by directly testing the method on the object. The result from the
+test must be a \linkS4class{GRanges} class object to satisfy the test.
 }
 
