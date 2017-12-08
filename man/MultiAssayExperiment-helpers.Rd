@@ -61,7 +61,7 @@ hasRowRanges(x)
 \S4method{hasRowRanges}{ExperimentList}(x)
 }
 \arguments{
-\item{x}{A MultiAssayExperiment}
+\item{x}{A MultiAssayExperiment or ExperimentList}
 
 \item{incomparables}{unused argument}
 
@@ -81,8 +81,6 @@ as indicated by replicates for \code{MultiAssayExperiment}}
 \item{key}{name of column whose values will used as variables in
 the wide dataset from \link[tidyr]{spread}. If none are specified, assay,
 rowname, and colname will be combined}
-
-\item{x}{Any supported class object}
 }
 \description{
 A set of helper functions were created to help clean and
@@ -113,7 +111,9 @@ for \code{ExperimentList} objects.
 }
 \details{
 For the \code{duplicated} function, the \code{incomparables} and
-ellipsis \code{\ldots} arguments are not used.
+ellipsis \code{\ldots} arguments are not used. \code{duplicated} is not
+supported for \code{ExperimentList} objects due to no available
+\code{sampleMap}.
 
 The \code{mergeReplicates} function is a house-keeping method
 for a \code{MultiAssayExperiment} where only \code{complete.cases} are
