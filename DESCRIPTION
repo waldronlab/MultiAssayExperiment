@@ -1,6 +1,6 @@
 Package: MultiAssayExperiment
 Title: Software for the integration of multi-omics experiments in Bioconductor
-Version: 1.5.38
+Version: 1.5.39
 Authors@R: c(person("Marcel", "Ramos", email = "marcel.ramos@roswellpark.org",
     role = c("aut", "cre")),
     person("Levi", "Waldron", email = "lwaldron.research@gmail.com",
@@ -8,12 +8,12 @@ Authors@R: c(person("Marcel", "Ramos", email = "marcel.ramos@roswellpark.org",
     person("MultiAssay", "SIG", email = "biocmultiassay@googlegroups.com",
     role = "ctb"))
 Description: Multi-assay 'omics experiments on a set of samples are increasingly
-    commonplace in biomedical research. MultiAssayExperiment implements data structures
-    and methods for representing, manipulating, and integrating multi-assay experiments
-    via efficient construction, subsetting, and extraction operations.
-    These methods are implemented matching Bioconductor user experience by
-    straightforward extending concept and design of single-assay classes such as
-    SummarizedExperiment or ExpressionSet.
+    commonplace in biomedical research. MultiAssayExperiment implements data
+    structures and methods for representing, manipulating, and integrating
+    multi-assay experiments via efficient construction, subsetting, and
+    extraction operations. These methods are implemented matching Bioconductor
+    user experience by straightforward extending concept and design of
+    single-assay classes such as SummarizedExperiment.
 Depends:
     R (>= 3.4.0)
 Imports:
@@ -43,7 +43,6 @@ Suggests:
     UpSetR,
     survival,
     survminer
-Maintainer: Marcel Ramos <marcel.ramosperez@roswellpark.org>
 biocViews: Infrastructure, DataRepresentation
 License: Artistic-2.0
 LazyData: true

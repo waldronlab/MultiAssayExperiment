@@ -52,11 +52,13 @@ intersectColumns <- function(x) {
 }
 
 #' @rdname MultiAssayExperiment-helpers
-#' @param x A MultiAssayExperiment
+#' @param x A MultiAssayExperiment or ExperimentList
 #' @param incomparables unused argument
 #' @exportMethod duplicated
 #' @details For the \code{duplicated} function, the \code{incomparables} and
-#' ellipsis \code{\ldots} arguments are not used.
+#' ellipsis \code{\ldots} arguments are not used. \code{duplicated} is not
+#' supported for \code{ExperimentList} objects due to no available
+#' \code{sampleMap}.
 setMethod("duplicated", "MultiAssayExperiment",
           function(x, incomparables = FALSE, ...) {
     listMap <- mapToList(sampleMap(x))
@@ -382,8 +384,6 @@ setMethod("wideFormat", "ANY", function(object, ...) {
 #' The \code{hasRowRanges} method identifies assays with associated ranged
 #' row data by directly testing the method on the object. The result from the
 #' test must be a \linkS4class{GRanges} class object to satisfy the test.
-#'
-#' @param x Any supported class object
 #'
 #' @export hasRowRanges
 setGeneric("hasRowRanges", function(x) standardGeneric("hasRowRanges"))
