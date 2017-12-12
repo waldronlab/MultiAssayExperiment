@@ -11,13 +11,13 @@ NULL
     primary <- rownames(colData)[matches]
     autoMap <- S4Vectors::DataFrame(
         assay=assay, primary=primary, colname=colname)
-
-    if (nrow(autoMap) && any(is.na(autoMap[["primary"]]))) {
-        notFound <- autoMap[is.na(autoMap[["primary"]]), ]
+    missingPrimary <- is.na(autoMap[["primary"]])
+    if (nrow(autoMap) && any(missingPrimary)) {
+        notFound <- autoMap[missingPrimary, ]
         warning("Data from rows:",
                 sprintf("\n %s - %s", notFound[, 2], notFound[, 3]),
                 "\ndropped due to missing phenotype data")
-        autoMap <- autoMap[!is.na(autoMap[["primary"]]), ]
+        autoMap <- autoMap[!missingPrimary, ]
     }
     autoMap
 }
