@@ -60,16 +60,19 @@ intersectColumns <- function(x) {
 setMethod("duplicated", "MultiAssayExperiment",
           function(x, incomparables = FALSE, ...) {
     listMap <- mapToList(sampleMap(x))
-    repList <- lapply(listMap, function(assayDF) {
-        repeats <- unique(assayDF[["primary"]][
-            duplicated(assayDF[["primary"]])])
-        repSamps <- lapply(repeats, function(primary) {
-            assayDF[["primary"]] %in% primary
-        })
-        names(repSamps) <- repeats
-        repSamps
+    lapply(listMap, function(assayDF) {
+        pnames <- unique(assayDF[["primary"]])
+        lmat <- vapply(pnames, function(x) {
+            tots <- assayDF[["primary"]] %in% x
+            if (sum(tots) <= 1L)
+                tots <- rep(FALSE, length(tots))
+            tots
+        }, logical(nrow(assayDF)))
+        resChunk <- LogicalList(lapply(seq_len(ncol(lmat)),
+            function(x) lmat[, x]))
+        names(resChunk) <- colnames(lmat)
+        resChunk
     })
-    lapply(repList, IRanges::LogicalList)
 })
 
 # mergeReplicates function ------------------------------------------------
@@ -156,7 +159,7 @@ setMethod("mergeReplicates", "ANY",
                 !any(cols)
             })
             repeatList <- lapply(replicates, function(reps, rectangle) {
-                if (length(reps)) {
+                if (any(reps)) {
                     repNames <- colnames(rectangle)[reps]
                     baseList <- as(split(rectangle[, repNames],
                                          seq_len(nrow(x))), "List")
@@ -172,6 +175,7 @@ setMethod("mergeReplicates", "ANY",
                 # Keep only first replicate row in colData
                 colDatIdx <- c(unname(min(which(replicates))),
                     which(uniqueCols))
+                ## FIX HERE
                 newColDat <- colData(object)[colDatIdx, , drop = FALSE]
                 object <- initialize(object,
                     assays = Assays(SimpleList(result)), colData = newColDat)
