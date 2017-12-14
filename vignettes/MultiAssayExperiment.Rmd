@@ -999,18 +999,9 @@ invalid.obj
 # Application Programming Interface (API)
 
 For more information on the formal API of `MultiAssayExperiment`, please see
-the `API` wiki document on GitHub. From within an R session, type:
-
-```{r, eval=FALSE}
-API()
-```
-
-to produce the webpage for the API or use the "shiny" argument to get a `shiny`
-app that browses the package, such as:
-
-```{r, eval=FALSE}
-API(shiny=TRUE)
-```
+the [API wiki][] document on GitHub. An API package is available for
+download on GitHub via `biocLite("waldronlab/MultiAssayShiny")`. It provides
+visual exploration of available methods in `MultiAssayExperiment`.
 
 <p style="text-align: right;"> <a href="#header">back to top</a> </p>
 
@@ -1037,3 +1028,5 @@ sessionInfo()
 ```
 
 <p style="text-align: right;"> <a href="#header">back to top</a> </p>
+
+[API wiki]: https://github.com/waldronlab/MultiAssayExperiment/wiki/MultiAssayExperiment-API

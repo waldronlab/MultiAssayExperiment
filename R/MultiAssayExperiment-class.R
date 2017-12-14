@@ -42,7 +42,8 @@ NULL
 #' the supplied \code{simplify} argument and function. When using the
 #' \strong{assay} method. When using \strong{c} method
 #' to add experiments to a \code{MultiAssayExperiment}, the dots allow extra
-#' data classes compatible with the MultiAssayExperiment API. See: \link{API}
+#' data classes compatible with the MultiAssayExperiment API.
+#' See the \href{https://github.com/waldronlab/MultiAssayExperiment/wiki/MultiAssayExperiment-API}{MultiAssayExperiment API}
 #'
 #' @section colData:
 #' The \code{colData} slot is a collection of primary specimen data valid
