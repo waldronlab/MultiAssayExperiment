@@ -303,7 +303,9 @@ setGeneric("wideFormat", function(object, ...) standardGeneric("wideFormat"))
 #' rowname, and colname will be combined
 setMethod("wideFormat", "MultiAssayExperiment",
     function(object, colDataCols = NULL, key = NULL, ...) {
-        onetoone <- all(!lengths(duplicated(object)))
+        sampDups <- vapply(duplicated(object), function(x)
+            any(as.matrix(x)), logical(1L))
+        onetoone <- all(!sampDups)
         longDataFrame <- longFormat(object, colDataCols = colDataCols, ...)
         longDataFrame <- as.data.frame(longDataFrame)
         check.names <- list(...)[["check.names"]]
