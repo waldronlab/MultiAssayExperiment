@@ -67,7 +67,7 @@ setMethod("duplicated", "MultiAssayExperiment",
         lmat <- vapply(pnames, function(x) {
             tots <- assayDF[["primary"]] %in% x
             if (sum(tots) <= 1L)
-                tots <- rep(FALSE, length(tots))
+                tots <- rep(FALSE, nrow(assayDF))
             tots
         }, logical(nrow(assayDF)))
         resChunk <- LogicalList(lapply(seq_len(ncol(lmat)),
