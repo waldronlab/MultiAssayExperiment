@@ -175,7 +175,6 @@ setMethod("mergeReplicates", "ANY",
                 # Keep only first replicate row in colData
                 colDatIdx <- c(unname(min(which(replicates))),
                     which(uniqueCols))
-                ## FIX HERE
                 newColDat <- colData(object)[colDatIdx, , drop = FALSE]
                 object <- initialize(object,
                     assays = Assays(SimpleList(result)), colData = newColDat)
