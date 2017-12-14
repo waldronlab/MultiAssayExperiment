@@ -156,7 +156,7 @@ setMethod("mergeReplicates", "ANY",
             x <- assay(object)
         if (is(object, "ExpressionSet"))
             x <- Biobase::exprs(object)
-        if (length(replicates)) {
+        if (any(any(replicates))) {
             uniqueCols <- apply(as.matrix(replicates), 2, function(cols) {
                 !any(cols)
             })
