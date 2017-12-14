@@ -1,5 +1,27 @@
 # MultiAssayExperiment
 
+## Changes in version 1.5.38
+
+### New features
+
+* Moved the API shiny function to waldronlab/MultiAssayShiny package
+* Reduced imports (removed shinydashboard and shiny)
+* Method requirement checks for classes are practical using `try()`
+* Deprecated methods removed: `pData`
+* Deprecated class removed: `RangedRaggedAssay`
+* Assay-selective subsetting implemented via `list`/`List` class subsettors
+
+### Bug fixes and minor improvements
+
+* updated `duplicated` function now returns FALSE for non-duplicated samples
+* Improved `ExperimentList` constructor now handles multiple `key = value`
+entries
+* Removed `updateObject` before giving warning
+* Removed old RTCGAToolbox example vignette
+* Official manuscript citation added
+* Improved examples (removed `ExpressionSet` legacy objects)
+* Improved test scripts
+
 ## Changes in version 1.1.37
 
 ### New features
