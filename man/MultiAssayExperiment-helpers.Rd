@@ -19,6 +19,9 @@
 \alias{wideFormat}
 \alias{wideFormat,MultiAssayExperiment-method}
 \alias{wideFormat,ANY-method}
+\alias{hasRowRanges}
+\alias{hasRowRanges,MultiAssayExperiment-method}
+\alias{hasRowRanges,ExperimentList-method}
 \title{A group of helper functions for manipulating and cleaning a
 MultiAssayExperiment}
 \usage{
@@ -50,9 +53,15 @@ wideFormat(object, ...)
   key = NULL, ...)
 
 \S4method{wideFormat}{ANY}(object, ...)
+
+hasRowRanges(x)
+
+\S4method{hasRowRanges}{MultiAssayExperiment}(x)
+
+\S4method{hasRowRanges}{ExperimentList}(x)
 }
 \arguments{
-\item{x}{A MultiAssayExperiment}
+\item{x}{A MultiAssayExperiment or ExperimentList}
 
 \item{incomparables}{unused argument}
 
@@ -102,7 +111,9 @@ for \code{ExperimentList} objects.
 }
 \details{
 For the \code{duplicated} function, the \code{incomparables} and
-ellipsis \code{\ldots} arguments are not used.
+ellipsis \code{\ldots} arguments are not used. \code{duplicated} is not
+supported for \code{ExperimentList} objects due to no available
+\code{sampleMap}.
 
 The \code{mergeReplicates} function is a house-keeping method
 for a \code{MultiAssayExperiment} where only \code{complete.cases} are
@@ -123,6 +134,10 @@ to provide a consistent long and skinny \link{DataFrame}.
 The \code{wideFormat} method provides a representation of
 \code{MultiAssayExperiment} where each row represents a particular
 biological unit.
+
+The \code{hasRowRanges} method identifies assays that support
+a \link[SummarizedExperiment]{rowRanges} method \emph{and} return a
+\linkS4class{GRanges} object.
 }
 \section{mergeReplicates}{
 
@@ -157,5 +172,12 @@ Additionally, the user may also specify \code{check.names} argument for the
 resulting \code{DataFrame}. \strong{Note}. The "ANY" method returns a
 slightly different wide format \code{DataFrame} due to missing biological
 units information.
+}
+
+\section{hasRowRanges}{
+
+The \code{hasRowRanges} method identifies assays with associated ranged
+row data by directly testing the method on the object. The result from the
+test must be a \linkS4class{GRanges} class object to satisfy the test.
 }
 
