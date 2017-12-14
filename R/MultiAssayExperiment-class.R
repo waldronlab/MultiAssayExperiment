@@ -657,8 +657,9 @@ MatchedAssayExperiment <- function(experiments = ExperimentList(),
 
 setAs("MultiAssayExperiment", "MatchedAssayExperiment", function(from) {
     from <- intersectColumns(from)
-    if (length(Filter(length, duplicated(from))))
+    sampDups <- vapply(duplicated(from), function(x)
+        any(as.matrix(x)), logical(1L))
+    if (any(sampDups))
         stop("Resolve replicate columns")
-    newMatched <- new("MatchedAssayExperiment", from)
-    return(newMatched)
+    new("MatchedAssayExperiment", from)
 })
