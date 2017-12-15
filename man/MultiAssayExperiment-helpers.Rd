@@ -32,7 +32,7 @@ intersectColumns(x)
 
 \S4method{duplicated}{MultiAssayExperiment}(x, incomparables = FALSE, ...)
 
-\S4method{anyDuplicated}{MultiAssayExperiment}(x, incomparables = FALSE, ....)
+\S4method{anyDuplicated}{MultiAssayExperiment}(x, incomparables = FALSE, ...)
 
 mergeReplicates(x, replicates = list(), simplify = BiocGenerics::mean, ...)
 
@@ -147,7 +147,8 @@ a \link[SummarizedExperiment]{rowRanges} method \emph{and} return a
 The \code{mergeReplicates} function makes use of the output from
 \code{duplicated} which will point out the duplicate measurements by
 biological unit in the \code{MultiAssayExperiment}. This function will return
-a \code{MultiAssayExperiment} with merged replicates.
+a \code{MultiAssayExperiment} with merged replicates. Additional arguments
+can be provided to the simplify argument via the ellipsis (\ldots).
 }
 
 \section{longFormat}{

@@ -80,7 +80,7 @@ setMethod("duplicated", "MultiAssayExperiment",
 #' @rdname MultiAssayExperiment-helpers
 #' @exportMethod anyDuplicated
 setMethod("anyDuplicated", "MultiAssayExperiment",
-    function(x, incomparables = FALSE, ....) {
+    function(x, incomparables = FALSE, ...) {
         dups <- duplicated(x)
         dupVec <- vapply(dups, function(x) any(as.matrix(x)), logical(1L))
         any(dupVec)
@@ -106,7 +106,8 @@ setGeneric("mergeReplicates", function(x, replicates = list(),
 #' The \code{mergeReplicates} function makes use of the output from
 #' \code{duplicated} which will point out the duplicate measurements by
 #' biological unit in the \code{MultiAssayExperiment}. This function will return
-#' a \code{MultiAssayExperiment} with merged replicates.
+#' a \code{MultiAssayExperiment} with merged replicates. Additional arguments
+#' can be provided to the simplify argument via the ellipsis (\ldots).
 #'
 #' @param replicates A list of \linkS4class{LogicalList}s
 #' indicating multiple / duplicate entries for each biological unit, see the
@@ -214,7 +215,6 @@ setMethod("mergeReplicates", "ANY",
 #' \linkS4class{SummarizedExperiment} assay function's \code{i} argument.
 #'
 #' @param object Any supported class object
-#' @param ... Additional arguments. See details.
 #'
 #' @export longFormat
 setGeneric("longFormat", function(object, ...) standardGeneric("longFormat"))
@@ -310,6 +310,9 @@ setGeneric("wideFormat", function(object, ...) standardGeneric("wideFormat"))
 #' @param key name of column whose values will used as variables in
 #' the wide dataset from \link[tidyr]{spread}. If none are specified, assay,
 #' rowname, and colname will be combined
+#' @param ... Additional arguments. See details.
+#'
+#' @exportMethod wideFormat
 setMethod("wideFormat", "MultiAssayExperiment",
     function(object, colDataCols = NULL, key = "feature", ...)
 {
