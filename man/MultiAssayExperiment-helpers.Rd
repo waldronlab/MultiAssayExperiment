@@ -50,7 +50,7 @@ longFormat(object, ...)
 wideFormat(object, ...)
 
 \S4method{wideFormat}{MultiAssayExperiment}(object, colDataCols = NULL,
-  key = NULL, ...)
+  key = "feature", ...)
 
 \S4method{wideFormat}{ANY}(object, ...)
 

@@ -302,36 +302,42 @@ setGeneric("wideFormat", function(object, ...) standardGeneric("wideFormat"))
 #' the wide dataset from \link[tidyr]{spread}. If none are specified, assay,
 #' rowname, and colname will be combined
 setMethod("wideFormat", "MultiAssayExperiment",
-    function(object, colDataCols = NULL, key = NULL, ...) {
-        sampDups <- vapply(duplicated(object), function(x)
-            any(as.matrix(x)), logical(1L))
-        onetoone <- all(!sampDups)
-        longDataFrame <- longFormat(object, colDataCols = colDataCols, ...)
-        longDataFrame <- as.data.frame(longDataFrame)
+    function(object, colDataCols = NULL, key = "feature", ...) {
+        dups <- duplicated(object)
+        cnames <- colnames(object)
         check.names <- list(...)[["check.names"]]
         if (is.null(check.names)) check.names <- TRUE
-        if (is.null(key)) {
-            if (onetoone) {
-        longDataFrame <- tidyr::unite_(longDataFrame, "feature",
-                                         c("assay", "rowname"))
-        longDataFrame <- longDataFrame[, colnames(longDataFrame) != "colname"]
-            } else {
-        message("See ?mergeReplicates to combine replicated observations",
-                "\n  to get one column per variable")
-        longDataFrame <- tidyr::unite_(longDataFrame, "feature",
-                                         c("assay", "rowname", "colname"))
-            }
-        wideDataFrame <- tidyr::spread_(longDataFrame, key = "feature",
-                                         value = "value")
-        } else {
-        wideDataFrame <- tidyr::spread_(longDataFrame, key = key, value = "value")
-        }
-        wideDataFrame <- wideDataFrame[match(rownames(colData(object)),
-            wideDataFrame[["primary"]]), ]
-        wideDataFrame <- S4Vectors::DataFrame(wideDataFrame,
-            check.names = check.names)
-        return(wideDataFrame)
-    })
+
+        longDataFrame <- longFormat(object, colDataCols = colDataCols, ...)
+        longDataFrame <- as.data.frame(longDataFrame)
+
+        lVects <- lapply(seq_along(dups), function(i, duplic) {
+            assayname <- names(duplic)[[i]]
+            logilist <- duplic[[i]]
+            lmat <- as.matrix(logilist)
+            rownames(lmat) <- names(logilist)
+            colnames(lmat) <- cnames[[i]]
+            lData <- longDataFrame[longDataFrame==assayname, c("primary", "colname")]
+            apply(lData, 1, function(x) lmat[x[1], x[2]])
+        }, duplic = dups)
+
+        longDataFrame[["duplicated"]] <- unlist(lVects)
+        splitDF <- split(longDataFrame, longDataFrame[["duplicated"]])
+        splitDF <- lapply(splitDF, function(x) x[, names(x) != "duplicated"])
+
+        DFwithDups <- tidyr::unite_(splitDF[["TRUE"]], "feature",
+                                       c("assay", "rowname", "colname"))
+        DFnoDups <- tidyr::unite_(splitDF[["FALSE"]], "feature",
+            c("assay", "rowname"))
+        DFnoDups <- DFnoDups[, colnames(DFnoDups) != "colname"]
+
+        wideDups <- tidyr::spread_(DFwithDups, key = key, value = "value")
+        wideNoDups <- tidyr::spread_(DFnoDups, key = key, value = "value")
+        wideDataFrame <- merge(wideNoDups, wideDups, by = "primary", all = TRUE)
+        wideDataFrame <- wideDataFrame[
+            match(rownames(colData(object)), wideDataFrame[["primary"]]), ]
+        S4Vectors::DataFrame(wideDataFrame, check.names = check.names)
+})
 
 #' @rdname MultiAssayExperiment-helpers
 #'
