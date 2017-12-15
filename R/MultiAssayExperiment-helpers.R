@@ -345,7 +345,8 @@ setMethod("wideFormat", "MultiAssayExperiment",
 
         wideDups <- tidyr::spread_(DFwithDups, key = key, value = "value")
         wideNoDups <- tidyr::spread_(DFnoDups, key = key, value = "value")
-        wideDataFrame <- merge(wideNoDups, wideDups, by = "primary", all = TRUE)
+        wideDataFrame <- merge(wideNoDups, wideDups,
+            by = intersect(names(wideNoDups), names(wideDups)), all = TRUE)
     } else {
         wideDF <- tidyr::unite_(longDataFrame, "feature", c("assay", "rowname"))
         wideDF <- wideDF[, colnames(wideDF) != "colname"]

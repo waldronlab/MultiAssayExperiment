@@ -30,4 +30,4 @@ test_that("wideFormat returns primary column order identical to colData rownames
     wideacc <- wideFormat(acc)
     expect_true(identical(rownames(colData(acc)),
         as.character(wideacc[["primary"]])))
-    })
+})
