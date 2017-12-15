@@ -55,10 +55,10 @@ intersectColumns <- function(x) {
 #' @param x A MultiAssayExperiment or ExperimentList
 #' @param incomparables unused argument
 #' @exportMethod duplicated
-#' @details For the \code{duplicated} function, the \code{incomparables} and
-#' ellipsis \code{\ldots} arguments are not used. \code{duplicated} is not
-#' supported for \code{ExperimentList} objects due to no available
-#' \code{sampleMap}.
+#' @details For the \code{anyDuplicated} and \code{duplicated} functions,
+#' the \code{incomparables} and ellipsis \code{\ldots} arguments are not used.
+#' Neither \code{duplicated} nor \code{anyDuplicated} is supported for
+#' \code{ExperimentList} due to an unavailable \code{sampleMap}.
 setMethod("duplicated", "MultiAssayExperiment",
           function(x, incomparables = FALSE, ...) {
     listMap <- mapToList(sampleMap(x))
@@ -75,6 +75,15 @@ setMethod("duplicated", "MultiAssayExperiment",
         names(resChunk) <- colnames(lmat)
         resChunk
     })
+})
+
+#' @rdname MultiAssayExperiment-helpers
+#' @exportMethod anyDuplicated
+setMethod("anyDuplicated", "MultiAssayExperiment",
+    function(x, incomparables = FALSE, ....) {
+        dups <- duplicated(x)
+        dupVec <- vapply(dups, function(x) any(as.matrix(x)), logical(1L))
+        any(dupVec)
 })
 
 # mergeReplicates function ------------------------------------------------

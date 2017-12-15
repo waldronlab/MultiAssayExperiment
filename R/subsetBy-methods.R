@@ -1,7 +1,7 @@
 #' @include MultiAssayExperiment-class.R ExperimentList-class.R
 #'
 #' @import BiocGenerics S4Vectors methods
-#' @importFrom BiocGenerics duplicated
+#' @importFrom BiocGenerics duplicated anyDuplicated
 #' @importFrom utils .DollarNames
 #' @importFrom stats kmeans
 #' @importFrom reshape2 melt

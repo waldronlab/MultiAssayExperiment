@@ -9,6 +9,7 @@
 \alias{duplicated}
 \alias{intersectColumns}
 \alias{duplicated,MultiAssayExperiment-method}
+\alias{anyDuplicated,MultiAssayExperiment-method}
 \alias{mergeReplicates}
 \alias{mergeReplicates,MultiAssayExperiment-method}
 \alias{mergeReplicates,ANY-method}
@@ -30,6 +31,8 @@ intersectRows(x)
 intersectColumns(x)
 
 \S4method{duplicated}{MultiAssayExperiment}(x, incomparables = FALSE, ...)
+
+\S4method{anyDuplicated}{MultiAssayExperiment}(x, incomparables = FALSE, ....)
 
 mergeReplicates(x, replicates = list(), simplify = BiocGenerics::mean, ...)
 
@@ -110,10 +113,10 @@ for \code{ExperimentList} objects.
 }
 }
 \details{
-For the \code{duplicated} function, the \code{incomparables} and
-ellipsis \code{\ldots} arguments are not used. \code{duplicated} is not
-supported for \code{ExperimentList} objects due to no available
-\code{sampleMap}.
+For the \code{anyDuplicated} and \code{duplicated} functions,
+the \code{incomparables} and ellipsis \code{\ldots} arguments are not used.
+Neither \code{duplicated} nor \code{anyDuplicated} is supported for
+\code{ExperimentList} due to an unavailable \code{sampleMap}.
 
 The \code{mergeReplicates} function is a house-keeping method
 for a \code{MultiAssayExperiment} where only \code{complete.cases} are
