@@ -323,8 +323,7 @@ MultiAssayExperiment <-
 ## 3.ii. Within rows of "sampleMap" corresponding to a single value in the
 ## "assay" column, there can be no duplicated values in the "colname" column
 .uniqueNamesInAssays <- function(object) {
-    SampMap <- sampleMap(object)
-    lcheckdups <- mapToList(SampMap[, c("assay", "colname")])
+    lcheckdups <- colnames(object)
     logchecks <- any(vapply(lcheckdups, FUN = function(x) {
         as.logical(anyDuplicated(x))
     }, FUN.VALUE = logical(1L)))

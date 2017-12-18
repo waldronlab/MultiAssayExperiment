@@ -29,8 +29,8 @@ NULL
 #' @describeIn ExperimentList Get the dimension names for
 #' an \code{ExperimentList} using \code{\link[IRanges]{CharacterList}}
 setMethod("dimnames", "ExperimentList", function(x) {
-    list(IRanges::CharacterList(lapply(x, rownames)),
-    IRanges::CharacterList(lapply(x, colnames)))
+    list(IRanges::CharacterList(lapply(x, function(g) dimnames(g)[[1]])),
+    IRanges::CharacterList(lapply(x, function(g) dimnames(g)[[2]])))
 })
 
 #' @describeIn MultiAssayExperiment Get the dimension names
