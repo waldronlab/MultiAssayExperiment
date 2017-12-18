@@ -4,7 +4,7 @@ NULL
 #' @name MultiAssayExperiment-helpers
 #' @title A group of helper functions for manipulating and cleaning a
 #' MultiAssayExperiment
-#' @aliases intersectRows intersectColumns mergeReplicates duplicated
+#' @aliases intersectRows intersectColumns mergeReplicates replicated
 #' @description A set of helper functions were created to help clean and
 #' manipulate a MultiAssayExperiment object. \code{intersectRows} also works
 #' for \code{ExperimentList} objects.
@@ -21,8 +21,8 @@ NULL
 #'     measurements across all experiments
 #'     \item replicated: A function that identifies multiple samples that
 #'     originate from a single biological unit within each assay
-#'     \item mergeReplicates: A function that combines duplicated / repeated
-#'     measurements across all experiments and is guided by the duplicated
+#'     \item mergeReplicates: A function that combines replicated / repeated
+#'     measurements across all experiments and is guided by the replicated
 #'     return value
 #'     \item longFormat: A \code{MultiAssayExperiment} method that
 #'     returns a small and skinny \link{DataFrame}. The \code{colDataCols}
@@ -82,6 +82,16 @@ setGeneric("replicated", function(x) standardGeneric("replicated"))
 #' @rdname MultiAssayExperiment-helpers
 #' @details The \code{replicated} function finds replicate samples in each
 #' assay and returns a list of \linkS4class{LogicalList}s for each assay.
+#' A \linkS4class{LogicalList} is given for each assay where each element
+#' in such list corresponds to a biological unit entry in the \code{sampleMap},
+#' (labeled as "primary"). Each element in this list of "primary" vectors is
+#' a logical vector that identifies samples for that given biological unit.
+#' Each logical vector is labeled with the "primary" identifier found in the
+#' \code{sampleMap}. The \code{anyReplicated} will test to see if any of these
+#' logical vectors has a summation value greater than one
+#' (i.e., \strong{\code{sum(...) > 1L}}). These methods are not available for
+#' an \code{ExperimentList} due to the unavailability of the \code{sampleMap}
+#' structure.
 setMethod("replicated", "MultiAssayExperiment", function(x) {
     listMap <- mapToList(sampleMap(x))
     lapply(listMap, function(assayDF) {
@@ -128,25 +138,28 @@ setGeneric("mergeReplicates", function(x, replicates = list(),
 #'
 #' @section mergeReplicates:
 #' The \code{mergeReplicates} function makes use of the output from
-#' \code{duplicated} which will point out the duplicate measurements by
+#' \code{replicated} which will point out the duplicate measurements by
 #' biological unit in the \code{MultiAssayExperiment}. This function will return
 #' a \code{MultiAssayExperiment} with merged replicates. Additional arguments
 #' can be provided to the simplify argument via the ellipsis (\ldots).
 #'
 #' @param replicates A list of \linkS4class{LogicalList}s
-#' indicating multiple / duplicate entries for each biological unit, see the
-#' \code{duplicated} output
+#' indicating multiple / duplicate entries for each biological unit per assay,
+#' see \code{replicated} (default \code{replicated(x)}).
 #' @param simplify A function for merging repeat measurements in experiments
-#' as indicated by replicates for \code{MultiAssayExperiment}
+#' as indicated by the \code{replicated} method for \code{MultiAssayExperiment}
 #'
 #' @exportMethod mergeReplicates
 setMethod("mergeReplicates", "MultiAssayExperiment",
-    function(x, replicates = list(), simplify = BiocGenerics::mean, ...) {
-        if (!length(replicates))
-            replicates <- duplicated(x)
-    experimentList <- mergeReplicates(x = experiments(x),
-                                      replicates = replicates,
-                                      simplify = simplify, ...)
+    function(x, replicates = replicated(x), simplify = BiocGenerics::mean, ...)
+{
+    if (!length(replicates))
+        stop("'replicates' must be a list of technical replicates for each",
+            "\n  biological unit. See '?replicated'.")
+    experimentList <- mergeReplicates(
+        x = experiments(x),
+        replicates = replicates,
+        simplify = simplify, ...)
     experiments(x) <- experimentList
     x
 })
@@ -162,7 +175,7 @@ setMethod("mergeReplicates", "MultiAssayExperiment",
 setMethod("mergeReplicates", "ExperimentList",
     function(x, replicates = list(), simplify = BiocGenerics::mean, ...) {
         if (!length(replicates))
-            stop("'replicates' must be a 'list' of duplicated column elements",
+            stop("'replicates' must be a 'list' of replicated column elements",
                  "\n per biological unit")
         idx <- seq_along(x)
         names(idx) <- names(x)
@@ -340,7 +353,7 @@ setGeneric("wideFormat", function(object, ...) standardGeneric("wideFormat"))
 setMethod("wideFormat", "MultiAssayExperiment",
     function(object, colDataCols = NULL, key = "feature", ...)
 {
-    dups <- duplicated(object)
+    dups <- replicated(object)
     cnames <- colnames(object)
     check.names <- list(...)[["check.names"]]
     if (is.null(check.names)) check.names <- TRUE
@@ -348,7 +361,7 @@ setMethod("wideFormat", "MultiAssayExperiment",
     longDataFrame <- longFormat(object, colDataCols = colDataCols, ...)
     longDataFrame <- as.data.frame(longDataFrame)
 
-    if (anyDuplicated(object)) {
+    if (anyreplicated(object)) {
         lVects <- lapply(seq_along(dups), function(i, duplic) {
             assayname <- names(duplic)[[i]]
             logilist <- duplic[[i]]
@@ -360,9 +373,9 @@ setMethod("wideFormat", "MultiAssayExperiment",
             apply(lData, 1, function(x) lmat[x[1], x[2]])
         }, duplic = dups)
 
-        longDataFrame[["duplicated"]] <- unlist(lVects)
-        splitDF <- split(longDataFrame, longDataFrame[["duplicated"]])
-        splitDF <- lapply(splitDF, function(x) x[, names(x) != "duplicated"])
+        longDataFrame[["replicated"]] <- unlist(lVects)
+        splitDF <- split(longDataFrame, longDataFrame[["replicated"]])
+        splitDF <- lapply(splitDF, function(x) x[, names(x) != "replicated"])
 
         DFwithDups <- tidyr::unite_(splitDF[["TRUE"]], "feature",
                                        c("assay", "rowname", "colname"))
@@ -463,11 +476,13 @@ setMethod("hasRowRanges", "ExperimentList", function(x) {
 #'
 #' @param incomparables unused argument
 #' @exportMethod duplicated
+#' @aliases duplicated
 #'
-#' @details \strong{Deprecated:} For the \code{anyDuplicated} and \code{duplicated} functions,
-#' the \code{incomparables} and ellipsis \code{\ldots} arguments are not used.
-#' Neither \code{duplicated} nor \code{anyDuplicated} is supported for
-#' \code{ExperimentList} due to an unavailable \code{sampleMap}.
+#' @details \strong{Deprecated:} For the \code{anyDuplicated} and
+#' \code{duplicated} functions, the \code{incomparables} and ellipsis
+#' \code{\ldots} arguments are not used. Neither \code{duplicated} nor
+#' \code{anyDuplicated} is supported for \code{ExperimentList} due to an
+#' unavailable \code{sampleMap}.
 setMethod("duplicated", "MultiAssayExperiment",
           function(x, incomparables = FALSE, ...) {
     .Deprecated("replicated")

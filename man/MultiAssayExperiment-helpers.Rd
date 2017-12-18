@@ -6,7 +6,7 @@
 \alias{intersectRows}
 \alias{intersectColumns}
 \alias{mergeReplicates}
-\alias{duplicated}
+\alias{replicated}
 \alias{isEmpty,MultiAssayExperiment-method}
 \alias{intersectRows}
 \alias{intersectColumns}
@@ -28,6 +28,7 @@
 \alias{hasRowRanges,MultiAssayExperiment-method}
 \alias{hasRowRanges,ExperimentList-method}
 \alias{duplicated,MultiAssayExperiment-method}
+\alias{duplicated}
 \title{A group of helper functions for manipulating and cleaning a
 MultiAssayExperiment}
 \usage{
@@ -49,8 +50,8 @@ anyReplicated(x)
 
 mergeReplicates(x, replicates = list(), simplify = BiocGenerics::mean, ...)
 
-\S4method{mergeReplicates}{MultiAssayExperiment}(x, replicates = list(),
-  simplify = BiocGenerics::mean, ...)
+\S4method{mergeReplicates}{MultiAssayExperiment}(x,
+  replicates = replicated(x), simplify = BiocGenerics::mean, ...)
 
 \S4method{mergeReplicates}{ANY}(x, replicates = list(),
   simplify = BiocGenerics::mean, ...)
@@ -84,11 +85,11 @@ hasRowRanges(x)
 \item{x}{A MultiAssayExperiment or ExperimentList}
 
 \item{replicates}{A list of \linkS4class{LogicalList}s
-indicating multiple / duplicate entries for each biological unit, see the
-\code{duplicated} output}
+indicating multiple / duplicate entries for each biological unit per assay,
+see \code{replicated} (default \code{replicated(x)}).}
 
 \item{simplify}{A function for merging repeat measurements in experiments
-as indicated by replicates for \code{MultiAssayExperiment}}
+as indicated by the \code{replicated} method for \code{MultiAssayExperiment}}
 
 \item{object}{Any supported class object}
 
@@ -112,14 +113,13 @@ for \code{ExperimentList} objects.
     \code{MultiAssayExperiment} objects
     \item intersectRows: Takes all common rows across experiments,
     excludes experiments with empty rownames
-    \item intersectColumns: A wrapper for
-    \link[=complete.cases,MultiAssayExperiment-method]{complete.cases} to
-    return a MultiAssayExperiment with only those biological units that have
+    \item intersectColumns: A wrapper for \code{complete.cases} to return a
+    \code{MultiAssayExperiment} with only those biological units that have
     measurements across all experiments
     \item replicated: A function that identifies multiple samples that
     originate from a single biological unit within each assay
-    \item mergeReplicates: A function that combines duplicated / repeated
-    measurements across all experiments and is guided by the duplicated
+    \item mergeReplicates: A function that combines replicated / repeated
+    measurements across all experiments and is guided by the replicated
     return value
     \item longFormat: A \code{MultiAssayExperiment} method that
     returns a small and skinny \link{DataFrame}. The \code{colDataCols}
@@ -136,6 +136,16 @@ for \code{ExperimentList} objects.
 \details{
 The \code{replicated} function finds replicate samples in each
 assay and returns a list of \linkS4class{LogicalList}s for each assay.
+A \linkS4class{LogicalList} is given for each assay where each element
+in such list corresponds to a biological unit entry in the \code{sampleMap},
+(labeled as "primary"). Each element in this list of "primary" vectors is
+a logical vector that identifies samples for that given biological unit.
+Each logical vector is labeled with the "primary" identifier found in the
+\code{sampleMap}. The \code{anyReplicated} will test to see if any of these
+logical vectors has a summation value greater than one
+(i.e., \strong{\code{sum(...) > 1L}}). These methods are not available for
+an \code{ExperimentList} due to the unavailability of the \code{sampleMap}
+structure.
 
 The \code{mergeReplicates} function is a house-keeping method
 for a \code{MultiAssayExperiment} where only \code{complete.cases} are
@@ -161,15 +171,16 @@ The \code{hasRowRanges} method identifies assays that support
 a \link[SummarizedExperiment]{rowRanges} method \emph{and} return a
 \linkS4class{GRanges} object.
 
-\strong{Deprecated:} For the \code{anyDuplicated} and \code{duplicated} functions,
-the \code{incomparables} and ellipsis \code{\ldots} arguments are not used.
-Neither \code{duplicated} nor \code{anyDuplicated} is supported for
-\code{ExperimentList} due to an unavailable \code{sampleMap}.
+\strong{Deprecated:} For the \code{anyDuplicated} and
+\code{duplicated} functions, the \code{incomparables} and ellipsis
+\code{\ldots} arguments are not used. Neither \code{duplicated} nor
+\code{anyDuplicated} is supported for \code{ExperimentList} due to an
+unavailable \code{sampleMap}.
 }
 \section{mergeReplicates}{
 
 The \code{mergeReplicates} function makes use of the output from
-\code{duplicated} which will point out the duplicate measurements by
+\code{replicated} which will point out the duplicate measurements by
 biological unit in the \code{MultiAssayExperiment}. This function will return
 a \code{MultiAssayExperiment} with merged replicates. Additional arguments
 can be provided to the simplify argument via the ellipsis (\ldots).
