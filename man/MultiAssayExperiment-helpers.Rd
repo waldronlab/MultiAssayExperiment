@@ -7,7 +7,11 @@
 \alias{intersectColumns}
 \alias{mergeReplicates}
 \alias{duplicated}
+\alias{isEmpty,MultiAssayExperiment-method}
+\alias{intersectRows}
 \alias{intersectColumns}
+\alias{replicated}
+\alias{replicated,MultiAssayExperiment-method}
 \alias{anyReplicated}
 \alias{anyReplicated,MultiAssayExperiment-method}
 \alias{mergeReplicates}
@@ -23,14 +27,21 @@
 \alias{hasRowRanges}
 \alias{hasRowRanges,MultiAssayExperiment-method}
 \alias{hasRowRanges,ExperimentList-method}
+\alias{duplicated,MultiAssayExperiment-method}
 \title{A group of helper functions for manipulating and cleaning a
 MultiAssayExperiment}
 \usage{
+\S4method{complete.cases}{MultiAssayExperiment}(...)
+
+\S4method{isEmpty}{MultiAssayExperiment}(x)
+
 intersectRows(x)
 
 intersectColumns(x)
 
-\S4method{duplicated}{MultiAssayExperiment}(x, incomparables = FALSE, ...)
+replicated(x)
+
+\S4method{replicated}{MultiAssayExperiment}(x)
 
 anyReplicated(x)
 
@@ -64,13 +75,13 @@ hasRowRanges(x)
 \S4method{hasRowRanges}{MultiAssayExperiment}(x)
 
 \S4method{hasRowRanges}{ExperimentList}(x)
+
+\S4method{duplicated}{MultiAssayExperiment}(x, incomparables = FALSE, ...)
 }
 \arguments{
-\item{x}{A MultiAssayExperiment or ExperimentList}
-
-\item{incomparables}{unused argument}
-
 \item{...}{Additional arguments. See details.}
+
+\item{x}{A MultiAssayExperiment or ExperimentList}
 
 \item{replicates}{A list of \linkS4class{LogicalList}s
 indicating multiple / duplicate entries for each biological unit, see the
@@ -86,6 +97,8 @@ as indicated by replicates for \code{MultiAssayExperiment}}
 \item{key}{name of column whose values will used as variables in
 the wide dataset from \link[tidyr]{spread}. If none are specified, assay,
 rowname, and colname will be combined}
+
+\item{incomparables}{unused argument}
 }
 \description{
 A set of helper functions were created to help clean and
@@ -95,14 +108,16 @@ for \code{ExperimentList} objects.
 \itemize{
     \item complete.cases: Returns a logical vector corresponding to 'colData'
     rows that have data across all experiments
-    \item duplicated: Returns a 'list' of 'LogicalList's that indicate
-    what measurements originate from the same biological unit
+    \item isEmpty: Returns a logical \code{TRUE} value for zero length
+    \code{MultiAssayExperiment} objects
     \item intersectRows: Takes all common rows across experiments,
     excludes experiments with empty rownames
     \item intersectColumns: A wrapper for
     \link[=complete.cases,MultiAssayExperiment-method]{complete.cases} to
     return a MultiAssayExperiment with only those biological units that have
     measurements across all experiments
+    \item replicated: A function that identifies multiple samples that
+    originate from a single biological unit within each assay
     \item mergeReplicates: A function that combines duplicated / repeated
     measurements across all experiments and is guided by the duplicated
     return value
@@ -112,13 +127,15 @@ for \code{ExperimentList} objects.
     \item wideFormat: A function to return a wide \link{DataFrame} where
     each row represents an observation. Optional \code{colDataCols} can be
     added when using a \code{MultiAssayExperiment}.
+    \item hasRowRanges: A function that identifies ExperimentList elements
+    that have a \link[SummarizedExperiment]{rowRanges} method
+    \item duplicated: (Deprecated) Returns a 'list' of 'LogicalList's that
+    indicate what measurements originate from the same biological unit
 }
 }
 \details{
-For the \code{anyDuplicated} and \code{duplicated} functions,
-the \code{incomparables} and ellipsis \code{\ldots} arguments are not used.
-Neither \code{duplicated} nor \code{anyDuplicated} is supported for
-\code{ExperimentList} due to an unavailable \code{sampleMap}.
+The \code{replicated} function finds replicate samples in each
+assay and returns a list of \linkS4class{LogicalList}s for each assay.
 
 The \code{mergeReplicates} function is a house-keeping method
 for a \code{MultiAssayExperiment} where only \code{complete.cases} are

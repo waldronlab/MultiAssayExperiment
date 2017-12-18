@@ -12,14 +12,15 @@ NULL
 #' \itemize{
 #'     \item complete.cases: Returns a logical vector corresponding to 'colData'
 #'     rows that have data across all experiments
-#'     \item duplicated: Returns a 'list' of 'LogicalList's that indicate
-#'     what measurements originate from the same biological unit
+#'     \item isEmpty: Returns a logical \code{TRUE} value for zero length
+#'     \code{MultiAssayExperiment} objects
 #'     \item intersectRows: Takes all common rows across experiments,
 #'     excludes experiments with empty rownames
-#'     \item intersectColumns: A wrapper for
-#'     \link[=complete.cases,MultiAssayExperiment-method]{complete.cases} to
-#'     return a MultiAssayExperiment with only those biological units that have
+#'     \item intersectColumns: A wrapper for \code{complete.cases} to return a
+#'     \code{MultiAssayExperiment} with only those biological units that have
 #'     measurements across all experiments
+#'     \item replicated: A function that identifies multiple samples that
+#'     originate from a single biological unit within each assay
 #'     \item mergeReplicates: A function that combines duplicated / repeated
 #'     measurements across all experiments and is guided by the duplicated
 #'     return value
@@ -29,8 +30,31 @@ NULL
 #'     \item wideFormat: A function to return a wide \link{DataFrame} where
 #'     each row represents an observation. Optional \code{colDataCols} can be
 #'     added when using a \code{MultiAssayExperiment}.
+#'     \item hasRowRanges: A function that identifies ExperimentList elements
+#'     that have a \link[SummarizedExperiment]{rowRanges} method
+#'     \item duplicated: (Deprecated) Returns a 'list' of 'LogicalList's that
+#'     indicate what measurements originate from the same biological unit
 #' }
 #'
+#' @param x A MultiAssayExperiment or ExperimentList
+#'
+#' @exportMethod complete.cases
+setMethod("complete.cases", "MultiAssayExperiment", function(...) {
+    args <- list(...)
+    if (length(args) == 1L) {
+        oldMap <- sampleMap(args[[1L]])
+        listMap <- mapToList(oldMap)
+        allPrimary <- Reduce(intersect,
+            lapply(listMap, function(element) { element[["primary"]] }))
+        rownames(colData(args[[1L]])) %in% allPrimary
+    } else { stop("Provide only a 'MultiAssayExperiment'") }
+})
+
+#' @rdname MultiAssayExperiment-helpers
+#' @exportMethod isEmpty
+setMethod("isEmpty", "MultiAssayExperiment", function(x) length(x) == 0L)
+
+#' @rdname MultiAssayExperiment-helpers
 #' @export
 intersectRows <- function(x) {
     rows <- rownames(x)
@@ -52,15 +76,13 @@ intersectColumns <- function(x) {
 }
 
 #' @rdname MultiAssayExperiment-helpers
-#' @param x A MultiAssayExperiment or ExperimentList
-#' @param incomparables unused argument
-#' @exportMethod duplicated
-#' @details For the \code{anyDuplicated} and \code{duplicated} functions,
-#' the \code{incomparables} and ellipsis \code{\ldots} arguments are not used.
-#' Neither \code{duplicated} nor \code{anyDuplicated} is supported for
-#' \code{ExperimentList} due to an unavailable \code{sampleMap}.
-setMethod("duplicated", "MultiAssayExperiment",
-          function(x, incomparables = FALSE, ...) {
+#' @export
+setGeneric("replicated", function(x) standardGeneric("replicated"))
+
+#' @rdname MultiAssayExperiment-helpers
+#' @details The \code{replicated} function finds replicate samples in each
+#' assay and returns a list of \linkS4class{LogicalList}s for each assay.
+setMethod("replicated", "MultiAssayExperiment", function(x) {
     listMap <- mapToList(sampleMap(x))
     lapply(listMap, function(assayDF) {
         pnames <- unique(assayDF[["primary"]])
@@ -435,4 +457,19 @@ setMethod("hasRowRanges", "MultiAssayExperiment", function(x) {
 #' @exportMethod hasRowRanges
 setMethod("hasRowRanges", "ExperimentList", function(x) {
     vapply(x, .tryRowRanges, logical(1L))
+})
+
+#' @rdname MultiAssayExperiment-helpers
+#'
+#' @param incomparables unused argument
+#' @exportMethod duplicated
+#'
+#' @details \strong{Deprecated:} For the \code{anyDuplicated} and \code{duplicated} functions,
+#' the \code{incomparables} and ellipsis \code{\ldots} arguments are not used.
+#' Neither \code{duplicated} nor \code{anyDuplicated} is supported for
+#' \code{ExperimentList} due to an unavailable \code{sampleMap}.
+setMethod("duplicated", "MultiAssayExperiment",
+          function(x, incomparables = FALSE, ...) {
+    .Deprecated("replicated")
+    replicated(x)
 })

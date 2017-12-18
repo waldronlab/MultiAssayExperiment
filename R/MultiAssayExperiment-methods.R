@@ -50,28 +50,6 @@ setMethod("$", "MultiAssayExperiment", function(x, name) {
     colData(x)[[name]]
 })
 
-#' @describeIn MultiAssayExperiment A \code{logical} value indicating an empty
-#' \code{MultiAssayExperiment}
-#' @exportMethod isEmpty
-setMethod("isEmpty", "MultiAssayExperiment", function(x)
-    length(x) == 0L)
-
-#' @exportMethod complete.cases
-#' @describeIn MultiAssayExperiment Return a logical vector of biological units
-#' with data across all experiments
-setMethod("complete.cases", "MultiAssayExperiment", function(...) {
-    args <- list(...)
-    if (length(args) == 1L) {
-        oldMap <- sampleMap(args[[1L]])
-        listMap <- mapToList(oldMap)
-        allPrimary <- Reduce(intersect,
-                             lapply(listMap,
-                                    function(element) {
-                                        element[["primary"]]
-                                    }))
-        rownames(colData(args[[1L]])) %in% allPrimary
-    }
-})
 
 .splitArgs <- function(args) {
     assayArgNames <- c("mcolname", "background", "type",

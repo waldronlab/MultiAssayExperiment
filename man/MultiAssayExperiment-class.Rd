@@ -9,8 +9,6 @@
 \alias{names,MultiAssayExperiment-method}
 \alias{updateObject,MultiAssayExperiment-method}
 \alias{dimnames,MultiAssayExperiment-method}
-\alias{isEmpty,MultiAssayExperiment-method}
-\alias{complete.cases,MultiAssayExperiment-method}
 \alias{c,MultiAssayExperiment-method}
 \alias{assays,MultiAssayExperiment-method}
 \alias{assay,MultiAssayExperiment,missing-method}
@@ -27,10 +25,6 @@
 \S4method{updateObject}{MultiAssayExperiment}(object, ..., verbose = FALSE)
 
 \S4method{dimnames}{MultiAssayExperiment}(x)
-
-\S4method{isEmpty}{MultiAssayExperiment}(x)
-
-\S4method{complete.cases}{MultiAssayExperiment}(...)
 
 \S4method{c}{MultiAssayExperiment}(x, ..., sampleMap = NULL, mapFrom = NULL)
 
@@ -105,12 +99,6 @@ objects to new API
 
 \item \code{dimnames}: Get the dimension names
 for a \code{MultiAssayExperiment} object
-
-\item \code{isEmpty}: A \code{logical} value indicating an empty
-\code{MultiAssayExperiment}
-
-\item \code{complete.cases}: Return a logical vector of biological units
-with data across all experiments
 
 \item \code{c}: Add an element to the
 \code{ExperimentList} data slot
