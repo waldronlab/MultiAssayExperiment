@@ -8,8 +8,8 @@
 \alias{mergeReplicates}
 \alias{duplicated}
 \alias{intersectColumns}
-\alias{duplicated,MultiAssayExperiment-method}
-\alias{anyDuplicated,MultiAssayExperiment-method}
+\alias{anyReplicated}
+\alias{anyReplicated,MultiAssayExperiment-method}
 \alias{mergeReplicates}
 \alias{mergeReplicates,MultiAssayExperiment-method}
 \alias{mergeReplicates,ANY-method}
@@ -32,7 +32,9 @@ intersectColumns(x)
 
 \S4method{duplicated}{MultiAssayExperiment}(x, incomparables = FALSE, ...)
 
-\S4method{anyDuplicated}{MultiAssayExperiment}(x, incomparables = FALSE, ...)
+anyReplicated(x)
+
+\S4method{anyReplicated}{MultiAssayExperiment}(x)
 
 mergeReplicates(x, replicates = list(), simplify = BiocGenerics::mean, ...)
 
@@ -141,6 +143,11 @@ biological unit.
 The \code{hasRowRanges} method identifies assays that support
 a \link[SummarizedExperiment]{rowRanges} method \emph{and} return a
 \linkS4class{GRanges} object.
+
+\strong{Deprecated:} For the \code{anyDuplicated} and \code{duplicated} functions,
+the \code{incomparables} and ellipsis \code{\ldots} arguments are not used.
+Neither \code{duplicated} nor \code{anyDuplicated} is supported for
+\code{ExperimentList} due to an unavailable \code{sampleMap}.
 }
 \section{mergeReplicates}{
 

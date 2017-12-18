@@ -78,12 +78,14 @@ setMethod("duplicated", "MultiAssayExperiment",
 })
 
 #' @rdname MultiAssayExperiment-helpers
-#' @exportMethod anyDuplicated
-setMethod("anyDuplicated", "MultiAssayExperiment",
-    function(x, incomparables = FALSE, ...) {
-        dups <- duplicated(x)
-        dupVec <- vapply(dups, function(x) any(as.matrix(x)), logical(1L))
-        any(dupVec)
+#' @export
+setGeneric("anyReplicated", function(x) standardGeneric("anyReplicated"))
+
+#' @rdname MultiAssayExperiment-helpers
+#' @exportMethod anyReplicated
+setMethod("anyReplicated", "MultiAssayExperiment", function(x) {
+    reps <- replicated(x)
+    vapply(reps, function(x) any(as.matrix(x)), logical(1L))
 })
 
 # mergeReplicates function ------------------------------------------------
