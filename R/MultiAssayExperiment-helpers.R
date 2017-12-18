@@ -353,7 +353,6 @@ setGeneric("wideFormat", function(object, ...) standardGeneric("wideFormat"))
 setMethod("wideFormat", "MultiAssayExperiment",
     function(object, colDataCols = NULL, key = "feature", ...)
 {
-    dups <- replicated(object)
     cnames <- colnames(object)
     check.names <- list(...)[["check.names"]]
     if (is.null(check.names)) check.names <- TRUE
@@ -361,7 +360,8 @@ setMethod("wideFormat", "MultiAssayExperiment",
     longDataFrame <- longFormat(object, colDataCols = colDataCols, ...)
     longDataFrame <- as.data.frame(longDataFrame)
 
-    if (anyreplicated(object)) {
+    if (any(anyReplicated(object))) {
+        dups <- replicated(object)
         lVects <- lapply(seq_along(dups), function(i, duplic) {
             assayname <- names(duplic)[[i]]
             logilist <- duplic[[i]]

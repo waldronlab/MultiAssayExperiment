@@ -657,7 +657,7 @@ MatchedAssayExperiment <- function(experiments = ExperimentList(),
 
 setAs("MultiAssayExperiment", "MatchedAssayExperiment", function(from) {
     from <- intersectColumns(from)
-    if (anyReplicated(from))
+    if (any(anyReplicated(from)))
         stop("Resolve replicate columns")
     new("MatchedAssayExperiment", from)
 })
