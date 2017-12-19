@@ -33,6 +33,8 @@
 #' data for all participants
 #' @param sampleMap A \linkS4class{DataFrame} of sample identifiers, assay
 #' samples, and assay names
+#' @param ... Optional arguments for the \code{MultiAssayExperiment} constructor
+#' function such as \code{metadata} and \code{drops}.
 #' @return A \code{list} containing all the essential components of a
 #' \code{\link{MultiAssayExperiment}} as well as a "drops" metadata element that
 #' indicates non-matched names. The names of the resulting list correspond to
@@ -54,41 +56,47 @@
 #' do.call(MultiAssayExperiment, preparedMAE)
 #'
 #' @export prepMultiAssay
-prepMultiAssay <- function(ExperimentList, colData, sampleMap) {
+prepMultiAssay <- function(ExperimentList, colData, sampleMap, ...) {
     if (!is(sampleMap, "DataFrame"))
         sampleMap <- S4Vectors::DataFrame(sampleMap)
     if (is.null(names(ExperimentList)))
         stop("ExperimentList does not have names, assign names")
-    drops <- list()
+
+    dotargs <- list(...)
+    drops <- if (!is.null(dotargs[["drops"]])) dotargs[["drops"]] else list()
+    metadata <- if (!is.null(dotargs[["metadata"]])) dotargs[["metadata"]] else list()
     ExperimentList <- ExperimentList(ExperimentList)
-    charTypes <- list(assay = is.factor,
-                      primary = is.character,
-                      colname = is.character)
+
+    charTypes <- list(
+        assay = is.factor,
+        primary = is.character,
+        colname = is.character)
+
     correctType <- vapply(seq_along(charTypes),
-                          function(i, sampMap, char) {
-                              char[[i]](sampMap[, i])
-                          }, logical(1L),
-                          sampMap = sampleMap, char = charTypes)
+        function(i, sampMap, char) {
+            char[[i]](sampMap[, i])
+            }, logical(1L), sampMap = sampleMap, char = charTypes)
+
     if (any(!correctType)) {
-        coerceList <- list(assay = as.factor,
-                           primary = as.character,
-                           colname = as.character)
+        coerceList <- list(assay = as.factor, primary = as.character,
+            colname = as.character)
         fxIdx <- which(!correctType)
         for (i in fxIdx) {
             sampleMap[, i] <- coerceList[[i]](sampleMap[[i]])
         }
     }
-    assays <- levels(sampleMap[["assay"]])
-    if (length(names(ExperimentList)) != length(assays)) {
+
+    assays <- sort(levels(sampleMap[["assay"]]))
+    expNames <- sort(names(ExperimentList))
+    if (length(expNames) != length(assays)) {
         warning("\nLengths of names in the ExperimentList and sampleMap\n",
                 " are not equal")
-    } else if (any(!(assays %in% names(ExperimentList)))) {
+    } else if (any(!(assays %in% expNames))) {
         message("\nNames in the ExperimentList do not match sampleMap assay",
                 "\nstandardizing will be attempted...")
         nameErr <- TRUE
-        if (identical(tolower(assays), tolower(names(ExperimentList))) &&
-            !as.logical(anyDuplicated(tolower(assays),
-                                      tolower(names(ExperimentList))))) {
+        if (identical(tolower(assays), tolower(expNames)) &&
+            !as.logical(anyDuplicated(tolower(assays), tolower(expNames)))) {
             message(" - names set to lowercase")
             sampleMap[["assay"]] <- tolower(sampleMap[["assay"]])
             names(ExperimentList) <- tolower(names(ExperimentList))
@@ -138,5 +146,5 @@ prepMultiAssay <- function(ExperimentList, colData, sampleMap) {
         drops <- c(drops, columns = coldrops)
     }
     return(list(experiments = ExperimentList, colData = colData,
-                sampleMap = sampleMap, metadata = list(drops = drops)))
+        sampleMap = sampleMap, metadata = list(metadata, drops = drops)))
 }

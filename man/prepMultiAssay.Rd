@@ -4,7 +4,7 @@
 \alias{prepMultiAssay}
 \title{Prepare a \code{MultiAssayExperiment} instance}
 \usage{
-prepMultiAssay(ExperimentList, colData, sampleMap)
+prepMultiAssay(ExperimentList, colData, sampleMap, ...)
 }
 \arguments{
 \item{ExperimentList}{A \code{list} of all combined experiments}
@@ -14,6 +14,9 @@ data for all participants}
 
 \item{sampleMap}{A \linkS4class{DataFrame} of sample identifiers, assay
 samples, and assay names}
+
+\item{...}{Optional arguments for the \code{MultiAssayExperiment} constructor
+function such as \code{metadata} and \code{drops}.}
 }
 \value{
 A \code{list} containing all the essential components of a
