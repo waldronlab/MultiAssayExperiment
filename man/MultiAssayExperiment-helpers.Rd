@@ -7,6 +7,7 @@
 \alias{intersectColumns}
 \alias{mergeReplicates}
 \alias{replicated}
+\alias{complete.cases,MultiAssayExperiment-method}
 \alias{isEmpty,MultiAssayExperiment-method}
 \alias{intersectRows}
 \alias{intersectColumns}

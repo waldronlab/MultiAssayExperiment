@@ -5,6 +5,7 @@ NULL
 #' @title A group of helper functions for manipulating and cleaning a
 #' MultiAssayExperiment
 #' @aliases intersectRows intersectColumns mergeReplicates replicated
+#' complete.cases,MultiAssayExperiment-method
 #' @description A set of helper functions were created to help clean and
 #' manipulate a MultiAssayExperiment object. \code{intersectRows} also works
 #' for \code{ExperimentList} objects.
