@@ -273,16 +273,20 @@ setMethod("longFormat", "ANY", function(object, ...) {
         object <- assay(object,
             i = if (!is.null(args[["i"]])) { args[["i"]] } else { 1L })
     }
-    if (is(object, "matrix") && !nullROWS) {
-        object <- reshape2::melt(object, varnames = c("rowname", "colname"),
-            as.is = TRUE)
-    } else {
-    object <- data.frame(rowname = rowNAMES, object, stringsAsFactors = FALSE,
-        check.names = FALSE, row.names = NULL)
-    object <- tidyr::gather(object, "colname", "value",
-        seq_along(object)[-1L])
+    if (is(object, "matrix")) {
+        object <- as.data.frame(object)
     }
-    rectangle <- S4Vectors::DataFrame(object)
+    ## use stats::reshape instead of reshape2::melt
+    if (nullROWS)
+        rownames(object) <- rowNAMES
+    object <- stats::reshape(object, idvar = "rowname",
+        ids = rownames(object), times = names(object),
+        timevar = "colname", varying = list(names(object)),
+        direction = "long", v.names = "value")
+    ## Reshape leaves rownames even if new.row.names = NULL
+    rownames(object) <- NULL
+    object <- object[, c("rowname", "colname", "value")]
+    rectangle <- as(object, "DataFrame")
     rectangle[, "colname"] <- S4Vectors::Rle(rectangle[["colname"]])
     rectangle
 })
