@@ -1,6 +1,13 @@
 # MultiAssayExperiment
 ----------------------------------------------------------------
 
+## Changes in version 1.5.64
+
+### New features
+
+* Remove `clusterOn` function and move to `Bioconductor/MultiOmicQC` package
+on GitHub
+
 ## Changes in version 1.5.63
 
 ### New features
