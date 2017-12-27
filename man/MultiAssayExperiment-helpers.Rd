@@ -97,8 +97,9 @@ as indicated by the \code{replicated} method for \code{MultiAssayExperiment}}
 \item{colDataCols}{selected colData columns to include in the output}
 
 \item{key}{name of column whose values will used as variables in
-the wide dataset from \link[tidyr]{spread}. If none are specified, assay,
-rowname, and colname will be combined}
+the wide dataset, see the \code{timevar} argument in
+\link[stats]{reshape}. If none are specified, assay, rowname, and colname
+will be combined and named as the "feature" column (default "feature")}
 
 \item{incomparables}{unused argument}
 }

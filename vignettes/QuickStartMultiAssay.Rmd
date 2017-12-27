@@ -352,6 +352,7 @@ We see that 43 samples have all 5 assays, 32 are missing reverse-phase protein
 mutations and gistict, etc:
 
 ```{r}
+library(UpSetR)
 upsetSamples(miniACC)
 ```
 

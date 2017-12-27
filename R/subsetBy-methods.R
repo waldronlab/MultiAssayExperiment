@@ -4,7 +4,6 @@
 #' @importFrom BiocGenerics duplicated anyDuplicated
 #' @importFrom utils .DollarNames
 #' @importFrom stats kmeans reshape
-#' @importFrom tidyr gather
 #' @importFrom GenomicRanges GRanges
 #' @importFrom IRanges IRanges findOverlaps subsetByOverlaps overlapsAny
 #' @importFrom IRanges splitAsList SplitDataFrameList

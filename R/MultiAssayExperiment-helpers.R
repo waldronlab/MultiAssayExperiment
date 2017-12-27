@@ -329,6 +329,14 @@ setMethod("longFormat", "MultiAssayExperiment",
 
 # wideformat function -----------------------------------------------------
 
+.uniteDF <- function(dframe, coi) {
+    data.frame(
+        feature = apply(dframe[, coi], 1L, paste, collapse = "_"),
+        primary = dframe[["primary"]],
+        value = dframe[["value"]]
+    )
+}
+
 #' @rdname MultiAssayExperiment-helpers
 #' @aliases wideFormat
 #' @export
@@ -350,8 +358,9 @@ setGeneric("wideFormat", function(object, ...) standardGeneric("wideFormat"))
 #' units information.
 #'
 #' @param key name of column whose values will used as variables in
-#' the wide dataset from \link[tidyr]{spread}. If none are specified, assay,
-#' rowname, and colname will be combined
+#' the wide dataset, see the \code{timevar} argument in
+#' \link[stats]{reshape}. If none are specified, assay, rowname, and colname
+#' will be combined and named as the "feature" column (default "feature")
 #' @param ... Additional arguments. See details.
 #'
 #' @exportMethod wideFormat
@@ -364,6 +373,7 @@ setMethod("wideFormat", "MultiAssayExperiment",
 
     longDataFrame <- longFormat(object, colDataCols = colDataCols, ...)
     longDataFrame <- as.data.frame(longDataFrame)
+    colsofinterest <- c("assay", "rowname")
 
     if (any(anyReplicated(object))) {
         dups <- replicated(object)
@@ -375,31 +385,30 @@ setMethod("wideFormat", "MultiAssayExperiment",
             colnames(lmat) <- cnames[[i]]
             lData <- longDataFrame[
                 longDataFrame==assayname, c("primary", "colname")]
-            apply(lData, 1, function(x) lmat[x[1], x[2]])
+            apply(lData, 1L, function(x) lmat[x[1L], x[2L]])
         }, duplic = dups)
 
         longDataFrame[["replicated"]] <- unlist(lVects)
         splitDF <- split(longDataFrame, longDataFrame[["replicated"]])
         splitDF <- lapply(splitDF, function(x) x[, names(x) != "replicated"])
 
-        DFwithDups <- tidyr::unite_(splitDF[["TRUE"]], "feature",
-                                       c("assay", "rowname", "colname"))
-        DFnoDups <- tidyr::unite_(splitDF[["FALSE"]], "feature",
-            c("assay", "rowname"))
-        DFnoDups <- DFnoDups[, colnames(DFnoDups) != "colname"]
+        splitDF <- lapply(names(splitDF), function(splitter) {
+            dfchunk <- splitDF[[splitter]]
+            colsofinterest <- if (splitter == "TRUE") {
+                append(colsofinterest, "colname") } else { colsofinterest }
+            .uniteDF(dfchunk, colsofinterest)
+        })
+        wideData <- do.call(rbind, splitDF)
 
-        wideDups <- tidyr::spread_(DFwithDups, key = key, value = "value")
-        wideNoDups <- tidyr::spread_(DFnoDups, key = key, value = "value")
-        wideDataFrame <- merge(wideNoDups, wideDups,
-            by = intersect(names(wideNoDups), names(wideDups)), all = TRUE)
     } else {
-        wideDF <- tidyr::unite_(longDataFrame, "feature", c("assay", "rowname"))
-        wideDF <- wideDF[, colnames(wideDF) != "colname"]
-        wideDataFrame <- tidyr::spread_(wideDF, key = key, value = "value")
+        wideData <- .uniteDF(longDataFrame, colsofinterest)
     }
-    wideDataFrame <- wideDataFrame[
-        match(rownames(colData(object)), wideDataFrame[["primary"]]), ]
-    S4Vectors::DataFrame(wideDataFrame, check.names = check.names)
+    wideData <- stats::reshape(wideData, direction = "wide",
+        idvar = "primary", timevar = key)
+    names(wideData) <- gsub("value\\.", "", names(wideData))
+    wideData <- wideData[
+        match(rownames(colData(object)), wideData[["primary"]]), ]
+    S4Vectors::DataFrame(wideData, check.names = check.names)
 })
 
 #' @rdname MultiAssayExperiment-helpers

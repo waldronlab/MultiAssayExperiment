@@ -22,13 +22,14 @@
 #'
 #' @export clusterOn
 clusterOn <- function(MultiAssayExperiment, colDataCols, rownames,
-                      experiments, seed = NULL) {
+    experiments, seed = NULL) {
     MultiAssayExperiment <- MultiAssayExperiment[rownames, , experiments]
     longMulti <- longFormat(MultiAssayExperiment, colDataCols = colDataCols)
+    longMulti <- as.data.frame(longMulti)[, names(longMulti) != "assay"]
 
-    wideMulti <- tidyr::spread(
-        as.data.frame(longMulti)[, -(which(names(longMulti)=="assay"))],
-        key = "rowname", value = "value")
+    wideMulti <- stats::reshape(longMulti, direction = "wide",
+        timevar = "rowname", idvar = "primary", v.names = "value")
+    names(wideMulti) <- gsub("value\\.", "", names(wideMulti))
 
     expSubset <- wideMulti[, rownames]
     scaledExp <- apply(expSubset, 2, scale)
