@@ -10,25 +10,35 @@ MultiAssayExperiment
 
 # Installation of release and development versions
 
-MultiAssayExperiment is under active development, and we highly recommend installing a current development version rather than the release Bioconductor version. This can be done either by installing the [development version of Bioconductor](https://www.bioconductor.org/developers/how-to/useDevel/), or by installing from Github:
+MultiAssayExperiment is under active development, and we highly recommend
+installing a current development version rather than the release Bioconductor
+version. This can be done by installing the
+[development version of Bioconductor](https://www.bioconductor.org/developers/how-to/useDevel/):
 
-`BiocInstaller::biocLite("waldronlab/MultiAssayExperiment")`
+```
+library(BiocInstaller)
+useDevel()
+biocLite("MultiAssayExperiment")
+```
 
 # Ready-to-use MultiAssayExperiment objects
 
-See http://tinyurl.com/MAEOurls for ready-packaged MultiAssayExperiment TCGA and CCLE objects  to try out.
+See the newly released `curatedTCGAData` `ExperimentHub` package for
+ready-packaged MultiAssayExperiment TCGA objects.
 
 # Documentation
 
-See the 
+The `MultiAssayExperiment` API is available by browsing to the
+[API wiki](https://github.com/waldronlab/MultiAssayExperiment/wiki/MultiAssayExperiment-API).
 
-A definition of the API is available by typing `API()` after loading the MultiAssayExperiment library, which opens the [API wiki](https://github.com/waldronlab/MultiAssayExperiment/wiki/MultiAssayExperiment-API).
+# The `MultiAssayExperiment` Bioconductor Special Interest Group
 
-
-# The MultiAssayExperiment Bioconductor special interest group
-
-This group meets remotely to discuss this project approximately every 3 weeks. If you are interested, please join the [MultiAssayExperiment Google
-Group](https://groups.google.com/forum/#!forum/biocmultiassay) and see the [calendar](https://www.google.com/calendar/embed?src=9ar0qc8mpkv6b9intgmdcdf0ss%40group.calendar.google.com&ctz=America/New_York) of upcoming meetings.
+This group meets remotely to discuss this project approximately every 3 weeks.
+If you are interested, please join the
+[MultiAssayExperiment Google Group](https://groups.google.com/forum/#!forum/biocmultiassay)
+and see the
+[calendar](https://www.google.com/calendar/embed?src=9ar0qc8mpkv6b9intgmdcdf0ss%40group.calendar.google.com&ctz=America/New_York)
+of upcoming meetings.
 
 # Contributor Code of Conduct
 
