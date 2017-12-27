@@ -330,10 +330,15 @@ setMethod("longFormat", "MultiAssayExperiment",
 # wideformat function -----------------------------------------------------
 
 .uniteDF <- function(dframe, coi) {
+    varsIn <- c(coi, "primary", "value", "colname")
+    cbind.data.frame(
     data.frame(
         feature = apply(dframe[, coi], 1L, paste, collapse = "_"),
         primary = dframe[["primary"]],
         value = dframe[["value"]]
+    ),
+    dframe[, !names(dframe) %in% varsIn, drop = FALSE],
+    stringsAsFactors = FALSE
     )
 }
 
@@ -404,7 +409,7 @@ setMethod("wideFormat", "MultiAssayExperiment",
         wideData <- .uniteDF(longDataFrame, colsofinterest)
     }
     wideData <- stats::reshape(wideData, direction = "wide",
-        idvar = "primary", timevar = key)
+        idvar = "primary", timevar = key, v.names = "value")
     names(wideData) <- gsub("value\\.", "", names(wideData))
     wideData <- wideData[
         match(rownames(colData(object)), wideData[["primary"]]), ]
