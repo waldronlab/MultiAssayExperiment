@@ -1,5 +1,18 @@
 # MultiAssayExperiment
 
+## Changes in version 1.5.63
+
+### New features
+
+* duplicated has been deprecated, use `replicated` and `anyReplicated`
+* removed dependencies on `tidyr` and `reshape2`
+
+### Bug fixes and minor improvements
+
+* Updates to `prepMultiAssay`
+* Enhancements to the main vignette
+* New format for NEWS section
+
 ## Changes in version 1.5.38
 
 ### New features
