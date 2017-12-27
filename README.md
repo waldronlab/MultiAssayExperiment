@@ -8,7 +8,7 @@ MultiAssayExperiment
 [![Coverage Status](https://codecov.io/github/LiNk-NY/MultiAssayExperiment/coverage.svg?branch=master)](https://codecov.io/github/LiNk-NY/MultiAssayExperiment?branch=master)
 [![Downloads](http://www.bioconductor.org/shields/downloads/MultiAssayExperiment.svg)](https://bioconductor.org/packages/stats/bioc/MultiAssayExperiment)
 
-# Installation of release and development versions
+## Installation of release and development versions
 
 MultiAssayExperiment is under active development, and we highly recommend
 installing a current development version rather than the release Bioconductor
@@ -21,17 +21,21 @@ useDevel()
 biocLite("MultiAssayExperiment")
 ```
 
-# Ready-to-use MultiAssayExperiment objects
+## Ready-to-use `MultiAssayExperiment` objects
 
 See the newly released `curatedTCGAData` `ExperimentHub` package for
 ready-packaged MultiAssayExperiment TCGA objects.
 
-# Documentation
+```
+biocLite("curatedTCGAData")
+```
+
+## Documentation
 
 The `MultiAssayExperiment` API is available by browsing to the
 [API wiki](https://github.com/waldronlab/MultiAssayExperiment/wiki/MultiAssayExperiment-API).
 
-# The `MultiAssayExperiment` Bioconductor Special Interest Group
+## The `MultiAssayExperiment` Bioconductor Special Interest Group
 
 This group meets remotely to discuss this project approximately every 3 weeks.
 If you are interested, please join the
@@ -40,7 +44,7 @@ and see the
 [calendar](https://www.google.com/calendar/embed?src=9ar0qc8mpkv6b9intgmdcdf0ss%40group.calendar.google.com&ctz=America/New_York)
 of upcoming meetings.
 
-# Contributor Code of Conduct
+## Contributor Code of Conduct
 
 As contributors and maintainers of this project, we pledge to respect
 all people who contribute through reporting issues, posting feature
