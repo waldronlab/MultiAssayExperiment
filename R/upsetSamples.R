@@ -22,7 +22,7 @@
 #' @export upsetSamples
 upsetSamples <- function(MultiAssayExperiment,
                          nsets=length(MultiAssayExperiment),
-                         nintersects = 24, order.by = "freq", check.names=FALSE, ... ) {
+                         nintersects = 24, order.by = "freq", nameFilter=force, check.names=FALSE, ... ) {
     if (!requireNamespace("UpSetR"))
         stop("Please install the 'UpSetR' package to make venn diagrams")
     maesn <- split(sampleMap(MultiAssayExperiment)[["primary"]],
@@ -33,7 +33,7 @@ upsetSamples <- function(MultiAssayExperiment,
     rownames(incid) <- as.character(st)
     for (i in seq_along(maesn))
         incid[, i] <- 1L*(rownames(incid) %in% maesn[[i]])
-    colnames(incid) <- names(MultiAssayExperiment) # may include hyphens, etc.
+    colnames(incid) <- nameFilter(names(MultiAssayExperiment)) # may include hyphens, etc.
     datf = data.frame(incid, check.names=check.names)
     UpSetR::upset(datf, nsets = nsets, nintersects = nintersects,
                   sets = colnames(incid), order.by = order.by, ...)
