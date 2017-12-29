@@ -1,6 +1,15 @@
 # MultiAssayExperiment
 ----------------------------------------------------------------
 
+## Changes in version 1.5.65
+
+### Bug fixes and minor improvements
+
+* `upsetSamples` does not munge experiment names with special characters when
+`check.names = FALSE` (by default keeps hyphens, underscores, etc.). A
+`nameFilter` functional argument allows operations such as `substr` on the
+experiment names. (@vjcitn, #231)
+
 ## Changes in version 1.5.64
 
 ### New features
