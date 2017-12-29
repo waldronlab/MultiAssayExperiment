@@ -16,6 +16,7 @@
 #' @examples
 #' data(miniACC)
 #' upsetSamples(miniACC)
+#' upsetSamples(miniACC, nameFilter=function(x)substr(x,1,5))
 #' @return Produces a visualization of set intersections using the UpSet matrix
 #' design
 #' @author Vincent J Carey
