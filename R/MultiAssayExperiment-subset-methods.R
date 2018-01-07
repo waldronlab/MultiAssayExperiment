@@ -126,7 +126,7 @@ NULL
 #' subsetByColumn(myMultiAssayExperiment, list(Affy = 1:2,
 #'                 Methyl450k = c(3,5,2), RNASeqGene = 2:4, CNVgistic = 1))
 #'
-#' subsetWith <- IRanges::mendoapply(`[`, colnames(myMultiAssayExperiment),
+#' subsetWith <- S4Vectors::mendoapply(`[`, colnames(myMultiAssayExperiment),
 #'                         MoreArgs = list(1:2))
 #' subsetByColumn(myMultiAssayExperiment, subsetWith)
 #'
@@ -298,7 +298,7 @@ setMethod("subsetByRow", c("MultiAssayExperiment", "ANY"), function(x, y, ...) {
 #' @rdname subsetBy
 setMethod("subsetByRow", c("MultiAssayExperiment", "logical"), function(x, y) {
     rowIds <- .rowIdx(experiments(x))
-    y <- IRanges::endoapply(rowIds, `[`, y)
+    y <- S4Vectors::endoapply(rowIds, `[`, y)
     subsetByRow(x, y)
 })
 
@@ -320,7 +320,7 @@ setMethod("subsetByRow", c("MultiAssayExperiment", "List"), function(x, y) {
         y <- IRanges::IntegerList(Map(function(expList, char) {
             which(rownames(expList) %in% char)
         }, expList = experiments(x), char = y))
-    newExpList <- IRanges::mendoapply(function(explist, i) {
+    newExpList <- S4Vectors::mendoapply(function(explist, i) {
         explist[i, , drop = FALSE]
     }, experiments(x), y)
     experiments(x) <- newExpList

@@ -84,7 +84,7 @@ setMethod("assay", c("ANY", "missing"), function(x, i, ...) {
 #' @param withDimnames logical (default TRUE) whether to return dimension names
 #' @aliases assay,ExperimentList,missing-method
 setMethod("assays", "ExperimentList", function(x, ..., withDimnames = TRUE) {
-    as(IRanges::endoapply(x, FUN = function(y) assay(y, ...)), "SimpleList")
+    as(S4Vectors::endoapply(x, FUN = function(y) assay(y, ...)), "SimpleList")
 })
 
 #' @describeIn ExperimentList Convenience function for the assay of the first
