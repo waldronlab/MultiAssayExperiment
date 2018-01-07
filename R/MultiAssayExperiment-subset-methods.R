@@ -10,6 +10,7 @@
 #' @importFrom GenomicRanges GRanges
 #' @importFrom IRanges IRanges findOverlaps subsetByOverlaps
 #' @importFrom IRanges splitAsList SplitDataFrameList endoapply mendoapply
+#' @importFrom S4Vectors endoapply mendoapply
 #' @importFrom IRanges IntegerList CharacterList LogicalList
 #' @importFrom SummarizedExperiment findOverlaps assays
 NULL
