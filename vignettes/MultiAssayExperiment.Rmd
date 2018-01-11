@@ -464,7 +464,13 @@ in `MultiAssayExperiment`.
 ```{r}
 objlist3 <- objlist
 (names(objlist3) <- NULL)
-try(prepMultiAssay(objlist3, patient.data, dfmap)$experiments)
+
+tryCatch(
+    expr = prepMultiAssay(objlist3, patient.data, dfmap)$experiments,
+    error = function(err) {
+        print("This is the error:")
+        conditionMessage(err)
+    })
 ```
 
 Non-matching names may also be present in the `ExperimentList` elements and the
