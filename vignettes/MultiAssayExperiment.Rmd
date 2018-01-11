@@ -206,7 +206,7 @@ In this example, allowable values in this column are "Jack", "Jill",
 in practice are often different than the primary sample names. For each assay,
 all column names must be found in this column. Otherwise, those assays would
 be orphaned: it would be impossible to match them up to samples in the overall
-experiment. As mentioned above, duplicated values are allowed, to represent
+experiment. As mentioned above, duplicate values are allowed, to represent
 replicates with the same overall experiment-level annotation.
 
 This design is motivated by the following situations:
@@ -500,9 +500,8 @@ does not have a match in the experimental data.
 
 ```{r}
 exMap <- rbind(dfmap,
-               DataFrame(assay = "New methyl",
-                         primary = "Joe",
-                         colname = "Joe"))
+    DataFrame(assay = "New methyl", primary = "Joe",
+        colname = "Joe"))
 invisible(prepMultiAssay(objlist, patient.data, exMap))
 ```
 
@@ -513,7 +512,7 @@ them as arguments to the `MultiAssayExperiment` constructor function.
 ```{r}
 prepped <- prepMultiAssay(objlist, patient.data, exMap)
 preppedMulti <- MultiAssayExperiment(prepped$experiments, prepped$colData,
-                                     prepped$sampleMap, prepped$metadata)
+    prepped$sampleMap, prepped$metadata)
 preppedMulti
 ```
 
@@ -850,15 +849,15 @@ This output can be used to select individuals with complete data:
 myMultiAssay[, complete.cases(myMultiAssay), ]
 ```
 
-## `duplicated`
+## `replicated` (formerly `duplicated`)
 
-The `duplicated` function identifies `primary` column values or biological units
+The `replicated` function identifies `primary` column values or biological units
 that have multiple observations per `assay`. It returns a `list` of
-`LogicalList`s that indicate what biological units have one or more duplicated
+`LogicalList`s that indicate what biological units have one or more replicate
 measurements. This output is used for merging replicates by default.
 
 ```{r}
-duplicated(myMultiAssay)
+replicated(myMultiAssay)
 ```
 
 ## `intersectRows`
