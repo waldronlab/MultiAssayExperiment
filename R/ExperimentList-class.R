@@ -81,8 +81,8 @@ ExperimentList <- function(...) {
     if (any(methErr)) {
         unsupported <- names(which(methErr))
         msg <- paste0("class '", class(object),
-                      "' does not have method(s): ",
-                      paste(unsupported, collapse = ", "))
+            "' does not have compatible method(s): ",
+            paste(unsupported, collapse = ", "))
         return(msg)
     }
     NULL
