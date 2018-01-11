@@ -465,12 +465,8 @@ in `MultiAssayExperiment`.
 objlist3 <- objlist
 (names(objlist3) <- NULL)
 
-tryCatch(
-    expr = prepMultiAssay(objlist3, patient.data, dfmap)$experiments,
-    error = function(err) {
-        print("This is the error:")
-        conditionMessage(err)
-    })
+try(prepMultiAssay(objlist3, patient.data, dfmap)$experiments,
+    outFile = stdout())
 ```
 
 Non-matching names may also be present in the `ExperimentList` elements and the
@@ -1006,12 +1002,8 @@ Here is what happens if one of the methods doesn't:
 objlist2 <- objlist
 objlist2[[2]] <- as.vector(objlist2[[2]])
 
-tryCatch(
-    expr = MultiAssayExperiment(objlist2, patient.data, dfmap),
-    error = function(err) {
-        print("This is the error:")
-        conditionMessage(err)
-    })
+try(MultiAssayExperiment(objlist2, patient.data, dfmap),
+    outFile = stdout())
 ```
 
 # Application Programming Interface (API)
