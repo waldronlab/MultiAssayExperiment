@@ -152,6 +152,14 @@ patient.data <- data.frame(sex=c("M", "F", "M", "F"),
 patient.data
 ```
 
+Key points:
+
+- one row of `colData` *can* map to zero, one, or more columns in any `ExperimentList` element
+- each row of `colData` *must* map to at least one column in at least one `ExperimentList` element. 
+- each column of each `ExperimentList` element *must* map to *exactly* one row of `colData`. 
+
+These relationships are defined by the [sampleMap](#sampleMap).
+
 #### Note on the flexibility of the `DataFrame`
 
 For many typical purposes the `DataFrame` and `data.frame` behave equivalently;
@@ -164,7 +172,7 @@ responses in another column, also as a `SimpleList`. Or, dose-response values
 could be stored in a single column of `colData` as a two-column matrix for
 each cell line.
 
-### `sampleMap`: relating `colData` to multiple assays
+### `sampleMap`: relating `colData` to multiple assays {#sampleMap}
 
 The `sampleMap` is a `DataFrame` that relates the "primary" data
 (`colData`) to the experimental assays:
