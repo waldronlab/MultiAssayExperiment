@@ -1006,8 +1006,13 @@ Here is what happens if one of the methods doesn't:
 ```{r}
 objlist2 <- objlist
 objlist2[[2]] <- as.vector(objlist2[[2]])
-invalid.obj <- try(MultiAssayExperiment(objlist2, patient.data, dfmap))
-invalid.obj
+
+tryCatch(
+    expr = MultiAssayExperiment(objlist2, patient.data, dfmap),
+    error = function(err) {
+        print("This is the error:")
+        conditionMessage(err)
+    })
 ```
 
 # Application Programming Interface (API)
