@@ -67,8 +67,7 @@ longFormat(object, ...)
 
 wideFormat(object, ...)
 
-\S4method{wideFormat}{MultiAssayExperiment}(object, colDataCols = NULL,
-  key = "feature", ...)
+\S4method{wideFormat}{MultiAssayExperiment}(object, ...)
 
 \S4method{wideFormat}{ANY}(object, ...)
 
@@ -95,11 +94,6 @@ as indicated by the \code{replicated} method for \code{MultiAssayExperiment}}
 \item{object}{Any supported class object}
 
 \item{colDataCols}{selected colData columns to include in the output}
-
-\item{key}{name of column whose values will used as variables in
-the wide dataset, see the \code{timevar} argument in
-\link[stats]{reshape}. If none are specified, assay, rowname, and colname
-will be combined and named as the "feature" column (default "feature")}
 
 \item{incomparables}{unused argument}
 }
@@ -172,10 +166,6 @@ The \code{longFormat} "ANY" class method, works with classes such as
 \link{ExpressionSet} and \link{SummarizedExperiment} as well as \code{matrix}
 to provide a consistent long and skinny \link{DataFrame}.
 
-The \code{wideFormat} method provides a representation of
-\code{MultiAssayExperiment} where each row represents a particular
-biological unit.
-
 The \code{hasRowRanges} method identifies assays that support
 a \link[SummarizedExperiment]{rowRanges} method \emph{and} return a
 \linkS4class{GRanges} object.
@@ -213,13 +203,40 @@ The \code{wideFormat} \code{MultiAssayExperiment} method returns standardized
 wide \link{DataFrame} where each row represents an observation or biological
 unit as represented in \code{colData}. Optionally, \code{colData} columns
 can be added to the data output. The \code{wideFormat} method for an
-\code{ExperimentList} returns a list of wideFormat \code{DataFrames}. The \code{\ldots}
-argument allows the user to specify the assay number for
+\code{ExperimentList} returns a list of wideFormat \code{DataFrames}. The
+\code{\ldots} argument allows the user to specify the assay number for
 \linkS4class{SummarizedExperiment} assay extractor (i.e., \code{i} argument).
 Additionally, the user may also specify \code{check.names} argument for the
 resulting \code{DataFrame}. \strong{Note}. The "ANY" method returns a
 slightly different wide format \code{DataFrame} due to missing biological
 units information.
+
+The \code{wideFormat} method provides a "wide" data representation of a
+\code{MultiAssayExperiment} where each row corresponds to a particular
+biological unit.
+
+Additional arugments may be passed to the
+\code{wideFormat,MultiAssayExperiment-method}:
+
+\itemize{
+
+\item{key}: name of column whose values will used as variables in
+the wide dataset, see the \code{timevar} argument in
+\link[stats]{reshape}. If none is specified, assay, rowname, and colname
+will be combined and named as the "feature" column (default "feature")
+
+\item{colDataCols}: (optional) the names of \code{colData} columns to
+be included in the \code{wideFormat} output
+
+\item{check.names}: (logical default TRUE) corresponds to the
+\code{check.names} argument in \link[S4Vectors]{DataFrame} when building
+the wide format output
+
+\item{collapse}: (character default "_") A single string delimiter for output
+column names. In \code{wideFormat}, experiments and rownames (and when
+replicate samples are present, colnames) are seperated by this delimiter
+
+}
 }
 
 \section{hasRowRanges}{
