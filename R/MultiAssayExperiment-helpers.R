@@ -92,9 +92,9 @@ setGeneric("replicated", function(x) standardGeneric("replicated"))
 #' assay:
 #' \preformatted{
 #'  >      replicated(MultiAssayExperiment)
-#'  (list str)       └── $ AssayName
-#'  (LogicalList str)      └── [[ "Biological Unit" ]]
-#'  Replicated if sum(...) > 1          └── TRUE TRUE FALSE FALSE
+#'  (list str)       '-- $ AssayName
+#'  (LogicalList str)      '-- [[ "Biological Unit" ]]
+#'  Replicated if sum(...) > 1          '-- TRUE TRUE FALSE FALSE
 #' }
 #' \code{anyReplicated} determines if any of the assays have at least one
 #' replicate. \emph{Note}. These methods are not available for the
