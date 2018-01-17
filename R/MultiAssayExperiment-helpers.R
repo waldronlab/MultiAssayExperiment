@@ -338,11 +338,11 @@ setMethod("longFormat", "MultiAssayExperiment",
 
 # wideformat function -----------------------------------------------------
 
-.uniteDF <- function(dframe, coi) {
+.uniteDF <- function(dframe, coi, collapser) {
     varsIn <- c(coi, "primary", "value", "colname")
     cbind.data.frame(
     data.frame(
-        feature = apply(dframe[, coi], 1L, paste, collapse = "_"),
+        feature = apply(dframe[, coi], 1L, paste, collapse = collapser),
         primary = dframe[["primary"]],
         value = dframe[["value"]]
     ),
@@ -410,7 +410,7 @@ setMethod("wideFormat", "MultiAssayExperiment",
             dfchunk <- splitDF[[splitter]]
             colsofinterest <- if (splitter == "TRUE") {
                 append(colsofinterest, "colname") } else { colsofinterest }
-            .uniteDF(dfchunk, colsofinterest)
+            .uniteDF(dfchunk, colsofinterest, collapse)
         })
         wideData <- do.call(rbind, splitDF)
 
