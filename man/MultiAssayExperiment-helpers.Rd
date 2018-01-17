@@ -120,6 +120,8 @@ for \code{ExperimentList} objects.
     measurements across all experiments
     \item replicated: A function that identifies multiple samples that
     originate from a single biological unit within each assay
+    \item anyReplicated: Determines if any of the assays have replicate
+    measurements by biological unit
     \item mergeReplicates: A function that combines replicated / repeated
     measurements across all experiments and is guided by the replicated
     return value
@@ -136,18 +138,23 @@ for \code{ExperimentList} objects.
 }
 }
 \details{
-The \code{replicated} function finds replicate samples in each
-assay and returns a list of \linkS4class{LogicalList}s for each assay.
-A \linkS4class{LogicalList} is given for each assay where each element
-in such list corresponds to a biological unit entry in the \code{sampleMap},
-(labeled as "primary"). Each element in this list of "primary" vectors is
-a logical vector that identifies samples for that given biological unit.
-Each logical vector is labeled with the "primary" identifier found in the
-\code{sampleMap}. The \code{anyReplicated} will test to see if any of these
-logical vectors has a summation value greater than one
-(i.e., \strong{\code{sum(...) > 1L}}). These methods are not available for
-an \code{ExperimentList} due to the unavailability of the \code{sampleMap}
-structure.
+The \code{replicated} function finds replicate measurements in each
+assay and returns a list of \linkS4class{LogicalList}s.
+Each element in a single \linkS4class{LogicalList} corresponds to a
+biological or \emph{primary} unit as in the \code{sampleMap}. Below is a
+small graphic for one particular biological unit in one assay, where the
+logical vector corresponds to the number of measurements/samples in the
+assay:
+\preformatted{
+ >      replicated(MultiAssayExperiment)
+ (list str)       └── $ AssayName
+ (LogicalList str)      └── [[ "Biological Unit" ]]
+ Replicated if sum(...) > 1          └── TRUE TRUE FALSE FALSE
+}
+\code{anyReplicated} determines if any of the assays have at least one
+replicate. \emph{Note}. These methods are not available for the
+\code{ExperimentList} class due to a missing \code{sampleMap} structure
+(by design).
 
 The \code{mergeReplicates} function is a house-keeping method
 for a \code{MultiAssayExperiment} where only \code{complete.cases} are
