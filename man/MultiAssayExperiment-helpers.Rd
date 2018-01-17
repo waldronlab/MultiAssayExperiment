@@ -63,7 +63,7 @@ longFormat(object, ...)
 
 \S4method{longFormat}{ExperimentList}(object, ...)
 
-\S4method{longFormat}{MultiAssayExperiment}(object, colDataCols = NULL, ...)
+\S4method{longFormat}{MultiAssayExperiment}(object, ...)
 
 wideFormat(object, ...)
 
@@ -92,8 +92,6 @@ see \code{replicated} (default \code{replicated(x)}).}
 as indicated by the \code{replicated} method for \code{MultiAssayExperiment}}
 
 \item{object}{Any supported class object}
-
-\item{colDataCols}{selected colData columns to include in the output}
 
 \item{incomparables}{unused argument}
 }

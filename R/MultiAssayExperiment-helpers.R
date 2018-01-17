@@ -271,20 +271,22 @@ setGeneric("longFormat", function(object, ...) standardGeneric("longFormat"))
 #' \link{ExpressionSet} and \link{SummarizedExperiment} as well as \code{matrix}
 #' to provide a consistent long and skinny \link{DataFrame}.
 setMethod("longFormat", "ANY", function(object, ...) {
+    args <- list(...)
+    i <- args[["i"]]
+    if (is.null(i)) i <- 1L
+
     rowNAMES <- rownames(object)
     nullROWS <- is.null(rowNAMES)
-    args <- list(...)
     if (nullROWS)
         rowNAMES <- as.character(seq_len(nrow(object)))
+
     if (is(object, "ExpressionSet"))
         object <- Biobase::exprs(object)
-    if (is(object, "SummarizedExperiment")) {
-        object <- assay(object,
-            i = if (!is.null(args[["i"]])) { args[["i"]] } else { 1L })
-    }
-    if (is(object, "matrix")) {
+    if (is(object, "SummarizedExperiment"))
+        object <- assay(object, i = i)
+    if (is(object, "matrix"))
         object <- as.data.frame(object)
-    }
+
     ## use stats::reshape instead of reshape2::melt
     if (nullROWS)
         rownames(object) <- rowNAMES
@@ -311,27 +313,29 @@ setMethod("longFormat", "ExperimentList", function(object, ...) {
 })
 
 #' @rdname MultiAssayExperiment-helpers
-#' @param colDataCols selected colData columns to include in the output
-setMethod("longFormat", "MultiAssayExperiment",
-          function(object, colDataCols = NULL, ...) {
+setMethod("longFormat", "MultiAssayExperiment", function(object, ...) {
+
+    args <- list(...)
+    colDataCols <- args[["colDataCols"]]
     addCols <- !is.null(colDataCols)
-    longDataFrame <- longFormat(experiments(object), ...)
+    longDataFrame <- do.call(longFormat,
+        args = c(list(object = experiments(object)), args))
     primary <- S4Vectors::Rle(
         sampleMap(object)[match(longDataFrame[["colname"]],
-                                sampleMap(object)[["colname"]]),
-                          "primary"])
+        sampleMap(object)[["colname"]]), "primary"])
+
     longDataFrame <- S4Vectors::DataFrame(longDataFrame, primary = primary)
     longDataFrame <-
         longDataFrame[, c("assay", "primary", "rowname", "colname", "value")]
+
     if (addCols) {
         extraColumns <- colData(object)[, colDataCols, drop = FALSE]
         rowNameValues <- rownames(extraColumns)
         rownames(extraColumns) <- NULL
         matchIdx <- BiocGenerics::match(longDataFrame[["primary"]],
-                                        rowNameValues)
+            rowNameValues)
         longDataFrame <- BiocGenerics::cbind(longDataFrame,
-                                               extraColumns[matchIdx, ,
-                                                            drop = FALSE])
+            extraColumns[matchIdx, , drop = FALSE])
     }
     return(longDataFrame)
 })
@@ -443,7 +447,7 @@ setMethod("wideFormat", "MultiAssayExperiment", function(object, ...) {
         wideData <- do.call(rbind, splitDF)
 
     } else {
-        wideData <- .uniteDF(longDataFrame, colsofinterest)
+        wideData <- .uniteDF(longDataFrame, colsofinterest, collapse)
     }
     wideData <- stats::reshape(wideData, direction = "wide",
         idvar = "primary", timevar = key, v.names = "value")
