@@ -202,16 +202,11 @@ allows the user to specify the assay value for the
 The \code{wideFormat} \code{MultiAssayExperiment} method returns standardized
 wide \link{DataFrame} where each row represents an observation or biological
 unit as represented in \code{colData}. Optionally, \code{colData} columns
-can be added to the data output. The \code{wideFormat} method for an
-\code{ExperimentList} returns a list of wideFormat \code{DataFrames}. The
-\code{\ldots} argument allows the user to specify the assay number for
-\linkS4class{SummarizedExperiment} assay extractor (i.e., \code{i} argument).
-Additionally, the user may also specify \code{check.names} argument for the
-resulting \code{DataFrame}. \strong{Note}. The "ANY" method returns a
-slightly different wide format \code{DataFrame} due to missing biological
-units information.
+can be added to the data output. Metadata columns are generated based on
+the names produced in the wide format \linkS4class{DataFrame}. These
+can be accessed via the \link[S4Vectors]{mcols} function.
 
-The \code{wideFormat} method provides a "wide" data representation of a
+The \code{wideFormat} function provides a "wide" data representation of a
 \code{MultiAssayExperiment} where each row corresponds to a particular
 biological unit.
 }
