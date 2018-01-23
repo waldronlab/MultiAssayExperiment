@@ -19,9 +19,6 @@
 \alias{mergeReplicates,MultiAssayExperiment-method}
 \alias{mergeReplicates,ANY-method}
 \alias{longFormat}
-\alias{longFormat,ANY-method}
-\alias{longFormat,ExperimentList-method}
-\alias{longFormat,MultiAssayExperiment-method}
 \alias{wideFormat}
 \alias{wideFormat,MultiAssayExperiment-method}
 \alias{wideFormat,ANY-method}
@@ -58,12 +55,6 @@ mergeReplicates(x, replicates = list(), simplify = BiocGenerics::mean, ...)
   simplify = BiocGenerics::mean, ...)
 
 longFormat(object, ...)
-
-\S4method{longFormat}{ANY}(object, ...)
-
-\S4method{longFormat}{ExperimentList}(object, ...)
-
-\S4method{longFormat}{MultiAssayExperiment}(object, ...)
 
 wideFormat(object, ...)
 

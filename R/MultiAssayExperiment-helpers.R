@@ -248,29 +248,7 @@ setMethod("mergeReplicates", "ANY",
 
 # longFormat function -----------------------------------------------------
 
-#' @rdname MultiAssayExperiment-helpers
-#'
-#' @aliases longFormat
-#' @section longFormat:
-#' The longFormat method takes data from the \code{\link{ExperimentList}}
-#' in a \code{\link{MultiAssayExperiment}} and returns a uniform
-#' \code{\link{DataFrame}}. The resulting DataFrame has columns indicating
-#' primary, rowname, colname and value. This method can optionally include
-#' colData columns with the \code{colDataCols} argument
-#' (\code{MultiAssayExperiment} method only). The \code{\ldots} argument
-#' allows the user to specify the assay value for the
-#' \linkS4class{SummarizedExperiment} assay function's \code{i} argument.
-#'
-#' @param object Any supported class object
-#'
-#' @export longFormat
-setGeneric("longFormat", function(object, ...) standardGeneric("longFormat"))
-
-#' @rdname MultiAssayExperiment-helpers
-#' @details The \code{longFormat} "ANY" class method, works with classes such as
-#' \link{ExpressionSet} and \link{SummarizedExperiment} as well as \code{matrix}
-#' to provide a consistent long and skinny \link{DataFrame}.
-setMethod("longFormat", "ANY", function(object, ...) {
+.longFormatANY <- function(object, ...) {
     args <- list(...)
     i <- args[["i"]]
     if (is.null(i)) i <- 1L
@@ -300,20 +278,45 @@ setMethod("longFormat", "ANY", function(object, ...) {
     rectangle <- as(object, "DataFrame")
     rectangle[, "colname"] <- S4Vectors::Rle(rectangle[["colname"]])
     rectangle
-})
+}
 
-#' @rdname MultiAssayExperiment-helpers
-#' @exportMethod longFormat
-setMethod("longFormat", "ExperimentList", function(object, ...) {
+.longFormatElist <- function(object, ...) {
+    if (!is(object, "ExperimentList"))
+        stop("<internal> Not an 'ExperimentList' input")
     dataList <- lapply(seq_along(object), function(i, flatBox) {
         S4Vectors::DataFrame(assay = S4Vectors::Rle(names(object)[i]),
-                             longFormat(flatBox[[i]], ...))
+                             .longFormatANY(flatBox[[i]], ...))
     }, flatBox = object)
     do.call(rbind, dataList)
-})
+}
 
 #' @rdname MultiAssayExperiment-helpers
-setMethod("longFormat", "MultiAssayExperiment", function(object, ...) {
+#'
+#' @aliases longFormat
+#'
+#' @details The \code{longFormat} "ANY" class method, works with classes such as
+#' \link{ExpressionSet} and \link{SummarizedExperiment} as well as \code{matrix}
+#' to provide a consistent long and skinny \link{DataFrame}.
+#'
+#' @section longFormat:
+#' The longFormat method takes data from the \code{\link{ExperimentList}}
+#' in a \code{\link{MultiAssayExperiment}} and returns a uniform
+#' \code{\link{DataFrame}}. The resulting DataFrame has columns indicating
+#' primary, rowname, colname and value. This method can optionally include
+#' colData columns with the \code{colDataCols} argument
+#' (\code{MultiAssayExperiment} method only). The \code{\ldots} argument
+#' allows the user to specify the assay value for the
+#' \linkS4class{SummarizedExperiment} assay function's \code{i} argument.
+#'
+#' @param object Any supported class object
+#'
+#' @export longFormat
+longFormat <- function(object, ...) {
+    if (is(object, "ExperimentList"))
+        return(.longFormatElist(object, ...))
+
+    if (!is(object, "MultiAssayExperiment"))
+        stop("Provide a 'MultiAssayExperiment' to convert")
 
     args <- list(...)
     colDataCols <- args[["colDataCols"]]
@@ -322,7 +325,7 @@ setMethod("longFormat", "MultiAssayExperiment", function(object, ...) {
         args = c(list(object = experiments(object)), args))
     primary <- S4Vectors::Rle(
         sampleMap(object)[match(longDataFrame[["colname"]],
-        sampleMap(object)[["colname"]]), "primary"])
+            sampleMap(object)[["colname"]]), "primary"])
 
     longDataFrame <- S4Vectors::DataFrame(longDataFrame, primary = primary)
     longDataFrame <-
@@ -338,7 +341,7 @@ setMethod("longFormat", "MultiAssayExperiment", function(object, ...) {
             extraColumns[matchIdx, , drop = FALSE])
     }
     return(longDataFrame)
-})
+}
 
 # wideformat function -----------------------------------------------------
 
