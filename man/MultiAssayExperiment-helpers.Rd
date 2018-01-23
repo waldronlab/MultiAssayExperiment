@@ -54,7 +54,7 @@ mergeReplicates(x, replicates = list(), simplify = BiocGenerics::mean, ...)
 \S4method{mergeReplicates}{ANY}(x, replicates = list(),
   simplify = BiocGenerics::mean, ...)
 
-longFormat(object, ...)
+longFormat(object, colDataCols = NULL, i = 1L)
 
 wideFormat(object, ...)
 
@@ -83,6 +83,12 @@ see \code{replicated} (default \code{replicated(x)}).}
 as indicated by the \code{replicated} method for \code{MultiAssayExperiment}}
 
 \item{object}{Any supported class object}
+
+\item{colDataCols}{A \code{character}, \code{logical}, or \code{numeric}
+index for \code{colData} columns to be included}
+
+\item{i}{An optional assay indicator for any
+\linkS4class{SummarizedExperiment} objects (default 1L)}
 
 \item{incomparables}{unused argument}
 }

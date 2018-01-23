@@ -248,10 +248,7 @@ setMethod("mergeReplicates", "ANY",
 
 # longFormat function -----------------------------------------------------
 
-.longFormatANY <- function(object, ...) {
-    args <- list(...)
-    i <- args[["i"]]
-    if (is.null(i)) i <- 1L
+.longFormatANY <- function(object, i) {
 
     rowNAMES <- rownames(object)
     nullROWS <- is.null(rowNAMES)
@@ -280,13 +277,13 @@ setMethod("mergeReplicates", "ANY",
     rectangle
 }
 
-.longFormatElist <- function(object, ...) {
+.longFormatElist <- function(object, i) {
     if (!is(object, "ExperimentList"))
         stop("<internal> Not an 'ExperimentList' input")
-    dataList <- lapply(seq_along(object), function(i, flatBox) {
-        S4Vectors::DataFrame(assay = S4Vectors::Rle(names(object)[i]),
-                             .longFormatANY(flatBox[[i]], ...))
-    }, flatBox = object)
+    dataList <- lapply(seq_along(object), function(indx, flatBox) {
+        S4Vectors::DataFrame(assay = S4Vectors::Rle(names(object)[indx]),
+            .longFormatANY(flatBox[[indx]], i = i))
+        }, flatBox = object)
     do.call(rbind, dataList)
 }
 
@@ -309,20 +306,21 @@ setMethod("mergeReplicates", "ANY",
 #' \linkS4class{SummarizedExperiment} assay function's \code{i} argument.
 #'
 #' @param object Any supported class object
+#' @param colDataCols A \code{character}, \code{logical}, or \code{numeric}
+#' index for \code{colData} columns to be included
+#' @param i An optional assay indicator for any
+#' \linkS4class{SummarizedExperiment} objects (default 1L)
 #'
 #' @export longFormat
-longFormat <- function(object, ...) {
+longFormat <- function(object, colDataCols = NULL, i = 1L) {
     if (is(object, "ExperimentList"))
-        return(.longFormatElist(object, ...))
+        return(.longFormatElist(object, i = i))
 
     if (!is(object, "MultiAssayExperiment"))
         stop("Provide a 'MultiAssayExperiment' to convert")
 
-    args <- list(...)
-    colDataCols <- args[["colDataCols"]]
     addCols <- !is.null(colDataCols)
-    longDataFrame <- do.call(longFormat,
-        args = c(list(object = experiments(object)), args))
+    longDataFrame <- .longFormatElist(experiments(object), i = i)
     primary <- S4Vectors::Rle(
         sampleMap(object)[match(longDataFrame[["colname"]],
             sampleMap(object)[["colname"]]), "primary"])
@@ -340,7 +338,7 @@ longFormat <- function(object, ...) {
         longDataFrame <- BiocGenerics::cbind(longDataFrame,
             extraColumns[matchIdx, , drop = FALSE])
     }
-    return(longDataFrame)
+    longDataFrame
 }
 
 # wideformat function -----------------------------------------------------
