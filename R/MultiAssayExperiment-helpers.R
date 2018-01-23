@@ -22,8 +22,7 @@ NULL
 #'     measurements across all experiments
 #'     \item replicated: A function that identifies multiple samples that
 #'     originate from a single biological unit within each assay
-#'     \item anyReplicated: Determines if any of the assays have replicate
-#'     measurements by biological unit
+#'     \item anyReplicated: Displays which assays have replicate measurements
 #'     \item mergeReplicates: A function that combines replicated / repeated
 #'     measurements across all experiments and is guided by the replicated
 #'     return value
@@ -356,10 +355,53 @@ longFormat <- function(object, colDataCols = NULL, i = 1L) {
     )
 }
 
-#' @rdname MultiAssayExperiment-helpers
-#' @aliases wideFormat
-#' @export
-setGeneric("wideFormat", function(object, ...) standardGeneric("wideFormat"))
+.wideFormatANY <- function(object, i, check.names) {
+    if (is(object, "ExpressionSet"))
+        object <- Biobase::exprs(object)
+
+    if (is.matrix(object) && is.null(rownames(object)))
+        rownames(object) <- as.character(seq_len(object))
+
+    if (!is.null(rownames(object)) && !is(object, "SummarizedExperiment"))
+        object <- data.frame(rowname = rownames(object), object,
+            stringsAsFactors = FALSE, check.names = check.names,
+            row.names = NULL)
+
+    if (is(object, "SummarizedExperiment")) {
+        ## Ensure that rowData DataFrame has a rowname column
+        ## Otherwise, use the rownames or first column
+        rowDatNames <- names(rowData(object))
+        rownameIn <- "rowname" %in% rowDatNames
+        rowNAMES <- rownames(object)
+        if (any(rownameIn)) {
+            rowData(object) <- rowData(object)[rownameIn]
+        } else if (!is.null(rowNAMES) || !length(rowDatNames)) {
+            rowData(object) <- S4Vectors::DataFrame(rowname = rowNAMES)
+        } else {
+            warning("'rowname' column not in 'rowData' taking first one")
+            rowData(object) <- rowData(object)[1L]
+            names(rowData(object)) <- "rowname"
+        }
+        assayDat <- assay(object, i = i)
+        object <- data.frame(rowname = rowData(object), assayDat,
+            stringsAsFactors = FALSE, check.names = check.names,
+            row.names = NULL)
+    }
+    S4Vectors::DataFrame(object)
+}
+
+.metadataCOLS <- function(metcols, collapser, coldatcols) {
+    namesList <- lapply(strsplit(metcols, collapser), `[`)
+    sqnames <- lapply(namesList, function(nam)
+        append(nam, rep(NA_character_, 3L - length(nam))))
+    doFrame <- do.call(rbind.data.frame, sqnames)
+    names(doFrame) <- c("sourceName", "rowname", "colname")
+    doFrame[["sourceName"]] <-
+        gsub("primary", "colDataRows", doFrame[["sourceName"]])
+    doFrame[doFrame[["sourceName"]] %in% coldatcols, "sourceName"] <-
+        "colDataCols"
+    doFrame
+}
 
 #' @rdname MultiAssayExperiment-helpers
 #'
@@ -383,44 +425,27 @@ setGeneric("wideFormat", function(object, ...) standardGeneric("wideFormat"))
 #' Additional arugments may be passed to the
 #' \code{wideFormat,MultiAssayExperiment-method}:
 #'
-#' \itemize{
-#'
-#' \item{key}: name of column whose values will used as variables in
-#' the wide dataset, see the \code{timevar} argument in
-#' \link[stats]{reshape}. If none is specified, assay, rowname, and colname
-#' will be combined and named as the "feature" column (default "feature")
-#'
-#' \item{colDataCols}: (optional) the names of \code{colData} columns to
-#' be included in the \code{wideFormat} output
-#'
-#' \item{check.names}: (logical default TRUE) corresponds to the
-#' \code{check.names} argument in \link[S4Vectors]{DataFrame} when building
-#' the wide format output
-#'
-#' \item{collapse}: (character default "_") A single string delimiter for output
+#' @param check.names (logical default TRUE) Column names of the output
+#' \code{DataFrame} will be checked for syntactic validity and made unique,
+#' if necessary
+#' @param collapse (character default "_") A single string delimiter for output
 #' column names. In \code{wideFormat}, experiments and rownames (and when
 #' replicate samples are present, colnames) are seperated by this delimiter
+#' @param key (character default "feature") name of column whose values will
+#' used as variables in the wide dataset, see the \code{timevar} argument in
+#' \link[stats]{reshape}. If none is specified, assay, rowname, and colname
+#' will be combined and named as the "feature" column
 #'
-#' }
-#'
-#' @param ... Additional arguments. See details.
-#'
-#' @exportMethod wideFormat
-setMethod("wideFormat", "MultiAssayExperiment", function(object, ...) {
+#' @export wideFormat
+wideFormat <- function(object, colDataCols = NULL, check.names = TRUE,
+    collapse = "_", key = "feature", i = 1L) {
 
     cnames <- colnames(object)
-    args <- list(...)
-    colDataCols <- args[["colDataCols"]]
-    check.names <- args[["check.names"]]
-    collapse <- args[["collapse"]]
-    key <- args[["key"]]
-    if (is.null(check.names)) check.names <- TRUE
-    if (is.null(key)) key <- "feature"
-    if (is.null(collapse)) collapse <- "_"
-
-    longDataFrame <- longFormat(object, colDataCols = colDataCols, ...)
+    longDataFrame <- longFormat(object, colDataCols = colDataCols, i = i)
     longDataFrame <- as.data.frame(longDataFrame)
     colsofinterest <- c("assay", "rowname")
+    coldatanames <- names(longDataFrame)[!names(longDataFrame) %in%
+        c("assay", "primary", "rowname", "colname", "value")]
 
     if (any(anyReplicated(object))) {
         dups <- replicated(object)
@@ -430,8 +455,8 @@ setMethod("wideFormat", "MultiAssayExperiment", function(object, ...) {
             lmat <- as.matrix(logilist)
             rownames(lmat) <- names(logilist)
             colnames(lmat) <- cnames[[i]]
-            lData <- longDataFrame[
-                longDataFrame==assayname, c("primary", "colname")]
+            lData <- longDataFrame[longDataFrame[["assay"]] == assayname,
+                c("primary", "colname")]
             apply(lData, 1L, function(x) lmat[x[1L], x[2L]])
         }, duplic = dups)
 
@@ -455,47 +480,13 @@ setMethod("wideFormat", "MultiAssayExperiment", function(object, ...) {
     names(wideData) <- gsub("value\\.", "", names(wideData))
     wideData <- wideData[
         match(rownames(colData(object)), wideData[["primary"]]), ]
-    S4Vectors::DataFrame(wideData, check.names = check.names)
-})
+    wideDF <- S4Vectors::DataFrame(wideData, check.names = check.names)
+    metadat <- .metadataCOLS(names(wideDF), collapse, coldatanames)
+    mcols(wideDF) <- metadat
+    wideDF
+}
 
-#' @rdname MultiAssayExperiment-helpers
-setMethod("wideFormat", "ANY", function(object, ...) {
-    args <- list(...)
-    check.names <- args[["check.names"]]
-    i <- args[["i"]]
-    if (is.null(args[["i"]])) i <- 1L
-    if (is.null(check.names)) check.names <- TRUE
-
-    if (is(object, "ExpressionSet"))
-        object <- Biobase::exprs(object)
-    if (is.matrix(object) && is.null(rownames(object)))
-        rownames(object) <- as.character(seq_len(object))
-    if (!is.null(rownames(object)) && !is(object, "SummarizedExperiment"))
-        object <- data.frame(rowname = rownames(object), object,
-            stringsAsFactors = FALSE, check.names = check.names,
-            row.names = NULL)
-    if (is(object, "SummarizedExperiment")) {
-        ## Ensure that rowData DataFrame has a rowname column
-        ## Otherwise, use the rownames or first column
-        rowDatNames <- names(rowData(object))
-        rownameIn <- "rowname" %in% rowDatNames
-        rowNAMES <- rownames(object)
-        if (any(rownameIn)) {
-            rowData(object) <- rowData(object)[rownameIn]
-        } else if (!is.null(rowNAMES) || !length(rowDatNames)) {
-            rowData(object) <- S4Vectors::DataFrame(rowname = rowNAMES)
-        } else {
-            warning("'rowname' column not in 'rowData' taking first one")
-            rowData(object) <- rowData(object)[1L]
-            names(rowData(object)) <- "rowname"
-        }
-        assayDat <- assay(object, i = i)
-        object <- data.frame(rowname = rowData(object), assayDat,
-            stringsAsFactors = FALSE, check.names = check.names,
-            row.names = NULL)
-    }
-    S4Vectors::DataFrame(object)
-})
+# hasRowRanges section ----------------------------------------------------
 
 .tryRowRanges <- function(obj) {
     res <- try(rowRanges(obj), silent = TRUE)

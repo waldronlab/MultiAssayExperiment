@@ -20,8 +20,6 @@
 \alias{mergeReplicates,ANY-method}
 \alias{longFormat}
 \alias{wideFormat}
-\alias{wideFormat,MultiAssayExperiment-method}
-\alias{wideFormat,ANY-method}
 \alias{hasRowRanges}
 \alias{hasRowRanges,MultiAssayExperiment-method}
 \alias{hasRowRanges,ExperimentList-method}
@@ -56,11 +54,8 @@ mergeReplicates(x, replicates = list(), simplify = BiocGenerics::mean, ...)
 
 longFormat(object, colDataCols = NULL, i = 1L)
 
-wideFormat(object, ...)
-
-\S4method{wideFormat}{MultiAssayExperiment}(object, ...)
-
-\S4method{wideFormat}{ANY}(object, ...)
+wideFormat(object, colDataCols = NULL, check.names = TRUE, collapse = "_",
+  key = "feature", i = 1L)
 
 hasRowRanges(x)
 
@@ -71,8 +66,6 @@ hasRowRanges(x)
 \S4method{duplicated}{MultiAssayExperiment}(x, incomparables = FALSE, ...)
 }
 \arguments{
-\item{...}{Additional arguments. See details.}
-
 \item{x}{A MultiAssayExperiment or ExperimentList}
 
 \item{replicates}{A list of \linkS4class{LogicalList}s
@@ -89,6 +82,19 @@ index for \code{colData} columns to be included}
 
 \item{i}{An optional assay indicator for any
 \linkS4class{SummarizedExperiment} objects (default 1L)}
+
+\item{check.names}{(logical default TRUE) Column names of the output
+\code{DataFrame} will be checked for syntactic validity and made unique,
+if necessary}
+
+\item{collapse}{(character default "_") A single string delimiter for output
+column names. In \code{wideFormat}, experiments and rownames (and when
+replicate samples are present, colnames) are seperated by this delimiter}
+
+\item{key}{(character default "feature") name of column whose values will
+used as variables in the wide dataset, see the \code{timevar} argument in
+\link[stats]{reshape}. If none is specified, assay, rowname, and colname
+will be combined and named as the "feature" column}
 
 \item{incomparables}{unused argument}
 }
@@ -109,8 +115,7 @@ for \code{ExperimentList} objects.
     measurements across all experiments
     \item replicated: A function that identifies multiple samples that
     originate from a single biological unit within each assay
-    \item anyReplicated: Determines if any of the assays have replicate
-    measurements by biological unit
+    \item anyReplicated: Displays which assays have replicate measurements
     \item mergeReplicates: A function that combines replicated / repeated
     measurements across all experiments and is guided by the replicated
     return value
@@ -209,29 +214,6 @@ units information.
 The \code{wideFormat} method provides a "wide" data representation of a
 \code{MultiAssayExperiment} where each row corresponds to a particular
 biological unit.
-
-Additional arugments may be passed to the
-\code{wideFormat,MultiAssayExperiment-method}:
-
-\itemize{
-
-\item{key}: name of column whose values will used as variables in
-the wide dataset, see the \code{timevar} argument in
-\link[stats]{reshape}. If none is specified, assay, rowname, and colname
-will be combined and named as the "feature" column (default "feature")
-
-\item{colDataCols}: (optional) the names of \code{colData} columns to
-be included in the \code{wideFormat} output
-
-\item{check.names}: (logical default TRUE) corresponds to the
-\code{check.names} argument in \link[S4Vectors]{DataFrame} when building
-the wide format output
-
-\item{collapse}: (character default "_") A single string delimiter for output
-column names. In \code{wideFormat}, experiments and rownames (and when
-replicate samples are present, colnames) are seperated by this delimiter
-
-}
 }
 
 \section{hasRowRanges}{
