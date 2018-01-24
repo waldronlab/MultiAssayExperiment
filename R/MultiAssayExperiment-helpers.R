@@ -39,6 +39,7 @@ NULL
 #' }
 #'
 #' @param x A MultiAssayExperiment or ExperimentList
+#' @param ... Additional arguments. See details for more information.
 #'
 #' @exportMethod complete.cases
 setMethod("complete.cases", "MultiAssayExperiment", function(...) {
@@ -133,9 +134,9 @@ setMethod("anyReplicated", "MultiAssayExperiment", function(x) {
 
 #' @rdname MultiAssayExperiment-helpers
 #' @export
-setGeneric("mergeReplicates", function(x, replicates = list(),
-                                       simplify = BiocGenerics::mean, ...)
-    standardGeneric("mergeReplicates"))
+setGeneric("mergeReplicates",
+    function(x, replicates = list(), simplify = BiocGenerics::mean, ...)
+        standardGeneric("mergeReplicates"))
 
 #' @rdname MultiAssayExperiment-helpers
 #'
@@ -248,7 +249,6 @@ setMethod("mergeReplicates", "ANY",
 # longFormat function -----------------------------------------------------
 
 .longFormatANY <- function(object, i) {
-
     rowNAMES <- rownames(object)
     nullROWS <- is.null(rowNAMES)
     if (nullROWS)
@@ -314,9 +314,8 @@ setMethod("mergeReplicates", "ANY",
 longFormat <- function(object, colDataCols = NULL, i = 1L) {
     if (is(object, "ExperimentList"))
         return(.longFormatElist(object, i = i))
-
-    if (!is(object, "MultiAssayExperiment"))
-        stop("Provide a 'MultiAssayExperiment' to convert")
+    else if (!is(object, "MultiAssayExperiment"))
+        return(.longFormatANY(object, i = i))
 
     addCols <- !is.null(colDataCols)
     longDataFrame <- .longFormatElist(experiments(object), i = i)

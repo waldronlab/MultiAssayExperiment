@@ -66,6 +66,8 @@ hasRowRanges(x)
 \S4method{duplicated}{MultiAssayExperiment}(x, incomparables = FALSE, ...)
 }
 \arguments{
+\item{...}{Additional arguments. See details for more information.}
+
 \item{x}{A MultiAssayExperiment or ExperimentList}
 
 \item{replicates}{A list of \linkS4class{LogicalList}s
@@ -199,16 +201,13 @@ allows the user to specify the assay value for the
 
 \section{wideFormat}{
 
-The \code{wideFormat} \code{MultiAssayExperiment} method returns standardized
-wide \link{DataFrame} where each row represents an observation or biological
-unit as represented in \code{colData}. Optionally, \code{colData} columns
-can be added to the data output. Metadata columns are generated based on
-the names produced in the wide format \linkS4class{DataFrame}. These
-can be accessed via the \link[S4Vectors]{mcols} function.
-
-The \code{wideFormat} function provides a "wide" data representation of a
-\code{MultiAssayExperiment} where each row corresponds to a particular
-biological unit.
+The \code{wideFormat} function returns standardized wide \link{DataFrame}
+where each row represents an observation or biological unit as represented
+in \code{colData}. Optionally, \code{colData} columns can be added to the
+data output (see the \code{colDataCols} argument). Metadata columns are
+generated based on the names produced in the wide format
+\linkS4class{DataFrame}. These can be accessed via the
+\link[S4Vectors]{mcols} function.
 }
 
 \section{hasRowRanges}{
