@@ -657,6 +657,10 @@ MatchedAssayExperiment <- function(experiments = ExperimentList(),
 
 setAs("MultiAssayExperiment", "MatchedAssayExperiment", function(from) {
     from <- intersectColumns(from)
+
+    if (all(!lengths(colnames(from))))
+        stop("No biological unit(s) measured across all assays")
+
     if (any(anyReplicated(from)))
         stop("Resolve replicate columns")
     new("MatchedAssayExperiment", from)
