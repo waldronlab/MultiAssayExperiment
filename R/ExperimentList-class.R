@@ -6,7 +6,13 @@
         stop(sQuote("GRangesList"), " class is not supported, use ",
              sQuote("RaggedExperiment"), " instead")
     }
-    return(object)
+    object
+}
+
+.hasDataFrames <- function(object) {
+    hasdf <- vapply(object, is.data.frame, logical(1L))
+    hasDF <- vapply(object, is, logical(1L), "DataFrame")
+    any(hasdf, hasDF)
 }
 
 ### ==============================================
@@ -58,6 +64,10 @@ ExperimentList <- function(...) {
             !is(listData[[1L]], "DataFrame"))) {
         listData <- listData[[1L]]
         listData <- lapply(listData, .checkGRL)
+                if (.hasDataFrames(listData))
+                    message(
+                        "ExperimentList contains data.frame or DataFrame,\n",
+                        "  potential for errors with mixed data types")
         }
     } else if (!length(listData)) {
         return(new("ExperimentList",
@@ -90,7 +100,7 @@ ExperimentList <- function(...) {
 
 ## 1.i. Check that [, colnames, rownames and dim methods are possible
 .testMethodsTable <- function(object) {
-    errors <- character()
+    errors <- character(0L)
     for (i in seq_along(object)) {
         coll_err <- .getMethErr(object[[i]])
         if (!is.null(coll_err)) {
@@ -107,7 +117,7 @@ ExperimentList <- function(...) {
 ## 1.ii. Check for null rownames and colnames for each element in the
 ## ExperimentList and duplicated element names
 .checkExperimentListNames <- function(object) {
-    errors <- character()
+    errors <- character(0L)
     if (is.null(names(object))) {
         msg <- "ExperimentList elements must be named"
         errors <- c(errors, msg)
@@ -138,15 +148,15 @@ S4Vectors::setValidity2("ExperimentList", .validExperimentList)
 #' @param object,x An \code{\linkS4class{ExperimentList}} object
 setMethod("show", "ExperimentList", function(object) {
     o_class <- class(object)
-    elem_cl <- vapply(object, class, character(1))
+    elem_cl <- vapply(object, class, character(1L))
     o_len <- length(object)
     o_names <- names(object)
     featdim <- vapply(object, FUN = function(obj) {
         dim(obj)[1]
-    }, FUN.VALUE = integer(1))
+    }, FUN.VALUE = integer(1L))
     sampdim <- vapply(object, FUN = function(obj) {
         dim(obj)[2]
-    }, FUN.VALUE = integer(1))
+    }, FUN.VALUE = integer(1L))
     cat(sprintf("%s", o_class),
         "class object of length",
         paste0(o_len, ":"),
