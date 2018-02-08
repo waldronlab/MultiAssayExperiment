@@ -656,6 +656,9 @@ MatchedAssayExperiment <- function(experiments = ExperimentList(),
 }
 
 setAs("MultiAssayExperiment", "MatchedAssayExperiment", function(from) {
+    if (isEmpty(from))
+        return(new("MatchedAssayExperiment", from))
+
     from <- intersectColumns(from)
 
     if (all(!lengths(colnames(from))))
