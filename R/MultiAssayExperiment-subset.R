@@ -14,14 +14,14 @@ NULL
     if (missing(i) && missing(j) && missing(k)) {
         return(x)
     }
-    if (!missing(k)) {
-        x <- subsetByAssay(x, k)
-    }
     if (!missing(j)) {
         if (is(j, "list") || is(j, "List"))
             x <- subsetByColumn(x, j)
         else
             x <- subsetByColData(x, j)
+    }
+    if (!missing(k)) {
+        x <- subsetByAssay(x, k)
     }
     if (!missing(i)) {
         x <- subsetByRow(x, i, ...)
@@ -56,13 +56,11 @@ setMethod("[[", "MultiAssayExperiment", function(x, i, j, ...) {
 #' @export
 #' @param value An assay compatible with the MultiAssayExperiment API
 setReplaceMethod("[[", "MultiAssayExperiment", function(x, i, j, ..., value) {
-                         if (!missing(j) || length(list(...)) > 0)
-                             stop("invalid replacement")
-                         origLen <- length(x)
-                         experiments(x) <- S4Vectors::setListElement(
-                             experiments(x),
-                             i, value)
-                         if (origLen < length(x))
-                            stop("replacement length greater than original")
-                         return(x)
+    if (!missing(j) || length(list(...)) > 0)
+        stop("invalid replacement")
+    origLen <- length(x)
+    experiments(x) <- S4Vectors::setListElement( experiments(x), i, value)
+    if (origLen < length(x))
+        stop("replacement length greater than original")
+    return(x)
 })
