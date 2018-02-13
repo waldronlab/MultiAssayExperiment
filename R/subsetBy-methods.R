@@ -198,8 +198,10 @@ setMethod("subsetByRow", c("ExperimentList", "list"), function(x, y) {
 setMethod("subsetByRow", c("ExperimentList", "List"), function(x, y) {
     if (!all(names(y) %in% names(x)))
         stop("list-like subscript has names not in list-like object to subset")
-    if (is(y, "DataFrame"))
+    if (is(y, "DataFrame") || is(y, "GRangesList"))
         stop("Provide a list of indices for subsetting")
+    if (is(y, "GRanges"))
+        return(callNextMethod())
     inNames <- names(x) %in% names(y)
     x[inNames] <- x[y]
     x
