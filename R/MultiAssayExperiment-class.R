@@ -650,12 +650,11 @@ MatchedAssayExperiment <- function(experiments = ExperimentList(),
     matched <- MultiAssayExperiment(experiments = experiments, colData = colData,
                              sampleMap = sampleMap, metadata = metadata,
                              drops = drops)
-    if (!isEmpty(matched))
-        matched <- as(matched, "MatchedAssayExperiment")
-    return(matched)
+    as(matched, "MatchedAssayExperiment")
 }
 
 setAs("MultiAssayExperiment", "MatchedAssayExperiment", function(from) {
+    if (!isEmpty(from)) {
     from <- intersectColumns(from)
 
     if (all(!lengths(colnames(from))))
@@ -663,5 +662,6 @@ setAs("MultiAssayExperiment", "MatchedAssayExperiment", function(from) {
 
     if (any(anyReplicated(from)))
         stop("Resolve replicate columns")
+    }
     new("MatchedAssayExperiment", from)
 })
