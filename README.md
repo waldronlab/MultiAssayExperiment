@@ -4,7 +4,7 @@ MultiAssayExperiment
 [![BioC status](http://www.bioconductor.org/shields/build/release/bioc/MultiAssayExperiment.svg)](https://bioconductor.org/checkResults/release/bioc-LATEST/MultiAssayExperiment)
 [![Platforms](http://www.bioconductor.org/shields/availability/release/MultiAssayExperiment.svg)](https://www.bioconductor.org/packages/release/bioc/html/MultiAssayExperiment.html#archives)
 [![Travis Build Status](https://travis-ci.org/waldronlab/MultiAssayExperiment.svg?branch=master)](https://travis-ci.org/waldronlab/MultiAssayExperiment)
-[![Build status](https://ci.appveyor.com/api/projects/status/2j9w8mub8to3vhid/branch/master?svg=true)](https://ci.appveyor.com/project/waldronlab/multiassayexperiment/branch/master)
+[![Build status](https://ci.appveyor.com/api/projects/status/rf25e9h995wnto7n/branch/master?svg=true)](https://ci.appveyor.com/project/LiNk-NY/multiassayexperiment-94gjw/branch/master)
 [![Coverage Status](https://codecov.io/github/waldronlab/MultiAssayExperiment/coverage.svg?branch=master)](https://codecov.io/github/waldronlab/MultiAssayExperiment?branch=master)
 [![Downloads](http://www.bioconductor.org/shields/downloads/MultiAssayExperiment.svg)](https://bioconductor.org/packages/stats/bioc/MultiAssayExperiment)
 
