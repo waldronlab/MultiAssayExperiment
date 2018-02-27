@@ -279,11 +279,29 @@ setMethod("mergeReplicates", "ANY",
 .longFormatElist <- function(object, i) {
     if (!is(object, "ExperimentList"))
         stop("<internal> Not an 'ExperimentList' input")
-    dataList <- lapply(seq_along(object), function(indx, flatBox) {
-        S4Vectors::DataFrame(assay = S4Vectors::Rle(names(object)[indx]),
-            .longFormatANY(flatBox[[indx]], i = i))
+    objnames <- structure(names(object), .Names = names(object))
+    lapply(objnames, function(nameidx, flatBox) {
+        S4Vectors::DataFrame(assay = S4Vectors::Rle(nameidx),
+            .longFormatANY(flatBox[[nameidx]], i = i))
         }, flatBox = object)
-    do.call(rbind, dataList)
+}
+
+.matchAddColData <- function(reshaped, colData, colDataCols) {
+    extraColumns <- colData[, colDataCols, drop = FALSE]
+    rowNameValues <- rownames(extraColumns)
+    rownames(extraColumns) <- NULL
+    matchIdx <- BiocGenerics::match(reshaped[["primary"]],
+        rowNameValues)
+    BiocGenerics::cbind(reshaped, extraColumns[matchIdx, , drop = FALSE])
+}
+
+.mapOrderPrimary <- function(flatbox, samplemap) {
+    primary <- S4Vectors::Rle(
+        samplemap[match(flatbox[["colname"]], samplemap[["colname"]]),
+        "primary"])
+
+    reshaped <- S4Vectors::DataFrame(flatbox, primary = primary)
+    reshaped[, c("assay", "primary", "rowname", "colname", "value")]
 }
 
 #' @rdname MultiAssayExperiment-helpers
@@ -313,29 +331,19 @@ setMethod("mergeReplicates", "ANY",
 #' @export longFormat
 longFormat <- function(object, colDataCols = NULL, i = 1L) {
     if (is(object, "ExperimentList"))
-        return(.longFormatElist(object, i = i))
+        return(do.call(rbind, .longFormatElist(object, i = i)))
     else if (!is(object, "MultiAssayExperiment"))
         return(.longFormatANY(object, i = i))
 
-    addCols <- !is.null(colDataCols)
-    longDataFrame <- .longFormatElist(experiments(object), i = i)
-    primary <- S4Vectors::Rle(
-        sampleMap(object)[match(longDataFrame[["colname"]],
-            sampleMap(object)[["colname"]]), "primary"])
+    longDataFrame <- do.call(rbind,
+        .longFormatElist(experiments(object), i = i))
 
-    longDataFrame <- S4Vectors::DataFrame(longDataFrame, primary = primary)
-    longDataFrame <-
-        longDataFrame[, c("assay", "primary", "rowname", "colname", "value")]
+    longDataFrame <- .mapOrderPrimary(longDataFrame, sampleMap(object))
 
-    if (addCols) {
-        extraColumns <- colData(object)[, colDataCols, drop = FALSE]
-        rowNameValues <- rownames(extraColumns)
-        rownames(extraColumns) <- NULL
-        matchIdx <- BiocGenerics::match(longDataFrame[["primary"]],
-            rowNameValues)
-        longDataFrame <- BiocGenerics::cbind(longDataFrame,
-            extraColumns[matchIdx, , drop = FALSE])
-    }
+    if (!is.null(colDataCols))
+        longDataFrame <-
+            .matchAddColData(longDataFrame, colData(object), colDataCols)
+
     longDataFrame
 }
 
@@ -429,12 +437,12 @@ longFormat <- function(object, colDataCols = NULL, i = 1L) {
 wideFormat <- function(object, colDataCols = NULL, check.names = TRUE,
     collapse = "_", key = "feature", i = 1L) {
 
+    if (is.null(colDataCols)) colDataCols <- character(0L)
+    nameFUN <- if (check.names) make.names else I
     cnames <- colnames(object)
-    longDataFrame <- longFormat(object, colDataCols = colDataCols, i = i)
-    longDataFrame <- as.data.frame(longDataFrame)
+    longList <- .longFormatElist(experiments(object))
+    longList <- lapply(longList, .mapOrderPrimary, sampleMap(object))
     colsofinterest <- c("assay", "rowname")
-    coldatanames <- names(longDataFrame)[!names(longDataFrame) %in%
-        c("assay", "primary", "rowname", "colname", "value")]
 
     if (any(anyReplicated(object))) {
         dups <- replicated(object)
@@ -444,8 +452,7 @@ wideFormat <- function(object, colDataCols = NULL, check.names = TRUE,
             lmat <- as.matrix(logilist)
             rownames(lmat) <- names(logilist)
             colnames(lmat) <- cnames[[i]]
-            lData <- longDataFrame[longDataFrame[["assay"]] == assayname,
-                c("primary", "colname")]
+            lData <- longList[[assayname]][, c("primary", "colname")]
             apply(lData, 1L, function(x) lmat[x[1L], x[2L]])
         }, duplic = dups)
 
@@ -462,15 +469,20 @@ wideFormat <- function(object, colDataCols = NULL, check.names = TRUE,
         wideData <- do.call(rbind, splitDF)
 
     } else {
-        wideData <- .uniteDF(longDataFrame, colsofinterest, collapse)
+        wideData <- lapply(longList, function(dfx) {
+            .uniteDF(as.data.frame(dfx), colsofinterest, collapse)
+        })
     }
-    wideData <- stats::reshape(wideData, direction = "wide",
+    wideData <- lapply(wideData, function(flox) {
+        flox <- stats::reshape(flox, direction = "wide",
         idvar = "primary", timevar = key, v.names = "value")
-    names(wideData) <- gsub("value\\.", "", names(wideData))
-    wideData <- wideData[
-        match(rownames(colData(object)), wideData[["primary"]]), ]
-    wideDF <- S4Vectors::DataFrame(wideData, check.names = check.names)
-    metadat <- .metadataCOLS(names(wideDF), collapse, coldatanames)
+        names(flox) <- nameFUN(gsub("value\\.", "", names(flox)))
+        .matchAddColData(flox, colData(object), colDataCols)
+    })
+    wideDF <- Reduce(function(x, y)
+        merge(x, y, by = "primary", all = TRUE), wideData)
+
+    metadat <- .metadataCOLS(names(wideDF), collapse, colDataCols)
     mcols(wideDF) <- metadat
     wideDF
 }
