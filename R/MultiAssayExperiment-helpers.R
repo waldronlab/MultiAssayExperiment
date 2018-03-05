@@ -482,7 +482,7 @@ wideFormat <- function(object, colDataCols = NULL, check.names = TRUE,
         .matchAddColData(flox, colData(object), colDataCols)
     })
     wideDF <- Reduce(function(x, y)
-        merge(x, y, by = "primary", all = TRUE), wideData)
+        merge(x, y, by = intersect(names(x), names(y)), all = TRUE), wideData)
 
     metadat <- .metadataCOLS(names(wideDF), collSymbol, colDataCols)
     mcols(wideDF) <- metadat
