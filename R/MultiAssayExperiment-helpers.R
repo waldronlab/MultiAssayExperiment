@@ -437,7 +437,7 @@ wideFormat <- function(object, colDataCols = NULL, check.names = TRUE,
     if (is.null(colDataCols)) colDataCols <- character(0L)
     nameFUN <- if (check.names) make.names else I
     cnames <- colnames(object)
-    longList <- .longFormatElist(experiments(object))
+    longList <- .longFormatElist(experiments(object), i = i)
     longList <- lapply(longList, .mapOrderPrimary, sampleMap(object))
     colsofinterest <- c("assay", "rowname")
 
