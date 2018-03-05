@@ -9,8 +9,8 @@ test_that("longFormat returns a DataFrame", {
     matDF <- longFormat(testMat)
     ESetDF <- longFormat(testESet)
 
-    expect_true(is(matDF, "DataFrame"))
-    expect_true(is(ESetDF, "DataFrame"))
+    expect_true(is(matDF, "data.frame"))
+    expect_true(is(ESetDF, "data.frame"))
 })
 
 test_that("longFormat returns specified colData column and proper dimensions", {
