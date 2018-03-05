@@ -396,11 +396,10 @@ longFormat <- function(object, colDataCols = NULL, i = 1L) {
 
 .metadataCOLS <- function(metcols, collapser, coldatcols) {
     namesList <- lapply(strsplit(metcols, collapser), `[`)
-    maxval <- max(lengths(namesList))
     sqnames <- lapply(namesList, function(nam)
-        append(nam, rep(NA_character_, maxval - length(nam))))
+        append(nam, rep(NA_character_, 3L - length(nam))))
     doFrame <- do.call(rbind.data.frame, sqnames)
-    names(doFrame) <- c("sourceName", "rowname", "colname")[seq_len(maxval)]
+    names(doFrame) <- c("sourceName", "rowname", "colname")
     doFrame[["sourceName"]] <-
         gsub("primary", "colDataRows", doFrame[["sourceName"]])
     doFrame[doFrame[["sourceName"]] %in% coldatcols, "sourceName"] <-
