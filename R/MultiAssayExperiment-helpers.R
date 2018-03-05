@@ -441,34 +441,39 @@ wideFormat <- function(object, colDataCols = NULL, check.names = TRUE,
     longList <- lapply(longList, .mapOrderPrimary, sampleMap(object))
     colsofinterest <- c("assay", "rowname")
 
-    if (any(anyReplicated(object))) {
-        dups <- replicated(object)
-        lVects <- lapply(seq_along(dups), function(i, duplic) {
+    anyReps <- anyReplicated(object)
+    if (any(anyReps)) {
+        dups <- replicated(object)[anyReps]
+        indx <- structure(seq_along(dups), .Names = names(object)[anyReps])
+        lVects <- lapply(indx, function(i, duplic) {
             assayname <- names(duplic)[[i]]
             logilist <- duplic[[i]]
             lmat <- as.matrix(logilist)
             rownames(lmat) <- names(logilist)
-            colnames(lmat) <- cnames[[i]]
+            colnames(lmat) <- cnames[anyReps][[i]]
             lData <- longList[[assayname]][, c("primary", "colname")]
             apply(lData, 1L, function(x) lmat[x[1L], x[2L]])
         }, duplic = dups)
 
-        longDataFrame[["replicated"]] <- unlist(lVects)
-        splitDF <- split(longDataFrame, longDataFrame[["replicated"]])
-        splitDF <- lapply(splitDF, function(x) x[, names(x) != "replicated"])
+        repList <- Map(function(x, y) { x[y, , drop = FALSE] },
+            x = longList[anyReps], y = lVects)
 
-        splitDF <- lapply(names(splitDF), function(splitter) {
-            dfchunk <- splitDF[[splitter]]
-            colsofinterest <- if (splitter == "TRUE") {
-                append(colsofinterest, "colname") } else { colsofinterest }
-            .uniteDF(dfchunk, colsofinterest, collapse)
-        })
-        wideData <- do.call(rbind, splitDF)
+        longList[anyReps] <- Map(function(x, y) { x[!y, , drop = FALSE] },
+            x = longList[anyReps], y = lVects)
 
+        longList <- lapply(longList, function(x)
+            tidyr::unite(x[, names(x) != "colname"], key, colsofinterest,
+                sep = collapse))
+
+        repList <- lapply(repList, function(x)
+            tidyr::unite(x, key, c(colsofinterest, "colname"),
+                sep = collapse))
+
+        wideData <- c(longList, repList)
     } else {
-        wideData <- lapply(longList, function(dfx) {
-            .uniteDF(as.data.frame(dfx), colsofinterest, collapse)
-        })
+        wideData <- lapply(longList, function(x)
+            tidyr::unite(head(x[, names(x) != "colname"]), key,
+                colsofinterest, sep = collapse))
     }
     wideData <- lapply(wideData, function(flox) {
         flox <- stats::reshape(flox, direction = "wide",
