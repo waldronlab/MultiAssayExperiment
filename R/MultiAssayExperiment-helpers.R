@@ -1,6 +1,8 @@
 #' @include MultiAssayExperiment-methods.R
 NULL
 
+#' @importFrom tidyr unite spread
+
 #' @name MultiAssayExperiment-helpers
 #' @title A group of helper functions for manipulating and cleaning a
 #' MultiAssayExperiment
@@ -472,12 +474,11 @@ wideFormat <- function(object, colDataCols = NULL, check.names = TRUE,
         wideData <- c(longList, repList)
     } else {
         wideData <- lapply(longList, function(x)
-            tidyr::unite(head(x[, names(x) != "colname"]), key,
+            tidyr::unite(x[, names(x) != "colname"], key,
                 colsofinterest, sep = collSymbol))
     }
     wideData <- lapply(wideData, function(flox) {
-        flox <- stats::reshape(flox, direction = "wide",
-        idvar = "primary", timevar = key, v.names = "value")
+        flox <- tidyr::spread(flox, key = key, value = "value")
         names(flox) <- nameFUN(gsub("value\\.", "", names(flox)))
         .matchAddColData(flox, colData(object), colDataCols)
     })
