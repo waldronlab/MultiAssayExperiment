@@ -487,7 +487,8 @@ wideFormat <- function(object, colDataCols = NULL, check.names = TRUE,
     metadat <- .metadataCOLS(names(wideDF), collSymbol, colDataCols)
     mcols(wideDF) <- metadat
     names(wideDF) <- gsub(collSymbol, collapse, names(wideDF))
-    wideDF
+
+    wideDF[order(match(wideDF[["primary"]], rownames(colData(object)))), ]
 }
 
 # hasRowRanges section ----------------------------------------------------
