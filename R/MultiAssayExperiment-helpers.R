@@ -348,19 +348,6 @@ longFormat <- function(object, colDataCols = NULL, i = 1L) {
 
 # wideformat function -----------------------------------------------------
 
-.uniteDF <- function(dframe, coi, collapser) {
-    varsIn <- c(coi, "primary", "value", "colname")
-    cbind.data.frame(
-    data.frame(
-        feature = apply(dframe[, coi], 1L, paste, collapse = collapser),
-        primary = dframe[["primary"]],
-        value = dframe[["value"]]
-    ),
-    dframe[, !names(dframe) %in% varsIn, drop = FALSE],
-    stringsAsFactors = FALSE
-    )
-}
-
 .wideFormatANY <- function(object, i, check.names) {
     if (is(object, "ExpressionSet"))
         object <- Biobase::exprs(object)
