@@ -439,6 +439,7 @@ wideFormat <- function(object, colDataCols = NULL, check.names = TRUE,
     longList <- .longFormatElist(experiments(object), i = i)
     longList <- lapply(longList, .mapOrderPrimary, sampleMap(object))
     colsofinterest <- c("assay", "rowname")
+    collSymbol <- "///"
 
     anyReps <- anyReplicated(object)
     if (any(anyReps)) {
@@ -462,17 +463,17 @@ wideFormat <- function(object, colDataCols = NULL, check.names = TRUE,
 
         longList <- lapply(longList, function(x)
             tidyr::unite(x[, names(x) != "colname"], key, colsofinterest,
-                sep = collapse))
+                sep = collSymbol))
 
         repList <- lapply(repList, function(x)
             tidyr::unite(x, key, c(colsofinterest, "colname"),
-                sep = collapse))
+                sep = collSymbol))
 
         wideData <- c(longList, repList)
     } else {
         wideData <- lapply(longList, function(x)
             tidyr::unite(head(x[, names(x) != "colname"]), key,
-                colsofinterest, sep = collapse))
+                colsofinterest, sep = collSymbol))
     }
     wideData <- lapply(wideData, function(flox) {
         flox <- stats::reshape(flox, direction = "wide",
@@ -483,8 +484,9 @@ wideFormat <- function(object, colDataCols = NULL, check.names = TRUE,
     wideDF <- Reduce(function(x, y)
         merge(x, y, by = "primary", all = TRUE), wideData)
 
-    metadat <- .metadataCOLS(names(wideDF), collapse, colDataCols)
+    metadat <- .metadataCOLS(names(wideDF), collSymbol, colDataCols)
     mcols(wideDF) <- metadat
+    names(wideDF) <- gsub(collSymbol, collapse, names(wideDF))
     wideDF
 }
 
