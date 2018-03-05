@@ -270,10 +270,7 @@ setMethod("mergeReplicates", "ANY",
         direction = "long", v.names = "value")
     ## Reshape leaves rownames even if new.row.names = NULL
     rownames(object) <- NULL
-    object <- object[, c("rowname", "colname", "value")]
-    rectangle <- as(object, "DataFrame")
-    rectangle[, "colname"] <- S4Vectors::Rle(rectangle[["colname"]])
-    rectangle
+    object[, c("rowname", "colname", "value")]
 }
 
 .longFormatElist <- function(object, i) {
@@ -281,8 +278,9 @@ setMethod("mergeReplicates", "ANY",
         stop("<internal> Not an 'ExperimentList' input")
     objnames <- structure(names(object), .Names = names(object))
     lapply(objnames, function(nameidx, flatBox) {
-        S4Vectors::DataFrame(assay = S4Vectors::Rle(nameidx),
-            .longFormatANY(flatBox[[nameidx]], i = i))
+        data.frame(assay = nameidx,
+            .longFormatANY(flatBox[[nameidx]], i = i),
+            stringsAsFactors = FALSE)
         }, flatBox = object)
 }
 
@@ -290,17 +288,16 @@ setMethod("mergeReplicates", "ANY",
     extraColumns <- colData[, colDataCols, drop = FALSE]
     rowNameValues <- rownames(extraColumns)
     rownames(extraColumns) <- NULL
-    matchIdx <- BiocGenerics::match(reshaped[["primary"]],
-        rowNameValues)
-    BiocGenerics::cbind(reshaped, extraColumns[matchIdx, , drop = FALSE])
+    matchIdx <- match(reshaped[["primary"]], rowNameValues)
+    cbind(reshaped, extraColumns[matchIdx, , drop = FALSE])
 }
 
 .mapOrderPrimary <- function(flatbox, samplemap) {
-    primary <- S4Vectors::Rle(
-        samplemap[match(flatbox[["colname"]], samplemap[["colname"]]),
-        "primary"])
+    primary <- samplemap[match(flatbox[["colname"]], samplemap[["colname"]]),
+        "primary"]
 
-    reshaped <- S4Vectors::DataFrame(flatbox, primary = primary)
+    reshaped <- data.frame(flatbox, primary = primary,
+        stringsAsFactors = FALSE)
     reshaped[, c("assay", "primary", "rowname", "colname", "value")]
 }
 
@@ -394,7 +391,7 @@ longFormat <- function(object, colDataCols = NULL, i = 1L) {
             stringsAsFactors = FALSE, check.names = check.names,
             row.names = NULL)
     }
-    S4Vectors::DataFrame(object)
+    object
 }
 
 .metadataCOLS <- function(metcols, collapser, coldatcols) {
