@@ -291,7 +291,9 @@ setMethod("mergeReplicates", "ANY",
     rowNameValues <- rownames(extraColumns)
     rownames(extraColumns) <- NULL
     matchIdx <- match(reshaped[["primary"]], rowNameValues)
-    cbind(reshaped, extraColumns[matchIdx, , drop = FALSE])
+    matchedDF <- extraColumns[matchIdx, , drop = FALSE]
+    rownames(matchedDF) <- NULL
+    cbind(reshaped, matchedDF)
 }
 
 .mapOrderPrimary <- function(flatbox, samplemap) {
