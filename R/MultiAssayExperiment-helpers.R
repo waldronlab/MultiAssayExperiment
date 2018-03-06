@@ -466,7 +466,6 @@ wideFormat <- function(object, colDataCols = NULL, check.names = TRUE,
 
     wideData <- lapply(wideData, function(flox) {
         flox <- tidyr::spread(flox, key = {key}, value = "value")
-        names(flox) <- nameFUN(gsub("value\\.", "", names(flox)))
         .matchAddColData(flox, colData(object), colDataCols)
     })
     wideDF <- Reduce(function(x, y)
@@ -475,7 +474,7 @@ wideFormat <- function(object, colDataCols = NULL, check.names = TRUE,
 
     metadat <- .metadataCOLS(names(wideDF), collSymbol, colDataCols)
     mcols(wideDF) <- metadat
-    names(wideDF) <- gsub(collSymbol, collapse, names(wideDF))
+    names(wideDF) <- nameFUN(gsub(collSymbol, collapse, names(wideDF)))
 
     wideDF[order(match(wideDF[["primary"]], rownames(colData(object)))), ]
 }
