@@ -343,7 +343,7 @@ longFormat <- function(object, colDataCols = NULL, i = 1L) {
         longDataFrame <-
             .matchAddColData(longDataFrame, colData(object), colDataCols)
 
-    longDataFrame
+    as(longDataFrame, "DataFrame")
 }
 
 # wideformat function -----------------------------------------------------
@@ -460,10 +460,12 @@ wideFormat <- function(object, colDataCols = NULL, check.names = TRUE,
 
         wideData <- c(longList, repList)
     } else {
+
         wideData <- lapply(longList, function(x)
             tidyr::unite(x[, names(x) != "colname"], key,
                 colsofinterest, sep = collSymbol))
     }
+
     wideData <- lapply(wideData, function(flox) {
         flox <- tidyr::spread(flox, key = key, value = "value")
         names(flox) <- nameFUN(gsub("value\\.", "", names(flox)))
@@ -471,6 +473,7 @@ wideFormat <- function(object, colDataCols = NULL, check.names = TRUE,
     })
     wideDF <- Reduce(function(x, y)
         merge(x, y, by = intersect(names(x), names(y)), all = TRUE), wideData)
+    wideDF <- as(wideDF, "DataFrame")
 
     metadat <- .metadataCOLS(names(wideDF), collSymbol, colDataCols)
     mcols(wideDF) <- metadat
