@@ -334,7 +334,7 @@ longFormat <- function(object, colDataCols = NULL, i = 1L) {
     else if (!is(object, "MultiAssayExperiment"))
         return(.longFormatANY(object, i = i))
 
-    longDataFrame <- do.call(rbind,
+    longDataFrame <- do.call(function(...) rbind(..., make.row.names = FALSE),
         .longFormatElist(experiments(object), i = i))
 
     longDataFrame <- .mapOrderPrimary(longDataFrame, sampleMap(object))
