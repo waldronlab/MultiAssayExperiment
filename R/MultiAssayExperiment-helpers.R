@@ -287,7 +287,7 @@ setMethod("mergeReplicates", "ANY",
 }
 
 .matchAddColData <- function(reshaped, colData, colDataCols) {
-    extraColumns <- colData[, colDataCols, drop = FALSE]
+    extraColumns <- as.data.frame(colData[, colDataCols, drop = FALSE])
     rowNameValues <- rownames(extraColumns)
     rownames(extraColumns) <- NULL
     matchIdx <- match(reshaped[["primary"]], rowNameValues)
