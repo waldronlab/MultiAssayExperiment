@@ -413,14 +413,13 @@ longFormat <- function(object, colDataCols = NULL, i = 1L) {
 #' @param collapse (character default "_") A single string delimiter for output
 #' column names. In \code{wideFormat}, experiments and rownames (and when
 #' replicate samples are present, colnames) are seperated by this delimiter
-#' @param key (character default "feature") name of column whose values will
-#' used as variables in the wide dataset, see the \code{timevar} argument in
-#' \link[stats]{reshape}. If none is specified, assay, rowname, and colname
-#' will be combined and named as the "feature" column
 #'
 #' @export wideFormat
 wideFormat <- function(object, colDataCols = NULL, check.names = TRUE,
-    collapse = "_", key = "feature", i = 1L) {
+    collapse = "_", i = 1L) {
+
+    collSymbol <- "///"
+    key <- "feature"
 
     if (is.null(colDataCols)) colDataCols <- character(0L)
     nameFUN <- if (check.names) make.names else I
@@ -428,7 +427,6 @@ wideFormat <- function(object, colDataCols = NULL, check.names = TRUE,
     longList <- .longFormatElist(experiments(object), i = i)
     longList <- lapply(longList, .mapOrderPrimary, sampleMap(object))
     colsofinterest <- c("assay", "rowname")
-    collSymbol <- "///"
 
     anyReps <- anyReplicated(object)
     if (any(anyReps)) {
@@ -451,23 +449,23 @@ wideFormat <- function(object, colDataCols = NULL, check.names = TRUE,
             x = longList[anyReps], y = lVects)
 
         longList <- lapply(longList, function(x)
-            tidyr::unite(x[, names(x) != "colname"], key, colsofinterest,
+            tidyr::unite(x[, names(x) != "colname"], col = !!key, colsofinterest,
                 sep = collSymbol))
 
         repList <- lapply(repList, function(x)
-            tidyr::unite(x, key, c(colsofinterest, "colname"),
+            tidyr::unite(x, col = !!key, c(colsofinterest, "colname"),
                 sep = collSymbol))
 
         wideData <- c(longList, repList)
     } else {
 
         wideData <- lapply(longList, function(x)
-            tidyr::unite(x[, names(x) != "colname"], key,
+            tidyr::unite(x[, names(x) != "colname"], col = !!key,
                 colsofinterest, sep = collSymbol))
     }
 
     wideData <- lapply(wideData, function(flox) {
-        flox <- tidyr::spread(flox, key = key, value = "value")
+        flox <- tidyr::spread(flox, key = {key}, value = "value")
         names(flox) <- nameFUN(gsub("value\\.", "", names(flox)))
         .matchAddColData(flox, colData(object), colDataCols)
     })

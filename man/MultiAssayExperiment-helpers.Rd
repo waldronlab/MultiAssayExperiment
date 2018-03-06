@@ -55,7 +55,7 @@ mergeReplicates(x, replicates = list(), simplify = BiocGenerics::mean, ...)
 longFormat(object, colDataCols = NULL, i = 1L)
 
 wideFormat(object, colDataCols = NULL, check.names = TRUE, collapse = "_",
-  key = "feature", i = 1L)
+  i = 1L)
 
 hasRowRanges(x)
 
@@ -92,11 +92,6 @@ if necessary}
 \item{collapse}{(character default "_") A single string delimiter for output
 column names. In \code{wideFormat}, experiments and rownames (and when
 replicate samples are present, colnames) are seperated by this delimiter}
-
-\item{key}{(character default "feature") name of column whose values will
-used as variables in the wide dataset, see the \code{timevar} argument in
-\link[stats]{reshape}. If none is specified, assay, rowname, and colname
-will be combined and named as the "feature" column}
 
 \item{incomparables}{unused argument}
 }
