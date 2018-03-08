@@ -25,8 +25,8 @@ NULL
 #' diverse assays on a collection of specimen. Currently,  the class can handle
 #' assays that are organized instances of
 #' \code{\linkS4class{SummarizedExperiment}},
-#' \code{\linkS4class{ExpressionSet}},
-#' \code{matrix}, \code{\link[RaggedExperiment]{RaggedExperiment}}
+#' \code{\linkS4class{ExpressionSet}}, \code{matrix},
+#' \code{\link[RaggedExperiment:RaggedExperiment-class]{RaggedExperiment}}
 #' (inherits from \code{\linkS4class{GRangesList}}), and \code{RangedVcfStack}.
 #' Create new \code{MultiAssayExperiment} instances with the homonymous
 #' constructor, minimally with the argument \code{\link{ExperimentList}},
@@ -53,7 +53,7 @@ NULL
 #'
 #' @section ExperimentList:
 #' The \code{\link{ExperimentList}} slot is designed to contain results from
-#' each experiment/assay. It contains a \link[S4Vectors]{SimpleList}.
+#' each experiment/assay. It contains a \linkS4class{SimpleList}.
 #'
 #' @section sampleMap:
 #' The \code{\link{sampleMap}} contains a \code{DataFrame} of translatable
@@ -186,12 +186,11 @@ setClass("MultiAssayExperiment",
 #' multiple data elements from the different hierarchies of data
 #' (study, experiments, and samples). It can create instances where neither
 #' a \code{sampleMap} or a \code{colData} set is provided. Please see the
-#' MultiAssayExperiment API documentation for more information by running the
-#' \code{API} function.
+#' MultiAssayExperiment API documentation for more information.
 #'
 #' @param experiments A \code{list} or \link{ExperimentList} of all
 #' combined experiments
-#' @param colData A \code{\link[S4Vectors]{DataFrame}} or \code{data.frame} of
+#' @param colData A \code{\linkS4class{DataFrame}} or \code{data.frame} of
 #' characteristics for all biological units
 #' @param sampleMap A \code{DataFrame} or \code{data.frame} of assay names,
 #' sample identifiers, and colname samples

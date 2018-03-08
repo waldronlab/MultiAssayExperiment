@@ -3,8 +3,8 @@
 #' features (\code{rowname}s)
 #' @param type Any of the valid types of maps including colnames, rownames,
 #' and assays.
-#' @return A \code{DataFrame} class object of names
-#' @describeIn mapToList Inverse of the listToMap function
+#' @return A \linkS4class{DataFrame} class object of names
+#' @describeIn mapToList The inverse of the listToMap operation
 #' @export listToMap
 listToMap <- function(listmap, type = "colnames") {
     if (is.null(names(listmap)))

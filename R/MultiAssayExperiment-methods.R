@@ -27,7 +27,7 @@ NULL
 ###
 
 #' @describeIn ExperimentList Get the dimension names for
-#' an \code{ExperimentList} using \code{\link[IRanges]{CharacterList}}
+#' an \code{ExperimentList} using \code{\linkS4class{CharacterList}}
 setMethod("dimnames", "ExperimentList", function(x) {
     list(IRanges::CharacterList(lapply(x, function(g) dimnames(g)[[1]])),
     IRanges::CharacterList(lapply(x, function(g) dimnames(g)[[2]])))

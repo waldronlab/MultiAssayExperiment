@@ -35,7 +35,7 @@ NULL
 #'     each row represents an observation. Optional \code{colDataCols} can be
 #'     added when using a \code{MultiAssayExperiment}.
 #'     \item hasRowRanges: A function that identifies ExperimentList elements
-#'     that have a \link[SummarizedExperiment]{rowRanges} method
+#'     that have a \link[=RangedSummarizedExperiment-class]{rowRanges} method
 #'     \item duplicated: (Deprecated) Returns a 'list' of 'LogicalList's that
 #'     indicate what measurements originate from the same biological unit
 #' }
@@ -407,7 +407,7 @@ longFormat <- function(object, colDataCols = NULL, i = 1L) {
 #' data output (see the \code{colDataCols} argument). Metadata columns are
 #' generated based on the names produced in the wide format
 #' \linkS4class{DataFrame}. These can be accessed via the
-#' \link[S4Vectors]{mcols} function.
+#' \link[=Vector-class]{mcols} function.
 #'
 #' @param check.names (logical default TRUE) Column names of the output
 #' \code{DataFrame} will be checked for syntactic validity and made unique,
@@ -505,8 +505,8 @@ setGeneric("hasRowRanges", function(x) standardGeneric("hasRowRanges"))
 #' @rdname MultiAssayExperiment-helpers
 #'
 #' @details The \code{hasRowRanges} method identifies assays that support
-#' a \link[SummarizedExperiment]{rowRanges} method \emph{and} return a
-#' \linkS4class{GRanges} object.
+#' a \link[=RangedSummarizedExperiment-class]{rowRanges} method \emph{and}
+#' return a \linkS4class{GRanges} object.
 setMethod("hasRowRanges", "MultiAssayExperiment", function(x) {
     hasRowRanges(experiments(x))
 })

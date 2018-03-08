@@ -24,7 +24,7 @@ identifiers in the first column}
 names column}
 }
 \value{
-A \code{DataFrame} class object of names
+A \linkS4class{DataFrame} class object of names
 
 A \code{list} object of DataFrames for each assay
 }
@@ -35,7 +35,7 @@ opposite by taking a \code{list} and converting it to \code{DataFrame}.
 }
 \section{Functions}{
 \itemize{
-\item \code{listToMap}: Inverse of the listToMap function
+\item \code{listToMap}: The inverse of the listToMap operation
 }}
 
 \examples{

@@ -68,7 +68,7 @@ given \code{simplify} function argument (e.g., na.rm = TRUE)
 \code{\linkS4class{ExperimentList}} class
 
 \item \code{dimnames}: Get the dimension names for
-an \code{ExperimentList} using \code{\link[IRanges]{CharacterList}}
+an \code{ExperimentList} using \code{\linkS4class{CharacterList}}
 
 \item \code{mergeReplicates}: Apply the mergeReplicates method on the
 ExperimentList elements

@@ -15,7 +15,7 @@ MatchedAssayExperiment(experiments = ExperimentList(),
 \item{experiments}{A \code{list} or \link{ExperimentList} of all
 combined experiments}
 
-\item{colData}{A \code{\link[S4Vectors]{DataFrame}} or \code{data.frame} of
+\item{colData}{A \code{\linkS4class{DataFrame}} or \code{data.frame} of
 characteristics for all biological units}
 
 \item{sampleMap}{A \code{DataFrame} or \code{data.frame} of assay names,

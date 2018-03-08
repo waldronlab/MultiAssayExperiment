@@ -66,7 +66,8 @@ diverse assays on a collection of specimen. Currently,  the class can handle
 assays that are organized instances of
 \code{\linkS4class{SummarizedExperiment}},
 \code{\linkS4class{ExpressionSet}},
-\code{matrix}, \code{\link[RaggedExperiment]{RaggedExperiment}}
+\code{matrix},
+\code{\link[RaggedExperiment:RaggedExperiment-class]{RaggedExperiment}}
 (inherits from \code{\linkS4class{GRangesList}}), and \code{RangedVcfStack}.
 Create new \code{MultiAssayExperiment} instances with the homonymous
 constructor, minimally with the argument \code{\link{ExperimentList}},
@@ -145,7 +146,7 @@ allow arguments to be of class \code{data.frame} and subsequently coerced.
 \section{ExperimentList}{
 
 The \code{\link{ExperimentList}} slot is designed to contain results from
-each experiment/assay. It contains a \link[S4Vectors]{SimpleList}.
+each experiment/assay. It contains a \linkS4class{SimpleList}.
 }
 
 \section{sampleMap}{

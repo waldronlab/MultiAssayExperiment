@@ -13,7 +13,7 @@ MultiAssayExperiment(experiments = ExperimentList(),
 \item{experiments}{A \code{list} or \link{ExperimentList} of all
 combined experiments}
 
-\item{colData}{A \code{\link[S4Vectors]{DataFrame}} or \code{data.frame} of
+\item{colData}{A \code{\linkS4class{DataFrame}} or \code{data.frame} of
 characteristics for all biological units}
 
 \item{sampleMap}{A \code{DataFrame} or \code{data.frame} of assay names,
@@ -34,8 +34,7 @@ The constructor function for the \link{MultiAssayExperiment-class} combines
 multiple data elements from the different hierarchies of data
 (study, experiments, and samples). It can create instances where neither
 a \code{sampleMap} or a \code{colData} set is provided. Please see the
-MultiAssayExperiment API documentation for more information by running the
-\code{API} function.
+MultiAssayExperiment API documentation for more information.
 }
 \examples{
 ## Run the example ExperimentList
