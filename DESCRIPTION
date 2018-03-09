@@ -1,6 +1,6 @@
 Package: MultiAssayExperiment
 Title: Software for the integration of multi-omics experiments in Bioconductor
-Version: 1.5.98
+Version: 1.5.99
 Authors@R: c(person("Marcel", "Ramos", email = "marcel.ramos@roswellpark.org",
     role = c("aut", "cre")),
     person("Levi", "Waldron", email = "lwaldron.research@gmail.com",
