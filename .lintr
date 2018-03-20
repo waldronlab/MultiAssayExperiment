@@ -1,6 +1,12 @@
 linters: with_defaults(
     camel_case_linter = NULL, # 466
+    snake_case_linter,
     closed_curly_linter = NULL, # 33
     commented_code_linter = NULL, # 30
-    open_curly_linter = NULL
+    open_curly_linter = NULL,
+    line_length_linter(80),
+    multiple_dots_linter,
+    single_quotes_linter = NULL,
+    spaces_left_parentheses_linter,
+    trailing_whitespace_linter
   )

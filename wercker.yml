@@ -1,11 +1,12 @@
 box: bioconductor/devel_core2
-
 build:
   steps:
-    - jimhester/r-dependencies:
-        cran_dependencies: devtools
+    - script:
+        name: Install devtools
+        code: R -e "install.packages('devtools')"
+    - jimhester/r-dependencies
     - jimhester/r-check
-    - jimhester/r-lint
+#    - jimhester/r-lint
     - jimhester/r-coverage
 
 after-steps:
@@ -13,3 +14,4 @@ after-steps:
       packages: ruby
   - wantedly/pretty-slack-notify:
       webhook_url: $SLACK_WEBHOOK_URL
+
