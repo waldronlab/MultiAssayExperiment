@@ -40,6 +40,7 @@ Suggests:
     survminer
 biocViews: Infrastructure, DataRepresentation
 License: Artistic-2.0
+Encoding: UTF-8
 LazyData: true
 VignetteBuilder: knitr, R.rsp
 URL: https://github.com/waldronlab/MultiAssayExperiment/wiki/MultiAssayExperiment-API
