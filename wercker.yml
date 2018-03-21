@@ -8,10 +8,10 @@ build:
     - jimhester/r-check
 #    - jimhester/r-lint
     - jimhester/r-coverage
-
-after-steps:
-  - install-packages:
-      packages: ruby
-  - wantedly/pretty-slack-notify:
-      webhook_url: $SLACK_WEBHOOK_URL
+# notify via slack step
+  after-steps:
+    - install-packages:
+        packages: ruby
+    - wantedly/pretty-slack-notify:
+        webhook_url: $SLACK_WEBHOOK_URL
 
