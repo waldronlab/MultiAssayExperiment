@@ -163,3 +163,37 @@ setMethod("show", "ExperimentList", function(object) {
         sprintf("\n [%i] %s: %s with %s rows and %s columns",
                 seq(o_len), o_names, elem_cl, featdim, sampdim), "\n")
 })
+
+
+coerceToExperimentList <- function(from) {
+    from <- as(from, "SimpleList")
+    new("ExperimentList", from)
+}
+
+#' @rdname ExperimentList-class
+#' @name coerce
+#'
+#' @aliases coerce,list,ExperimentList-method coerce,List,ExperimentList-method
+#'
+#' @section
+#' coercion:
+#'  Convert a \code{list} or S4 \code{List} to an ExperimentList using the
+#'  `as()` function.
+#'
+#'  In the following example, \code{x} is either a \code{list} or
+#'  \linkS4class{List}:
+#'
+#'  \preformatted{    \code{as(x, "ExperimentList")}}
+#'
+#' @md
+#'
+#' @exportMethod coerce
+
+setAs("list", "ExperimentList", function(from) {
+    coerceToExperimentList(from)
+})
+
+setAs("List", "ExperimentList", function(from) {
+    coerceToExperimentList(from)
+})
+

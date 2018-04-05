@@ -6,6 +6,9 @@
 \name{ExperimentList-class}
 \alias{ExperimentList-class}
 \alias{show,ExperimentList-method}
+\alias{coerce}
+\alias{coerce,list,ExperimentList-method}
+\alias{coerce,List,ExperimentList-method}
 \alias{dimnames,ExperimentList-method}
 \alias{mergeReplicates,ExperimentList-method}
 \alias{assay,ANY,missing-method}
@@ -87,6 +90,17 @@ with a \code{numeric} index
 \item \code{assay}: Get the specified assay from ExperimentList with
 a \code{character} index
 }}
+
+\section{coercion}{
+
+Convert a \code{list} or S4 \code{List} to an ExperimentList using the
+\code{as()} function.
+
+In the following example, \code{x} is either a \code{list} or
+\linkS4class{List}:
+
+\preformatted{    \code{as(x, "ExperimentList")}}
+}
 
 \examples{
 ExperimentList()
