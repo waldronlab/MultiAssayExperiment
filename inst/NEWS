@@ -1,6 +1,22 @@
 # MultiAssayExperiment
 ----------------------------------------------------------------
 
+## Changes in version 1.5.101
+
+### New features
+
+* Renamed `duplicated` function to `replicated`
+* Added coercion functions from `List` and `list` to `ExperimentList`
+* Improve speed of reshape functions from previous change (`wideFormat`)
+
+### Bug fixes and minor improvements
+
+* Explicitly check for `DataFrame` in `ExperimentList`
+* Fixed documentation warnings for inexact links
+* Fix subsetting order in bracket method (`[`)
+* Minor vignette changes
+* Supply a collapse character for `wideFormat` column names
+
 ## Changes in version 1.5.65
 
 ### Bug fixes and minor improvements

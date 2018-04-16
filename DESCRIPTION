@@ -1,6 +1,6 @@
 Package: MultiAssayExperiment
 Title: Software for the integration of multi-omics experiments in Bioconductor
-Version: 1.5.100
+Version: 1.5.101
 Authors@R: c(person("Marcel", "Ramos", email = "marcel.ramos@roswellpark.org",
     role = c("aut", "cre")),
     person("Levi", "Waldron", email = "lwaldron.research@gmail.com",
@@ -15,7 +15,7 @@ Description: Multi-assay 'omics experiments on a set of samples are increasingly
     user experience by straightforward extending concept and design of
     single-assay classes such as SummarizedExperiment.
 Depends:
-    R (>= 3.4.0)
+    R (>= 3.5.0)
 Imports:
     methods,
     GenomicRanges (>= 1.25.93),
