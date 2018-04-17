@@ -4,28 +4,14 @@
 \name{MatchedAssayExperiment-class}
 \alias{MatchedAssayExperiment-class}
 \alias{MatchedAssayExperiment}
+\alias{coerce,MultiAssayExperiment,MatchedAssayExperiment-method}
 \title{An integrative and matched-samples class for experiment data}
 \usage{
-MatchedAssayExperiment(experiments = ExperimentList(),
-  colData = S4Vectors::DataFrame(), sampleMap = S4Vectors::DataFrame(assay =
-  factor(), primary = character(), colname = character()), metadata = NULL,
-  drops = list())
+MatchedAssayExperiment(...)
 }
 \arguments{
-\item{experiments}{A \code{list} or \link{ExperimentList} of all
-combined experiments}
-
-\item{colData}{A \code{\linkS4class{DataFrame}} or \code{data.frame} of
-characteristics for all biological units}
-
-\item{sampleMap}{A \code{DataFrame} or \code{data.frame} of assay names,
-sample identifiers, and colname samples}
-
-\item{metadata}{An optional argument of "ANY" class (usually list) for
-content describing the experiments}
-
-\item{drops}{A \code{list} of unmatched information
-(included after subsetting)}
+\item{...}{Either a single MultiAssayExperiment or the components to create
+a valid MultiAssayExperiment}
 }
 \value{
 A \code{MatchedAssayExperiment} object
@@ -48,5 +34,5 @@ acc
 
 }
 \seealso{
-MultiAssayExperiment
+\link{MultiAssayExperiment}
 }

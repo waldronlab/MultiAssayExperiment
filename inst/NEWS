@@ -1,6 +1,13 @@
 # MultiAssayExperiment
 ----------------------------------------------------------------
 
+## Changes in version 1.5.102
+
+### New features
+
+* The `MatchedAssayExperiment` constructor function now works either a
+single `MultiAssayExperiment` or the essential components of one.
+
 ## Changes in version 1.5.101
 
 ### New features

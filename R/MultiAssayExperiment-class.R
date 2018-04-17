@@ -591,7 +591,8 @@ setMethod("updateObject", "MultiAssayExperiment",
 #' @return A \code{MatchedAssayExperiment} object
 #'
 #' @exportClass MatchedAssayExperiment
-#' @seealso MultiAssayExperiment
+#' @seealso \link{MultiAssayExperiment}
+#'
 setClass("MatchedAssayExperiment", contains="MultiAssayExperiment")
 
 .checkEqualPrimaries <- function(object) {
@@ -628,31 +629,7 @@ setClass("MatchedAssayExperiment", contains="MultiAssayExperiment")
 
 S4Vectors::setValidity2("MatchedAssayExperiment", .validMatchedAssayExperiment)
 
-#' @describeIn MatchedAssayExperiment-class Construct a
-#' \code{MatchedAssayExperiment} class from \linkS4class{MultiAssayExperiment}
-#' inputs.
-#'
-#' @inheritParams MultiAssayExperiment
-#'
-#' @examples
-#' data("miniACC")
-#' acc <- as(miniACC, "MatchedAssayExperiment")
-#' acc
-#'
-#' @aliases MatchedAssayExperiment
-#' @export MatchedAssayExperiment
-MatchedAssayExperiment <- function(experiments = ExperimentList(),
-    colData = S4Vectors::DataFrame(), sampleMap =
-        S4Vectors::DataFrame(assay = factor(), primary = character(),
-                             colname = character()),
-    metadata = NULL, drops = list()) {
-    matched <- MultiAssayExperiment(experiments = experiments, colData = colData,
-                             sampleMap = sampleMap, metadata = metadata,
-                             drops = drops)
-    as(matched, "MatchedAssayExperiment")
-}
-
-setAs("MultiAssayExperiment", "MatchedAssayExperiment", function(from) {
+.doMatching <- function(from) {
     if (!isEmpty(from)) {
     from <- intersectColumns(from)
 
@@ -662,5 +639,40 @@ setAs("MultiAssayExperiment", "MatchedAssayExperiment", function(from) {
     if (any(anyReplicated(from)))
         stop("Resolve replicate columns")
     }
+    from
+}
+
+#' @describeIn MatchedAssayExperiment-class Construct a
+#' \code{MatchedAssayExperiment} class from \linkS4class{MultiAssayExperiment}
+#' inputs.
+#'
+#' @param ... Either a single MultiAssayExperiment or the components to create
+#' a valid MultiAssayExperiment
+#'
+#' @examples
+#' data("miniACC")
+#' acc <- as(miniACC, "MatchedAssayExperiment")
+#' acc
+#'
+#' @aliases MatchedAssayExperiment
+#' coerce,MultiAssayExperiment,MatchedAssayExperiment-method
+#'
+#' @export MatchedAssayExperiment
+MatchedAssayExperiment <- function(...) {
+    listData <- list(...)
+    if (length(listData) == 1L) {
+        if (is(listData[[1L]], "MultiAssayExperiment"))
+            multiassay <- listData[[1L]]
+        else
+            stop("Provide a 'MultiAssayExperiment' or its basic components")
+    } else {
+        multiassay <- MultiAssayExperiment(...)
+    }
+    multiassay <- .doMatching(multiassay)
+    new("MatchedAssayExperiment", multiassay)
+}
+
+setAs("MultiAssayExperiment", "MatchedAssayExperiment", function(from) {
+    from <- .doMatching(from)
     new("MatchedAssayExperiment", from)
 })
