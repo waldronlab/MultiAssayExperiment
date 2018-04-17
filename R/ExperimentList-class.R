@@ -62,8 +62,8 @@ ExperimentList <- function(...) {
     if (length(listData) == 1L) {
         if (is.list(listData[[1L]]) || (is(listData[[1L]], "List") &&
             !is(listData[[1L]], "DataFrame"))) {
-        listData <- listData[[1L]]
-        listData <- lapply(listData, .checkGRL)
+            listData <- listData[[1L]]
+            listData <- lapply(listData, .checkGRL)
                 if (.hasDataFrames(listData))
                     message(
                         "ExperimentList contains data.frame or DataFrame,\n",
