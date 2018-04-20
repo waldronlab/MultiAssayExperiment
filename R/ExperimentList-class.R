@@ -197,3 +197,11 @@ setAs("List", "ExperimentList", function(from) {
     coerceToExperimentList(from)
 })
 
+#' @describeIn ExperimentList check for zero length across all
+#' experiments
+setMethod("isEmpty", "ExperimentList", function(x) {
+    x <- Filter(function(y) {
+        !(is.matrix(y) && dim(y) == c(1, 1) && as.vector(is.na(y)))
+    }, x)
+    callNextMethod()
+})

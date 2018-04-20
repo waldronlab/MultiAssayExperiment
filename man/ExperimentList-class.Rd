@@ -9,6 +9,7 @@
 \alias{coerce}
 \alias{coerce,list,ExperimentList-method}
 \alias{coerce,List,ExperimentList-method}
+\alias{isEmpty,ExperimentList-method}
 \alias{dimnames,ExperimentList-method}
 \alias{mergeReplicates,ExperimentList-method}
 \alias{assay,ANY,missing-method}
@@ -20,6 +21,8 @@
 \title{A container for multi-experiment data}
 \usage{
 \S4method{show}{ExperimentList}(object)
+
+\S4method{isEmpty}{ExperimentList}(x)
 
 \S4method{dimnames}{ExperimentList}(x)
 
@@ -69,6 +72,9 @@ given \code{simplify} function argument (e.g., na.rm = TRUE)
 \itemize{
 \item \code{show}: Show method for
 \code{\linkS4class{ExperimentList}} class
+
+\item \code{isEmpty}: check for zero length across all
+experiments
 
 \item \code{dimnames}: Get the dimension names for
 an \code{ExperimentList} using \code{\linkS4class{CharacterList}}
