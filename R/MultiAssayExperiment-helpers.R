@@ -402,9 +402,10 @@ longFormat <- function(object, colDataCols = NULL, i = 1L) {
 #'
 #' @section wideFormat:
 #' The \code{wideFormat} function returns standardized wide \link{DataFrame}
-#' where each row represents an observation or biological unit as represented
-#' in \code{colData}. Optionally, \code{colData} columns can be added to the
-#' data output (see the \code{colDataCols} argument). Metadata columns are
+#' where each row represents a biological unit as in the \code{colData}.
+#' Depending on the data and setup, biological units can be patients, tumors,
+#' specimens, etc. Optionally, \code{colData} columns can be added to the
+#' wide data output (see the \code{colDataCols} argument). Metadata columns are
 #' generated based on the names produced in the wide format
 #' \linkS4class{DataFrame}. These can be accessed via the
 #' \link[=Vector-class]{mcols} function.
