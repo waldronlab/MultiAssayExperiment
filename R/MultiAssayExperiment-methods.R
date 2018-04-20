@@ -83,40 +83,31 @@ setMethod("$", "MultiAssayExperiment", function(x, name) {
 #' test2 <- myMultiAssayExperiment[[1L]]
 #' c(myMultiAssayExperiment, newExp = test2, mapFrom = 3L)
 #'
-setMethod("c", "MultiAssayExperiment", function(x, ..., sampleMap = NULL,
-                                                mapFrom = NULL) {
-    newExperiments <- list(...)
-    if (!length(newExperiments))
-        stop("No arguments provided")
-    if (is.list(newExperiments[[1L]]) || is(newExperiments[[1L]], "List") &&
-        !is(newExperiments[[1L]], "DataFrame"))
-        newExperiments <- ExperimentList(newExperiments[[1L]])
-    else
-        newExperiments <- ExperimentList(newExperiments)
-    if (is.null(names(newExperiments)))
-        stop("Additional experiments must be named")
-    if (is.null(sampleMap)) {
+setMethod("c", "MultiAssayExperiment",
+    function(x, ..., sampleMap = NULL, mapFrom = NULL) {
+    exps <- ExperimentList(...)
+    if (!isEmpty(exps)) {
         if (!is.null(mapFrom)) {
             warning("Assuming column order in the data provided ",
                     "\n matches the order in 'mapFrom' experiment(s) colnames")
             addMaps <- mapToList(sampleMap(x))[mapFrom]
-            names(addMaps) <- names(newExperiments)
+            names(addMaps) <- names(exps)
             sampleMap <- mapply(function(x, y) {
                 x[["colname"]] <- colnames(y)
                 return(x)
-            }, addMaps, newExperiments)
-        } else {
-        sampleMap <- .generateMap(colData(x), newExperiments)
+            }, addMaps, exps)
+        } else if (is.null(sampleMap)) {
+            sampleMap <- .generateMap(colData(x), exps)
         }
+        if (is(sampleMap, "DataFrame") || is.data.frame(sampleMap))
+            sampleMap <- mapToList(sampleMap)
+        else if (!is.list(sampleMap))
+            stop("'sampleMap' must be a 'DataFrame', 'data.frame', or 'list'")
+        newListMap <- c(mapToList(sampleMap(x)),
+                        IRanges::SplitDataFrameList(sampleMap))
+        sampleMap(x) <- listToMap(newListMap)
+        experiments(x) <- c(experiments(x), exps)
+        validObject(x)
     }
-    if (is(sampleMap, "DataFrame") || is.data.frame(sampleMap))
-        sampleMap <- mapToList(sampleMap)
-    else if (!is.list(sampleMap))
-        stop("Provided 'sampleMap' must be either a 'DataFrame' or a 'list'")
-    newListMap <- c(mapToList(sampleMap(x)),
-                    IRanges::SplitDataFrameList(sampleMap))
-    sampleMap(x) <- listToMap(newListMap)
-    experiments(x) <- c(experiments(x), newExperiments)
-    validObject(x)
     return(x)
 })
