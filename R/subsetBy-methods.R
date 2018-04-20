@@ -8,8 +8,9 @@
 #' @importFrom IRanges IRanges findOverlaps subsetByOverlaps overlapsAny
 #' @importFrom IRanges splitAsList SplitDataFrameList
 #' @importFrom IRanges IntegerList CharacterList LogicalList
-#' @importFrom S4Vectors endoapply mendoapply
+#' @importFrom S4Vectors endoapply mendoapply DataFrame
 #' @importFrom SummarizedExperiment findOverlaps assays
+#' @export DataFrame
 NULL
 
 .checkOverlapsAny <- function(obj_cl) {
