@@ -35,15 +35,18 @@ NULL
 #'
 #' @details
 #' The dots (\code{\ldots}) argument allows the user to specify additional
-#' arguments in several instances. When subsetting (\strong{[}) a
-#' \code{MultiAssayExperiment}, the dots allow for additional
-#' arguments to be sent to \link{findOverlaps}. When using the
-#' \code{mergeReplicates} method, the dots are used to specify arguments for
-#' the supplied \code{simplify} argument and function. When using the
-#' \strong{assay} method. When using \strong{c} method
-#' to add experiments to a \code{MultiAssayExperiment}, the dots allow extra
-#' data classes compatible with the MultiAssayExperiment API.
-#' See the \href{https://github.com/waldronlab/MultiAssayExperiment/wiki/MultiAssayExperiment-API}{MultiAssayExperiment API}
+#' arguments in several instances.
+#' \itemize{
+#' \item subsetting \strong{[}: additional arguments sent to
+#'     \link[GenomicRanges:findOverlaps-methods]{findOverlaps}.
+#' \item mergeReplicates: used to specify arguments for the \code{simplify}
+#'     functional argument
+#' \item assay: may contain withDimnames, which is forwarded to assays
+#' \item combining \strong{c}: compatible \code{MultiAssayExperiment} classes
+#'     passed on to the \linkS4class{ExperimentList} constructor, can be a
+#'     \code{list}, \linkS4class{List}, or a series of named arguments. See
+#'     the examples below.
+#' }
 #'
 #' @section colData:
 #' The \code{colData} slot is a collection of primary specimen data valid
@@ -96,7 +99,9 @@ NULL
 #' colData(compMAE)
 #'
 #' @exportClass MultiAssayExperiment
-#' @seealso \link{MultiAssayExperiment-methods} for slot modifying methods
+#' @seealso
+#'     \link{MultiAssayExperiment-methods} for slot modifying methods
+#'     \href{https://github.com/waldronlab/MultiAssayExperiment/wiki/MultiAssayExperiment-API}{MultiAssayExperiment API}
 #' @include ExperimentList-class.R
 setClass("MultiAssayExperiment",
          slots = list(

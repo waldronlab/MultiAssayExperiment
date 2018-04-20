@@ -60,8 +60,8 @@ setMethod("$", "MultiAssayExperiment", function(x, name) {
     list(assayArgs, altArgs)
 }
 
-#' @describeIn MultiAssayExperiment Add an element to the
-#' \code{ExperimentList} data slot
+#' @describeIn MultiAssayExperiment Add a supported data class to the
+#' \code{ExperimentList}
 #'
 #' @param sampleMap \code{c} method: a \code{sampleMap} \code{list} or
 #' \code{DataFrame} to guide merge
