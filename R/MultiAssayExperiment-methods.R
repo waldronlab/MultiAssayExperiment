@@ -86,24 +86,29 @@ setMethod("$", "MultiAssayExperiment", function(x, name) {
 setMethod("c", "MultiAssayExperiment",
     function(x, ..., sampleMap = NULL, mapFrom = NULL) {
     exps <- ExperimentList(...)
+    xmap <- sampleMap(x)
     if (!isEmpty(exps)) {
         if (!is.null(mapFrom)) {
             warning("Assuming column order in the data provided ",
-                    "\n matches the order in 'mapFrom' experiment(s) colnames")
+                "\n matches the order in 'mapFrom' experiment(s) colnames")
             addMaps <- mapToList(sampleMap(x))[mapFrom]
             names(addMaps) <- names(exps)
             sampleMap <- mapply(function(x, y) {
                 x[["colname"]] <- colnames(y)
-                return(x)
+                x
             }, addMaps, exps)
         } else if (is.null(sampleMap)) {
-            sampleMap <- .generateMap(colData(x), exps)
+            sampleMap <- lapply(colnames(exps), function(cnames)
+                xmap[na.omit(match(cnames, xmap[["colname"]])),
+                    c("primary", "colname")]
+            )
+            sampleMap <- listToMap(sampleMap)
         }
         if (is(sampleMap, "DataFrame") || is.data.frame(sampleMap))
             sampleMap <- mapToList(sampleMap)
         else if (!is.list(sampleMap))
             stop("'sampleMap' must be a 'DataFrame', 'data.frame', or 'list'")
-        newListMap <- c(mapToList(sampleMap(x)),
+        newListMap <- c(mapToList(xmap),
                         IRanges::SplitDataFrameList(sampleMap))
         sampleMap(x) <- listToMap(newListMap)
         experiments(x) <- c(experiments(x), exps)

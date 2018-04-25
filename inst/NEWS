@@ -1,6 +1,21 @@
 # MultiAssayExperiment
 ----------------------------------------------------------------
 
+## Changes in version 1.5.106
+
+### New features
+
+* `DataFrame` now exported for users (@DarioS, #242)
+* `c` is smarter at matching `colnames` with `primary` names and creating a
+`sampleMap`
+
+### Bug fixes and minor improvements
+
+* Added an `isEmpty` method for `ExperimentList` to account for an empty matrix
+* Documentation improvements to `MultiAssayExperiment-class` and
+`MultiAssayExperiment-helpers`
+* `c` internals improved
+
 ## Changes in version 1.5.102
 
 ### New features
