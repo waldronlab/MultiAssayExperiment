@@ -2,6 +2,7 @@
 % Please edit documentation in R/reexports.R
 \name{reexports}
 \alias{reexports}
+\alias{DataFrame}
 \title{Objects exported from other packages}
 \description{
 These objects are imported from other packages. Click on the

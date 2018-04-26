@@ -11,7 +11,7 @@
 #'     }
 #' }
 #'
-#' @aliases NULL reexports
+#' @aliases NULL reexports DataFrame
 #'
 #' @examples
 #' DataFrame()
