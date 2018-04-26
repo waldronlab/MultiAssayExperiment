@@ -10,7 +10,6 @@
 #' @importFrom IRanges IntegerList CharacterList LogicalList
 #' @importFrom S4Vectors endoapply mendoapply DataFrame
 #' @importFrom SummarizedExperiment findOverlaps assays
-#' @export DataFrame
 NULL
 
 .checkOverlapsAny <- function(obj_cl) {
