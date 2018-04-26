@@ -5,10 +5,11 @@ test_that("combine c function works", {
     myMulti <- MultiAssayExperiment(list(express = mat))
     mat2 <- matrix(rnorm(20), ncol = 4, dimnames = list(NULL, letters[1:4]))
     expect_error(c(myMulti, mat2)) # Unnamed list element
-    expect_error(c(myMulti, express2 = mat2)) # no sampleMap or mapFrom arg
+    # no sampleMap or mapFrom arg
+    expect_error(c(myMulti, express2 = mat2))
     expect_true(validObject(c(myMulti, express2 = mat2, mapFrom = 1L)))
     expect_true(is(c(myMulti, express2 = mat2, mapFrom = 1L),
-                   "MultiAssayExperiment"))
+        "MultiAssayExperiment"))
 })
 
 test_that("combine c function works on multiple objects", {
@@ -19,13 +20,13 @@ test_that("combine c function works on multiple objects", {
     ncols <- 6
     counts <- matrix(runif(nrows * ncols, 1, 1e4), nrows)
     rowRanges <- GRanges(rep(c("chr1", "chr2"), c(50, 150)),
-                         IRanges(floor(runif(200, 1e5, 1e6)), width=100),
-                         strand=sample(c("+", "-"), 200, TRUE),
-                         feature_id=sprintf("ID%03d", 1:200))
+        IRanges(floor(runif(200, 1e5, 1e6)), width=100),
+        strand=sample(c("+", "-"), 200, TRUE),
+        feature_id=sprintf("ID%03d", 1:200))
     colData <- DataFrame(Treatment=rep(c("ChIP", "Input"), 3),
-                         row.names=LETTERS[1:6])
+        row.names=LETTERS[1:6])
     rse <- SummarizedExperiment(assays=SimpleList(counts=counts),
-                                rowRanges=rowRanges, colData=colData)
+        rowRanges=rowRanges, colData=colData)
     rse <- rse[, 1:4]
 
     library(RaggedExperiment)
@@ -36,13 +37,12 @@ test_that("combine c function works on multiple objects", {
     re <- RaggedExperiment(grl, colData = colDat)
 
     addMap <- DataFrame(assay = "RExp",
-                        primary = c("Jack", "Jill"),
-                        colname = c("sample1", "sample2"))
+        primary = c("Jack", "Jill"),
+        colname = c("sample1", "sample2"))
     addMap <- rbind(addMap, DataFrame(assay = "myRSE",
-                                      primary = c("Jack", "Jill",
-                                                  "Bob", "Barbara"),
-                                      colname = LETTERS[1:4]))
+        primary = c("Jack", "Jill", "Bob", "Barbara"),
+        colname = LETTERS[1:4]))
     expect_true(validObject(c(myMultiAssayExperiment, RExp = re,
-                              myRSE = rse, sampleMap = addMap)))
+        myRSE = rse, sampleMap = addMap)))
 })
 

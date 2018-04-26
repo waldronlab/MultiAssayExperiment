@@ -1,25 +1,30 @@
 #' @include MultiAssayExperiment-subset.R
 NULL
 
-.generateMap <- function(colData, experiments) {
-    samps <- colnames(experiments)
-    assay <- factor(rep(names(samps), lengths(samps)), levels=names(samps))
-    colname <- unlist(samps, use.names=FALSE)
-    matches <- match(colname, rownames(colData))
-    if (length(matches) && all(is.na(matches)))
-        stop("no way to map colData to ExperimentList")
-    primary <- rownames(colData)[matches]
-    autoMap <- S4Vectors::DataFrame(
-        assay=assay, primary=primary, colname=colname)
-    missingPrimary <- is.na(autoMap[["primary"]])
-    if (nrow(autoMap) && any(missingPrimary)) {
-        notFound <- autoMap[missingPrimary, ]
-        warning("Data from rows:",
-                sprintf("\n %s - %s", notFound[, 2], notFound[, 3]),
-                "\ndropped due to missing phenotype data")
-        autoMap <- autoMap[!missingPrimary, ]
+.warnnomatch <- function(type, values) {
+    warning("'", type, "': ",
+        paste(S4Vectors:::selectSome(values), collapse = ", "),
+            "\n  could not be matched")
+}
+
+.generateMiniMap <- function(colData, sampleMap, colnames) {
+    colmatches <- match(colnames, sampleMap[["colname"]])
+    notFounds <- which(is.na(colmatches))
+    if (!length(colmatches) || all(is.na(colmatches))) {
+        pmatch <- match(rownames(colData), colnames)
+        noPrim <- which(is.na(pmatch))
+        pnames <- colnames[na.omit(pmatch)]
+        if (!length(pnames) || all(is.na(pnames)))
+            stop("No 'colnames' in experiments could be matched:\n  ",
+                 paste(S4Vectors:::selectSome(colnames), collapse = ", "))
+        else if (length(noPrim))
+            .warnnomatch("primary", colnames[noPrim])
+        DataFrame(primary = pnames, colname = pnames)
+    } else {
+        if (length(notFounds))
+            .warnnomatch("colnames", colmatches[notFounds])
+        sampleMap[na.omit(colmatches), c("primary", "colname")]
     }
-    autoMap
 }
 
 ### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -87,6 +92,7 @@ setMethod("c", "MultiAssayExperiment",
     function(x, ..., sampleMap = NULL, mapFrom = NULL) {
     exps <- ExperimentList(...)
     xmap <- sampleMap(x)
+    cdata <- colData(x)
     if (!isEmpty(exps)) {
         if (!is.null(mapFrom)) {
             warning("Assuming column order in the data provided ",
@@ -98,10 +104,8 @@ setMethod("c", "MultiAssayExperiment",
                 x
             }, addMaps, exps)
         } else if (is.null(sampleMap)) {
-            sampleMap <- lapply(colnames(exps), function(cnames)
-                xmap[na.omit(match(cnames, xmap[["colname"]])),
-                    c("primary", "colname")]
-            )
+            sampleMap <- lapply(colnames(exps), .generateMiniMap,
+                colData = cdata, sampleMap = xmap)
             sampleMap <- listToMap(sampleMap)
         }
         if (is(sampleMap, "DataFrame") || is.data.frame(sampleMap))
