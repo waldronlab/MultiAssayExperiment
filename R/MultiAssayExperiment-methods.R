@@ -7,7 +7,28 @@ NULL
             "\n  could not be matched")
 }
 
-.generateMiniMap <- function(colData, sampleMap, colnames) {
+.sampleMapFromData <- function(colData, experiments) {
+    samps <- colnames(experiments)
+    assay <- factor(rep(names(samps), lengths(samps)), levels=names(samps))
+    colname <- unlist(samps, use.names=FALSE)
+    matches <- match(colname, rownames(colData))
+    if (length(matches) && all(is.na(matches)))
+        stop("no way to map colData to ExperimentList")
+    primary <- rownames(colData)[matches]
+    autoMap <- S4Vectors::DataFrame(
+        assay=assay, primary=primary, colname=colname)
+    missingPrimary <- is.na(autoMap[["primary"]])
+    if (nrow(autoMap) && any(missingPrimary)) {
+        notFound <- autoMap[missingPrimary, ]
+        warning("Data from rows:",
+                sprintf("\n %s - %s", notFound[, 2], notFound[, 3]),
+                "\ndropped due to missing phenotype data")
+        autoMap <- autoMap[!missingPrimary, ]
+    }
+    autoMap
+}
+
+.sampleMapFromExisting <- function(colData, sampleMap, colnames) {
     colmatches <- match(colnames, sampleMap[["colname"]])
     notFounds <- which(is.na(colmatches))
     if (!length(colmatches) || all(is.na(colmatches))) {
@@ -104,7 +125,7 @@ setMethod("c", "MultiAssayExperiment",
                 x
             }, addMaps, exps)
         } else if (is.null(sampleMap)) {
-            sampleMap <- lapply(colnames(exps), .generateMiniMap,
+            sampleMap <- lapply(colnames(exps), .sampleMapFromExisting,
                 colData = cdata, sampleMap = xmap)
             sampleMap <- listToMap(sampleMap)
         }

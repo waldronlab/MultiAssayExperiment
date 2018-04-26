@@ -233,8 +233,8 @@ MultiAssayExperiment <-
             colData <- S4Vectors::DataFrame(colData)
 
 
-        if (missing(sampleMap)){
-            sampleMap <- .generateMap(colData, experiments)
+        if (missing(sampleMap)) {
+            sampleMap <- .sampleMapFromData(colData, experiments)
         } else {
             sampleMap <- S4Vectors::DataFrame(sampleMap)
             if (!all(c("assay", "primary", "colname") %in% colnames(sampleMap)))
