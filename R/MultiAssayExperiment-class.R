@@ -213,9 +213,11 @@ setClass("MultiAssayExperiment",
 MultiAssayExperiment <-
     function(experiments = ExperimentList(),
             colData = S4Vectors::DataFrame(),
-            sampleMap = S4Vectors::DataFrame(assay = factor(),
-                                             primary = character(),
-                                             colname = character()),
+            sampleMap =
+                S4Vectors::DataFrame(
+                    assay = factor(),
+                    primary = character(),
+                    colname = character()),
             metadata = NULL,
             drops = list()) {
 

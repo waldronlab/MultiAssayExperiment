@@ -14,13 +14,14 @@
 NULL
 
 .checkOverlapsAny <- function(obj_cl) {
-    return(
-        any(hasMethod("overlapsAny", signature(obj_cl, "GRanges"),
-                getNamespace("GenomicRanges")),
-            hasMethod("overlapsAny", signature(obj_cl, "GRanges"),
-                getNamespace("SummarizedExperiment")),
-            hasMethod("overlapsAny", signature(obj_cl, "GRanges"),
-                getNamespace("IRanges")))
+    return(any(
+        hasMethod("overlapsAny", signature(obj_cl, "GRanges"),
+            getNamespace("GenomicRanges")),
+        hasMethod("overlapsAny", signature(obj_cl, "GRanges"),
+            getNamespace("SummarizedExperiment")),
+        hasMethod("overlapsAny", signature(obj_cl, "GRanges"),
+            getNamespace("IRanges"))
+        )
     )
 }
 
@@ -40,7 +41,7 @@ NULL
                 i <- which(overlapsAny(element, i, ...))
             else
                 i <- match(intersect(as.character(i), rownames(element)),
-                           rownames(element))
+                    rownames(element))
                 # i <- na.omit(match(rownames(element), as.character(i)))
         } else if (is.character(i)) {
             i <- match(intersect(i, rownames(element)), rownames(element))
