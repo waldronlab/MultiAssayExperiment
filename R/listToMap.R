@@ -13,9 +13,9 @@ listToMap <- function(listmap, type = "colnames") {
     DFmap <- lapply(seq_along(listmap), FUN = function(i, x) {
         if (type == "colnames") {
             if (S4Vectors::isEmpty(x[i])) {
-                S4Vectors::DataFrame(assay = factor(names(x)[i]),
-                                     primary = NA_character_,
-                                     colname = NA_character_)
+                S4Vectors::DataFrame(assay = factor(),
+                                     primary = character(),
+                                     colname = character())
             } else {
                 S4Vectors::DataFrame(assay = factor(names(x)[i]),
                                      primary = x[[i]][, 1],
@@ -23,8 +23,8 @@ listToMap <- function(listmap, type = "colnames") {
             }
         } else if (type == "rownames") {
             if (S4Vectors::isEmpty(x[i])) {
-                S4Vectors::DataFrame(assay = factor(names(x)[i]),
-                                     rowname = NA_character_)
+                S4Vectors::DataFrame(assay = factor(),
+                                     rowname = character())
             } else {
                 S4Vectors::DataFrame(assay = factor(names(x)[i]),
                                      rowname = x[[i]])
