@@ -29,7 +29,6 @@ Imports:
     utils
 Suggests:
     BiocStyle,
-    dplyr,
     testthat,
     knitr,
     rmarkdown,
