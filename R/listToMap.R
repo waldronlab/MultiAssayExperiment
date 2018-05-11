@@ -1,39 +1,23 @@
-#' @param listmap A named \code{list} object containing either
-#' experiments (\code{assay}s), samples (\code{colname}s) or
-#' features (\code{rowname}s)
-#' @param type Any of the valid types of maps including colnames, rownames,
-#' and assays.
+#' @param listmap A named \code{list} object containing \code{DataFrame}s
+#' with "primary" and "colname" columns
+#'
 #' @return A \linkS4class{DataFrame} class object of names
 #' @describeIn mapToList The inverse of the listToMap operation
 #' @export listToMap
-listToMap <- function(listmap, type = "colnames") {
+listToMap <- function(listmap) {
     if (is.null(names(listmap)))
         stop("'listmap' must be a named list")
-    type <- match.arg(type, c("colnames", "rownames", "assays"))
-    DFmap <- lapply(seq_along(listmap), FUN = function(i, x) {
-        if (type == "colnames") {
-            if (S4Vectors::isEmpty(x[i])) {
-                S4Vectors::DataFrame(assay = factor(),
-                                     primary = character(),
-                                     colname = character())
-            } else {
-                S4Vectors::DataFrame(assay = factor(names(x)[i]),
-                                     primary = x[[i]][, 1],
-                                     colname = x[[i]][, 2])
-            }
-        } else if (type == "rownames") {
-            if (S4Vectors::isEmpty(x[i])) {
-                S4Vectors::DataFrame(assay = factor(),
-                                     rowname = character())
-            } else {
-                S4Vectors::DataFrame(assay = factor(names(x)[i]),
-                                     rowname = x[[i]])
-            }
-        } else if (type == "assays") {
-            S4Vectors::DataFrame(assay = factor(names(x)[i]))
-        }
-    }, x = listmap)
-    newMap <- do.call(S4Vectors::rbind, DFmap)
-    newMap <- newMap[!is.na(newMap[, 1]), , drop = FALSE]
-    return(newMap)
+
+    elementClass <- unique(vapply(listmap, class, character(1L)))
+
+    if (!elementClass %in% c("DataFrame", "data.frame") ||
+            length(elementClass) != 1L)
+        stop("'listmap' elements must all be 'DataFrame' or 'data.frame'")
+
+    if (elementClass == "data.frame")
+        listmap <- IRanges::SplitDataFrameList(
+            lapply(listmap, S4Vectors::DataFrame))
+
+    avector <- factor(rep(names(listmap), lengths(listmap)))
+    cbind(assay = avector, unlist(listmap, use.names = FALSE))
 }
