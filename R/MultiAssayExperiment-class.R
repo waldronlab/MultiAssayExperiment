@@ -516,20 +516,22 @@ setGeneric("experiments<-", function(object, value)
 #' @exportMethod experiments<-
 #' @rdname MultiAssayExperiment-methods
 setReplaceMethod("experiments", c("MultiAssayExperiment", "ExperimentList"),
-                 function(object, value) {
-                     if (!length(value)) {
-                         slot(object, "ExperimentList") <- value
-                         return(object)
-                     }
-                     rebliss <- .harmonize(value,
-                                           colData(object),
-                                           sampleMap(object))
-                     BiocGenerics:::replaceSlots(object,
-                             ExperimentList = rebliss[["experiments"]],
-                             colData = rebliss[["colData"]],
-                             sampleMap = rebliss[["sampleMap"]],
-                             metadata = metadata(object))
-                 })
+    function(object, value) {
+        if (!length(value)) {
+            slot(object, "ExperimentList") <- value
+            return(object)
+        }
+        rebliss <- .harmonize(value,
+            colData(object),
+            sampleMap(object))
+        BiocGenerics:::replaceSlots(
+            object,
+            ExperimentList = rebliss[["experiments"]],
+            colData = rebliss[["colData"]],
+            sampleMap = rebliss[["sampleMap"]],
+            metadata = metadata(object)
+            )
+    })
 
 #' @exportMethod colData<-
 #' @rdname MultiAssayExperiment-methods
