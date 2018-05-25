@@ -17,11 +17,15 @@ mapToList <- function(dfmap, assayCol = "assay") {
     if (!assayCol %in% colnames(dfmap))
         stop("assay column not found in dataframe")
     assayColIndex <- which(names(dfmap) == assayCol)
-    if (inherits(dfmap, "data.frame"))
+    if (is.data.frame(dfmap))
         dfmap <- S4Vectors::DataFrame(dfmap)
 
     grp <- dfmap[[assayCol]]
     if (!is.factor(grp))
         grp <- factor(grp, levels=unique(grp))
-    IRanges::splitAsList(dfmap[, -assayColIndex], grp)
+
+    if (length(levels(grp)) > 1L)
+        IRanges::splitAsList(dfmap[, -assayColIndex], grp)[unique(grp)]
+    else
+        IRanges::splitAsList(dfmap[, -assayColIndex], grp)
 }

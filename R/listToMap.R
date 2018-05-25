@@ -15,9 +15,9 @@ listToMap <- function(listmap) {
         stop("'listmap' elements must all be 'DataFrame' or 'data.frame'")
 
     if (elementClass == "data.frame")
-        listmap <- IRanges::SplitDataFrameList(
-            lapply(listmap, S4Vectors::DataFrame))
+        listmap <- lapply(listmap, S4Vectors::DataFrame)
 
-    avector <- factor(rep(names(listmap), lengths(listmap)))
+    listmap <- IRanges::SplitDataFrameList(listmap)
+    avector <- factor(rep(names(listmap), vapply(listmap, nrow, integer(1L))))
     cbind(assay = avector, unlist(listmap, use.names = FALSE))
 }
