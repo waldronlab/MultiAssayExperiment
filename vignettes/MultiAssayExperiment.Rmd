@@ -311,7 +311,7 @@ names. Note that row orders aren't initially matched up, and this is OK.
 
 ```{r}
 (exprmap <- data.frame(primary=rownames(patient.data)[c(1, 2, 4, 3)],
-                       assay=c("array1", "array2", "array3", "array4"),
+                       colname=c("array1", "array2", "array3", "array4"),
                        stringsAsFactors = FALSE))
 ```
 
@@ -333,8 +333,8 @@ names.
 
 ```{r}
 (methylmap <- data.frame(primary = c("Jack", "Jack", "Jill", "Barbara", "Bob"),
-              assay = c("methyl1", "methyl2", "methyl3", "methyl4", "methyl5"),
-              stringsAsFactors = FALSE))
+    colname = c("methyl1", "methyl2", "methyl3", "methyl4", "methyl5"),
+    stringsAsFactors = FALSE))
 ```
 
 Now we have a microRNA platform, which has no common identifiers with the
@@ -353,8 +353,7 @@ And the following map matches `colData` sample names to `microdat` sample names.
 
 ```{r}
 (micromap <- data.frame(primary = c("Jack", "Barbara", "Bob"),
-                        assay = c("micro1", "micro2", "micro3"),
-                        stringsAsFactors = FALSE))
+    colname = c("micro1", "micro2", "micro3"), stringsAsFactors = FALSE))
 ```
 
 Finally, we create a dataset of class `RangedSummarizedExperiment`:
@@ -363,24 +362,23 @@ Finally, we create a dataset of class `RangedSummarizedExperiment`:
 nrows <- 5; ncols <- 4
 counts <- matrix(runif(nrows * ncols, 1, 1e4), nrows)
 rowRanges <- GRanges(rep(c("chr1", "chr2"), c(2, nrows - 2)),
-                     IRanges(floor(runif(nrows, 1e5, 1e6)), width=100),
-                     strand=sample(c("+", "-"), nrows, TRUE),
-                     feature_id=sprintf("ID\\%03d", 1:nrows))
+    IRanges(floor(runif(nrows, 1e5, 1e6)), width=100),
+    strand=sample(c("+", "-"), nrows, TRUE),
+    feature_id=sprintf("ID\\%03d", 1:nrows))
 names(rowRanges) <- letters[1:5]
 colData <- DataFrame(Treatment=rep(c("ChIP", "Input"), 2),
-                     row.names= c("mysnparray1", "mysnparray2",
-                                  "mysnparray3", "mysnparray4"))
+    row.names= c("mysnparray1", "mysnparray2", "mysnparray3", "mysnparray4"))
 rse <- SummarizedExperiment(assays=SimpleList(counts=counts),
-                            rowRanges=rowRanges, colData=colData)
+    rowRanges=rowRanges, colData=colData)
 ```
 
 And we map the `colData` samples to the `RangedSummarizedExperiment`: 
 
 ```{r}
 (rangemap <-
-   data.frame(primary = c("Jack", "Jill", "Bob", "Barbara"),
-              assay = c("mysnparray1", "mysnparray2", "mysnparray3",
-                        "mysnparray4"), stringsAsFactors = FALSE))
+    data.frame(primary = c("Jack", "Jill", "Bob", "Barbara"),
+    colname = c("mysnparray1", "mysnparray2", "mysnparray3", "mysnparray4"),
+        stringsAsFactors = FALSE))
 ```
 
 ## `sampleMap` creation
@@ -420,7 +418,7 @@ All of these names must be found within in the third column of `dfmap`:
 
 ```{r}
 objlist <- list("Affy" = exprdat, "Methyl 450k" = methyldat,
-                "Mirna" = microdat, "CNV gistic" = rse)
+    "Mirna" = microdat, "CNV gistic" = rse)
 ```
 
 ## Creation of the `MultiAssayExperiment` class object
@@ -538,12 +536,14 @@ A simple example can be obtained from the function documentation in
 
 ```{r}
 grlls <- list(chr = rep("chr1", nrows), start = seq(11, 15),
-              end = seq(12, 16), strand = c("+", "-", "+", "*", "*"),
-              score = seq(1, 5), specimen = c("a", "a", "b", "b", "c"),
-              gene_symbols = paste0("GENE", letters[seq_len(nrows)]))
+    end = seq(12, 16), strand = c("+", "-", "+", "*", "*"),
+    score = seq(1, 5), specimen = c("a", "a", "b", "b", "c"),
+    gene_symbols = paste0("GENE", letters[seq_len(nrows)]))
+
 grldf <- as.data.frame(grlls, stringsAsFactors = FALSE)
+
 GRL <- makeGRangesListFromDataFrame(grldf, split.field = "specimen",
-                             names.field = "gene_symbols")
+    names.field = "gene_symbols")
 ```
 
 This can then be converted to a `RaggedExperiment` object for a
@@ -560,11 +560,11 @@ In the `SummarizedExperiment` package:
 
 ```{r}
 sels <- list(chr = rep("chr2", nrows), start = seq(11, 15),
-             end = seq(12, 16), strand = c("+", "-", "+", "*", "*"),
-             expr0 = seq(3, 7), expr1 = seq(8, 12), expr2 = seq(12, 16))
-sedf <- as.data.frame(sels, row.names = paste0("GENE",
-                                               letters[rev(seq_len(nrows))]),
-                      stringsAsFactors = FALSE)
+    end = seq(12, 16), strand = c("+", "-", "+", "*", "*"),
+    expr0 = seq(3, 7), expr1 = seq(8, 12), expr2 = seq(12, 16))
+sedf <- as.data.frame(sels,
+    row.names = paste0("GENE", letters[rev(seq_len(nrows))]),
+    stringsAsFactors = FALSE)
 sedf
 makeSummarizedExperimentFromDataFrame(sedf)
 ```
