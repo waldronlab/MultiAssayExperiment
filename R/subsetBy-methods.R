@@ -1,15 +1,6 @@
 #' @include MultiAssayExperiment-class.R ExperimentList-class.R
 #'
-#' @import BiocGenerics S4Vectors methods
-#' @importFrom BiocGenerics duplicated anyDuplicated
 #' @importFrom utils .DollarNames
-#' @importFrom stats reshape
-#' @importFrom GenomicRanges GRanges
-#' @importFrom IRanges IRanges findOverlaps subsetByOverlaps overlapsAny
-#' @importFrom IRanges splitAsList SplitDataFrameList
-#' @importFrom IRanges IntegerList CharacterList LogicalList
-#' @importFrom S4Vectors endoapply mendoapply DataFrame
-#' @importFrom SummarizedExperiment findOverlaps assays
 NULL
 
 .checkOverlapsAny <- function(obj_cl) {

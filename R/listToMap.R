@@ -1,6 +1,5 @@
 #' @param listmap A named \code{list} object containing \code{DataFrame}s
 #' with "primary" and "colname" columns
-#' @importFrom IRanges stack
 #'
 #' @return A \linkS4class{DataFrame} class object of names
 #' @describeIn mapToList The inverse of the listToMap operation
@@ -15,7 +14,7 @@ listToMap <- function(listmap) {
         stop("'listmap' elements are not all 'DataFrame' or 'data.frame'")
 
     if (elementClass == "data.frame")
-        listmap <- lapply(listmap, S4Vectors::DataFrame)
+        listmap <- lapply(listmap, DataFrame)
 
     listmap <- lapply(listmap, function(lmap) {
         if (isEmpty(lmap))

@@ -1,8 +1,6 @@
 #' @include MultiAssayExperiment-methods.R
 NULL
 
-#' @importFrom tidyr unite spread
-
 #' @name MultiAssayExperiment-helpers
 #' @title A group of helper functions for manipulating and cleaning a
 #' MultiAssayExperiment
