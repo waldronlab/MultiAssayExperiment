@@ -53,11 +53,10 @@ NULL
 }
 
 .matchReorderSub <- function(assayMap, identifiers) {
-    positions <- unlist(
-        lapply(identifiers,
-               function(ident) {
-                   which(!is.na(match(assayMap[["primary"]], ident)))
-               }))
+    positions <-
+        unlist(lapply(identifiers, function(ident) {
+            which(!is.na(match(assayMap[["primary"]], ident)))
+        }))
     assayMap[positions, ]
 }
 
@@ -260,8 +259,9 @@ setMethod("subsetByColData", c("MultiAssayExperiment", "ANY"), function(x, y) {
     columns <- lapply(listMap, function(mapChunk) {
         mapChunk[, "colname", drop = TRUE]
     })
+    columns <- columns[names(experiments(x))]
     newSubset <- mapply(function(x, j) {x[, j, drop = FALSE]},
-                        x = experiments(x), j = columns, SIMPLIFY = FALSE)
+        x = experiments(x), j = columns, SIMPLIFY = FALSE)
     newSubset <- ExperimentList(newSubset)
     experiments(x) <- newSubset
     sampleMap(x) <- newMap

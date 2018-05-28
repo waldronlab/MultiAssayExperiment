@@ -21,11 +21,8 @@ mapToList <- function(dfmap, assayCol = "assay") {
         dfmap <- S4Vectors::DataFrame(dfmap)
 
     grp <- dfmap[[assayCol]]
-    if (!is.factor(grp))
-        grp <- factor(grp, levels=unique(grp))
+    levs <- if (!length(grp)) levels(grp) else unique(grp)
+    grp <- factor(grp, levels=levs, ordered = TRUE)
 
-    if (length(levels(grp)) > 1L)
-        IRanges::splitAsList(dfmap[, -assayColIndex], grp)[unique(grp)]
-    else
-        IRanges::splitAsList(dfmap[, -assayColIndex], grp)
+    IRanges::splitAsList(dfmap[, -assayColIndex], grp)
 }

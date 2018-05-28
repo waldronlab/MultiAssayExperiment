@@ -1,6 +1,6 @@
 #' @import BiocGenerics SummarizedExperiment S4Vectors GenomicRanges methods
 #' @importFrom SummarizedExperiment colData colData<-
-#' @importFrom S4Vectors metadata<-
+#' @importFrom S4Vectors metadata<- isEmpty
 NULL
 
 ## Helper function for validity checks
