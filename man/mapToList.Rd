@@ -5,17 +5,13 @@
 \alias{mapToList}
 \title{Convert map from data.frame or DataFrame to list and vice versa}
 \usage{
-listToMap(listmap, type = "colnames")
+listToMap(listmap)
 
 mapToList(dfmap, assayCol = "assay")
 }
 \arguments{
-\item{listmap}{A named \code{list} object containing either
-experiments (\code{assay}s), samples (\code{colname}s) or
-features (\code{rowname}s)}
-
-\item{type}{Any of the valid types of maps including colnames, rownames,
-and assays.}
+\item{listmap}{A named \code{list} object containing \code{DataFrame}s
+with "primary" and "colname" columns}
 
 \item{dfmap}{A \code{data.frame} or \code{DataFrame} object with
 identifiers in the first column}

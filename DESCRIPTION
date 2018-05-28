@@ -13,12 +13,12 @@ Description: MultiAssayExperiment harmonizes data management of
     SummarizedExperiment, supporting an open-ended mix of standard data classes 
     for individual assays, and allowing subsetting by genomic ranges or rownames.
 Depends:
-    R (>= 3.5.0)
+    R (>= 3.5.0),
+    SummarizedExperiment (>= 1.3.81)
 Imports:
     methods,
     GenomicRanges (>= 1.25.93),
     BiocGenerics,
-    SummarizedExperiment (>= 1.3.81),
     S4Vectors (>= 0.17.5),
     IRanges,
     Biobase,

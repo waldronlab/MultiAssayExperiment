@@ -1,15 +1,6 @@
 #' @include MultiAssayExperiment-class.R ExperimentList-class.R
 #'
-#' @import BiocGenerics S4Vectors methods
-#' @importFrom BiocGenerics duplicated anyDuplicated
 #' @importFrom utils .DollarNames
-#' @importFrom stats reshape
-#' @importFrom GenomicRanges GRanges
-#' @importFrom IRanges IRanges findOverlaps subsetByOverlaps overlapsAny
-#' @importFrom IRanges splitAsList SplitDataFrameList
-#' @importFrom IRanges IntegerList CharacterList LogicalList
-#' @importFrom S4Vectors endoapply mendoapply DataFrame
-#' @importFrom SummarizedExperiment findOverlaps assays
 NULL
 
 .checkOverlapsAny <- function(obj_cl) {
@@ -53,11 +44,10 @@ NULL
 }
 
 .matchReorderSub <- function(assayMap, identifiers) {
-    positions <- unlist(
-        lapply(identifiers,
-               function(ident) {
-                   which(!is.na(match(assayMap[["primary"]], ident)))
-               }))
+    positions <-
+        unlist(lapply(identifiers, function(ident) {
+            which(!is.na(match(assayMap[["primary"]], ident)))
+        }))
     assayMap[positions, ]
 }
 
@@ -260,8 +250,9 @@ setMethod("subsetByColData", c("MultiAssayExperiment", "ANY"), function(x, y) {
     columns <- lapply(listMap, function(mapChunk) {
         mapChunk[, "colname", drop = TRUE]
     })
+    columns <- columns[names(experiments(x))]
     newSubset <- mapply(function(x, j) {x[, j, drop = FALSE]},
-                        x = experiments(x), j = columns, SIMPLIFY = FALSE)
+        x = experiments(x), j = columns, SIMPLIFY = FALSE)
     newSubset <- ExperimentList(newSubset)
     experiments(x) <- newSubset
     sampleMap(x) <- newMap
