@@ -313,9 +313,9 @@ biological units)
 The miniACC object can be reconstructed as follows:
 ```{r}
 MultiAssayExperiment(experiments=experiments(miniACC),
-                     colData=colData(miniACC),
-                     sampleMap=sampleMap(miniACC),
-                     metadata=metadata(miniACC))
+    colData=colData(miniACC),
+    sampleMap=sampleMap(miniACC),
+    metadata=metadata(miniACC))
 ```
 
 
@@ -362,22 +362,28 @@ The colData can provide clinical data for things like a Kaplan-Meier plot for
 overall survival stratified by nodal stage. To simplify things, first add a "y"
 column to the colData, containing the `Surv` object for survival analysis:
 
+_**Note**_: `survfit` method does not work well with `DataFrame`. To bypass
+the error, here we covert `colData` to a `data.frame`.
+
 ```{r}
 suppressPackageStartupMessages({
   library(survival)
   library(survminer)
 })
-miniACC$y <- Surv(miniACC$days_to_death, miniACC$vital_status)
+coldat <- as.data.frame(colData(miniACC))
+coldat$y <- Surv(miniACC$days_to_death, miniACC$vital_status)
+colData(miniACC) <- DataFrame(coldat)
 ```
 
 And remove any patients missing overall survival information:
 ```{r}
-miniACC <- miniACC[, complete.cases(miniACC$y), ]
+miniACC <- miniACC[, complete.cases(coldat$y), ]
+coldat <- as(colData(miniACC), "data.frame")
 ```
 
 ```{r}
-fit <- survfit(y ~ pathology_N_stage, data = colData(miniACC))
-ggsurvplot(fit, data = colData(miniACC), risk.table = TRUE)
+fit <- survfit(y ~ pathology_N_stage, data = coldat)
+ggsurvplot(fit, data = coldat, risk.table = TRUE)
 ```
 
 ## Multivariate Cox regression including RNA-seq, copy number, and pathology
