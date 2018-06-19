@@ -305,9 +305,10 @@ setMethod("subsetByColumn", c("MultiAssayExperiment", "ANY"), function(x, y) {
 #' @rdname subsetBy
 setMethod("subsetByAssay", c("MultiAssayExperiment", "ANY"), function(x, y) {
     expers <- experiments(x)[y]
+    nametags <- names(expers)
     listMap <- mapToList(sampleMap(x), "assay")
     ## TODO: Add sensible error message here
-    newMap <- listMap[y]
+    newMap <- listMap[nametags]
     newMap <- listToMap(newMap)
     sampleMap(x) <- newMap
     experiments(x) <- expers
