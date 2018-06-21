@@ -316,8 +316,8 @@ setMethod("mergeReplicates", "ANY",
 #' in a \code{\link{MultiAssayExperiment}} and returns a uniform
 #' \code{\link{DataFrame}}. The resulting DataFrame has columns indicating
 #' primary, rowname, colname and value. This method can optionally include
-#' colData columns with the \code{colDataCols} argument
-#' (\code{MultiAssayExperiment} method only). The \code{\ldots} argument
+#' columns of the MultiAssayExperiment colData named by \code{colDataCols} character
+#' vector argument. (\code{MultiAssayExperiment} method only). The \code{i} argument
 #' allows the user to specify the assay value for the
 #' \linkS4class{SummarizedExperiment} assay function's \code{i} argument.
 #'
@@ -402,11 +402,12 @@ longFormat <- function(object, colDataCols = NULL, i = 1L) {
 #' The \code{wideFormat} function returns standardized wide \link{DataFrame}
 #' where each row represents a biological unit as in the \code{colData}.
 #' Depending on the data and setup, biological units can be patients, tumors,
-#' specimens, etc. Optionally, \code{colData} columns can be added to the
-#' wide data output (see the \code{colDataCols} argument). Metadata columns are
+#' specimens, etc. Metadata columns are
 #' generated based on the names produced in the wide format
 #' \linkS4class{DataFrame}. These can be accessed via the
 #' \link[=Vector-class]{mcols} function.
+#' See the \code{wideFormat} section for description of the \code{colDataCols} and
+#' \code{i} arguments.
 #'
 #' @param check.names (logical default TRUE) Column names of the output
 #' \code{DataFrame} will be checked for syntactic validity and made unique,
