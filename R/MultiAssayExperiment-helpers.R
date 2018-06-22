@@ -317,15 +317,16 @@ setMethod("mergeReplicates", "ANY",
 #' \code{\link{DataFrame}}. The resulting DataFrame has columns indicating
 #' primary, rowname, colname and value. This method can optionally include
 #' colData columns with the \code{colDataCols} argument
-#' (\code{MultiAssayExperiment} method only). The \code{\ldots} argument
-#' allows the user to specify the assay value for the
-#' \linkS4class{SummarizedExperiment} assay function's \code{i} argument.
+#' (\code{MultiAssayExperiment} method only). The \code{i} argument
+#' allows the user to specify the assay value in a
+#' \linkS4class{SummarizedExperiment}. It directly relates to the \code{i}
+#' argument in the assay method.
 #'
 #' @param object Any supported class object
 #' @param colDataCols A \code{character}, \code{logical}, or \code{numeric}
 #' index for \code{colData} columns to be included
-#' @param i An optional assay indicator for any
-#' \linkS4class{SummarizedExperiment} objects (default 1L)
+#' @param i The assay indicator for \linkS4class{SummarizedExperiment}
+#' objects (default 1L)
 #'
 #' @export longFormat
 longFormat <- function(object, colDataCols = NULL, i = 1L) {
@@ -406,7 +407,8 @@ longFormat <- function(object, colDataCols = NULL, i = 1L) {
 #' wide data output (see the \code{colDataCols} argument). Metadata columns are
 #' generated based on the names produced in the wide format
 #' \linkS4class{DataFrame}. These can be accessed via the
-#' \link[=Vector-class]{mcols} function.
+#' \link[=Vector-class]{mcols} function. See the \code{Arguments} and
+#' \code{longFormat} sections for argument descriptions.
 #'
 #' @param check.names (logical default TRUE) Column names of the output
 #' \code{DataFrame} will be checked for syntactic validity and made unique,
