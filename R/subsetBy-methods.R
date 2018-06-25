@@ -287,15 +287,6 @@ setMethod("subsetByColumn", c("MultiAssayExperiment", "ANY"), function(x, y) {
         subsetByColData(x, y)
     else {
     experiments(x) <- subsetByColumn(experiments(x), y)
-    newSamps <- as.list(colnames(x))
-    listMap <- mapToList(sampleMap(x), "assay")
-    newMap <- mapply(function(lMap, nSamps) {
-        lMap[na.omit(match(nSamps, as.character(lMap[["colname"]]))), ]
-    }, lMap = listMap, nSamps = newSamps, SIMPLIFY = FALSE)
-    newMap <- listToMap(newMap)
-    selectors <- unique(as.character(newMap[["primary"]]))
-    colData(x) <- colData(x)[rownames(colData(x)) %in% selectors, , drop = FALSE]
-    sampleMap(x) <- newMap
     return(x)
     }
 })
