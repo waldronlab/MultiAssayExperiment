@@ -291,12 +291,14 @@ MultiAssayExperiment <-
 .checkSampleNames <- function(object) {
     sampMap <- sampleMap(object)
     assayCols <- mapToList(sampMap[, c("assay", "colname")])
-    colNams <- colnames(object)
-    logicResult <- mapply(function(columnNames, assayColumns) {
-        identical(sort(columnNames), sort(assayColumns))
-    }, columnNames = colNams,
-    assayColumns = assayCols)
-    if (!all(logicResult)) {
+    colNams <- Filter(function(x) !isEmpty(x), colnames(object))
+    if (length(colNams)) {
+        logicResult <- mapply(function(x, y) {
+            identical(sort(x), sort(y))
+        }, x = colNams, y = assayCols)
+    if (all(logicResult))
+        NULL
+    else
         "not all samples in the ExperimentList are found in the sampleMap"
     }
     NULL
@@ -332,10 +334,10 @@ MultiAssayExperiment <-
     logchecks <- any(vapply(lcheckdups, FUN = function(x) {
         as.logical(anyDuplicated(x))
     }, FUN.VALUE = logical(1L)))
-    if (logchecks) {
-        return("All sample identifiers in the assays must be unique")
-    }
-    NULL
+    if (!logchecks)
+        NULL
+    else
+        "All sample identifiers in the assays must be unique"
 }
 
 .validMultiAssayExperiment <- function(object) {
