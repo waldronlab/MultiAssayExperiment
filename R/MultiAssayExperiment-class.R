@@ -119,8 +119,6 @@ setClass("MultiAssayExperiment",
 .harmonize <- function(experiments, colData, sampleMap) {
     harmony <- character()
     ## sampleMap assays agree with experiment names
-    sampleMap <- sampleMap[complete.cases(sampleMap), ]
-    sampleMap[["assay"]] <- droplevels(sampleMap[["assay"]])
     assay <- intersect(names(experiments), levels(sampleMap[["assay"]]))
     keep_sampleMap_assay <- sampleMap[["assay"]] %in% assay
     if (!all(keep_sampleMap_assay)) {
