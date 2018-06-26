@@ -1,4 +1,5 @@
-#' @describeIn ExperimentList Get the assay data for the default ANY class
+#' @describeIn ExperimentList Obtain the specified assay with a \code{numberic}
+#' or \code{character} reference
 setMethod("assay", c("ANY", "missing"), function(x, i, ...) {
     if (is(x, "ExpressionSet"))
         return(Biobase::exprs(x))
@@ -13,8 +14,7 @@ setMethod("assays", "ExperimentList", function(x, ..., withDimnames = TRUE) {
     as(S4Vectors::endoapply(x, FUN = function(y) assay(y, ...)), "SimpleList")
 })
 
-#' @describeIn ExperimentList Convenience function for the assay of the first
-#' element
+#' @rdname ExperimentList-class
 #' @param i A scalar \code{character} or \code{integer} index
 setMethod("assay", c("ExperimentList", "missing"), function(x, i, ...) {
     if (!length(x))
@@ -23,8 +23,7 @@ setMethod("assay", c("ExperimentList", "missing"), function(x, i, ...) {
     assay(x[[1L]], ...)
 })
 
-#' @describeIn ExperimentList Obtain the specified assay from ExperimentList
-#' with a \code{numeric} index
+#' @rdname ExperimentList-class
 setMethod("assay", c("ExperimentList", "numeric"), function(x, i, ...) {
     tryCatch({
         assay(x[[i]], ...)
@@ -34,8 +33,7 @@ setMethod("assay", c("ExperimentList", "numeric"), function(x, i, ...) {
     })
 })
 
-#' @describeIn ExperimentList Get the specified assay from ExperimentList with
-#' a \code{character} index
+#' @rdname ExperimentList-class
 setMethod("assay", c("ExperimentList", "character"), function(x, i, ...) {
     msg <- paste0("'assay(<", class(x), ">, i=\"character\", ...)' ",
                   "invalid subscript 'i'")
@@ -59,21 +57,20 @@ setMethod("assays", "MultiAssayExperiment", function(x, ..., withDimnames = TRUE
 })
 
 #' @describeIn MultiAssayExperiment Convenience function for extracting the
-#' assay of the first element in the \code{ExperimentList}
+#' assay of the first element (default) in the \code{ExperimentList}. A
+#' \code{numeric} or \code{character} index can also be provided
 #' @exportMethod assay
 setMethod("assay", c("MultiAssayExperiment", "missing"), function(x, i, ...) {
     assay(experiments(x), ...)
 })
 
-#' @describeIn MultiAssayExperiment Obtain the specified assay from the
-#' MultiAssayExperiment with a \code{numeric} index
+#' @rdname MultiAssayExperiment-class
 #' @param i An integer or character scalar indicating the assay to return
 setMethod("assay", c("MultiAssayExperiment", "numeric"), function(x, i, ...) {
     assay(experiments(x), i = i, ...)
 })
 
-#' @describeIn MultiAssayExperiment Get the specified assay from the
-#' MultiAssayExperiment with a \code{character} index
+#' @rdname MultiAssayExperiment-class
 setMethod("assay", c("MultiAssayExperiment", "character"), function(x, i, ...) {
     assay(experiments(x), i = i, ...)
 })

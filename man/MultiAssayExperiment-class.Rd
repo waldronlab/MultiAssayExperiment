@@ -110,13 +110,8 @@ for a \code{MultiAssayExperiment} object
 data for all available experiments in the object
 
 \item \code{assay}: Convenience function for extracting the
-assay of the first element in the \code{ExperimentList}
-
-\item \code{assay}: Obtain the specified assay from the
-MultiAssayExperiment with a \code{numeric} index
-
-\item \code{assay}: Get the specified assay from the
-MultiAssayExperiment with a \code{character} index
+assay of the first element (default) in the \code{ExperimentList}. A
+\code{numeric} or \code{character} index can also be provided
 }}
 
 \section{Slots}{

@@ -82,19 +82,11 @@ an \code{ExperimentList} using \code{\linkS4class{CharacterList}}
 \item \code{mergeReplicates}: Apply the mergeReplicates method on the
 ExperimentList elements
 
-\item \code{assay}: Get the assay data for the default ANY class
+\item \code{assay}: Obtain the specified assay with a \code{numberic}
+or \code{character} reference
 
 \item \code{assays}: Get the assay data from each element in the
 \link{ExperimentList}
-
-\item \code{assay}: Convenience function for the assay of the first
-element
-
-\item \code{assay}: Obtain the specified assay from ExperimentList
-with a \code{numeric} index
-
-\item \code{assay}: Get the specified assay from ExperimentList with
-a \code{character} index
 }}
 
 \section{coercion}{
