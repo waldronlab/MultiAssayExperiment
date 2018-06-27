@@ -92,40 +92,40 @@ NULL
 #' example("MultiAssayExperiment")
 #'
 #' ## Using experiment names
-#' subsetByAssay(myMultiAssayExperiment, "Affy")
+#' subsetByAssay(mae, "Affy")
 #'
 #' ## Using numeric indices
-#' subsetByAssay(myMultiAssayExperiment, 1:2)
+#' subsetByAssay(mae, 1:2)
 #'
 #' ## Using a logical vector
-#' subsetByAssay(myMultiAssayExperiment, c(TRUE, FALSE, TRUE))
+#' subsetByAssay(mae, c(TRUE, FALSE, TRUE))
 #'
 #' ## Subset by character vector (Jack)
-#' subsetByColData(myMultiAssayExperiment, "Jack")
+#' subsetByColData(mae, "Jack")
 #'
 #' ## Subset by numeric index of colData rows (Jack and Bob)
-#' subsetByColData(myMultiAssayExperiment, c(1, 3))
+#' subsetByColData(mae, c(1, 3))
 #'
 #' ## Subset by logical indicator of colData rows (Jack and Jill)
-#' subsetByColData(myMultiAssayExperiment, c(TRUE, TRUE, FALSE, FALSE))
+#' subsetByColData(mae, c(TRUE, TRUE, FALSE, FALSE))
 #'
-#' subsetByColumn(myMultiAssayExperiment, list(Affy = 1:2,
+#' subsetByColumn(mae, list(Affy = 1:2,
 #'     Methyl450k = c(3,5,2), RNASeqGene = 2:4, GISTIC = 1))
 #'
-#' subsetWith <- S4Vectors::mendoapply(`[`, colnames(myMultiAssayExperiment),
+#' subsetWith <- S4Vectors::mendoapply(`[`, colnames(mae),
 #'     MoreArgs = list(1:2))
-#' subsetByColumn(myMultiAssayExperiment, subsetWith)
+#' subsetByColumn(mae, subsetWith)
 #'
 #' ## Use a GRanges object to subset rows where ranged data present
 #' egr <- GenomicRanges::GRanges(seqnames = "chr2",
 #'     IRanges::IRanges(start = 11, end = 13), strand = "-")
-#' subsetByRow(myMultiAssayExperiment, egr)
+#' subsetByRow(mae, egr)
 #'
 #' ## Use a logical vector (recycling used)
-#' subsetByRow(myMultiAssayExperiment, c(TRUE, FALSE))
+#' subsetByRow(mae, c(TRUE, FALSE))
 #'
 #' ## Use a character vector
-#' subsetByRow(myMultiAssayExperiment, "ENST00000355076")
+#' subsetByRow(mae, "ENST00000355076")
 #'
 NULL
 

@@ -82,18 +82,18 @@ NULL
 #'
 #' ## Subsetting
 #' # Rows (i) Rows/Features in each experiment
-#' myMultiAssayExperiment[1, , ]
-#' myMultiAssayExperiment[c(TRUE, FALSE), , ]
+#' mae[1, , ]
+#' mae[c(TRUE, FALSE), , ]
 #'
 #' # Columns (j) Rows in colData
-#' myMultiAssayExperiment[, rownames(colData(myMultiAssayExperiment))[3:2],  ]
+#' mae[, rownames(colData(mae))[3:2],  ]
 #'
 #' # Assays (k)
-#' myMultiAssayExperiment[, , "Affy"]
+#' mae[, , "Affy"]
 #'
 #' ## Complete cases (returns logical vector)
-#' completes <- complete.cases(myMultiAssayExperiment)
-#' compMAE <- myMultiAssayExperiment[, completes, ]
+#' completes <- complete.cases(mae)
+#' compMAE <- mae[, completes, ]
 #' compMAE
 #' colData(compMAE)
 #'

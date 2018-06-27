@@ -2,29 +2,29 @@
 example(MultiAssayExperiment)
 
 ## Access the sampleMap
-sampleMap(myMultiAssayExperiment)
+sampleMap(mae)
 
 ## Replacement method for a MultiAssayExperiment sampleMap
-sampleMap(myMultiAssayExperiment) <- S4Vectors::DataFrame()
+sampleMap(mae) <- S4Vectors::DataFrame()
 
 ## Access the ExperimentList
-experiments(myMultiAssayExperiment)
+experiments(mae)
 
 ## Replace with an empty ExperimentList
-experiments(myMultiAssayExperiment) <- ExperimentList()
+experiments(mae) <- ExperimentList()
 
 ## Access the metadata
-metadata(myMultiAssayExperiment)
+metadata(mae)
 
 ## Replace metadata with a list
-metadata(myMultiAssayExperiment) <- list(runDate =
+metadata(mae) <- list(runDate =
     format(Sys.time(), "%B %d, %Y"))
 
 ## Access the colData
-colData(myMultiAssayExperiment)
+colData(mae)
 
 ## Access a column in colData
-myMultiAssayExperiment$age
+mae$age
 
 ## Replace a column in colData
-myMultiAssayExperiment$age <- myMultiAssayExperiment$age + 1
+mae$age <- mae$age + 1

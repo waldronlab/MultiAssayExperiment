@@ -42,7 +42,6 @@ test_that("combine c function works on multiple objects", {
     addMap <- rbind(addMap, DataFrame(assay = "myRSE",
         primary = c("Jack", "Jill", "Bob", "Barbara"),
         colname = LETTERS[1:4]))
-    expect_true(validObject(c(myMultiAssayExperiment, RExp = re,
-        myRSE = rse, sampleMap = addMap)))
+    expect_true(validObject(c(mae, RExp = re, myRSE = rse, sampleMap = addMap)))
 })
 

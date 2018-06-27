@@ -2,8 +2,8 @@ context("long and wide format methods")
 
 example("MultiAssayExperiment")
 
-longDF <- longFormat(myMultiAssayExperiment, colDataCols = "sex")
-wideDF <- wideFormat(myMultiAssayExperiment, colDataCols = "sex")
+longDF <- longFormat(mae, colDataCols = "sex")
+wideDF <- wideFormat(mae, colDataCols = "sex")
 
 test_that("longFormat-ANY returns a data.frame", {
     testMat <- matrix(seq_len(20), nrow = 4, ncol = 5, byrow = TRUE,
@@ -27,7 +27,7 @@ test_that("longFormat returns specified colData column and proper dimensions", {
             names(longDF)))
 
     expect_true("primary" %in% names(wideDF))
-    expect_equal(nrow(wideDF), nrow(colData(myMultiAssayExperiment)))
+    expect_equal(nrow(wideDF), nrow(colData(mae)))
 })
 
 test_that("longFormat on MultiAssayExperiment returns DataFrame", {

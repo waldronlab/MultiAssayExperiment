@@ -99,15 +99,15 @@ setMethod("$", "MultiAssayExperiment", function(x, name) {
 #' example("MultiAssayExperiment")
 #'
 #' ## Add an experiment
-#' test1 <- myMultiAssayExperiment[[1L]]
-#' colnames(test1) <- rownames(colData(myMultiAssayExperiment))
+#' test1 <- mae[[1L]]
+#' colnames(test1) <- rownames(colData(mae))
 #'
 #' ## Combine current MultiAssayExperiment with additional experiment
 #' ## (no sampleMap)
-#' c(myMultiAssayExperiment, newExperiment = test1)
+#' c(mae, newExperiment = test1)
 #'
-#' test2 <- myMultiAssayExperiment[[1L]]
-#' c(myMultiAssayExperiment, newExp = test2, mapFrom = 3L)
+#' test2 <- mae[[1L]]
+#' c(mae, newExp = test2, mapFrom = 3L)
 #'
 setMethod("c", "MultiAssayExperiment",
     function(x, ..., sampleMap = NULL, mapFrom = NULL) {

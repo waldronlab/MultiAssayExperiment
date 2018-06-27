@@ -158,33 +158,33 @@ example("MultiAssayExperiment")
 
 ## Subsetting
 # Rows (i) Rows/Features in each experiment
-myMultiAssayExperiment[1, , ]
-myMultiAssayExperiment[c(TRUE, FALSE), , ]
+mae[1, , ]
+mae[c(TRUE, FALSE), , ]
 
 # Columns (j) Rows in colData
-myMultiAssayExperiment[, rownames(colData(myMultiAssayExperiment))[3:2],  ]
+mae[, rownames(colData(mae))[3:2],  ]
 
 # Assays (k)
-myMultiAssayExperiment[, , "Affy"]
+mae[, , "Affy"]
 
 ## Complete cases (returns logical vector)
-completes <- complete.cases(myMultiAssayExperiment)
-compMAE <- myMultiAssayExperiment[, completes, ]
+completes <- complete.cases(mae)
+compMAE <- mae[, completes, ]
 compMAE
 colData(compMAE)
 
 example("MultiAssayExperiment")
 
 ## Add an experiment
-test1 <- myMultiAssayExperiment[[1L]]
-colnames(test1) <- rownames(colData(myMultiAssayExperiment))
+test1 <- mae[[1L]]
+colnames(test1) <- rownames(colData(mae))
 
 ## Combine current MultiAssayExperiment with additional experiment
 ## (no sampleMap)
-c(myMultiAssayExperiment, newExperiment = test1)
+c(mae, newExperiment = test1)
 
-test2 <- myMultiAssayExperiment[[1L]]
-c(myMultiAssayExperiment, newExp = test2, mapFrom = 3L)
+test2 <- mae[[1L]]
+c(mae, newExp = test2, mapFrom = 3L)
 
 }
 \seealso{

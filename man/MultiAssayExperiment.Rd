@@ -72,8 +72,8 @@ colDat <- data.frame(sex = c("M", "F", "M", "F"), age = 38:41,
     row.names = c("Jack", "Jill", "Bob", "Barbara"))
 
 ## Create a MultiAssayExperiment instance
-myMultiAssayExperiment <- MultiAssayExperiment(experiments = ExpList,
-    colData = colDat, sampleMap = mySampleMap)
+mae <- MultiAssayExperiment(experiments = ExpList, colData = colDat,
+    sampleMap = mySampleMap)
 }
 \seealso{
 \link{MultiAssayExperiment-class}
