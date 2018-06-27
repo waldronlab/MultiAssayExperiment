@@ -23,6 +23,12 @@ test_that("subsetByRow works with lists", {
         length(myMultiAssayExperiment))
 })
 
+test_that("subsetByRow keeps order in subsettor", {
+    rows <- rownames(myMultiAssayExperiment)
+    rows <- rows[c(2, 3, 1, 4)]
+    expect_identical(names(rows), names(myMultiAssayExperiment[rows, ]))
+})
+
 test_that("assay subsets work", {
     noAffy <- list(noAffy = 1:5)
     expect_error(experiments(myMultiAssayExperiment)[noAffy])
@@ -80,6 +86,12 @@ test_that("drop argument works", {
     expect_equal(
         length(myMultiAssayExperiment[, FALSE, drop = FALSE]), fullLength
     )
+})
+
+test_that("subsetByColumn keeps order in subsettor", {
+    cols <- colnames(myMultiAssayExperiment)
+    cols <- cols[c(2, 3, 1, 4)]
+    expect_identical(names(cols), names(myMultiAssayExperiment[, cols]))
 })
 
 test_that("subsetByColumn works with lists", {
