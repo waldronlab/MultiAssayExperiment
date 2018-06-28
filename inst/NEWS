@@ -1,5 +1,21 @@
 # MultiAssayExperiment
 ----------------------------------------------------------------
+## Changes in version 1.7.14
+
+### New features
+
+* Subsetting `MultiAssayExperiment` by a `list` or `List` type class now
+returns experiments in the input order for rows, columns, and assays
+
+### Bug fixes and minor improvements
+
+* Renamed objects in examples for brevity and descriptiveness
+* Updated `importFrom` directives
+* Internal sample names check now only works on non-empty `colnames`
+* Various documentation improvements
+* `listToMap` re-written for efficiency
+* Various improvements to subsetting mechanism
+* `subsetByAssay` bug fixed when using an integer index (@vjcitn, #)
 
 ## Changes in version 1.5.108
 
