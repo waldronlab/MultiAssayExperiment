@@ -173,12 +173,6 @@ setClass("MultiAssayExperiment",
         x[, colnames(x) %in% idx, drop=FALSE]
     }, experiments[assay], experiments_columns[assay]))
 
-    ## experiment assay names and sampleMap assays need to be in the same order
-    if (!identical(levels(sampleMap[["assay"]]), names(experiments))) {
-        tempMap <- mapToList(sampleMap)[names(experiments)]
-        sampleMap <- listToMap(tempMap)
-    }
-
     if (length(harmony))
         message("harmonizing input:\n  ", paste(harmony, collapse="\n  "))
     list(experiments=experiments, sampleMap=sampleMap, colData=colData)

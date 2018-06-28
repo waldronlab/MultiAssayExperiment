@@ -160,6 +160,15 @@ setGeneric("subsetByAssay", function(x, y) standardGeneric("subsetByAssay"))
     }, x = object, i = cutter)
 }
 
+.fillEmptyExps <- function(exps, subr) {
+    if (!all(names(exps) %in% names(subr))) {
+        outnames <- setdiff(names(exps), names(subr))
+        names(outnames) <- outnames
+        subr <- c(subr, lapply(outnames, function(x) character(0L)))
+    }
+    subr
+}
+
 # subsetByRow,ExperimentList-methods -----------------------------------------
 
 #' @rdname subsetBy
@@ -178,24 +187,18 @@ setMethod("subsetByRow", c("ExperimentList", "ANY"), function(x, y, ...) {
 
 #' @rdname subsetBy
 setMethod("subsetByRow", c("ExperimentList", "list"), function(x, y) {
-    if (!all(names(y) %in% names(x)))
-        stop("list-like subscript has names not in list-like object to subset")
-    inNames <- names(x) %in% names(y)
-    x[inNames] <- x[y]
-    x
+    y <- .fillEmptyExps(x, y)
+    x[y]
 })
 
 #' @rdname subsetBy
 setMethod("subsetByRow", c("ExperimentList", "List"), function(x, y) {
-    if (!all(names(y) %in% names(x)))
-        stop("list-like subscript has names not in list-like object to subset")
     if (is(y, "DataFrame") || is(y, "GRangesList"))
         stop("Provide a list of indices for subsetting")
     if (is(y, "GRanges"))
         return(callNextMethod())
-    inNames <- names(x) %in% names(y)
-    x[inNames] <- x[y]
-    x
+    y <- as.list(y)
+    subsetByRow(x, y)
 })
 
 #' @rdname subsetBy
@@ -208,10 +211,9 @@ setMethod("subsetByRow", c("ExperimentList", "logical"), function(x, y) {
 
 #' @rdname subsetBy
 setMethod("subsetByColumn", c("ExperimentList", "list"), function(x, y) {
-    y <- y[names(x)]
-    ExperimentList(mapply(function(exps, j) {
-        exps[, j, drop = FALSE]
-    }, exps = x, j = y, SIMPLIFY = FALSE))
+    y <- .fillEmptyExps(x, y)
+    x <- x[names(y)]
+    .subsetCOLS(x, y)
 })
 
 #' @rdname subsetBy
