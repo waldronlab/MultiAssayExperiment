@@ -44,8 +44,8 @@ rangedat <- data.frame(chr="chr2", start = 11:15, end = 12:16,
 rangeSE <- SummarizedExperiment::makeSummarizedExperimentFromDataFrame(rangedat)
 
 ## Combine to a named list and call the ExperimentList constructor function
-ExpList <- list(Affy = exprdat, Methyl450k = methyldat, RNASeqGene = rnadat,
+assayList <- list(Affy = exprdat, Methyl450k = methyldat, RNASeqGene = rnadat,
                 GISTIC = rangeSE)
 
 ## Use the ExperimentList constructor
-myExperimentList <- ExperimentList(ExpList)
+ExpList <- ExperimentList(assayList)
