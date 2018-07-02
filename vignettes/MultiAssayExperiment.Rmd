@@ -24,8 +24,9 @@ suppressPackageStartupMessages({
 # Installation
 
 ```{r, eval = FALSE}
-source("https://bioconductor.org/biocLite.R")
-BiocInstaller::biocLite("MultiAssayExperiment")
+if (!require("BiocManager"))
+    install.packages("BiocManager")
+BiocManager::install("MultiAssayExperiment")
 ```
 
 Loading the packages:
@@ -970,7 +971,7 @@ as `MultiAssayExperiment` objects. Please see the package vignette for more
 details.
 
 ```{r, eval = FALSE}
-BiocInstaller::biocLite("curatedTCGAData")
+BiocManager::install("curatedTCGAData")
 ```
 
 # Dimension names: `rownames` and `colnames`
@@ -1010,7 +1011,7 @@ try(MultiAssayExperiment(objlist2, patient.data, dfmap),
 
 For more information on the formal API of `MultiAssayExperiment`, please see
 the [API wiki][] document on GitHub. An API package is available for
-download on GitHub via `biocLite("waldronlab/MultiAssayShiny")`. It provides
+download on GitHub via `install("waldronlab/MultiAssayShiny")`. It provides
 visual exploration of available methods in `MultiAssayExperiment`.
 
 <p style="text-align: right;"> <a href="#header">back to top</a> </p>

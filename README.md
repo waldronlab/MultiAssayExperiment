@@ -17,9 +17,13 @@ version. This can be done by installing the
 [development version of Bioconductor](https://www.bioconductor.org/developers/how-to/useDevel/):
 
 ```
-library(BiocInstaller)
-useDevel()
-biocLite("MultiAssayExperiment")
+if (!require("BiocManager"))
+    install.packages("BiocManager")
+
+library(BiocManager)
+
+install(version = "devel")
+install("MultiAssayExperiment")
 ```
 
 ## Ready-to-use `MultiAssayExperiment` objects
@@ -28,7 +32,7 @@ See the newly released `curatedTCGAData` `ExperimentHub` package for
 ready-packaged MultiAssayExperiment TCGA objects.
 
 ```
-biocLite("curatedTCGAData")
+install("curatedTCGAData")
 ```
 
 ## Documentation
