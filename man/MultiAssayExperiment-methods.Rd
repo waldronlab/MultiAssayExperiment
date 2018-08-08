@@ -30,7 +30,8 @@
 
 \S4method{sampleMap}{MultiAssayExperiment,DataFrame}(object) <- value
 
-\S4method{experiments}{MultiAssayExperiment,ExperimentList}(object) <- value
+
+  \S4method{experiments}{MultiAssayExperiment,ExperimentList}(object) <- value
 
 \S4method{colData}{MultiAssayExperiment,DataFrame}(x) <- value
 

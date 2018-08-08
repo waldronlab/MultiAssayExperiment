@@ -9,13 +9,9 @@
 \alias{replicated}
 \alias{complete.cases,MultiAssayExperiment-method}
 \alias{isEmpty,MultiAssayExperiment-method}
-\alias{intersectRows}
-\alias{intersectColumns}
-\alias{replicated}
 \alias{replicated,MultiAssayExperiment-method}
 \alias{anyReplicated}
 \alias{anyReplicated,MultiAssayExperiment-method}
-\alias{mergeReplicates}
 \alias{mergeReplicates,MultiAssayExperiment-method}
 \alias{mergeReplicates,ANY-method}
 \alias{longFormat}
@@ -44,7 +40,8 @@ anyReplicated(x)
 
 \S4method{anyReplicated}{MultiAssayExperiment}(x)
 
-mergeReplicates(x, replicates = list(), simplify = BiocGenerics::mean, ...)
+mergeReplicates(x, replicates = list(), simplify = BiocGenerics::mean,
+  ...)
 
 \S4method{mergeReplicates}{MultiAssayExperiment}(x,
   replicates = replicated(x), simplify = BiocGenerics::mean, ...)
@@ -54,8 +51,8 @@ mergeReplicates(x, replicates = list(), simplify = BiocGenerics::mean, ...)
 
 longFormat(object, colDataCols = NULL, i = 1L)
 
-wideFormat(object, colDataCols = NULL, check.names = TRUE, collapse = "_",
-  i = 1L)
+wideFormat(object, colDataCols = NULL, check.names = TRUE,
+  collapse = "_", i = 1L)
 
 hasRowRanges(x)
 
@@ -63,7 +60,8 @@ hasRowRanges(x)
 
 \S4method{hasRowRanges}{ExperimentList}(x)
 
-\S4method{duplicated}{MultiAssayExperiment}(x, incomparables = FALSE, ...)
+\S4method{duplicated}{MultiAssayExperiment}(x, incomparables = FALSE,
+  ...)
 }
 \arguments{
 \item{...}{Additional arguments. See details for more information.}

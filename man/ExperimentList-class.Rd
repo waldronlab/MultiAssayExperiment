@@ -15,7 +15,6 @@
 \alias{assay,ANY,missing-method}
 \alias{assays,ExperimentList-method}
 \alias{assay,ExperimentList,missing-method}
-\alias{assay,ExperimentList,missing-method}
 \alias{assay,ExperimentList,numeric-method}
 \alias{assay,ExperimentList,character-method}
 \title{A container for multi-experiment data}

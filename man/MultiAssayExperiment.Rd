@@ -5,9 +5,9 @@
 \title{Construct a \code{MultiAssayExperiment} object}
 \usage{
 MultiAssayExperiment(experiments = ExperimentList(),
-  colData = S4Vectors::DataFrame(), sampleMap = S4Vectors::DataFrame(assay =
-  factor(), primary = character(), colname = character()), metadata = NULL,
-  drops = list())
+  colData = S4Vectors::DataFrame(),
+  sampleMap = S4Vectors::DataFrame(assay = factor(), primary =
+  character(), colname = character()), metadata = NULL, drops = list())
 }
 \arguments{
 \item{experiments}{A \code{list} or \link{ExperimentList} of all

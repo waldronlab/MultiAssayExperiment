@@ -10,10 +10,6 @@
 \alias{subsetByColumn}
 \alias{subsetByAssay}
 \alias{subset}
-\alias{subsetByRow}
-\alias{subsetByColData}
-\alias{subsetByColumn}
-\alias{subsetByAssay}
 \alias{subsetByRow,ExperimentList,ANY-method}
 \alias{subsetByRow,ExperimentList,list-method}
 \alias{subsetByRow,ExperimentList,List-method}
@@ -66,7 +62,8 @@ subsetByAssay(x, y)
 
 \S4method{subsetByAssay}{MultiAssayExperiment}(x, y)
 
-\S4method{[}{MultiAssayExperiment,ANY,ANY,ANY}(x, i, j, k, ..., drop = TRUE)
+\S4method{[}{MultiAssayExperiment,ANY,ANY,ANY}(x, i, j, k, ...,
+  drop = TRUE)
 
 \S4method{[[}{MultiAssayExperiment,ANY,ANY}(x, i, j, ...)
 
