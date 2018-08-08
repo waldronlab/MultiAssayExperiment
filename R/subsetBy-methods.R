@@ -247,19 +247,22 @@ setMethod("subsetByColData", c("MultiAssayExperiment", "ANY"), function(x, y) {
     listMap <- mapToList(sampleMap(x), "assay")
     listMap <- lapply(listMap, function(elementMap, keepers) {
         .matchReorderSub(elementMap, keepers)
-    }, keepers = selectors)
+        }, keepers = selectors)
     newMap <- listToMap(listMap)
     columns <- lapply(listMap, function(mapChunk) {
         mapChunk[, "colname", drop = TRUE]
     })
     columns <- columns[names(experiments(x))]
-    newSubset <- mapply(function(x, j) {x[, j, drop = FALSE]},
-        x = experiments(x), j = columns, SIMPLIFY = FALSE)
+    newSubset <- Map(function(x, j) {x[, j, drop = FALSE]},
+        x = experiments(x), j = columns)
     newSubset <- ExperimentList(newSubset)
-    experiments(x) <- newSubset
-    sampleMap(x) <- newMap
-    colData(x) <- newcolData
-    return(x)
+
+    harmon <- .harmonize(newSubset, newcolData, newMap)
+    new("MultiAssayExperiment",
+        ExperimentList = harmon[["experiments"]],
+        colData = harmon[["colData"]],
+        sampleMap = harmon[["sampleMap"]],
+        metadata = metadata(x))
 })
 
 #' @rdname subsetBy
