@@ -258,11 +258,12 @@ setMethod("subsetByColData", c("MultiAssayExperiment", "ANY"), function(x, y) {
     newSubset <- ExperimentList(newSubset)
 
     harmon <- .harmonize(newSubset, newcolData, newMap)
-    new("MultiAssayExperiment",
+    BiocGenerics:::replaceSlots(x,
         ExperimentList = harmon[["experiments"]],
         colData = harmon[["colData"]],
         sampleMap = harmon[["sampleMap"]],
-        metadata = metadata(x))
+        metadata = metadata(x),
+        check = FALSE)
 })
 
 #' @rdname subsetBy

@@ -163,7 +163,7 @@ setGeneric("mergeReplicates",
 setMethod("mergeReplicates", "MultiAssayExperiment",
     function(x, replicates = replicated(x), simplify = BiocGenerics::mean, ...)
 {
-    if (!length(replicates))
+    if (!length(replicates) || !identical(length(replicates), length(x)))
         stop("'replicates' must be a list of technical replicates for each",
             "\n  biological unit. See '?replicated'.")
     experimentList <- mergeReplicates(
