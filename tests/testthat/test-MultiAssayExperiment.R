@@ -126,3 +126,14 @@ test_that("MultiAssayExperiment replacements work", {
     expect_true(is(colData(obs), "DataFrame"))
     expect_error(colData(obs) <- pDF[, 1])
 })
+
+test_that("MultiAssayExperiment name replacements work", {
+    m <- matrix(0, 3, 3, dimnames=list(letters[1:3], letters[1:3]))
+    m2 <- matrix(0, 0, 0)
+    m3 <- matrix(0, 1, 1, dimnames=list("d", "d"))
+    obs <- MultiAssayExperiment(list(m=m, m2=m2, m3=m3))
+    newnames <- c("exp1", "exp2", "exp3")
+    names(obs) <- newnames
+    expect_identical(names(obs), newnames)
+    expect_identical(levels(sampleMap(obs)[["assay"]]), newnames)
+})

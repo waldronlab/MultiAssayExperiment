@@ -557,6 +557,31 @@ setReplaceMethod("$", "MultiAssayExperiment", function(x, name, value) {
     return(x)
 })
 
+#' @exportMethod names<-
+#' @rdname MultiAssayExperiment-methods
+setReplaceMethod("names", c("MultiAssayExperiment", "ANY"),
+    function(x, value)
+{
+    if (!is.character(value))
+        stop("'value' must be a character vector",
+                "in names(x) <- value")
+    if (length(value) != length(x))
+        stop("experiment names and experiments not equal in length")
+
+    explist <- experiments(x)
+    oldNames <- names(explist)
+    names(explist) <- value
+    sampmap <- sampleMap(x)
+    map <- stats::setNames(value, oldNames)
+    sampmap[, "assay"] <-
+        factor(unname(map[sampmap[["assay"]]]), levels = value)
+
+    BiocGenerics:::replaceSlots(x,
+        ExperimentList = explist,
+        sampleMap = sampmap,
+        check = FALSE)
+})
+
 #' @exportMethod updateObject
 #' @param verbose logical (default FALSE) whether to print extra messages
 #' @describeIn MultiAssayExperiment Update old serialized MultiAssayExperiment
