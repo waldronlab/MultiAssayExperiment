@@ -17,6 +17,7 @@
 \alias{colData<-,MultiAssayExperiment,DataFrame-method}
 \alias{metadata<-,MultiAssayExperiment-method}
 \alias{$<-,MultiAssayExperiment-method}
+\alias{names<-,MultiAssayExperiment-method}
 \alias{$,MultiAssayExperiment-method}
 \title{Accessing/modifying slot information}
 \usage{
@@ -38,6 +39,8 @@
 \S4method{metadata}{MultiAssayExperiment}(x, ...) <- value
 
 \S4method{$}{MultiAssayExperiment}(x, name) <- value
+
+\S4method{names}{MultiAssayExperiment}(x) <- value
 
 \S4method{$}{MultiAssayExperiment}(x, name)
 }
