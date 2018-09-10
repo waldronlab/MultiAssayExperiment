@@ -187,9 +187,7 @@ setMethod("mergeReplicates", "ExperimentList",
         if (!length(replicates))
             stop("'replicates' must be a 'list' of replicated column elements",
                  "\n per biological unit")
-        idx <- seq_along(x)
-        names(idx) <- names(x)
-        redList <- lapply(idx, function(i, element, simply,
+        redList <- lapply(names(x), function(i, element, simply,
                                         replicate, ...) {
             mergeReplicates(x = element[[i]], simplify = simply,
                             replicates = replicate[[i]], ...)
@@ -232,7 +230,7 @@ setMethod("mergeReplicates", "ANY",
             result <- cbind(uniqueRectangle, x[, uniqueCols, drop = FALSE])
             if (is(object, "SummarizedExperiment")) {
                 # Keep only first replicate row in colData
-                colDatIdx <- c(unname(min(which(replicates))),
+                colDatIdx <- c(unname(min(which(replicates[any(replicates)]))),
                     which(uniqueCols))
                 newColDat <- colData(object)[colDatIdx, , drop = FALSE]
                 object <- initialize(object,
