@@ -4,7 +4,7 @@ build:
     - script:
         name: Install devtools
         code: R -e "install.packages('devtools')"
-    - jimhester/r-dependencies
+    - LiNk-NY/r-dependencies
     - jimhester/r-check
 #    - jimhester/r-lint
     - jimhester/r-coverage
