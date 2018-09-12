@@ -187,12 +187,12 @@ setMethod("mergeReplicates", "ExperimentList",
         if (!length(replicates))
             stop("'replicates' must be a 'list' of replicated column elements",
                  "\n per biological unit")
-        redList <- lapply(names(x), function(i, element, simply,
-                                        replicate, ...) {
-            mergeReplicates(x = element[[i]], simplify = simply,
-                            replicates = replicate[[i]], ...)
-        }, element = x, simply = simplify,
-        replicate = replicates, ...)
+        expnames <- structure(names(x), .Names = names(x))
+        redList <- lapply(expnames,
+            function(i, element, simply, replicate, ...) {
+                mergeReplicates(x = element[[i]], simplify = simply,
+                    replicates = replicate[[i]], ...)
+            }, element = x, simply = simplify, replicate = replicates, ...)
         ExperimentList(redList)
     })
 
