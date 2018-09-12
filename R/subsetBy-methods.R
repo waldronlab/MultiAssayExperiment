@@ -262,7 +262,6 @@ setMethod("subsetByColData", c("MultiAssayExperiment", "ANY"), function(x, y) {
         ExperimentList = harmon[["experiments"]],
         colData = harmon[["colData"]],
         sampleMap = harmon[["sampleMap"]],
-        metadata = metadata(x),
         check = FALSE)
 })
 

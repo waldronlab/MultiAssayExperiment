@@ -204,55 +204,51 @@ setClass("MultiAssayExperiment",
 #' @export MultiAssayExperiment
 #' @seealso \link{MultiAssayExperiment-class}
 MultiAssayExperiment <-
-    function(experiments = ExperimentList(),
-            colData = S4Vectors::DataFrame(),
-            sampleMap =
-                S4Vectors::DataFrame(
-                    assay = factor(),
-                    primary = character(),
-                    colname = character()),
+    function(experiments = ExperimentList(), colData = S4Vectors::DataFrame(),
+        sampleMap = S4Vectors::DataFrame(
+            assay = factor(),
+            primary = character(),
+            colname = character()),
             metadata = NULL,
-            drops = list()) {
+            drops = list())
+{
+    if (missing(experiments))
+        experiments <- ExperimentList()
+    else
+        experiments <- ExperimentList(experiments)
 
-        if (missing(experiments))
-            experiments <- ExperimentList()
-        else
-            experiments <- ExperimentList(experiments)
+    if (missing(colData)){
+        allsamps <- unique(unlist(unname(colnames(experiments))))
+        colData <- S4Vectors::DataFrame(row.names = allsamps)
+    } else if (!is(colData, "DataFrame"))
+        colData <- S4Vectors::DataFrame(colData)
 
-        if (missing(colData)){
-            allsamps <- unique(unlist(unname(colnames(experiments))))
-            colData <- S4Vectors::DataFrame(row.names = allsamps)
-        } else if (!is(colData, "DataFrame"))
-            colData <- S4Vectors::DataFrame(colData)
-
-
-        if (missing(sampleMap)) {
-            sampleMap <- .sampleMapFromData(colData, experiments)
-        } else {
-            sampleMap <- S4Vectors::DataFrame(sampleMap)
-            if (!all(c("assay", "primary", "colname") %in% colnames(sampleMap)))
-                stop("'sampleMap' does not have required columns")
-            if (!is.factor(sampleMap[["assay"]]))
-                sampleMap[["assay"]] <- factor(sampleMap[["assay"]])
-            if (!is.character(sampleMap[["primary"]])) {
-                warning("sampleMap[['primary']] coerced to character()")
-                sampleMap[["primary"]] <- as.character(sampleMap[["primary"]])
-            }
-            if (!is.character(sampleMap[["colname"]])) {
-                warning("sampleMap[['colname']] coerced to character()")
-                sampleMap[["colname"]] <- as.character(sampleMap[["colname"]])
-            }
+    if (missing(sampleMap)) {
+        sampleMap <- .sampleMapFromData(colData, experiments)
+    } else {
+        sampleMap <- S4Vectors::DataFrame(sampleMap)
+        if (!all(c("assay", "primary", "colname") %in% colnames(sampleMap)))
+            stop("'sampleMap' does not have required columns")
+        if (!is.factor(sampleMap[["assay"]]))
+            sampleMap[["assay"]] <- factor(sampleMap[["assay"]])
+        if (!is.character(sampleMap[["primary"]])) {
+            warning("sampleMap[['primary']] coerced to character()")
+            sampleMap[["primary"]] <- as.character(sampleMap[["primary"]])
         }
-
-        bliss <- .harmonize(experiments, colData, sampleMap)
-
-        newMultiAssay <- new("MultiAssayExperiment",
-                             ExperimentList = bliss[["experiments"]],
-                             colData = bliss[["colData"]],
-                             sampleMap = bliss[["sampleMap"]],
-                             metadata = metadata)
-        return(newMultiAssay)
+        if (!is.character(sampleMap[["colname"]])) {
+            warning("sampleMap[['colname']] coerced to character()")
+            sampleMap[["colname"]] <- as.character(sampleMap[["colname"]])
+        }
     }
+
+    bliss <- .harmonize(experiments, colData, sampleMap)
+
+    new("MultiAssayExperiment",
+        ExperimentList = bliss[["experiments"]],
+        colData = bliss[["colData"]],
+        sampleMap = bliss[["sampleMap"]],
+        metadata = metadata)
+}
 
 ### - - - - - - - - - - - - - - - - - - - - - - - -
 ### Validity
@@ -519,13 +515,12 @@ setReplaceMethod("experiments", c("MultiAssayExperiment", "ExperimentList"),
         rebliss <- .harmonize(value,
             colData(object),
             sampleMap(object))
-        BiocGenerics:::replaceSlots(
-            object,
+        BiocGenerics:::replaceSlots(object,
             ExperimentList = rebliss[["experiments"]],
             colData = rebliss[["colData"]],
             sampleMap = rebliss[["sampleMap"]],
-            metadata = metadata(object)
-            )
+            check = FALSE
+        )
     })
 
 #' @exportMethod colData<-
