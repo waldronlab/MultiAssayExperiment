@@ -86,6 +86,27 @@ setMethod("$", "MultiAssayExperiment", function(x, name) {
     list(assayArgs, altArgs)
 }
 
+.mergeMAE <- function(x, y) {
+    if (any(names(x) %in% names(y)))
+        stop("Provide unique experiment names")
+    expz <- c(experiments(x), experiments(y))
+    sampz <- rbind(sampleMap(x), sampleMap(y))
+    coldx <- colData(x)
+    coldx[["rnames"]] <- rownames(coldx)
+    coldy <- colData(y)
+    coldy[["rnames"]] <- rownames(coldy)
+    cdatz <- S4Vectors::merge(coldx, coldy,
+        by = intersect(names(coldx), names(coldy)), all = TRUE, sort = FALSE)
+    rownames(cdatz) <- cdatz[["rnames"]]
+    cdatz <- cdatz[, -which(names(cdatz) == "rnames")]
+    metaz <- c(metadata(x), metadata(y))
+    new("MultiAssayExperiment",
+        ExperimentList = expz,
+        colData = cdatz,
+        sampleMap = sampz,
+        metadata = metaz)
+}
+
 #' @describeIn MultiAssayExperiment Add a supported data class to the
 #' \code{ExperimentList}
 #'
@@ -111,7 +132,12 @@ setMethod("$", "MultiAssayExperiment", function(x, name) {
 #'
 setMethod("c", "MultiAssayExperiment",
     function(x, ..., sampleMap = NULL, mapFrom = NULL) {
-    exps <- ExperimentList(...)
+    args <- list(...)
+    if (!length(args))
+        stop("Provide experiments or a 'MultiAssayExperiment' to concatenate")
+    if (is(args[[1L]], "MultiAssayExperiment") && length(args) == 1L)
+        return(.mergeMAE(x, args[[1L]]))
+    exps <- ExperimentList(args)
     xmap <- sampleMap(x)
     cdata <- colData(x)
     if (!isEmpty(exps)) {
@@ -135,9 +161,10 @@ setMethod("c", "MultiAssayExperiment",
             stop("'sampleMap' must be a 'DataFrame', 'data.frame', or 'list'")
         newListMap <- c(mapToList(xmap),
                         IRanges::SplitDataFrameList(sampleMap))
-        sampleMap(x) <- listToMap(newListMap)
-        experiments(x) <- c(experiments(x), exps)
-        validObject(x)
+        x <- BiocGenerics:::replaceSlots(x,
+            ExperimentList = c(experiments(x), exps),
+            sampleMap = listToMap(newListMap)
+        )
     }
     return(x)
 })
