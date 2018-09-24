@@ -433,14 +433,13 @@ wideFormat <- function(object, colDataCols = NULL, check.names = TRUE,
     anyReps <- anyReplicated(object)
     if (any(anyReps)) {
         dups <- replicated(object)[anyReps]
-        indx <- structure(seq_along(dups), .Names = names(object)[anyReps])
-        lVects <- lapply(indx, function(i, duplic) {
-            assayname <- names(duplic)[[i]]
-            logilist <- duplic[[i]]
+        indx <- names(which(anyReps))
+        lVects <- lapply(indx, function(expname, duplic) {
+            logilist <- duplic[[expname]]
             lmat <- as.matrix(logilist)
             rownames(lmat) <- names(logilist)
-            colnames(lmat) <- cnames[anyReps][[i]]
-            lData <- longList[[assayname]][, c("primary", "colname")]
+            colnames(lmat) <- cnames[[expname]]
+            lData <- longList[[expname]][, c("primary", "colname")]
             apply(lData, 1L, function(x) lmat[x[1L], x[2L]])
         }, duplic = dups)
 
