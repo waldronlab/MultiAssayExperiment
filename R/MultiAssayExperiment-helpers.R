@@ -104,6 +104,7 @@ setGeneric("replicated", function(x) standardGeneric("replicated"))
 #' @export
 setMethod("replicated", "MultiAssayExperiment", function(x) {
     listMap <- mapToList(sampleMap(x))
+    listMap <- listMap[names(x)]
     lapply(listMap, function(assayDF) {
         pnames <- unique(assayDF[["primary"]])
         lmat <- vapply(pnames, function(x) {
