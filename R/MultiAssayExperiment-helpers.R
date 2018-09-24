@@ -275,7 +275,7 @@ setMethod("mergeReplicates", "ANY",
 .longFormatElist <- function(object, i) {
     if (!is(object, "ExperimentList"))
         stop("<internal> Not an 'ExperimentList' input")
-    objnames <- structure(names(object), .Names = names(object))
+    objnames <- setNames(names(object), names(object))
     lapply(objnames, function(nameidx, flatBox) {
         data.frame(assay = nameidx,
             .longFormatANY(flatBox[[nameidx]], i = i),
