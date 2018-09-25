@@ -51,7 +51,7 @@ test_that("concatenate two MultiAssayExperiment objects works", {
     names(mae2) <- paste0(names(mae), seq_along(mae))
     rns <- rownames(colData(mae2))
     newrns <- paste0(rns, seq_along(rns))
-    map2 <- setNames(newrns, rownames(colData(mae)))
+    map2 <- stats::setNames(newrns, rownames(colData(mae)))
     sampleMap(mae2)[["primary"]] <- map2[sampleMap(mae2)[["primary"]]]
     rownames(colData(mae2)) <- newrns
     combinedmae <- c(mae, mae2)

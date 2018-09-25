@@ -215,7 +215,7 @@ setMethod("mergeReplicates", "ExperimentList",
         if (!length(replicates))
             stop("'replicates' must be a 'list' of replicated column elements",
                  "\n per biological unit")
-        expnames <- structure(names(x), .Names = names(x))
+        expnames <- stats::setNames(names(x), names(x))
         redList <- lapply(expnames,
             function(i, element, simply, replicate, ...) {
                 mergeReplicates(x = element[[i]], simplify = simply,
@@ -302,7 +302,7 @@ setMethod("mergeReplicates", "ANY",
 .longFormatElist <- function(object, i) {
     if (!is(object, "ExperimentList"))
         stop("<internal> Not an 'ExperimentList' input")
-    objnames <- setNames(names(object), names(object))
+    objnames <- stats::setNames(names(object), names(object))
     lapply(objnames, function(nameidx, flatBox) {
         data.frame(assay = nameidx,
             .longFormatANY(flatBox[[nameidx]], i = i),
