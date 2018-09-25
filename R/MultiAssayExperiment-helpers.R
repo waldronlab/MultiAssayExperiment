@@ -82,6 +82,15 @@ intersectColumns <- function(x) {
 #' @export
 setGeneric("replicated", function(x) standardGeneric("replicated"))
 
+.matrixToList <- function(mat) {
+    nout <- ncol(mat)
+    listout <- vector("list", nout)
+    for (i in seq_along(listout))
+        listout[[i]] <- unname(mat[, i])
+    names(listout) <- colnames(mat)
+    listout
+}
+
 #' @rdname MultiAssayExperiment-helpers
 #' @details The \code{replicated} function finds replicate measurements in each
 #' assay and returns a list of \linkS4class{LogicalList}s.
