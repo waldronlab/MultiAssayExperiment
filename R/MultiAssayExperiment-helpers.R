@@ -122,30 +122,11 @@ setMethod("replicated", "MultiAssayExperiment", function(x) {
             tots
         }))
         lmat <- matrix(
-            # lvect, nrow = length(pnames), dimnames = list(NULL, assayDF[["primary"]])
-            ## TODO: Fix this
+            lvect, ncol = length(pnames), dimnames = list(NULL, pnames)
         )
         IRanges::LogicalList(.matrixToList(lmat))
     })
 })
-
-# setMethod("replicated", "MultiAssayExperiment", function(x) {
-#     listMap <- mapToList(sampleMap(x))
-#     lapply(listMap, function(assayDF) {
-#         pnames <- unique(assayDF[["primary"]])
-#         lmat <- vapply(pnames, function(x) {
-#             tots <- assayDF[["primary"]] %in% x
-#             if (sum(tots) <= 1L)
-#                 tots <- rep(FALSE, nrow(assayDF))
-#             tots
-#         }, logical(nrow(assayDF)))
-#         resChunk <- LogicalList(lapply(seq_len(ncol(lmat)),
-#                                        function(x) lmat[, x]))
-#         names(resChunk) <- colnames(lmat)
-#         resChunk
-#     })
-# })
-
 
 #' @rdname MultiAssayExperiment-helpers
 #' @export
