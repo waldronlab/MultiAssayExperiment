@@ -440,8 +440,8 @@ wideFormat <- function(object, colDataCols = NULL, check.names = TRUE,
 
     anyReps <- anyReplicated(object)
     if (any(anyReps)) {
-        dups <- replicated(object)[anyReps]
         indx <- names(which(anyReps))
+        dups <- replicated(object)[indx]
         lVects <- lapply(indx, function(expname, duplic) {
             logilist <- duplic[[expname]]
             lmat <- as.matrix(logilist)
@@ -452,10 +452,10 @@ wideFormat <- function(object, colDataCols = NULL, check.names = TRUE,
         }, duplic = dups)
 
         repList <- Map(function(x, y) { x[y, , drop = FALSE] },
-            x = longList[anyReps], y = lVects)
+            x = longList[indx], y = lVects)
 
-        longList[anyReps] <- Map(function(x, y) { x[!y, , drop = FALSE] },
-            x = longList[anyReps], y = lVects)
+        longList[indx] <- Map(function(x, y) { x[!y, , drop = FALSE] },
+            x = longList[indx], y = lVects)
 
         longList <- lapply(longList, function(x)
             tidyr::unite(x[, names(x) != "colname"], col = !!key, colsofinterest,
