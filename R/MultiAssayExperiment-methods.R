@@ -137,7 +137,10 @@ setMethod("c", "MultiAssayExperiment",
         stop("Provide experiments or a 'MultiAssayExperiment' to concatenate")
     if (is(args[[1L]], "MultiAssayExperiment") && length(args) == 1L)
         return(.mergeMAE(x, args[[1L]]))
-    exps <- ExperimentList(args)
+    else if (is(args[[1L]], "ExperimentList") && length(args) == 1L)
+        exps <- args[[1L]]
+    else
+        exps <- ExperimentList(args)
     xmap <- sampleMap(x)
     cdata <- colData(x)
     if (!isEmpty(exps)) {
@@ -160,7 +163,7 @@ setMethod("c", "MultiAssayExperiment",
         else if (!is.list(sampleMap))
             stop("'sampleMap' must be a 'DataFrame', 'data.frame', or 'list'")
         newListMap <- c(mapToList(xmap),
-                        IRanges::SplitDataFrameList(sampleMap))
+            IRanges::SplitDataFrameList(sampleMap))
         x <- BiocGenerics:::replaceSlots(x,
             ExperimentList = c(experiments(x), exps),
             sampleMap = listToMap(newListMap)
