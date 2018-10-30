@@ -1,5 +1,23 @@
 # MultiAssayExperiment
 ----------------------------------------------------------------
+
+## Changes in version 1.7.23
+
+### New features
+
+* Users can now rename experiments in a MultiAssayExperiment with
+`names(x) <- value`
+* `replicated` and `mergeReplicates` functions have been refactored and
+improved
+* combining MultiAssayExperiments now possible with `c` function
+
+### Bug fixes and minor improvements
+
+* `wideFormat` function improvements and bug fixes with name indicator
+subsetting
+* `BiocGenerics:::replaceSlots` used instead of replace methods
+* Added tests for `anyReplicated`, `c`, and `names<-` functions
+
 ## Changes in version 1.7.14
 
 ### New features
