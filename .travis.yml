@@ -13,7 +13,7 @@ warnings_are_errors: false
 branches:
   only:
     - master
-    - RELEASE_3_6
+    - RELEASE_3_8
 
 # Run binary install of testthat
 r_binary_packages:
