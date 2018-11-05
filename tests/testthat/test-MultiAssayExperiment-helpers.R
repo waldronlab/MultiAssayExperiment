@@ -13,11 +13,11 @@ test_that("MultiAssayExperiment anyReplicated returns same order", {
     expect_true(
         length(replicated(obs2)[["m4"]]) == length(unique(m4map[["primary"]]))
     )
-    expect_identical(
-        unname(
-        vapply(replicated(obs2), function(x) unique(lengths(x)), integer(1L))
-        ),
+    expect_true(
+        all.equal(
+        vapply(replicated(obs2), function(x) unique(lengths(x)), integer(1L)),
         lengths(Filter(length, colnames(obs2)))
+        )
     )
 
     expect_identical(
