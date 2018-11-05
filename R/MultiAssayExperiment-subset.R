@@ -56,11 +56,23 @@ setMethod("[[", "MultiAssayExperiment", function(x, i, j, ...) {
 #' @export
 #' @param value An assay compatible with the MultiAssayExperiment API
 setReplaceMethod("[[", "MultiAssayExperiment", function(x, i, j, ..., value) {
-    if (!missing(j) || length(list(...)) > 0)
+    if (!missing(j) || length(list(...)))
         stop("invalid replacement")
-    origLen <- length(x)
-    experiments(x) <- S4Vectors::setListElement( experiments(x), i, value)
-    if (origLen < length(x))
-        stop("replacement length greater than original")
+    if (is.list(value) || (is(value, "List") && !is(value, "DataFrame")))
+        stop("Provide a compatible API object for replacement")
+    experiments(x) <- S4Vectors::setListElement(experiments(x), i, value)
+    return(x)
+})
+
+#' @rdname subsetBy
+#' @export
+setReplaceMethod("[", "MultiAssayExperiment", function(x, i, j, ..., value) {
+    if (!missing(j) || !missing(i))
+        stop("invalid replacement, only 'k' replacement supported")
+    args <- list(...)
+    if (length(args) > 1L)
+        stop("Provide a single 'k' index vector")
+    indx <- args[[1L]]
+    experiments(x)[indx] <- value
     return(x)
 })

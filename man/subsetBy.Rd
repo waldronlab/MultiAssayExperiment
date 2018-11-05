@@ -26,6 +26,7 @@
 \alias{[,MultiAssayExperiment,ANY,ANY,ANY-method}
 \alias{[[,MultiAssayExperiment,ANY,ANY-method}
 \alias{[[<-,MultiAssayExperiment,ANY,ANY-method}
+\alias{[<-,MultiAssayExperiment,ANY,ANY,ANY-method}
 \title{Subsetting a MultiAssayExperiment object}
 \usage{
 subsetByRow(x, y, ...)
@@ -68,6 +69,8 @@ subsetByAssay(x, y)
 \S4method{[[}{MultiAssayExperiment,ANY,ANY}(x, i, j, ...)
 
 \S4method{[[}{MultiAssayExperiment,ANY,ANY}(x, i, j, ...) <- value
+
+\S4method{[}{MultiAssayExperiment,ANY,ANY,ANY}(x, i, j, ...) <- value
 }
 \arguments{
 \item{x}{A \code{MultiAssayExperiment} or \code{ExperimentList}}

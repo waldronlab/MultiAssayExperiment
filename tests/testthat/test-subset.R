@@ -156,3 +156,19 @@ test_that("subsetting by row keeps the order of the index", {
         B = c("row1", "row2"))
     expect_identical(rownames(mae[c("row1", "row2")]), expectedOrder)
 })
+
+test_that("replacement methods work", {
+    ## test double bracket replacement
+    exse <- ExpList[["Affy"]]
+    assay(exse) <- log(assay(ExpList[["Affy"]]))
+    expect_error(
+        mae[[1L]] <- SimpleList(Affy = exse)
+    )
+    mae[[1L]] <- exse
+    expect_identical(assay(mae[[1L]]), assay(exse))
+
+    ## test multiple replacement as list or List
+    replace2 <- log(mae[[2L]] + 1)
+    mae[, , 1:2] <- SimpleList(exse, replace2)
+    expect_identical(mae[[2]], replace2)
+})
