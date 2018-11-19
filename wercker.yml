@@ -5,7 +5,7 @@ build:
         name: Install devtools
         code: R -e "install.packages('devtools')"
     - mr148/r-dependencies
-    - jimhester/r-check
+    - mr148/r-check
 #    - mr148/r-lint
     - jimhester/r-coverage
 # notify via slack step
