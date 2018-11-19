@@ -5,6 +5,17 @@
 
 ### New features
 
+* The single bracket replacement method `[<-` added to support assignment
+of assay datasets
+
+### Bug fixes and minor improvements
+
+* Unit tests added for replacement method testing
+
+## Changes in version 1.7.23
+
+### New features
+
 * Users can now rename experiments in a MultiAssayExperiment with
 `names(x) <- value`
 * `replicated` and `mergeReplicates` functions have been refactored and
