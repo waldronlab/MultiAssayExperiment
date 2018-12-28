@@ -846,7 +846,7 @@ This output can be used to select individuals with complete data:
 myMultiAssay[, complete.cases(myMultiAssay), ]
 ```
 
-## `replicated` (formerly `duplicated`)
+## `replicated`
 
 The `replicated` function identifies `primary` column values or biological units
 that have multiple observations per `assay`. It returns a `list` of
@@ -919,6 +919,21 @@ _Note_: Alternatively, a `sampleMap` for the additional dataset can be provided.
 Extractor functions convert a `MultiAssayExperiment` into other forms that are
 convenient for analyzing. These would normally be called after any desired 
 subsetting has been performed.
+
+## `getWithColData`
+
+Provides a single assay along with any associated 'colData' columns while
+keeping the assay class constant.
+
+```{r}
+(affex <- getWithColData(myMultiAssay, 1L))
+colData(affex)
+class(affex)
+```
+
+It will error when the target data class does not support a `colData`
+replacement method, meaning that it typically works with `SummarizedExperiment`
+and `RaggedExperiment` assays and their extensions.
 
 ## `longFormat` & `wideFormat`
 

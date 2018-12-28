@@ -206,12 +206,12 @@ test must be a \linkS4class{GRanges} class object to satisfy the test.
 \section{getWithColData}{
 
 The \code{getWithColData} function allows the user to conveniently extract
-a particular assay as indicated by the \code{\bold{i}} index argument. It
+a particular assay as indicated by the \code{\strong{i}} index argument. It
 will also attempt to provide the
 \code{\link[=SummarizedExperiment-class]{colData}} along with the
 extracted object using the \code{colData<-} replacement
 method when possible. Typically, this method is available for
-\linkS4class{SummarizedExperiment} and \linkS4class{RaggedExperiment}
+\linkS4class{SummarizedExperiment} and \code{RaggedExperiment}
 classes.
 }
 
