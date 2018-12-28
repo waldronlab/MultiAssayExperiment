@@ -54,7 +54,7 @@ on_success:
 environment:
   global:
     _R_CHECK_FORCE_SUGGESTS_: false
-    USE_RTOOLS: true ## to be able to use Remotes (i.e. packages from non-CRAN sources)
+    USE_RTOOLS: false
 
   matrix:
     - R_VERSION: devel

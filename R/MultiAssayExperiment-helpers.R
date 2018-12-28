@@ -529,7 +529,7 @@ setMethod("hasRowRanges", "ExperimentList", function(x) {
 #' @aliases getWithColData
 #' @section getWithColData:
 #' The \code{getWithColData} function allows the user to conveniently extract
-#' a particular assay as indicated by the \code{\strong{i}} index argument. It
+#' a particular assay as indicated by the \strong{\code{i}} index argument. It
 #' will also attempt to provide the
 #' \code{\link[=SummarizedExperiment-class]{colData}} along with the
 #' extracted object using the \code{colData<-} replacement
