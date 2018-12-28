@@ -19,8 +19,7 @@
 \alias{hasRowRanges}
 \alias{hasRowRanges,MultiAssayExperiment-method}
 \alias{hasRowRanges,ExperimentList-method}
-\alias{duplicated,MultiAssayExperiment-method}
-\alias{duplicated}
+\alias{getWithColData}
 \title{A group of helper functions for manipulating and cleaning a
 MultiAssayExperiment}
 \usage{
@@ -60,8 +59,7 @@ hasRowRanges(x)
 
 \S4method{hasRowRanges}{ExperimentList}(x)
 
-\S4method{duplicated}{MultiAssayExperiment}(x, incomparables = FALSE,
-  ...)
+getWithColData(x, i)
 }
 \arguments{
 \item{...}{Additional arguments. See details for more information.}
@@ -90,8 +88,6 @@ if necessary}
 \item{collapse}{(character default "_") A single string delimiter for output
 column names. In \code{wideFormat}, experiments and rownames (and when
 replicate samples are present, colnames) are seperated by this delimiter}
-
-\item{incomparables}{unused argument}
 }
 \description{
 A set of helper functions were created to help clean and
@@ -122,8 +118,8 @@ for \code{ExperimentList} objects.
     added when using a \code{MultiAssayExperiment}.
     \item hasRowRanges: A function that identifies ExperimentList elements
     that have a \link[=RangedSummarizedExperiment-class]{rowRanges} method
-    \item duplicated: (Deprecated) Returns a 'list' of 'LogicalList's that
-    indicate what measurements originate from the same biological unit
+    \item getWithColData: A convenience function for extracting an assay
+    and associated colData
 }
 }
 \details{
@@ -164,12 +160,6 @@ to provide a consistent long and skinny \link{DataFrame}.
 The \code{hasRowRanges} method identifies assays that support
 a \link[=RangedSummarizedExperiment-class]{rowRanges} method \emph{and}
 return a \linkS4class{GRanges} object.
-
-\strong{Deprecated:} For the \code{anyDuplicated} and
-\code{duplicated} functions, the \code{incomparables} and ellipsis
-\code{\ldots} arguments are not used. Neither \code{duplicated} nor
-\code{anyDuplicated} is supported for \code{ExperimentList} due to an
-unavailable \code{sampleMap}.
 }
 \section{mergeReplicates}{
 
@@ -211,5 +201,17 @@ generated based on the names produced in the wide format
 The \code{hasRowRanges} method identifies assays with associated ranged
 row data by directly testing the method on the object. The result from the
 test must be a \linkS4class{GRanges} class object to satisfy the test.
+}
+
+\section{getWithColData}{
+
+The \code{getWithColData} function allows the user to conveniently extract
+a particular assay as indicated by the \code{\bold{i}} index argument. It
+will also attempt to provide the
+\code{\link[=SummarizedExperiment-class]{colData}} along with the
+extracted object using the \code{colData<-} replacement
+method when possible. Typically, this method is available for
+\linkS4class{SummarizedExperiment} and \linkS4class{RaggedExperiment}
+classes.
 }
 

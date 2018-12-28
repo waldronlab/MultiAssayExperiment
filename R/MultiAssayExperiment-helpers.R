@@ -34,8 +34,8 @@ NULL
 #'     added when using a \code{MultiAssayExperiment}.
 #'     \item hasRowRanges: A function that identifies ExperimentList elements
 #'     that have a \link[=RangedSummarizedExperiment-class]{rowRanges} method
-#'     \item duplicated: (Deprecated) Returns a 'list' of 'LogicalList's that
-#'     indicate what measurements originate from the same biological unit
+#'     \item getWithColData: A convenience function for extracting an assay
+#'     and associated colData
 #' }
 #'
 #' @param x A MultiAssayExperiment or ExperimentList
@@ -526,17 +526,35 @@ setMethod("hasRowRanges", "ExperimentList", function(x) {
 
 #' @rdname MultiAssayExperiment-helpers
 #'
-#' @param incomparables unused argument
-#' @exportMethod duplicated
-#' @aliases duplicated
+#' @aliases getWithColData
+#' @section getWithColData:
+#' The \code{getWithColData} function allows the user to conveniently extract
+#' a particular assay as indicated by the \code{\bold{i}} index argument. It
+#' will also attempt to provide the
+#' \code{\link[=SummarizedExperiment-class]{colData}} along with the
+#' extracted object using the \code{colData<-} replacement
+#' method when possible. Typically, this method is available for
+#' \linkS4class{SummarizedExperiment} and \linkS4class{RaggedExperiment}
+#' classes.
 #'
-#' @details \strong{Deprecated:} For the \code{anyDuplicated} and
-#' \code{duplicated} functions, the \code{incomparables} and ellipsis
-#' \code{\ldots} arguments are not used. Neither \code{duplicated} nor
-#' \code{anyDuplicated} is supported for \code{ExperimentList} due to an
-#' unavailable \code{sampleMap}.
-setMethod("duplicated", "MultiAssayExperiment",
-          function(x, incomparables = FALSE, ...) {
-    .Deprecated("replicated")
-    replicated(x)
-})
+#' @export getWithColData
+getWithColData <- function(x, i) {
+    if (!is(x, "MultiAssayExperiment"))
+        stop("Provide a MultiAssayExperiment as input")
+
+    stopifnot(is.numeric(i) || is.character(i),
+        identical(length(i), 1L), !is.na(i), !is.logical(i))
+
+    mae <- x[, , i, drop = TRUE]
+    cdat <- colData(mae)
+    exObj <- mae[[1L]]
+    tryCatch({
+        colData(exObj) <- cdat
+    }, error = function(e) {
+        stop(
+            "Extracted class does not support 'colData<-':",
+            "\n    ", conditionMessage(e), call. = FALSE
+        )
+    })
+    exObj
+}

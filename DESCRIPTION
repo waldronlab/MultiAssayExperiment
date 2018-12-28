@@ -1,6 +1,6 @@
 Package: MultiAssayExperiment
 Title: Software for the integration of multi-omics experiments in Bioconductor
-Version: 1.9.3
+Version: 1.9.4
 Authors@R: c(person("Marcel", "Ramos", email = "marcel.ramos@roswellpark.org",
     role = c("aut", "cre")),
     person("Levi", "Waldron", email = "lwaldron.research@gmail.com",
@@ -13,7 +13,7 @@ Description: MultiAssayExperiment harmonizes data management of
     SummarizedExperiment, supporting an open-ended mix of standard data classes
     for individual assays, and allowing subsetting by genomic ranges or rownames.
 Depends:
-    R (>= 3.5.0),
+    R (>= 3.6.0),
     SummarizedExperiment (>= 1.3.81)
 Imports:
     methods,
@@ -59,4 +59,4 @@ Collate:
     'prepMultiAssay.R'
     'reexports.R'
     'upsetSamples.R'
-RoxygenNote: 6.1.0
+RoxygenNote: 6.1.1
