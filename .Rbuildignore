@@ -2,6 +2,7 @@
 # Git
 #----------------------------
 ^\.git$
+^\.github$
 ^\.gitignore$
 ^\.gitattributes$
 
