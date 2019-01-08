@@ -34,7 +34,7 @@ NULL
                     rownames(element))
                 # i <- na.omit(match(rownames(element), as.character(i)))
         } else if (is.character(i)) {
-            i <- match(intersect(i, rownames(element)), rownames(element))
+            i <- match(rownames(element), intersect(i, rownames(element)))
             # i <- na.omit(match(rownames(element), i))
         } else {
             i <- as.integer(i)
@@ -154,13 +154,19 @@ setGeneric("subsetByAssay", function(x, y) standardGeneric("subsetByAssay"))
         x[, j, drop = FALSE]
     }, x = object, j = cutter)
 }
+
 .subsetROWS <- function(object, cutter) {
     mendoapply(function(x, i) {
-        x[i, , drop = FALSE]
+        if (!is.null(rownames(x)) && length(i))
+            x[i, , drop = FALSE]
+        else
+            x
     }, x = object, i = cutter)
 }
 
 .fillEmptyExps <- function(exps, subr) {
+    if (!any(names(subr) %in% names(exps)))
+        stop("No matching experiment names in subset list", call. = FALSE)
     if (!all(names(exps) %in% names(subr))) {
         outnames <- setdiff(names(exps), names(subr))
         names(outnames) <- outnames
@@ -181,14 +187,13 @@ setMethod("subsetByRow", c("ExperimentList", "ANY"), function(x, y, ...) {
                 " use an ", sQuote("IntegerList"), " index for finer control")
     }
     subsetor <- .getHits(x, y, ...)
-    Y <- rowIds[subsetor]
-    subsetByRow(x, Y)
+    .subsetROWS(x, subsetor)
 })
 
 #' @rdname subsetBy
 setMethod("subsetByRow", c("ExperimentList", "list"), function(x, y) {
     y <- .fillEmptyExps(x, y)
-    x[y]
+    .subsetROWS(x, y)
 })
 
 #' @rdname subsetBy
@@ -198,7 +203,7 @@ setMethod("subsetByRow", c("ExperimentList", "List"), function(x, y) {
     if (is(y, "GRanges"))
         return(callNextMethod())
     y <- as.list(y)
-    subsetByRow(x, y)
+    .subsetROWS(x, y)
 })
 
 #' @rdname subsetBy
