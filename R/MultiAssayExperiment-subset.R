@@ -28,7 +28,7 @@ NULL
     }
     if (drop) {
         isEmptyAssay <- vapply(experiments(x), FUN = .isEmpty,
-                               FUN.VALUE = logical(1L))
+            FUN.VALUE = logical(1L))
         if (all(isEmptyAssay)) {
             experiments(x) <- ExperimentList()
         } else if (any(isEmptyAssay)) {

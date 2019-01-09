@@ -39,7 +39,7 @@ rnadat <- matrix(
 rangedat <- data.frame(chr="chr2", start = 11:15, end = 12:16,
     strand = c("+", "-", "+", "*", "."),
     samp0 = c(0,0,1,1,1), samp1 = c(1,0,1,0,1), samp2 = c(0,1,0,1,0),
-    row.names = paste0("GENE", letters[5:1]))
+    row.names = c(paste0("ENST", "00000", 135411:135414), "ENST00000383323"))
 
 rangeSE <- SummarizedExperiment::makeSummarizedExperimentFromDataFrame(rangedat)
 

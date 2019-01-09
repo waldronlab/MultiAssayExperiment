@@ -21,21 +21,19 @@ NULL
 
 .getHits <- function(expList, i, ...) {
     IntegerList(lapply(expList, function(element) {
+        rnames <- rownames(element)
         if (is(i, "Vector")) {
             if (is(element, "RangedSummarizedExperiment"))
                 element <- rowRanges(element)
             if (is(element, "VcfStack"))
-                i <- which(rownames(element) %in% as.character(seqnames(i)))
+                i <- which(rnames %in% as.character(seqnames(i)))
             if (.checkOverlapsAny(class(element)) &&
                 !is(element, "SummarizedExperiment"))
                 i <- which(overlapsAny(element, i, ...))
             else
-                i <- match(intersect(as.character(i), rownames(element)),
-                    rownames(element))
-                # i <- na.omit(match(rownames(element), as.character(i)))
+                i <- match(intersect(as.character(i), rnames), rnames)
         } else if (is.character(i)) {
-            i <- match(rownames(element), intersect(i, rownames(element)))
-            # i <- na.omit(match(rownames(element), i))
+            i <- match(intersect(i, rnames), rnames)
         } else {
             i <- as.integer(i)
         }
