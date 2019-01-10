@@ -185,7 +185,7 @@ setMethod("subsetByRow", c("ExperimentList", "ANY"), function(x, y, ...) {
                 " use an ", sQuote("IntegerList"), " index for finer control")
     }
     subsetor <- .getHits(x, y, ...)
-    .subsetROWS(x, subsetor)
+    subsetByRow(x, subsetor)
 })
 
 #' @rdname subsetBy
@@ -201,7 +201,7 @@ setMethod("subsetByRow", c("ExperimentList", "List"), function(x, y) {
     if (is(y, "GRanges"))
         return(callNextMethod())
     y <- as.list(y)
-    .subsetROWS(x, y)
+    subsetByRow(x, y)
 })
 
 #' @rdname subsetBy
