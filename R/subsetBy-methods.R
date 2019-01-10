@@ -149,7 +149,10 @@ setGeneric("subsetByAssay", function(x, y) standardGeneric("subsetByAssay"))
 
 .subsetCOLS <- function(object, cutter) {
     mendoapply(function(x, j) {
-        x[, j, drop = FALSE]
+        if (length(j))
+            x[, j, drop = FALSE]
+        else
+            x
     }, x = object, j = cutter)
 }
 
@@ -170,7 +173,7 @@ setGeneric("subsetByAssay", function(x, y) standardGeneric("subsetByAssay"))
         names(outnames) <- outnames
         subr <- c(subr, lapply(outnames, function(x) character(0L)))
     }
-    subr
+    subr[names(exps)]
 }
 
 # subsetByRow,ExperimentList-methods -----------------------------------------
@@ -215,7 +218,6 @@ setMethod("subsetByRow", c("ExperimentList", "logical"), function(x, y) {
 #' @rdname subsetBy
 setMethod("subsetByColumn", c("ExperimentList", "list"), function(x, y) {
     y <- .fillEmptyExps(x, y)
-    x <- x[names(y)]
     .subsetCOLS(x, y)
 })
 
@@ -294,8 +296,8 @@ setMethod("subsetByColumn", c("MultiAssayExperiment", "ANY"), function(x, y) {
     if (is.character(y) || is.logical(y) || is.numeric(y))
         subsetByColData(x, y)
     else {
-    experiments(x) <- subsetByColumn(experiments(x), y)
-    return(x)
+        experiments(x) <- subsetByColumn(experiments(x), y)
+        return(x)
     }
 })
 

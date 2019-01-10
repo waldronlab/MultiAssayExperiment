@@ -9,9 +9,9 @@ test_that("MultiAssayExperiment length remains the same after subset with list",
 
     ## drop = TRUE by default
     expect_identical(
-        length(rowindex), length(mae[rowindex, drop = TRUE])
+        length(mae), length(mae[rowindex, drop = TRUE])
     )
-    expect_equal(mae[index2, ], mae)
+    expect_equal(rownames(mae[index2, ]), index2)
 })
 
 test_that("subsetByRow works with lists", {
@@ -22,15 +22,16 @@ test_that("subsetByRow works with lists", {
     expect_error(subsetByRow(experiments(mae), noAffy))
     ## list-like subsets will preserve the original length of the object
     expect_equal(length(subsetByRow(mae, rows)), length(mae))
-    expect_equal(length(mae[rows, ]), length(rows))
+    expect_equal(length(mae[rows, ]), length(mae))
 })
 
-test_that("subsetByRow keeps order in index", {
+test_that("subsetByRow keeps assay order in MultiAssayExperiment", {
     rows <- rownames(mae)
+    ## re-arrange experiment rownames
     rows <- rows[c(2, 3, 1, 4)]
     newrows <- subsetByRow(mae, rows)
-    expect_identical(names(rows), names(newrows))
-    expect_identical(names(rows), names(mae[rows, ]))
+    expect_identical(names(mae), names(newrows))
+    expect_identical(names(mae), names(mae[rows, ]))
 })
 
 test_that("assay subsets work", {
@@ -61,10 +62,10 @@ test_that("drop argument works", {
     minusOne <- length(mae) - 1L
     minusTwo <- length(mae) - 2L
     expect_equal(
-        length(mae[, colList1, drop = TRUE]), minusOne
+        length(mae[, colList1, drop = TRUE]), fullLength
     )
     expect_equal(
-        length(mae[, colList2, drop = TRUE]), minusTwo
+        length(mae[, colList2, drop = TRUE]), fullLength
     )
     expect_equal(
         length(mae[, colList1, drop = FALSE]), fullLength
@@ -95,16 +96,16 @@ test_that("subsetByColumn keeps order in index", {
     cols <- colnames(mae)
     cols <- cols[c(2, 3, 1, 4)]
     newcols <- subsetByColumn(mae, cols)
-    expect_identical(names(cols), names(newcols))
-    expect_identical(names(cols), names(mae[, cols]))
+    expect_identical(names(mae), names(newcols))
+    expect_identical(names(mae), names(mae[, cols]))
 })
 
 test_that("subsetByColumn works with lists", {
     affySub <- list(Affy = 1:2)
     affySimple <- List(affySub)
 
-    expect_equal(length(mae[, affySub, ]), length(affySub))
-    expect_equal(length(mae[, affySimple, ]), length(affySimple))
+    expect_equal(length(mae[, affySub, ]), length(mae))
+    expect_equal(length(mae[, affySimple, ]), length(mae))
     expect_equal(length(experiments(mae)[affySub]), length(affySub))
     expect_equal(length(experiments(mae)[affySimple]), length(affySimple))
 
@@ -113,7 +114,7 @@ test_that("subsetByColumn works with lists", {
     cLIST <- fuLL[c(1,3)]
 
     expect_equal(length(mae[, cLIST, , drop = FALSE]), length(fuLL))
-    expect_equal(length(mae[, cLIST, , drop = TRUE]), length(cLIST))
+    expect_equal(length(mae[, cLIST, , drop = TRUE]), length(mae))
 })
 
 test_that("subsetByColData works as intended", {
