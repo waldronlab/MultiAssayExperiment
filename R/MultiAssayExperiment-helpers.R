@@ -263,7 +263,7 @@ setMethod("mergeReplicates", "ANY",
 
     if (is(object, "ExpressionSet"))
         object <- Biobase::exprs(object)
-    if (is(object, "SummarizedExperiment"))
+    if (is(object, "SummarizedExperiment") || is(object, "RaggedExperiment"))
         object <- assay(object, i = i)
     if (is(object, "matrix"))
         object <- as.data.frame(object)
