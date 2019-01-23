@@ -74,10 +74,10 @@ test_that("drop argument works", {
         length(mae[, colList2, drop = FALSE]), fullLength
     )
     expect_equal(
-        length(mae[rowList1, drop = TRUE]), fullLength
+        length(mae[rowList1, drop = TRUE]), minusOne
     )
     expect_equal(
-        length(mae[rowList2, drop = TRUE]), fullLength
+        length(mae[rowList2, drop = TRUE]), minusTwo
     )
     expect_equal(
         length(mae[rowList1, drop = FALSE]), fullLength

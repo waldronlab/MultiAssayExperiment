@@ -158,7 +158,7 @@ setGeneric("subsetByAssay", function(x, y) standardGeneric("subsetByAssay"))
 
 .subsetROWS <- function(object, cutter) {
     mendoapply(function(x, i) {
-        if (!is.null(rownames(x)) && length(i))
+        if (!is.null(rownames(x)) && !is.null(i))
             x[i, , drop = FALSE]
         else
             x
@@ -171,7 +171,7 @@ setGeneric("subsetByAssay", function(x, y) standardGeneric("subsetByAssay"))
     if (!all(names(exps) %in% names(subr))) {
         outnames <- setdiff(names(exps), names(subr))
         names(outnames) <- outnames
-        subr <- c(subr, lapply(outnames, function(x) character(0L)))
+        subr <- c(subr, lapply(outnames, function(x) NULL))
     }
     subr[names(exps)]
 }
