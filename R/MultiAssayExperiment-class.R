@@ -131,7 +131,7 @@ setClass("MultiAssayExperiment",
     }
 
     ## sampleMap colname agrees with experiment colnames
-    grp <- sampleMap[["assay"]]
+    grp <- droplevels(sampleMap[["assay"]])
     colnm <- split(sampleMap[["colname"]], grp)
     keep <- Map(intersect, colnm, colnames(experiments)[names(colnm)])
     keep_sampleMap_colname <- logical(nrow(sampleMap))

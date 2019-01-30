@@ -112,9 +112,15 @@ test_that("subsetByColumn works with lists", {
     # incomplete lists
     fuLL <- colnames(mae)
     cLIST <- fuLL[c(1,3)]
+    pLIST <-
+        list(Affy = 1:4, Methyl450k = integer(), RNASeqGene = 1:4, GISTIC = 1:3)
 
     expect_equal(length(mae[, cLIST, , drop = FALSE]), length(fuLL))
     expect_equal(length(mae[, cLIST, , drop = TRUE]), length(mae))
+
+    ## test zero length subset in list
+    expect_equal(length(mae[, pLIST, drop = FALSE]), length(fuLL))
+    expect_equal(length(mae[, pLIST, drop = TRUE]), length(fuLL)-1L)
 })
 
 test_that("subsetByColData works as intended", {
