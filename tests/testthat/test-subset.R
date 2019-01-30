@@ -62,10 +62,10 @@ test_that("drop argument works", {
     minusOne <- length(mae) - 1L
     minusTwo <- length(mae) - 2L
     expect_equal(
-        length(mae[, colList1, drop = TRUE]), fullLength
+        length(mae[, colList1, drop = TRUE]), minusOne
     )
     expect_equal(
-        length(mae[, colList2, drop = TRUE]), fullLength
+        length(mae[, colList2, drop = TRUE]), minusTwo
     )
     expect_equal(
         length(mae[, colList1, drop = FALSE]), fullLength
