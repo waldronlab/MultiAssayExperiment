@@ -149,7 +149,7 @@ setGeneric("subsetByAssay", function(x, y) standardGeneric("subsetByAssay"))
 
 .subsetCOLS <- function(object, cutter) {
     mendoapply(function(x, j) {
-        if (length(j))
+        if (!is.null(j))
             x[, j, drop = FALSE]
         else
             x
