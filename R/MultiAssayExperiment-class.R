@@ -102,14 +102,15 @@ NULL
 #'     \link{MultiAssayExperiment-methods} for slot modifying methods
 #'     \href{https://github.com/waldronlab/MultiAssayExperiment/wiki/MultiAssayExperiment-API}{MultiAssayExperiment API}
 #' @include ExperimentList-class.R
-setClass("MultiAssayExperiment",
-         slots = list(
-           ExperimentList = "ExperimentList",
-           colData = "DataFrame",
-           sampleMap = "DataFrame",
-           metadata = "ANY",
-           drops = "list"
-         )
+setClass(
+    "MultiAssayExperiment",
+     slots = list(
+       ExperimentList = "ExperimentList",
+       colData = "DataFrame",
+       sampleMap = "DataFrame",
+       drops = "list"
+     ),
+    contains = "Annotated"
 )
 
 ### ==============================================
@@ -209,7 +210,7 @@ MultiAssayExperiment <-
             assay = factor(),
             primary = character(),
             colname = character()),
-            metadata = NULL,
+            metadata = list(),
             drops = list())
 {
     if (missing(experiments))

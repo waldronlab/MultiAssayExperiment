@@ -7,7 +7,8 @@
 MultiAssayExperiment(experiments = ExperimentList(),
   colData = S4Vectors::DataFrame(),
   sampleMap = S4Vectors::DataFrame(assay = factor(), primary =
-  character(), colname = character()), metadata = NULL, drops = list())
+  character(), colname = character()), metadata = list(),
+  drops = list())
 }
 \arguments{
 \item{experiments}{A \code{list} or \link{ExperimentList} of all

@@ -13,5 +13,5 @@ test_that("slots are of appropriate class", {
     expect_true(is(colData(MultiAssayExperiment()), "DataFrame"))
     expect_true(is(sampleMap(MultiAssayExperiment()), "DataFrame"))
     expect_true(is(ExperimentList(), "ExperimentList"))
-    expect_null(metadata(MultiAssayExperiment()))
+    expect_true(is(metadata(MultiAssayExperiment()), "list"))
 })
