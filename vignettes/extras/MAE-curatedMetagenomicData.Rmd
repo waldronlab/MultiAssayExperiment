@@ -1,5 +1,5 @@
 ---
-title: "MultiAssayExperiment_CRC"
+title: "Making use of curatedMetagenomicData"
 author: "Levi Waldron"
 date: "1/11/2017"
 output: html_document
@@ -9,9 +9,10 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE, eval = FALSE)
 ```
 
-# Fetch from curatedMetagenomicData
+# Fetch from `curatedMetagenomicData`
 
-Download the data as a list:
+Download the data as an `ExpressionSet` list:
+
 ```{r, cache=FALSE}
 library(curatedMetagenomicData)
 esetlist <- list(taxa = ZellerG_2014.metaphlan_bugs_list.stool()[, 1:10],
@@ -23,25 +24,26 @@ esetlist$pathways <- esetlist$pathways[grep("g__",
                                   rownames(esetlist$pathways), invert=TRUE), ]
 ```
 
-Then create the MultiAssayExperiment:
+Create the `MultiAssayExperiment`:
+
 ```{r}
 library(MultiAssayExperiment)
-mae = MultiAssayExperiment(experiments=esetlist, 
-                           colData=colData(esetlist[[2]]))
-mae
-rownames(mae)
+cmd <- MultiAssayExperiment(experiments=esetlist, 
+    colData=colData(as(esetlist[[2]], "SummarizedExperiment")))
+cmd
+rownames(cmd)
 ```
 
 ## CCA with omicade4
+
 ```{r}
 library(omicade4)
-maesub = mae[, mae$disease %in% c("cancer", "large_adenoma", "small_adenoma"), ]
+cmdsub <- cmd[, cmd$disease %in% c("adenoma", "CRC", "healthy"), ]
 ##Get rid of rows that are all zero:
-for (i in 1:length(experiments(maesub))){
-  experiments(maesub)[[i]] <- experiments(maesub)[[i]][apply(assay(maesub)[[i]], 1, function(x) sum(x) > 0), ]
-}
-mcoin = mcia(assay(maesub))
-plot(mcoin, phenovec=maesub$disease, sample.lab=FALSE)
+cmdsub <- cmdsub[lapply(assays(cmdsub), function(exper) rowSums(exper) > 0), ]
+
+mcoin <- mcia(assay(cmdsub))
+plot(mcoin, phenovec=cmdsub$disease, sample.lab=FALSE)
 ```
 
 ## iClusterPlus
@@ -49,25 +51,25 @@ plot(mcoin, phenovec=maesub$disease, sample.lab=FALSE)
 Error, "system is computationally singular"
 ```{r, eval=FALSE}
 library(iClusterPlus)
-datasets = assay(maesub)
+datasets = assay(cmdsub)
 datasets = lapply(datasets, t)
 iclus = iCluster(datasets=datasets, k=5, lambda=c(0.2, 0.2))
-plotiCluster(fit=iclus, label=maesub$disease)
+plotiCluster(fit=iclus, label=cmdsub$disease)
 ```
 
 ## sparse CCA
 
 ```{r}
 library(PMA)
-mae2 <- mergeReplicates(intersectColumns(mae))
-mycca = PMA::CCA(x=t(assay(mae)[[1]]), z=t(assay(mae)[[2]]))
+cmd2 <- mergeReplicates(intersectColumns(cmd))
+## ERROR: some columns have SD = 0
+mycca <- PMA::CCA(x=t(assay(cmd2, 1)), z=t(assay(cmd2, 2)))
 mycca
 ```
 
 # Others to try
 ```{r, eval=FALSE}
-library(PMA)
 library(made4)
 library(MCIA)
-##library(Rtopper)  #gene set analysis
+# library(Rtopper)  # gene set analysis
 ```
