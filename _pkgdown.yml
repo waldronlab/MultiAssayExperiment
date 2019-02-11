@@ -1,6 +1,6 @@
 title: MultiAssayExperiment
 
-url: https://multiassay.waldronlab.io
+# url: https://multiassay.waldronlab.io
 
 template:
   bootswatch: flatly
