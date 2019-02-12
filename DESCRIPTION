@@ -1,6 +1,6 @@
 Package: MultiAssayExperiment
 Title: Software for the integration of multi-omics experiments in Bioconductor
-Version: 1.8.1
+Version: 1.8.2
 Authors@R: c(person("Marcel", "Ramos", email = "marcel.ramos@roswellpark.org",
     role = c("aut", "cre")),
     person("Levi", "Waldron", email = "lwaldron.research@gmail.com",
@@ -41,7 +41,7 @@ License: Artistic-2.0
 Encoding: UTF-8
 LazyData: true
 VignetteBuilder: knitr, R.rsp
-URL: https://github.com/waldronlab/MultiAssayExperiment/wiki/MultiAssayExperiment-API
+URL: http://waldronlab.io/MultiAssayExperiment/
 BugReports: https://github.com/waldronlab/MultiAssayExperiment/issues
 Collate: 
     'ExperimentList-class.R'
