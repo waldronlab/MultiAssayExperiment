@@ -6,7 +6,4 @@ articles:
   QuickStartMultiAssay: QuickStartMultiAssay.html
   UsingHDF5Array: UsingHDF5Array.html
   MAE-curatedMetagenomicData: extras/MAE-curatedMetagenomicData.html
-urls:
-  reference: https://multiassay.waldronlab.io/reference
-  article: https://multiassay.waldronlab.io/articles
 
