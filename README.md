@@ -9,12 +9,10 @@ MultiAssayExperiment
 [![Coverage Status](https://codecov.io/github/waldronlab/MultiAssayExperiment/coverage.svg?branch=master)](https://codecov.io/github/waldronlab/MultiAssayExperiment?branch=master)
 [![Downloads](http://www.bioconductor.org/shields/downloads/MultiAssayExperiment.svg)](https://bioconductor.org/packages/stats/bioc/MultiAssayExperiment)
 
-## Installation of release and development versions
+## Installation
 
-MultiAssayExperiment is under active development, and we highly recommend
-installing a current development version rather than the release Bioconductor
-version. This can be done by installing the
-[development version of Bioconductor](https://www.bioconductor.org/developers/how-to/useDevel/):
+We recommend installing the stable release version of MultiAssayExperiment in
+Bioconductor. This can be done using `BiocManager`:
 
 ```
 if (!require("BiocManager"))
@@ -22,17 +20,30 @@ if (!require("BiocManager"))
 
 library(BiocManager)
 
-install(version = "devel")
 install("MultiAssayExperiment")
 ```
 
+## Cheatsheet
+
+<a href="https://github.com/waldronlab/cheatsheets/blob/master/MultiAssayExperiment_QuickRef.pdf"><img src="https://raw.githubusercontent.com/waldronlab/cheatsheets/master/pngs/MultiAssayExperiment_QuickRef.png" width="989" height="1091"/></a>
+
 ## Ready-to-use `MultiAssayExperiment` objects
 
-See the newly released `curatedTCGAData` `ExperimentHub` package for
-ready-packaged MultiAssayExperiment TCGA objects.
+For easy-to-use and ready-made MultiAssayExperiment objects, use the
+`curatedTCGAData` experiment data package.
 
 ```
 install("curatedTCGAData")
+```
+
+## Companion package for working with TCGA data
+
+TCGAutils is a handy package for working with `MultiAssayExperiment` data
+objects from `curatedTCGAData`. It is highly recommended to use `TCGAutils` for
+identifier manipulation, sample identification and more.
+
+```
+install("TCGAutils")
 ```
 
 ## Documentation
