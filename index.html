@@ -34,7 +34,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">MultiAssayExperiment</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.9.14</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.9.15</span>
       </span>
     </div>
 
@@ -68,14 +68,7 @@
   <a href="news/index.html">NEWS</a>
 </li>
       </ul>
-<ul class="nav navbar-nav navbar-right">
-<li>
-  <a href="https://github.com/waldronlab/MultiAssayExperiment">
-    <span class="fa fa-github fa-lg"></span>
-     
-  </a>
-</li>
-      </ul>
+<ul class="nav navbar-nav navbar-right"></ul>
 </div>
 <!--/.nav-collapse -->
   </div>
@@ -90,16 +83,15 @@
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#multiassayexperiment" class="anchor"></a>MultiAssayExperiment</h1></div>
 
-<div id="installation-of-release-and-development-versions" class="section level2">
+<div id="installation" class="section level2">
 <h2 class="hasAnchor">
-<a href="#installation-of-release-and-development-versions" class="anchor"></a>Installation of release and development versions</h2>
-<p>MultiAssayExperiment is under active development, and we highly recommend installing a current development version rather than the release Bioconductor version. This can be done by installing the <a href="https://www.bioconductor.org/developers/how-to/useDevel/">development version of Bioconductor</a>:</p>
+<a href="#installation" class="anchor"></a>Installation</h2>
+<p>We recommend installing the stable release version of MultiAssayExperiment in Bioconductor. This can be done using <code>BiocManager</code>:</p>
 <pre><code>if (!require("BiocManager"))
     install.packages("BiocManager")
 
 library(BiocManager)
 
-install(version = "devel")
 install("MultiAssayExperiment")</code></pre>
 </div>
 <div id="cheatsheet" class="section level2">
@@ -110,8 +102,14 @@ install("MultiAssayExperiment")</code></pre>
 <div id="ready-to-use-multiassayexperiment-objects" class="section level2">
 <h2 class="hasAnchor">
 <a href="#ready-to-use-multiassayexperiment-objects" class="anchor"></a>Ready-to-use <code>MultiAssayExperiment</code> objects</h2>
-<p>See the newly released <code>curatedTCGAData</code> <code>ExperimentHub</code> package for ready-packaged MultiAssayExperiment TCGA objects.</p>
+<p>For easy-to-use and ready-made MultiAssayExperiment objects, use the <code>curatedTCGAData</code> experiment data package.</p>
 <pre><code>install("curatedTCGAData")</code></pre>
+</div>
+<div id="companion-package-for-working-with-tcga-data" class="section level2">
+<h2 class="hasAnchor">
+<a href="#companion-package-for-working-with-tcga-data" class="anchor"></a>Companion package for working with TCGA data</h2>
+<p>TCGAutils is a handy package for working with <code>MultiAssayExperiment</code> data objects from <code>curatedTCGAData</code>. It is highly recommended to use <code>TCGAutils</code> for identifier manipulation, sample identification and more.</p>
+<pre><code>install("TCGAutils")</code></pre>
 </div>
 <div id="documentation" class="section level2">
 <h2 class="hasAnchor">
@@ -141,8 +139,6 @@ install("MultiAssayExperiment")</code></pre>
 <h2>Links</h2>
 <ul class="list-unstyled">
 <li>Download from BIOC at <br><a href="https://www.bioconductor.org/packages/MultiAssayExperiment">https://​www.bioconductor.org/​packages/​MultiAssayExperiment</a>
-</li>
-<li>Browse source code at <br><a href="https://github.com/waldronlab/MultiAssayExperiment">https://​github.com/​waldronlab/​MultiAssayExperiment</a>
 </li>
 <li>Report a bug at <br><a href="https://github.com/waldronlab/MultiAssayExperiment/issues">https://​github.com/​waldronlab/​MultiAssayExperiment/​issues</a>
 </li>
