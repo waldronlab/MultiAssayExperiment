@@ -34,6 +34,13 @@ bioc_packages:
   - HDF5Array
   - RaggedExperiment
 
+before_deploy: Rscript -e 'remotes::install_cran("pkgdown")'
+
+deploy:
+  provider: script
+  script: Rscript -e 'pkgdown::deploy_site_github()'
+  skip_cleanup: true
+
 # Test code coverage
 r_github_packages:
   - jimhester/covr
