@@ -4,7 +4,7 @@ language: r
 sudo: false
 cache: packages
 
-r: bioc-devel
+r: bioc-release
 bioc_check: true
 
 # Strict checks in place
@@ -12,7 +12,6 @@ warnings_are_errors: false
 
 branches:
   only:
-    - master
     - RELEASE_3_8
 
 # Run binary install of testthat

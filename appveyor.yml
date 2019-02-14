@@ -26,7 +26,7 @@ install:
 
 branches:
   only:
-    - master
+    - RELEASE_3_8
 
 # Adapt as necessary starting from here
 build_script:
@@ -57,7 +57,7 @@ environment:
     USE_RTOOLS: true ## to be able to use Remotes (i.e. packages from non-CRAN sources)
 
   matrix:
-    - R_VERSION: devel
+    - R_VERSION: release
       R_ARCH: x64
       GCC_PATH: mingw_64
 
