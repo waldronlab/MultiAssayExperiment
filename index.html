@@ -45,27 +45,27 @@
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
+    Vignettes
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="articles/QuickStartMultiAssay.html">Quick Start Guide</a>
+      <a href="vignettes/QuickStartMultiAssay.html">Quick Start Guide</a>
     </li>
     <li>
-      <a href="articles/MultiAssayExperiment.html">Getting Started</a>
+      <a href="vignettes/MultiAssayExperiment.html">Getting Started</a>
     </li>
     <li>
-      <a href="articles/UsingHDF5Array.html">Using DelayedMatrix</a>
+      <a href="vignettes/UsingHDF5Array.html">Using DelayedMatrix</a>
     </li>
     <li>
-      <a href="articles/extras/MAE-curatedMetagenomicData.html">MultiAssayExperiment in Practice</a>
+      <a href="vignettes/extras/MAE-curatedMetagenomicData.html">MultiAssayExperiment in Practice</a>
     </li>
   </ul>
 </li>
 <li>
-  <a href="news/index.html">NEWS</a>
+  <a href="news/index.html">News</a>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right"></ul>
@@ -83,9 +83,14 @@
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#multiassayexperiment" class="anchor"></a>MultiAssayExperiment</h1></div>
 
-<div id="installation" class="section level2">
+<div id="overview" class="section level2">
 <h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h2>
+<a href="#overview" class="anchor"></a>Overview</h2>
+<p><code>MultiAssayExperiment</code> provides an integrative representation of multi-’omics data on a set of samples. You can choose to represent your data using this infrastructure or use pre-processed datasets from <code>curatedTCGAData</code>.</p>
+</div>
+<div id="introduction" class="section level2">
+<h2 class="hasAnchor">
+<a href="#introduction" class="anchor"></a>Introduction</h2>
 <p>We recommend installing the stable release version of MultiAssayExperiment in Bioconductor. This can be done using <code>BiocManager</code>:</p>
 <pre><code>if (!require("BiocManager"))
     install.packages("BiocManager")
@@ -94,42 +99,54 @@ library(BiocManager)
 
 install("MultiAssayExperiment")</code></pre>
 </div>
+<div id="documentation-website" class="section level2">
+<h2 class="hasAnchor">
+<a href="#documentation-website" class="anchor"></a>Documentation website</h2>
+<p>The <code>MultiAssayExperiment</code> quick reference, vignettes, and function help pages are available by browsing to the <a href="http://waldronlab.io/MultiAssayExperiment">package website</a>.</p>
+</div>
 <div id="cheatsheet" class="section level2">
 <h2 class="hasAnchor">
 <a href="#cheatsheet" class="anchor"></a>Cheatsheet</h2>
+<p>We provide a reference cheat sheet for a summary of available functionality in <code>MultiAssayExperiment</code>.</p>
 <p><a href="https://github.com/waldronlab/cheatsheets/blob/master/MultiAssayExperiment_QuickRef.pdf"><img src="https://raw.githubusercontent.com/waldronlab/cheatsheets/master/pngs/MultiAssayExperiment_QuickRef.png" width="989" height="1091"></a></p>
 </div>
-<div id="ready-to-use-multiassayexperiment-objects" class="section level2">
+<div id="ready-to-use-datasets-from-the-cancer-genome-atlas-tcga" class="section level2">
 <h2 class="hasAnchor">
-<a href="#ready-to-use-multiassayexperiment-objects" class="anchor"></a>Ready-to-use <code>MultiAssayExperiment</code> objects</h2>
-<p>For easy-to-use and ready-made MultiAssayExperiment objects, use the <code>curatedTCGAData</code> experiment data package.</p>
+<a href="#ready-to-use-datasets-from-the-cancer-genome-atlas-tcga" class="anchor"></a>Ready-to-use datasets from The Cancer Genome Atlas (TCGA)</h2>
+<p>For easy-to-use and analysis-ready <code>MultiAssayExperiment</code> objects, use the <code>curatedTCGAData</code> experiment data package:</p>
 <pre><code>install("curatedTCGAData")</code></pre>
 </div>
-<div id="companion-package-for-working-with-tcga-data" class="section level2">
+<div id="how-to-make-working-with-tcga-data-easier" class="section level2">
 <h2 class="hasAnchor">
-<a href="#companion-package-for-working-with-tcga-data" class="anchor"></a>Companion package for working with TCGA data</h2>
-<p>TCGAutils is a handy package for working with <code>MultiAssayExperiment</code> data objects from <code>curatedTCGAData</code>. It is highly recommended to use <code>TCGAutils</code> for identifier manipulation, sample identification and more.</p>
+<a href="#how-to-make-working-with-tcga-data-easier" class="anchor"></a>How to make working with TCGA data easier</h2>
+<p><code>TCGAutils</code> is a handy package for working with TCGA data represented as <code>MultiAssayExperiment</code> objects. It is highly recommended to use <code>TCGAutils</code> for TCGA identifier manipulation, sample identification and separation, and much more.</p>
+<p>To install <code>TCGAutils</code>, run the following:</p>
 <pre><code>install("TCGAutils")</code></pre>
 </div>
-<div id="documentation" class="section level2">
+<div id="getting-help" class="section level2">
 <h2 class="hasAnchor">
-<a href="#documentation" class="anchor"></a>Documentation</h2>
-<p>The <code>MultiAssayExperiment</code> API is available by browsing to the <a href="https://github.com/waldronlab/MultiAssayExperiment/wiki/MultiAssayExperiment-API">API wiki</a>.</p>
+<a href="#getting-help" class="anchor"></a>Getting help</h2>
+<p>If you find a bug or error within <code>MultiAssayExperiment</code>, <code>curatedTCGAData</code>, or <code>TCGAutils</code>, please provide a reproducible example in the respective GitHub issues pages: ‘<a href="http://github.com/waldronlab/" class="uri">http://github.com/waldronlab/</a><package_name>/issues’.</package_name></p>
+<p>If you have a question about using any of the packages listed above, create a post on <a href="https://support.bioconductor.org/" class="uri">https://support.bioconductor.org/</a>.</p>
 </div>
 <div id="the-multiassayexperiment-bioconductor-special-interest-group" class="section level2">
 <h2 class="hasAnchor">
 <a href="#the-multiassayexperiment-bioconductor-special-interest-group" class="anchor"></a>The <code>MultiAssayExperiment</code> Bioconductor Special Interest Group</h2>
 <p>This group meets remotely to discuss this project approximately every 3 weeks. If you are interested, please join the <a href="https://groups.google.com/forum/#!forum/biocmultiassay">MultiAssayExperiment Google Group</a> and see the <a href="https://www.google.com/calendar/embed?src=9ar0qc8mpkv6b9intgmdcdf0ss%40group.calendar.google.com&amp;ctz=America/New_York">calendar</a> of upcoming meetings.</p>
 </div>
-<div id="contributor-code-of-conduct" class="section level2">
+<div id="the-fine-print" class="section level2">
 <h2 class="hasAnchor">
-<a href="#contributor-code-of-conduct" class="anchor"></a>Contributor Code of Conduct</h2>
+<a href="#the-fine-print" class="anchor"></a>The Fine Print</h2>
+<div id="contributor-code-of-conduct" class="section level3">
+<h3 class="hasAnchor">
+<a href="#contributor-code-of-conduct" class="anchor"></a>Contributor Code of Conduct</h3>
 <p>As contributors and maintainers of this project, we pledge to respect all people who contribute through reporting issues, posting feature requests, updating documentation, submitting pull requests or patches, and other activities.</p>
 <p>We are committed to making participation in this project a harassment-free experience for everyone, regardless of level of experience, gender, gender identity and expression, sexual orientation, disability, personal appearance, body size, race, age, or religion.</p>
 <p>Examples of unacceptable behavior by participants include the use of sexual language or imagery, derogatory comments or personal attacks, trolling, public or private harassment, insults, or other disrespectful conduct.</p>
 <p>Project maintainers have the right and responsibility to remove, edit, or reject comments, commits, code, wiki edits, issues, and other contributions that are not aligned to this Code of Conduct. Project maintainers who do not follow the Code of Conduct may be removed from the project team.</p>
 <p>Instances of abusive, harassing, or otherwise unacceptable behavior may be reported by opening an issue or contacting one or more of the project maintainers.</p>
 <p>This Code of Conduct is adapted from the <a href="http://contributor-covenant.org">Contributor Covenant</a>, version 1.0.0, available at <a href="http://contributor-covenant.org/version/1/0/0/" class="uri">http://contributor-covenant.org/version/1/0/0/</a></p>
+</div>
 </div>
 </div>
   </div>
@@ -170,10 +187,10 @@ install("MultiAssayExperiment")</code></pre>
 <ul class="list-unstyled">
 <li><a href="https://bioconductor.org/checkResults/release/bioc-LATEST/MultiAssayExperiment"><img src="http://www.bioconductor.org/shields/build/release/bioc/MultiAssayExperiment.svg" alt="BioC status"></a></li>
 <li><a href="https://www.bioconductor.org/packages/release/bioc/html/MultiAssayExperiment.html#archives"><img src="http://www.bioconductor.org/shields/availability/release/MultiAssayExperiment.svg" alt="Platforms"></a></li>
-<li><a href="https://travis-ci.org/waldronlab/MultiAssayExperiment"><img src="https://travis-ci.org/waldronlab/MultiAssayExperiment.svg?branch=master" alt="Travis Build Status"></a></li>
-<li><a href="https://ci.appveyor.com/project/LiNk-NY/multiassayexperiment-94gjw/branch/master"><img src="https://ci.appveyor.com/api/projects/status/rf25e9h995wnto7n/branch/master?svg=true" alt="Build status"></a></li>
-<li><a href="https://app.wercker.com/project/byKey/2aa523f23142715771256b85187d7bcb"><img src="https://app.wercker.com/status/2aa523f23142715771256b85187d7bcb/s/master" title="wercker status" alt="wercker status"></a></li>
-<li><a href="https://codecov.io/github/waldronlab/MultiAssayExperiment?branch=master"><img src="https://codecov.io/github/waldronlab/MultiAssayExperiment/coverage.svg?branch=master" alt="Coverage Status"></a></li>
+<li><a href="https://travis-ci.org/waldronlab/MultiAssayExperiment"><img src="https://travis-ci.org/waldronlab/MultiAssayExperiment.svg?branch=RELEASE_3_8" alt="Travis Build Status"></a></li>
+<li><a href="https://ci.appveyor.com/project/LiNk-NY/multiassayexperiment-94gjw/branch/RELEASE_3_8"><img src="https://ci.appveyor.com/api/projects/status/rf25e9h995wnto7n?svg=true" alt="Build status"></a></li>
+<li><a href="https://app.wercker.com/project/byKey/2aa523f23142715771256b85187d7bcb"><img src="https://app.wercker.com/status/2aa523f23142715771256b85187d7bcb/s/" title="wercker status" alt="wercker status"></a></li>
+<li><a href="https://codecov.io/github/waldronlab/MultiAssayExperiment?branch=RELEASE_3_8"><img src="https://codecov.io/gh/waldronlab/MultiAssayExperiment/branch/RELEASE_3_8/graphs/badge.svg?branch=RELEASE_3_8" alt="Coverage Status"></a></li>
 <li><a href="https://bioconductor.org/packages/stats/bioc/MultiAssayExperiment"><img src="http://www.bioconductor.org/shields/downloads/MultiAssayExperiment.svg" alt="Downloads"></a></li>
 </ul>
 </div>
