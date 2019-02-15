@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Objects exported from other packages — reexports • MultiAssayExperiment</title>
+<title>Version 1.7 • MultiAssayExperiment</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,14 +30,7 @@
 
 
 
-<meta property="og:title" content="Objects exported from other packages — reexports" />
-
-<meta property="og:description" content="These objects are imported from other packages. Click on the
-function name to see their documentation.
-
-S4Vectors: DataFrame
-" />
-<meta name="twitter:card" content="summary" />
+<meta property="og:title" content="Version 1.7" />
 
 
 
@@ -54,7 +47,7 @@ S4Vectors: DataFrame
   </head>
 
   <body>
-    <div class="container template-reference-topic">
+    <div class="container template-news">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -116,35 +109,75 @@ S4Vectors: DataFrame
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Objects exported from other packages</h1>
-    
-    <div class="hidden name"><code>reexports.Rd</code></div>
+      <h1>Changelog <small>1.7</small></h1>
+      
     </div>
 
-    <div class="ref-description">
-    
-    <p>These objects are imported from other packages. Click on the
-function name to see their documentation.</p>
+    <div id="multiassayexperiment-1-7-14" class="section level1">
+<h1 class="page-header">
+<a href="#multiassayexperiment-1-7-14" class="anchor"></a>MultiAssayExperiment 1.7.14</h1>
+<div id="new-features-1" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-features-1" class="anchor"></a>New features</h2>
 <ul>
-<li><p>S4Vectors: DataFrame</p></li>
+<li>Subsetting <code>MultiAssayExperiment</code> by a <code>list</code> or <code>List</code> type class now returns experiments in the input order for rows, columns, and assays</li>
 </ul>
-    
-    </div>
-
-        
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/S4Vectors/topics/DataFrame-class'>DataFrame</a></span>()</div><div class='output co'>#&gt; DataFrame with 0 rows and 0 columns</div><div class='input'>
-</div></pre>
+</div>
+<div id="bug-fixes-and-minor-improvements-1" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-fixes-and-minor-improvements-1" class="anchor"></a>Bug fixes and minor improvements</h2>
+<ul>
+<li>Renamed objects in examples for brevity and descriptiveness</li>
+<li>Updated <code>importFrom</code> directives</li>
+<li>Internal sample names check now only works on non-empty <code>colnames</code>
+</li>
+<li>Various documentation improvements</li>
+<li>
+<code>listToMap</code> re-written for efficiency</li>
+<li>Various improvements to subsetting mechanism</li>
+<li>
+<code>subsetByAssay</code> bug fixed when using an integer index (<a href='https://github.com/vjcitn'>@vjcitn</a>, #)</li>
+</ul>
+</div>
+</div>
+    <div id="multiassayexperiment-1-7-23" class="section level1">
+<h1 class="page-header">
+<a href="#multiassayexperiment-1-7-23" class="anchor"></a>MultiAssayExperiment 1.7.23</h1>
+<div id="new-features" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-features" class="anchor"></a>New features</h2>
+<ul>
+<li>Users can now rename experiments in a MultiAssayExperiment with <code>names(x) &lt;- value</code>
+</li>
+<li>
+<code>replicated</code> and <code>mergeReplicates</code> functions have been refactored and improved</li>
+<li>combining MultiAssayExperiments now possible with <code>c</code> function</li>
+</ul>
+</div>
+<div id="bug-fixes-and-minor-improvements" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-fixes-and-minor-improvements" class="anchor"></a>Bug fixes and minor improvements</h2>
+<ul>
+<li>
+<code>wideFormat</code> function improvements and bug fixes with name indicator subsetting</li>
+<li>
+<code>BiocGenerics:::replaceSlots</code> used instead of replace methods</li>
+<li>Added tests for <code>anyReplicated</code>, <code>c</code>, and <code>names&lt;-</code> functions</li>
+</ul>
+</div>
+</div>
   </div>
+
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-            
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+    <div id="tocnav">
+      <h2>Contents</h2>
+      <ul class="nav nav-pills nav-stacked">
+        <li><a href="#multiassayexperiment-1-7-14">1.7.14</a></li>
+        <li><a href="#multiassayexperiment-1-7-23">1.7.23</a></li>
+      </ul>
+    </div>
   </div>
+
 </div>
 
       <footer>
