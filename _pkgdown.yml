@@ -34,12 +34,15 @@ navbar:
     - text: Vignettes
       menu:
       - text: Quick Start Guide
-        href: vignettes/QuickStartMultiAssay.html
+        href: articles/QuickStartMultiAssay.html
       - text: Getting Started
-        href: vignettes/MultiAssayExperiment.html
+        href: articles/MultiAssayExperiment.html
       - text: Using DelayedMatrix
-        href: vignettes/UsingHDF5Array.html
+        href: articles/UsingHDF5Array.html
       - text: MultiAssayExperiment in Practice
-        href: vignettes/extras/MAE-curatedMetagenomicData.html
+        href: articles/extras/MAE-curatedMetagenomicData.html
     - text: News
       href: news/index.html
+
+news:
+- one_page: false
