@@ -3,13 +3,19 @@ MultiAssayExperiment
 
 [![BioC status](http://www.bioconductor.org/shields/build/release/bioc/MultiAssayExperiment.svg)](https://bioconductor.org/checkResults/release/bioc-LATEST/MultiAssayExperiment)
 [![Platforms](http://www.bioconductor.org/shields/availability/release/MultiAssayExperiment.svg)](https://www.bioconductor.org/packages/release/bioc/html/MultiAssayExperiment.html#archives)
-[![Travis Build Status](https://travis-ci.org/waldronlab/MultiAssayExperiment.svg?branch=master)](https://travis-ci.org/waldronlab/MultiAssayExperiment)
-[![Build status](https://ci.appveyor.com/api/projects/status/rf25e9h995wnto7n/branch/master?svg=true)](https://ci.appveyor.com/project/LiNk-NY/multiassayexperiment-94gjw/branch/master)
-[![wercker status](https://app.wercker.com/status/2aa523f23142715771256b85187d7bcb/s/master "wercker status")](https://app.wercker.com/project/byKey/2aa523f23142715771256b85187d7bcb)
-[![Coverage Status](https://codecov.io/github/waldronlab/MultiAssayExperiment/coverage.svg?branch=master)](https://codecov.io/github/waldronlab/MultiAssayExperiment?branch=master)
+[![Travis Build Status](https://travis-ci.org/waldronlab/MultiAssayExperiment.svg?branch=RELEASE_3_8)](https://travis-ci.org/waldronlab/MultiAssayExperiment)
+[![Build status](https://ci.appveyor.com/api/projects/status/rf25e9h995wnto7n?svg=true)](https://ci.appveyor.com/project/LiNk-NY/multiassayexperiment-94gjw/branch/RELEASE_3_8)
+[![wercker status](https://app.wercker.com/status/2aa523f23142715771256b85187d7bcb/s/ "wercker status")](https://app.wercker.com/project/byKey/2aa523f23142715771256b85187d7bcb)
+[![Coverage Status](https://codecov.io/gh/waldronlab/MultiAssayExperiment/branch/RELEASE_3_8/graphs/badge.svg?branch=RELEASE_3_8)](https://codecov.io/github/waldronlab/MultiAssayExperiment?branch=RELEASE_3_8)
 [![Downloads](http://www.bioconductor.org/shields/downloads/MultiAssayExperiment.svg)](https://bioconductor.org/packages/stats/bioc/MultiAssayExperiment)
 
-## Installation
+## Overview
+
+`MultiAssayExperiment` provides an integrative representation of multi-'omics
+data on a set of samples. You can choose to represent your data using this
+infrastructure or use pre-processed datasets from `curatedTCGAData`.
+
+## Introduction
 
 We recommend installing the stable release version of MultiAssayExperiment in
 Bioconductor. This can be done using `BiocManager`:
@@ -23,33 +29,50 @@ library(BiocManager)
 install("MultiAssayExperiment")
 ```
 
+## Documentation website
+
+The `MultiAssayExperiment` quick reference, vignettes, and function help pages
+are available by browsing to the
+[package website](http://waldronlab.io/MultiAssayExperiment).
+
 ## Cheatsheet
+
+We provide a reference cheat sheet for a summary of available functionality
+in `MultiAssayExperiment`.
 
 <a href="https://github.com/waldronlab/cheatsheets/blob/master/MultiAssayExperiment_QuickRef.pdf"><img src="https://raw.githubusercontent.com/waldronlab/cheatsheets/master/pngs/MultiAssayExperiment_QuickRef.png" width="989" height="1091"/></a>
 
-## Ready-to-use `MultiAssayExperiment` objects
+## Ready-to-use datasets from The Cancer Genome Atlas (TCGA)
 
-For easy-to-use and ready-made MultiAssayExperiment objects, use the
-`curatedTCGAData` experiment data package.
+For easy-to-use and analysis-ready `MultiAssayExperiment` objects, use the
+`curatedTCGAData` experiment data package:
 
 ```
 install("curatedTCGAData")
 ```
 
-## Companion package for working with TCGA data
+## How to make working with TCGA data easier
 
-TCGAutils is a handy package for working with `MultiAssayExperiment` data
-objects from `curatedTCGAData`. It is highly recommended to use `TCGAutils` for
-identifier manipulation, sample identification and more.
+`TCGAutils` is a handy package for working with TCGA data represented as
+`MultiAssayExperiment` objects. It is highly recommended to use `TCGAutils` for
+TCGA identifier manipulation, sample identification and separation, and
+much more.
+
+To install `TCGAutils`, run the following:
 
 ```
 install("TCGAutils")
 ```
 
-## Documentation
+## Getting help
 
-The `MultiAssayExperiment` API is available by browsing to the
-[API wiki](https://github.com/waldronlab/MultiAssayExperiment/wiki/MultiAssayExperiment-API).
+If you find a bug or error within `MultiAssayExperiment`,
+`curatedTCGAData`, or `TCGAutils`, please provide a reproducible example in the
+respective GitHub issues pages:
+'http://github.com/waldronlab/<package_name>/issues'.
+
+If you have a question about using any of the packages listed above, create
+a post on https://support.bioconductor.org/.
 
 ## The `MultiAssayExperiment` Bioconductor Special Interest Group
 
@@ -60,7 +83,9 @@ and see the
 [calendar](https://www.google.com/calendar/embed?src=9ar0qc8mpkv6b9intgmdcdf0ss%40group.calendar.google.com&ctz=America/New_York)
 of upcoming meetings.
 
-## Contributor Code of Conduct
+## The Fine Print
+
+### Contributor Code of Conduct
 
 As contributors and maintainers of this project, we pledge to respect
 all people who contribute through reporting issues, posting feature

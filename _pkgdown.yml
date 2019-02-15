@@ -1,0 +1,45 @@
+title: MultiAssayExperiment
+
+template:
+  params:
+    bootswatch: flatly
+
+reference:
+  - title: Constructors
+    desc: Build objects with designated constructor functions
+    contents:
+      - MultiAssayExperiment
+      - ExperimentList
+  - title: Accessors
+    desc: Discover content within MultiAssayExperiment
+    contents:
+      - MultiAssayExperiment-class
+      - MultiAssayExperiment-methods
+  - title: Subsetting
+    desc: Easy operations for selecting rows, columns, and/or biological units
+    contents:
+      - subsetBy
+  - title: Management and Reshaping
+    desc: Work with and reshape data
+    contents:
+      - MultiAssayExperiment-helpers
+      - upsetSamples
+
+navbar:
+  title: ~
+  type: default
+  left:
+    - text: Quick Reference
+      href: reference/index.html
+    - text: Vignettes
+      menu:
+      - text: Quick Start Guide
+        href: vignettes/QuickStartMultiAssay.html
+      - text: Getting Started
+        href: vignettes/MultiAssayExperiment.html
+      - text: Using DelayedMatrix
+        href: vignettes/UsingHDF5Array.html
+      - text: MultiAssayExperiment in Practice
+        href: vignettes/extras/MAE-curatedMetagenomicData.html
+    - text: News
+      href: news/index.html
