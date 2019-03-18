@@ -60,3 +60,12 @@ test_that("concatenate two MultiAssayExperiment objects works", {
     expect_true(all(unique(c(rownames(colData(mae)), rns))
         %in% rownames(colData(combinedmae))))
 })
+
+test_that("concatenation of regular named list works", {
+    example("MultiAssayExperiment")
+    example("ExperimentList")
+    elist <- ExpList
+    names(elist) <- paste0(names(elist), seq_along(elist))
+
+    expect_true(validObject(c(mae, as.list(elist))))
+})

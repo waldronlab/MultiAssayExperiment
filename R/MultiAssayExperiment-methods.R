@@ -127,7 +127,7 @@ setMethod("$", "MultiAssayExperiment", function(x, name) {
 #' ## (no sampleMap)
 #' c(mae, newExperiment = test1)
 #'
-#' test2 <- mae[[1L]]
+#' test2 <- mae[[3L]]
 #' c(mae, newExp = test2, mapFrom = 3L)
 #'
 setMethod("c", "MultiAssayExperiment",
@@ -135,18 +135,23 @@ setMethod("c", "MultiAssayExperiment",
     args <- list(...)
     if (!length(args))
         stop("Provide experiments or a 'MultiAssayExperiment' to concatenate")
-    if (is(args[[1L]], "MultiAssayExperiment") && length(args) == 1L)
-        return(.mergeMAE(x, args[[1L]]))
-    else if (is(args[[1L]], "ExperimentList") && length(args) == 1L)
-        exps <- args[[1L]]
-    else
-        exps <- ExperimentList(args)
+
+    if (identical(length(args), 1L)) {
+        if (is(args[[1L]], "MultiAssayExperiment"))
+            return(.mergeMAE(x, args[[1L]]))
+        else if (is(args[[1L]], "ExperimentList") || is(args[[1L]], "list"))
+            args <- args[[1L]]
+    }
+
+    exps <- ExperimentList(args)
+
     xmap <- sampleMap(x)
     cdata <- colData(x)
     if (!isEmpty(exps)) {
         if (!is.null(mapFrom)) {
             warning("Assuming column order in the data provided ",
-                "\n matches the order in 'mapFrom' experiment(s) colnames")
+                "\n matches the order in 'mapFrom' experiment(s) colnames",
+                    call. = FALSE)
             addMaps <- mapToList(sampleMap(x))[mapFrom]
             names(addMaps) <- names(exps)
             sampleMap <- mapply(function(x, y) {

@@ -185,7 +185,7 @@ colnames(test1) <- rownames(colData(mae))
 ## (no sampleMap)
 c(mae, newExperiment = test1)
 
-test2 <- mae[[1L]]
+test2 <- mae[[3L]]
 c(mae, newExp = test2, mapFrom = 3L)
 
 }
