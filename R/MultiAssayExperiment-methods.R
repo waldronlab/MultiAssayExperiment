@@ -137,13 +137,15 @@ setMethod("c", "MultiAssayExperiment",
         stop("Provide experiments or a 'MultiAssayExperiment' to concatenate")
 
     if (identical(length(args), 1L)) {
-        if (is(args[[1L]], "MultiAssayExperiment"))
-            return(.mergeMAE(x, args[[1L]]))
-        else if (is(args[[1L]], "ExperimentList") || is(args[[1L]], "list"))
-            args <- args[[1L]]
+        input <- args[[1L]]
+        if (is(input, "MultiAssayExperiment"))
+            return(.mergeMAE(x, input))
+        else if (inherits(input, "List") && !is(input, "DataFrame")
+                 || is(input, "list"))
+            args <- input
     }
 
-    exps <- ExperimentList(args)
+    exps <- as(args, "ExperimentList")
 
     xmap <- sampleMap(x)
     cdata <- colData(x)
