@@ -201,7 +201,7 @@ setAs("List", "ExperimentList", function(from) {
 #' experiments
 setMethod("isEmpty", "ExperimentList", function(x) {
     x <- Filter(function(y) {
-        !(is.matrix(y) && dim(y) == c(1, 1) && as.vector(is.na(y)))
+        !(is.matrix(y) && identical(dim(y), c(1L, 1L)) && isTRUE(is.na(y)))
     }, x)
     callNextMethod()
 })
