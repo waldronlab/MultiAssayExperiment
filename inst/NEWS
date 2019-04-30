@@ -1,21 +1,32 @@
 # MultiAssayExperiment
 ----------------------------------------------------------------
 
-## Changes in version 1.7.23
+## Changes in version 1.10.0
+
+### New features
+
+* getWithColData now allows easy extraction of experiments
+(such as `SummarizedExperiment`) with associated `colData` data
+* Single bracket replace method implemented for `MultiAssayExperiment` assays
+
+### Bug fixes and minor improvements
+
+* `isEmpty` method fixed for `ExperimentList`s containing matrices
+* `MultiAssayExperiment` now inherits from the standard `Annotated` virtual
+class
+* `c` method better distinguishes between `list` and `ExperimentList` inputs
+* Improvements on `.getHits` internal method for obtaining correct queries on
+row metadata
+* Subsetting mechanism tweaked to do nothing when subsetting by `NULL` rows
+compared to empty rows (i.e., `character(0L)`)
+* Improved README.md
+
+## Changes in version 1.8.0
 
 ### New features
 
 * The single bracket replacement method `[<-` added to support assignment
 of assay datasets
-
-### Bug fixes and minor improvements
-
-* Unit tests added for replacement method testing
-
-## Changes in version 1.7.23
-
-### New features
-
 * Users can now rename experiments in a MultiAssayExperiment with
 `names(x) <- value`
 * `replicated` and `mergeReplicates` functions have been refactored and
@@ -28,6 +39,7 @@ improved
 subsetting
 * `BiocGenerics:::replaceSlots` used instead of replace methods
 * Added tests for `anyReplicated`, `c`, and `names<-` functions
+* Unit tests added for replacement method testing
 
 ## Changes in version 1.7.14
 
