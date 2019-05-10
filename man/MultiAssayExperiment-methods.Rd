@@ -13,7 +13,7 @@
 \alias{colData,MultiAssayExperiment-method}
 \alias{metadata,MultiAssayExperiment-method}
 \alias{sampleMap<-,MultiAssayExperiment,DataFrame-method}
-\alias{experiments<-,MultiAssayExperiment,ExperimentList-method}
+\alias{experiments<-,MultiAssayExperiment-method}
 \alias{colData<-,MultiAssayExperiment,DataFrame-method}
 \alias{metadata<-,MultiAssayExperiment-method}
 \alias{$<-,MultiAssayExperiment-method}
@@ -29,10 +29,9 @@
 
 \S4method{metadata}{MultiAssayExperiment}(x)
 
-\S4method{sampleMap}{MultiAssayExperiment,DataFrame}(object) <- value
+\S4method{sampleMap}{MultiAssayExperiment,DataFrame}(x) <- value
 
-
-  \S4method{experiments}{MultiAssayExperiment,ExperimentList}(object) <- value
+\S4method{experiments}{MultiAssayExperiment}(x) <- value
 
 \S4method{colData}{MultiAssayExperiment,DataFrame}(x) <- value
 
@@ -49,11 +48,11 @@
 
 \item{...}{Argument not in use}
 
-\item{object}{A \code{MultiAssayExperiment} object}
-
 \item{value}{See details.}
 
 \item{name}{A column in \code{colData}}
+
+\item{object}{A \code{MultiAssayExperiment} object}
 }
 \value{
 Accessors: Either a \code{sampleMap}, \code{ExperimentList}, or
