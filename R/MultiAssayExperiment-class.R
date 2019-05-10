@@ -490,40 +490,39 @@ setMethod("names", "MultiAssayExperiment", function(x)
 ### Replacers
 ###
 
-setGeneric("sampleMap<-", function(x, value) {
+setGeneric("sampleMap<-", function(object, value) {
     standardGeneric("sampleMap<-")
 })
 
 #' @exportMethod sampleMap<-
 #' @rdname MultiAssayExperiment-methods
 setReplaceMethod("sampleMap", c("MultiAssayExperiment", "DataFrame"),
-    function(x, value) {
-        slot(x, "sampleMap") <- value
-        return(x)
-    }
-)
+                function(object, value) {
+                    slot(object, "sampleMap") <- value
+                    return(object)
+                })
 
-setGeneric("experiments<-", function(x, value)
+setGeneric("experiments<-", function(object, value)
     standardGeneric("experiments<-"))
 
 #' @exportMethod experiments<-
 #' @rdname MultiAssayExperiment-methods
-setReplaceMethod("experiments", "MultiAssayExperiment", function(x, value) {
-    if (!length(value)) {
-        slot(x, "ExperimentList") <- value
-        return(x)
-    }
-    rebliss <- .harmonize(value,
-        colData(x),
-        sampleMap(x))
-    BiocGenerics:::replaceSlots(
-        x,
-        ExperimentList = rebliss[["experiments"]],
-        colData = rebliss[["colData"]],
-        sampleMap = rebliss[["sampleMap"]],
-        check = FALSE
-    )
-})
+setReplaceMethod("experiments", c("MultiAssayExperiment", "ExperimentList"),
+    function(object, value) {
+        if (!length(value)) {
+            slot(object, "ExperimentList") <- value
+            return(object)
+        }
+        rebliss <- .harmonize(value,
+            colData(object),
+            sampleMap(object))
+        BiocGenerics:::replaceSlots(object,
+            ExperimentList = rebliss[["experiments"]],
+            colData = rebliss[["colData"]],
+            sampleMap = rebliss[["sampleMap"]],
+            check = FALSE
+        )
+    })
 
 #' @exportMethod colData<-
 #' @rdname MultiAssayExperiment-methods

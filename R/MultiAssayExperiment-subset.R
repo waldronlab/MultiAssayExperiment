@@ -73,5 +73,6 @@ setReplaceMethod("[", "MultiAssayExperiment", function(x, i, j, ..., value) {
     if (length(args) > 1L)
         stop("Provide a single 'k' index vector")
     indx <- args[[1L]]
-    callNextMethod(experiments(x), i = indx, value = value)
+    experiments(x)[indx] <- value
+    return(x)
 })
