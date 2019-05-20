@@ -93,11 +93,11 @@ setMethod("$", "MultiAssayExperiment", function(x, name) {
     sampz <- rbind(sampleMap(x), sampleMap(y))
     coldx <- colData(x)
     coldy <- colData(y)
-    cdatz <- S4Vectors::merge(coldx, coldy,
-        by = c("row.names", intersect(names(coldx), names(coldy)),
+    cdatz <- S4Vectors::merge(x = coldx, y = coldy,
+        by = c("row.names", intersect(names(coldx), names(coldy))),
         all = TRUE, sort = FALSE, stringsAsFactors = FALSE)
     rownames(cdatz) <- cdatz[["Row.names"]]
-    cdatz <- cdatz[, names(cdatz) != "Row.names")]
+    cdatz <- cdatz[, names(cdatz) != "Row.names"]
     metaz <- c(metadata(x), metadata(y))
     new("MultiAssayExperiment",
         ExperimentList = expz,
