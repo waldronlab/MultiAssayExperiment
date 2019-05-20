@@ -10,14 +10,17 @@ upsetSamples(MultiAssayExperiment, nsets = length(MultiAssayExperiment),
   check.names = FALSE, ...)
 }
 \arguments{
-\item{MultiAssayExperiment}{instance of
-\code{\link[MultiAssayExperiment]{MultiAssayExperiment-class}}}
+\item{MultiAssayExperiment}{A
+\code{\link[MultiAssayExperiment:MultiAssayExperiment-class]{MultiAssayExperiment}}
+instance}
 
 \item{nsets}{integer number of sets to analyze}
 
-\item{nintersects}{Number of intersections to plot. If set to NA, all intersections will be plotted.}
+\item{nintersects}{Number of intersections to plot. If set to NA, all
+intersections will be plotted.}
 
-\item{order.by}{How the intersections in the matrix should be ordered by. Options include frequency (entered as "freq"), degree, or both in any order.}
+\item{order.by}{How the intersections in the matrix should be ordered by.
+Options include frequency (entered as "freq"), degree, or both in any order.}
 
 \item{nameFilter}{function, defaulting to force, to manipulate colnames of
 incidence matrix}
