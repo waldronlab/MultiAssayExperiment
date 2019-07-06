@@ -1,4 +1,4 @@
-box: bioconductor/devel_core2
+box: bioconductor/bioconductor_full:devel
 build:
   steps:
     - script:
