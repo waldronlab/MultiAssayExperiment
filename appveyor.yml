@@ -20,8 +20,7 @@ init:
         Import-Module '..\appveyor-tool.ps1'
 
 install:
-  ps: |
-        Bootstrap
+  ps: Bootstrap
 
 branches:
   only:
@@ -85,6 +84,7 @@ artifacts:
 cache:
   - C:\RLibrary -> appveyor.yml
 
+notifications:
 - provider: Slack
   incoming_webhook:
     secure: 5CUebSKaHY7HA1RR+HIF9n2+yYF3A/3pykI5rxp4J6bgntGZIGa7iOY1RBXo8BGWq5N6uCGrlQj4Cu1xqzSQotPz/3i6TpDit9Z+wnpBrTs=
