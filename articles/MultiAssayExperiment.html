@@ -30,7 +30,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MultiAssayExperiment</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.8.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.10.4</span>
       </span>
     </div>
 
@@ -79,7 +79,7 @@
       <h1>MultiAssayExperiment: The Integrative Bioconductor Container</h1>
                         <h4 class="author">MultiAssay Special Interest Group</h4>
             
-            <h4 class="date">February 15, 2019</h4>
+            <h4 class="date">July 18, 2019</h4>
       
       
       <div class="hidden name"><code>MultiAssayExperiment.Rmd</code></div>
@@ -127,8 +127,8 @@
 ##  *Format() - convert into a long or wide DataFrame 
 ##  assays() - convert ExperimentList to a SimpleList of matrices</code></pre>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw">slotNames</span>(empty)</a></code></pre></div>
-<pre><code>## [1] "ExperimentList" "colData"        "sampleMap"      "metadata"      
-## [5] "drops"</code></pre>
+<pre><code>## [1] "ExperimentList" "colData"        "sampleMap"      "drops"         
+## [5] "metadata"</code></pre>
 <div id="components-of-the-multiassayexperiment" class="section level2">
 <h2 class="hasAnchor">
 <a href="#components-of-the-multiassayexperiment" class="anchor"></a>Components of the <code>MultiAssayExperiment</code>
@@ -295,7 +295,7 @@
 <p>Metadata can be added at different levels of the <code>MultiAssayExperiment</code>.</p>
 <p>Can be of <em>ANY</em> class, for storing study-wide metadata, such as citation information. For an empty <code>MultiAssayExperiment</code> object, it is NULL.</p>
 <div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/class">class</a></span>(<span class="kw">metadata</span>(empty)) <span class="co"># NULL (class "ANY")</span></a></code></pre></div>
-<pre><code>## [1] "NULL"</code></pre>
+<pre><code>## [1] "list"</code></pre>
 <p>At the <code>ExperimentList</code> level, the <code>metadata</code> function would allow the user to enter metadata as a <code>list</code>.</p>
 <div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1"><span class="kw">metadata</span>(<span class="kw"><a href="../reference/MultiAssayExperiment-methods.html">experiments</a></span>(empty))</a></code></pre></div>
 <pre><code>## list()</code></pre>
@@ -514,7 +514,7 @@
 ## 15   CNV gistic         Bob mysnparray3
 ## 16   CNV gistic     Barbara mysnparray4</code></pre>
 <div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb59-1" data-line-number="1"><span class="kw">metadata</span>(myMultiAssay)</a></code></pre></div>
-<pre><code>## NULL</code></pre>
+<pre><code>## list()</code></pre>
 <p>Note that the <code>ExperimentList</code> class extends the <code>SimpleList</code> class to add some validity checks specific to <code>MultiAssayExperiment</code>. It can be used like a list.</p>
 </div>
 <div id="helper-function-to-create-a-multiassayexperiment-object" class="section level2">
@@ -703,6 +703,8 @@
 <div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb100-1" data-line-number="1">myMultiAssay[rows, columns, assays]</a></code></pre></div>
 <p>For example, to select the gene “ENST00000355076”:</p>
 <div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb101-1" data-line-number="1">myMultiAssay[<span class="st">"ENST00000355076"</span>, , ]</a></code></pre></div>
+<pre><code>## harmonizing input:
+##   removing 7 sampleMap rows not in names(experiments)</code></pre>
 <pre><code>## A MultiAssayExperiment object of 2 listed
 ##  experiments with user-defined names and respective classes. 
 ##  Containing an ExperimentList class object of length 2: 
@@ -717,7 +719,9 @@
 ##  assays() - convert ExperimentList to a SimpleList of matrices</code></pre>
 <p>The above operation works across all types of assays, whether ID-based (e.g. <code>matrix</code>, <code>ExpressionSet</code>, <code>SummarizedExperiment</code>) or range-based (e.g. <code>RangedSummarizedExperiment</code>). Note that when using the bracket method <code>[</code>, the drop argument is <em>TRUE</em> by default.</p>
 <p>You can subset by rows, columns, and assays in a single bracket operation, and they will be performed in that order (rows, then columns, then assays). The following selects the <code>ENST00000355076</code> gene across all samples, then the first two samples of each assay, and finally the Affy and Methyl 450k assays:</p>
-<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb103-1" data-line-number="1">myMultiAssay[<span class="st">"ENST00000355076"</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">2</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"Affy"</span>, <span class="st">"Methyl 450k"</span>)]</a></code></pre></div>
+<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb104-1" data-line-number="1">myMultiAssay[<span class="st">"ENST00000355076"</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">2</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"Affy"</span>, <span class="st">"Methyl 450k"</span>)]</a></code></pre></div>
+<pre><code>## harmonizing input:
+##   removing 3 sampleMap rows not in names(experiments)</code></pre>
 <pre><code>## A MultiAssayExperiment object of 2 listed
 ##  experiments with user-defined names and respective classes. 
 ##  Containing an ExperimentList class object of length 2: 
@@ -735,7 +739,7 @@
 <h2 class="hasAnchor">
 <a href="#subsetting-by-character-integer-and-logical" class="anchor"></a>Subsetting by character, integer, and logical</h2>
 <p>By columns - character, integer, and logical are all allowed, for example:</p>
-<div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb105-1" data-line-number="1">myMultiAssay[, <span class="st">"Jack"</span>, ]</a></code></pre></div>
+<div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb107-1" data-line-number="1">myMultiAssay[, <span class="st">"Jack"</span>, ]</a></code></pre></div>
 <pre><code>## A MultiAssayExperiment object of 4 listed
 ##  experiments with user-defined names and respective classes. 
 ##  Containing an ExperimentList class object of length 4: 
@@ -750,7 +754,7 @@
 ##  `$`, `[`, `[[` - extract colData columns, subset, or experiment 
 ##  *Format() - convert into a long or wide DataFrame 
 ##  assays() - convert ExperimentList to a SimpleList of matrices</code></pre>
-<div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb107-1" data-line-number="1">myMultiAssay[, <span class="dv">1</span>, ]</a></code></pre></div>
+<div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb109-1" data-line-number="1">myMultiAssay[, <span class="dv">1</span>, ]</a></code></pre></div>
 <pre><code>## A MultiAssayExperiment object of 4 listed
 ##  experiments with user-defined names and respective classes. 
 ##  Containing an ExperimentList class object of length 4: 
@@ -765,7 +769,7 @@
 ##  `$`, `[`, `[[` - extract colData columns, subset, or experiment 
 ##  *Format() - convert into a long or wide DataFrame 
 ##  assays() - convert ExperimentList to a SimpleList of matrices</code></pre>
-<div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb109-1" data-line-number="1">myMultiAssay[, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="ot">TRUE</span>, <span class="ot">FALSE</span>, <span class="ot">FALSE</span>, <span class="ot">FALSE</span>), ]</a></code></pre></div>
+<div class="sourceCode" id="cb111"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb111-1" data-line-number="1">myMultiAssay[, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="ot">TRUE</span>, <span class="ot">FALSE</span>, <span class="ot">FALSE</span>, <span class="ot">FALSE</span>), ]</a></code></pre></div>
 <pre><code>## A MultiAssayExperiment object of 4 listed
 ##  experiments with user-defined names and respective classes. 
 ##  Containing an ExperimentList class object of length 4: 
@@ -781,8 +785,9 @@
 ##  *Format() - convert into a long or wide DataFrame 
 ##  assays() - convert ExperimentList to a SimpleList of matrices</code></pre>
 <p>By assay - character, integer, and logical are allowed:</p>
-<div class="sourceCode" id="cb111"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb111-1" data-line-number="1">myMultiAssay[, , <span class="st">"Mirna"</span>]</a></code></pre></div>
+<div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb113-1" data-line-number="1">myMultiAssay[, , <span class="st">"Mirna"</span>]</a></code></pre></div>
 <pre><code>## harmonizing input:
+##   removing 13 sampleMap rows not in names(experiments)
 ##   removing 1 colData rownames not in sampleMap 'primary'</code></pre>
 <pre><code>## A MultiAssayExperiment object of 1 listed
 ##  experiment with a user-defined name and respective class. 
@@ -795,8 +800,9 @@
 ##  `$`, `[`, `[[` - extract colData columns, subset, or experiment 
 ##  *Format() - convert into a long or wide DataFrame 
 ##  assays() - convert ExperimentList to a SimpleList of matrices</code></pre>
-<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb114-1" data-line-number="1">myMultiAssay[, , <span class="dv">3</span>]</a></code></pre></div>
+<div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb116-1" data-line-number="1">myMultiAssay[, , <span class="dv">3</span>]</a></code></pre></div>
 <pre><code>## harmonizing input:
+##   removing 13 sampleMap rows not in names(experiments)
 ##   removing 1 colData rownames not in sampleMap 'primary'</code></pre>
 <pre><code>## A MultiAssayExperiment object of 1 listed
 ##  experiment with a user-defined name and respective class. 
@@ -809,8 +815,9 @@
 ##  `$`, `[`, `[[` - extract colData columns, subset, or experiment 
 ##  *Format() - convert into a long or wide DataFrame 
 ##  assays() - convert ExperimentList to a SimpleList of matrices</code></pre>
-<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb117-1" data-line-number="1">myMultiAssay[, , <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="ot">FALSE</span>, <span class="ot">FALSE</span>, <span class="ot">TRUE</span>, <span class="ot">FALSE</span>, <span class="ot">FALSE</span>)]</a></code></pre></div>
+<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb119-1" data-line-number="1">myMultiAssay[, , <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="ot">FALSE</span>, <span class="ot">FALSE</span>, <span class="ot">TRUE</span>, <span class="ot">FALSE</span>, <span class="ot">FALSE</span>)]</a></code></pre></div>
 <pre><code>## harmonizing input:
+##   removing 13 sampleMap rows not in names(experiments)
 ##   removing 1 colData rownames not in sampleMap 'primary'</code></pre>
 <pre><code>## A MultiAssayExperiment object of 1 listed
 ##  experiment with a user-defined name and respective class. 
@@ -828,7 +835,7 @@
 <h2 class="hasAnchor">
 <a href="#the-drop-argument" class="anchor"></a>the “drop” argument</h2>
 <p>Specify <code>drop=FALSE</code> to keep assays with zero rows or zero columns, e.g.:</p>
-<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb120-1" data-line-number="1">myMultiAssay[<span class="st">"ENST00000355076"</span>, , , drop=<span class="ot">FALSE</span>]</a></code></pre></div>
+<div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb122-1" data-line-number="1">myMultiAssay[<span class="st">"ENST00000355076"</span>, , , drop=<span class="ot">FALSE</span>]</a></code></pre></div>
 <pre><code>## A MultiAssayExperiment object of 4 listed
 ##  experiments with user-defined names and respective classes. 
 ##  Containing an ExperimentList class object of length 4: 
@@ -844,7 +851,9 @@
 ##  *Format() - convert into a long or wide DataFrame 
 ##  assays() - convert ExperimentList to a SimpleList of matrices</code></pre>
 <p>Using the default <code>drop=TRUE</code>, assays with no rows or no columns are removed:</p>
-<div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb122-1" data-line-number="1">myMultiAssay[<span class="st">"ENST00000355076"</span>, , , drop=<span class="ot">TRUE</span>]</a></code></pre></div>
+<div class="sourceCode" id="cb124"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb124-1" data-line-number="1">myMultiAssay[<span class="st">"ENST00000355076"</span>, , , drop=<span class="ot">TRUE</span>]</a></code></pre></div>
+<pre><code>## harmonizing input:
+##   removing 7 sampleMap rows not in names(experiments)</code></pre>
 <pre><code>## A MultiAssayExperiment object of 2 listed
 ##  experiments with user-defined names and respective classes. 
 ##  Containing an ExperimentList class object of length 2: 
@@ -862,7 +871,7 @@
 <h2 class="hasAnchor">
 <a href="#more-on-subsetting-by-columns" class="anchor"></a>More on subsetting by columns</h2>
 <p>Experimental samples are stored in the rows of <code>colData</code> but the columns of elements of <code>ExperimentList</code>, so when we refer to subsetting by columns, we are referring to columns of the experimental assays. Subsetting by samples / columns will be more obvious after recalling the <code>colData</code>:</p>
-<div class="sourceCode" id="cb124"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb124-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/SummarizedExperiment/topics/SummarizedExperiment-class">colData</a></span>(myMultiAssay)</a></code></pre></div>
+<div class="sourceCode" id="cb127"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb127-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/SummarizedExperiment/topics/SummarizedExperiment-class">colData</a></span>(myMultiAssay)</a></code></pre></div>
 <pre><code>## DataFrame with 4 rows and 2 columns
 ##              sex       age
 ##         &lt;factor&gt; &lt;integer&gt;
@@ -871,7 +880,7 @@
 ## Bob            M        40
 ## Barbara        F        41</code></pre>
 <p>Subsetting by samples identifies the selected samples in rows of the colData DataFrame, then selects all columns of the <code>ExperimentList</code> corresponding to these rows. Here we use an integer to keep the first two rows of colData, and all experimental assays associated to those two primary samples:</p>
-<div class="sourceCode" id="cb126"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb126-1" data-line-number="1">myMultiAssay[, <span class="dv">1</span><span class="op">:</span><span class="dv">2</span>]</a></code></pre></div>
+<div class="sourceCode" id="cb129"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb129-1" data-line-number="1">myMultiAssay[, <span class="dv">1</span><span class="op">:</span><span class="dv">2</span>]</a></code></pre></div>
 <pre><code>## A MultiAssayExperiment object of 4 listed
 ##  experiments with user-defined names and respective classes. 
 ##  Containing an ExperimentList class object of length 4: 
@@ -888,24 +897,24 @@
 ##  assays() - convert ExperimentList to a SimpleList of matrices</code></pre>
 <p>Note that the above operation keeps different numbers of columns / samples from each assay, reflecting the reality that some samples may not have been assayed in all experiments, and may have replicates in some.</p>
 <p>Columns can be subset using a logical vector. Here the dollar sign operator (<code>$</code>) accesses one of the columns in <code>colData</code>.</p>
-<div class="sourceCode" id="cb128"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb128-1" data-line-number="1">malesMultiAssay &lt;-<span class="st"> </span>myMultiAssay[, myMultiAssay<span class="op">$</span>sex <span class="op">==</span><span class="st"> "M"</span>]</a>
-<a class="sourceLine" id="cb128-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/SummarizedExperiment/topics/SummarizedExperiment-class">colData</a></span>(malesMultiAssay)</a></code></pre></div>
+<div class="sourceCode" id="cb131"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb131-1" data-line-number="1">malesMultiAssay &lt;-<span class="st"> </span>myMultiAssay[, myMultiAssay<span class="op">$</span>sex <span class="op">==</span><span class="st"> "M"</span>]</a>
+<a class="sourceLine" id="cb131-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/SummarizedExperiment/topics/SummarizedExperiment-class">colData</a></span>(malesMultiAssay)</a></code></pre></div>
 <pre><code>## DataFrame with 2 rows and 2 columns
 ##           sex       age
 ##      &lt;factor&gt; &lt;integer&gt;
 ## Jack        M        38
 ## Bob         M        40</code></pre>
 <p>Finally, for special use cases you can exert detailed control of row or column subsetting, by using a <code>list</code> or <code>CharacterList</code> to subset. The following creates a <code>CharacterList</code> of the column names of each assay:</p>
-<div class="sourceCode" id="cb130"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb130-1" data-line-number="1">allsamples &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/colnames">colnames</a></span>(myMultiAssay)</a>
-<a class="sourceLine" id="cb130-2" data-line-number="2">allsamples</a></code></pre></div>
+<div class="sourceCode" id="cb133"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb133-1" data-line-number="1">allsamples &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/colnames">colnames</a></span>(myMultiAssay)</a>
+<a class="sourceLine" id="cb133-2" data-line-number="2">allsamples</a></code></pre></div>
 <pre><code>## CharacterList of length 4
 ## [["Affy"]] array1 array2 array3 array4
 ## [["Methyl 450k"]] methyl1 methyl2 methyl3 methyl4 methyl5
 ## [["Mirna"]] micro1 micro2 micro3
 ## [["CNV gistic"]] mysnparray1 mysnparray2 mysnparray3 mysnparray4</code></pre>
 <p>Now let’s get rid of three Methyl 450k arrays, those in positions 3, 4, and 5:</p>
-<div class="sourceCode" id="cb132"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb132-1" data-line-number="1">allsamples[[<span class="st">"Methyl 450k"</span>]] &lt;-<span class="st"> </span>allsamples[[<span class="st">"Methyl 450k"</span>]][<span class="op">-</span><span class="dv">3</span><span class="op">:-</span><span class="dv">5</span>]</a>
-<a class="sourceLine" id="cb132-2" data-line-number="2">myMultiAssay[, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">as.list</a></span>(allsamples), ]</a></code></pre></div>
+<div class="sourceCode" id="cb135"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb135-1" data-line-number="1">allsamples[[<span class="st">"Methyl 450k"</span>]] &lt;-<span class="st"> </span>allsamples[[<span class="st">"Methyl 450k"</span>]][<span class="op">-</span><span class="dv">3</span><span class="op">:-</span><span class="dv">5</span>]</a>
+<a class="sourceLine" id="cb135-2" data-line-number="2">myMultiAssay[, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">as.list</a></span>(allsamples), ]</a></code></pre></div>
 <pre><code>## harmonizing input:
 ##   removing 3 sampleMap rows with 'colname' not in colnames of experiments</code></pre>
 <pre><code>## A MultiAssayExperiment object of 4 listed
@@ -922,7 +931,7 @@
 ##  `$`, `[`, `[[` - extract colData columns, subset, or experiment 
 ##  *Format() - convert into a long or wide DataFrame 
 ##  assays() - convert ExperimentList to a SimpleList of matrices</code></pre>
-<div class="sourceCode" id="cb135"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb135-1" data-line-number="1"><span class="kw"><a href="../reference/subsetBy.html">subsetByColumn</a></span>(myMultiAssay,  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">as.list</a></span>(allsamples))  <span class="co">#equivalent</span></a></code></pre></div>
+<div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb138-1" data-line-number="1"><span class="kw"><a href="../reference/subsetBy.html">subsetByColumn</a></span>(myMultiAssay,  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">as.list</a></span>(allsamples))  <span class="co">#equivalent</span></a></code></pre></div>
 <pre><code>## harmonizing input:
 ##   removing 3 sampleMap rows with 'colname' not in colnames of experiments</code></pre>
 <pre><code>## A MultiAssayExperiment object of 4 listed
@@ -944,7 +953,9 @@
 <h2 class="hasAnchor">
 <a href="#subsetting-assays" class="anchor"></a>Subsetting assays</h2>
 <p>You can select certain assays / experiments using subset, by providing a character, logical, or integer vector. An example using character:</p>
-<div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb138-1" data-line-number="1">myMultiAssay[, , <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"Affy"</span>, <span class="st">"CNV gistic"</span>)]</a></code></pre></div>
+<div class="sourceCode" id="cb141"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb141-1" data-line-number="1">myMultiAssay[, , <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"Affy"</span>, <span class="st">"CNV gistic"</span>)]</a></code></pre></div>
+<pre><code>## harmonizing input:
+##   removing 8 sampleMap rows not in names(experiments)</code></pre>
 <pre><code>## A MultiAssayExperiment object of 2 listed
 ##  experiments with user-defined names and respective classes. 
 ##  Containing an ExperimentList class object of length 2: 
@@ -958,10 +969,12 @@
 ##  *Format() - convert into a long or wide DataFrame 
 ##  assays() - convert ExperimentList to a SimpleList of matrices</code></pre>
 <p>You can subset assays also using logical or integer vectors:</p>
-<div class="sourceCode" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb140-1" data-line-number="1">is.cnv &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/grep">grepl</a></span>(<span class="st">"CNV"</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/names">names</a></span>(<span class="kw"><a href="../reference/MultiAssayExperiment-methods.html">experiments</a></span>(myMultiAssay)))</a>
-<a class="sourceLine" id="cb140-2" data-line-number="2">is.cnv</a></code></pre></div>
+<div class="sourceCode" id="cb144"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb144-1" data-line-number="1">is.cnv &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/grep">grepl</a></span>(<span class="st">"CNV"</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/names">names</a></span>(<span class="kw"><a href="../reference/MultiAssayExperiment-methods.html">experiments</a></span>(myMultiAssay)))</a>
+<a class="sourceLine" id="cb144-2" data-line-number="2">is.cnv</a></code></pre></div>
 <pre><code>## [1] FALSE FALSE FALSE  TRUE</code></pre>
-<div class="sourceCode" id="cb142"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb142-1" data-line-number="1">myMultiAssay[, , is.cnv]  <span class="co">#logical subsetting</span></a></code></pre></div>
+<div class="sourceCode" id="cb146"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb146-1" data-line-number="1">myMultiAssay[, , is.cnv]  <span class="co">#logical subsetting</span></a></code></pre></div>
+<pre><code>## harmonizing input:
+##   removing 12 sampleMap rows not in names(experiments)</code></pre>
 <pre><code>## A MultiAssayExperiment object of 1 listed
 ##  experiment with a user-defined name and respective class. 
 ##  Containing an ExperimentList class object of length 1: 
@@ -973,7 +986,9 @@
 ##  `$`, `[`, `[[` - extract colData columns, subset, or experiment 
 ##  *Format() - convert into a long or wide DataFrame 
 ##  assays() - convert ExperimentList to a SimpleList of matrices</code></pre>
-<div class="sourceCode" id="cb144"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb144-1" data-line-number="1">myMultiAssay[, , <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/which">which</a></span>(is.cnv)] <span class="co">#integer subsetting</span></a></code></pre></div>
+<div class="sourceCode" id="cb149"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb149-1" data-line-number="1">myMultiAssay[, , <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/which">which</a></span>(is.cnv)] <span class="co">#integer subsetting</span></a></code></pre></div>
+<pre><code>## harmonizing input:
+##   removing 12 sampleMap rows not in names(experiments)</code></pre>
 <pre><code>## A MultiAssayExperiment object of 1 listed
 ##  experiment with a user-defined name and respective class. 
 ##  Containing an ExperimentList class object of length 1: 
@@ -997,13 +1012,14 @@
 <li><p>a <strong>list</strong> or <strong>List</strong> with element names matching those in the <code>ExperimentList</code>. Each element of the subsetting list will be passed on exactly to subset rows of the corresponding element of the <code>ExperimentList</code>.</p></li>
 </ul>
 <p>Any <code>list</code> or <code>List</code> input allows for selective subsetting. The subsetting is applied only to the matching element names in the <code>ExperimentList</code>. For example, to only take the first two rows of the microRNA dataset, we use a named <code>list</code> to indicate what element we want to subset along with the <code>drop = FALSE</code> argument.</p>
-<div class="sourceCode" id="cb146"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb146-1" data-line-number="1">myMultiAssay[<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">Mirna =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">2</span>), , ]</a></code></pre></div>
-<pre><code>## harmonizing input:
-##   removing 1 colData rownames not in sampleMap 'primary'</code></pre>
-<pre><code>## A MultiAssayExperiment object of 1 listed
-##  experiment with a user-defined name and respective class. 
-##  Containing an ExperimentList class object of length 1: 
-##  [1] Mirna: matrix with 2 rows and 3 columns 
+<div class="sourceCode" id="cb152"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb152-1" data-line-number="1">myMultiAssay[<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">Mirna =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">2</span>), , ]</a></code></pre></div>
+<pre><code>## A MultiAssayExperiment object of 4 listed
+##  experiments with user-defined names and respective classes. 
+##  Containing an ExperimentList class object of length 4: 
+##  [1] Affy: SummarizedExperiment with 2 rows and 4 columns 
+##  [2] Methyl 450k: matrix with 2 rows and 5 columns 
+##  [3] Mirna: matrix with 2 rows and 3 columns 
+##  [4] CNV gistic: RangedSummarizedExperiment with 5 rows and 4 columns 
 ## Features: 
 ##  experiments() - obtain the ExperimentList instance 
 ##  colData() - the primary/phenotype DataFrame 
@@ -1011,15 +1027,15 @@
 ##  `$`, `[`, `[[` - extract colData columns, subset, or experiment 
 ##  *Format() - convert into a long or wide DataFrame 
 ##  assays() - convert ExperimentList to a SimpleList of matrices</code></pre>
-<div class="sourceCode" id="cb149"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb149-1" data-line-number="1">## equivalently</a>
-<a class="sourceLine" id="cb149-2" data-line-number="2"><span class="kw"><a href="../reference/subsetBy.html">subsetByRow</a></span>(myMultiAssay, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">Mirna =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">2</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb154"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb154-1" data-line-number="1">## equivalently</a>
+<a class="sourceLine" id="cb154-2" data-line-number="2"><span class="kw"><a href="../reference/subsetBy.html">subsetByRow</a></span>(myMultiAssay, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">Mirna =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">2</span>))</a></code></pre></div>
 <pre><code>## A MultiAssayExperiment object of 4 listed
 ##  experiments with user-defined names and respective classes. 
 ##  Containing an ExperimentList class object of length 4: 
-##  [1] Mirna: matrix with 2 rows and 3 columns 
-##  [2] Affy: SummarizedExperiment with 0 rows and 4 columns 
-##  [3] Methyl 450k: matrix with 0 rows and 5 columns 
-##  [4] CNV gistic: RangedSummarizedExperiment with 0 rows and 4 columns 
+##  [1] Affy: SummarizedExperiment with 2 rows and 4 columns 
+##  [2] Methyl 450k: matrix with 2 rows and 5 columns 
+##  [3] Mirna: matrix with 2 rows and 3 columns 
+##  [4] CNV gistic: RangedSummarizedExperiment with 5 rows and 4 columns 
 ## Features: 
 ##  experiments() - obtain the ExperimentList instance 
 ##  colData() - the primary/phenotype DataFrame 
@@ -1029,32 +1045,32 @@
 ##  assays() - convert ExperimentList to a SimpleList of matrices</code></pre>
 <p>Again, these operations always return a <code>MultiAssayExperiment</code> class, unless <code>drop=TRUE</code> is passed to the <code>[</code> backet subset, with any <code>ExperimentList</code> element not containing the feature having zero rows.</p>
 <p>For example, return a MultiAssayExperiment where <code>Affy</code> and <code>Methyl 450k</code> contain only “ENST0000035076”" row, and “Mirna” and “CNV gistic” have zero rows (<code>drop</code> argument is set to <code>FALSE</code> by default in <code>subsetBy*</code>):</p>
-<div class="sourceCode" id="cb151"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb151-1" data-line-number="1">featSub0 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/subsetBy.html">subsetByRow</a></span>(myMultiAssay, <span class="st">"ENST00000355076"</span>)</a>
-<a class="sourceLine" id="cb151-2" data-line-number="2">featSub1 &lt;-<span class="st"> </span>myMultiAssay[<span class="st">"ENST00000355076"</span>, , drop =<span class="st"> </span><span class="ot">FALSE</span>] <span class="co">#equivalent</span></a>
-<a class="sourceLine" id="cb151-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/all.equal">all.equal</a></span>(featSub0, featSub1)</a></code></pre></div>
+<div class="sourceCode" id="cb156"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb156-1" data-line-number="1">featSub0 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/subsetBy.html">subsetByRow</a></span>(myMultiAssay, <span class="st">"ENST00000355076"</span>)</a>
+<a class="sourceLine" id="cb156-2" data-line-number="2">featSub1 &lt;-<span class="st"> </span>myMultiAssay[<span class="st">"ENST00000355076"</span>, , drop =<span class="st"> </span><span class="ot">FALSE</span>] <span class="co">#equivalent</span></a>
+<a class="sourceLine" id="cb156-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/all.equal">all.equal</a></span>(featSub0, featSub1)</a></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
-<div class="sourceCode" id="cb153"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb153-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/class">class</a></span>(featSub1)</a></code></pre></div>
+<div class="sourceCode" id="cb158"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb158-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/class">class</a></span>(featSub1)</a></code></pre></div>
 <pre><code>## [1] "MultiAssayExperiment"
 ## attr(,"package")
 ## [1] "MultiAssayExperiment"</code></pre>
-<div class="sourceCode" id="cb155"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb155-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/class">class</a></span>(<span class="kw"><a href="../reference/MultiAssayExperiment-methods.html">experiments</a></span>(featSub1))</a></code></pre></div>
+<div class="sourceCode" id="cb160"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb160-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/class">class</a></span>(<span class="kw"><a href="../reference/MultiAssayExperiment-methods.html">experiments</a></span>(featSub1))</a></code></pre></div>
 <pre><code>## [1] "ExperimentList"
 ## attr(,"package")
 ## [1] "MultiAssayExperiment"</code></pre>
-<div class="sourceCode" id="cb157"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb157-1" data-line-number="1"><span class="kw"><a href="../reference/MultiAssayExperiment-methods.html">experiments</a></span>(featSub1)</a></code></pre></div>
+<div class="sourceCode" id="cb162"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb162-1" data-line-number="1"><span class="kw"><a href="../reference/MultiAssayExperiment-methods.html">experiments</a></span>(featSub1)</a></code></pre></div>
 <pre><code>## ExperimentList class object of length 4: 
 ##  [1] Affy: SummarizedExperiment with 1 rows and 4 columns 
 ##  [2] Methyl 450k: matrix with 1 rows and 5 columns 
 ##  [3] Mirna: matrix with 0 rows and 3 columns 
 ##  [4] CNV gistic: RangedSummarizedExperiment with 0 rows and 4 columns</code></pre>
 <p>In the following, <code>Affy</code> <code>SummarizedExperiment</code> keeps both rows but with their order reversed, and <code>Methyl 450k</code> keeps only its second row.</p>
-<div class="sourceCode" id="cb159"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb159-1" data-line-number="1">featSubsetted &lt;-</a>
-<a class="sourceLine" id="cb159-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/subsetBy.html">subsetByRow</a></span>(myMultiAssay, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"ENST00000355076"</span>, <span class="st">"ENST00000294241"</span>))</a>
-<a class="sourceLine" id="cb159-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/SummarizedExperiment/topics/SummarizedExperiment-class">assay</a></span>(myMultiAssay, 1L)</a></code></pre></div>
+<div class="sourceCode" id="cb164"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb164-1" data-line-number="1">featSubsetted &lt;-</a>
+<a class="sourceLine" id="cb164-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/subsetBy.html">subsetByRow</a></span>(myMultiAssay, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"ENST00000355076"</span>, <span class="st">"ENST00000294241"</span>))</a>
+<a class="sourceLine" id="cb164-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/SummarizedExperiment/topics/SummarizedExperiment-class">assay</a></span>(myMultiAssay, 1L)</a></code></pre></div>
 <pre><code>##                 array1 array2 array3 array4
 ## ENST00000294241    101    103    105    107
 ## ENST00000355076    102    104    106    108</code></pre>
-<div class="sourceCode" id="cb161"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb161-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/SummarizedExperiment/topics/SummarizedExperiment-class">assay</a></span>(featSubsetted, 1L)</a></code></pre></div>
+<div class="sourceCode" id="cb166"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb166-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/SummarizedExperiment/topics/SummarizedExperiment-class">assay</a></span>(featSubsetted, 1L)</a></code></pre></div>
 <pre><code>##                 array1 array2 array3 array4
 ## ENST00000355076    102    104    106    108
 ## ENST00000294241    101    103    105    107</code></pre>
@@ -1064,22 +1080,21 @@
 <a href="#subsetting-rows-features-by-genomicranges" class="anchor"></a>Subsetting rows (features) by <code>GenomicRanges</code>
 </h2>
 <p>For <code>MultiAssayExperiment</code> objects containing range-based objects (currently <code>RangedSummarizedExperiment</code>), these can be subset using a <code>GRanges</code> object, for example:</p>
-<div class="sourceCode" id="cb163"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb163-1" data-line-number="1">gr &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/GenomicRanges/topics/GRanges-class">GRanges</a></span>(<span class="dt">seqnames =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"chr1"</span>, <span class="st">"chr1"</span>, <span class="st">"chr2"</span>), <span class="dt">strand =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"-"</span>, <span class="st">"+"</span>, <span class="st">"+"</span>),</a>
-<a class="sourceLine" id="cb163-2" data-line-number="2">              <span class="dt">ranges =</span> <span class="kw">IRanges</span>(<span class="dt">start =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">230602</span>, <span class="dv">443625</span>, <span class="dv">934533</span>),</a>
-<a class="sourceLine" id="cb163-3" data-line-number="3">                               <span class="dt">end =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">330701</span>, <span class="dv">443724</span>, <span class="dv">934632</span>)))</a></code></pre></div>
+<div class="sourceCode" id="cb168"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb168-1" data-line-number="1">gr &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/GenomicRanges/topics/GRanges-class">GRanges</a></span>(<span class="dt">seqnames =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"chr1"</span>, <span class="st">"chr1"</span>, <span class="st">"chr2"</span>), <span class="dt">strand =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"-"</span>, <span class="st">"+"</span>, <span class="st">"+"</span>),</a>
+<a class="sourceLine" id="cb168-2" data-line-number="2">              <span class="dt">ranges =</span> <span class="kw">IRanges</span>(<span class="dt">start =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">230602</span>, <span class="dv">443625</span>, <span class="dv">934533</span>),</a>
+<a class="sourceLine" id="cb168-3" data-line-number="3">                               <span class="dt">end =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">330701</span>, <span class="dv">443724</span>, <span class="dv">934632</span>)))</a></code></pre></div>
 <p>Now do the subsetting. The function doing the work here is <code><a href="https://www.rdocumentation.org/packages/IRanges/topics/findOverlaps-methods">IRanges::subsetByOverlaps</a></code> - see its arguments for flexible types of subsetting by range. The first three arguments here are for <code>subset</code>, the rest passed on to <code><a href="https://www.rdocumentation.org/packages/IRanges/topics/findOverlaps-methods">IRanges::subsetByOverlaps</a></code> through “…”:</p>
-<div class="sourceCode" id="cb164"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb164-1" data-line-number="1">subsetted &lt;-<span class="st"> </span><span class="kw"><a href="../reference/subsetBy.html">subsetByRow</a></span>(myMultiAssay, gr, <span class="dt">maxgap =</span> 2L, <span class="dt">type =</span> <span class="st">"within"</span>)</a>
-<a class="sourceLine" id="cb164-2" data-line-number="2"><span class="kw"><a href="../reference/MultiAssayExperiment-methods.html">experiments</a></span>(subsetted)</a></code></pre></div>
+<div class="sourceCode" id="cb169"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb169-1" data-line-number="1">subsetted &lt;-<span class="st"> </span><span class="kw"><a href="../reference/subsetBy.html">subsetByRow</a></span>(myMultiAssay, gr, <span class="dt">maxgap =</span> 2L, <span class="dt">type =</span> <span class="st">"within"</span>)</a>
+<a class="sourceLine" id="cb169-2" data-line-number="2"><span class="kw"><a href="../reference/MultiAssayExperiment-methods.html">experiments</a></span>(subsetted)</a></code></pre></div>
 <pre><code>## ExperimentList class object of length 4: 
 ##  [1] Affy: SummarizedExperiment with 0 rows and 4 columns 
 ##  [2] Methyl 450k: matrix with 0 rows and 5 columns 
 ##  [3] Mirna: matrix with 0 rows and 3 columns 
-##  [4] CNV gistic: RangedSummarizedExperiment with 1 rows and 4 columns</code></pre>
-<div class="sourceCode" id="cb166"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb166-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/SummarizedExperiment/topics/RangedSummarizedExperiment-class">rowRanges</a></span>(subsetted[[<span class="dv">4</span>]])</a></code></pre></div>
-<pre><code>## GRanges object with 1 range and 1 metadata column:
-##     seqnames        ranges strand |  feature_id
-##        &lt;Rle&gt;     &lt;IRanges&gt;  &lt;Rle&gt; | &lt;character&gt;
-##   b     chr1 260990-261089      - |     ID\\002
+##  [4] CNV gistic: RangedSummarizedExperiment with 0 rows and 4 columns</code></pre>
+<div class="sourceCode" id="cb171"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb171-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/SummarizedExperiment/topics/RangedSummarizedExperiment-class">rowRanges</a></span>(subsetted[[<span class="dv">4</span>]])</a></code></pre></div>
+<pre><code>## GRanges object with 0 ranges and 1 metadata column:
+##    seqnames    ranges strand |  feature_id
+##       &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt; | &lt;character&gt;
 ##   -------
 ##   seqinfo: 2 sequences from an unspecified genome; no seqlengths</code></pre>
 <p>Square bracket subsetting can still be used here, but passing on arguments to <code><a href="https://www.rdocumentation.org/packages/IRanges/topics/findOverlaps-methods">IRanges::subsetByOverlaps</a></code> through “…” is simpler using <code><a href="../reference/subsetBy.html">subsetByRow()</a></code>.</p>
@@ -1093,9 +1108,9 @@
 <h2 class="hasAnchor">
 <a href="#double-bracket-subsetting-to-select-experiments" class="anchor"></a>Double-bracket subsetting to select experiments</h2>
 <p>A double-bracket subset operation refers to an experiment, and will return the object contained within an <code>ExperimentList</code> element. It is <strong>not</strong> endomorphic. For example, the first <code>ExperimentList</code> element is called “Affy” and contains a <code>SummarizedExperiment</code>:</p>
-<div class="sourceCode" id="cb168"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb168-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/names">names</a></span>(myMultiAssay)</a></code></pre></div>
+<div class="sourceCode" id="cb173"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb173-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/names">names</a></span>(myMultiAssay)</a></code></pre></div>
 <pre><code>## [1] "Affy"        "Methyl 450k" "Mirna"       "CNV gistic"</code></pre>
-<div class="sourceCode" id="cb170"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb170-1" data-line-number="1">myMultiAssay[[<span class="dv">1</span>]]</a></code></pre></div>
+<div class="sourceCode" id="cb175"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb175-1" data-line-number="1">myMultiAssay[[<span class="dv">1</span>]]</a></code></pre></div>
 <pre><code>## class: SummarizedExperiment 
 ## dim: 2 4 
 ## metadata(0):
@@ -1104,7 +1119,7 @@
 ## rowData names(0):
 ## colnames(4): array1 array2 array3 array4
 ## colData names(1): slope53</code></pre>
-<div class="sourceCode" id="cb172"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb172-1" data-line-number="1">myMultiAssay[[<span class="st">"Affy"</span>]]</a></code></pre></div>
+<div class="sourceCode" id="cb177"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb177-1" data-line-number="1">myMultiAssay[[<span class="st">"Affy"</span>]]</a></code></pre></div>
 <pre><code>## class: SummarizedExperiment 
 ## dim: 2 4 
 ## metadata(0):
@@ -1126,7 +1141,7 @@
 <a href="#complete-cases" class="anchor"></a><code>complete.cases</code>
 </h2>
 <p>The <code>complete.cases</code> function returns a logical vector of <code>colData</code> rows identifying which primary units have data for all experiments. Recall that <code>myMultiAssay</code> provides data for four individuals:</p>
-<div class="sourceCode" id="cb174"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb174-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/SummarizedExperiment/topics/SummarizedExperiment-class">colData</a></span>(myMultiAssay)</a></code></pre></div>
+<div class="sourceCode" id="cb179"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb179-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/SummarizedExperiment/topics/SummarizedExperiment-class">colData</a></span>(myMultiAssay)</a></code></pre></div>
 <pre><code>## DataFrame with 4 rows and 2 columns
 ##              sex       age
 ##         &lt;factor&gt; &lt;integer&gt;
@@ -1135,13 +1150,13 @@
 ## Bob            M        40
 ## Barbara        F        41</code></pre>
 <p>Of these, only Jack has data for all 5 experiments:</p>
-<div class="sourceCode" id="cb176"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb176-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/complete.cases">complete.cases</a></span>(myMultiAssay)</a></code></pre></div>
+<div class="sourceCode" id="cb181"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb181-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/complete.cases">complete.cases</a></span>(myMultiAssay)</a></code></pre></div>
 <pre><code>## [1]  TRUE FALSE  TRUE  TRUE</code></pre>
 <p>But all four have complete cases for Affy and Methyl 450k:</p>
-<div class="sourceCode" id="cb178"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb178-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/complete.cases">complete.cases</a></span>(myMultiAssay[, , <span class="dv">1</span><span class="op">:</span><span class="dv">2</span>])</a></code></pre></div>
+<div class="sourceCode" id="cb183"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb183-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/complete.cases">complete.cases</a></span>(myMultiAssay[, , <span class="dv">1</span><span class="op">:</span><span class="dv">2</span>])</a></code></pre></div>
 <pre><code>## [1] TRUE TRUE TRUE TRUE</code></pre>
 <p>This output can be used to select individuals with complete data:</p>
-<div class="sourceCode" id="cb180"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb180-1" data-line-number="1">myMultiAssay[, <span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/complete.cases">complete.cases</a></span>(myMultiAssay), ]</a></code></pre></div>
+<div class="sourceCode" id="cb185"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb185-1" data-line-number="1">myMultiAssay[, <span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/complete.cases">complete.cases</a></span>(myMultiAssay), ]</a></code></pre></div>
 <pre><code>## A MultiAssayExperiment object of 4 listed
 ##  experiments with user-defined names and respective classes. 
 ##  Containing an ExperimentList class object of length 4: 
@@ -1157,11 +1172,12 @@
 ##  *Format() - convert into a long or wide DataFrame 
 ##  assays() - convert ExperimentList to a SimpleList of matrices</code></pre>
 </div>
-<div id="replicated-formerly-duplicated" class="section level2">
+<div id="replicated" class="section level2">
 <h2 class="hasAnchor">
-<a href="#replicated-formerly-duplicated" class="anchor"></a><code>replicated</code> (formerly <code>duplicated</code>)</h2>
+<a href="#replicated" class="anchor"></a><code>replicated</code>
+</h2>
 <p>The <code>replicated</code> function identifies <code>primary</code> column values or biological units that have multiple observations per <code>assay</code>. It returns a <code>list</code> of <code>LogicalList</code>s that indicate what biological units have one or more replicate measurements. This output is used for merging replicates by default.</p>
-<div class="sourceCode" id="cb182"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb182-1" data-line-number="1"><span class="kw"><a href="../reference/MultiAssayExperiment-helpers.html">replicated</a></span>(myMultiAssay)</a></code></pre></div>
+<div class="sourceCode" id="cb187"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb187-1" data-line-number="1"><span class="kw"><a href="../reference/MultiAssayExperiment-helpers.html">replicated</a></span>(myMultiAssay)</a></code></pre></div>
 <pre><code>## $Affy
 ## LogicalList of length 4
 ## [["Jack"]] FALSE FALSE FALSE FALSE
@@ -1194,7 +1210,9 @@
 <a href="#intersectrows" class="anchor"></a><code>intersectRows</code>
 </h2>
 <p>The <code>intersectRows</code> function takes all common rownames across all experiments and returns a <code>MultiAssayExperiment</code> with those rows.</p>
-<div class="sourceCode" id="cb184"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb184-1" data-line-number="1">(ensmblMatches &lt;-<span class="st"> </span><span class="kw"><a href="../reference/MultiAssayExperiment-helpers.html">intersectRows</a></span>(myMultiAssay[, , <span class="dv">1</span><span class="op">:</span><span class="dv">2</span>]))</a></code></pre></div>
+<div class="sourceCode" id="cb189"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb189-1" data-line-number="1">(ensmblMatches &lt;-<span class="st"> </span><span class="kw"><a href="../reference/MultiAssayExperiment-helpers.html">intersectRows</a></span>(myMultiAssay[, , <span class="dv">1</span><span class="op">:</span><span class="dv">2</span>]))</a></code></pre></div>
+<pre><code>## harmonizing input:
+##   removing 7 sampleMap rows not in names(experiments)</code></pre>
 <pre><code>## A MultiAssayExperiment object of 2 listed
 ##  experiments with user-defined names and respective classes. 
 ##  Containing an ExperimentList class object of length 2: 
@@ -1207,7 +1225,7 @@
 ##  `$`, `[`, `[[` - extract colData columns, subset, or experiment 
 ##  *Format() - convert into a long or wide DataFrame 
 ##  assays() - convert ExperimentList to a SimpleList of matrices</code></pre>
-<div class="sourceCode" id="cb186"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb186-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/colnames">rownames</a></span>(ensmblMatches)</a></code></pre></div>
+<div class="sourceCode" id="cb192"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb192-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/colnames">rownames</a></span>(ensmblMatches)</a></code></pre></div>
 <pre><code>## CharacterList of length 2
 ## [["Affy"]] ENST00000355076
 ## [["Methyl 450k"]] ENST00000355076</code></pre>
@@ -1217,7 +1235,7 @@
 <a href="#intersectcolumns" class="anchor"></a><code>intersectColumns</code>
 </h2>
 <p>A call to <code>intersectColumns</code> returns another <code>MultiAssayExperiment</code> where the columns of each element of the <code>ExperimentList</code> correspond exactly to the rows of <code>colData</code>. In many cases, this operation returns a 1-to-1 correspondence of samples to patients for each experiment assay unless replicates are present in the data.</p>
-<div class="sourceCode" id="cb188"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb188-1" data-line-number="1"><span class="kw"><a href="../reference/MultiAssayExperiment-helpers.html">intersectColumns</a></span>(myMultiAssay)</a></code></pre></div>
+<div class="sourceCode" id="cb194"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb194-1" data-line-number="1"><span class="kw"><a href="../reference/MultiAssayExperiment-helpers.html">intersectColumns</a></span>(myMultiAssay)</a></code></pre></div>
 <pre><code>## A MultiAssayExperiment object of 4 listed
 ##  experiments with user-defined names and respective classes. 
 ##  Containing an ExperimentList class object of length 4: 
@@ -1238,7 +1256,7 @@
 <a href="#mergereplicates" class="anchor"></a><code>mergeReplicates</code>
 </h2>
 <p>The <code>mergeReplicates</code> function allows the user to specify a function (default: <code>mean</code>) for combining replicate columns in each assay element. This can be combined with <code>intersectColumns</code> to create a <code>MultiAssayExperiment</code> object with one measurement in each experiment per biological unit.</p>
-<div class="sourceCode" id="cb190"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb190-1" data-line-number="1"><span class="kw"><a href="../reference/MultiAssayExperiment-helpers.html">mergeReplicates</a></span>(<span class="kw"><a href="../reference/MultiAssayExperiment-helpers.html">intersectColumns</a></span>(myMultiAssay))</a></code></pre></div>
+<div class="sourceCode" id="cb196"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb196-1" data-line-number="1"><span class="kw"><a href="../reference/MultiAssayExperiment-helpers.html">mergeReplicates</a></span>(<span class="kw"><a href="../reference/MultiAssayExperiment-helpers.html">intersectColumns</a></span>(myMultiAssay))</a></code></pre></div>
 <pre><code>## harmonizing input:
 ##   removing 1 sampleMap rows with 'colname' not in colnames of experiments</code></pre>
 <pre><code>## A MultiAssayExperiment object of 4 listed
@@ -1263,10 +1281,10 @@
 <p>The combine <code>c</code> function allows the user to append an experiment to the list of experiments already present in <code>MultiAssayExperiment</code>. In the case that additional observations on the same set of samples were performed, the <code>c</code> function can conveniently be referenced to an existing assay that contains the same ordering of sample measurements.</p>
 <p>The <code>mapFrom</code> argument indicates what experiment has the exact same organization of samples that will be introduced by the new experiment dataset. If the number of columns in the new experiment do not match those in the reference experiment, an error will be thrown.</p>
 <p>Here we introduce a toy dataset created on the fly:</p>
-<div class="sourceCode" id="cb193"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb193-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(myMultiAssay, <span class="dt">ExpScores =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/matrix">matrix</a></span>(<span class="dv">1</span><span class="op">:</span><span class="dv">8</span>, <span class="dt">ncol =</span> <span class="dv">4</span>,</a>
-<a class="sourceLine" id="cb193-2" data-line-number="2"><span class="dt">dim =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"ENSMBL0001"</span>, <span class="st">"ENSMBL0002"</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(<span class="st">"pt"</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">4</span>))),</a>
-<a class="sourceLine" id="cb193-3" data-line-number="3"><span class="dt">mapFrom =</span> 1L)</a></code></pre></div>
-<pre><code>## Warning in .local(x, ...): Assuming column order in the data provided 
+<div class="sourceCode" id="cb199"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb199-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(myMultiAssay, <span class="dt">ExpScores =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/matrix">matrix</a></span>(<span class="dv">1</span><span class="op">:</span><span class="dv">8</span>, <span class="dt">ncol =</span> <span class="dv">4</span>,</a>
+<a class="sourceLine" id="cb199-2" data-line-number="2"><span class="dt">dim =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"ENSMBL0001"</span>, <span class="st">"ENSMBL0002"</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(<span class="st">"pt"</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">4</span>))),</a>
+<a class="sourceLine" id="cb199-3" data-line-number="3"><span class="dt">mapFrom =</span> 1L)</a></code></pre></div>
+<pre><code>## Warning: Assuming column order in the data provided 
 ##  matches the order in 'mapFrom' experiment(s) colnames</code></pre>
 <pre><code>## A MultiAssayExperiment object of 5 listed
 ##  experiments with user-defined names and respective classes. 
@@ -1293,12 +1311,44 @@
 <h1 class="hasAnchor">
 <a href="#extractor-functions" class="anchor"></a>Extractor functions</h1>
 <p>Extractor functions convert a <code>MultiAssayExperiment</code> into other forms that are convenient for analyzing. These would normally be called after any desired subsetting has been performed.</p>
+<div id="getwithcoldata" class="section level2">
+<h2 class="hasAnchor">
+<a href="#getwithcoldata" class="anchor"></a><code>getWithColData</code>
+</h2>
+<p>Provides a single assay along with any associated ‘colData’ columns while keeping the assay class constant.</p>
+<div class="sourceCode" id="cb202"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb202-1" data-line-number="1">(affex &lt;-<span class="st"> </span><span class="kw"><a href="../reference/MultiAssayExperiment-helpers.html">getWithColData</a></span>(myMultiAssay, 1L))</a></code></pre></div>
+<pre><code>## harmonizing input:
+##   removing 12 sampleMap rows not in names(experiments)</code></pre>
+<pre><code>## class: SummarizedExperiment 
+## dim: 2 4 
+## metadata(0):
+## assays(1): ''
+## rownames(2): ENST00000294241 ENST00000355076
+## rowData names(0):
+## colnames(4): Jack Jill Bob Barbara
+## colData names(2): sex age</code></pre>
+<div class="sourceCode" id="cb205"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb205-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/SummarizedExperiment/topics/SummarizedExperiment-class">colData</a></span>(affex)</a></code></pre></div>
+<pre><code>## DataFrame with 4 rows and 2 columns
+##              sex       age
+##         &lt;factor&gt; &lt;integer&gt;
+## Jack           M        38
+## Jill           F        39
+## Bob            M        40
+## Barbara        F        41</code></pre>
+<div class="sourceCode" id="cb207"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb207-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/class">class</a></span>(affex)</a></code></pre></div>
+<pre><code>## [1] "SummarizedExperiment"
+## attr(,"package")
+## [1] "SummarizedExperiment"</code></pre>
+<p>It will error when the target data class does not support a <code>colData</code> replacement method, meaning that it typically works with <code>SummarizedExperiment</code> and <code>RaggedExperiment</code> assays and their extensions.</p>
+</div>
 <div id="longformat-wideformat" class="section level2">
 <h2 class="hasAnchor">
 <a href="#longformat-wideformat" class="anchor"></a><code>longFormat</code> &amp; <code>wideFormat</code>
 </h2>
 <p>Produces <em>long</em> (default) or <em>wide</em> <code>DataFrame</code> objects. The following produces a long <code>DataFrame</code> (the default) for the first two assays:</p>
-<div class="sourceCode" id="cb196"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb196-1" data-line-number="1"><span class="kw"><a href="../reference/MultiAssayExperiment-helpers.html">longFormat</a></span>(myMultiAssay[, , <span class="dv">1</span><span class="op">:</span><span class="dv">2</span>])</a></code></pre></div>
+<div class="sourceCode" id="cb209"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb209-1" data-line-number="1"><span class="kw"><a href="../reference/MultiAssayExperiment-helpers.html">longFormat</a></span>(myMultiAssay[, , <span class="dv">1</span><span class="op">:</span><span class="dv">2</span>])</a></code></pre></div>
+<pre><code>## harmonizing input:
+##   removing 7 sampleMap rows not in names(experiments)</code></pre>
 <pre><code>## DataFrame with 18 rows and 5 columns
 ##           assay     primary         rowname     colname     value
 ##     &lt;character&gt; &lt;character&gt;     &lt;character&gt; &lt;character&gt; &lt;integer&gt;
@@ -1314,7 +1364,9 @@
 ## 17  Methyl 450k         Bob ENST00000355076     methyl5         9
 ## 18  Methyl 450k         Bob ENST00000383706     methyl5        10</code></pre>
 <p>This is especially useful for performing regression against patient or sample data from <code>colData</code> using the <code>pDataCols</code> argument:</p>
-<div class="sourceCode" id="cb198"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb198-1" data-line-number="1"><span class="kw"><a href="../reference/MultiAssayExperiment-helpers.html">longFormat</a></span>(myMultiAssay[, , <span class="dv">1</span><span class="op">:</span><span class="dv">2</span>], <span class="dt">colDataCols=</span><span class="st">"age"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb212"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb212-1" data-line-number="1"><span class="kw"><a href="../reference/MultiAssayExperiment-helpers.html">longFormat</a></span>(myMultiAssay[, , <span class="dv">1</span><span class="op">:</span><span class="dv">2</span>], <span class="dt">colDataCols=</span><span class="st">"age"</span>)</a></code></pre></div>
+<pre><code>## harmonizing input:
+##   removing 7 sampleMap rows not in names(experiments)</code></pre>
 <pre><code>## DataFrame with 18 rows and 6 columns
 ##           assay     primary         rowname     colname     value
 ##     &lt;character&gt; &lt;character&gt;     &lt;character&gt; &lt;character&gt; &lt;integer&gt;
@@ -1343,10 +1395,10 @@
 ## 17         40
 ## 18         40</code></pre>
 <p>The “wide” format is useful for calculating correlations or performing regression against different genomic features. Wide format is in general not possible with replicate measurements, so we demonstrate on the cleaned <code>MultiAssayExperiment</code> for the first 5 columns:</p>
-<div class="sourceCode" id="cb200"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb200-1" data-line-number="1">maemerge &lt;-<span class="st"> </span><span class="kw"><a href="../reference/MultiAssayExperiment-helpers.html">mergeReplicates</a></span>(<span class="kw"><a href="../reference/MultiAssayExperiment-helpers.html">intersectColumns</a></span>(myMultiAssay))</a></code></pre></div>
+<div class="sourceCode" id="cb215"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb215-1" data-line-number="1">maemerge &lt;-<span class="st"> </span><span class="kw"><a href="../reference/MultiAssayExperiment-helpers.html">mergeReplicates</a></span>(<span class="kw"><a href="../reference/MultiAssayExperiment-helpers.html">intersectColumns</a></span>(myMultiAssay))</a></code></pre></div>
 <pre><code>## harmonizing input:
 ##   removing 1 sampleMap rows with 'colname' not in colnames of experiments</code></pre>
-<div class="sourceCode" id="cb202"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb202-1" data-line-number="1"><span class="kw"><a href="../reference/MultiAssayExperiment-helpers.html">wideFormat</a></span>(maemerge, <span class="dt">colDataCols=</span><span class="st">"sex"</span>)[, <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>]</a></code></pre></div>
+<div class="sourceCode" id="cb217"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb217-1" data-line-number="1"><span class="kw"><a href="../reference/MultiAssayExperiment-helpers.html">wideFormat</a></span>(maemerge, <span class="dt">colDataCols=</span><span class="st">"sex"</span>)[, <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>]</a></code></pre></div>
 <pre><code>## DataFrame with 3 rows and 5 columns
 ##       primary      sex Affy_ENST00000294241 Affy_ENST00000355076
 ##   &lt;character&gt; &lt;factor&gt;            &lt;integer&gt;            &lt;integer&gt;
@@ -1364,12 +1416,12 @@
 <a href="#assay-assays" class="anchor"></a><code>assay</code> / <code>assays</code>
 </h2>
 <p>The <code>assay</code> (singular) function takes a particular experiment and returns a matrix. By default, it will return the <em>first</em> experiment as a matrix.</p>
-<div class="sourceCode" id="cb204"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb204-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/SummarizedExperiment/topics/SummarizedExperiment-class">assay</a></span>(myMultiAssay)</a></code></pre></div>
+<div class="sourceCode" id="cb219"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb219-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/SummarizedExperiment/topics/SummarizedExperiment-class">assay</a></span>(myMultiAssay)</a></code></pre></div>
 <pre><code>##                 array1 array2 array3 array4
 ## ENST00000294241    101    103    105    107
 ## ENST00000355076    102    104    106    108</code></pre>
 <p>The <code>assays</code> (plural) function returns a <code>SimpleList</code> of data matrices from the <code>ExperimentList</code>:</p>
-<div class="sourceCode" id="cb206"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb206-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/SummarizedExperiment/topics/SummarizedExperiment-class">assays</a></span>(myMultiAssay)</a></code></pre></div>
+<div class="sourceCode" id="cb221"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb221-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/SummarizedExperiment/topics/SummarizedExperiment-class">assays</a></span>(myMultiAssay)</a></code></pre></div>
 <pre><code>## List of length 4
 ## names(4): Affy Methyl 450k Mirna CNV gistic</code></pre>
 </div>
@@ -1378,20 +1430,20 @@
 <h1 class="hasAnchor">
 <a href="#the-cancer-genome-atlas-and-multiassayexperiment" class="anchor"></a>The Cancer Genome Atlas and MultiAssayExperiment</h1>
 <p>Our most recent efforts include the release of the experiment data package, <code>curatedTCGAData</code>. This package will allow users to selectively download cancer datasets from The Cancer Genome Atlas (TCGA) and represent the data as <code>MultiAssayExperiment</code> objects. Please see the package vignette for more details.</p>
-<div class="sourceCode" id="cb208"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb208-1" data-line-number="1">BiocManager<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/BiocManager/topics/install">install</a></span>(<span class="st">"curatedTCGAData"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb223"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb223-1" data-line-number="1">BiocManager<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/BiocManager/topics/install">install</a></span>(<span class="st">"curatedTCGAData"</span>)</a></code></pre></div>
 </div>
 <div id="dimension-names-rownames-and-colnames" class="section level1">
 <h1 class="hasAnchor">
 <a href="#dimension-names-rownames-and-colnames" class="anchor"></a>Dimension names: <code>rownames</code> and <code>colnames</code>
 </h1>
 <p><code>rownames</code> and <code>colnames</code> return a <code>CharacterList</code> of row names and column names across all the assays. A <code>CharacterList</code> is an efficient alternative to <code>list</code> used when each element contains a character vector. It also provides a nice show method:</p>
-<div class="sourceCode" id="cb209"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb209-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/colnames">rownames</a></span>(myMultiAssay)</a></code></pre></div>
+<div class="sourceCode" id="cb224"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb224-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/colnames">rownames</a></span>(myMultiAssay)</a></code></pre></div>
 <pre><code>## CharacterList of length 4
 ## [["Affy"]] ENST00000294241 ENST00000355076
 ## [["Methyl 450k"]] ENST00000355076 ENST00000383706
 ## [["Mirna"]] hsa-miR-21 hsa-miR-191 hsa-miR-148a hsa-miR148b
 ## [["CNV gistic"]] a b c d e</code></pre>
-<div class="sourceCode" id="cb211"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb211-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/colnames">colnames</a></span>(myMultiAssay)</a></code></pre></div>
+<div class="sourceCode" id="cb226"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb226-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/colnames">colnames</a></span>(myMultiAssay)</a></code></pre></div>
 <pre><code>## CharacterList of length 4
 ## [["Affy"]] array1 array2 array3 array4
 ## [["Methyl 450k"]] methyl1 methyl2 methyl3 methyl4 methyl5
@@ -1411,13 +1463,14 @@
 <li><code><a href="https://www.rdocumentation.org/packages/base/topics/dim">dim()</a></code></li>
 </ul>
 <p>Here is what happens if one of the methods doesn’t:</p>
-<div class="sourceCode" id="cb213"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb213-1" data-line-number="1">objlist2 &lt;-<span class="st"> </span>objlist</a>
-<a class="sourceLine" id="cb213-2" data-line-number="2">objlist2[[<span class="dv">2</span>]] &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/vector">as.vector</a></span>(objlist2[[<span class="dv">2</span>]])</a>
-<a class="sourceLine" id="cb213-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb213-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/try">try</a></span>(<span class="kw"><a href="../reference/MultiAssayExperiment.html">MultiAssayExperiment</a></span>(objlist2, patient.data, dfmap),</a>
-<a class="sourceLine" id="cb213-5" data-line-number="5">    <span class="dt">outFile =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/showConnections">stdout</a></span>())</a></code></pre></div>
-<pre><code>## Error in validObject(.Object) : 
-##   invalid class "ExperimentList" object: Element [2] of class 'integer' does not have compatible method(s): [</code></pre>
+<div class="sourceCode" id="cb228"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb228-1" data-line-number="1">objlist2 &lt;-<span class="st"> </span>objlist</a>
+<a class="sourceLine" id="cb228-2" data-line-number="2">objlist2[[<span class="dv">2</span>]] &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/vector">as.vector</a></span>(objlist2[[<span class="dv">2</span>]])</a>
+<a class="sourceLine" id="cb228-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb228-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/try">try</a></span>(<span class="kw"><a href="../reference/MultiAssayExperiment.html">MultiAssayExperiment</a></span>(objlist2, patient.data, dfmap),</a>
+<a class="sourceLine" id="cb228-5" data-line-number="5">    <span class="dt">outFile =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/showConnections">stdout</a></span>())</a></code></pre></div>
+<pre><code>## Error in validObject(.Object) : invalid class "ExperimentList" object: 
+##     Element [2] of class 'integer' does not have compatible method(s):
+##     [</code></pre>
 </div>
 <div id="application-programming-interface-api" class="section level1">
 <h1 class="hasAnchor">
@@ -1431,11 +1484,11 @@
 <h1 class="hasAnchor">
 <a href="#methods-for-multiassayexperiment" class="anchor"></a>Methods for MultiAssayExperiment</h1>
 <p>The following methods are defined for <code>MultiAssayExperiment</code>:</p>
-<div class="sourceCode" id="cb215"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb215-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/methods">methods</a></span>(<span class="dt">class=</span><span class="st">"MultiAssayExperiment"</span>)</a></code></pre></div>
-<pre><code>##  [1] [               [[              [[&lt;-            $              
-##  [5] $&lt;-             anyReplicated   assay           assays         
-##  [9] c               coerce          colData         colData&lt;-      
-## [13] complete.cases  dimnames        duplicated      experiments    
+<div class="sourceCode" id="cb230"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb230-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/methods">methods</a></span>(<span class="dt">class=</span><span class="st">"MultiAssayExperiment"</span>)</a></code></pre></div>
+<pre><code>##  [1] [               [[              [[&lt;-            [&lt;-            
+##  [5] $               $&lt;-             anyReplicated   assay          
+##  [9] assays          c               coerce          colData        
+## [13] colData&lt;-       complete.cases  dimnames        experiments    
 ## [17] experiments&lt;-   hasRowRanges    isEmpty         length         
 ## [21] mergeReplicates metadata        metadata&lt;-      names          
 ## [25] names&lt;-         replicated      sampleMap       sampleMap&lt;-    
@@ -1447,7 +1500,7 @@
 <h1 class="hasAnchor">
 <a href="#citing-multiassayexperiment" class="anchor"></a>Citing MultiAssayExperiment</h1>
 <p>We are excited to announce the official citation for MultiAssayExperiment in <em>Cancer Research</em>.</p>
-<div class="sourceCode" id="cb217"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb217-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/citation">citation</a></span>(<span class="st">"MultiAssayExperiment"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb232"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb232-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/citation">citation</a></span>(<span class="st">"MultiAssayExperiment"</span>)</a></code></pre></div>
 <pre><code>## 
 ## To cite MultiAssayExperiment in publications use:
 ## 
@@ -1468,13 +1521,13 @@
 <div id="sessioninfo" class="section level1">
 <h1 class="hasAnchor">
 <a href="#sessioninfo" class="anchor"></a>sessionInfo()</h1>
-<div class="sourceCode" id="cb219"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb219-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/sessionInfo">sessionInfo</a></span>()</a></code></pre></div>
-<pre><code>## R version 3.5.2 (2017-01-27)
+<div class="sourceCode" id="cb234"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb234-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/sessionInfo">sessionInfo</a></span>()</a></code></pre></div>
+<pre><code>## R version 3.6.0 (2017-01-27)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
 ## Running under: Ubuntu 14.04.5 LTS
 ## 
 ## Matrix products: default
-## BLAS: /home/travis/R-bin/lib/R/lib/libRblas.so
+## BLAS:   /home/travis/R-bin/lib/R/lib/libRblas.so
 ## LAPACK: /home/travis/R-bin/lib/R/lib/libRlapack.so
 ## 
 ## locale:
@@ -1490,30 +1543,30 @@
 ## [8] methods   base     
 ## 
 ## other attached packages:
-##  [1] RaggedExperiment_1.6.0      MultiAssayExperiment_1.8.3 
-##  [3] SummarizedExperiment_1.12.0 DelayedArray_0.8.0         
-##  [5] BiocParallel_1.16.6         matrixStats_0.54.0         
-##  [7] Biobase_2.42.0              GenomicRanges_1.34.0       
-##  [9] GenomeInfoDb_1.18.2         IRanges_2.16.0             
-## [11] S4Vectors_0.20.1            BiocGenerics_0.28.0        
-## [13] BiocStyle_2.10.0           
+##  [1] RaggedExperiment_1.8.0      MultiAssayExperiment_1.10.4
+##  [3] SummarizedExperiment_1.14.0 DelayedArray_0.10.0        
+##  [5] BiocParallel_1.18.0         matrixStats_0.54.0         
+##  [7] Biobase_2.44.0              GenomicRanges_1.36.0       
+##  [9] GenomeInfoDb_1.20.0         IRanges_2.18.1             
+## [11] S4Vectors_0.22.0            BiocGenerics_0.30.0        
+## [13] BiocStyle_2.12.0           
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] Rcpp_1.0.0             pillar_1.3.1           compiler_3.5.2        
-##  [4] BiocManager_1.30.4     XVector_0.22.0         bitops_1.0-6          
-##  [7] tools_3.5.2            zlibbioc_1.28.0        digest_0.6.18         
-## [10] tibble_2.0.1           lattice_0.20-38        evaluate_0.13         
-## [13] memoise_1.1.0          pkgconfig_2.0.2        rlang_0.3.1           
-## [16] Matrix_1.2-15          commonmark_1.7         yaml_2.2.0            
-## [19] pkgdown_1.3.0          xfun_0.4               GenomeInfoDbData_1.2.0
+##  [1] Rcpp_1.0.1             pillar_1.4.2           compiler_3.6.0        
+##  [4] BiocManager_1.30.4     XVector_0.24.0         bitops_1.0-6          
+##  [7] tools_3.6.0            zlibbioc_1.30.0        digest_0.6.20         
+## [10] tibble_2.1.3           lattice_0.20-38        evaluate_0.14         
+## [13] memoise_1.1.0          pkgconfig_2.0.2        rlang_0.4.0           
+## [16] Matrix_1.2-17          commonmark_1.7         yaml_2.2.0            
+## [19] pkgdown_1.3.0          xfun_0.8               GenomeInfoDbData_1.2.1
 ## [22] stringr_1.4.0          roxygen2_6.1.1         xml2_1.2.0            
-## [25] knitr_1.21             desc_1.2.0             fs_1.2.6              
-## [28] tidyselect_0.2.5       grid_3.5.2             rprojroot_1.3-2       
-## [31] glue_1.3.0             R6_2.4.0               rmarkdown_1.11        
-## [34] bookdown_0.9           purrr_0.3.0            tidyr_0.8.2           
-## [37] magrittr_1.5           backports_1.1.3        htmltools_0.3.6       
-## [40] MASS_7.3-51.1          assertthat_0.2.0       stringi_1.3.1         
-## [43] RCurl_1.95-4.11        crayon_1.3.4</code></pre>
+## [25] knitr_1.23             desc_1.2.0             fs_1.3.1              
+## [28] tidyselect_0.2.5       grid_3.6.0             rprojroot_1.3-2       
+## [31] glue_1.3.1             R6_2.4.0               rmarkdown_1.14        
+## [34] bookdown_0.12          purrr_0.3.2            tidyr_0.8.3           
+## [37] magrittr_1.5           backports_1.1.4        htmltools_0.3.6       
+## [40] MASS_7.3-51.4          assertthat_0.2.1       stringi_1.4.3         
+## [43] RCurl_1.95-4.12        crayon_1.3.4</code></pre>
 <p style="text-align: right;">
 <a href="#header">back to top</a>
 </p>
@@ -1562,7 +1615,7 @@
       <li>
 <a href="#helpers-for-data-clean-up-and-management">Helpers for data clean-up and management</a><ul class="nav nav-pills nav-stacked">
 <li><a href="#complete-cases"><code>complete.cases</code></a></li>
-      <li><a href="#replicated-formerly-duplicated"><code>replicated</code> (formerly <code>duplicated</code>)</a></li>
+      <li><a href="#replicated"><code>replicated</code></a></li>
       <li><a href="#intersectrows"><code>intersectRows</code></a></li>
       <li><a href="#intersectcolumns"><code>intersectColumns</code></a></li>
       <li><a href="#mergereplicates"><code>mergeReplicates</code></a></li>
@@ -1571,7 +1624,8 @@
 </li>
       <li>
 <a href="#extractor-functions">Extractor functions</a><ul class="nav nav-pills nav-stacked">
-<li><a href="#longformat-wideformat"><code>longFormat</code> &amp; <code>wideFormat</code></a></li>
+<li><a href="#getwithcoldata"><code>getWithColData</code></a></li>
+      <li><a href="#longformat-wideformat"><code>longFormat</code> &amp; <code>wideFormat</code></a></li>
       <li><a href="#assay-assays"><code>assay</code> / <code>assays</code></a></li>
       </ul>
 </li>

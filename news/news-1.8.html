@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Checking assay method for any class — hasAssay • MultiAssayExperiment</title>
+<title>Version 1.8 • MultiAssayExperiment</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,13 +30,7 @@
 
 
 
-<meta property="og:title" content="Checking assay method for any class — hasAssay" />
-
-<meta property="og:description" content="The hasAssay function is intended for developers who would like to
-include new classes into a MultiAssayExperiment instance.
-It checks the methods tables of the assay function for the
-specified class of the argument." />
-<meta name="twitter:card" content="summary" />
+<meta property="og:title" content="Version 1.8" />
 
 
 
@@ -53,7 +47,7 @@ specified class of the argument." />
   </head>
 
   <body>
-    <div class="container template-reference-topic">
+    <div class="container template-news">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -115,53 +109,49 @@ specified class of the argument." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Checking assay method for any class</h1>
-    
-    <div class="hidden name"><code>hasAssay.Rd</code></div>
+      <h1>Changelog <small>1.8</small></h1>
+      
     </div>
 
-    <div class="ref-description">
-    
-    <p>The <code>hasAssay</code> function is intended for developers who would like to
-include new classes into a <code>MultiAssayExperiment</code> instance.
-It checks the methods tables of the <code>assay</code> function for the
-specified class of the argument.</p>
-    
-    </div>
-
-    <pre class="usage"><span class='fu'>hasAssay</span>(<span class='no'>object</span>)</pre>
-    
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>object</th>
-      <td><p>A <code>MultiAssayExperiment</code> or <code>named list</code>
-object instance</p></td>
-    </tr>
-    </table>
-    
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>A <code>logical</code> value indicating method availability</p>
-    
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>lst</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/structure'>structure</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='kw'>.Names</span><span class='kw'>=</span><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>())
-<span class='fu'>hasAssay</span>(<span class='no'>lst</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
-</div></pre>
+    <div id="multiassayexperiment-1-8-0" class="section level1">
+<h1 class="page-header">
+<a href="#multiassayexperiment-1-8-0" class="anchor"></a>MultiAssayExperiment 1.8.0</h1>
+<div id="new-features-1" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-features-1" class="anchor"></a>New features</h2>
+<ul>
+<li>The single bracket replacement method <code>[&lt;-</code> added to support assignment of assay datasets</li>
+<li>Users can now rename experiments in a MultiAssayExperiment with <code>names(x) &lt;- value</code>
+</li>
+<li>
+<code>replicated</code> and <code>mergeReplicates</code> functions have been refactored and improved</li>
+<li>combining MultiAssayExperiments now possible with <code>c</code> function</li>
+</ul>
+</div>
+<div id="bug-fixes-and-minor-improvements-1" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-fixes-and-minor-improvements-1" class="anchor"></a>Bug fixes and minor improvements</h2>
+<ul>
+<li>
+<code>wideFormat</code> function improvements and bug fixes with name indicator subsetting</li>
+<li>
+<code>BiocGenerics:::replaceSlots</code> used instead of replace methods</li>
+<li>Added tests for <code>anyReplicated</code>, <code>c</code>, and <code>names&lt;-</code> functions</li>
+<li>Unit tests added for replacement method testing</li>
+</ul>
+</div>
+</div>
   </div>
+
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+    <div id="tocnav">
+      <h2>Contents</h2>
+      <ul class="nav nav-pills nav-stacked">
+        <li><a href="#multiassayexperiment-1-8-0">1.8.0</a></li>
+      </ul>
+    </div>
   </div>
+
 </div>
 
       <footer>

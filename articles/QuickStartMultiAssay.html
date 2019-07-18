@@ -30,7 +30,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MultiAssayExperiment</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.8.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.10.4</span>
       </span>
     </div>
 
@@ -79,7 +79,7 @@
       <h1>MultiAssayExperiment: Quick Start Guide</h1>
                         <h4 class="author">Marcel Ramos &amp; Levi Waldron</h4>
             
-            <h4 class="date">February 15, 2019</h4>
+            <h4 class="date">July 18, 2019</h4>
       
       
       <div class="hidden name"><code>QuickStartMultiAssay.Rmd</code></div>
@@ -221,11 +221,14 @@
 <pre><code>multiassayexperiment[i = rownames, j = primary or colnames, k = assay]</code></pre>
 <p>Subsetting operations always return another <code>MultiAssayExperiment</code>. For example, the following will return any rows named “MAPK14” or “IGFBP2”, and remove any assays where no rows match:</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">miniACC[<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"MAPK14"</span>, <span class="st">"IGFBP2"</span>), , ]</a></code></pre></div>
-<p>The following will keep only patients of pathological stage iv, and all their associated assays:</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">miniACC[, miniACC<span class="op">$</span>pathologic_stage <span class="op">==</span><span class="st"> "stage iv"</span>, ]</a></code></pre></div>
-<p>And the following will keep only the RNA-seq dataset, and only patients for which this assay is available:</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1">miniACC[, , <span class="st">"RNASeq2GeneNorm"</span>]</a></code></pre></div>
 <pre><code>## harmonizing input:
+##   removing 170 sampleMap rows not in names(experiments)</code></pre>
+<p>The following will keep only patients of pathological stage iv, and all their associated assays:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1">miniACC[, miniACC<span class="op">$</span>pathologic_stage <span class="op">==</span><span class="st"> "stage iv"</span>, ]</a></code></pre></div>
+<p>And the following will keep only the RNA-seq dataset, and only patients for which this assay is available:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1">miniACC[, , <span class="st">"RNASeq2GeneNorm"</span>]</a></code></pre></div>
+<pre><code>## harmonizing input:
+##   removing 306 sampleMap rows not in names(experiments)
 ##   removing 13 colData rownames not in sampleMap 'primary'</code></pre>
 <div id="subsetting-by-genomic-ranges" class="section level3">
 <h3 class="hasAnchor">
@@ -238,7 +241,7 @@
 <a href="#double-bracket" class="anchor"></a>Double bracket <code>[[</code>
 </h2>
 <p>The “double bracket” method (<code>[[</code>) is a convenience function for extracting a single element of the <code>MultiAssayExperiment</code> <code>ExperimentList</code>. It avoids the use of <code>experiments(mae)[[1L]]</code>. For example, both of the following extract the <code>ExpressionSet</code> object containing RNA-seq data:</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1">miniACC[[1L]]  <span class="co">#or equivalently, miniACC[["RNASeq2GeneNorm"]]</span></a></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1">miniACC[[1L]]  <span class="co">#or equivalently, miniACC[["RNASeq2GeneNorm"]]</span></a></code></pre></div>
 <pre><code>## class: SummarizedExperiment 
 ## dim: 198 79 
 ## metadata(3): experimentData annotation protocolData
@@ -254,13 +257,13 @@
 <h2 class="hasAnchor">
 <a href="#patients-with-complete-data" class="anchor"></a>Patients with complete data</h2>
 <p><code><a href="https://www.rdocumentation.org/packages/stats/topics/complete.cases">complete.cases()</a></code> shows which patients have complete data for all assays:</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/summary">summary</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/complete.cases">complete.cases</a></span>(miniACC))</a></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/summary">summary</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/complete.cases">complete.cases</a></span>(miniACC))</a></code></pre></div>
 <pre><code>##    Mode   FALSE    TRUE 
 ## logical      49      43</code></pre>
 <p>The above logical vector could be used for patient subsetting. More simply, <code><a href="../reference/MultiAssayExperiment-helpers.html">intersectColumns()</a></code> will select complete cases and rearrange each <code>ExperimentList</code> element so its columns correspond exactly to rows of <code>colData</code> in the same order:</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1">accmatched =<span class="st"> </span><span class="kw"><a href="../reference/MultiAssayExperiment-helpers.html">intersectColumns</a></span>(miniACC)</a></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1">accmatched =<span class="st"> </span><span class="kw"><a href="../reference/MultiAssayExperiment-helpers.html">intersectColumns</a></span>(miniACC)</a></code></pre></div>
 <p>Note, the column names of the assays in <code>accmatched</code> are not the same because of assay-specific identifiers, but they have been automatically re-arranged to correspond to the same patients. In these TCGA assays, the first three <code>-</code> delimited positions correspond to patient, ie the first patient is <em>TCGA-OR-A5J2</em>:</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/colnames">colnames</a></span>(accmatched)</a></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/colnames">colnames</a></span>(accmatched)</a></code></pre></div>
 <pre><code>## CharacterList of length 5
 ## [["RNASeq2GeneNorm"]] TCGA-OR-A5J2-01A-11R-A29S-07 ...
 ## [["gistict"]] TCGA-OR-A5J2-01A-11D-A29H-01 ...
@@ -272,10 +275,12 @@
 <h2 class="hasAnchor">
 <a href="#row-names-that-are-common-across-assays" class="anchor"></a>Row names that are common across assays</h2>
 <p><code><a href="../reference/MultiAssayExperiment-helpers.html">intersectRows()</a></code> keeps only rows that are common to each assay, and aligns them in identical order. For example, to keep only genes where data are available for RNA-seq, GISTIC copy number, and somatic mutations:</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1">accmatched2 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/MultiAssayExperiment-helpers.html">intersectRows</a></span>(miniACC[, , <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"RNASeq2GeneNorm"</span>,</a>
-<a class="sourceLine" id="cb25-2" data-line-number="2">                                           <span class="st">"gistict"</span>,</a>
-<a class="sourceLine" id="cb25-3" data-line-number="3">                                           <span class="st">"Mutations"</span>)])</a>
-<a class="sourceLine" id="cb25-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/colnames">rownames</a></span>(accmatched2)</a></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1">accmatched2 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/MultiAssayExperiment-helpers.html">intersectRows</a></span>(miniACC[, , <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"RNASeq2GeneNorm"</span>,</a>
+<a class="sourceLine" id="cb26-2" data-line-number="2">                                           <span class="st">"gistict"</span>,</a>
+<a class="sourceLine" id="cb26-3" data-line-number="3">                                           <span class="st">"Mutations"</span>)])</a></code></pre></div>
+<pre><code>## harmonizing input:
+##   removing 126 sampleMap rows not in names(experiments)</code></pre>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/colnames">rownames</a></span>(accmatched2)</a></code></pre></div>
 <pre><code>## CharacterList of length 3
 ## [["RNASeq2GeneNorm"]] DIRAS3 G6PD KDR ERBB3 ... RET CDKN2A MACC1 CHGA
 ## [["gistict"]] DIRAS3 G6PD KDR ERBB3 AKT1S1 ... PREX1 RET CDKN2A MACC1 CHGA
@@ -292,10 +297,10 @@
 <h2 class="hasAnchor">
 <a href="#assay-and-assays" class="anchor"></a>assay and assays</h2>
 <p>The <code>assay</code> and <code>assays</code> methods follow <code>SummarizedExperiment</code> convention. The <code>assay</code> (singular) method will extract the first element of the <code>ExperimentList</code> and will return a <code>matrix</code>.</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/class">class</a></span>(<span class="kw">assay</span>(miniACC))</a></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/class">class</a></span>(<span class="kw">assay</span>(miniACC))</a></code></pre></div>
 <pre><code>## [1] "matrix"</code></pre>
 <p>The <code>assays</code> (plural) method will return a <code>SimpleList</code> of the data with each element being a <code>matrix</code>.</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" data-line-number="1"><span class="kw">assays</span>(miniACC)</a></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1"><span class="kw">assays</span>(miniACC)</a></code></pre></div>
 <pre><code>## List of length 5
 ## names(5): RNASeq2GeneNorm gistict RPPAArray Mutations miRNASeqGene</code></pre>
 <p><em>Key point:</em> * Whereas the <code>[[</code> returned an assay as its original class, <code>assay()</code> and <code>assays()</code> convert the assay data to matrix form.</p>
@@ -344,8 +349,10 @@
 <a href="#longformat" class="anchor"></a><code>longFormat</code>
 </h2>
 <p>In <em>long</em> format a single column provides all assay results, with additional optional <code>colData</code> columns whose values are repeated as necessary. Here <em>assay</em> is the name of the ExperimentList element, <em>primary</em> is the patient identifier (rowname of colData), <em>rowname</em> is the assay rowname (in this case genes), <em>colname</em> is the assay-specific identifier (column name), <em>value</em> is the numeric measurement (gene expression, copy number, presence of a non-silent mutation, etc), and following these are the <em>vital_status</em> and <em>days_to_death</em> colData columns that have been added:</p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" data-line-number="1"><span class="kw"><a href="../reference/MultiAssayExperiment-helpers.html">longFormat</a></span>(miniACC[<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"TP53"</span>, <span class="st">"CTNNB1"</span>), , ], </a>
-<a class="sourceLine" id="cb31-2" data-line-number="2">           <span class="dt">colDataCols =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"vital_status"</span>, <span class="st">"days_to_death"</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" data-line-number="1"><span class="kw"><a href="../reference/MultiAssayExperiment-helpers.html">longFormat</a></span>(miniACC[<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"TP53"</span>, <span class="st">"CTNNB1"</span>), , ], </a>
+<a class="sourceLine" id="cb34-2" data-line-number="2">           <span class="dt">colDataCols =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"vital_status"</span>, <span class="st">"days_to_death"</span>))</a></code></pre></div>
+<pre><code>## harmonizing input:
+##   removing 126 sampleMap rows not in names(experiments)</code></pre>
 <pre><code>## DataFrame with 518 rows and 7 columns
 ##               assay      primary     rowname                      colname
 ##         &lt;character&gt;  &lt;character&gt; &lt;character&gt;                  &lt;character&gt;
@@ -379,8 +386,10 @@
 <a href="#wideformat" class="anchor"></a><code>wideFormat</code>
 </h2>
 <p>In <em>wide</em> format, each feature from each assay goes in a separate column, with one row per primary identifier (patient). Here, each variable becomes a new column:</p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb33-1" data-line-number="1"><span class="kw"><a href="../reference/MultiAssayExperiment-helpers.html">wideFormat</a></span>(miniACC[<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"TP53"</span>, <span class="st">"CTNNB1"</span>), , ], </a>
-<a class="sourceLine" id="cb33-2" data-line-number="2">           <span class="dt">colDataCols =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"vital_status"</span>, <span class="st">"days_to_death"</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb37-1" data-line-number="1"><span class="kw"><a href="../reference/MultiAssayExperiment-helpers.html">wideFormat</a></span>(miniACC[<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"TP53"</span>, <span class="st">"CTNNB1"</span>), , ], </a>
+<a class="sourceLine" id="cb37-2" data-line-number="2">           <span class="dt">colDataCols =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"vital_status"</span>, <span class="st">"days_to_death"</span>))</a></code></pre></div>
+<pre><code>## harmonizing input:
+##   removing 126 sampleMap rows not in names(experiments)</code></pre>
 <pre><code>## DataFrame with 92 rows and 9 columns
 ##          primary vital_status days_to_death RNASeq2GeneNorm_CTNNB1
 ##      &lt;character&gt;    &lt;integer&gt;     &lt;integer&gt;              &lt;numeric&gt;
@@ -439,10 +448,10 @@
 <code>sampleMap</code> - A <code>DataFrame</code> of <code>assay</code>, <code>primary</code>, and <code>colname</code> identifiers</li>
 </ol>
 <p>The miniACC object can be reconstructed as follows:</p>
-<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb35-1" data-line-number="1"><span class="kw"><a href="../reference/MultiAssayExperiment.html">MultiAssayExperiment</a></span>(<span class="dt">experiments=</span><span class="kw"><a href="../reference/MultiAssayExperiment-methods.html">experiments</a></span>(miniACC),</a>
-<a class="sourceLine" id="cb35-2" data-line-number="2">    <span class="dt">colData=</span><span class="kw">colData</span>(miniACC),</a>
-<a class="sourceLine" id="cb35-3" data-line-number="3">    <span class="dt">sampleMap=</span><span class="kw"><a href="../reference/MultiAssayExperiment-methods.html">sampleMap</a></span>(miniACC),</a>
-<a class="sourceLine" id="cb35-4" data-line-number="4">    <span class="dt">metadata=</span><span class="kw">metadata</span>(miniACC))</a></code></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" data-line-number="1"><span class="kw"><a href="../reference/MultiAssayExperiment.html">MultiAssayExperiment</a></span>(<span class="dt">experiments=</span><span class="kw"><a href="../reference/MultiAssayExperiment-methods.html">experiments</a></span>(miniACC),</a>
+<a class="sourceLine" id="cb40-2" data-line-number="2">    <span class="dt">colData=</span><span class="kw">colData</span>(miniACC),</a>
+<a class="sourceLine" id="cb40-3" data-line-number="3">    <span class="dt">sampleMap=</span><span class="kw"><a href="../reference/MultiAssayExperiment-methods.html">sampleMap</a></span>(miniACC),</a>
+<a class="sourceLine" id="cb40-4" data-line-number="4">    <span class="dt">metadata=</span><span class="kw">metadata</span>(miniACC))</a></code></pre></div>
 <pre><code>## A MultiAssayExperiment object of 5 listed
 ##  experiments with user-defined names and respective classes. 
 ##  Containing an ExperimentList class object of length 5: 
@@ -468,10 +477,10 @@
 <h2 class="hasAnchor">
 <a href="#c---concatenate-to-multiassayexperiment" class="anchor"></a><code>c</code> - concatenate to MultiAssayExperiment</h2>
 <p>The <code>c</code> function allows the user to concatenate an additional experiment to an existing <code>MultiAssayExperiment</code>. The optional <code>sampleMap</code> argument allows concatenating an assay whose column names do not match the row names of <code>colData</code>. For convenience, the <em>mapFrom</em> argument allows the user to map from a particular experiment <strong>provided</strong> that the <strong>order</strong> of the colnames is in the <strong>same</strong>. A <code>warning</code> will be issued to make the user aware of this assumption. For example, to concatenate a matrix of log2-transformed RNA-seq results:</p>
-<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb37-1" data-line-number="1">miniACC2 &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(miniACC, <span class="dt">log2rnaseq =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Log">log2</a></span>(<span class="kw">assays</span>(miniACC)<span class="op">$</span>RNASeq2GeneNorm), <span class="dt">mapFrom=</span>1L)</a></code></pre></div>
-<pre><code>## Warning in .local(x, ...): Assuming column order in the data provided 
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb42-1" data-line-number="1">miniACC2 &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(miniACC, <span class="dt">log2rnaseq =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Log">log2</a></span>(<span class="kw">assays</span>(miniACC)<span class="op">$</span>RNASeq2GeneNorm), <span class="dt">mapFrom=</span>1L)</a></code></pre></div>
+<pre><code>## Warning: Assuming column order in the data provided 
 ##  matches the order in 'mapFrom' experiment(s) colnames</code></pre>
-<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb39-1" data-line-number="1"><span class="kw">assays</span>(miniACC2)</a></code></pre></div>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb44-1" data-line-number="1"><span class="kw">assays</span>(miniACC2)</a></code></pre></div>
 <pre><code>## List of length 6
 ## names(6): RNASeq2GeneNorm gistict RPPAArray Mutations miRNASeqGene log2rnaseq</code></pre>
 <p style="text-align: right;">
@@ -486,8 +495,8 @@
 <h2 class="hasAnchor">
 <a href="#upsetr-venn-diagram" class="anchor"></a>UpsetR “Venn” diagram</h2>
 <p>We see that 43 samples have all 5 assays, 32 are missing reverse-phase protein (RPPAArray), 2 are missing Mutations, 1 is missing gistict, 12 have only mutations and gistict, etc:</p>
-<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(UpSetR)</a>
-<a class="sourceLine" id="cb41-2" data-line-number="2"><span class="kw"><a href="../reference/upsetSamples.html">upsetSamples</a></span>(miniACC)</a></code></pre></div>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb46-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(UpSetR)</a>
+<a class="sourceLine" id="cb46-2" data-line-number="2"><span class="kw"><a href="../reference/upsetSamples.html">upsetSamples</a></span>(miniACC)</a></code></pre></div>
 <p><img src="QuickStartMultiAssay_files/figure-html/unnamed-chunk-21-1.png" width="700"></p>
 </div>
 <div id="kaplan-meier-plot-stratified-by-a-clinical-variable" class="section level2">
@@ -495,28 +504,30 @@
 <a href="#kaplan-meier-plot-stratified-by-a-clinical-variable" class="anchor"></a>Kaplan-meier plot stratified by a clinical variable</h2>
 <p>The colData can provide clinical data for things like a Kaplan-Meier plot for overall survival stratified by nodal stage. To simplify things, first add a “y” column to the colData, containing the <code>Surv</code> object for survival analysis:</p>
 <p><em><strong>Note</strong></em>: <code>survfit</code> method does not work well with <code>DataFrame</code>. To bypass the error, here we covert <code>colData</code> to a <code>data.frame</code>.</p>
-<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb42-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/message">suppressPackageStartupMessages</a></span>({</a>
-<a class="sourceLine" id="cb42-2" data-line-number="2">  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(survival)</a>
-<a class="sourceLine" id="cb42-3" data-line-number="3">  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(survminer)</a>
-<a class="sourceLine" id="cb42-4" data-line-number="4">})</a>
-<a class="sourceLine" id="cb42-5" data-line-number="5">coldat &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/as.data.frame">as.data.frame</a></span>(<span class="kw">colData</span>(miniACC))</a>
-<a class="sourceLine" id="cb42-6" data-line-number="6">coldat<span class="op">$</span>y &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/survival/topics/Surv">Surv</a></span>(miniACC<span class="op">$</span>days_to_death, miniACC<span class="op">$</span>vital_status)</a>
-<a class="sourceLine" id="cb42-7" data-line-number="7"><span class="kw">colData</span>(miniACC) &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/S4Vectors/topics/DataFrame-class">DataFrame</a></span>(coldat)</a></code></pre></div>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/message">suppressPackageStartupMessages</a></span>({</a>
+<a class="sourceLine" id="cb47-2" data-line-number="2">  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(survival)</a>
+<a class="sourceLine" id="cb47-3" data-line-number="3">  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(survminer)</a>
+<a class="sourceLine" id="cb47-4" data-line-number="4">})</a>
+<a class="sourceLine" id="cb47-5" data-line-number="5">coldat &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/as.data.frame">as.data.frame</a></span>(<span class="kw">colData</span>(miniACC))</a>
+<a class="sourceLine" id="cb47-6" data-line-number="6">coldat<span class="op">$</span>y &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/survival/topics/Surv">Surv</a></span>(miniACC<span class="op">$</span>days_to_death, miniACC<span class="op">$</span>vital_status)</a>
+<a class="sourceLine" id="cb47-7" data-line-number="7"><span class="kw">colData</span>(miniACC) &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/S4Vectors/topics/DataFrame-class">DataFrame</a></span>(coldat)</a></code></pre></div>
 <p>And remove any patients missing overall survival information:</p>
-<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" data-line-number="1">miniACC &lt;-<span class="st"> </span>miniACC[, <span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/complete.cases">complete.cases</a></span>(coldat<span class="op">$</span>y), ]</a>
-<a class="sourceLine" id="cb43-2" data-line-number="2">coldat &lt;-<span class="st"> </span><span class="kw">as</span>(<span class="kw">colData</span>(miniACC), <span class="st">"data.frame"</span>)</a></code></pre></div>
-<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb44-1" data-line-number="1">fit &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/survival/topics/survfit">survfit</a></span>(y <span class="op">~</span><span class="st"> </span>pathology_N_stage, <span class="dt">data =</span> coldat)</a>
-<a class="sourceLine" id="cb44-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/survminer/topics/ggsurvplot">ggsurvplot</a></span>(fit, <span class="dt">data =</span> coldat, <span class="dt">risk.table =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb48-1" data-line-number="1">miniACC &lt;-<span class="st"> </span>miniACC[, <span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/complete.cases">complete.cases</a></span>(coldat<span class="op">$</span>y), ]</a>
+<a class="sourceLine" id="cb48-2" data-line-number="2">coldat &lt;-<span class="st"> </span><span class="kw">as</span>(<span class="kw">colData</span>(miniACC), <span class="st">"data.frame"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb49-1" data-line-number="1">fit &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/survival/topics/survfit">survfit</a></span>(y <span class="op">~</span><span class="st"> </span>pathology_N_stage, <span class="dt">data =</span> coldat)</a>
+<a class="sourceLine" id="cb49-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/survminer/topics/ggsurvplot">ggsurvplot</a></span>(fit, <span class="dt">data =</span> coldat, <span class="dt">risk.table =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <p><img src="QuickStartMultiAssay_files/figure-html/unnamed-chunk-24-1.png" width="700"></p>
 </div>
 <div id="multivariate-cox-regression-including-rna-seq-copy-number-and-pathology" class="section level2">
 <h2 class="hasAnchor">
 <a href="#multivariate-cox-regression-including-rna-seq-copy-number-and-pathology" class="anchor"></a>Multivariate Cox regression including RNA-seq, copy number, and pathology</h2>
 <p>Choose the <em>EZH2</em> gene for demonstration. This subsetting will drop assays with no row named EZH2:</p>
-<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb45-1" data-line-number="1">wideacc &lt;-<span class="st"> </span><span class="kw"><a href="../reference/MultiAssayExperiment-helpers.html">wideFormat</a></span>(miniACC[<span class="st">"EZH2"</span>, , ], </a>
-<a class="sourceLine" id="cb45-2" data-line-number="2">    <span class="dt">colDataCols =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"vital_status"</span>, <span class="st">"days_to_death"</span>, <span class="st">"pathology_N_stage"</span>))</a>
-<a class="sourceLine" id="cb45-3" data-line-number="3">wideacc<span class="op">$</span>y &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/survival/topics/Surv">Surv</a></span>(wideacc<span class="op">$</span>days_to_death, wideacc<span class="op">$</span>vital_status)</a>
-<a class="sourceLine" id="cb45-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(wideacc)</a></code></pre></div>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb50-1" data-line-number="1">wideacc &lt;-<span class="st"> </span><span class="kw"><a href="../reference/MultiAssayExperiment-helpers.html">wideFormat</a></span>(miniACC[<span class="st">"EZH2"</span>, , ], </a>
+<a class="sourceLine" id="cb50-2" data-line-number="2">    <span class="dt">colDataCols =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"vital_status"</span>, <span class="st">"days_to_death"</span>, <span class="st">"pathology_N_stage"</span>))</a></code></pre></div>
+<pre><code>## harmonizing input:
+##   removing 76 sampleMap rows not in names(experiments)</code></pre>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb52-1" data-line-number="1">wideacc<span class="op">$</span>y &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/survival/topics/Surv">Surv</a></span>(wideacc<span class="op">$</span>days_to_death, wideacc<span class="op">$</span>vital_status)</a>
+<a class="sourceLine" id="cb52-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(wideacc)</a></code></pre></div>
 <pre><code>## DataFrame with 6 rows and 7 columns
 ##        primary vital_status days_to_death pathology_N_stage
 ##    &lt;character&gt;    &lt;integer&gt;     &lt;integer&gt;       &lt;character&gt;
@@ -535,8 +546,8 @@
 ## 5             747.6935            1  490:1
 ## 6             426.4401            1  579:1</code></pre>
 <p>Perform a multivariate Cox regression with <em>EZH2</em> copy number (gistict), log2-transformed <em>EZH2</em> expression (RNASeq2GeneNorm), and nodal status (pathology_N_stage) as predictors:</p>
-<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/survival/topics/coxph">coxph</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/survival/topics/Surv">Surv</a></span>(days_to_death, vital_status) <span class="op">~</span><span class="st"> </span>gistict_EZH2 <span class="op">+</span></a>
-<a class="sourceLine" id="cb47-2" data-line-number="2"><span class="st">          </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Log">log2</a></span>(RNASeq2GeneNorm_EZH2) <span class="op">+</span><span class="st"> </span>pathology_N_stage,  <span class="dt">data=</span>wideacc)</a></code></pre></div>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb54-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/survival/topics/coxph">coxph</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/survival/topics/Surv">Surv</a></span>(days_to_death, vital_status) <span class="op">~</span><span class="st"> </span>gistict_EZH2 <span class="op">+</span></a>
+<a class="sourceLine" id="cb54-2" data-line-number="2"><span class="st">          </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Log">log2</a></span>(RNASeq2GeneNorm_EZH2) <span class="op">+</span><span class="st"> </span>pathology_N_stage,  <span class="dt">data=</span>wideacc)</a></code></pre></div>
 <pre><code>## Call:
 ## coxph(formula = Surv(days_to_death, vital_status) ~ gistict_EZH2 + 
 ##     log2(RNASeq2GeneNorm_EZH2) + pathology_N_stage, data = wideacc)
@@ -556,13 +567,13 @@
 <div id="session-info" class="section level1">
 <h1 class="hasAnchor">
 <a href="#session-info" class="anchor"></a>Session info</h1>
-<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb49-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/sessionInfo">sessionInfo</a></span>()</a></code></pre></div>
-<pre><code>## R version 3.5.2 (2017-01-27)
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb56-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/sessionInfo">sessionInfo</a></span>()</a></code></pre></div>
+<pre><code>## R version 3.6.0 (2017-01-27)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
 ## Running under: Ubuntu 14.04.5 LTS
 ## 
 ## Matrix products: default
-## BLAS: /home/travis/R-bin/lib/R/lib/libRblas.so
+## BLAS:   /home/travis/R-bin/lib/R/lib/libRblas.so
 ## LAPACK: /home/travis/R-bin/lib/R/lib/libRlapack.so
 ## 
 ## locale:
@@ -578,39 +589,39 @@
 ## [8] methods   base     
 ## 
 ## other attached packages:
-##  [1] survminer_0.4.3             ggpubr_0.2                 
-##  [3] magrittr_1.5                ggplot2_3.1.0              
-##  [5] survival_2.43-3             UpSetR_1.3.3               
-##  [7] MultiAssayExperiment_1.8.3  SummarizedExperiment_1.12.0
-##  [9] DelayedArray_0.8.0          BiocParallel_1.16.6        
-## [11] matrixStats_0.54.0          Biobase_2.42.0             
-## [13] GenomicRanges_1.34.0        GenomeInfoDb_1.18.2        
-## [15] IRanges_2.16.0              S4Vectors_0.20.1           
-## [17] BiocGenerics_0.28.0         BiocStyle_2.10.0           
+##  [1] survminer_0.4.4             ggpubr_0.2.1               
+##  [3] magrittr_1.5                ggplot2_3.2.0              
+##  [5] survival_2.44-1.1           UpSetR_1.4.0               
+##  [7] MultiAssayExperiment_1.10.4 SummarizedExperiment_1.14.0
+##  [9] DelayedArray_0.10.0         BiocParallel_1.18.0        
+## [11] matrixStats_0.54.0          Biobase_2.44.0             
+## [13] GenomicRanges_1.36.0        GenomeInfoDb_1.20.0        
+## [15] IRanges_2.18.1              S4Vectors_0.22.0           
+## [17] BiocGenerics_0.30.0         BiocStyle_2.12.0           
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] tidyr_0.8.2            splines_3.5.2          assertthat_0.2.0      
-##  [4] BiocManager_1.30.4     GenomeInfoDbData_1.2.0 yaml_2.2.0            
-##  [7] pillar_1.3.1           backports_1.1.3        lattice_0.20-38       
-## [10] glue_1.3.0             digest_0.6.18          XVector_0.22.0        
-## [13] colorspace_1.4-0       cmprsk_2.2-7           htmltools_0.3.6       
-## [16] Matrix_1.2-15          plyr_1.8.4             pkgconfig_2.0.2       
-## [19] broom_0.5.1            bookdown_0.9           zlibbioc_1.28.0       
-## [22] xtable_1.8-3           purrr_0.3.0            scales_1.0.0          
-## [25] km.ci_0.5-2            KMsurv_0.1-5           tibble_2.0.1          
-## [28] generics_0.0.2         withr_2.1.2            lazyeval_0.2.1        
-## [31] crayon_1.3.4           memoise_1.1.0          evaluate_0.13         
-## [34] fs_1.2.6               nlme_3.1-137           MASS_7.3-51.1         
-## [37] xml2_1.2.0             tools_3.5.2            data.table_1.12.0     
-## [40] stringr_1.4.0          munsell_0.5.0          compiler_3.5.2        
-## [43] pkgdown_1.3.0          rlang_0.3.1            grid_3.5.2            
-## [46] RCurl_1.95-4.11        bitops_1.0-6           labeling_0.3          
-## [49] rmarkdown_1.11         gtable_0.2.0           roxygen2_6.1.1        
-## [52] R6_2.4.0               zoo_1.8-4              gridExtra_2.3         
-## [55] knitr_1.21             dplyr_0.8.0            survMisc_0.5.5        
-## [58] commonmark_1.7         rprojroot_1.3-2        desc_1.2.0            
-## [61] stringi_1.3.1          Rcpp_1.0.0             tidyselect_0.2.5      
-## [64] xfun_0.4</code></pre>
+##  [1] tidyr_0.8.3            splines_3.6.0          assertthat_0.2.1      
+##  [4] BiocManager_1.30.4     GenomeInfoDbData_1.2.1 yaml_2.2.0            
+##  [7] pillar_1.4.2           backports_1.1.4        lattice_0.20-38       
+## [10] glue_1.3.1             digest_0.6.20          XVector_0.24.0        
+## [13] ggsignif_0.5.0         colorspace_1.4-1       cmprsk_2.2-8          
+## [16] htmltools_0.3.6        Matrix_1.2-17          plyr_1.8.4            
+## [19] pkgconfig_2.0.2        broom_0.5.2            bookdown_0.12         
+## [22] zlibbioc_1.30.0        xtable_1.8-4           purrr_0.3.2           
+## [25] scales_1.0.0           km.ci_0.5-2            KMsurv_0.1-5          
+## [28] tibble_2.1.3           generics_0.0.2         withr_2.1.2           
+## [31] lazyeval_0.2.2         crayon_1.3.4           memoise_1.1.0         
+## [34] evaluate_0.14          fs_1.3.1               nlme_3.1-139          
+## [37] MASS_7.3-51.4          xml2_1.2.0             data.table_1.12.2     
+## [40] tools_3.6.0            stringr_1.4.0          munsell_0.5.0         
+## [43] compiler_3.6.0         pkgdown_1.3.0          rlang_0.4.0           
+## [46] grid_3.6.0             RCurl_1.95-4.12        bitops_1.0-6          
+## [49] labeling_0.3           rmarkdown_1.14         gtable_0.3.0          
+## [52] roxygen2_6.1.1         R6_2.4.0               zoo_1.8-6             
+## [55] gridExtra_2.3          knitr_1.23             dplyr_0.8.3           
+## [58] survMisc_0.5.5         commonmark_1.7         rprojroot_1.3-2       
+## [61] desc_1.2.0             stringi_1.4.3          Rcpp_1.0.1            
+## [64] tidyselect_0.2.5       xfun_0.8</code></pre>
 <p style="text-align: right;">
 <a href="#header">back to top</a>
 </p>

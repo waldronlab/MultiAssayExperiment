@@ -69,7 +69,7 @@ additional details are provided by metadata(miniACC)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MultiAssayExperiment</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.8.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.10.4</span>
       </span>
     </div>
 
@@ -227,7 +227,8 @@ Adrenocortical Carcinoma. Cancer Cell 2016, 29:723-736.</p>
 #&gt; [29] "genome_doublings"                    
 #&gt; [30] "ADS"                                 </div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/table'>table</a></span>(<span class='no'>miniACC</span>$<span class='no'>vital_status</span>)</div><div class='output co'>#&gt; 
 #&gt;  0  1 
-#&gt; 58 34 </div><div class='input'><span class='fu'><a href='MultiAssayExperiment-helpers.html'>longFormat</a></span>(<span class='no'>miniACC</span>[<span class='st'>"MAPK3"</span>, , ], <span class='kw'>colDataCols</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"vital_status"</span>, <span class='st'>"days_to_death"</span>))</div><div class='output co'>#&gt; DataFrame with 169 rows and 7 columns
+#&gt; 58 34 </div><div class='input'><span class='fu'><a href='MultiAssayExperiment-helpers.html'>longFormat</a></span>(<span class='no'>miniACC</span>[<span class='st'>"MAPK3"</span>, , ], <span class='kw'>colDataCols</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"vital_status"</span>, <span class='st'>"days_to_death"</span>))</div><div class='output co'>#&gt; <span class='message'>harmonizing input:</span>
+#&gt; <span class='message'>  removing 216 sampleMap rows not in names(experiments)</span></div><div class='output co'>#&gt; DataFrame with 169 rows and 7 columns
 #&gt;               assay      primary     rowname                      colname
 #&gt;         &lt;character&gt;  &lt;character&gt; &lt;character&gt;                  &lt;character&gt;
 #&gt; 1   RNASeq2GeneNorm TCGA-OR-A5J1       MAPK3 TCGA-OR-A5J1-01A-11R-A29S-07
@@ -253,7 +254,8 @@ Adrenocortical Carcinoma. Cancer Cell 2016, 29:723-736.</p>
 #&gt; 166         0            0            NA
 #&gt; 167         0            0            NA
 #&gt; 168         0            0            NA
-#&gt; 169         1            0            NA</div><div class='input'><span class='fu'><a href='MultiAssayExperiment-helpers.html'>wideFormat</a></span>(<span class='no'>miniACC</span>[<span class='st'>"MAPK3"</span>, , ], <span class='kw'>colDataCols</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"vital_status"</span>, <span class='st'>"days_to_death"</span>))</div><div class='output co'>#&gt; DataFrame with 92 rows and 5 columns
+#&gt; 169         1            0            NA</div><div class='input'><span class='fu'><a href='MultiAssayExperiment-helpers.html'>wideFormat</a></span>(<span class='no'>miniACC</span>[<span class='st'>"MAPK3"</span>, , ], <span class='kw'>colDataCols</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"vital_status"</span>, <span class='st'>"days_to_death"</span>))</div><div class='output co'>#&gt; <span class='message'>harmonizing input:</span>
+#&gt; <span class='message'>  removing 216 sampleMap rows not in names(experiments)</span></div><div class='output co'>#&gt; DataFrame with 92 rows and 5 columns
 #&gt;          primary vital_status days_to_death RNASeq2GeneNorm_MAPK3 gistict_MAPK3
 #&gt;      &lt;character&gt;    &lt;integer&gt;     &lt;integer&gt;             &lt;numeric&gt;     &lt;numeric&gt;
 #&gt; 1   TCGA-OR-A5J1            1          1355              946.6811             0

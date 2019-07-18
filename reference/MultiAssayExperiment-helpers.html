@@ -61,8 +61,8 @@ wideFormat: A function to return a wide DataFrame where
     added when using a MultiAssayExperiment.
 hasRowRanges: A function that identifies ExperimentList elements
     that have a rowRanges method
-duplicated: (Deprecated) Returns a 'list' of 'LogicalList's that
-    indicate what measurements originate from the same biological unit
+getWithColData: A convenience function for extracting an assay
+    and associated colData
 " />
 <meta name="twitter:card" content="summary" />
 
@@ -94,7 +94,7 @@ duplicated: (Deprecated) Returns a 'list' of 'LogicalList's that
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MultiAssayExperiment</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.8.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.10.4</span>
       </span>
     </div>
 
@@ -178,8 +178,8 @@ for <code>ExperimentList</code> objects.</p>
     added when using a <code>MultiAssayExperiment</code>.</p></li>
 <li><p>hasRowRanges: A function that identifies ExperimentList elements
     that have a rowRanges method</p></li>
-<li><p>duplicated: (Deprecated) Returns a 'list' of 'LogicalList's that
-    indicate what measurements originate from the same biological unit</p></li>
+<li><p>getWithColData: A convenience function for extracting an assay
+    and associated colData</p></li>
 </ul>
     
     </div>
@@ -228,9 +228,7 @@ for <code>ExperimentList</code> objects.</p>
 <span class='co'># S4 method for ExperimentList</span>
 <span class='fu'>hasRowRanges</span>(<span class='no'>x</span>)
 
-<span class='co'># S4 method for MultiAssayExperiment</span>
-<span class='fu'>duplicated</span>(<span class='no'>x</span>, <span class='kw'>incomparables</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='no'>...</span>)</pre>
+<span class='fu'>getWithColData</span>(<span class='no'>x</span>, <span class='no'>i</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -280,10 +278,6 @@ if necessary</p></td>
 column names. In <code>wideFormat</code>, experiments and rownames (and when
 replicate samples are present, colnames) are seperated by this delimiter</p></td>
     </tr>
-    <tr>
-      <th>incomparables</th>
-      <td><p>unused argument</p></td>
-    </tr>
     </table>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
@@ -319,11 +313,6 @@ to provide a consistent long and skinny <a href='https://www.rdocumentation.org/
 <p>The <code>hasRowRanges</code> method identifies assays that support
 a rowRanges method <em>and</em>
 return a GRanges object.</p>
-<p><strong>Deprecated:</strong> For the <code>anyDuplicated</code> and
-<code>duplicated</code> functions, the <code>incomparables</code> and ellipsis
-<code>&#8230;</code> arguments are not used. Neither <code>duplicated</code> nor
-<code>anyDuplicated</code> is supported for <code>ExperimentList</code> due to an
-unavailable <code>sampleMap</code>.</p>
     
     <h2 class="hasAnchor" id="mergereplicates"><a class="anchor" href="#mergereplicates"></a>mergeReplicates</h2>
 
@@ -367,6 +356,18 @@ mcols function. See the <code>Arguments</code> and
 row data by directly testing the method on the object. The result from the
 test must be a GRanges class object to satisfy the test.</p>
     
+    <h2 class="hasAnchor" id="getwithcoldata"><a class="anchor" href="#getwithcoldata"></a>getWithColData</h2>
+
+    
+    <p>The <code>getWithColData</code> function allows the user to conveniently extract
+a particular assay as indicated by the <strong><code>i</code></strong> index argument. It
+will also attempt to provide the
+<code>colData</code> along with the
+extracted object using the <code>colData&lt;-</code> replacement
+method when possible. Typically, this method is available for
+SummarizedExperiment and <code>RaggedExperiment</code>
+classes.</p>
+    
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -383,6 +384,8 @@ test must be a GRanges class object to satisfy the test.</p>
       <li><a href="#wideformat">wideFormat</a></li>
 
       <li><a href="#hasrowranges">hasRowRanges</a></li>
+
+      <li><a href="#getwithcoldata">getWithColData</a></li>
           </ul>
 
   </div>

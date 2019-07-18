@@ -68,7 +68,7 @@ dimnames" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MultiAssayExperiment</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.8.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.10.4</span>
       </span>
     </div>
 
@@ -189,7 +189,7 @@ objects contained have the following set of methods: <code>dim</code>, <code>[</
 <span class='no'>rangedat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/data.frame'>data.frame</a></span>(<span class='kw'>chr</span><span class='kw'>=</span><span class='st'>"chr2"</span>, <span class='kw'>start</span> <span class='kw'>=</span> <span class='fl'>11</span>:<span class='fl'>15</span>, <span class='kw'>end</span> <span class='kw'>=</span> <span class='fl'>12</span>:<span class='fl'>16</span>,
     <span class='kw'>strand</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"+"</span>, <span class='st'>"-"</span>, <span class='st'>"+"</span>, <span class='st'>"*"</span>, <span class='st'>"."</span>),
     <span class='kw'>samp0</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>), <span class='kw'>samp1</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>1</span>), <span class='kw'>samp2</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>0</span>),
-    <span class='kw'>row.names</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/paste'>paste0</a></span>(<span class='st'>"GENE"</span>, <span class='no'>letters</span>[<span class='fl'>5</span>:<span class='fl'>1</span>]))
+    <span class='kw'>row.names</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/paste'>paste0</a></span>(<span class='st'>"ENST"</span>, <span class='st'>"00000"</span>, <span class='fl'>135411</span>:<span class='fl'>135414</span>), <span class='st'>"ENST00000383323"</span>))
 
 <span class='no'>rangeSE</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>SummarizedExperiment</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/SummarizedExperiment/topics/makeSummarizedExperimentFromDataFrame'>makeSummarizedExperimentFromDataFrame</a></span>(<span class='no'>rangedat</span>)
 

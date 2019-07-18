@@ -60,7 +60,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MultiAssayExperiment</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.8.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.10.4</span>
       </span>
     </div>
 
@@ -116,9 +116,9 @@
     <div id="multiassayexperiment-1-5-38" class="section level1">
 <h1 class="page-header">
 <a href="#multiassayexperiment-1-5-38" class="anchor"></a>MultiAssayExperiment 1.5.38</h1>
-<div id="new-features-7" class="section level2">
+<div id="new-features-8" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-features-7" class="anchor"></a>New features</h2>
+<a href="#new-features-8" class="anchor"></a>New features</h2>
 <ul>
 <li>Moved the API shiny function to waldronlab/MultiAssayShiny package</li>
 <li>Reduced imports (removed shinydashboard and shiny)</li>
@@ -131,9 +131,9 @@
 <li>Assay-selective subsetting implemented via <code>list</code>/<code>List</code> class subsettors</li>
 </ul>
 </div>
-<div id="bug-fixes-and-minor-improvements-6" class="section level2">
+<div id="bug-fixes-and-minor-improvements-7" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-and-minor-improvements-6" class="anchor"></a>Bug fixes and minor improvements</h2>
+<a href="#bug-fixes-and-minor-improvements-7" class="anchor"></a>Bug fixes and minor improvements</h2>
 <ul>
 <li>updated <code>duplicated</code> function now returns FALSE for non-duplicated samples</li>
 <li>Improved <code>ExperimentList</code> constructor now handles multiple <code>key = value</code> entries</li>
@@ -148,9 +148,9 @@
     <div id="multiassayexperiment-1-5-63" class="section level1">
 <h1 class="page-header">
 <a href="#multiassayexperiment-1-5-63" class="anchor"></a>MultiAssayExperiment 1.5.63</h1>
-<div id="new-features-6" class="section level2">
+<div id="new-features-7" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-features-6" class="anchor"></a>New features</h2>
+<a href="#new-features-7" class="anchor"></a>New features</h2>
 <ul>
 <li>duplicated has been deprecated, use <code>replicated</code> and <code>anyReplicated</code>
 </li>
@@ -158,9 +158,9 @@
 </li>
 </ul>
 </div>
-<div id="bug-fixes-and-minor-improvements-5" class="section level2">
+<div id="bug-fixes-and-minor-improvements-6" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-and-minor-improvements-5" class="anchor"></a>Bug fixes and minor improvements</h2>
+<a href="#bug-fixes-and-minor-improvements-6" class="anchor"></a>Bug fixes and minor improvements</h2>
 <ul>
 <li>Updates to <code>prepMultiAssay</code>
 </li>
@@ -172,9 +172,9 @@
     <div id="multiassayexperiment-1-5-64" class="section level1">
 <h1 class="page-header">
 <a href="#multiassayexperiment-1-5-64" class="anchor"></a>MultiAssayExperiment 1.5.64</h1>
-<div id="new-features-5" class="section level2">
+<div id="new-features-6" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-features-5" class="anchor"></a>New features</h2>
+<a href="#new-features-6" class="anchor"></a>New features</h2>
 <ul>
 <li>Remove <code>clusterOn</code> function and move to <code>Bioconductor/MultiOmicQC</code> package on GitHub</li>
 </ul>
@@ -183,9 +183,9 @@
     <div id="multiassayexperiment-1-5-65" class="section level1">
 <h1 class="page-header">
 <a href="#multiassayexperiment-1-5-65" class="anchor"></a>MultiAssayExperiment 1.5.65</h1>
-<div id="bug-fixes-and-minor-improvements-4" class="section level2">
+<div id="bug-fixes-and-minor-improvements-5" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-and-minor-improvements-4" class="anchor"></a>Bug fixes and minor improvements</h2>
+<a href="#bug-fixes-and-minor-improvements-5" class="anchor"></a>Bug fixes and minor improvements</h2>
 <ul>
 <li>
 <code>upsetSamples</code> does not munge experiment names with special characters when <code>check.names = FALSE</code> (by default keeps hyphens, underscores, etc.). A <code>nameFilter</code> functional argument allows operations such as <code>substr</code> on the experiment names. (<a href='https://github.com/vjcitn'>@vjcitn</a>, #231)</li>
@@ -195,9 +195,9 @@
     <div id="multiassayexperiment-1-5-101" class="section level1">
 <h1 class="page-header">
 <a href="#multiassayexperiment-1-5-101" class="anchor"></a>MultiAssayExperiment 1.5.101</h1>
-<div id="new-features-4" class="section level2">
+<div id="new-features-5" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-features-4" class="anchor"></a>New features</h2>
+<a href="#new-features-5" class="anchor"></a>New features</h2>
 <ul>
 <li>Renamed <code>duplicated</code> function to <code>replicated</code>
 </li>
@@ -206,9 +206,9 @@
 <li>Improve speed of reshape functions from previous change (<code>wideFormat</code>)</li>
 </ul>
 </div>
-<div id="bug-fixes-and-minor-improvements-3" class="section level2">
+<div id="bug-fixes-and-minor-improvements-4" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-and-minor-improvements-3" class="anchor"></a>Bug fixes and minor improvements</h2>
+<a href="#bug-fixes-and-minor-improvements-4" class="anchor"></a>Bug fixes and minor improvements</h2>
 <ul>
 <li>Explicitly check for <code>DataFrame</code> in <code>ExperimentList</code>
 </li>
@@ -222,9 +222,9 @@
     <div id="multiassayexperiment-1-5-102" class="section level1">
 <h1 class="page-header">
 <a href="#multiassayexperiment-1-5-102" class="anchor"></a>MultiAssayExperiment 1.5.102</h1>
-<div id="new-features-3" class="section level2">
+<div id="new-features-4" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-features-3" class="anchor"></a>New features</h2>
+<a href="#new-features-4" class="anchor"></a>New features</h2>
 <ul>
 <li>The <code>MatchedAssayExperiment</code> constructor function now works either a single <code>MultiAssayExperiment</code> or the essential components of one.</li>
 </ul>
@@ -233,9 +233,9 @@
     <div id="multiassayexperiment-1-5-108" class="section level1">
 <h1 class="page-header">
 <a href="#multiassayexperiment-1-5-108" class="anchor"></a>MultiAssayExperiment 1.5.108</h1>
-<div id="new-features-2" class="section level2">
+<div id="new-features-3" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-features-2" class="anchor"></a>New features</h2>
+<a href="#new-features-3" class="anchor"></a>New features</h2>
 <ul>
 <li>
 <code>DataFrame</code> now exported for users (<a href='https://github.com/DarioS'>@DarioS</a>, #242)</li>
@@ -244,9 +244,9 @@
 </li>
 </ul>
 </div>
-<div id="bug-fixes-and-minor-improvements-2" class="section level2">
+<div id="bug-fixes-and-minor-improvements-3" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-and-minor-improvements-2" class="anchor"></a>Bug fixes and minor improvements</h2>
+<a href="#bug-fixes-and-minor-improvements-3" class="anchor"></a>Bug fixes and minor improvements</h2>
 <ul>
 <li>Added an <code>isEmpty</code> method for <code>ExperimentList</code> to account for an empty matrix</li>
 <li>Documentation improvements to <code>MultiAssayExperiment-class</code> and <code>MultiAssayExperiment-helpers</code>
