@@ -20,6 +20,8 @@ deploy:
   provider: script
   script: Rscript -e 'pkgdown::deploy_site_github()'
   skip_cleanup: true
+  on:
+    branch: RELEASE_3_9
 
 # Test code coverage
 r_github_packages:
