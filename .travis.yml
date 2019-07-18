@@ -4,7 +4,7 @@ language: r
 sudo: false
 cache: packages
 
-r: bioc-devel
+r: bioc-release
 bioc_check: true
 
 # Strict checks in place
