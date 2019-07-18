@@ -12,27 +12,7 @@ warnings_are_errors: false
 
 branches:
   only:
-    - master
-
-# Run binary install of testthat
-r_binary_packages:
-  - testthat
-
-r_packages:
-  - rmarkdown
-
-bioc_packages:
-  - BiocGenerics
-  - BiocCheck
-  - S4Vectors
-  - GenomicRanges
-  - SummarizedExperiment
-  - Biobase
-  - S4Vectors
-  - IRanges
-  - BiocStyle
-  - HDF5Array
-  - RaggedExperiment
+    - RELEASE_3_9
 
 before_deploy: Rscript -e 'remotes::install_cran("pkgdown")'
 
