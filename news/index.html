@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>News • MultiAssayExperiment</title>
+<title>Changelog • MultiAssayExperiment</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,7 +30,7 @@
 
 
 
-<meta property="og:title" content="News" />
+<meta property="og:title" content="Changelog" />
 
 
 
@@ -47,7 +47,7 @@
   </head>
 
   <body>
-    <div class="container template-news-index">
+    <div class="container template-news">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -90,13 +90,46 @@
     </li>
   </ul>
 </li>
-<li>
-  <a href="../news/index.html">News</a>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    News
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Release Notes</li>
+    <li>
+      <a href="https://waldronlab.io/MultiAssayExperiment/news/news-1.10.html">Version 1.10.0</a>
+    </li>
+    <li>
+      <a href="https://waldronlab.io/MultiAssayExperiment/news/news-1.8.html">Version 1.8.0</a>
+    </li>
+    <li>
+      <a href="https://waldronlab.io/MultiAssayExperiment/news/news-1.7.html">Version 1.7.14</a>
+    </li>
+    <li>
+      <a href="https://waldronlab.io/MultiAssayExperiment/news/news-1.1.html">Version 1.1.0</a>
+    </li>
+    <li>
+      <a href="https://waldronlab.io/MultiAssayExperiment/news/news-0.101.html">Version 0.101.0</a>
+    </li>
+    <li>
+      <a href="https://waldronlab.io/MultiAssayExperiment/news/news-0.99.html">Version 0.99.0</a>
+    </li>
+    <li>
+      <a href="../news/index.html">Change log</a>
+    </li>
+  </ul>
 </li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/waldronlab/MultiAssayExperiment">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -107,22 +140,824 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Release notes</h1>
+      <h1>Changelog <small></small></h1>
+      
     </div>
-    <ul>
-    <li><a href="news-1.10.html">Version 1.10</a></li>
-    <li><a href="news-1.8.html">Version 1.8</a></li>
-    <li><a href="news-1.7.html">Version 1.7</a></li>
-    <li><a href="news-1.5.html">Version 1.5</a></li>
-    <li><a href="news-1.1.html">Version 1.1</a></li>
-    <li><a href="news-0.101.html">Version 0.101</a></li>
-    <li><a href="news-0.99.html">Version 0.99</a></li>
-    </ul>
-  </div>
-</div>
 
+    <div id="multiassayexperiment-1-10-0" class="section level1">
+<h1 class="page-header">
+<a href="#multiassayexperiment-1-10-0" class="anchor"></a>MultiAssayExperiment 1.10.0</h1>
+<div id="new-features" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-features" class="anchor"></a>New features</h2>
+<ul>
+<li>getWithColData now allows easy extraction of experiments (such as <code>SummarizedExperiment</code>) with associated <code>colData</code> data</li>
+<li>Single bracket replace method implemented for <code>MultiAssayExperiment</code> assays</li>
+</ul>
+</div>
+<div id="bug-fixes-and-minor-improvements" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-fixes-and-minor-improvements" class="anchor"></a>Bug fixes and minor improvements</h2>
+<ul>
+<li>
+<code>isEmpty</code> method fixed for <code>ExperimentList</code>s containing matrices</li>
+<li>
+<code>MultiAssayExperiment</code> now inherits from the standard <code>Annotated</code> virtual class</li>
+<li>
+<code>c</code> method better distinguishes between <code>list</code> and <code>ExperimentList</code> inputs</li>
+<li>Improvements on <code>.getHits</code> internal method for obtaining correct queries on row metadata</li>
+<li>Subsetting mechanism tweaked to do nothing when subsetting by <code>NULL</code> rows compared to empty rows (i.e., <code><a href="https://www.rdocumentation.org/packages/base/topics/character">character(0L)</a></code>)</li>
+<li>Improved README.md</li>
+</ul>
+</div>
+</div>
+    <div id="multiassayexperiment-1-8-0" class="section level1">
+<h1 class="page-header">
+<a href="#multiassayexperiment-1-8-0" class="anchor"></a>MultiAssayExperiment 1.8.0</h1>
+<div id="new-features-1" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-features-1" class="anchor"></a>New features</h2>
+<ul>
+<li>The single bracket replacement method <code>[&lt;-</code> added to support assignment of assay datasets</li>
+<li>Users can now rename experiments in a MultiAssayExperiment with <code>names(x) &lt;- value</code>
+</li>
+<li>
+<code>replicated</code> and <code>mergeReplicates</code> functions have been refactored and improved</li>
+<li>combining MultiAssayExperiments now possible with <code>c</code> function</li>
+</ul>
+</div>
+<div id="bug-fixes-and-minor-improvements-1" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-fixes-and-minor-improvements-1" class="anchor"></a>Bug fixes and minor improvements</h2>
+<ul>
+<li>
+<code>wideFormat</code> function improvements and bug fixes with name indicator subsetting</li>
+<li>
+<code>BiocGenerics:::replaceSlots</code> used instead of replace methods</li>
+<li>Added tests for <code>anyReplicated</code>, <code>c</code>, and <code>names&lt;-</code> functions</li>
+<li>Unit tests added for replacement method testing</li>
+</ul>
+</div>
+</div>
+    <div id="multiassayexperiment-1-7-14" class="section level1">
+<h1 class="page-header">
+<a href="#multiassayexperiment-1-7-14" class="anchor"></a>MultiAssayExperiment 1.7.14</h1>
+<div id="new-features-2" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-features-2" class="anchor"></a>New features</h2>
+<ul>
+<li>Subsetting <code>MultiAssayExperiment</code> by a <code>list</code> or <code>List</code> type class now returns experiments in the input order for rows, columns, and assays</li>
+</ul>
+</div>
+<div id="bug-fixes-and-minor-improvements-2" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-fixes-and-minor-improvements-2" class="anchor"></a>Bug fixes and minor improvements</h2>
+<ul>
+<li>Renamed objects in examples for brevity and descriptiveness</li>
+<li>Updated <code>importFrom</code> directives</li>
+<li>Internal sample names check now only works on non-empty <code>colnames</code>
+</li>
+<li>Various documentation improvements</li>
+<li>
+<code>listToMap</code> re-written for efficiency</li>
+<li>Various improvements to subsetting mechanism</li>
+<li>
+<code>subsetByAssay</code> bug fixed when using an integer index (<a href='https://github.com/vjcitn'>@vjcitn</a>, #)</li>
+</ul>
+</div>
+</div>
+    <div id="multiassayexperiment-1-5-108" class="section level1">
+<h1 class="page-header">
+<a href="#multiassayexperiment-1-5-108" class="anchor"></a>MultiAssayExperiment 1.5.108</h1>
+<div id="new-features-3" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-features-3" class="anchor"></a>New features</h2>
+<ul>
+<li>
+<code>DataFrame</code> now exported for users (<a href='https://github.com/DarioS'>@DarioS</a>, #242)</li>
+<li>
+<code>c</code> is smarter at matching <code>colnames</code> with <code>primary</code> names and creating a <code>sampleMap</code>
+</li>
+</ul>
+</div>
+<div id="bug-fixes-and-minor-improvements-3" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-fixes-and-minor-improvements-3" class="anchor"></a>Bug fixes and minor improvements</h2>
+<ul>
+<li>Added an <code>isEmpty</code> method for <code>ExperimentList</code> to account for an empty matrix</li>
+<li>Documentation improvements to <code>MultiAssayExperiment-class</code> and <code>MultiAssayExperiment-helpers</code>
+</li>
+<li>
+<code>c</code> internals improved</li>
+</ul>
+</div>
+</div>
+    <div id="multiassayexperiment-1-5-102" class="section level1">
+<h1 class="page-header">
+<a href="#multiassayexperiment-1-5-102" class="anchor"></a>MultiAssayExperiment 1.5.102</h1>
+<div id="new-features-4" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-features-4" class="anchor"></a>New features</h2>
+<ul>
+<li>The <code>MatchedAssayExperiment</code> constructor function now works either a single <code>MultiAssayExperiment</code> or the essential components of one.</li>
+</ul>
+</div>
+</div>
+    <div id="multiassayexperiment-1-5-101" class="section level1">
+<h1 class="page-header">
+<a href="#multiassayexperiment-1-5-101" class="anchor"></a>MultiAssayExperiment 1.5.101</h1>
+<div id="new-features-5" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-features-5" class="anchor"></a>New features</h2>
+<ul>
+<li>Renamed <code>duplicated</code> function to <code>replicated</code>
+</li>
+<li>Added coercion functions from <code>List</code> and <code>list</code> to <code>ExperimentList</code>
+</li>
+<li>Improve speed of reshape functions from previous change (<code>wideFormat</code>)</li>
+</ul>
+</div>
+<div id="bug-fixes-and-minor-improvements-4" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-fixes-and-minor-improvements-4" class="anchor"></a>Bug fixes and minor improvements</h2>
+<ul>
+<li>Explicitly check for <code>DataFrame</code> in <code>ExperimentList</code>
+</li>
+<li>Fixed documentation warnings for inexact links</li>
+<li>Fix subsetting order in bracket method (<code>[</code>)</li>
+<li>Minor vignette changes</li>
+<li>Supply a collapse character for <code>wideFormat</code> column names</li>
+</ul>
+</div>
+</div>
+    <div id="multiassayexperiment-1-5-65" class="section level1">
+<h1 class="page-header">
+<a href="#multiassayexperiment-1-5-65" class="anchor"></a>MultiAssayExperiment 1.5.65</h1>
+<div id="bug-fixes-and-minor-improvements-5" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-fixes-and-minor-improvements-5" class="anchor"></a>Bug fixes and minor improvements</h2>
+<ul>
+<li>
+<code>upsetSamples</code> does not munge experiment names with special characters when <code>check.names = FALSE</code> (by default keeps hyphens, underscores, etc.). A <code>nameFilter</code> functional argument allows operations such as <code>substr</code> on the experiment names. (<a href='https://github.com/vjcitn'>@vjcitn</a>, #231)</li>
+</ul>
+</div>
+</div>
+    <div id="multiassayexperiment-1-5-64" class="section level1">
+<h1 class="page-header">
+<a href="#multiassayexperiment-1-5-64" class="anchor"></a>MultiAssayExperiment 1.5.64</h1>
+<div id="new-features-6" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-features-6" class="anchor"></a>New features</h2>
+<ul>
+<li>Remove <code>clusterOn</code> function and move to <code>Bioconductor/MultiOmicQC</code> package on GitHub</li>
+</ul>
+</div>
+</div>
+    <div id="multiassayexperiment-1-5-63" class="section level1">
+<h1 class="page-header">
+<a href="#multiassayexperiment-1-5-63" class="anchor"></a>MultiAssayExperiment 1.5.63</h1>
+<div id="new-features-7" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-features-7" class="anchor"></a>New features</h2>
+<ul>
+<li>duplicated has been deprecated, use <code>replicated</code> and <code>anyReplicated</code>
+</li>
+<li>removed dependencies on <code>tidyr</code> and <code>reshape2</code>
+</li>
+</ul>
+</div>
+<div id="bug-fixes-and-minor-improvements-6" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-fixes-and-minor-improvements-6" class="anchor"></a>Bug fixes and minor improvements</h2>
+<ul>
+<li>Updates to <code>prepMultiAssay</code>
+</li>
+<li>Enhancements to the main vignette</li>
+<li>New format for NEWS section</li>
+</ul>
+</div>
+</div>
+    <div id="multiassayexperiment-1-5-38" class="section level1">
+<h1 class="page-header">
+<a href="#multiassayexperiment-1-5-38" class="anchor"></a>MultiAssayExperiment 1.5.38</h1>
+<div id="new-features-8" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-features-8" class="anchor"></a>New features</h2>
+<ul>
+<li>Moved the API shiny function to waldronlab/MultiAssayShiny package</li>
+<li>Reduced imports (removed shinydashboard and shiny)</li>
+<li>Method requirement checks for classes are practical using <code><a href="https://www.rdocumentation.org/packages/base/topics/try">try()</a></code>
+</li>
+<li>Deprecated methods removed: <code>pData</code>
+</li>
+<li>Deprecated class removed: <code>RangedRaggedAssay</code>
+</li>
+<li>Assay-selective subsetting implemented via <code>list</code>/<code>List</code> class subsettors</li>
+</ul>
+</div>
+<div id="bug-fixes-and-minor-improvements-7" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-fixes-and-minor-improvements-7" class="anchor"></a>Bug fixes and minor improvements</h2>
+<ul>
+<li>updated <code>duplicated</code> function now returns FALSE for non-duplicated samples</li>
+<li>Improved <code>ExperimentList</code> constructor now handles multiple <code>key = value</code> entries</li>
+<li>Removed <code>updateObject</code> before giving warning</li>
+<li>Removed old RTCGAToolbox example vignette</li>
+<li>Official manuscript citation added</li>
+<li>Improved examples (removed <code>ExpressionSet</code> legacy objects)</li>
+<li>Improved test scripts</li>
+</ul>
+</div>
+</div>
+    <div id="multiassayexperiment-1-1-37" class="section level1">
+<h1 class="page-header">
+<a href="#multiassayexperiment-1-1-37" class="anchor"></a>MultiAssayExperiment 1.1.37</h1>
+<div id="new-features-9" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-features-9" class="anchor"></a>New features</h2>
+<ul>
+<li>
+<code>MatchedAssayExperiment</code> subclass added for matched samples in all assays</li>
+<li>Supply mini ACC dataset <code><a href="https://www.rdocumentation.org/packages/utils/topics/data">data(miniACC)</a></code>
+</li>
+<li>Provide reference table for methods in package, see vignettes</li>
+<li>Merge with GitHub development version</li>
+</ul>
+</div>
+<div id="bug-fixes-and-minor-improvements-8" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-fixes-and-minor-improvements-8" class="anchor"></a>Bug fixes and minor improvements</h2>
+<ul>
+<li>ensure assay column in sampleMap is a factor</li>
+<li>rearrange long DataFrame correctly</li>
+<li>remove support for RangedRaggedAssay - deprecate</li>
+<li>
+<code>drop = FALSE</code> in single column subset of colData</li>
+<li>default sampleMap representation as empty DataFrame with colnames</li>
+<li>added combine <code>c</code> vignette section for adding experiments to an existing</li>
+</ul>
+</div>
+</div>
+    <div id="multiassayexperiment-1-1-59" class="section level1">
+<h1 class="page-header">
+<a href="#multiassayexperiment-1-1-59" class="anchor"></a>MultiAssayExperiment 1.1.59</h1>
+<div id="new-features-10" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-features-10" class="anchor"></a>New features</h2>
+<ul>
+<li>
+<code>rearrange</code> is now broken up into <code>longFormat</code> and <code>wideFormat</code> functions.</li>
+<li>Helper functions now have a dedicated man page, see: <code><a href="../reference/MultiAssayExperiment-helpers.html">?'MultiAssayExperiment-helpers'</a></code>
+</li>
+</ul>
+</div>
+<div id="bug-fixes-and-minor-improvements-9" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-fixes-and-minor-improvements-9" class="anchor"></a>Bug fixes and minor improvements</h2>
+<ul>
+<li>A subset can affect the order of rows (previously it didn’t)</li>
+<li>
+<code>rownames</code> are exclusively used to create <code>longFormat</code> <code>DataFrame</code>s</li>
+<li>The <code>longFormat,ExperimentList-method</code> now returns a long DataFrame</li>
+<li>Minor improvements to tests</li>
+</ul>
+</div>
+</div>
+    <div id="multiassayexperiment-1-1-52" class="section level1">
+<h1 class="page-header">
+<a href="#multiassayexperiment-1-1-52" class="anchor"></a>MultiAssayExperiment 1.1.52</h1>
+<div id="new-features-11" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-features-11" class="anchor"></a>New features</h2>
+<ul>
+<li>
+<code>reduce</code> removed and broken up into <code>mergeReplicates</code> and <code>intersectColumns</code>
+</li>
+<li>Additional helper introduced: <code>intersectRows</code>
+</li>
+</ul>
+</div>
+</div>
+    <div id="multiassayexperiment-1-1-49" class="section level1">
+<h1 class="page-header">
+<a href="#multiassayexperiment-1-1-49" class="anchor"></a>MultiAssayExperiment 1.1.49</h1>
+<div id="new-features-12" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-features-12" class="anchor"></a>New features</h2>
+<ul>
+<li>
+<code>pData</code> deprecated in favor of <code>colData</code>
+</li>
+<li>Quick start vignette now available</li>
+</ul>
+</div>
+<div id="bug-fixes-and-minor-improvements-10" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-fixes-and-minor-improvements-10" class="anchor"></a>Bug fixes and minor improvements</h2>
+<ul>
+<li>Fixed API function link</li>
+<li>Removed coercion to old <code>RangedRaggedAssay</code> class</li>
+<li>Improved <code>listToMap</code>
+</li>
+</ul>
+</div>
+</div>
+    <div id="multiassayexperiment-1-1-44" class="section level1">
+<h1 class="page-header">
+<a href="#multiassayexperiment-1-1-44" class="anchor"></a>MultiAssayExperiment 1.1.44</h1>
+<div id="bug-fixes-and-minor-improvements-11" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-fixes-and-minor-improvements-11" class="anchor"></a>Bug fixes and minor improvements</h2>
+<ul>
+<li>Renamed <code>PrepMultiAssay</code> to <code>prepMultiAssay</code> (lower <code>p</code> following convention)</li>
+</ul>
+</div>
+</div>
+    <div id="multiassayexperiment-1-1-43" class="section level1">
+<h1 class="page-header">
+<a href="#multiassayexperiment-1-1-43" class="anchor"></a>MultiAssayExperiment 1.1.43</h1>
+<div id="new-features-13" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-features-13" class="anchor"></a>New features</h2>
+<ul>
+<li>The <code>MultiAssayExperiment</code> quickstart guide vignette added</li>
+<li>Deprecation of the <code>RangedRaggedAssay</code> class. Use <code>RaggedExperiment</code> package instead.</li>
+<li>
+<code>reduce</code> function simplified</li>
+<li>
+<code>mapFrom</code> convenience argument added to the <code>c,MultiAssayExperiment-method</code>
+</li>
+<li>
+<code>assay</code> and <code>assays</code> methods have been revised to conform to <code>SummarizedExperiment</code> standards</li>
+</ul>
+</div>
+<div id="bug-fixes-and-minor-improvements-12" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-fixes-and-minor-improvements-12" class="anchor"></a>Bug fixes and minor improvements</h2>
+<ul>
+<li>
+<code>API()</code> now points to the correct web document</li>
+<li>
+<code>ExperimentList</code> constructor no longer coerces <code>GRangesList</code> to <code>RangedRaggedAssay</code>
+</li>
+<li>Documentation changes: consolidate man pages for <code>experiments</code>, <code>experiments&lt;-</code>, <code>sampleMap</code>, and <code>sampleMap&lt;-</code>
+</li>
+<li>removal of internal <code>getHits</code> method, simplified helper function in place</li>
+<li>
+<code>prepMultiAssay</code> helper now returns a <code>list</code> with names corresponding to the <code>MultiAssayExperiment</code> constructor function</li>
+</ul>
+</div>
+</div>
+    <div id="multiassayexperiment-1-1-27" class="section level1">
+<h1 class="page-header">
+<a href="#multiassayexperiment-1-1-27" class="anchor"></a>MultiAssayExperiment 1.1.27</h1>
+<div id="new-features-14" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-features-14" class="anchor"></a>New features</h2>
+<ul>
+<li>
+<code>c</code> method implemented for experiments with 1:1 sample matches in <code>pData</code> rows</li>
+<li>
+<code>MultiAssayExperiment</code> show method improved</li>
+<li>Double bracket <code>[[</code> extracts single experiment (replacement also included)</li>
+<li>Internal <code>getHits</code> methods removed and refactored <code>subsetByRows</code>
+</li>
+<li>
+<code>subsetBypData</code> available</li>
+<li>
+<code>rearrange</code> method now supports “wide” format outputs</li>
+</ul>
+</div>
+<div id="bug-fixes-and-minor-improvements-13" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-fixes-and-minor-improvements-13" class="anchor"></a>Bug fixes and minor improvements</h2>
+<ul>
+<li>Updates to HDF5 vignette</li>
+<li>More examples to documentation</li>
+<li>Numerous bug fixes</li>
+<li>
+<code>mapToList</code> uses the more efficient <code>splitAsList</code> function</li>
+</ul>
+</div>
+</div>
+    <div id="multiassayexperiment-1-1-17" class="section level1">
+<h1 class="page-header">
+<a href="#multiassayexperiment-1-1-17" class="anchor"></a>MultiAssayExperiment 1.1.17</h1>
+<div id="new-features-15" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-features-15" class="anchor"></a>New features</h2>
+<ul>
+<li>
+<code>upsetSamples</code> function implemented</li>
+</ul>
+</div>
+</div>
+    <div id="multiassayexperiment-1-1-16" class="section level1">
+<h1 class="page-header">
+<a href="#multiassayexperiment-1-1-16" class="anchor"></a>MultiAssayExperiment 1.1.16</h1>
+<div id="new-features-16" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-features-16" class="anchor"></a>New features</h2>
+<ul>
+<li>Implement <code>shape</code> argument for <code>rearrange</code> function: <code>wide</code> now available</li>
+</ul>
+</div>
+<div id="bug-fixes-and-minor-improvements-14" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-fixes-and-minor-improvements-14" class="anchor"></a>Bug fixes and minor improvements</h2>
+<ul>
+<li>Updated vignettes: <code>DelayedMatrix</code> &amp; PRAD <code>MultiAssayExperiment</code> object</li>
+</ul>
+</div>
+</div>
+    <div id="multiassayexperiment-1-1-15" class="section level1">
+<h1 class="page-header">
+<a href="#multiassayexperiment-1-1-15" class="anchor"></a>MultiAssayExperiment 1.1.15</h1>
+<div id="new-features-17" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-features-17" class="anchor"></a>New features</h2>
+<ul>
+<li>
+<code>disjoin</code> method for <code>RangedRaggedAssay</code>
+</li>
+</ul>
+</div>
+<div id="bug-fixes-and-minor-improvements-15" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-fixes-and-minor-improvements-15" class="anchor"></a>Bug fixes and minor improvements</h2>
+<ul>
+<li>
+<code>show</code> method for <code>RangedRaggedAssay</code> abbreviated. No longer summarizes data with <code>assay</code>
+</li>
+<li>Documentation changes for <code>reduce</code> and <code>disjoin</code>
+</li>
+</ul>
+</div>
+</div>
+    <div id="multiassayexperiment-1-1-12" class="section level1">
+<h1 class="page-header">
+<a href="#multiassayexperiment-1-1-12" class="anchor"></a>MultiAssayExperiment 1.1.12</h1>
+<div id="new-features-18" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-features-18" class="anchor"></a>New features</h2>
+<ul>
+<li>
+<code>gather</code>/<code>collect</code> function name changed to <code>rearrange</code>
+</li>
+<li>
+<code>clusterSex</code> now <code>clusterOn</code>, works with characteristic of choice</li>
+</ul>
+</div>
+</div>
+    <div id="multiassayexperiment-1-1-11" class="section level1">
+<h1 class="page-header">
+<a href="#multiassayexperiment-1-1-11" class="anchor"></a>MultiAssayExperiment 1.1.11</h1>
+<div id="new-features-19" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-features-19" class="anchor"></a>New features</h2>
+<ul>
+<li>Renamed <code>gather</code> function to <code>collect</code>
+</li>
+</ul>
+</div>
+</div>
+    <div id="multiassayexperiment-1-1-10" class="section level1">
+<h1 class="page-header">
+<a href="#multiassayexperiment-1-1-10" class="anchor"></a>MultiAssayExperiment 1.1.10</h1>
+<div id="new-features-20" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-features-20" class="anchor"></a>New features</h2>
+<ul>
+<li>Double bracket method for MultiAssayExperiment available</li>
+</ul>
+</div>
+</div>
+    <div id="multiassayexperiment-1-1-9" class="section level1">
+<h1 class="page-header">
+<a href="#multiassayexperiment-1-1-9" class="anchor"></a>MultiAssayExperiment 1.1.9</h1>
+<div id="new-features-21" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-features-21" class="anchor"></a>New features</h2>
+<ul>
+<li>
+<code>clusterSex</code> function available for clustering gender from expression data</li>
+</ul>
+</div>
+<div id="bug-fixes-and-minor-improvements-16" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-fixes-and-minor-improvements-16" class="anchor"></a>Bug fixes and minor improvements</h2>
+<ul>
+<li>Improvements to documentation</li>
+</ul>
+</div>
+</div>
+    <div id="multiassayexperiment-1-1-6" class="section level1">
+<h1 class="page-header">
+<a href="#multiassayexperiment-1-1-6" class="anchor"></a>MultiAssayExperiment 1.1.6</h1>
+<div id="new-features-22" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-features-22" class="anchor"></a>New features</h2>
+<ul>
+<li>Added an example <code>HNSC</code> dataset</li>
+</ul>
+</div>
+<div id="bug-fixes-and-minor-improvements-17" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-fixes-and-minor-improvements-17" class="anchor"></a>Bug fixes and minor improvements</h2>
+<ul>
+<li>Improve documentation of <code>assay</code> method for the <code>RangedRaggedAssay</code>
+</li>
+<li>Bug fixes for <code>assay</code> method</li>
+<li>Removed method pollution for other Bioconductor classes</li>
+<li>
+<code>assay</code> method only shows numeric or character data</li>
+</ul>
+</div>
+</div>
+    <div id="multiassayexperiment-1-1-2" class="section level1">
+<h1 class="page-header">
+<a href="#multiassayexperiment-1-1-2" class="anchor"></a>MultiAssayExperiment 1.1.2</h1>
+<div id="new-features-23" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-features-23" class="anchor"></a>New features</h2>
+<ul>
+<li>
+<code>extract</code> method renamed to <code>gather</code>
+</li>
+<li>
+<code>gather</code> allows for inclusion of pData columns</li>
+<li>
+<code>gather</code> method supports common classes; creates a “tidy” DataFrame with pData rownames, <code>ExperimentList</code> rownames, <code>ExperimentList</code> columns, assay names, and optional pData columns</li>
+</ul>
+</div>
+</div>
+    <div id="multiassayexperiment-1-1-1" class="section level1">
+<h1 class="page-header">
+<a href="#multiassayexperiment-1-1-1" class="anchor"></a>MultiAssayExperiment 1.1.1</h1>
+<div id="new-features-24" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-features-24" class="anchor"></a>New features</h2>
+<ul>
+<li>MultiAssayExperiment now in release!</li>
+<li>
+<code>extract</code> method not available for common classes - creates <code>tidy</code> data.frame from data</li>
+</ul>
+</div>
+</div>
+    <div id="multiassayexperiment-0-101-49" class="section level1">
+<h1 class="page-header">
+<a href="#multiassayexperiment-0-101-49" class="anchor"></a>MultiAssayExperiment 0.101.49</h1>
+<div id="new-features-25" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-features-25" class="anchor"></a>New features</h2>
+<ul>
+<li>Example section added to vignette for converting data frames to Bioconductor objects</li>
+</ul>
+</div>
+<div id="minor-improvements" class="section level2">
+<h2 class="hasAnchor">
+<a href="#minor-improvements" class="anchor"></a>Minor improvements</h2>
+<ul>
+<li>A proper <code>dimnames</code> method added to <code>MultiAssayExperiment</code>
+</li>
+</ul>
+</div>
+</div>
+    <div id="multiassayexperiment-0-101-45" class="section level1">
+<h1 class="page-header">
+<a href="#multiassayexperiment-0-101-45" class="anchor"></a>MultiAssayExperiment 0.101.45</h1>
+<div id="new-features-26" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-features-26" class="anchor"></a>New features</h2>
+<ul>
+<li>
+<code>dimnames</code> method added to <code>RangedRaggedAssay</code>
+</li>
+</ul>
+</div>
+</div>
+    <div id="multiassayexperiment-0-101-44" class="section level1">
+<h1 class="page-header">
+<a href="#multiassayexperiment-0-101-44" class="anchor"></a>MultiAssayExperiment 0.101.44</h1>
+<div id="new-features-27" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-features-27" class="anchor"></a>New features</h2>
+<ul>
+<li>
+<code>$</code> (DollarSign) method available for <code>MultiAssayExperiment</code> to access <code>pData</code> column</li>
+</ul>
+</div>
+</div>
+    <div id="multiassayexperiment-0-101-43" class="section level1">
+<h1 class="page-header">
+<a href="#multiassayexperiment-0-101-43" class="anchor"></a>MultiAssayExperiment 0.101.43</h1>
+</div>
+    <div id="multiassayexperiment-0-101-42" class="section level1">
+<h1 class="page-header">
+<a href="#multiassayexperiment-0-101-42" class="anchor"></a>MultiAssayExperiment 0.101.42</h1>
+<div id="new-features-28" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-features-28" class="anchor"></a>New features</h2>
+<ul>
+<li>
+<code>metadata&lt;-</code> set method now available for the <code>MultiAssayExperiment</code>
+</li>
+</ul>
+</div>
+</div>
+    <div id="multiassayexperiment-0-101-40" class="section level1">
+<h1 class="page-header">
+<a href="#multiassayexperiment-0-101-40" class="anchor"></a>MultiAssayExperiment 0.101.40</h1>
+<div id="new-features-29" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-features-29" class="anchor"></a>New features</h2>
+<ul>
+<li>Improved <code>MultiAssayExperiment</code> constructor with renamed argument “experiments” for the <code>ExperimentList</code> or <code>list</code> input.</li>
+</ul>
+</div>
+</div>
+    <div id="multiassayexperiment-0-101-39" class="section level1">
+<h1 class="page-header">
+<a href="#multiassayexperiment-0-101-39" class="anchor"></a>MultiAssayExperiment 0.101.39</h1>
+<div id="new-features-30" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-features-30" class="anchor"></a>New features</h2>
+<ul>
+<li>
+<code>updateObject</code> method now available for old instances of the <code>MultiAssayExperiment</code>
+</li>
+<li>Users with invalid <code>MultiAssayExperiments</code> should update and re-serialize them</li>
+</ul>
+</div>
+</div>
+    <div id="multiassayexperiment-0-101-38" class="section level1">
+<h1 class="page-header">
+<a href="#multiassayexperiment-0-101-38" class="anchor"></a>MultiAssayExperiment 0.101.38</h1>
+<div id="new-features-31" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-features-31" class="anchor"></a>New features</h2>
+<ul>
+<li>
+<code>complete.cases</code> method available for the <code>MultiAssayExperiment</code> class</li>
+</ul>
+</div>
+</div>
+    <div id="multiassayexperiment-0-101-37" class="section level1">
+<h1 class="page-header">
+<a href="#multiassayexperiment-0-101-37" class="anchor"></a>MultiAssayExperiment 0.101.37</h1>
+<div id="new-features-32" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-features-32" class="anchor"></a>New features</h2>
+<ul>
+<li>
+<code>sampleMap</code> column names renamed to <strong>assay</strong> (prev. “assayname”), <strong>primary</strong>, and <strong>colname</strong> (prev. “assay”)</li>
+<li>New vignete available for creating <code>MultiAssayExperiment</code> objects with TCGA data</li>
+</ul>
+</div>
+</div>
+    <div id="multiassayexperiment-0-101-36" class="section level1">
+<h1 class="page-header">
+<a href="#multiassayexperiment-0-101-36" class="anchor"></a>MultiAssayExperiment 0.101.36</h1>
+<ul>
+<li>
+<code>Elist</code> class renamed to <code>ExperimentList</code>
+</li>
+<li>
+<code>ExperimentList</code> constructor is homonymous</li>
+<li>
+<code>ExperimentList</code> accessor now called <code>experiments</code>
+</li>
+<li>
+<code>ExperimentList</code> replacement method is now <code>experiments&lt;-</code>
+</li>
+<li>Updated vignettes to reflect change of names</li>
+</ul>
+</div>
+    <div id="multiassayexperiment-0-101-34" class="section level1">
+<h1 class="page-header">
+<a href="#multiassayexperiment-0-101-34" class="anchor"></a>MultiAssayExperiment 0.101.34</h1>
+<ul>
+<li>
+<code>assay</code> method for <code>RangedRaggedAssay</code> works on inner metadata columns now</li>
+<li>vignette examples available for <code>HDF5Array</code> package</li>
+<li>Improved outline for main vignette</li>
+</ul>
+</div>
+    <div id="multiassayexperiment-0-99-202" class="section level1">
+<h1 class="page-header">
+<a href="#multiassayexperiment-0-99-202" class="anchor"></a>MultiAssayExperiment 0.99.202</h1>
+<div id="new-features-33" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-features-33" class="anchor"></a>New features</h2>
+<ul>
+<li>
+<code>assay</code> method available for <code>RangedRaggedAssay</code> and other classes. Created to obtain raw data from certain classes (see <code>?assay,(class),ANY-method</code>).</li>
+</ul>
+</div>
+</div>
+    <div id="multiassayexperiment-0-99-194" class="section level1">
+<h1 class="page-header">
+<a href="#multiassayexperiment-0-99-194" class="anchor"></a>MultiAssayExperiment 0.99.194</h1>
+<div id="new-features-34" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-features-34" class="anchor"></a>New features</h2>
+<ul>
+<li>Subsetting by non-character i (#108)</li>
+<li>
+<code>PrepMultiAssay</code> helper function now available to aid in creating object (#122)</li>
+<li>Vignette now building (#125)</li>
+<li>Preliminary assay method for RangedRaggedAssay</li>
+</ul>
+</div>
+<div id="bug-fixes-and-minor-improvements-25" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-fixes-and-minor-improvements-25" class="anchor"></a>Bug fixes and minor improvements</h2>
+<ul>
+<li>superflous <code>subset</code> function removed</li>
+<li>
+<code>sampleMap</code> uses character vectors instead of Rle</li>
+<li>Elist order consistent when subsetting</li>
+<li>mapToList preserves list order</li>
+</ul>
+</div>
+</div>
+    <div id="multiassayexperiment-0-99-14" class="section level1">
+<h1 class="page-header">
+<a href="#multiassayexperiment-0-99-14" class="anchor"></a>MultiAssayExperiment 0.99.14</h1>
+<ul>
+<li>NEWS file is now live!</li>
+<li>Package now in <code>Bioc-devel</code>!</li>
+<li>More to come!</li>
+</ul>
+<div id="new-features-35" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-features-35" class="anchor"></a>New features</h2>
+<ul>
+<li>Replacement method for <code>colnames</code> now available for the <code>RangedRaggedAssay</code> class.</li>
+</ul>
+</div>
+<div id="bug-fixes-and-minor-improvements-26" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-fixes-and-minor-improvements-26" class="anchor"></a>Bug fixes and minor improvements</h2>
+<ul>
+<li>Documentation additions</li>
+</ul>
+</div>
+</div>
+  </div>
+
+  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+    <div id="tocnav">
+      <h2>Contents</h2>
+      <ul class="nav nav-pills nav-stacked">
+        <li><a href="#multiassayexperiment-1-10-0">1.10.0</a></li>
+        <li><a href="#multiassayexperiment-1-8-0">1.8.0</a></li>
+        <li><a href="#multiassayexperiment-1-7-14">1.7.14</a></li>
+        <li><a href="#multiassayexperiment-1-5-108">1.5.108</a></li>
+        <li><a href="#multiassayexperiment-1-5-102">1.5.102</a></li>
+        <li><a href="#multiassayexperiment-1-5-101">1.5.101</a></li>
+        <li><a href="#multiassayexperiment-1-5-65">1.5.65</a></li>
+        <li><a href="#multiassayexperiment-1-5-64">1.5.64</a></li>
+        <li><a href="#multiassayexperiment-1-5-63">1.5.63</a></li>
+        <li><a href="#multiassayexperiment-1-5-38">1.5.38</a></li>
+        <li><a href="#multiassayexperiment-1-1-37">1.1.37</a></li>
+        <li><a href="#multiassayexperiment-1-1-59">1.1.59</a></li>
+        <li><a href="#multiassayexperiment-1-1-52">1.1.52</a></li>
+        <li><a href="#multiassayexperiment-1-1-49">1.1.49</a></li>
+        <li><a href="#multiassayexperiment-1-1-44">1.1.44</a></li>
+        <li><a href="#multiassayexperiment-1-1-43">1.1.43</a></li>
+        <li><a href="#multiassayexperiment-1-1-27">1.1.27</a></li>
+        <li><a href="#multiassayexperiment-1-1-17">1.1.17</a></li>
+        <li><a href="#multiassayexperiment-1-1-16">1.1.16</a></li>
+        <li><a href="#multiassayexperiment-1-1-15">1.1.15</a></li>
+        <li><a href="#multiassayexperiment-1-1-12">1.1.12</a></li>
+        <li><a href="#multiassayexperiment-1-1-11">1.1.11</a></li>
+        <li><a href="#multiassayexperiment-1-1-10">1.1.10</a></li>
+        <li><a href="#multiassayexperiment-1-1-9">1.1.9</a></li>
+        <li><a href="#multiassayexperiment-1-1-6">1.1.6</a></li>
+        <li><a href="#multiassayexperiment-1-1-2">1.1.2</a></li>
+        <li><a href="#multiassayexperiment-1-1-1">1.1.1</a></li>
+        <li><a href="#multiassayexperiment-0-101-49">0.101.49</a></li>
+        <li><a href="#multiassayexperiment-0-101-45">0.101.45</a></li>
+        <li><a href="#multiassayexperiment-0-101-44">0.101.44</a></li>
+        <li><a href="#multiassayexperiment-0-101-43">0.101.43</a></li>
+        <li><a href="#multiassayexperiment-0-101-42">0.101.42</a></li>
+        <li><a href="#multiassayexperiment-0-101-40">0.101.40</a></li>
+        <li><a href="#multiassayexperiment-0-101-39">0.101.39</a></li>
+        <li><a href="#multiassayexperiment-0-101-38">0.101.38</a></li>
+        <li><a href="#multiassayexperiment-0-101-37">0.101.37</a></li>
+        <li><a href="#multiassayexperiment-0-101-36">0.101.36</a></li>
+        <li><a href="#multiassayexperiment-0-101-34">0.101.34</a></li>
+        <li><a href="#multiassayexperiment-0-99-202">0.99.202</a></li>
+        <li><a href="#multiassayexperiment-0-99-194">0.99.194</a></li>
+        <li><a href="#multiassayexperiment-0-99-14">0.99.14</a></li>
+      </ul>
+    </div>
+  </div>
+
+</div>
 
       <footer>
       <div class="copyright">
