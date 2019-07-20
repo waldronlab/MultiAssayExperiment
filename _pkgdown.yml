@@ -42,7 +42,23 @@ navbar:
       - text: MultiAssayExperiment in Practice
         href: articles/extras/MAE-curatedMetagenomicData.html
     - text: News
-      href: news/index.html
+      menu:
+      - text: "Release Notes"
+      - text: "Version 1.10.0"
+        href: https://waldronlab.io/MultiAssayExperiment/news/news-1.10.html
+      - text: "Version 1.8.0"
+        href: https://waldronlab.io/MultiAssayExperiment/news/news-1.8.html
+      - text: "Version 1.7.14"
+        href: https://waldronlab.io/MultiAssayExperiment/news/news-1.7.html
+      - text: "Version 1.1.0"
+        href: https://waldronlab.io/MultiAssayExperiment/news/news-1.1.html
+      - text: "Version 0.101.0"
+        href: https://waldronlab.io/MultiAssayExperiment/news/news-0.101.html
+      - text: "Version 0.99.0"
+        href: https://waldronlab.io/MultiAssayExperiment/news/news-0.99.html
+      - text: "Change log"
+        href: news/index.html
+  right:
+  - icon: fa-github fa-lg
+    href: https://github.com/waldronlab/MultiAssayExperiment
 
-news:
-- one_page: false
