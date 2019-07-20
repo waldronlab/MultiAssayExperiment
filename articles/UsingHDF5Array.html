@@ -147,13 +147,13 @@
 ## [1] "DelayedArray"</code></pre>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(smallMatrix)</a></code></pre></div>
 <pre><code>## &lt;6 x 20&gt; DelayedMatrix object of type "double":
-##          SampleID1    SampleID2    SampleID3 ...  SampleID19  SampleID20
-## GENE1  0.237915594  0.533650527  1.163304887   . -0.08753405  1.58157806
-## GENE2 -1.633758472 -0.080013925 -0.098232465   .  0.04540275 -0.83773296
-## GENE3  0.113644276  0.956695356  0.008040728   .  1.11271655  0.65248779
-## GENE4 -0.430642063 -0.044852796 -0.131885573   .  0.70314236  1.53346330
-## GENE5  0.438879850 -0.984580023  0.426286213   .  0.51362588  1.93504381
-## GENE6 -0.638805264  0.751290117 -0.196905942   .  0.28786449 -0.06550800</code></pre>
+##         SampleID1   SampleID2   SampleID3 ... SampleID19 SampleID20
+## GENE1  0.53857151  0.91894206 -0.94657990   . -1.1529532 -0.4478337
+## GENE2 -1.02444033  1.14337371  0.01640610   .  0.6604408 -0.2145036
+## GENE3 -1.27083947  0.97514301  0.08198664   . -0.9743102  0.8043133
+## GENE4  0.12999363 -1.65496456  0.82146075   . -0.2440440  1.3588717
+## GENE5  0.82412877  0.38915534 -2.23698163   . -0.3325850  0.6101786
+## GENE6  0.84428859 -0.81880909 -0.99243684   .  0.1124182 -1.0337238</code></pre>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/dim">dim</a></span>(smallMatrix)</a></code></pre></div>
 <pre><code>## [1] 50000    20</code></pre>
 </div>
@@ -218,30 +218,30 @@
 <div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1">HDF5SE &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/SummarizedExperiment/topics/RangedSummarizedExperiment-class">SummarizedExperiment</a></span>(<span class="dt">assays =</span> smallMatrix)</a>
 <a class="sourceLine" id="cb20-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/SummarizedExperiment/topics/SummarizedExperiment-class">assay</a></span>(HDF5SE)</a></code></pre></div>
 <pre><code>## &lt;50000 x 20&gt; DelayedMatrix object of type "double":
-##              SampleID1    SampleID2    SampleID3 ...  SampleID19
-##     GENE1  0.237915594  0.533650527  1.163304887   . -0.08753405
-##     GENE2 -1.633758472 -0.080013925 -0.098232465   .  0.04540275
-##     GENE3  0.113644276  0.956695356  0.008040728   .  1.11271655
-##     GENE4 -0.430642063 -0.044852796 -0.131885573   .  0.70314236
-##     GENE5  0.438879850 -0.984580023  0.426286213   .  0.51362588
-##       ...            .            .            .   .           .
-## GENE49996    2.8738624   -1.3732248    0.7479260   .  -0.5348899
-## GENE49997    0.8780618    1.9385392   -0.4521694   .   0.2574191
-## GENE49998   -1.5214056    0.1515881    0.1166038   .   0.3149342
-## GENE49999    1.8053476   -0.6664306    2.0805251   .  -0.6511209
-## GENE50000    1.7190921   -1.1255142    2.4656423   .  -0.2096134
-##            SampleID20
-##     GENE1  1.58157806
-##     GENE2 -0.83773296
-##     GENE3  0.65248779
-##     GENE4  1.53346330
-##     GENE5  1.93504381
-##       ...           .
-## GENE49996  -0.1057023
-## GENE49997  -1.7340250
-## GENE49998   0.8964369
-## GENE49999   0.4712160
-## GENE50000  -0.4617595</code></pre>
+##             SampleID1   SampleID2   SampleID3 ...   SampleID19
+##     GENE1  0.53857151  0.91894206 -0.94657990   .   -1.1529532
+##     GENE2 -1.02444033  1.14337371  0.01640610   .    0.6604408
+##     GENE3 -1.27083947  0.97514301  0.08198664   .   -0.9743102
+##     GENE4  0.12999363 -1.65496456  0.82146075   .   -0.2440440
+##     GENE5  0.82412877  0.38915534 -2.23698163   .   -0.3325850
+##       ...           .           .           .   .            .
+## GENE49996 -1.26540744  0.83734160  0.74994799   . -0.649486952
+## GENE49997 -2.22348411 -0.06597274  0.42503265   .  0.174402327
+## GENE49998  0.57279832  0.73348459  0.45121099   .  1.673384477
+## GENE49999 -1.18932460  0.03748414 -1.54591139   .  1.291318556
+## GENE50000 -0.24488814 -0.78257070 -0.13195286   .  0.475753854
+##             SampleID20
+##     GENE1   -0.4478337
+##     GENE2   -0.2145036
+##     GENE3    0.8043133
+##     GENE4    1.3588717
+##     GENE5    0.6101786
+##       ...            .
+## GENE49996  1.730226207
+## GENE49997  1.278511816
+## GENE49998 -0.729997664
+## GENE49999  0.003001443
+## GENE50000 -1.394994414</code></pre>
 <div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1"><span class="kw"><a href="../reference/MultiAssayExperiment.html">MultiAssayExperiment</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">HDF5SE =</span> HDF5SE))</a></code></pre></div>
 <pre><code>## A MultiAssayExperiment object of 1 listed
 ##  experiment with a user-defined name and respective class. 

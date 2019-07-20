@@ -1125,11 +1125,12 @@
 ##  [1] Affy: SummarizedExperiment with 0 rows and 4 columns 
 ##  [2] Methyl 450k: matrix with 0 rows and 5 columns 
 ##  [3] Mirna: matrix with 0 rows and 3 columns 
-##  [4] CNV gistic: RangedSummarizedExperiment with 0 rows and 4 columns</code></pre>
+##  [4] CNV gistic: RangedSummarizedExperiment with 1 rows and 4 columns</code></pre>
 <div class="sourceCode" id="cb171"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb171-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/SummarizedExperiment/topics/RangedSummarizedExperiment-class">rowRanges</a></span>(subsetted[[<span class="dv">4</span>]])</a></code></pre></div>
-<pre><code>## GRanges object with 0 ranges and 1 metadata column:
-##    seqnames    ranges strand |  feature_id
-##       &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt; | &lt;character&gt;
+<pre><code>## GRanges object with 1 range and 1 metadata column:
+##     seqnames        ranges strand |  feature_id
+##        &lt;Rle&gt;     &lt;IRanges&gt;  &lt;Rle&gt; | &lt;character&gt;
+##   a     chr1 240782-240881      - |     ID\\001
 ##   -------
 ##   seqinfo: 2 sequences from an unspecified genome; no seqlengths</code></pre>
 <p>Square bracket subsetting can still be used here, but passing on arguments to <code><a href="https://www.rdocumentation.org/packages/IRanges/topics/findOverlaps-methods">IRanges::subsetByOverlaps</a></code> through “…” is simpler using <code><a href="../reference/subsetBy.html">subsetByRow()</a></code>.</p>
