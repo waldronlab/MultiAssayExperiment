@@ -1,5 +1,8 @@
-MultiAssayExperiment
-==============
+# MultiAssayExperiment <a href='https://waldronlab.io/MultiAssayExperiment'><img src='https://raw.githubusercontent.com/Bioconductor/BiocStickers/master/MultiAssayExperiment/MultiAssayExperiment.png' align="right" height="139" /></a>
+
+## Software For The Integration Of Multi-Omics Experiments In Bioconductor
+
+https://doi.org/10.1158/0008-5472.CAN-17-0344
 
 [![BioC status](http://www.bioconductor.org/shields/build/release/bioc/MultiAssayExperiment.svg)](https://bioconductor.org/checkResults/release/bioc-LATEST/MultiAssayExperiment)
 [![Platforms](http://www.bioconductor.org/shields/availability/release/MultiAssayExperiment.svg)](https://www.bioconductor.org/packages/release/bioc/html/MultiAssayExperiment.html#archives)
