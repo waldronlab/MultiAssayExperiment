@@ -9,8 +9,8 @@ listToMap <- function(listmap) {
         stop("'listmap' must be a named list")
 
     elementClass <- unique(vapply(listmap, class, character(1L)))
-    if (!elementClass %in% c("DataFrame", "data.frame") ||
-            length(elementClass) != 1L)
+    if (length(elementClass) != 1L ||
+        !(extends(elementClass, "DataFrame") || elementClass == "data.frame"))
         stop("'listmap' elements are not all 'DataFrame' or 'data.frame'")
 
     if (elementClass == "data.frame")
