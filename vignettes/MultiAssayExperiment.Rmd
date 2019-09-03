@@ -179,7 +179,7 @@ The `sampleMap` is a `DataFrame` that relates the "primary" data
 (`colData`) to the experimental assays:
 
 ```{r}
-class(sampleMap(empty)) # DataFrame
+is(sampleMap(empty), "DataFrame") # TRUE
 ```
 
 The `sampleMap` provides an unambiguous map from every experimental
