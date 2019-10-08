@@ -62,6 +62,15 @@ empty
 slotNames(empty)
 ```
 
+A visual representation of the MultiAssayExperiment class and its accessor 
+functions can be seen below. There are three main components:
+
+1) `ExperimentList`
+2) `colData`
+3) `sampleMap`
+
+![MultiAssayExperiment](MultiAssayExperiment.png)
+
 ## Components of the `MultiAssayExperiment`
 
 ### `ExperimentList`: experimental data
