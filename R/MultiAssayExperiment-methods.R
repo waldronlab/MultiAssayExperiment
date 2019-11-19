@@ -20,9 +20,9 @@ NULL
     missingPrimary <- is.na(autoMap[["primary"]])
     if (nrow(autoMap) && any(missingPrimary)) {
         notFound <- autoMap[missingPrimary, ]
-        warning("Data from rows:",
-                sprintf("\n %s - %s", notFound[, 2], notFound[, 3]),
-                "\ndropped due to missing phenotype data")
+        warning("Data from ExperimentList element - column:",
+                sprintf("\n %s - %s", notFound[, 1], notFound[, 3]),
+                "\nwere dropped because they could not be mapped to rows of colData")
         autoMap <- autoMap[!missingPrimary, ]
     }
     autoMap
