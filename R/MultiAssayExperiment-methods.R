@@ -20,8 +20,10 @@ NULL
     missingPrimary <- is.na(autoMap[["primary"]])
     if (nrow(autoMap) && any(missingPrimary)) {
         notFound <- autoMap[missingPrimary, ]
-        warning("Data from ExperimentList element - column:",
-                sprintf("\n %s - %s", notFound[, 1], notFound[, 3]),
+        warning("Data from ExperimentList (element - column):",
+                Biobase::selectSome(
+                    paste("\n", notFound[["assay"]], "-", notFound[["colname"]])
+                ),
                 "\nwere dropped because they could not be mapped to rows of colData")
         autoMap <- autoMap[!missingPrimary, ]
     }
