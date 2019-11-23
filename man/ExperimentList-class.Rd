@@ -25,8 +25,7 @@
 
 \S4method{dimnames}{ExperimentList}(x)
 
-\S4method{mergeReplicates}{ExperimentList}(x, replicates = list(),
-  simplify = BiocGenerics::mean, ...)
+\S4method{mergeReplicates}{ExperimentList}(x, replicates = list(), simplify = BiocGenerics::mean, ...)
 
 \S4method{assay}{ANY,missing}(x, i, ...)
 

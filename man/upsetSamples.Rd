@@ -5,9 +5,15 @@
 \title{Create a generalized Venn Diagram analog for sample membership in multiple
 assays, using the upset algorithm in \code{UpSetR}}
 \usage{
-upsetSamples(MultiAssayExperiment, nsets = length(MultiAssayExperiment),
-  nintersects = 24, order.by = "freq", nameFilter = force,
-  check.names = FALSE, ...)
+upsetSamples(
+  MultiAssayExperiment,
+  nsets = length(MultiAssayExperiment),
+  nintersects = 24,
+  order.by = "freq",
+  nameFilter = force,
+  check.names = FALSE,
+  ...
+)
 }
 \arguments{
 \item{MultiAssayExperiment}{A
