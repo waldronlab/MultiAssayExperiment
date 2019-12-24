@@ -375,18 +375,18 @@ setMethod("show", "MultiAssayExperiment", function(object) {
         ifelse(length(o_len) == 0L, "or", "and"),
         ifelse(length(o_len) == 0L, "classes.",
                ifelse(length(classes) == 1L,
-                      "respective class.", "respective classes.")),
-        "\n Containing an ")
+                      "respective class.\n", "respective classes.\n")),
+        "Containing an ")
     show(experiments(object))
-    cat("Features: \n experiments() - obtain the",
-        sprintf("%s", c_elist), "instance",
-        "\n colData() - the primary/phenotype", sprintf("%s", c_mp),
-        "\n sampleMap() - the sample availability", sprintf("%s", c_sm),
+    cat("Features:\n experiments() - obtain the ",
+        sprintf("%s", c_elist), " instance",
+        "\n colData() - the primary/phenotype ", sprintf("%s", c_mp),
+        "\n sampleMap() - the sample availability ", sprintf("%s", c_sm),
         "\n `$`, `[`, `[[` - extract colData columns, subset, or experiment",
-        "\n *Format() - convert",
-        "into a long or wide", sprintf("%s", c_mp),
-        "\n assays() - convert", sprintf("%s", c_elist),
-        "to a SimpleList of matrices\n")
+        "\n *Format() - convert ",
+        "into a long or wide ", sprintf("%s", c_mp),
+        "\n assays() - convert ", sprintf("%s", c_elist),
+        " to a SimpleList of matrices\n", sep = "")
 })
 
 #' @name MultiAssayExperiment-methods

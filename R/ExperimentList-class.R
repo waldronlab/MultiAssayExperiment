@@ -159,9 +159,9 @@ setMethod("show", "ExperimentList", function(object) {
     }, FUN.VALUE = integer(1L))
     cat(sprintf("%s", o_class),
         "class object of length",
-        paste0(o_len, ":"),
-        sprintf("\n [%i] %s: %s with %s rows and %s columns",
-                seq(o_len), o_names, elem_cl, featdim, sampdim), "\n")
+        paste0(o_len, ":\n"),
+        sprintf("[%i] %s: %s with %s rows and %s columns\n",
+                seq(o_len), o_names, elem_cl, featdim, sampdim))
 })
 
 
