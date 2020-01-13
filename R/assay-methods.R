@@ -1,4 +1,4 @@
-#' @describeIn ExperimentList Obtain the specified assay with a \code{numberic}
+#' @describeIn ExperimentList Obtain the specified assay with a \code{numeric}
 #' or \code{character} reference
 setMethod("assay", c("ANY", "missing"), function(x, i, ...) {
     if (is(x, "ExpressionSet"))

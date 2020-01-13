@@ -4,11 +4,14 @@
 \alias{MultiAssayExperiment}
 \title{Construct a \code{MultiAssayExperiment} object}
 \usage{
-MultiAssayExperiment(experiments = ExperimentList(),
+MultiAssayExperiment(
+  experiments = ExperimentList(),
   colData = S4Vectors::DataFrame(),
-  sampleMap = S4Vectors::DataFrame(assay = factor(), primary =
-  character(), colname = character()), metadata = list(),
-  drops = list())
+  sampleMap = S4Vectors::DataFrame(assay = factor(), primary = character(), colname =
+    character()),
+  metadata = list(),
+  drops = list()
+)
 }
 \arguments{
 \item{experiments}{A \code{list} or \link{ExperimentList} of all

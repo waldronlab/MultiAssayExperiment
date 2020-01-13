@@ -25,8 +25,7 @@
 
 \S4method{dimnames}{ExperimentList}(x)
 
-\S4method{mergeReplicates}{ExperimentList}(x, replicates = list(),
-  simplify = BiocGenerics::mean, ...)
+\S4method{mergeReplicates}{ExperimentList}(x, replicates = list(), simplify = BiocGenerics::mean, ...)
 
 \S4method{assay}{ANY,missing}(x, i, ...)
 
@@ -81,7 +80,7 @@ an \code{ExperimentList} using \code{\linkS4class{CharacterList}}
 \item \code{mergeReplicates}: Apply the mergeReplicates method on the
 ExperimentList elements
 
-\item \code{assay}: Obtain the specified assay with a \code{numberic}
+\item \code{assay}: Obtain the specified assay with a \code{numeric}
 or \code{character} reference
 
 \item \code{assays}: Get the assay data from each element in the
