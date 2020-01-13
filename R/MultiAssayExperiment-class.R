@@ -701,3 +701,43 @@ setAs("MultiAssayExperiment", "MatchedAssayExperiment", function(from) {
     from <- .doMatching(from)
     new("MatchedAssayExperiment", from)
 })
+
+setGeneric("exportClass", function(object, dir, format, ext, match, ...) {
+    standardGeneric("exportClass")
+})
+
+setMethod("exportClass", "MultiAssayExperiment",
+    function(object, dir, format = ".csv", ext = format, ...) {
+        if (missing(dir) || !dir.exists(dir))
+            stop("Specify a valid folder location for saving data files")
+        exargs <- list(...)
+        match <- exargs[["match"]]
+        if (isTRUE(match))
+            object <- as(object, "MatchedAssayExperiment")
+        objname <- as.character(substitute(object))
+        nfiles <- length(object) + !isEmpty(colData(object)) +
+            !isEmpty(sampleMap(object)) + length(metadata(object))
+        message("Writing about ", nfiles, " files to disk.",
+            " This may take a while.")
+        if (is.character(format))
+            format <- switch(format, .csv = write.csv,
+                .tsv = function(...) write.table(sep = "\t", ...))
+        else if (is.function(format))
+            ext <- as.character(substitute(format))
+        else
+            stop("Invalid format type: must be 'character' or 'function'")
+
+        coldatname <- paste0(objname, "_", "colData", ext)
+        sampmapname <- paste0(objname, "_", "sampleMap", ext)
+
+        exfnames <- c(paste0(objname, "_", names(experiments(object)), ext),
+        coldatname, sampmapname)
+
+        lists <- c(assays(object), as(colData(object), "data.frame"),
+            as(sampleMap(object), "data.frame"))
+        Map(function(fname, lobject) {
+            floc <- file.path(dir, fname)
+            format(lobject, floc, ...)
+        }, exfnames, lists)
+    }
+)

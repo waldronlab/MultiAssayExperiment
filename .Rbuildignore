@@ -27,7 +27,6 @@
 ^.*\.rda$
 ^.*\.tar\.gz$
 ^\.lintr$
-^NEWS\.md$
 ^README\.md$
 ^docs$
 
