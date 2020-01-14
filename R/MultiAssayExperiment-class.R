@@ -706,6 +706,22 @@ setGeneric("exportClass", function(object, dir, format, ext, match, ...) {
     standardGeneric("exportClass")
 })
 
+.sortMetadata <- function(object, dir) {
+    objname <- as.character(substitute(object))
+    metas <- metadata(object)
+    stopifnot(is.list(metas))
+    atmos <- vapply(metas, is.atomic, logical(1L))
+    metatxt <- metas[atmos]
+
+    fpath <- file.path(dir, paste0(objname, "_META", ".txt"))
+    writeLines(metatxt, fpath)
+    if (any(!atmos))
+        tryCatch({
+            nonato <- metas[!atmos]
+            lapply(nonato)
+        })
+}
+
 setMethod("exportClass", "MultiAssayExperiment",
     function(object, dir, format = ".csv", ext = format, ...) {
         if (missing(dir) || !dir.exists(dir))
@@ -720,8 +736,8 @@ setMethod("exportClass", "MultiAssayExperiment",
         message("Writing about ", nfiles, " files to disk.",
             " This may take a while.")
         if (is.character(format))
-            format <- switch(format, .csv = write.csv,
-                .tsv = function(...) write.table(sep = "\t", ...))
+            format <- switch(format, .csv = ",",
+                .tsv = "\t")
         else if (is.function(format))
             ext <- as.character(substitute(format))
         else
@@ -732,12 +748,17 @@ setMethod("exportClass", "MultiAssayExperiment",
 
         exfnames <- c(paste0(objname, "_", names(experiments(object)), ext),
         coldatname, sampmapname)
+        alists <- lapply(assays(object), as.data.frame)
+        lists <- c(alists, list(coldat = as.data.frame(colData(object)),
+            sampmap = as.data.frame(sampleMap(object))))
 
-        lists <- c(assays(object), as(colData(object), "data.frame"),
-            as(sampleMap(object), "data.frame"))
-        Map(function(fname, lobject) {
+        lapply(metas, function(lest) {
+            if (is.atomic(lest))
+
+
+        invisible(Map(function(fname, lobject) {
             floc <- file.path(dir, fname)
             format(lobject, floc, ...)
-        }, exfnames, lists)
+        }, exfnames, lists))
     }
 )
