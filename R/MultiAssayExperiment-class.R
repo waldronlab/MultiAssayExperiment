@@ -706,7 +706,7 @@ setGeneric("exportClass", function(object, dir, format, ext, match, ...) {
     standardGeneric("exportClass")
 })
 
-.sortMetadata <- function(object, dir) {
+.sortMetadata <- function(object, dir, ext) {
     objname <- as.character(substitute(object))
     metas <- metadata(object)
     stopifnot(is.list(metas))
@@ -718,12 +718,18 @@ setGeneric("exportClass", function(object, dir, format, ext, match, ...) {
     if (any(!atmos))
         tryCatch({
             nonato <- metas[!atmos]
-            lapply(nonato)
-        })
+            lapply(seq_along(nonato), function(i) {
+                format(
+                    as(nonato[[i]], "data.frame"),
+                    file.path(dir, paste0("META_", i, ext)),
+                    ...
+                )
+            })
+        }, error = function(e) conditionMessage(e))
 }
 
 setMethod("exportClass", "MultiAssayExperiment",
-    function(object, dir, format = ".csv", ext = format, ...) {
+    function(object, dir, format, ext, ...) {
         if (missing(dir) || !dir.exists(dir))
             stop("Specify a valid folder location for saving data files")
         exargs <- list(...)
@@ -735,11 +741,12 @@ setMethod("exportClass", "MultiAssayExperiment",
             !isEmpty(sampleMap(object)) + length(metadata(object))
         message("Writing about ", nfiles, " files to disk.",
             " This may take a while.")
-        if (is.character(format))
+        if (is.character(format)) {
+            ext <- format
             format <- switch(format, .csv = ",",
                 .tsv = "\t")
-        else if (is.function(format))
-            ext <- as.character(substitute(format))
+        } else if (is.function(format) && missing(ext))
+            stop("Provide a valid file extention, see 'ext' argument")
         else
             stop("Invalid format type: must be 'character' or 'function'")
 
@@ -752,9 +759,7 @@ setMethod("exportClass", "MultiAssayExperiment",
         lists <- c(alists, list(coldat = as.data.frame(colData(object)),
             sampmap = as.data.frame(sampleMap(object))))
 
-        lapply(metas, function(lest) {
-            if (is.atomic(lest))
-
+        .sortMetadata(object, dir, ext)
 
         invisible(Map(function(fname, lobject) {
             floc <- file.path(dir, fname)
