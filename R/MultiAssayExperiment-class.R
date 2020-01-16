@@ -702,68 +702,94 @@ setAs("MultiAssayExperiment", "MatchedAssayExperiment", function(from) {
     new("MatchedAssayExperiment", from)
 })
 
-setGeneric("exportClass", function(object, dir, format, ext, match, ...) {
+setGeneric("exportClass", function(object, dir, fmt, ext, match, verbose, ...) {
     standardGeneric("exportClass")
 })
 
-.sortMetadata <- function(object, dir, ext) {
+
+.metasize <- function(metlist) {
+    atmos <- vapply(metlist, is.atomic, logical(1L))
+    sum(any(atmos), !atmos)
+}
+
+.chr2fxn <- function(fmt) {
+    sep <- switch(fmt, csv = ",", "\t")
+    cols <- switch(fmt, csv = NA, TRUE)
+    qme <- switch(fmt, csv = "double", "escape")
+    function(...) write.table(..., sep = sep,
+        col.names = cols, qmethod = qme)
+}
+
+.sortMetadata <- function(object, dir, fmt, ext, ...) {
     objname <- as.character(substitute(object))
     metas <- metadata(object)
     stopifnot(is.list(metas))
     atmos <- vapply(metas, is.atomic, logical(1L))
     metatxt <- metas[atmos]
 
-    fpath <- file.path(dir, paste0(objname, "_META", ".txt"))
-    writeLines(metatxt, fpath)
-    if (any(!atmos))
+    fpath <- file.path(dir, paste0(objname, "_META_0", ext))
+    if (!is.function(fmt))
+        fmt <- .chr2fxn(fmt)
+    fmt(as.data.frame(metatxt), fpath, ...)
+    fnames <- fpath
+    if (any(!atmos)) {
+        nonato <- metas[!atmos]
+        nonatos <- seq_along(nonato)
+        mpaths <- file.path(dir, paste0(objname, "_META_", nonatos, ext))
         tryCatch({
-            nonato <- metas[!atmos]
-            lapply(seq_along(nonato), function(i) {
-                format(
-                    as(nonato[[i]], "data.frame"),
-                    file.path(dir, paste0("META_", i, ext)),
-                    ...
-                )
-            })
+            invisible(
+                lapply(nonatos, function(i) {
+                    fmt(as(nonato[[i]], "data.frame"), mpaths[[i]], ...)
+                })
+            )
         }, error = function(e) conditionMessage(e))
+        fnames <- c(fnames, mpaths)
+    }
+    fnames
 }
 
 setMethod("exportClass", "MultiAssayExperiment",
-    function(object, dir, format, ext, ...) {
+    function(object, dir, fmt, ext, match, verbose, ...) {
         if (missing(dir) || !dir.exists(dir))
             stop("Specify a valid folder location for saving data files")
-        exargs <- list(...)
-        match <- exargs[["match"]]
+        objname <- as.character(substitute(object))
+
         if (isTRUE(match))
             object <- as(object, "MatchedAssayExperiment")
-        objname <- as.character(substitute(object))
-        nfiles <- length(object) + !isEmpty(colData(object)) +
-            !isEmpty(sampleMap(object)) + length(metadata(object))
-        message("Writing about ", nfiles, " files to disk.",
-            " This may take a while.")
-        if (is.character(format)) {
-            ext <- format
-            format <- switch(format, .csv = ",",
-                .tsv = "\t")
-        } else if (is.function(format) && missing(ext))
+
+        nfiles <- sum(length(object), !isEmpty(colData(object)),
+            !isEmpty(sampleMap(object)), .metasize(metadata(object)))
+        if (missing(verbose) || !isFALSE(verbose))
+            message("Writing about ", nfiles, " files to disk...")
+
+        if (is.function(fmt) && missing(ext))
             stop("Provide a valid file extention, see 'ext' argument")
-        else
+
+        if (!is.function(fmt) && !is.character(fmt))
             stop("Invalid format type: must be 'character' or 'function'")
+
+        if (is.character(fmt)) {
+            if (missing(ext))
+                ext <- paste0(".", fmt)
+            fmt <- .chr2fxn(fmt)
+        }
 
         coldatname <- paste0(objname, "_", "colData", ext)
         sampmapname <- paste0(objname, "_", "sampleMap", ext)
 
-        exfnames <- c(paste0(objname, "_", names(experiments(object)), ext),
-        coldatname, sampmapname)
+        exfnames <- file.path(dir,
+            c(paste0(objname, "_", names(experiments(object)), ext),
+            coldatname, sampmapname))
         alists <- lapply(assays(object), as.data.frame)
         lists <- c(alists, list(coldat = as.data.frame(colData(object)),
             sampmap = as.data.frame(sampleMap(object))))
 
-        .sortMetadata(object, dir, ext)
+        metafs <- .sortMetadata(object, dir, fmt, ext)
 
         invisible(Map(function(fname, lobject) {
-            floc <- file.path(dir, fname)
-            format(lobject, floc, ...)
+            fmt(lobject, fname, ...)
         }, exfnames, lists))
+
+        c(metafs, exfnames)
     }
 )
