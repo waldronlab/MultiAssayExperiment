@@ -702,9 +702,12 @@ setAs("MultiAssayExperiment", "MatchedAssayExperiment", function(from) {
     new("MatchedAssayExperiment", from)
 })
 
-setGeneric("exportClass", function(object, dir, fmt, ext, match, verbose, ...) {
-    standardGeneric("exportClass")
-})
+setGeneric("exportClass",
+    function(object, dir = tempdir(), fmt, ext, match = NULL,
+        verbose = TRUE, ...) {
+        standardGeneric("exportClass")
+    }
+)
 
 
 .metasize <- function(metlist) {
@@ -716,7 +719,7 @@ setGeneric("exportClass", function(object, dir, fmt, ext, match, verbose, ...) {
     sep <- switch(fmt, csv = ",", "\t")
     cols <- switch(fmt, csv = NA, TRUE)
     qme <- switch(fmt, csv = "double", "escape")
-    function(...) write.table(..., sep = sep,
+    function(...) utils::write.table(..., sep = sep,
         col.names = cols, qmethod = qme)
 }
 
@@ -749,7 +752,8 @@ setGeneric("exportClass", function(object, dir, fmt, ext, match, verbose, ...) {
 }
 
 setMethod("exportClass", "MultiAssayExperiment",
-    function(object, dir, fmt, ext, match, verbose, ...) {
+    function(object, dir = tempdir(), fmt, ext, match = NULL,
+            verbose = TRUE, ...) {
         if (missing(dir) || !dir.exists(dir))
             stop("Specify a valid folder location for saving data files")
         objname <- as.character(substitute(object))
