@@ -23,8 +23,7 @@
 
 \S4method{names}{MultiAssayExperiment}(x)
 
-\S4method{updateObject}{MultiAssayExperiment}(object, ...,
-  verbose = FALSE)
+\S4method{updateObject}{MultiAssayExperiment}(object, ..., verbose = FALSE)
 
 \S4method{exportClass}{MultiAssayExperiment}(
   object,
@@ -38,8 +37,7 @@
 
 \S4method{dimnames}{MultiAssayExperiment}(x)
 
-\S4method{c}{MultiAssayExperiment}(x, ..., sampleMap = NULL,
-  mapFrom = NULL)
+\S4method{c}{MultiAssayExperiment}(x, ..., sampleMap = NULL, mapFrom = NULL)
 
 \S4method{assays}{MultiAssayExperiment}(x, ..., withDimnames = TRUE)
 
