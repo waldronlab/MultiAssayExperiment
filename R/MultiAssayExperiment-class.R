@@ -703,7 +703,7 @@ setAs("MultiAssayExperiment", "MatchedAssayExperiment", function(from) {
 })
 
 setGeneric("exportClass",
-    function(object, dir = tempdir(), fmt, ext, match = NULL,
+    function(object, dir = tempdir(), fmt, ext, match = FALSE,
         verbose = TRUE, ...) {
         standardGeneric("exportClass")
     }
@@ -751,8 +751,24 @@ setGeneric("exportClass",
     fnames
 }
 
+#' @describeIn MultiAssayExperiment Export data from class to a series of text
+#'     files
+#'
+#' @param dir character(1) A directory for saving exported data (default:
+#'     `tempdir()`)
+#'
+#' @param fmt character(1) or function() Either a format character atomic as
+#'     supported by `write.table` either ('csv', or 'tsv') or a function whose
+#'     first two arguments are 'object to save' and 'file location'
+#'
+#' @param ext character(1) A file extension supported by the format argument
+#'
+#' @param match logical(1) Whether to coerce the current object to a
+#'     'MatchedAssayExperiment' object (default: FALSE)
+#'
+#' @exportMethod exportClass
 setMethod("exportClass", "MultiAssayExperiment",
-    function(object, dir = tempdir(), fmt, ext, match = NULL,
+    function(object, dir = tempdir(), fmt, ext, match = FALSE,
             verbose = TRUE, ...) {
         if (missing(dir) || !dir.exists(dir))
             stop("Specify a valid folder location for saving data files")

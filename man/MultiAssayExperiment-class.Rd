@@ -8,6 +8,7 @@
 \alias{length,MultiAssayExperiment-method}
 \alias{names,MultiAssayExperiment-method}
 \alias{updateObject,MultiAssayExperiment-method}
+\alias{exportClass,MultiAssayExperiment-method}
 \alias{dimnames,MultiAssayExperiment-method}
 \alias{c,MultiAssayExperiment-method}
 \alias{assays,MultiAssayExperiment-method}
@@ -24,6 +25,16 @@
 
 \S4method{updateObject}{MultiAssayExperiment}(object, ...,
   verbose = FALSE)
+
+\S4method{exportClass}{MultiAssayExperiment}(
+  object,
+  dir = tempdir(),
+  fmt,
+  ext,
+  match = FALSE,
+  verbose = TRUE,
+  ...
+)
 
 \S4method{dimnames}{MultiAssayExperiment}(x)
 
@@ -46,6 +57,18 @@
 \item{...}{Additional arguments for supporting functions. See details.}
 
 \item{verbose}{logical (default FALSE) whether to print extra messages}
+
+\item{dir}{character(1) A directory for saving exported data (default:
+`tempdir()`)}
+
+\item{fmt}{character(1) or function() Either a format character atomic as
+supported by `write.table` either ('csv', or 'tsv') or a function whose
+first two arguments are 'object to save' and 'file location'}
+
+\item{ext}{character(1) A file extension supported by the format argument}
+
+\item{match}{logical(1) Whether to coerce the current object to a
+'MatchedAssayExperiment' object (default: FALSE)}
 
 \item{sampleMap}{\code{c} method: a \code{sampleMap} \code{list} or
 \code{DataFrame} to guide merge}
@@ -101,6 +124,9 @@ arguments in several instances.
 
 \item \code{updateObject}: Update old serialized MultiAssayExperiment
 objects to new API
+
+\item \code{exportClass}: Export data from class to a series of text
+files
 
 \item \code{dimnames}: Get the dimension names
 for a \code{MultiAssayExperiment} object
