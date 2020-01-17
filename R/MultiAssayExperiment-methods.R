@@ -13,16 +13,19 @@ NULL
     colname <- unlist(samps, use.names=FALSE)
     matches <- match(colname, rownames(colData))
     if (length(matches) && all(is.na(matches)))
-        stop("no way to map colData to ExperimentList")
+        stop("No way to map colData to ExperimentList")
+    else if (!length(matches))
+        warning("colData rownames and ExperimentList colnames are empty")
     primary <- rownames(colData)[matches]
     autoMap <- S4Vectors::DataFrame(
         assay=assay, primary=primary, colname=colname)
     missingPrimary <- is.na(autoMap[["primary"]])
     if (nrow(autoMap) && any(missingPrimary)) {
         notFound <- autoMap[missingPrimary, ]
-        warning("Data from rows:",
-                sprintf("\n %s - %s", notFound[, 2], notFound[, 3]),
-                "\ndropped due to missing phenotype data")
+        warning("Data dropped from ExperimentList (element - column):",
+            Biobase::selectSome(
+                paste("\n", notFound[["assay"]], "-", notFound[["colname"]]),
+            ), "\nUnable to map to rows of colData", call. = FALSE)
         autoMap <- autoMap[!missingPrimary, ]
     }
     autoMap
