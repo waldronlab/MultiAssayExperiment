@@ -12,15 +12,6 @@ output:
     toc: true
 ---
 
-```{r, echo=FALSE, warning=FALSE}
-suppressPackageStartupMessages({
-    library(MultiAssayExperiment)
-    library(GenomicRanges)
-    library(SummarizedExperiment)
-    library(RaggedExperiment)
-})
-```
-
 # Installation
 
 ```{r, eval = FALSE}
@@ -31,7 +22,7 @@ BiocManager::install("MultiAssayExperiment")
 
 Loading the packages:
 
-```{r, eval = FALSE}
+```{r,include=TRUE,results="hide",message=FALSE,warning=FALSE}
 library(MultiAssayExperiment)
 library(GenomicRanges)
 library(SummarizedExperiment)
