@@ -60,6 +60,9 @@ setClass("ExperimentList", contains = "SimpleList")
 ExperimentList <- function(...) {
     listData <- list(...)
     if (length(listData) == 1L) {
+        if (is(listData[[1L]], "MultiAssayExperiment"))
+            stop("MultiAssayExperiment input detected. ",
+                "Did you mean 'experiments()'?")
         if (is.list(listData[[1L]]) || (is(listData[[1L]], "List") &&
             !is(listData[[1L]], "DataFrame"))) {
             listData <- listData[[1L]]
