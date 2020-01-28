@@ -283,12 +283,13 @@ setMethod("mergeReplicates", "ANY",
 .longFormatElist <- function(object, i) {
     if (!is(object, "ExperimentList"))
         stop("<internal> Not an 'ExperimentList' input")
-    objnames <- stats::setNames(names(object), names(object))
-    lapply(objnames, function(nameidx, flatBox) {
-        data.frame(assay = nameidx,
-            .longFormatANY(flatBox[[nameidx]], i = i),
+    samelength <- identical(length(object), length(i))
+    if (!samelength && identical(length(i), 1L))
+        i <- rep(i, length(object))
+    mapply(function(obj, obname, idx) {
+        data.frame(assay = obname, .longFormatANY(obj, i = idx),
             stringsAsFactors = FALSE)
-        }, flatBox = object)
+        }, obj = object, obname = names(object), idx = i, SIMPLIFY = FALSE)
 }
 
 .matchAddColData <- function(reshaped, colData, colDataCols) {
