@@ -85,7 +85,8 @@ as indicated by the \code{replicated} method for \code{MultiAssayExperiment}}
 index for \code{colData} columns to be included}
 
 \item{i}{The assay indicator for \linkS4class{SummarizedExperiment}
-objects (default 1L)}
+objects. A vector input is supported in the case that the
+SummarizedExperiment object(s) has more than one assay (default 1L)}
 
 \item{check.names}{(logical default TRUE) Column names of the output
 \code{DataFrame} will be checked for syntactic validity and made unique,

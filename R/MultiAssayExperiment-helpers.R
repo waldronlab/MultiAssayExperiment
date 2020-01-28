@@ -331,10 +331,13 @@ setMethod("mergeReplicates", "ANY",
 #' argument in the assay method.
 #'
 #' @param object Any supported class object
+#'
 #' @param colDataCols A \code{character}, \code{logical}, or \code{numeric}
-#' index for \code{colData} columns to be included
+#'     index for \code{colData} columns to be included
+#'
 #' @param i The assay indicator for \linkS4class{SummarizedExperiment}
-#' objects (default 1L)
+#'     objects. A vector input is supported in the case that the
+#'     SummarizedExperiment object(s) has more than one assay (default 1L)
 #'
 #' @export longFormat
 longFormat <- function(object, colDataCols = NULL, i = 1L) {
