@@ -72,7 +72,7 @@ NULL
 #' \code{MultiAssayExperiment} object
 #' @slot drops A metadata \code{list} of dropped information
 #'
-#' @param x A \code{MultiAssayExperiment} object
+#' @param object,x A \code{MultiAssayExperiment} object
 #' @param ... Additional arguments for supporting functions. See details.
 #'
 #' @return A \code{MultiAssayExperiment} object
@@ -350,7 +350,6 @@ S4Vectors::setValidity2("MultiAssayExperiment", .validMultiAssayExperiment)
 #' @exportMethod show
 #' @describeIn MultiAssayExperiment Show method for a
 #' \code{MultiAssayExperiment}
-#' @param object A \code{MultiAssayExperiment} object
 setMethod("show", "MultiAssayExperiment", function(object) {
     if (.hasOldAPI(object)) {
         stop("MultiAssayExperiment is outdated, please run updateObject()")
@@ -423,8 +422,7 @@ setMethod("show", "MultiAssayExperiment", function(object) {
 #'     \item `$<-`: A vector to replace the indicated column in \code{colData}
 #' }
 #'
-#' @param x A \code{MultiAssayExperiment} object
-#' @param object A \code{MultiAssayExperiment} object
+#' @param object,x A \code{MultiAssayExperiment} object
 #' @param name A column in \code{colData}
 #' @param value See details.
 #' @param ... Argument not in use
@@ -442,6 +440,7 @@ NULL
 ### Accessor methods
 ###
 
+#' @export
 setGeneric("sampleMap", function(x) standardGeneric("sampleMap"))
 
 #' @exportMethod sampleMap
@@ -458,7 +457,6 @@ setMethod("experiments", "MultiAssayExperiment", function(x)
     getElement(x, "ExperimentList"))
 
 
-#' @export
 #' @exportMethod colData
 #' @rdname MultiAssayExperiment-methods
 setMethod("colData", "MultiAssayExperiment", function(x, ...) {
@@ -490,6 +488,7 @@ setMethod("names", "MultiAssayExperiment", function(x)
 ### Replacers
 ###
 
+#' @export
 setGeneric("sampleMap<-", function(object, value) {
     standardGeneric("sampleMap<-")
 })
@@ -502,6 +501,7 @@ setReplaceMethod("sampleMap", c("MultiAssayExperiment", "DataFrame"),
                     return(object)
                 })
 
+#' @export
 setGeneric("experiments<-", function(object, value)
     standardGeneric("experiments<-"))
 
@@ -702,14 +702,6 @@ setAs("MultiAssayExperiment", "MatchedAssayExperiment", function(from) {
     new("MatchedAssayExperiment", from)
 })
 
-setGeneric("exportClass",
-    function(object, dir = tempdir(), fmt, ext, match = FALSE,
-        verbose = TRUE, ...) {
-        standardGeneric("exportClass")
-    }
-)
-
-
 .metasize <- function(metlist) {
     atmos <- vapply(metlist, is.atomic, logical(1L))
     sum(any(atmos), !atmos)
@@ -751,8 +743,16 @@ setGeneric("exportClass",
     fnames
 }
 
-#' @describeIn MultiAssayExperiment Export data from class to a series of text
-#'     files
+#' @export
+setGeneric("exportClass",
+    function(object, dir = tempdir(), fmt, ext, match = FALSE,
+        verbose = TRUE, ...) {
+        standardGeneric("exportClass")
+    }
+)
+
+#' @describeIn MultiAssayExperiment Export data from class to a series
+#'     of text files
 #'
 #' @param dir character(1) A directory for saving exported data (default:
 #'     `tempdir()`)
@@ -766,6 +766,10 @@ setGeneric("exportClass",
 #' @param match logical(1) Whether to coerce the current object to a
 #'     'MatchedAssayExperiment' object (default: FALSE)
 #'
+#' @param verbose logical(1) Whether to print additional information (default
+#'     TRUE)
+#'
+#' @aliases exportClass
 #' @exportMethod exportClass
 setMethod("exportClass", "MultiAssayExperiment",
     function(object, dir = tempdir(), fmt, ext, match = FALSE,

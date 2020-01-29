@@ -43,11 +43,9 @@
 \S4method{$}{MultiAssayExperiment}(x, name)
 }
 \arguments{
-\item{x}{A \code{MultiAssayExperiment} object}
-
 \item{...}{Argument not in use}
 
-\item{object}{A \code{MultiAssayExperiment} object}
+\item{object, x}{A \code{MultiAssayExperiment} object}
 
 \item{value}{See details.}
 

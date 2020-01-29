@@ -9,6 +9,7 @@
 \alias{names,MultiAssayExperiment-method}
 \alias{updateObject,MultiAssayExperiment-method}
 \alias{exportClass,MultiAssayExperiment-method}
+\alias{exportClass}
 \alias{dimnames,MultiAssayExperiment-method}
 \alias{c,MultiAssayExperiment-method}
 \alias{assays,MultiAssayExperiment-method}
@@ -48,13 +49,12 @@
 \S4method{assay}{MultiAssayExperiment,character}(x, i, ...)
 }
 \arguments{
-\item{object}{A \code{MultiAssayExperiment} object}
-
-\item{x}{A \code{MultiAssayExperiment} object}
+\item{object, x}{A \code{MultiAssayExperiment} object}
 
 \item{...}{Additional arguments for supporting functions. See details.}
 
-\item{verbose}{logical (default FALSE) whether to print extra messages}
+\item{verbose}{logical(1) Whether to print additional information (default
+TRUE)}
 
 \item{dir}{character(1) A directory for saving exported data (default:
 `tempdir()`)}
@@ -123,8 +123,8 @@ arguments in several instances.
 \item \code{updateObject}: Update old serialized MultiAssayExperiment
 objects to new API
 
-\item \code{exportClass}: Export data from class to a series of text
-files
+\item \code{exportClass}: Export data from class to a series
+of text files
 
 \item \code{dimnames}: Get the dimension names
 for a \code{MultiAssayExperiment} object
