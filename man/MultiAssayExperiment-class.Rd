@@ -40,13 +40,13 @@
 
 \S4method{c}{MultiAssayExperiment}(x, ..., sampleMap = NULL, mapFrom = NULL)
 
-\S4method{assays}{MultiAssayExperiment}(x, ..., withDimnames = TRUE)
+\S4method{assays}{MultiAssayExperiment}(x, withDimnames = TRUE, ...)
 
-\S4method{assay}{MultiAssayExperiment,missing}(x, i, ...)
+\S4method{assay}{MultiAssayExperiment,missing}(x, i, withDimnames = TRUE, ...)
 
-\S4method{assay}{MultiAssayExperiment,numeric}(x, i, ...)
+\S4method{assay}{MultiAssayExperiment,numeric}(x, i, withDimnames = TRUE, ...)
 
-\S4method{assay}{MultiAssayExperiment,character}(x, i, ...)
+\S4method{assay}{MultiAssayExperiment,character}(x, i, withDimnames = TRUE, ...)
 }
 \arguments{
 \item{object, x}{A \code{MultiAssayExperiment} object}

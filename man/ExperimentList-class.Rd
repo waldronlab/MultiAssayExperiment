@@ -27,15 +27,15 @@
 
 \S4method{mergeReplicates}{ExperimentList}(x, replicates = list(), simplify = BiocGenerics::mean, ...)
 
-\S4method{assay}{ANY,missing}(x, i, ...)
+\S4method{assay}{ANY,missing}(x, i, withDimnames = TRUE, ...)
 
-\S4method{assays}{ExperimentList}(x, ..., withDimnames = TRUE)
+\S4method{assays}{ExperimentList}(x, withDimnames = TRUE, ...)
 
-\S4method{assay}{ExperimentList,missing}(x, i, ...)
+\S4method{assay}{ExperimentList,missing}(x, i, withDimnames = TRUE, ...)
 
-\S4method{assay}{ExperimentList,numeric}(x, i, ...)
+\S4method{assay}{ExperimentList,numeric}(x, i, withDimnames = TRUE, ...)
 
-\S4method{assay}{ExperimentList,character}(x, i, ...)
+\S4method{assay}{ExperimentList,character}(x, i, withDimnames = TRUE, ...)
 }
 \arguments{
 \item{object, x}{An \code{\linkS4class{ExperimentList}} object}
