@@ -754,6 +754,8 @@ setGeneric("exportClass",
 #' @describeIn MultiAssayExperiment Export data from class to a series of text
 #'     files
 #'
+#' @aliases exportClass
+#'
 #' @param dir character(1) A directory for saving exported data (default:
 #'     `tempdir()`)
 #'

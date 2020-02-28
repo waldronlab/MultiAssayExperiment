@@ -9,6 +9,7 @@
 \alias{names,MultiAssayExperiment-method}
 \alias{updateObject,MultiAssayExperiment-method}
 \alias{exportClass,MultiAssayExperiment-method}
+\alias{exportClass}
 \alias{dimnames,MultiAssayExperiment-method}
 \alias{c,MultiAssayExperiment-method}
 \alias{assays,MultiAssayExperiment-method}
