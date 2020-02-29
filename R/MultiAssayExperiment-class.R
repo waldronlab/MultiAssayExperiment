@@ -360,7 +360,8 @@ setMethod("show", "MultiAssayExperiment", function(object) {
     if (length(o_names) == 0L) {
         o_names <- "none"
     }
-    classes <- vapply(experiments(object), class, character(1))
+    classes <- vapply(experiments(object), function(o) { class(o)[[1L]] },
+        character(1L))
     c_elist <- class(experiments(object))
     c_mp <- class(colData(object))
     c_sm <- class(sampleMap(object))

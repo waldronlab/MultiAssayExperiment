@@ -89,7 +89,7 @@ ExperimentList <- function(...) {
     supportedMethodFUN <- list(dimnames = dimnames, `[` =
         function(x) {x[integer(0L), ]}, dim = dim)
     methErr <- vapply(supportedMethodFUN, function(f) {
-        class(try(f(object), silent = TRUE)) == "try-error"
+        "try-error" %in% class(try(f(object), silent = TRUE))
     }, logical(1L))
     if (any(methErr)) {
         unsupported <- names(which(methErr))
@@ -151,7 +151,7 @@ S4Vectors::setValidity2("ExperimentList", .validExperimentList)
 #' @param object,x An \code{\linkS4class{ExperimentList}} object
 setMethod("show", "ExperimentList", function(object) {
     o_class <- class(object)
-    elem_cl <- vapply(object, class, character(1L))
+    elem_cl <- vapply(object, function(o) { class(o)[[1L]] }, character(1L))
     o_len <- length(object)
     o_names <- names(object)
     featdim <- vapply(object, FUN = function(obj) {
