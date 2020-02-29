@@ -13,7 +13,9 @@ setMethod("assay", c("ANY", "missing"),
 #' @param withDimnames logical (default TRUE) whether to return dimension names
 #' @aliases assay,ExperimentList,missing-method
 setMethod("assays", "ExperimentList", function(x, withDimnames = TRUE, ...) {
-    as(S4Vectors::endoapply(x, FUN = function(y) assay(y, ...)), "SimpleList")
+    as(S4Vectors::endoapply(x,
+        FUN = function(y) assay(y, withDimnames = withDimnames, ...)
+    ), "SimpleList")
 })
 
 #' @rdname ExperimentList-class
@@ -62,7 +64,7 @@ setMethod("assay", c("ExperimentList", "character"),
 #' @exportMethod assays
 setMethod("assays", "MultiAssayExperiment",
     function(x, withDimnames = TRUE, ...) {
-        assays(experiments(x), ..., withDimnames = withDimnames)
+        assays(experiments(x), withDimnames = withDimnames, ...)
     }
 )
 
@@ -72,7 +74,7 @@ setMethod("assays", "MultiAssayExperiment",
 #' @exportMethod assay
 setMethod("assay", c("MultiAssayExperiment", "missing"),
     function(x, i, withDimnames = TRUE, ...) {
-        assay(experiments(x), ...)
+        assay(experiments(x), withDimnames = withDimnames, ...)
     }
 )
 
@@ -80,7 +82,7 @@ setMethod("assay", c("MultiAssayExperiment", "missing"),
 #' @param i An integer or character scalar indicating the assay to return
 setMethod("assay", c("MultiAssayExperiment", "numeric"),
     function(x, i, withDimnames = TRUE, ...) {
-        assay(experiments(x), i = i, ...)
+        assay(experiments(x), i = i, withDimnames = withDimnames, ...)
     }
 )
 
