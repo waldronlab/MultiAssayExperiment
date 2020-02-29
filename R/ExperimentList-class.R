@@ -154,12 +154,9 @@ setMethod("show", "ExperimentList", function(object) {
     elem_cl <- vapply(object, function(o) { class(o)[[1L]] }, character(1L))
     o_len <- length(object)
     o_names <- names(object)
-    featdim <- vapply(object, FUN = function(obj) {
-        dim(obj)[1]
-    }, FUN.VALUE = integer(1L))
-    sampdim <- vapply(object, FUN = function(obj) {
-        dim(obj)[2]
-    }, FUN.VALUE = integer(1L))
+    ldims <- vapply(object, dim, integer(2L))
+    featdim <- ldims[1L, ]
+    sampdim <- ldims[2L, ]
     cat(sprintf("%s", o_class),
         "class object of length",
         paste0(o_len, ":\n"),

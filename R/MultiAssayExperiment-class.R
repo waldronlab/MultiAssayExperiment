@@ -360,8 +360,6 @@ setMethod("show", "MultiAssayExperiment", function(object) {
     if (length(o_names) == 0L) {
         o_names <- "none"
     }
-    classes <- vapply(experiments(object), function(o) { class(o)[[1L]] },
-        character(1L))
     c_elist <- class(experiments(object))
     c_mp <- class(colData(object))
     c_sm <- class(sampleMap(object))
@@ -374,7 +372,7 @@ setMethod("show", "MultiAssayExperiment", function(object) {
                       "user-defined names")),
         ifelse(length(o_len) == 0L, "or", "and"),
         ifelse(length(o_len) == 0L, "classes.",
-               ifelse(length(classes) == 1L,
+               ifelse(o_len == 1L,
                       "respective class.\n", "respective classes.\n")),
         "Containing an ")
     show(experiments(object))
