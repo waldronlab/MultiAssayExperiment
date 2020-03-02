@@ -4,6 +4,8 @@
 NULL
 
 .checkOverlapsAny <- function(obj_cl) {
+    if (identical(obj_cl, c("matrix", "array")))
+        obj_cl <- "matrix"
     return(any(
         hasMethod("overlapsAny", signature(obj_cl, "GRanges"),
             getNamespace("GenomicRanges")),
