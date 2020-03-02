@@ -12,16 +12,23 @@ test_that("exportClass on a MultiAssayExperiment works", {
     }
 
     with_mock(write.table = .write.table, {
-        expect_message(
-            exportClass(miniACC, dir = tempdir(), fmt = "csv", ext = ".csv"),
-            paste(tempdir(), "miniACC_*", sep = "/")
+        filenames <- basename(
+            exportClass(miniACC, dir = tempdir(), fmt = "csv", ext = ".csv",
+                verbose = FALSE)
+        )
+        expect_match(
+            filenames, "miniACC_.*"
         )
     })
 
     with_mock(write.table = .write.table, {
-        expect_message(
-            .sortMetadata(miniACC, dir = tempdir(), fmt = "csv", ext = ".csv"),
-            paste(tempdir(), "miniACC_META_*", sep = "/")
+        filenames <- basename(
+            .sortMetadata(
+                miniACC, "miniACC", dir = tempdir(), fmt = "csv", ext = ".csv"
+            )
+        )
+        expect_match(
+            filenames, "miniACC_META_.*"
         )
     })
 })
