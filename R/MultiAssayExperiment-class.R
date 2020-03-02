@@ -714,8 +714,7 @@ setAs("MultiAssayExperiment", "MatchedAssayExperiment", function(from) {
         col.names = cols, qmethod = qme)
 }
 
-.sortMetadata <- function(object, dir, fmt, ext, ...) {
-    objname <- as.character(substitute(object))
+.sortMetadata <- function(object, objname, dir, fmt, ext, ...) {
     metas <- metadata(object)
     stopifnot(is.list(metas))
     atmos <- vapply(metas, is.atomic, logical(1L))
@@ -807,7 +806,7 @@ setMethod("exportClass", "MultiAssayExperiment",
         lists <- c(alists, list(coldat = as.data.frame(colData(object)),
             sampmap = as.data.frame(sampleMap(object))))
 
-        metafs <- .sortMetadata(object, dir, fmt, ext)
+        metafs <- .sortMetadata(object, objname, dir, fmt, ext)
 
         invisible(Map(function(fname, lobject) {
             fmt(lobject, fname, ...)
