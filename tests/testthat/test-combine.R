@@ -13,9 +13,6 @@ test_that("combine c function works", {
 })
 
 test_that("combine c function works on multiple objects", {
-    example("MultiAssayExperiment")
-
-    library(SummarizedExperiment)
     nrows <- 200
     ncols <- 6
     counts <- matrix(runif(nrows * ncols, 1, 1e4), nrows)
@@ -46,7 +43,6 @@ test_that("combine c function works on multiple objects", {
 })
 
 test_that("concatenate two MultiAssayExperiment objects works", {
-    example("MultiAssayExperiment")
     mae2 <- mae
     names(mae2) <- paste0(names(mae), seq_along(mae))
     rns <- rownames(colData(mae2))
@@ -62,8 +58,6 @@ test_that("concatenate two MultiAssayExperiment objects works", {
 })
 
 test_that("concatenation of regular named list works", {
-    example("MultiAssayExperiment")
-    example("ExperimentList")
     elist <- ExpList
     names(elist) <- paste0(names(elist), seq_along(elist))
 

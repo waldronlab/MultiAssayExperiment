@@ -1,7 +1,5 @@
 context("long and wide format methods")
 
-example("MultiAssayExperiment")
-
 longDF <- longFormat(mae, colDataCols = "sex")
 wideDF <- wideFormat(mae, colDataCols = "sex")
 

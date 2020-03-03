@@ -14,7 +14,6 @@ test_that("merging replicates orders columns of each experiment the same", {
             expect_equal(matchednames[[i]], matchednames[[1]])
     }
 
-    example("MultiAssayExperiment")
     mae[[1]] <- mae[[1]][, 4:1]
     check_mergeReps_colorder(mae)
     check_mergeReps_colorder(mae[, , 1:2])
@@ -23,7 +22,6 @@ test_that("merging replicates orders columns of each experiment the same", {
 })
 
 test_that("row order identical after matching", {
-    example("MultiAssayExperiment")
     introws <- Reduce(intersect, rownames(mae))
     intMultiRow <- rownames(intersectRows(mae))
     expect_true(

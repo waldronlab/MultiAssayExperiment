@@ -1,7 +1,5 @@
 context("drop argument for rows works as it should")
 
-example("MultiAssayExperiment")
-
 test_that("when drop is TRUE, length of ExperimentList is correct", {
     expect_true(length(mae[FALSE, , , drop = TRUE]) == 0L)
 })

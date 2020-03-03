@@ -13,7 +13,6 @@ test_that("ExperimentList constructors work", {
 })
 
 test_that("Metadata is kept in ExperimentList when replacing", {
-    example("MultiAssayExperiment")
     ## add metadata columns and metadata
     mcoldf <- DataFrame(AssayNumber=seq_len(length(ExpList)),
         row.names = names(ExpList))

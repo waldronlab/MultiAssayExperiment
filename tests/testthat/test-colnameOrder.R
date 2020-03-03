@@ -1,7 +1,6 @@
 context("Colname consistency after subsetting")
 
 test_that("when columns in different order, subset ops will rearrange them", {
-    example("MultiAssayExperiment")
     sampMap <- sampleMap(mae)
     ## Reverse the order of the samples in the first assay
     newSampMap <- rbind(sampMap[4:1, ], sampMap[5:nrow(sampMap), ])

@@ -1,7 +1,5 @@
 context("Subset tests")
 
-example("MultiAssayExperiment")
-
 test_that("MultiAssayExperiment length remains the same after subset with list",
 {
     rowindex <- rownames(mae)[LogicalList(c(TRUE, FALSE), c(FALSE, TRUE))]
