@@ -32,3 +32,25 @@ test_that("exportClass on a MultiAssayExperiment works", {
         )
     })
 })
+
+test_that("MatchedAssayExperiment constructor works", {
+    expect_error(
+        MatchedAssayExperiment(ExpList, colDat, sampMap)
+    )
+    mm <- mergeReplicates(mae)
+    expect_true(
+        is(
+            as(mm, "MatchedAssayExperiment"),
+            "MatchedAssayExperiment"
+        )
+    )
+    ## remove replicate column
+    expect_true(
+        validObject(
+            MatchedAssayExperiment(
+                mae[, list(Affy = 1:4, Methyl450k = 2:5,
+                        RNASeqGene = 1:4, GISTIC = 1:3), ]
+            )
+        )
+    )
+})
