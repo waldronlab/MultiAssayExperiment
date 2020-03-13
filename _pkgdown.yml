@@ -1,0 +1,67 @@
+title: MultiAssayExperiment
+
+template:
+  params:
+    bootswatch: flatly
+
+reference:
+  - title: Constructors
+    desc: Build objects with designated constructor functions
+    contents:
+      - MultiAssayExperiment
+      - ExperimentList
+  - title: Accessors
+    desc: Discover content within MultiAssayExperiment
+    contents:
+      - MultiAssayExperiment-class
+      - MultiAssayExperiment-methods
+  - title: Subsetting
+    desc: Easy operations for selecting rows, columns, and/or biological units
+    contents:
+      - subsetBy
+  - title: Management and Reshaping
+    desc: Work with and reshape data
+    contents:
+      - MultiAssayExperiment-helpers
+      - upsetSamples
+
+navbar:
+  title: ~
+  type: default
+  left:
+    - text: Quick Reference
+      href: reference/index.html
+    - text: Vignettes
+      menu:
+      - text: Quick Start Guide
+        href: articles/QuickStartMultiAssay.html
+      - text: Getting Started
+        href: articles/MultiAssayExperiment.html
+      - text: Using DelayedMatrix
+        href: articles/UsingHDF5Array.html
+      - text: MultiAssayExperiment in Practice
+        href: articles/extras/MAE-curatedMetagenomicData.html
+    - text: News
+      menu:
+      - text: "Release Notes"
+      - text: "Version 1.12.0"
+        href: https://waldronlab.io/MultiAssayExperiment/news/news-1.12.html
+      - text: "Version 1.10.0"
+        href: https://waldronlab.io/MultiAssayExperiment/news/news-1.10.html
+      - text: "Version 1.8.0"
+        href: https://waldronlab.io/MultiAssayExperiment/news/news-1.8.html
+      - text: "Version 1.7.14"
+        href: https://waldronlab.io/MultiAssayExperiment/news/news-1.7.html
+      - text: "Version 1.1.0"
+        href: https://waldronlab.io/MultiAssayExperiment/news/news-1.1.html
+      - text: "Version 0.101.0"
+        href: https://waldronlab.io/MultiAssayExperiment/news/news-0.101.html
+      - text: "Version 0.99.0"
+        href: https://waldronlab.io/MultiAssayExperiment/news/news-0.99.html
+      - text: "Change log"
+        href: news/index.html
+  right:
+  - icon: fa-github fa-lg
+    href: https://github.com/waldronlab/MultiAssayExperiment
+
+
