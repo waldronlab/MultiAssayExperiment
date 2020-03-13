@@ -9,21 +9,25 @@
 <title>A group of helper functions for manipulating and cleaning a
 MultiAssayExperiment — MultiAssayExperiment-helpers • MultiAssayExperiment</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -31,9 +35,9 @@ MultiAssayExperiment — MultiAssayExperiment-helpers • MultiAssayExperiment</
 
 
 
+
 <meta property="og:title" content="A group of helper functions for manipulating and cleaning a
 MultiAssayExperiment — MultiAssayExperiment-helpers" />
-
 <meta property="og:description" content="A set of helper functions were created to help clean and
 manipulate a MultiAssayExperiment object. intersectRows also works
 for ExperimentList objects.
@@ -63,8 +67,10 @@ hasRowRanges: A function that identifies ExperimentList elements
     that have a rowRanges method
 getWithColData: A convenience function for extracting an assay
     and associated colData
+
 " />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -76,6 +82,7 @@ getWithColData: A convenience function for extracting an assay
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
 
 
   </head>
@@ -94,7 +101,7 @@ getWithColData: A convenience function for extracting an assay
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MultiAssayExperiment</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.10.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.12.4</span>
       </span>
     </div>
 
@@ -133,6 +140,9 @@ getWithColData: A convenience function for extracting an assay
   <ul class="dropdown-menu" role="menu">
     <li class="dropdown-header">Release Notes</li>
     <li>
+      <a href="https://waldronlab.io/MultiAssayExperiment/news/news-1.12.html">Version 1.12.0</a>
+    </li>
+    <li>
       <a href="https://waldronlab.io/MultiAssayExperiment/news/news-1.10.html">Version 1.10.0</a>
     </li>
     <li>
@@ -156,7 +166,6 @@ getWithColData: A convenience function for extracting an assay
   </ul>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/waldronlab/MultiAssayExperiment">
@@ -171,6 +180,7 @@ getWithColData: A convenience function for extracting an assay
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -183,7 +193,6 @@ MultiAssayExperiment</h1>
     </div>
 
     <div class="ref-description">
-    
     <p>A set of helper functions were created to help clean and
 manipulate a MultiAssayExperiment object. <code>intersectRows</code> also works
 for <code>ExperimentList</code> objects.</p>
@@ -204,9 +213,9 @@ for <code>ExperimentList</code> objects.</p>
     measurements across all experiments and is guided by the replicated
     return value</p></li>
 <li><p>longFormat: A <code>MultiAssayExperiment</code> method that
-    returns a small and skinny <a href='https://www.rdocumentation.org/packages/S4Vectors/topics/DataFrame-class'>DataFrame</a>. The <code>colDataCols</code>
+    returns a small and skinny <a href='https://rdrr.io/pkg/S4Vectors/man/DataFrame-class.html'>DataFrame</a>. The <code>colDataCols</code>
     arguments allows the user to append <code>colData</code> columns to the data.</p></li>
-<li><p>wideFormat: A function to return a wide <a href='https://www.rdocumentation.org/packages/S4Vectors/topics/DataFrame-class'>DataFrame</a> where
+<li><p>wideFormat: A function to return a wide <a href='https://rdrr.io/pkg/S4Vectors/man/DataFrame-class.html'>DataFrame</a> where
     each row represents an observation. Optional <code>colDataCols</code> can be
     added when using a <code>MultiAssayExperiment</code>.</p></li>
 <li><p>hasRowRanges: A function that identifies ExperimentList elements
@@ -214,11 +223,11 @@ for <code>ExperimentList</code> objects.</p>
 <li><p>getWithColData: A convenience function for extracting an assay
     and associated colData</p></li>
 </ul>
-    
+
     </div>
 
     <pre class="usage"><span class='co'># S4 method for MultiAssayExperiment</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/complete.cases'>complete.cases</a></span>(<span class='no'>...</span>)
+<span class='fu'><a href='https://rdrr.io/r/stats/complete.cases.html'>complete.cases</a></span>(<span class='no'>...</span>)
 
 <span class='co'># S4 method for MultiAssayExperiment</span>
 <span class='fu'>isEmpty</span>(<span class='no'>x</span>)
@@ -237,21 +246,28 @@ for <code>ExperimentList</code> objects.</p>
 <span class='co'># S4 method for MultiAssayExperiment</span>
 <span class='fu'>anyReplicated</span>(<span class='no'>x</span>)
 
-<span class='fu'>mergeReplicates</span>(<span class='no'>x</span>, <span class='kw'>replicates</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='kw'>simplify</span> <span class='kw'>=</span> <span class='kw pkg'>BiocGenerics</span><span class='kw ns'>::</span><span class='no'><a href='https://www.rdocumentation.org/packages/BiocGenerics/topics/mean'>mean</a></span>,
-  <span class='no'>...</span>)
+<span class='fu'>mergeReplicates</span>(<span class='no'>x</span>, <span class='kw'>replicates</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(), <span class='kw'>simplify</span> <span class='kw'>=</span> <span class='kw pkg'>BiocGenerics</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/BiocGenerics/man/mean.html'>mean</a></span>, <span class='no'>...</span>)
 
 <span class='co'># S4 method for MultiAssayExperiment</span>
-<span class='fu'>mergeReplicates</span>(<span class='no'>x</span>,
-  <span class='kw'>replicates</span> <span class='kw'>=</span> <span class='fu'>replicated</span>(<span class='no'>x</span>), <span class='kw'>simplify</span> <span class='kw'>=</span> <span class='kw pkg'>BiocGenerics</span><span class='kw ns'>::</span><span class='no'><a href='https://www.rdocumentation.org/packages/BiocGenerics/topics/mean'>mean</a></span>, <span class='no'>...</span>)
+<span class='fu'>mergeReplicates</span>(
+  <span class='no'>x</span>,
+  <span class='kw'>replicates</span> <span class='kw'>=</span> <span class='fu'>replicated</span>(<span class='no'>x</span>),
+  <span class='kw'>simplify</span> <span class='kw'>=</span> <span class='kw pkg'>BiocGenerics</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/BiocGenerics/man/mean.html'>mean</a></span>,
+  <span class='no'>...</span>
+)
 
 <span class='co'># S4 method for ANY</span>
-<span class='fu'>mergeReplicates</span>(<span class='no'>x</span>, <span class='kw'>replicates</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(),
-  <span class='kw'>simplify</span> <span class='kw'>=</span> <span class='kw pkg'>BiocGenerics</span><span class='kw ns'>::</span><span class='no'><a href='https://www.rdocumentation.org/packages/BiocGenerics/topics/mean'>mean</a></span>, <span class='no'>...</span>)
+<span class='fu'>mergeReplicates</span>(<span class='no'>x</span>, <span class='kw'>replicates</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(), <span class='kw'>simplify</span> <span class='kw'>=</span> <span class='kw pkg'>BiocGenerics</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/BiocGenerics/man/mean.html'>mean</a></span>, <span class='no'>...</span>)
 
 <span class='fu'>longFormat</span>(<span class='no'>object</span>, <span class='kw'>colDataCols</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>i</span> <span class='kw'>=</span> <span class='fl'>1L</span>)
 
-<span class='fu'>wideFormat</span>(<span class='no'>object</span>, <span class='kw'>colDataCols</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>check.names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>collapse</span> <span class='kw'>=</span> <span class='st'>"_"</span>, <span class='kw'>i</span> <span class='kw'>=</span> <span class='fl'>1L</span>)
+<span class='fu'>wideFormat</span>(
+  <span class='no'>object</span>,
+  <span class='kw'>colDataCols</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>check.names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>collapse</span> <span class='kw'>=</span> <span class='st'>"_"</span>,
+  <span class='kw'>i</span> <span class='kw'>=</span> <span class='fl'>1L</span>
+)
 
 <span class='fu'>hasRowRanges</span>(<span class='no'>x</span>)
 
@@ -262,7 +278,7 @@ for <code>ExperimentList</code> objects.</p>
 <span class='fu'>hasRowRanges</span>(<span class='no'>x</span>)
 
 <span class='fu'>getWithColData</span>(<span class='no'>x</span>, <span class='no'>i</span>)</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -312,7 +328,7 @@ column names. In <code>wideFormat</code>, experiments and rownames (and when
 replicate samples are present, colnames) are seperated by this delimiter</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>The <code>replicated</code> function finds replicate measurements in each
@@ -337,42 +353,42 @@ aligned by the row order in <code>colData</code>. Additional arguments can be
 passed on to the <code>simplify</code> function.</p>
 <p>The <code>mergeReplicates</code> "ANY" method consolidates duplicate
 measurements for rectangular data structures, returns object of the same
-class (endomorphic). The ellipsis or <code>&#8230;</code> argument allows the
+class (endomorphic). The ellipsis or <code>...</code> argument allows the
 user to provide additional arguments to the <code>simplify</code> functional
 argument.</p>
 <p>The <code>longFormat</code> "ANY" class method, works with classes such as
 ExpressionSet and SummarizedExperiment as well as <code>matrix</code>
-to provide a consistent long and skinny <a href='https://www.rdocumentation.org/packages/S4Vectors/topics/DataFrame-class'>DataFrame</a>.</p>
+to provide a consistent long and skinny <a href='https://rdrr.io/pkg/S4Vectors/man/DataFrame-class.html'>DataFrame</a>.</p>
 <p>The <code>hasRowRanges</code> method identifies assays that support
 a rowRanges method <em>and</em>
 return a GRanges object.</p>
-    
     <h2 class="hasAnchor" id="mergereplicates"><a class="anchor" href="#mergereplicates"></a>mergeReplicates</h2>
 
     
-    <p>The <code>mergeReplicates</code> function makes use of the output from
+
+<p>The <code>mergeReplicates</code> function makes use of the output from
 <code>replicated</code> which will point out the duplicate measurements by
 biological unit in the <code>MultiAssayExperiment</code>. This function will return
 a <code>MultiAssayExperiment</code> with merged replicates. Additional arguments
-can be provided to the simplify argument via the ellipsis (&#8230;).</p>
-    
+can be provided to the simplify argument via the ellipsis (...).</p>
     <h2 class="hasAnchor" id="longformat"><a class="anchor" href="#longformat"></a>longFormat</h2>
 
     
-    <p>The longFormat method takes data from the <code><a href='ExperimentList.html'>ExperimentList</a></code>
+
+<p>The longFormat method takes data from the <code><a href='ExperimentList.html'>ExperimentList</a></code>
 in a <code><a href='MultiAssayExperiment.html'>MultiAssayExperiment</a></code> and returns a uniform
-<code><a href='https://www.rdocumentation.org/packages/S4Vectors/topics/DataFrame-class'>DataFrame</a></code>. The resulting DataFrame has columns indicating
+<code><a href='https://rdrr.io/pkg/S4Vectors/man/DataFrame-class.html'>DataFrame</a></code>. The resulting DataFrame has columns indicating
 primary, rowname, colname and value. This method can optionally include
 colData columns with the <code>colDataCols</code> argument
 (<code>MultiAssayExperiment</code> method only). The <code>i</code> argument
 allows the user to specify the assay value in a
 SummarizedExperiment. It directly relates to the <code>i</code>
 argument in the assay method.</p>
-    
     <h2 class="hasAnchor" id="wideformat"><a class="anchor" href="#wideformat"></a>wideFormat</h2>
 
     
-    <p>The <code>wideFormat</code> function returns standardized wide <a href='https://www.rdocumentation.org/packages/S4Vectors/topics/DataFrame-class'>DataFrame</a>
+
+<p>The <code>wideFormat</code> function returns standardized wide <a href='https://rdrr.io/pkg/S4Vectors/man/DataFrame-class.html'>DataFrame</a>
 where each row represents a biological unit as in the <code>colData</code>.
 Depending on the data and setup, biological units can be patients, tumors,
 specimens, etc. Optionally, <code>colData</code> columns can be added to the
@@ -381,18 +397,18 @@ generated based on the names produced in the wide format
 DataFrame. These can be accessed via the
 mcols function. See the <code>Arguments</code> and
 <code>longFormat</code> sections for argument descriptions.</p>
-    
     <h2 class="hasAnchor" id="hasrowranges"><a class="anchor" href="#hasrowranges"></a>hasRowRanges</h2>
 
     
-    <p>The <code>hasRowRanges</code> method identifies assays with associated ranged
+
+<p>The <code>hasRowRanges</code> method identifies assays with associated ranged
 row data by directly testing the method on the object. The result from the
 test must be a GRanges class object to satisfy the test.</p>
-    
     <h2 class="hasAnchor" id="getwithcoldata"><a class="anchor" href="#getwithcoldata"></a>getWithColData</h2>
 
     
-    <p>The <code>getWithColData</code> function allows the user to conveniently extract
+
+<p>The <code>getWithColData</code> function allows the user to conveniently extract
 a particular assay as indicated by the <strong><code>i</code></strong> index argument. It
 will also attempt to provide the
 <code>colData</code> along with the
@@ -400,29 +416,23 @@ extracted object using the <code>colData&lt;-</code> replacement
 method when possible. Typically, this method is available for
 SummarizedExperiment and <code>RaggedExperiment</code>
 classes.</p>
-    
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#details">Details</a></li>
-
       <li><a href="#mergereplicates">mergeReplicates</a></li>
-
       <li><a href="#longformat">longFormat</a></li>
-
       <li><a href="#wideformat">wideFormat</a></li>
-
       <li><a href="#hasrowranges">hasRowRanges</a></li>
-
       <li><a href="#getwithcoldata">getWithColData</a></li>
-          </ul>
+    </ul>
 
   </div>
 </div>
+
 
       <footer>
       <div class="copyright">
@@ -430,13 +440,16 @@ classes.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 

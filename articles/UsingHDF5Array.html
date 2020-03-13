@@ -7,8 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Using DelayedMatrix with MultiAssayExperiment • MultiAssayExperiment</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><meta property="og:title" content="Using DelayedMatrix with MultiAssayExperiment">
 <meta property="og:description" content="">
 <meta name="twitter:card" content="summary">
@@ -30,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MultiAssayExperiment</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.10.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.12.4</span>
       </span>
     </div>
 
@@ -68,6 +69,9 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li class="dropdown-header">Release Notes</li>
+    <li>
+      <a href="https://waldronlab.io/MultiAssayExperiment/news/news-1.12.html">Version 1.12.0</a>
+    </li>
     <li>
       <a href="https://waldronlab.io/MultiAssayExperiment/news/news-1.10.html">Version 1.10.0</a>
     </li>
@@ -108,13 +112,14 @@
 <!--/.navbar -->
 
       
+
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1>Using DelayedMatrix with MultiAssayExperiment</h1>
                         <h4 class="author">MultiAssay Special Interest Group</h4>
             
-            <h4 class="date">July 20, 2019</h4>
+            <h4 class="date">March 13, 2020</h4>
       
       
       <div class="hidden name"><code>UsingHDF5Array.Rmd</code></div>
@@ -127,34 +132,34 @@
 <h1 class="hasAnchor">
 <a href="#integrating-an-hdf5-backend-for-multiassayexperiment" class="anchor"></a>Integrating an HDF5 backend for MultiAssayExperiment</h1>
 <p>Dependencies</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(MultiAssayExperiment)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(HDF5Array)</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(SummarizedExperiment)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(MultiAssayExperiment)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(HDF5Array)</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(SummarizedExperiment)</a></code></pre></div>
 <div id="hdf5array-and-delayedarray-constructor" class="section level2">
 <h2 class="hasAnchor">
 <a href="#hdf5array-and-delayedarray-constructor" class="anchor"></a>HDF5Array and DelayedArray Constructor</h2>
 <p>The <code>HDF5Array</code> package provides an on-disk representation of large datasets without the need to load them into memory. Convenient lazy evaluation operations allow the user to manipulate such large data files based on metadata. The <code>DelayedMatrix</code> class in the <code>DelayedArray</code> package provides a way to connect to a large matrix that is stored on disk.</p>
 <p>First, we create a small matrix for constructing the <code>DelayedMatrix</code> class.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">smallMatrix &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/matrix">matrix</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">rnorm</a></span>(<span class="fl">10e5</span>), <span class="dt">ncol =</span> <span class="dv">20</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">smallMatrix &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span>(<span class="kw"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(<span class="fl">10e5</span>), <span class="dt">ncol =</span> <span class="dv">20</span>)</a></code></pre></div>
 <p>We add rownames and column names to the matrix object for compatibility with the <code>MultiAssayExperiment</code> representation.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/colnames">rownames</a></span>(smallMatrix) &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(<span class="st">"GENE"</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/seq">seq_len</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow</a></span>(smallMatrix)))</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/colnames">colnames</a></span>(smallMatrix) &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(<span class="st">"SampleID"</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/seq">seq_len</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">ncol</a></span>(smallMatrix)))</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span>(smallMatrix) &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(<span class="st">"GENE"</span>, <span class="kw"><a href="https://rdrr.io/r/base/seq.html">seq_len</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(smallMatrix)))</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span>(smallMatrix) &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(<span class="st">"SampleID"</span>, <span class="kw"><a href="https://rdrr.io/r/base/seq.html">seq_len</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span>(smallMatrix)))</a></code></pre></div>
 <p>Here we use the <code>DelayedArray</code> constructor function to create a <code>DelayedMatrix</code> object.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">smallMatrix &lt;-<span class="st"> </span><span class="kw">DelayedArray</span>(smallMatrix)</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/class">class</a></span>(smallMatrix)</a></code></pre></div>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/class.html">class</a></span>(smallMatrix)</a></code></pre></div>
 <pre><code>## [1] "DelayedMatrix"
 ## attr(,"package")
 ## [1] "DelayedArray"</code></pre>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(smallMatrix)</a></code></pre></div>
-<pre><code>## &lt;6 x 20&gt; DelayedMatrix object of type "double":
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(smallMatrix)</a></code></pre></div>
+<pre><code>## &lt;6 x 20&gt; matrix of class DelayedMatrix and type "double":
 ##         SampleID1   SampleID2   SampleID3 ... SampleID19 SampleID20
-## GENE1  0.53857151  0.91894206 -0.94657990   . -1.1529532 -0.4478337
-## GENE2 -1.02444033  1.14337371  0.01640610   .  0.6604408 -0.2145036
-## GENE3 -1.27083947  0.97514301  0.08198664   . -0.9743102  0.8043133
-## GENE4  0.12999363 -1.65496456  0.82146075   . -0.2440440  1.3588717
-## GENE5  0.82412877  0.38915534 -2.23698163   . -0.3325850  0.6101786
-## GENE6  0.84428859 -0.81880909 -0.99243684   .  0.1124182 -1.0337238</code></pre>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/dim">dim</a></span>(smallMatrix)</a></code></pre></div>
+## GENE1 -0.33789435  0.67647964 -0.56959089   . -0.3894551 -0.5337837
+## GENE2  1.92472818  0.15708479  1.23382973   .  1.4139702 -0.9287891
+## GENE3  0.04505693 -1.56255240  0.74994501   . -1.9861645 -2.4135165
+## GENE4 -0.50469120 -0.62007280 -0.63002972   .  0.7210442  0.4945722
+## GENE5  0.29265559  0.68967362 -0.65641614   . -0.1909523  0.8736474
+## GENE6  0.85559024 -0.12069880  0.59102327   . -2.6388035 -0.2675101</code></pre>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(smallMatrix)</a></code></pre></div>
 <pre><code>## [1] 50000    20</code></pre>
 </div>
 <div id="importing-hdf5-files" class="section level2">
@@ -162,19 +167,19 @@
 <a href="#importing-hdf5-files" class="anchor"></a>Importing HDF5 files</h2>
 <p>Note that a large matrix from an HDF5 file can also be loaded using the <code>HDF5Array</code> function.</p>
 <p>For example:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">dataLocation &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">"extdata"</span>, <span class="st">"exMatrix.h5"</span>, <span class="dt">package =</span></a>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">dataLocation &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"extdata"</span>, <span class="st">"exMatrix.h5"</span>, <span class="dt">package =</span></a>
 <a class="sourceLine" id="cb10-2" data-line-number="2">                              <span class="st">"MultiAssayExperiment"</span>, <span class="dt">mustWork =</span> <span class="ot">TRUE</span>)</a>
 <a class="sourceLine" id="cb10-3" data-line-number="3"><span class="kw">h5ls</span>(dataLocation)</a></code></pre></div>
 <pre><code>##   group     name       otype dclass       dim
 ## 0     / exMatrix H5I_DATASET  FLOAT 5000 x 20</code></pre>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">hdf5Data &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/HDF5Array/topics/HDF5ArraySeed-class">HDF5ArraySeed</a></span>(<span class="dt">file =</span> dataLocation, <span class="dt">name =</span> <span class="st">"exMatrix"</span>)</a>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">hdf5Data &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/HDF5Array/man/HDF5ArraySeed-class.html">HDF5ArraySeed</a></span>(<span class="dt">file =</span> dataLocation, <span class="dt">name =</span> <span class="st">"exMatrix"</span>)</a>
 <a class="sourceLine" id="cb12-2" data-line-number="2">newDelayedMatrix &lt;-<span class="st"> </span><span class="kw">DelayedArray</span>(hdf5Data)</a>
-<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/class">class</a></span>(newDelayedMatrix)</a></code></pre></div>
+<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/r/base/class.html">class</a></span>(newDelayedMatrix)</a></code></pre></div>
 <pre><code>## [1] "HDF5Matrix"
 ## attr(,"package")
 ## [1] "HDF5Array"</code></pre>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(newDelayedMatrix)</a></code></pre></div>
-<pre><code>## &lt;6 x 20&gt; DelayedMatrix object of type "double":
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(newDelayedMatrix)</a></code></pre></div>
+<pre><code>## &lt;6 x 20&gt; matrix of class DelayedMatrix and type "double":
 ##            [,1]       [,2]       [,3] ...      [,19]      [,20]
 ## [1,]  0.3261516  0.4149151  0.8154378   . -0.1876063  0.4156044
 ## [2,]  0.7243018 -0.9416687 -1.1290878   . -1.2820178 -0.3591841
@@ -193,7 +198,7 @@
 <a href="#using-a-delayedmatrix-with-multiassayexperiment" class="anchor"></a>Using a <code>DelayedMatrix</code> with <code>MultiAssayExperiment</code>
 </h2>
 <p>A <code>DelayedMatrix</code> alone conforms to the <code>MultiAssayExperiment</code> API requirements. Shown below, the <code>DelayedMatrix</code> can be put into a named <code>list</code> and passed into the <code>MultiAssayExperiment</code> constructor function.</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1">HDF5MAE &lt;-<span class="st"> </span><span class="kw"><a href="../reference/MultiAssayExperiment.html">MultiAssayExperiment</a></span>(<span class="dt">experiments =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">smallMatrix =</span> smallMatrix))</a>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1">HDF5MAE &lt;-<span class="st"> </span><span class="kw"><a href="../reference/MultiAssayExperiment.html">MultiAssayExperiment</a></span>(<span class="dt">experiments =</span> <span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">smallMatrix =</span> smallMatrix))</a>
 <a class="sourceLine" id="cb16-2" data-line-number="2"><span class="kw"><a href="../reference/MultiAssayExperiment-methods.html">sampleMap</a></span>(HDF5MAE)</a></code></pre></div>
 <pre><code>## DataFrame with 20 rows and 3 columns
 ##           assay     primary     colname
@@ -209,50 +214,38 @@
 ## 18  smallMatrix  SampleID18  SampleID18
 ## 19  smallMatrix  SampleID19  SampleID19
 ## 20  smallMatrix  SampleID20  SampleID20</code></pre>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/SummarizedExperiment/topics/SummarizedExperiment-class">colData</a></span>(HDF5MAE)</a></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html">colData</a></span>(HDF5MAE)</a></code></pre></div>
 <pre><code>## DataFrame with 20 rows and 0 columns</code></pre>
 <div id="summarizedexperiment-with-delayedmatrix-backend" class="section level3">
 <h3 class="hasAnchor">
 <a href="#summarizedexperiment-with-delayedmatrix-backend" class="anchor"></a><code>SummarizedExperiment</code> with <code>DelayedMatrix</code> backend</h3>
 <p>A more information rich <code>DelayedMatrix</code> can be created when used in conjunction with the <code>SummarizedExperiment</code> class and it can even include <code>rowRanges</code>. The flexibility of the <code>MultiAssayExperiment</code> API supports classes with minimal requirements. Additionally, this <code>SummarizedExperiment</code> with the <code>DelayedMatrix</code> backend can be part of a bigger <code>MultiAssayExperiment</code> object. Below is a minimal example of how this would work:</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1">HDF5SE &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/SummarizedExperiment/topics/RangedSummarizedExperiment-class">SummarizedExperiment</a></span>(<span class="dt">assays =</span> smallMatrix)</a>
-<a class="sourceLine" id="cb20-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/SummarizedExperiment/topics/SummarizedExperiment-class">assay</a></span>(HDF5SE)</a></code></pre></div>
-<pre><code>## &lt;50000 x 20&gt; DelayedMatrix object of type "double":
-##             SampleID1   SampleID2   SampleID3 ...   SampleID19
-##     GENE1  0.53857151  0.91894206 -0.94657990   .   -1.1529532
-##     GENE2 -1.02444033  1.14337371  0.01640610   .    0.6604408
-##     GENE3 -1.27083947  0.97514301  0.08198664   .   -0.9743102
-##     GENE4  0.12999363 -1.65496456  0.82146075   .   -0.2440440
-##     GENE5  0.82412877  0.38915534 -2.23698163   .   -0.3325850
-##       ...           .           .           .   .            .
-## GENE49996 -1.26540744  0.83734160  0.74994799   . -0.649486952
-## GENE49997 -2.22348411 -0.06597274  0.42503265   .  0.174402327
-## GENE49998  0.57279832  0.73348459  0.45121099   .  1.673384477
-## GENE49999 -1.18932460  0.03748414 -1.54591139   .  1.291318556
-## GENE50000 -0.24488814 -0.78257070 -0.13195286   .  0.475753854
-##             SampleID20
-##     GENE1   -0.4478337
-##     GENE2   -0.2145036
-##     GENE3    0.8043133
-##     GENE4    1.3588717
-##     GENE5    0.6101786
-##       ...            .
-## GENE49996  1.730226207
-## GENE49997  1.278511816
-## GENE49998 -0.729997664
-## GENE49999  0.003001443
-## GENE50000 -1.394994414</code></pre>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1"><span class="kw"><a href="../reference/MultiAssayExperiment.html">MultiAssayExperiment</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">HDF5SE =</span> HDF5SE))</a></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1">HDF5SE &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/RangedSummarizedExperiment-class.html">SummarizedExperiment</a></span>(<span class="dt">assays =</span> smallMatrix)</a>
+<a class="sourceLine" id="cb20-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html">assay</a></span>(HDF5SE)</a></code></pre></div>
+<pre><code>## &lt;50000 x 20&gt; matrix of class DelayedMatrix and type "double":
+##             SampleID1   SampleID2   SampleID3 ... SampleID19 SampleID20
+##     GENE1 -0.33789435  0.67647964 -0.56959089   . -0.3894551 -0.5337837
+##     GENE2  1.92472818  0.15708479  1.23382973   .  1.4139702 -0.9287891
+##     GENE3  0.04505693 -1.56255240  0.74994501   . -1.9861645 -2.4135165
+##     GENE4 -0.50469120 -0.62007280 -0.63002972   .  0.7210442  0.4945722
+##     GENE5  0.29265559  0.68967362 -0.65641614   . -0.1909523  0.8736474
+##       ...           .           .           .   .          .          .
+## GENE49996  1.88544559  0.76627225  0.03876170   . -1.6765195 -2.0567015
+## GENE49997  0.30989328  2.12447293  0.37380282   .  1.1047221  0.5656647
+## GENE49998 -0.02295855 -1.05055965  1.12461558   .  0.7621865  1.1300398
+## GENE49999  0.58956024 -0.09621190 -1.40901445   . -1.2139865  0.1708743
+## GENE50000  0.50831631 -0.08027781 -0.37368238   . -0.2861757  1.4642835</code></pre>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1"><span class="kw"><a href="../reference/MultiAssayExperiment.html">MultiAssayExperiment</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">HDF5SE =</span> HDF5SE))</a></code></pre></div>
 <pre><code>## A MultiAssayExperiment object of 1 listed
-##  experiment with a user-defined name and respective class. 
-##  Containing an ExperimentList class object of length 1: 
-##  [1] HDF5SE: SummarizedExperiment with 50000 rows and 20 columns 
-## Features: 
-##  experiments() - obtain the ExperimentList instance 
-##  colData() - the primary/phenotype DataFrame 
-##  sampleMap() - the sample availability DataFrame 
-##  `$`, `[`, `[[` - extract colData columns, subset, or experiment 
-##  *Format() - convert into a long or wide DataFrame 
+##  experiment with a user-defined name and respective class.
+##  Containing an ExperimentList class object of length 1:
+##  [1] HDF5SE: SummarizedExperiment with 50000 rows and 20 columns
+## Features:
+##  experiments() - obtain the ExperimentList instance
+##  colData() - the primary/phenotype DFrame
+##  sampleMap() - the sample availability DFrame
+##  `$`, `[`, `[[` - extract colData columns, subset, or experiment
+##  *Format() - convert into a long or wide DFrame
 ##  assays() - convert ExperimentList to a SimpleList of matrices</code></pre>
 <p>Additional scenarios are currently in development where an <code>HDF5Matrix</code> is hosted remotely. Many opportunities exist when considering on-disk and off-disk representations of data with <code>MultiAssayExperiment</code>.</p>
 </div>
@@ -261,6 +254,7 @@
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+
         <div id="tocnav">
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>
@@ -279,17 +273,20 @@
 </div>
 
 
+
       <footer><div class="copyright">
   <p>Developed by Marcel Ramos, Levi Waldron.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
+
       </footer>
 </div>
 
   
+
 
   </body>
 </html>

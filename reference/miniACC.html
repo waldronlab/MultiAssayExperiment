@@ -8,21 +8,25 @@
 
 <title>Adrenocortical Carcinoma (ACC) MultiAssayExperiment — miniACC • MultiAssayExperiment</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -30,8 +34,8 @@
 
 
 
-<meta property="og:title" content="Adrenocortical Carcinoma (ACC) MultiAssayExperiment — miniACC" />
 
+<meta property="og:title" content="Adrenocortical Carcinoma (ACC) MultiAssayExperiment — miniACC" />
 <meta property="og:description" content="A MultiAssayExperiment object providing a reduced version of
 the TCGA ACC dataset for all 92 patients. RNA-seq, copy number, and somatic
 mutations are included only for genes whose proteins are included in the
@@ -43,6 +47,7 @@ additional details are provided by metadata(miniACC)." />
 
 
 
+
 <!-- mathjax -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script>
@@ -51,6 +56,7 @@ additional details are provided by metadata(miniACC)." />
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
 
 
   </head>
@@ -69,7 +75,7 @@ additional details are provided by metadata(miniACC)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MultiAssayExperiment</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.10.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.12.4</span>
       </span>
     </div>
 
@@ -108,6 +114,9 @@ additional details are provided by metadata(miniACC)." />
   <ul class="dropdown-menu" role="menu">
     <li class="dropdown-header">Release Notes</li>
     <li>
+      <a href="https://waldronlab.io/MultiAssayExperiment/news/news-1.12.html">Version 1.12.0</a>
+    </li>
+    <li>
       <a href="https://waldronlab.io/MultiAssayExperiment/news/news-1.10.html">Version 1.10.0</a>
     </li>
     <li>
@@ -131,7 +140,6 @@ additional details are provided by metadata(miniACC)." />
   </ul>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/waldronlab/MultiAssayExperiment">
@@ -146,6 +154,7 @@ additional details are provided by metadata(miniACC)." />
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -157,7 +166,6 @@ additional details are provided by metadata(miniACC)." />
     </div>
 
     <div class="ref-description">
-    
     <p>A <code><a href='MultiAssayExperiment.html'>MultiAssayExperiment</a></code> object providing a reduced version of
 the TCGA ACC dataset for all 92 patients. RNA-seq, copy number, and somatic
 mutations are included only for genes whose proteins are included in the
@@ -165,11 +173,11 @@ reverse-phase protein array. The MicroRNA-seq dataset is also included,
 with infrequently expressed microRNA removed. Clinical, pathological, and
 subtype information are provided by <code>colData(miniACC)</code>, and some
 additional details are provided by metadata(miniACC).</p>
-    
     </div>
 
     <pre class="usage"><span class='no'>miniACC</span></pre>
-        
+
+
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
     <p>A <code>MultiAssayExperiment</code> with 5 experiments, providing:</p><dl class='dl-horizontal'>
@@ -180,41 +188,39 @@ additional details are provided by metadata(miniACC).</p>
     <dt>RPPAArray</dt><dd><p>Reverse Phase Protein Array: an <code>ExpressionSet</code>
     with 33 rows and 46 columns. Rows are indexed by genes,
     but protein annotations are available from
-    <code><a href='https://www.rdocumentation.org/packages/Biobase/topics/featureData'>featureData(miniACC[["RPPAArray"]])</a></code>. The source of these
-    annotations is noted in <code><a href='https://www.rdocumentation.org/packages/Biobase/topics/abstract'>abstract(miniACC[["RPPAArray"]])</a></code></p></dd>
+    <code><a href='https://rdrr.io/pkg/Biobase/man/featureData.html'>featureData(miniACC[["RPPAArray"]])</a></code>. The source of these
+    annotations is noted in <code><a href='https://rdrr.io/pkg/Biobase/man/abstract.html'>abstract(miniACC[["RPPAArray"]])</a></code></p></dd>
     <dt>Mutations</dt><dd><p>Somatic mutations: a <code>matrix</code> with 223 rows and
     90 columns. 1 for any kind of non-silent mutation, zero for silent
     (synonymous) or no mutation.</p></dd>
     <dt>miRNASeqGene</dt><dd><p>microRNA sequencing: an <code>ExpressionSet</code> with
     471 rows and 80 columns. Rows not having at least 5 counts in at least
     5 samples were removed.</p></dd>
+
 </dl>
-    
     <h2 class="hasAnchor" id="source"><a class="anchor" href="#source"></a>Source</h2>
 
     <p>https://github.com/waldronlab/multiassayexperiment-tcga</p>
-    
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Zheng S *et al.*: Comprehensive Pan-Genomic Characterization of
 Adrenocortical Carcinoma. Cancer Cell 2016, 29:723-736.</p>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>miniACC</span></div><div class='output co'>#&gt; A MultiAssayExperiment object of 5 listed
-#&gt;  experiments with user-defined names and respective classes. 
-#&gt;  Containing an ExperimentList class object of length 5: 
-#&gt;  [1] RNASeq2GeneNorm: SummarizedExperiment with 198 rows and 79 columns 
-#&gt;  [2] gistict: SummarizedExperiment with 198 rows and 90 columns 
-#&gt;  [3] RPPAArray: SummarizedExperiment with 33 rows and 46 columns 
-#&gt;  [4] Mutations: matrix with 97 rows and 90 columns 
-#&gt;  [5] miRNASeqGene: SummarizedExperiment with 471 rows and 80 columns 
-#&gt; Features: 
-#&gt;  experiments() - obtain the ExperimentList instance 
-#&gt;  colData() - the primary/phenotype DataFrame 
-#&gt;  sampleMap() - the sample availability DataFrame 
-#&gt;  `$`, `[`, `[[` - extract colData columns, subset, or experiment 
-#&gt;  *Format() - convert into a long or wide DataFrame 
+#&gt;  experiments with user-defined names and respective classes.
+#&gt;  Containing an ExperimentList class object of length 5:
+#&gt;  [1] RNASeq2GeneNorm: SummarizedExperiment with 198 rows and 79 columns
+#&gt;  [2] gistict: SummarizedExperiment with 198 rows and 90 columns
+#&gt;  [3] RPPAArray: SummarizedExperiment with 33 rows and 46 columns
+#&gt;  [4] Mutations: matrix with 97 rows and 90 columns
+#&gt;  [5] miRNASeqGene: SummarizedExperiment with 471 rows and 80 columns
+#&gt; Features:
+#&gt;  experiments() - obtain the ExperimentList instance
+#&gt;  colData() - the primary/phenotype DFrame
+#&gt;  sampleMap() - the sample availability DFrame
+#&gt;  `$`, `[`, `[[` - extract colData columns, subset, or experiment
+#&gt;  *Format() - convert into a long or wide DFrame
 #&gt;  assays() - convert ExperimentList to a SimpleList of matrices</div><div class='input'><span class='fu'>metadata</span>(<span class='no'>miniACC</span>)</div><div class='output co'>#&gt; $title
 #&gt; [1] "Comprehensive Pan-Genomic Characterization of Adrenocortical Carcinoma"
 #&gt; 
@@ -229,7 +235,7 @@ Adrenocortical Carcinoma. Cancer Cell 2016, 29:723-736.</p>
 #&gt; 
 #&gt; $colDataExtrasURL
 #&gt; [1] "http://www.cell.com/cms/attachment/2062093088/2063584534/mmc3.xlsx"
-#&gt; </div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/colnames'>colnames</a></span>(<span class='fu'>colData</span>(<span class='no'>miniACC</span>))</div><div class='output co'>#&gt;  [1] "patientID"                           
+#&gt; </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='fu'>colData</span>(<span class='no'>miniACC</span>))</div><div class='output co'>#&gt;  [1] "patientID"                           
 #&gt;  [2] "years_to_birth"                      
 #&gt;  [3] "vital_status"                        
 #&gt;  [4] "days_to_death"                       
@@ -258,9 +264,9 @@ Adrenocortical Carcinoma. Cancer Cell 2016, 29:723-736.</p>
 #&gt; [27] "purity"                              
 #&gt; [28] "ploidy"                              
 #&gt; [29] "genome_doublings"                    
-#&gt; [30] "ADS"                                 </div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/table'>table</a></span>(<span class='no'>miniACC</span>$<span class='no'>vital_status</span>)</div><div class='output co'>#&gt; 
+#&gt; [30] "ADS"                                 </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span>(<span class='no'>miniACC</span>$<span class='no'>vital_status</span>)</div><div class='output co'>#&gt; 
 #&gt;  0  1 
-#&gt; 58 34 </div><div class='input'><span class='fu'><a href='MultiAssayExperiment-helpers.html'>longFormat</a></span>(<span class='no'>miniACC</span>[<span class='st'>"MAPK3"</span>, , ], <span class='kw'>colDataCols</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"vital_status"</span>, <span class='st'>"days_to_death"</span>))</div><div class='output co'>#&gt; <span class='message'>harmonizing input:</span>
+#&gt; 58 34 </div><div class='input'><span class='fu'><a href='MultiAssayExperiment-helpers.html'>longFormat</a></span>(<span class='no'>miniACC</span>[<span class='st'>"MAPK3"</span>, , ], <span class='kw'>colDataCols</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"vital_status"</span>, <span class='st'>"days_to_death"</span>))</div><div class='output co'>#&gt; <span class='message'>harmonizing input:</span>
 #&gt; <span class='message'>  removing 216 sampleMap rows not in names(experiments)</span></div><div class='output co'>#&gt; DataFrame with 169 rows and 7 columns
 #&gt;               assay      primary     rowname                      colname
 #&gt;         &lt;character&gt;  &lt;character&gt; &lt;character&gt;                  &lt;character&gt;
@@ -287,7 +293,7 @@ Adrenocortical Carcinoma. Cancer Cell 2016, 29:723-736.</p>
 #&gt; 166         0            0            NA
 #&gt; 167         0            0            NA
 #&gt; 168         0            0            NA
-#&gt; 169         1            0            NA</div><div class='input'><span class='fu'><a href='MultiAssayExperiment-helpers.html'>wideFormat</a></span>(<span class='no'>miniACC</span>[<span class='st'>"MAPK3"</span>, , ], <span class='kw'>colDataCols</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"vital_status"</span>, <span class='st'>"days_to_death"</span>))</div><div class='output co'>#&gt; <span class='message'>harmonizing input:</span>
+#&gt; 169         1            0            NA</div><div class='input'><span class='fu'><a href='MultiAssayExperiment-helpers.html'>wideFormat</a></span>(<span class='no'>miniACC</span>[<span class='st'>"MAPK3"</span>, , ], <span class='kw'>colDataCols</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"vital_status"</span>, <span class='st'>"days_to_death"</span>))</div><div class='output co'>#&gt; <span class='message'>harmonizing input:</span>
 #&gt; <span class='message'>  removing 216 sampleMap rows not in names(experiments)</span></div><div class='output co'>#&gt; DataFrame with 92 rows and 5 columns
 #&gt;          primary vital_status days_to_death RNASeq2GeneNorm_MAPK3 gistict_MAPK3
 #&gt;      &lt;character&gt;    &lt;integer&gt;     &lt;integer&gt;             &lt;numeric&gt;     &lt;numeric&gt;
@@ -302,48 +308,48 @@ Adrenocortical Carcinoma. Cancer Cell 2016, 29:723-736.</p>
 #&gt; 90  TCGA-PK-A5HB            0            NA             1463.3079             0
 #&gt; 91  TCGA-PK-A5HC            0            NA                    NA             1
 #&gt; 92  TCGA-P6-A5OG            1           383             1310.8799            -1</div><div class='input'>
-##
-## The following is the code used to create this mini dataset from the full ACC dataset.
-## The full ACC MultiAssayExperiment was created by the pipeline at
-## https://github.com/waldronlab/multiassayexperiment-tcga.
-</div><span class='co'># NOT RUN {</span>
+<span class='co'>##</span>
+<span class='co'>## The following is the code used to create this mini dataset from the full ACC dataset.</span>
+<span class='co'>## The full ACC MultiAssayExperiment was created by the pipeline at</span>
+<span class='co'>## https://github.com/waldronlab/multiassayexperiment-tcga.</span>
+<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
     <span class='co'>## See www.tinyurl.com/MAEOurls for more pre-built TCGA MultiAssayExperiment objects</span>
-    <span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/download.file'>download.file</a></span>(<span class='st'>"http://s3.amazonaws.com/multiassayexperiments/accMAEO.rds"</span>,
+    <span class='fu'><a href='https://rdrr.io/r/utils/download.file.html'>download.file</a></span>(<span class='st'>"http://s3.amazonaws.com/multiassayexperiments/accMAEO.rds"</span>,
                   <span class='kw'>destfile</span> <span class='kw'>=</span> <span class='st'>"accMAEO.rds"</span>)
-    <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>MultiAssayExperiment</span>)
-    <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>RaggedExperiment</span>) <span class='co'>#needed for RaggedExperiment objects by updateObject()</span>
-    <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>Biobase</span>)
+    <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>MultiAssayExperiment</span>)
+    <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>RaggedExperiment</span>) <span class='co'>#needed for RaggedExperiment objects by updateObject()</span>
+    <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>Biobase</span>)
 
-    <span class='no'>acc</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/readRDS'>readRDS</a></span>(<span class='st'>"accMAEO.rds"</span>)
+    <span class='no'>acc</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/readRDS.html'>readRDS</a></span>(<span class='st'>"accMAEO.rds"</span>)
     <span class='no'>acc</span> <span class='kw'>&lt;-</span> <span class='fu'>updateObject</span>(<span class='no'>acc</span>)
-    <span class='no'>protmap</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/read.table'>read.csv</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/paste'>paste0</a></span>(<span class='st'>"http://genomeportal.stanford.edu/"</span>,
+    <span class='no'>protmap</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/utils/read.table.html'>read.csv</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"http://genomeportal.stanford.edu/"</span>,
                         <span class='st'>"pan-tcga/target_selection_send_data"</span>,
                         <span class='st'>"?filename=Allprotein.txt"</span>), <span class='kw'>as.is</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
         )
 
-    <span class='no'>RPPAgenes</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/funprog'>Filter</a></span>(<span class='kw'>function</span>(<span class='no'>x</span>) <span class='no'>x</span> <span class='kw'>!=</span> <span class='st'>""</span>, <span class='no'>protmap</span>$<span class='no'>Genes</span>)
-    <span class='no'>RPPAgenes</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/unlist'>unlist</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/strsplit'>strsplit</a></span>(<span class='no'>RPPAgenes</span>, <span class='st'>","</span>))
-    <span class='no'>RPPAgenes</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/unique'>unique</a></span>(<span class='no'>RPPAgenes</span>)
+    <span class='no'>RPPAgenes</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/funprog.html'>Filter</a></span>(<span class='kw'>function</span>(<span class='no'>x</span>) <span class='no'>x</span> <span class='kw'>!=</span> <span class='st'>""</span>, <span class='no'>protmap</span>$<span class='no'>Genes</span>)
+    <span class='no'>RPPAgenes</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/unlist.html'>unlist</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/strsplit.html'>strsplit</a></span>(<span class='no'>RPPAgenes</span>, <span class='st'>","</span>))
+    <span class='no'>RPPAgenes</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/unique.html'>unique</a></span>(<span class='no'>RPPAgenes</span>)
 
     <span class='no'>miniACC</span> <span class='kw'>&lt;-</span>
-        <span class='no'>acc</span>[<span class='no'>RPPAgenes</span>, , <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"RNASeq2GeneNorm"</span>, <span class='st'>"gistict"</span>, <span class='st'>"RPPAArray"</span>, <span class='st'>"Mutations"</span>)]
+        <span class='no'>acc</span>[<span class='no'>RPPAgenes</span>, , <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"RNASeq2GeneNorm"</span>, <span class='st'>"gistict"</span>, <span class='st'>"RPPAArray"</span>, <span class='st'>"Mutations"</span>)]
     <span class='no'>mut</span> <span class='kw'>&lt;-</span> <span class='fu'>assay</span>(<span class='no'>miniACC</span><span class='kw'>[[</span><span class='st'>"Mutations"</span>]], <span class='kw'>i</span> <span class='kw'>=</span> <span class='st'>"Variant_Classification"</span>)
-    <span class='no'>mut</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/ifelse'>ifelse</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/NA'>is.na</a></span>(<span class='no'>mut</span>) <span class='kw'>|</span> <span class='no'>mut</span> <span class='kw'>==</span> <span class='st'>"Silent"</span>, <span class='fl'>0</span>, <span class='fl'>1</span>)
+    <span class='no'>mut</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span>(<span class='no'>mut</span>) <span class='kw'>|</span> <span class='no'>mut</span> <span class='kw'>==</span> <span class='st'>"Silent"</span>, <span class='fl'>0</span>, <span class='fl'>1</span>)
 
     <span class='no'>miniACC</span><span class='kw'>[[</span><span class='st'>"Mutations"</span>]] <span class='kw'>&lt;-</span> <span class='no'>mut</span>
-    <span class='fu'>colData</span>(<span class='no'>miniACC</span>) <span class='kw'>&lt;-</span> <span class='fu'>colData</span>(<span class='no'>miniACC</span>)[, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>1</span>:<span class='fl'>17</span>, <span class='fl'>810</span>:<span class='fl'>822</span>)]
+    <span class='fu'>colData</span>(<span class='no'>miniACC</span>) <span class='kw'>&lt;-</span> <span class='fu'>colData</span>(<span class='no'>miniACC</span>)[, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>:<span class='fl'>17</span>, <span class='fl'>810</span>:<span class='fl'>822</span>)]
 
     <span class='no'>rpparowData</span> <span class='kw'>&lt;-</span>
-        <span class='no'>protmap</span>[<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/match'>match</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/colnames'>rownames</a></span>(<span class='no'>miniACC</span><span class='kw'>[[</span><span class='st'>"RPPAArray"</span>]]), <span class='no'>protmap</span>$<span class='no'>Genes</span>),]
-    <span class='no'>rpparowData</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/Biobase/topics/class.AnnotatedDataFrame'>AnnotatedDataFrame</a></span>(<span class='no'>rpparowData</span>)
-    <span class='fu'><a href='https://www.rdocumentation.org/packages/Biobase/topics/featureData'>featureData</a></span>(<span class='no'>miniACC</span><span class='kw'>[[</span><span class='st'>"RPPAArray"</span>]]) <span class='kw'>&lt;-</span> <span class='no'>rpparowData</span>
+        <span class='no'>protmap</span>[<span class='fu'><a href='https://rdrr.io/r/base/match.html'>match</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span>(<span class='no'>miniACC</span><span class='kw'>[[</span><span class='st'>"RPPAArray"</span>]]), <span class='no'>protmap</span>$<span class='no'>Genes</span>),]
+    <span class='no'>rpparowData</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/Biobase/man/class.AnnotatedDataFrame.html'>AnnotatedDataFrame</a></span>(<span class='no'>rpparowData</span>)
+    <span class='fu'><a href='https://rdrr.io/pkg/Biobase/man/featureData.html'>featureData</a></span>(<span class='no'>miniACC</span><span class='kw'>[[</span><span class='st'>"RPPAArray"</span>]]) <span class='kw'>&lt;-</span> <span class='no'>rpparowData</span>
 
     <span class='no'>md</span> <span class='kw'>&lt;-</span>
-        <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(
+        <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(
             <span class='kw'>title</span> <span class='kw'>=</span> <span class='st'>"Comprehensive Pan-Genomic Characterization of Adrenocortical Carcinoma"</span>,
             <span class='kw'>PMID</span> <span class='kw'>=</span> <span class='st'>"27165744"</span>,
             <span class='kw'>sourceURL</span> <span class='kw'>=</span> <span class='st'>"http://s3.amazonaws.com/multiassayexperiments/accMAEO.rds"</span>,
-            <span class='kw'>RPPAfeatureDataURL</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/paste'>paste0</a></span>(<span class='st'>"http://genomeportal.stanford.edu/"</span>,
+            <span class='kw'>RPPAfeatureDataURL</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"http://genomeportal.stanford.edu/"</span>,
                                         <span class='st'>"pan-tcga/show_target_selection_file"</span>,
                                         <span class='st'>"?filename=Allprotein.txt"</span>),
             <span class='kw'>colDataExtrasURL</span> <span class='kw'>=</span> <span class='st'>"http://www.cell.com/cms/attachment/2062093088/2063584534/mmc3.xlsx"</span>
@@ -351,11 +357,11 @@ Adrenocortical Carcinoma. Cancer Cell 2016, 29:723-736.</p>
     <span class='fu'>metadata</span>(<span class='no'>miniACC</span>) <span class='kw'>&lt;-</span> <span class='no'>md</span>
 
     <span class='no'>mirna</span> <span class='kw'>&lt;-</span> <span class='no'>acc</span><span class='kw'>[[</span><span class='st'>"miRNASeqGene"</span>]]
-    <span class='no'>mirna</span> <span class='kw'>&lt;-</span> <span class='no'>mirna</span>[<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/colSums'>rowSums</a></span>(<span class='fu'>assay</span>(<span class='no'>mirna</span>) <span class='kw'>&gt;=</span> <span class='fl'>5</span>) <span class='kw'>&gt;=</span> <span class='fl'>5</span>, ]
-    <span class='fu'><a href='https://www.rdocumentation.org/packages/Biobase/topics/abstract'>experimentData</a></span>(<span class='no'>mirna</span>)@<span class='kw'>abstract</span> <span class='kw'>&lt;-</span>
+    <span class='no'>mirna</span> <span class='kw'>&lt;-</span> <span class='no'>mirna</span>[<span class='fu'><a href='https://rdrr.io/r/base/colSums.html'>rowSums</a></span>(<span class='fu'>assay</span>(<span class='no'>mirna</span>) <span class='kw'>&gt;=</span> <span class='fl'>5</span>) <span class='kw'>&gt;=</span> <span class='fl'>5</span>, ]
+    <span class='fu'><a href='https://rdrr.io/pkg/Biobase/man/abstract.html'>experimentData</a></span>(<span class='no'>mirna</span>)@<span class='kw'>abstract</span> <span class='kw'>&lt;-</span>
         <span class='st'>"Note: Rows not having at least 5 counts in at least 5 samples were removed."</span>
-    <span class='no'>miniACC</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='no'>miniACC</span>,
-                 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>miRNASeqGene</span> <span class='kw'>=</span> <span class='no'>mirna</span>),
+    <span class='no'>miniACC</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='no'>miniACC</span>,
+                 <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>miRNASeqGene</span> <span class='kw'>=</span> <span class='no'>mirna</span>),
                  <span class='kw'>sampleMap</span> <span class='kw'>=</span> <span class='fu'><a href='MultiAssayExperiment-methods.html'>sampleMap</a></span>(<span class='no'>acc</span>)[<span class='fu'><a href='MultiAssayExperiment-methods.html'>sampleMap</a></span>(<span class='no'>acc</span>)$<span class='no'>assay</span> <span class='kw'>==</span> <span class='st'>"miRNASeqGene"</span>,])
 
      <span class='no'>miniACC</span><span class='kw'>[[</span><span class='st'>"RNASeq2GeneNorm"</span>]] <span class='kw'>&lt;-</span>
@@ -365,19 +371,15 @@ Adrenocortical Carcinoma. Cancer Cell 2016, 29:723-736.</p>
      <span class='no'>miniACC</span><span class='kw'>[[</span><span class='st'>"miRNASeqGene"</span>]] <span class='kw'>&lt;-</span>
          <span class='fu'>as</span>(<span class='no'>miniACC</span><span class='kw'>[[</span><span class='st'>"miRNASeqGene"</span>]], <span class='st'>"SummarizedExperiment"</span>)
 
-    <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/save'>save</a></span>(<span class='no'>miniACC</span>, <span class='kw'>file</span> <span class='kw'>=</span> <span class='st'>"data/miniACC.RData"</span>, <span class='kw'>compress</span> <span class='kw'>=</span> <span class='st'>"bzip2"</span>)
-<span class='co'># }</span></pre>
+    <span class='fu'><a href='https://rdrr.io/r/base/save.html'>save</a></span>(<span class='no'>miniACC</span>, <span class='kw'>file</span> <span class='kw'>=</span> <span class='st'>"data/miniACC.RData"</span>, <span class='kw'>compress</span> <span class='kw'>=</span> <span class='st'>"bzip2"</span>)
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      
       <li><a href="#format">Format</a></li>
-
       <li><a href="#source">Source</a></li>
-
       <li><a href="#references">References</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
@@ -386,19 +388,23 @@ Adrenocortical Carcinoma. Cancer Cell 2016, 29:723-736.</p>
   </div>
 </div>
 
+
       <footer>
       <div class="copyright">
   <p>Developed by Marcel Ramos, Levi Waldron.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 
