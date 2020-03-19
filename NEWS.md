@@ -1,3 +1,23 @@
+## Changes in version 1.14.0
+
+### New features
+
+* `exportClass` creates a number of `.csv` data files for exporting data
+* Allow vector input `i` for selecting assays in `longFormat` (@lgatto, #266)
+
+### Bug fixes and minor improvements
+
+* Warn when `colData` rownames and `ExperimentList` colnames are empty
+(@LTLA #262)
+* Add informative error message for `ExperimentList` (@lgatto, #265)
+* Informative warning when dropping `ExperimentList` element columns
+(@lwaldron)
+* Fixes to constructor functions, `MultiAssayExperiment` and
+`MatchedAssayExperiment` (@lgatto, #267 #268, @lwaldron)
+* Add warning when `j` in `mae[i, j, k]` is longer than `colData` rows
+* Strict argument matching between generic and methods
+* Updates due to `class(matrix())`
+
 ## Changes in version 1.12.0
 
 ### Bug fixes and minor improvements
