@@ -13,7 +13,9 @@ NULL
     colname <- unlist(samps, use.names=FALSE)
     matches <- match(colname, rownames(colData))
     if (length(matches) && all(is.na(matches)))
-        stop("no way to map colData to ExperimentList")
+        stop("No way to map colData to ExperimentList")
+    else if (!length(matches) && !isEmpty(experiments))
+        warning("colData rownames and ExperimentList colnames are empty")
     primary <- rownames(colData)[matches]
     autoMap <- S4Vectors::DataFrame(
         assay=assay, primary=primary, colname=colname)
