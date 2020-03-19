@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MultiAssayExperiment</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.12.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.12.5</span>
       </span>
     </div>
 
@@ -119,7 +119,7 @@
       <h1>Using DelayedMatrix with MultiAssayExperiment</h1>
                         <h4 class="author">MultiAssay Special Interest Group</h4>
             
-            <h4 class="date">March 13, 2020</h4>
+            <h4 class="date">March 19, 2020</h4>
       
       
       <div class="hidden name"><code>UsingHDF5Array.Rmd</code></div>
@@ -153,12 +153,12 @@
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(smallMatrix)</a></code></pre></div>
 <pre><code>## &lt;6 x 20&gt; matrix of class DelayedMatrix and type "double":
 ##         SampleID1   SampleID2   SampleID3 ... SampleID19 SampleID20
-## GENE1 -0.33789435  0.67647964 -0.56959089   . -0.3894551 -0.5337837
-## GENE2  1.92472818  0.15708479  1.23382973   .  1.4139702 -0.9287891
-## GENE3  0.04505693 -1.56255240  0.74994501   . -1.9861645 -2.4135165
-## GENE4 -0.50469120 -0.62007280 -0.63002972   .  0.7210442  0.4945722
-## GENE5  0.29265559  0.68967362 -0.65641614   . -0.1909523  0.8736474
-## GENE6  0.85559024 -0.12069880  0.59102327   . -2.6388035 -0.2675101</code></pre>
+## GENE1 -1.41472697 -0.76068678  0.84172800   . -0.1383351 -1.5222285
+## GENE2 -0.08867852 -0.42823907  2.95401711   . -0.9481955  1.1727539
+## GENE3 -1.23213662 -1.97066456 -1.85652868   .  1.8731168 -1.1639092
+## GENE4 -0.89720851  0.13782847 -0.13340405   .  1.3817006 -0.3920698
+## GENE5 -1.56705312 -2.13016358 -0.02342016   . -0.3106762 -0.5243450
+## GENE6  0.09771351  1.49585535 -1.23021657   . -1.2603070  0.5487804</code></pre>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(smallMatrix)</a></code></pre></div>
 <pre><code>## [1] 50000    20</code></pre>
 </div>
@@ -223,18 +223,18 @@
 <div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1">HDF5SE &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/RangedSummarizedExperiment-class.html">SummarizedExperiment</a></span>(<span class="dt">assays =</span> smallMatrix)</a>
 <a class="sourceLine" id="cb20-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html">assay</a></span>(HDF5SE)</a></code></pre></div>
 <pre><code>## &lt;50000 x 20&gt; matrix of class DelayedMatrix and type "double":
-##             SampleID1   SampleID2   SampleID3 ... SampleID19 SampleID20
-##     GENE1 -0.33789435  0.67647964 -0.56959089   . -0.3894551 -0.5337837
-##     GENE2  1.92472818  0.15708479  1.23382973   .  1.4139702 -0.9287891
-##     GENE3  0.04505693 -1.56255240  0.74994501   . -1.9861645 -2.4135165
-##     GENE4 -0.50469120 -0.62007280 -0.63002972   .  0.7210442  0.4945722
-##     GENE5  0.29265559  0.68967362 -0.65641614   . -0.1909523  0.8736474
-##       ...           .           .           .   .          .          .
-## GENE49996  1.88544559  0.76627225  0.03876170   . -1.6765195 -2.0567015
-## GENE49997  0.30989328  2.12447293  0.37380282   .  1.1047221  0.5656647
-## GENE49998 -0.02295855 -1.05055965  1.12461558   .  0.7621865  1.1300398
-## GENE49999  0.58956024 -0.09621190 -1.40901445   . -1.2139865  0.1708743
-## GENE50000  0.50831631 -0.08027781 -0.37368238   . -0.2861757  1.4642835</code></pre>
+##             SampleID1   SampleID2   SampleID3 ...  SampleID19  SampleID20
+##     GENE1 -1.41472697 -0.76068678  0.84172800   .  -0.1383351  -1.5222285
+##     GENE2 -0.08867852 -0.42823907  2.95401711   .  -0.9481955   1.1727539
+##     GENE3 -1.23213662 -1.97066456 -1.85652868   .   1.8731168  -1.1639092
+##     GENE4 -0.89720851  0.13782847 -0.13340405   .   1.3817006  -0.3920698
+##     GENE5 -1.56705312 -2.13016358 -0.02342016   .  -0.3106762  -0.5243450
+##       ...           .           .           .   .           .           .
+## GENE49996  0.02368656  0.53135651 -1.05642306   .  1.04119157 -0.06683369
+## GENE49997  1.70204806  0.28555932 -0.56537661   . -1.18250242  0.38804436
+## GENE49998  0.45858280 -0.30451308 -0.55309848   . -0.10167249  1.20496227
+## GENE49999 -0.15570977  1.45622024  2.64845564   .  0.66718881 -0.13931523
+## GENE50000  0.01414211 -0.07622898 -0.23895247   . -0.94382835 -0.27781134</code></pre>
 <div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1"><span class="kw"><a href="../reference/MultiAssayExperiment.html">MultiAssayExperiment</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">HDF5SE =</span> HDF5SE))</a></code></pre></div>
 <pre><code>## A MultiAssayExperiment object of 1 listed
 ##  experiment with a user-defined name and respective class.
