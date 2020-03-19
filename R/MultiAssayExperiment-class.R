@@ -684,8 +684,8 @@ S4Vectors::setValidity2("MatchedAssayExperiment", .validMatchedAssayExperiment)
 #' @export MatchedAssayExperiment
 MatchedAssayExperiment <- function(...) {
     listData <- list(...)
-    if (is(listData[[1L]], "MultiAssayExperiment"))
-        multiassay <- listData[[1L]]
+    if (length(listData) && is(listData[[1L]], "MultiAssayExperiment"))
+            multiassay <- listData[[1L]]
     else
         multiassay <- MultiAssayExperiment(...)
     multiassay <- .doMatching(multiassay)
