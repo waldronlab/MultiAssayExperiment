@@ -8,7 +8,7 @@ test_that("exportClass on a MultiAssayExperiment works", {
         GRanges(c(a = "chr2:1-10:-", b = "chr2:2-10:+", c = "chr2:3-10:+"))
 
     .write.table <- function(...) {
-        message(..2)
+        return(..2)
     }
 
     with_mock(write.table = .write.table, {
