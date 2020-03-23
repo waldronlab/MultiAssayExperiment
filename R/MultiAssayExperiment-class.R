@@ -716,11 +716,14 @@ setAs("MultiAssayExperiment", "MatchedAssayExperiment", function(from) {
     atmos <- vapply(metas, is.atomic, logical(1L))
     metatxt <- metas[atmos]
 
-    fpath <- file.path(dir, paste0(objname, "_META_0", ext))
-    if (!is.function(fmt))
-        fmt <- .chr2fxn(fmt)
-    fmt(as.data.frame(metatxt), fpath, ...)
-    fnames <- fpath
+    fnames <- character(0L)
+    if (length(metatxt)) {
+        fpath <- file.path(dir, paste0(objname, "_META_0", ext))
+        if (!is.function(fmt))
+            fmt <- .chr2fxn(fmt)
+        fmt(as.data.frame(metatxt), fpath, ...)
+        fnames <- fpath
+    }
     if (any(!atmos)) {
         nonato <- metas[!atmos]
         nonatos <- seq_along(nonato)
