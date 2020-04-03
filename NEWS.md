@@ -353,7 +353,7 @@ instead.
 pData rownames, `ExperimentList` rownames, `ExperimentList` columns,
 assay names, and optional pData columns
 
-## Bug fixes and minor improvements
+### Bug fixes and minor improvements
 
 * Fix `assay` arguments for the `RangedRaggedAssay` method
 * Subsetting by column now arranges `sampleMap` in proper order
@@ -366,7 +366,7 @@ assay names, and optional pData columns
 * `extract` method not available for common classes - creates `tidy` data.frame
 from data
 
-## Bug fixes and minor improvements
+### Bug fixes and minor improvements
 
 * Documentation updated with new roxygen version
 
@@ -377,7 +377,7 @@ from data
 * Example section added to vignette for converting data frames to Bioconductor
 objects
 
-## Minor improvements
+### Minor improvements
 
 * A proper `dimnames` method added to `MultiAssayExperiment`
 
@@ -387,7 +387,7 @@ objects
 
 * `dimnames` method added to `RangedRaggedAssay`
 
-## Bug fixes and minor improvements
+### Bug fixes and minor improvements
 
 * Improved `RangedRaggedAssay` rowname construction
 * Improved `show` method for the `RangedRaggedAssay` class
@@ -401,7 +401,7 @@ column
 
 ## Changes in version 0.101.43
 
-## Bug fixes and minor improvements
+### Bug fixes and minor improvements
 
 * Improved `MultiAssayExperiment` constructor now handles stray assays, colnames,
 pData rownames, and `sampleMap` rows
@@ -412,7 +412,7 @@ pData rownames, and `sampleMap` rows
 
 * `metadata<-` set method now available for the `MultiAssayExperiment`
 
-## Bug fixes and minor improvements
+### Bug fixes and minor improvements
 
 * `metadata` argument available in the `MultiAssayExperiment` constructor function
 * Fix bug when subsetting for unmatched samples/colnames (drop = FALSE) in constructor
@@ -431,7 +431,7 @@ for the `ExperimentList` or `list` input.
 * `updateObject` method now available for old instances of the `MultiAssayExperiment`
 * Users with invalid `MultiAssayExperiments` should update and re-serialize them
 
-## Bug fixes and minor improvements
+### Bug fixes and minor improvements
 
 * `drop` argument now works as intended when using `List` inherited objects
 
@@ -449,7 +449,7 @@ for the `ExperimentList` or `list` input.
 and __colname__ (prev. "assay")
 * New vignete available for creating `MultiAssayExperiment` objects with TCGA data
 
-## Bug fixes and minor improvements
+### Bug fixes and minor improvements
 
 * Added informative error to `MultiAssayExperiment` constructor
 * Improved `show` method display
@@ -485,7 +485,7 @@ Created to obtain raw data from certain classes (see `?assay,(class),ANY-method`
 * Vignette now building (#125)
 * Preliminary assay method for RangedRaggedAssay
 
-## Bug fixes and minor improvements
+### Bug fixes and minor improvements
 
 * superflous `subset` function removed
 * `sampleMap` uses character vectors instead of Rle
@@ -502,6 +502,6 @@ Created to obtain raw data from certain classes (see `?assay,(class),ANY-method`
 
 * Replacement method for `colnames` now available for the `RangedRaggedAssay` class.
 
-## Bug fixes and minor improvements
+### Bug fixes and minor improvements
 
 * Documentation additions
