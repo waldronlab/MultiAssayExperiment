@@ -12,6 +12,20 @@ test_that("ExperimentList constructors work", {
     expect_true(validObject(ExperimentList(list(m=m))))
 })
 
+test_that("ExperimentList constructor preserves metadata", {
+    mcoldf <- DataFrame(AssayNumber=seq_len(length(ExpList)),
+        row.names = names(ExpList))
+    mcols(ExpList) <- mcoldf
+
+    metalist <- list(Shiny = "Blue Jeans", Old = "Metadata")
+    metadata(ExpList) <- metalist
+
+    nexp <- ExperimentList(ExpList)
+
+    expect_identical(mcols(nexp), mcoldf)
+    expect_identical(metadata(nexp), metalist)
+})
+
 test_that("Metadata is kept in ExperimentList when replacing", {
     ## add metadata columns and metadata
     mcoldf <- DataFrame(AssayNumber=seq_len(length(ExpList)),

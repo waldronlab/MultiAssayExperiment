@@ -63,6 +63,8 @@ ExperimentList <- function(...) {
         if (is(listData[[1L]], "MultiAssayExperiment"))
             stop("MultiAssayExperiment input detected. ",
                 "Did you mean 'experiments()'?")
+        if (is(listData[[1L]], "ExperimentList"))
+            return(listData[[1L]])
         if (is.list(listData[[1L]]) || (is(listData[[1L]], "List") &&
             !is(listData[[1L]], "DataFrame"))) {
             listData <- listData[[1L]]

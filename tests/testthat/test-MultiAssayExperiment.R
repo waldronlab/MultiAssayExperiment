@@ -137,3 +137,17 @@ test_that("MultiAssayExperiment name replacements work", {
     expect_identical(names(obs), newnames)
     expect_identical(levels(sampleMap(obs)[["assay"]]), newnames)
 })
+
+test_that("ExperimentList metadata and mcols are preserved", {
+    mcoldf <- DataFrame(AssayNumber=seq_len(length(ExpList)),
+        row.names = names(ExpList))
+    mcols(ExpList) <- mcoldf
+
+    metalist <- list(Shiny = "Blue Jeans", Old = "Metadata")
+    metadata(ExpList) <- metalist
+
+    mae0 <- MultiAssayExperiment(ExpList)
+
+    expect_identical(mcols(experiments(mae0)), mcoldf)
+    expect_identical(metadata(experiments(mae0)), metalist)
+})
