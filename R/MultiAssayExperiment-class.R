@@ -495,10 +495,22 @@ setGeneric("sampleMap<-", function(object, value) {
 #' @exportMethod sampleMap<-
 #' @rdname MultiAssayExperiment-methods
 setReplaceMethod("sampleMap", c("MultiAssayExperiment", "DataFrame"),
-                function(object, value) {
-                    slot(object, "sampleMap") <- value
-                    return(object)
-                })
+    function(object, value) {
+        if (isEmpty(value))
+            value <- DataFrame(assay = factor(), primary = character(),
+                colname = character())
+        rebliss <- .harmonize(experiments(object),
+            colData(object),
+            value)
+
+        BiocGenerics:::replaceSlots(object,
+            ExperimentList = rebliss[["experiments"]],
+            colData = rebliss[["colData"]],
+            sampleMap = rebliss[["sampleMap"]],
+            check = FALSE
+        )
+    }
+)
 
 #' @export
 setGeneric("experiments<-", function(object, value)
@@ -508,28 +520,35 @@ setGeneric("experiments<-", function(object, value)
 #' @rdname MultiAssayExperiment-methods
 setReplaceMethod("experiments", c("MultiAssayExperiment", "ExperimentList"),
     function(object, value) {
-        if (!length(value)) {
-            slot(object, "ExperimentList") <- value
-            return(object)
-        }
         rebliss <- .harmonize(value,
             colData(object),
             sampleMap(object))
+
         BiocGenerics:::replaceSlots(object,
             ExperimentList = rebliss[["experiments"]],
             colData = rebliss[["colData"]],
             sampleMap = rebliss[["sampleMap"]],
             check = FALSE
         )
-    })
+    }
+)
 
 #' @exportMethod colData<-
 #' @rdname MultiAssayExperiment-methods
 setReplaceMethod("colData", c("MultiAssayExperiment", "DataFrame"),
     function(x, value) {
-        slot(x, "colData") <- value
-        return(x)
-    })
+        rebliss <- .harmonize(experiments(x),
+            value,
+            sampleMap(x))
+
+        BiocGenerics:::replaceSlots(x,
+            ExperimentList = rebliss[["experiments"]],
+            colData = rebliss[["colData"]],
+            sampleMap = rebliss[["sampleMap"]],
+            check = FALSE
+        )
+    }
+)
 
 .rearrangeMap <- function(sampMap) {
     return(DataFrame(assay = factor(sampMap[["assayname"]]),

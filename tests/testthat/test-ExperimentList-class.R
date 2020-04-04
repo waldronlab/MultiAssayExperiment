@@ -35,8 +35,9 @@ test_that("Metadata is kept in ExperimentList when replacing", {
     metalist <- list(Shiny = "Blue Jeans", Old = "Metadata")
     metadata(ExpList) <- metalist
 
-    experiments(mae) <- ExpList
+    mae0 <- mae
+    experiments(mae0) <- ExpList
 
-    expect_identical(mcols(experiments(mae)), mcoldf)
-    expect_identical(metadata(experiments(mae)), metalist)
+    expect_identical(mcols(experiments(mae0)), mcoldf)
+    expect_identical(metadata(experiments(mae0)), metalist)
 })

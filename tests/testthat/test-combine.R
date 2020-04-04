@@ -43,17 +43,26 @@ test_that("combine c function works on multiple objects", {
 })
 
 test_that("concatenate two MultiAssayExperiment objects works", {
-    mae2 <- mae
-    names(mae2) <- paste0(names(mae), seq_along(mae))
-    rns <- rownames(colData(mae2))
-    newrns <- paste0(rns, seq_along(rns))
-    map2 <- stats::setNames(newrns, rownames(colData(mae)))
-    sampleMap(mae2)[["primary"]] <- map2[sampleMap(mae2)[["primary"]]]
-    rownames(colData(mae2)) <- newrns
-    combinedmae <- c(mae, mae2)
+    ex3 <- experiments(mae)
+    newasn <- paste0(names(mae), seq_along(mae))
+    names(ex3) <- newasn
 
-    expect_true(all(c(names(mae), names(mae2)) %in% names(combinedmae)))
-    expect_true(all(unique(c(rownames(colData(mae)), rns))
+    cd3 <- colData(mae)
+    newrns <- paste0(rownames(cd3), seq_along(rownames(cd3)))
+    rownames(cd3) <- newrns
+
+    maprn <- stats::setNames(newrns, rownames(colData(mae)))
+    mapassay <- stats::setNames(newasn, names(mae))
+
+    sm3 <- sampleMap(mae)
+    sm3[["primary"]] <- maprn[sampleMap(mae)[["primary"]]]
+    sm3[["assay"]] <- mapassay[sampleMap(mae)[["assay"]]]
+
+    mae3 <- MultiAssayExperiment(ex3, cd3, sm3)
+    combinedmae <- c(mae, mae3)
+
+    expect_true(all(c(names(mae), names(mae3)) %in% names(combinedmae)))
+    expect_true(all(unique(c(rownames(colData(mae)), newrns))
         %in% rownames(colData(combinedmae))))
 })
 

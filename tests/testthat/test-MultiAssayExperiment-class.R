@@ -54,3 +54,33 @@ test_that("constructors work", {
         is(conv, "MatchedAssayExperiment")
     )
 })
+
+test_that("replace methods are using rebliss and replace", {
+    mae0 <- mae
+    sampleMap(mae0) <- DataFrame()
+    expect_true(isEmpty(mae0))
+    expect_true(validObject(mae0))
+
+    mae0 <- mae
+    sampleMap(mae0) <- DataFrame(assay="testAssay", primary="testPrimary",
+        colname="testColname")
+    expect_true(isEmpty(mae0))
+    expect_true(validObject(mae0))
+
+
+    mae0 <- mae
+    experiments(mae0) <- ExperimentList()
+    expect_true(isEmpty(mae0))
+    expect_true(validObject(mae0))
+
+    mae0 <- mae
+    colData(mae0) <- DataFrame()
+    # check cols are zero
+    expect_true(
+        all(vapply(experiments(mae0),
+            function(expo) dim(expo)[[2]] == 0L,
+            logical(1)
+        ))
+    )
+    expect_true(validObject(mae0))
+})
