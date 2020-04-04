@@ -48,7 +48,7 @@ upsetSamples <- function(MultiAssayExperiment,
     for (i in seq_along(maesn))
         incid[, i] <- 1L*(rownames(incid) %in% maesn[[i]])
     # may include hyphens, etc.
-    colnames(incid) <- nameFilter(names(MultiAssayExperiment))
+    colnames(incid) <- nameFilter(names(maesn))
     datf = data.frame(incid, check.names=check.names)
     UpSetR::upset(datf, nsets = nsets, nintersects = nintersects,
         sets = colnames(incid), order.by = order.by, ...)
