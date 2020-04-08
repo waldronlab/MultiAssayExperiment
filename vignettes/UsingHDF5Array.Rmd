@@ -91,7 +91,7 @@ newDelayedMatrix
 
 A `DelayedMatrix` alone conforms to the `MultiAssayExperiment` API requirements.
 Shown below, the `DelayedMatrix` can be put into a named `list` and passed into
-the `MultiAssayExperiment` constructor function. 
+the `MultiAssayExperiment` constructor function.
 
 ```{r}
 HDF5MAE <- MultiAssayExperiment(experiments = list(smallMatrix = smallMatrix))
