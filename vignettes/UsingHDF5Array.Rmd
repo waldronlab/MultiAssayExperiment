@@ -12,19 +12,11 @@ output:
     toc: yes
 ---
 
-```{r, echo=FALSE, warning=FALSE}
-suppressPackageStartupMessages({
-    library(MultiAssayExperiment)
-    library(HDF5Array)
-    library(SummarizedExperiment)
-})
-```
-
 # Integrating an HDF5 backend for MultiAssayExperiment
 
-Dependencies
+## Dependencies
 
-```{r, eval = FALSE}
+```{r,include=TRUE,results="hide",message=FALSE,warning=FALSE}
 library(MultiAssayExperiment)
 library(HDF5Array)
 library(SummarizedExperiment)
@@ -58,33 +50,42 @@ Here we use the `DelayedArray` constructor function to create a
 ```{r}
 smallMatrix <- DelayedArray(smallMatrix)
 class(smallMatrix)
-head(smallMatrix)
+# show method
+smallMatrix
+
 dim(smallMatrix)
+```
+
+## Writing to a file with dimnames
+
+Finally, the `rhdf5` package stores `dimnames` in a standard location.
+
+In order to make use of this functionality, we would use `writeHDF5Array`
+with the `with.dimnames` argument:
+
+```{r}
+testh5 <- tempfile(fileext = ".h5")
+writeHDF5Array(smallMatrix, filepath = testh5, name = "smallMatrix",
+    with.dimnames = TRUE)
+```
+
+To see the file structure we use `h5ls`:
+
+```{r}
+h5ls(testh5)
 ```
 
 ## Importing HDF5 files
 
 Note that a large matrix from an HDF5 file can also be loaded using the
-`HDF5Array` function. 
-
-For example: 
+`HDF5ArraySeed` and `DelayedArray` functions.
 
 ```{r}
-dataLocation <- system.file("extdata", "exMatrix.h5", package =
-                              "MultiAssayExperiment", mustWork = TRUE)
-h5ls(dataLocation)
-hdf5Data <- HDF5ArraySeed(file = dataLocation, name = "exMatrix")
+hdf5Data <- HDF5ArraySeed(file = testh5, name = "smallMatrix")
 newDelayedMatrix <- DelayedArray(hdf5Data)
 class(newDelayedMatrix)
-head(newDelayedMatrix)
+newDelayedMatrix
 ```
-
-### Dimnames from HDF5 file
-
-Currently, the `rhdf5` package does not store `dimnames` in the `h5` file by
-default. A request for this feature has been sent to the maintainer of the
-`rhdf5` package and any further development to the `HDF5Array` package is
-contingent on such lower level dimension name storage.
 
 ## Using a `DelayedMatrix` with `MultiAssayExperiment`
 
