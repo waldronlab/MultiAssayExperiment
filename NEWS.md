@@ -4,6 +4,7 @@
 
 * `exportClass` creates a number of `.csv` data files for exporting data
 * Allow vector input `i` for selecting assays in `longFormat` (@lgatto, #266)
+* Updates to 'Using `MultiAssayExperiment` with `DelayedMatrix`' vignette
 
 ### Bug fixes and minor improvements
 
@@ -17,6 +18,12 @@
 * Add warning when `j` in `mae[i, j, k]` is longer than `colData` rows
 * Strict argument matching between generic and methods
 * Updates due to `class(matrix())`
+* `UpsetSamples` more robust to differences in names between split `sampleMap`
+and `names(ExperimentList)` (@jonocarroll, #269)
+* Refactored and improved `UpsetSamples`
+* `ExperimentList` propagation of `mcols` and `metadata` (@vobencha, #270)
+* Enforcement of `validObject` with replacement methods `colData` and
+`sampleMap` (@vobencha, #271)
 
 ## Changes in version 1.12.0
 
