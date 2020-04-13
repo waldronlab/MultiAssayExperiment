@@ -39,17 +39,16 @@ upsetSamples <- function(MultiAssayExperiment,
 {
     if (!requireNamespace("UpSetR"))
         stop("Please install the 'UpSetR' package to make venn diagrams")
-    maesn <- split(sampleMap(MultiAssayExperiment)[["primary"]],
-        sampleMap(MultiAssayExperiment)[["assay"]])
-    st <- unique(sampleMap(MultiAssayExperiment)[["primary"]])
-    nr <- length(st)
-    incid <- matrix(0L, nrow = nr, ncol = length(maesn))
-    rownames(incid) <- as.character(st)
-    for (i in seq_along(maesn))
-        incid[, i] <- 1L*(rownames(incid) %in% maesn[[i]])
-    # may include hyphens, etc.
-    colnames(incid) <- nameFilter(names(maesn))
-    datf = data.frame(incid, check.names=check.names)
+    mae <- MultiAssayExperiment
+    datf <- do.call(
+        function(...) { data.frame(..., check.names = check.names) },
+        lapply(mapToList(sampleMap(mae)),
+            function(minimap) {
+                rownames(colData(mae)) %in% minimap[["primary"]] * 1L
+            }
+        )
+    )
+    rownames(datf) <- rownames(colData(mae))
     UpSetR::upset(datf, nsets = nsets, nintersects = nintersects,
-        sets = colnames(incid), order.by = order.by, ...)
+        sets = names(MultiAssayExperiment), order.by = order.by, ...)
 }
