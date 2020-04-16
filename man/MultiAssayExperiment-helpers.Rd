@@ -65,7 +65,7 @@ hasRowRanges(x)
 
 \S4method{hasRowRanges}{ExperimentList}(x)
 
-getWithColData(x, i)
+getWithColData(x, i, mode = c("append", "replace", "none"))
 }
 \arguments{
 \item{...}{Additional arguments. See details for more information.}
@@ -95,6 +95,10 @@ if necessary}
 \item{collapse}{(character default "_") A single string delimiter for output
 column names. In \code{wideFormat}, experiments and rownames (and when
 replicate samples are present, colnames) are seperated by this delimiter}
+
+\item{mode}{String indicating how \linkS4class{MultiAssayExperiment}
+column-level metadata should be added to the 
+\linkS4class{SummarizedExperiment} \code{colData}.}
 }
 \description{
 A set of helper functions were created to help clean and
@@ -220,5 +224,14 @@ extracted object using the \code{colData<-} replacement
 method when possible. Typically, this method is available for
 \linkS4class{SummarizedExperiment} and \code{RaggedExperiment}
 classes.
+
+The setting of \code{mode} determines how the \code{\link{colData}}
+is added. If \code{mode="append"}, the \linkS4class{MultiAssayExperiment}
+metadata is appended onto that of the \linkS4class{SummarizedExperiment}.
+If any fields are duplicated by name, the values in the \linkS4class{SummarizedExperiment}
+are retained, with a warning emitted if the values are different.
+For \code{mode="replace"}, the \linkS4class{MultiAssayExperiment}
+metadata replaces that of the \linkS4class{SummarizedExperiment},
+while for \code{mode="none"}, no replacement or appending is performed.
 }
 

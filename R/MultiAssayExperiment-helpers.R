@@ -339,6 +339,10 @@ setMethod("mergeReplicates", "ANY",
 #'     objects. A vector input is supported in the case that the
 #'     SummarizedExperiment object(s) has more than one assay (default 1L)
 #'
+#' @param mode String indicating how \linkS4class{MultiAssayExperiment}
+#'     column-level metadata should be added to the 
+#'     \linkS4class{SummarizedExperiment} \code{colData}.
+#'
 #' @export longFormat
 longFormat <- function(object, colDataCols = NULL, i = 1L) {
     if (is(object, "ExperimentList"))
@@ -541,8 +545,17 @@ setMethod("hasRowRanges", "ExperimentList", function(x) {
 #' \linkS4class{SummarizedExperiment} and \code{RaggedExperiment}
 #' classes.
 #'
+#' The setting of \code{mode} determines how the \code{\link{colData}}
+#' is added. If \code{mode="append"}, the \linkS4class{MultiAssayExperiment}
+#' metadata is appended onto that of the \linkS4class{SummarizedExperiment}.
+#' If any fields are duplicated by name, the values in the \linkS4class{SummarizedExperiment}
+#' are retained, with a warning emitted if the values are different.
+#' For \code{mode="replace"}, the \linkS4class{MultiAssayExperiment}
+#' metadata replaces that of the \linkS4class{SummarizedExperiment},
+#' while for \code{mode="none"}, no replacement or appending is performed.
+#'
 #' @export getWithColData
-getWithColData <- function(x, i) {
+getWithColData <- function(x, i, mode=c("append", "replace", "none")) {
     if (!is(x, "MultiAssayExperiment"))
         stop("Provide a MultiAssayExperiment as input")
 
@@ -552,8 +565,31 @@ getWithColData <- function(x, i) {
     mae <- x[, , i, drop = TRUE]
     cdat <- colData(mae)
     exObj <- mae[[1L]]
+
+    sm <- sampleMap(mae)
+    mae.names <- sm$primary[match(colnames(exObj), sm$colname)]
+    expanded <- cdat[mae.names,,drop=FALSE]
+
+    mode <- match.arg(mode)
+    if (mode=="append") {
+        # Prune out duplicate entries.
+        existing <- colData(exObj)
+        common <- intersect(colnames(existing), colnames(expanded))
+        for (j in common) {
+            if (!identical(existing[[j]], expanded[[j]])) {
+                warning(sprintf("ignoring redundant '%s' field in in MAE-level colData", j))
+            }
+        }
+        leftovers <- expanded[,setdiff(colnames(expanded), common),drop=FALSE]
+        final <- cbind(existing, leftovers)                
+    } else if (mode=="replace") {
+        final <- expanded
+    } else {
+        final <- colData(exObj)
+    }
+
     tryCatch({
-        colData(exObj) <- cdat
+        colData(exObj) <- final
     }, error = function(e) {
         stop(
             "Extracted class does not support 'colData<-':",
