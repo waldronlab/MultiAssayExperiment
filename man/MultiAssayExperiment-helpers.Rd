@@ -65,7 +65,7 @@ hasRowRanges(x)
 
 \S4method{hasRowRanges}{ExperimentList}(x)
 
-getWithColData(x, i, mode = c("append", "replace", "none"))
+getWithColData(x, i, mode = c("append", "replace"))
 }
 \arguments{
 \item{...}{Additional arguments. See details for more information.}
@@ -97,7 +97,7 @@ column names. In \code{wideFormat}, experiments and rownames (and when
 replicate samples are present, colnames) are seperated by this delimiter}
 
 \item{mode}{String indicating how \linkS4class{MultiAssayExperiment}
-column-level metadata should be added to the 
+column-level metadata should be added to the
 \linkS4class{SummarizedExperiment} \code{colData}.}
 }
 \description{

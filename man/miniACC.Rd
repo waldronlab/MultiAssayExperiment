@@ -4,7 +4,8 @@
 \name{miniACC}
 \alias{miniACC}
 \title{Adrenocortical Carcinoma (ACC) MultiAssayExperiment}
-\format{A \code{MultiAssayExperiment} with 5 experiments, providing:
+\format{
+A \code{MultiAssayExperiment} with 5 experiments, providing:
 \describe{
     \item{RNASeq2GeneNorm}{RNA-seq count data: an \code{ExpressionSet}
     with 198 rows and 79 columns}
@@ -21,7 +22,8 @@
     \item{miRNASeqGene}{microRNA sequencing: an \code{ExpressionSet} with
     471 rows and 80 columns. Rows not having at least 5 counts in at least
     5 samples were removed.}
-}}
+}
+}
 \source{
 https://github.com/waldronlab/multiassayexperiment-tcga
 }

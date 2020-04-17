@@ -31,3 +31,126 @@ test_that("MultiAssayExperiment anyReplicated returns same order", {
         IRanges::CharacterList(cnames), Filter(length, colnames(obs))
     )
 })
+
+test_that("getWithColData works", {
+    Y1 <- matrix(rnorm(200), ncol=10)
+    colnames(Y1) <- c("A.1", "A.2",
+        "B.1", "B.2", "B.3",
+        "C.1", "C.2",
+        "D.1",
+        "E.1", "E.2")
+
+    # Making up some sample-level metadata, for some variety.
+    df <- DataFrame(RIN=runif(10), sizeFactor=runif(10))
+    rownames(df) <- colnames(Y1)
+    se1 <- SummarizedExperiment(list(counts=Y1), colData=df)
+
+    ### EXPERIMENT 2 ###
+    Y2 <- matrix(rnorm(200), ncol=5)
+    colnames(Y2) <- c("B", "C", "D", "E", "F")
+
+    # Making up some more sample-level metadata.
+    df <- DataFrame(FrIP=runif(5), NumPeaks=sample(1000, 5))
+    rownames(df) <- colnames(Y2)
+    se2 <- SummarizedExperiment(list(counts=Y2), colData=df)
+
+    sampleMap <- rbind(
+        DataFrame(assay="rnaseq",
+            primary=sub("\\..*", "", colnames(se1)),
+            colname=colnames(se1)
+        ),
+        DataFrame(assay="chipseq",
+            primary=sub("\\..*", "", colnames(se2)),
+            colname=colnames(se2)
+        )
+    )
+
+    colData <- DataFrame(
+        row.names=LETTERS[1:6],
+        Sex=sample(c("M", "F"), 6, replace=TRUE),
+        Age=sample(10:50, 6)
+    )
+
+    MAE <- MultiAssayExperiment(list(rnaseq=se1, chipseq=se2),
+        sampleMap=sampleMap, colData=colData)
+
+    expect_warning(
+        getWithColData(MAE, 1L, "append")
+    )
+
+    expect_warning(
+        getWithColData(MAE, 1L, "replace")
+    )
+
+    cData <- colData(getWithColData(MAE, 1L, "append"))
+    cDataMatch <- cData[, names(colData), drop = FALSE]
+    matchedData <- colData[
+        match(mapToList(sampleMap)[[1]][["primary"]], rownames(colData)), ,
+        drop = FALSE]
+    testres <- unlist(
+        Map(function(x, y) { identical(x, y) }, x = cDataMatch, y = matchedData)
+    )
+    expect_true( all(testres) )
+
+    expect_identical(
+        names(cData),
+        c(names(colData(MAE[[1]])), names(colData))
+    )
+    expect_identical(
+        colData(se1),
+        cData[, names(colData(se1))]
+    )
+    testres <- unlist(
+        Map(function(x, y) { identical(x, y) },
+            x = colData(se1), y = cData[, names(colData(se1))])
+    )
+    expect_true( all(testres) )
+
+    cData <- colData(getWithColData(MAE, 1L, "replace"))
+    cDataMatch <- cData[, names(colData), drop = FALSE]
+    matchedData <- colData[
+        match(mapToList(sampleMap)[[1L]][["primary"]], rownames(colData)), ,
+        drop = FALSE]
+    expect_identical(cDataMatch, matchedData)
+
+    ## Empty MAE colData return assay colData
+    MAE0 <- MAE
+    colData(MAE0) <- DataFrame(row.names = rownames(colData(MAE0)))
+    cData <- colData(getWithColData(MAE0, 1L, "append"))
+    expect_identical(
+        cData,
+        colData(se1)
+    )
+
+    MAE0 <- MAE
+    colData(MAE0) <- DataFrame(row.names = rownames(colData(MAE0)))
+    cData <- colData(getWithColData(MAE0, 1L, "replace"))
+
+    expect_identical(
+        cData,
+        DataFrame(row.names = mapToList(sampleMap(MAE0))[[1]][["primary"]])
+    )
+    expect_true( isEmpty(cData) )
+
+    ## Empty assay colData return MAE colData
+    MAE0 <- MAE
+    eCol <- DataFrame(row.names = rownames(colData(MAE0[["rnaseq"]])))
+    colData(MAE0[["rnaseq"]]) <- eCol
+    cData <- colData(getWithColData(MAE0, 1L, "replace"))
+    matchedData <- colData(MAE0)[
+        match(mapToList(sampleMap(MAE0))[["rnaseq"]][["primary"]],
+            rownames(colData)), ,
+        drop = FALSE]
+    expect_identical(cData, matchedData)
+
+
+    MAE0 <- MAE
+    eCol <- DataFrame(row.names = rownames(colData(MAE0[["rnaseq"]])))
+    colData(MAE0[["rnaseq"]]) <- eCol
+    cData <- colData(getWithColData(MAE0, 1L, "append"))
+    matchedData <- colData(MAE0)[
+        match(mapToList(sampleMap(MAE0))[["rnaseq"]][["primary"]],
+            rownames(colData)), ,
+        drop = FALSE]
+    expect_identical(cData, matchedData)
+})
