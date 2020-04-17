@@ -340,7 +340,7 @@ setMethod("mergeReplicates", "ANY",
 #'     SummarizedExperiment object(s) has more than one assay (default 1L)
 #'
 #' @param mode String indicating how \linkS4class{MultiAssayExperiment}
-#'     column-level metadata should be added to the 
+#'     column-level metadata should be added to the
 #'     \linkS4class{SummarizedExperiment} \code{colData}.
 #'
 #' @export longFormat
@@ -555,46 +555,50 @@ setMethod("hasRowRanges", "ExperimentList", function(x) {
 #' while for \code{mode="none"}, no replacement or appending is performed.
 #'
 #' @export getWithColData
-getWithColData <- function(x, i, mode=c("append", "replace", "none")) {
+getWithColData <- function(x, i, mode=c("append", "replace")) {
     if (!is(x, "MultiAssayExperiment"))
         stop("Provide a MultiAssayExperiment as input")
 
     stopifnot(is.numeric(i) || is.character(i),
-        identical(length(i), 1L), !is.na(i), !is.logical(i))
+        identical(length(i), 1L), !is.na(i), !is.logical(i),
+        is.character(mode), !is.na(mode), !is.logical(mode))
 
     mae <- x[, , i, drop = TRUE]
-    cdat <- colData(mae)
+    prims <- sampleMap(mae)[["primary"]]
+    if (anyDuplicated(prims))
+        warning("Duplicating colData rows due to replicates in 'replicated(x)'",
+            call. = FALSE)
+    expanded <- colData(mae)[prims, , drop = FALSE]
     exObj <- mae[[1L]]
 
-    sm <- sampleMap(mae)
-    mae.names <- sm$primary[match(colnames(exObj), sm$colname)]
-    expanded <- cdat[mae.names,,drop=FALSE]
-
-    mode <- match.arg(mode)
-    if (mode=="append") {
-        # Prune out duplicate entries.
-        existing <- colData(exObj)
-        common <- intersect(colnames(existing), colnames(expanded))
-        for (j in common) {
-            if (!identical(existing[[j]], expanded[[j]])) {
-                warning(sprintf("ignoring redundant '%s' field in in MAE-level colData", j))
-            }
-        }
-        leftovers <- expanded[,setdiff(colnames(expanded), common),drop=FALSE]
-        final <- cbind(existing, leftovers)                
-    } else if (mode=="replace") {
-        final <- expanded
-    } else {
-        final <- colData(exObj)
-    }
-
     tryCatch({
-        colData(exObj) <- final
+        existing <- colData(exObj)
     }, error = function(e) {
         stop(
-            "Extracted class does not support 'colData<-':",
+            "Extracted class does not support 'colData':",
             "\n    ", conditionMessage(e), call. = FALSE
         )
     })
+
+    mode <- match.arg(mode)
+    if (identical(mode, "replace") || !length(existing))
+            colData(exObj) <- expanded
+    else if (identical(mode, "append")) {
+        # Prune out duplicate entries
+        common <- intersect(colnames(existing), colnames(expanded))
+        if (length(common)) {
+            warnid <- vapply(common, function(varname, x, y) {
+                !identical(x[[varname]], y[[varname]])
+            }, logical(1L), x = existing, y = expanded)
+            .warning(
+                "Ignoring redundant column names in 'colData(x)': ",
+                paste(common[warnid], collapse = ", ")
+            )
+        }
+        leftovers <- expanded[, setdiff(colnames(expanded), common), drop=FALSE]
+        colData(exObj) <- cbind(existing, leftovers)
+    }
+
     exObj
 }
+
