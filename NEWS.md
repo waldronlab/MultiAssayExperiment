@@ -11,8 +11,7 @@
 * Warn when `colData` rownames and `ExperimentList` colnames are empty
 (@LTLA #262)
 * Add informative error message for `ExperimentList` (@lgatto, #265)
-* Informative warning when dropping `ExperimentList` element columns
-(@lwaldron)
+* Informative warning when dropping `ExperimentList` element columns (@lwaldron)
 * Fixes to constructor functions, `MultiAssayExperiment` and
 `MatchedAssayExperiment` (@lgatto, #267 #268, @lwaldron)
 * Add warning when `j` in `mae[i, j, k]` is longer than `colData` rows
