@@ -512,6 +512,15 @@ setReplaceMethod("sampleMap", c("MultiAssayExperiment", "DataFrame"),
     }
 )
 
+#' @rdname MultiAssayExperiment-methods
+setReplaceMethod("sampleMap", c("MultiAssayExperiment", "ANY"),
+    function(object, value) {
+        stopifnot(is.data.frame(value))
+        value <- as(value, "DataFrame")
+        `sampleMap<-`(object, value)
+    }
+)
+
 #' @export
 setGeneric("experiments<-", function(object, value)
     standardGeneric("experiments<-"))
@@ -549,6 +558,16 @@ setReplaceMethod("colData", c("MultiAssayExperiment", "DataFrame"),
         )
     }
 )
+
+#' @rdname MultiAssayExperiment-methods
+setReplaceMethod("colData", c("MultiAssayExperiment", "ANY"),
+    function(x, value) {
+        stopifnot(is.data.frame(value))
+        value <- as(value, "DataFrame")
+        `colData<-`(x, value)
+    }
+)
+
 
 .rearrangeMap <- function(sampMap) {
     return(DataFrame(assay = factor(sampMap[["assayname"]]),

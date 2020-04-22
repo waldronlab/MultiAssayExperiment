@@ -12,8 +12,10 @@
 \alias{colData,MultiAssayExperiment-method}
 \alias{metadata,MultiAssayExperiment-method}
 \alias{sampleMap<-,MultiAssayExperiment,DataFrame-method}
+\alias{sampleMap<-,MultiAssayExperiment,ANY-method}
 \alias{experiments<-,MultiAssayExperiment,ExperimentList-method}
 \alias{colData<-,MultiAssayExperiment,DataFrame-method}
+\alias{colData<-,MultiAssayExperiment,ANY-method}
 \alias{metadata<-,MultiAssayExperiment-method}
 \alias{$<-,MultiAssayExperiment-method}
 \alias{names<-,MultiAssayExperiment-method}
@@ -30,9 +32,13 @@
 
 \S4method{sampleMap}{MultiAssayExperiment,DataFrame}(object) <- value
 
+\S4method{sampleMap}{MultiAssayExperiment,ANY}(object) <- value
+
 \S4method{experiments}{MultiAssayExperiment,ExperimentList}(object) <- value
 
 \S4method{colData}{MultiAssayExperiment,DataFrame}(x) <- value
+
+\S4method{colData}{MultiAssayExperiment,ANY}(x) <- value
 
 \S4method{metadata}{MultiAssayExperiment}(x, ...) <- value
 
