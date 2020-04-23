@@ -6,19 +6,19 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Making use of curatedMetagenomicData • MultiAssayExperiment</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../../pkgdown.css" rel="stylesheet">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../../bootstrap-toc.css">
+<script src="../../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../../pkgdown.css" rel="stylesheet">
 <script src="../../pkgdown.js"></script><meta property="og:title" content="Making use of curatedMetagenomicData">
-<meta property="og:description" content="">
-<meta name="twitter:card" content="summary">
+<meta property="og:description" content="MultiAssayExperiment">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
-<body>
+<body data-spy="scroll" data-target="#toc">
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -61,39 +61,12 @@
     </li>
   </ul>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    News
+<li>
+  <a href="../../news/index.html">
+    <span class="fa fa-newspaper-o"></span>
      
-    <span class="caret"></span>
+    NEWS
   </a>
-  <ul class="dropdown-menu" role="menu">
-<li class="dropdown-header">Release Notes</li>
-    <li>
-      <a href="https://waldronlab.io/MultiAssayExperiment/news/news-1.12.html">Version 1.12.0</a>
-    </li>
-    <li>
-      <a href="https://waldronlab.io/MultiAssayExperiment/news/news-1.10.html">Version 1.10.0</a>
-    </li>
-    <li>
-      <a href="https://waldronlab.io/MultiAssayExperiment/news/news-1.8.html">Version 1.8.0</a>
-    </li>
-    <li>
-      <a href="https://waldronlab.io/MultiAssayExperiment/news/news-1.7.html">Version 1.7.14</a>
-    </li>
-    <li>
-      <a href="https://waldronlab.io/MultiAssayExperiment/news/news-1.1.html">Version 1.1.0</a>
-    </li>
-    <li>
-      <a href="https://waldronlab.io/MultiAssayExperiment/news/news-0.101.html">Version 0.101.0</a>
-    </li>
-    <li>
-      <a href="https://waldronlab.io/MultiAssayExperiment/news/news-0.99.html">Version 0.99.0</a>
-    </li>
-    <li>
-      <a href="../../news/index.html">Change log</a>
-    </li>
-  </ul>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
@@ -116,12 +89,12 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1>Making use of curatedMetagenomicData</h1>
+      <h1 data-toc-skip>Making use of curatedMetagenomicData</h1>
                         <h4 class="author">Levi Waldron</h4>
             
             <h4 class="date">1/11/2017</h4>
       
-      
+      <small class="dont-index">Source: <a href="https://github.com/waldronlab/MultiAssayExperiment/blob/master/vignettes/extras/MAE-curatedMetagenomicData.Rmd"><code>vignettes/extras/MAE-curatedMetagenomicData.Rmd</code></a></small>
       <div class="hidden name"><code>MAE-curatedMetagenomicData.Rmd</code></div>
 
     </div>
@@ -133,77 +106,65 @@
 <a href="#fetch-from-curatedmetagenomicdata" class="anchor"></a>Fetch from <code>curatedMetagenomicData</code>
 </h1>
 <p>Download the data as an <code>ExpressionSet</code> list:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(curatedMetagenomicData)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2">esetlist &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">taxa =</span> <span class="kw">ZellerG_2014.metaphlan_bugs_list.stool</span>()[, <span class="dv">1</span><span class="op">:</span><span class="dv">10</span>],</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3">                 <span class="dt">pathways =</span> <span class="kw">ZellerG_2014.pathabundance_relab.stool</span>())</a>
-<a class="sourceLine" id="cb1-4" data-line-number="4">## species and strain-level taxa only:</a>
-<a class="sourceLine" id="cb1-5" data-line-number="5">esetlist<span class="op">$</span>taxa &lt;-<span class="st"> </span>esetlist<span class="op">$</span>taxa[<span class="kw"><a href="https://rdrr.io/r/base/grep.html">grep</a></span>(<span class="st">"s__"</span>, <span class="kw"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span>(esetlist<span class="op">$</span>taxa)), ]</a>
-<a class="sourceLine" id="cb1-6" data-line-number="6">## eliminate taxa-specific pathway contributions (only total pathway abundances):</a>
-<a class="sourceLine" id="cb1-7" data-line-number="7">esetlist<span class="op">$</span>pathways &lt;-<span class="st"> </span>esetlist<span class="op">$</span>pathways[<span class="kw"><a href="https://rdrr.io/r/base/grep.html">grep</a></span>(<span class="st">"g__"</span>, </a>
-<a class="sourceLine" id="cb1-8" data-line-number="8">                                  <span class="kw"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span>(esetlist<span class="op">$</span>pathways), <span class="dt">invert=</span><span class="ot">TRUE</span>), ]</a></code></pre></div>
+<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">curatedMetagenomicData</span>)
+<span class="no">esetlist</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">taxa</span> <span class="kw">=</span> <span class="fu">ZellerG_2014.metaphlan_bugs_list.stool</span>()[, <span class="fl">1</span>:<span class="fl">10</span>],
+                 <span class="kw">pathways</span> <span class="kw">=</span> <span class="fu">ZellerG_2014.pathabundance_relab.stool</span>())
+<span class="co">## species and strain-level taxa only:</span>
+<span class="no">esetlist</span>$<span class="no">taxa</span> <span class="kw">&lt;-</span> <span class="no">esetlist</span>$<span class="no">taxa</span>[<span class="fu"><a href="https://rdrr.io/r/base/grep.html">grep</a></span>(<span class="st">"s__"</span>, <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span>(<span class="no">esetlist</span>$<span class="no">taxa</span>)), ]
+<span class="co">## eliminate taxa-specific pathway contributions (only total pathway abundances):</span>
+<span class="no">esetlist</span>$<span class="no">pathways</span> <span class="kw">&lt;-</span> <span class="no">esetlist</span>$<span class="no">pathways</span>[<span class="fu"><a href="https://rdrr.io/r/base/grep.html">grep</a></span>(<span class="st">"g__"</span>,
+                                  <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span>(<span class="no">esetlist</span>$<span class="no">pathways</span>), <span class="kw">invert</span><span class="kw">=</span><span class="fl">TRUE</span>), ]</pre></body></html></div>
 <p>Create the <code>MultiAssayExperiment</code>:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(MultiAssayExperiment)</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">cmd &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/MultiAssayExperiment.html">MultiAssayExperiment</a></span>(<span class="dt">experiments=</span>esetlist, </a>
-<a class="sourceLine" id="cb2-3" data-line-number="3">    <span class="dt">colData=</span><span class="kw">colData</span>(<span class="kw">as</span>(esetlist[[<span class="dv">2</span>]], <span class="st">"SummarizedExperiment"</span>)))</a>
-<a class="sourceLine" id="cb2-4" data-line-number="4">cmd</a>
-<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="kw"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span>(cmd)</a></code></pre></div>
+<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">MultiAssayExperiment</span>)
+<span class="no">cmd</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../../reference/MultiAssayExperiment.html">MultiAssayExperiment</a></span>(<span class="kw">experiments</span><span class="kw">=</span><span class="no">esetlist</span>,
+    <span class="kw">colData</span><span class="kw">=</span><span class="fu">colData</span>(<span class="fu">as</span>(<span class="no">esetlist</span><span class="kw">[[</span><span class="fl">2</span>]], <span class="st">"SummarizedExperiment"</span>)))
+<span class="no">cmd</span>
+<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span>(<span class="no">cmd</span>)</pre></body></html></div>
 <div id="cca-with-omicade4" class="section level2">
 <h2 class="hasAnchor">
 <a href="#cca-with-omicade4" class="anchor"></a>CCA with omicade4</h2>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(omicade4)</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2">cmdsub &lt;-<span class="st"> </span>cmd[, cmd<span class="op">$</span>disease <span class="op">%in%</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"adenoma"</span>, <span class="st">"CRC"</span>, <span class="st">"healthy"</span>), ]</a>
-<a class="sourceLine" id="cb3-3" data-line-number="3">##Get rid of rows that are all zero:</a>
-<a class="sourceLine" id="cb3-4" data-line-number="4">cmdsub &lt;-<span class="st"> </span>cmdsub[<span class="kw"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span>(<span class="kw">assays</span>(cmdsub), <span class="cf">function</span>(exper) <span class="kw"><a href="https://rdrr.io/r/base/colSums.html">rowSums</a></span>(exper) <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>), ]</a>
-<a class="sourceLine" id="cb3-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb3-6" data-line-number="6">mcoin &lt;-<span class="st"> </span><span class="kw">mcia</span>(<span class="kw">assay</span>(cmdsub))</a>
-<a class="sourceLine" id="cb3-7" data-line-number="7"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(mcoin, <span class="dt">phenovec=</span>cmdsub<span class="op">$</span>disease, <span class="dt">sample.lab=</span><span class="ot">FALSE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">omicade4</span>)
+<span class="no">cmdsub</span> <span class="kw">&lt;-</span> <span class="no">cmd</span>[, <span class="no">cmd</span>$<span class="no">disease</span> <span class="kw">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"adenoma"</span>, <span class="st">"CRC"</span>, <span class="st">"healthy"</span>), ]
+<span class="co">##Get rid of rows that are all zero:</span>
+<span class="no">cmdsub</span> <span class="kw">&lt;-</span> <span class="no">cmdsub</span>[<span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span>(<span class="fu">assays</span>(<span class="no">cmdsub</span>), <span class="kw">function</span>(<span class="no">exper</span>) <span class="fu"><a href="https://rdrr.io/r/base/colSums.html">rowSums</a></span>(<span class="no">exper</span>) <span class="kw">&gt;</span> <span class="fl">0</span>), ]
+
+<span class="no">mcoin</span> <span class="kw">&lt;-</span> <span class="fu">mcia</span>(<span class="fu">assay</span>(<span class="no">cmdsub</span>))
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(<span class="no">mcoin</span>, <span class="kw">phenovec</span><span class="kw">=</span><span class="no">cmdsub</span>$<span class="no">disease</span>, <span class="kw">sample.lab</span><span class="kw">=</span><span class="fl">FALSE</span>)</pre></body></html></div>
 </div>
 <div id="iclusterplus" class="section level2">
 <h2 class="hasAnchor">
 <a href="#iclusterplus" class="anchor"></a>iClusterPlus</h2>
 <p>Error, “system is computationally singular”</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(iClusterPlus)</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2">datasets =<span class="st"> </span><span class="kw">assay</span>(cmdsub)</a>
-<a class="sourceLine" id="cb4-3" data-line-number="3">datasets =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span>(datasets, t)</a>
-<a class="sourceLine" id="cb4-4" data-line-number="4">iclus =<span class="st"> </span><span class="kw">iCluster</span>(<span class="dt">datasets=</span>datasets, <span class="dt">k=</span><span class="dv">5</span>, <span class="dt">lambda=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.2</span>, <span class="fl">0.2</span>))</a>
-<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="kw">plotiCluster</span>(<span class="dt">fit=</span>iclus, <span class="dt">label=</span>cmdsub<span class="op">$</span>disease)</a></code></pre></div>
+<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">iClusterPlus</span>)
+<span class="no">datasets</span> <span class="kw">=</span> <span class="fu">assay</span>(<span class="no">cmdsub</span>)
+<span class="no">datasets</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span>(<span class="no">datasets</span>, <span class="no">t</span>)
+<span class="no">iclus</span> <span class="kw">=</span> <span class="fu">iCluster</span>(<span class="kw">datasets</span><span class="kw">=</span><span class="no">datasets</span>, <span class="kw">k</span><span class="kw">=</span><span class="fl">5</span>, <span class="kw">lambda</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.2</span>, <span class="fl">0.2</span>))
+<span class="fu">plotiCluster</span>(<span class="kw">fit</span><span class="kw">=</span><span class="no">iclus</span>, <span class="kw">label</span><span class="kw">=</span><span class="no">cmdsub</span>$<span class="no">disease</span>)</pre></body></html></div>
 </div>
 <div id="sparse-cca" class="section level2">
 <h2 class="hasAnchor">
 <a href="#sparse-cca" class="anchor"></a>sparse CCA</h2>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(PMA)</a>
-<a class="sourceLine" id="cb5-2" data-line-number="2">cmd2 &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/MultiAssayExperiment-helpers.html">mergeReplicates</a></span>(<span class="kw"><a href="../../reference/MultiAssayExperiment-helpers.html">intersectColumns</a></span>(cmd))</a>
-<a class="sourceLine" id="cb5-3" data-line-number="3">## ERROR: some columns have SD = 0</a>
-<a class="sourceLine" id="cb5-4" data-line-number="4">mycca &lt;-<span class="st"> </span>PMA<span class="op">::</span><span class="kw">CCA</span>(<span class="dt">x=</span><span class="kw"><a href="https://rdrr.io/r/base/t.html">t</a></span>(<span class="kw">assay</span>(cmd2, <span class="dv">1</span>)), <span class="dt">z=</span><span class="kw"><a href="https://rdrr.io/r/base/t.html">t</a></span>(<span class="kw">assay</span>(cmd2, <span class="dv">2</span>)))</a>
-<a class="sourceLine" id="cb5-5" data-line-number="5">mycca</a></code></pre></div>
+<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">PMA</span>)
+<span class="no">cmd2</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../../reference/MultiAssayExperiment-helpers.html">mergeReplicates</a></span>(<span class="fu"><a href="../../reference/MultiAssayExperiment-helpers.html">intersectColumns</a></span>(<span class="no">cmd</span>))
+<span class="co">## ERROR: some columns have SD = 0</span>
+<span class="no">mycca</span> <span class="kw">&lt;-</span> <span class="kw pkg">PMA</span><span class="kw ns">::</span><span class="fu">CCA</span>(<span class="kw">x</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span>(<span class="fu">assay</span>(<span class="no">cmd2</span>, <span class="fl">1</span>)), <span class="kw">z</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span>(<span class="fu">assay</span>(<span class="no">cmd2</span>, <span class="fl">2</span>)))
+<span class="no">mycca</span></pre></body></html></div>
 </div>
 </div>
 <div id="others-to-try" class="section level1">
 <h1 class="hasAnchor">
 <a href="#others-to-try" class="anchor"></a>Others to try</h1>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(made4)</a>
-<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(MCIA)</a>
-<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="co"># library(Rtopper)  # gene set analysis</span></a></code></pre></div>
+<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">made4</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">MCIA</span>)
+<span class="co"># library(Rtopper)  # gene set analysis</span></pre></body></html></div>
 </div>
   </div>
 
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
 
-        <div id="tocnav">
-      <h2 class="hasAnchor">
-<a href="#tocnav" class="anchor"></a>Contents</h2>
-      <ul class="nav nav-pills nav-stacked">
-<li>
-<a href="#fetch-from-curatedmetagenomicdata">Fetch from <code>curatedMetagenomicData</code></a><ul class="nav nav-pills nav-stacked">
-<li><a href="#cca-with-omicade4">CCA with omicade4</a></li>
-      <li><a href="#iclusterplus">iClusterPlus</a></li>
-      <li><a href="#sparse-cca">sparse CCA</a></li>
-      </ul>
-</li>
-      <li><a href="#others-to-try">Others to try</a></li>
-      </ul>
+        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
+    </nav>
 </div>
-      </div>
 
 </div>
 
@@ -214,7 +175,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

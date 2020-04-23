@@ -10,23 +10,27 @@
 
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -40,7 +44,6 @@
 either the sampleMap, the ExperimentList,
 colData, or metadata slots of a
 MultiAssayExperiment object" />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -58,7 +61,7 @@ MultiAssayExperiment object" />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -102,39 +105,12 @@ MultiAssayExperiment object" />
     </li>
   </ul>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    News
+<li>
+  <a href="../news/index.html">
+    <span class="fa fa-newspaper-o"></span>
      
-    <span class="caret"></span>
+    NEWS
   </a>
-  <ul class="dropdown-menu" role="menu">
-    <li class="dropdown-header">Release Notes</li>
-    <li>
-      <a href="https://waldronlab.io/MultiAssayExperiment/news/news-1.12.html">Version 1.12.0</a>
-    </li>
-    <li>
-      <a href="https://waldronlab.io/MultiAssayExperiment/news/news-1.10.html">Version 1.10.0</a>
-    </li>
-    <li>
-      <a href="https://waldronlab.io/MultiAssayExperiment/news/news-1.8.html">Version 1.8.0</a>
-    </li>
-    <li>
-      <a href="https://waldronlab.io/MultiAssayExperiment/news/news-1.7.html">Version 1.7.14</a>
-    </li>
-    <li>
-      <a href="https://waldronlab.io/MultiAssayExperiment/news/news-1.1.html">Version 1.1.0</a>
-    </li>
-    <li>
-      <a href="https://waldronlab.io/MultiAssayExperiment/news/news-0.101.html">Version 0.101.0</a>
-    </li>
-    <li>
-      <a href="https://waldronlab.io/MultiAssayExperiment/news/news-0.99.html">Version 0.99.0</a>
-    </li>
-    <li>
-      <a href="../news/index.html">Change log</a>
-    </li>
-  </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -158,7 +134,7 @@ MultiAssayExperiment object" />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Accessing/modifying slot information</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/waldronlab/MultiAssayExperiment/blob/master/R/MultiAssayExperiment-class.R'><code>R/MultiAssayExperiment-class.R</code></a>, <a href='https://github.com/waldronlab/MultiAssayExperiment/blob/master/R/MultiAssayExperiment-methods.R'><code>R/MultiAssayExperiment-methods.R</code></a></small>
     <div class="hidden name"><code>MultiAssayExperiment-methods.Rd</code></div>
     </div>
 
@@ -182,22 +158,22 @@ colData(x, ...)
 metadata(x)
 
 # S4 method for MultiAssayExperiment,DataFrame
-sampleMap(object) <- value
+sampleMap(object) &lt;- value
 
 # S4 method for MultiAssayExperiment,ExperimentList
-experiments(object) <- value
+experiments(object) &lt;- value
 
 # S4 method for MultiAssayExperiment,DataFrame
-colData(x) <- value
+colData(x) &lt;- value
 
 # S4 method for MultiAssayExperiment
-metadata(x, ...) <- value
+metadata(x, ...) &lt;- value
 
 # S4 method for MultiAssayExperiment
-$(x, name) <- value
+$(x, name) &lt;- value
 
 # S4 method for MultiAssayExperiment
-names(x) <- value
+names(x) &lt;- value
 
 # S4 method for MultiAssayExperiment
 $(x, name)</pre>
@@ -403,16 +379,10 @@ exception of the <a href='ExperimentList.html'>ExperimentList</a> accessor named
 <span class='co'>## Replace a column in colData</span>
 <span class='no'>mae</span>$<span class='no'>age</span> <span class='kw'>&lt;-</span> <span class='no'>mae</span>$<span class='no'>age</span> + <span class='fl'>1</span></div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
-      <li><a href="#accessors">Accessors</a></li>
-      <li><a href="#setters">Setters</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -423,7 +393,7 @@ exception of the <a href='ExperimentList.html'>ExperimentList</a> accessor named
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

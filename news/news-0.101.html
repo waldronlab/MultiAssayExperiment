@@ -8,21 +8,29 @@
 
 <title>Version 0.101 • MultiAssayExperiment</title>
 
-<!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-<!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<!-- jquery -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<!-- Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -30,7 +38,9 @@
 
 
 
+
 <meta property="og:title" content="Version 0.101" />
+
 
 
 
@@ -44,9 +54,10 @@
 <![endif]-->
 
 
+
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-news">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -60,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MultiAssayExperiment</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.10.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.12.6</span>
       </span>
     </div>
 
@@ -91,12 +102,20 @@
   </ul>
 </li>
 <li>
-  <a href="../news/index.html">News</a>
+  <a href="../news/index.html">
+    <span class="fa fa-newspaper-o"></span>
+     
+    NEWS
+  </a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/waldronlab/MultiAssayExperiment">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -104,18 +123,19 @@
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Changelog <small>0.101</small></h1>
+      <h1 data-toc-skip>Changelog <small>0.101</small></h1>
       
     </div>
 
-    <div id="multiassayexperiment-0-101-34" class="section level1">
-<h1 class="page-header">
-<a href="#multiassayexperiment-0-101-34" class="anchor"></a>MultiAssayExperiment 0.101.34</h1>
+    <div id="multiassayexperiment-010134" class="section level1">
+<h1 class="page-header" data-toc-text="0.101.34">
+<a href="#multiassayexperiment-010134" class="anchor"></a>MultiAssayExperiment 0.101.34</h1>
 <ul>
 <li>
 <code>assay</code> method for <code>RangedRaggedAssay</code> works on inner metadata columns now</li>
@@ -123,9 +143,9 @@
 <li>Improved outline for main vignette</li>
 </ul>
 </div>
-    <div id="multiassayexperiment-0-101-36" class="section level1">
-<h1 class="page-header">
-<a href="#multiassayexperiment-0-101-36" class="anchor"></a>MultiAssayExperiment 0.101.36</h1>
+    <div id="multiassayexperiment-010136" class="section level1">
+<h1 class="page-header" data-toc-text="0.101.36">
+<a href="#multiassayexperiment-010136" class="anchor"></a>MultiAssayExperiment 0.101.36</h1>
 <ul>
 <li>
 <code>Elist</code> class renamed to <code>ExperimentList</code>
@@ -141,9 +161,9 @@
 <li>Updated vignettes to reflect change of names</li>
 </ul>
 </div>
-    <div id="multiassayexperiment-0-101-37" class="section level1">
-<h1 class="page-header">
-<a href="#multiassayexperiment-0-101-37" class="anchor"></a>MultiAssayExperiment 0.101.37</h1>
+    <div id="multiassayexperiment-010137" class="section level1">
+<h1 class="page-header" data-toc-text="0.101.37">
+<a href="#multiassayexperiment-010137" class="anchor"></a>MultiAssayExperiment 0.101.37</h1>
 <div id="new-features-32" class="section level2">
 <h2 class="hasAnchor">
 <a href="#new-features-32" class="anchor"></a>New features</h2>
@@ -154,9 +174,9 @@
 </ul>
 </div>
 </div>
-    <div id="multiassayexperiment-0-101-38" class="section level1">
-<h1 class="page-header">
-<a href="#multiassayexperiment-0-101-38" class="anchor"></a>MultiAssayExperiment 0.101.38</h1>
+    <div id="multiassayexperiment-010138" class="section level1">
+<h1 class="page-header" data-toc-text="0.101.38">
+<a href="#multiassayexperiment-010138" class="anchor"></a>MultiAssayExperiment 0.101.38</h1>
 <div id="new-features-31" class="section level2">
 <h2 class="hasAnchor">
 <a href="#new-features-31" class="anchor"></a>New features</h2>
@@ -166,9 +186,9 @@
 </ul>
 </div>
 </div>
-    <div id="multiassayexperiment-0-101-39" class="section level1">
-<h1 class="page-header">
-<a href="#multiassayexperiment-0-101-39" class="anchor"></a>MultiAssayExperiment 0.101.39</h1>
+    <div id="multiassayexperiment-010139" class="section level1">
+<h1 class="page-header" data-toc-text="0.101.39">
+<a href="#multiassayexperiment-010139" class="anchor"></a>MultiAssayExperiment 0.101.39</h1>
 <div id="new-features-30" class="section level2">
 <h2 class="hasAnchor">
 <a href="#new-features-30" class="anchor"></a>New features</h2>
@@ -180,9 +200,9 @@
 </ul>
 </div>
 </div>
-    <div id="multiassayexperiment-0-101-40" class="section level1">
-<h1 class="page-header">
-<a href="#multiassayexperiment-0-101-40" class="anchor"></a>MultiAssayExperiment 0.101.40</h1>
+    <div id="multiassayexperiment-010140" class="section level1">
+<h1 class="page-header" data-toc-text="0.101.40">
+<a href="#multiassayexperiment-010140" class="anchor"></a>MultiAssayExperiment 0.101.40</h1>
 <div id="new-features-29" class="section level2">
 <h2 class="hasAnchor">
 <a href="#new-features-29" class="anchor"></a>New features</h2>
@@ -191,9 +211,9 @@
 </ul>
 </div>
 </div>
-    <div id="multiassayexperiment-0-101-42" class="section level1">
-<h1 class="page-header">
-<a href="#multiassayexperiment-0-101-42" class="anchor"></a>MultiAssayExperiment 0.101.42</h1>
+    <div id="multiassayexperiment-010142" class="section level1">
+<h1 class="page-header" data-toc-text="0.101.42">
+<a href="#multiassayexperiment-010142" class="anchor"></a>MultiAssayExperiment 0.101.42</h1>
 <div id="new-features-28" class="section level2">
 <h2 class="hasAnchor">
 <a href="#new-features-28" class="anchor"></a>New features</h2>
@@ -204,25 +224,25 @@
 </ul>
 </div>
 </div>
-    <div id="multiassayexperiment-0-101-43" class="section level1">
-<h1 class="page-header">
-<a href="#multiassayexperiment-0-101-43" class="anchor"></a>MultiAssayExperiment 0.101.43</h1>
+    <div id="multiassayexperiment-010143" class="section level1">
+<h1 class="page-header" data-toc-text="0.101.43">
+<a href="#multiassayexperiment-010143" class="anchor"></a>MultiAssayExperiment 0.101.43</h1>
 </div>
-    <div id="multiassayexperiment-0-101-44" class="section level1">
-<h1 class="page-header">
-<a href="#multiassayexperiment-0-101-44" class="anchor"></a>MultiAssayExperiment 0.101.44</h1>
+    <div id="multiassayexperiment-010144" class="section level1">
+<h1 class="page-header" data-toc-text="0.101.44">
+<a href="#multiassayexperiment-010144" class="anchor"></a>MultiAssayExperiment 0.101.44</h1>
 <div id="new-features-27" class="section level2">
 <h2 class="hasAnchor">
 <a href="#new-features-27" class="anchor"></a>New features</h2>
 <ul>
 <li>
-<code>$</code> (DollarSign) method available for <code>MultiAssayExperiment</code> to access <code>pData</code> column</li>
+<code><a href="https://rdrr.io/r/base/Extract.html">$</a></code> (DollarSign) method available for <code>MultiAssayExperiment</code> to access <code>pData</code> column</li>
 </ul>
 </div>
 </div>
-    <div id="multiassayexperiment-0-101-45" class="section level1">
-<h1 class="page-header">
-<a href="#multiassayexperiment-0-101-45" class="anchor"></a>MultiAssayExperiment 0.101.45</h1>
+    <div id="multiassayexperiment-010145" class="section level1">
+<h1 class="page-header" data-toc-text="0.101.45">
+<a href="#multiassayexperiment-010145" class="anchor"></a>MultiAssayExperiment 0.101.45</h1>
 <div id="new-features-26" class="section level2">
 <h2 class="hasAnchor">
 <a href="#new-features-26" class="anchor"></a>New features</h2>
@@ -233,9 +253,9 @@
 </ul>
 </div>
 </div>
-    <div id="multiassayexperiment-0-101-49" class="section level1">
-<h1 class="page-header">
-<a href="#multiassayexperiment-0-101-49" class="anchor"></a>MultiAssayExperiment 0.101.49</h1>
+    <div id="multiassayexperiment-010149" class="section level1">
+<h1 class="page-header" data-toc-text="0.101.49">
+<a href="#multiassayexperiment-010149" class="anchor"></a>MultiAssayExperiment 0.101.49</h1>
 <div id="new-features-25" class="section level2">
 <h2 class="hasAnchor">
 <a href="#new-features-25" class="anchor"></a>New features</h2>
@@ -254,26 +274,14 @@
 </div>
   </div>
 
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <div id="tocnav">
-      <h2>Contents</h2>
-      <ul class="nav nav-pills nav-stacked">
-        <li><a href="#multiassayexperiment-0-101-34">0.101.34</a></li>
-        <li><a href="#multiassayexperiment-0-101-36">0.101.36</a></li>
-        <li><a href="#multiassayexperiment-0-101-37">0.101.37</a></li>
-        <li><a href="#multiassayexperiment-0-101-38">0.101.38</a></li>
-        <li><a href="#multiassayexperiment-0-101-39">0.101.39</a></li>
-        <li><a href="#multiassayexperiment-0-101-40">0.101.40</a></li>
-        <li><a href="#multiassayexperiment-0-101-42">0.101.42</a></li>
-        <li><a href="#multiassayexperiment-0-101-43">0.101.43</a></li>
-        <li><a href="#multiassayexperiment-0-101-44">0.101.44</a></li>
-        <li><a href="#multiassayexperiment-0-101-45">0.101.45</a></li>
-        <li><a href="#multiassayexperiment-0-101-49">0.101.49</a></li>
-      </ul>
-    </div>
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 
 </div>
+
 
       <footer>
       <div class="copyright">
@@ -281,13 +289,16 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 

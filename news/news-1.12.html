@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Version 0.99 • MultiAssayExperiment</title>
+<title>Version 1.12 • MultiAssayExperiment</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,7 @@
 
 
 
-<meta property="og:title" content="Version 0.99" />
+<meta property="og:title" content="Version 1.12" />
 
 
 
@@ -129,50 +129,22 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-      <h1 data-toc-skip>Changelog <small>0.99</small></h1>
+      <h1 data-toc-skip>Changelog <small>1.12</small></h1>
       
     </div>
 
-    <div id="multiassayexperiment-09914" class="section level1">
-<h1 class="page-header" data-toc-text="0.99.14">
-<a href="#multiassayexperiment-09914" class="anchor"></a>MultiAssayExperiment 0.99.14</h1>
-<ul>
-<li>NEWS file is now live!</li>
-<li>Package now in <code>Bioc-devel</code>!</li>
-<li>More to come!</li>
-</ul>
-<div id="new-features-35" class="section level2">
+    <div id="multiassayexperiment-1120" class="section level1">
+<h1 class="page-header" data-toc-text="1.12.0">
+<a href="#multiassayexperiment-1120" class="anchor"></a>MultiAssayExperiment 1.12.0</h1>
+<div id="bug-fixes-and-minor-improvements" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-features-35" class="anchor"></a>New features</h2>
+<a href="#bug-fixes-and-minor-improvements" class="anchor"></a>Bug fixes and minor improvements</h2>
 <ul>
-<li>Replacement method for <code>colnames</code> now available for the <code>RangedRaggedAssay</code> class.</li>
-</ul>
-</div>
-</div>
-    <div id="multiassayexperiment-099194" class="section level1">
-<h1 class="page-header" data-toc-text="0.99.194">
-<a href="#multiassayexperiment-099194" class="anchor"></a>MultiAssayExperiment 0.99.194</h1>
-<div id="new-features-34" class="section level2">
-<h2 class="hasAnchor">
-<a href="#new-features-34" class="anchor"></a>New features</h2>
-<ul>
-<li>Subsetting by non-character i (<a href='https://github.com/waldronlab/MultiAssayExperiment/issues/108'>#108</a>)</li>
-<li>
-<code>PrepMultiAssay</code> helper function now available to aid in creating object (<a href='https://github.com/waldronlab/MultiAssayExperiment/issues/122'>#122</a>)</li>
-<li>Vignette now building (<a href='https://github.com/waldronlab/MultiAssayExperiment/issues/125'>#125</a>)</li>
-<li>Preliminary assay method for RangedRaggedAssay</li>
-</ul>
-</div>
-</div>
-    <div id="multiassayexperiment-099202" class="section level1">
-<h1 class="page-header" data-toc-text="0.99.202">
-<a href="#multiassayexperiment-099202" class="anchor"></a>MultiAssayExperiment 0.99.202</h1>
-<div id="new-features-33" class="section level2">
-<h2 class="hasAnchor">
-<a href="#new-features-33" class="anchor"></a>New features</h2>
-<ul>
-<li>
-<code>assay</code> method available for <code>RangedRaggedAssay</code> and other classes. Created to obtain raw data from certain classes (see <code>?assay,(class),ANY-method</code>).</li>
+<li>Improvements to the main vignette, <code>MultiAssayExperiment</code> class schematic now included (<a href='https://github.com/mtmorgan'>@mtmorgan</a>, <a href='https://github.com/waldronlab/MultiAssayExperiment/issues/261'>#261</a>)</li>
+<li>Updated documentation for the <code>upsetSamples</code> function</li>
+<li>Update code to use <code>splitAsList</code> from <code>S4Vectors</code> (<a href='https://github.com/hpages'>@hpages</a>)</li>
+<li>Fixed bug with metadata disappearing from <code>ExperimentList</code> when replacing it inside a <code>MultiAssayExperiment</code> object (<a href='https://github.com/lawremi'>@lawremi</a>, <a href='https://github.com/waldronlab/MultiAssayExperiment/issues/259'>#259</a>)</li>
+<li>Fixed the formatting of the NEWS file</li>
 </ul>
 </div>
 </div>
