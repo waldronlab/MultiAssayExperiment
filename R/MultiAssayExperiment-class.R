@@ -377,15 +377,16 @@ setMethod("show", "MultiAssayExperiment", function(object) {
                       "respective class.\n", "respective classes.\n")),
         "Containing an ")
     show(experiments(object))
-    cat("Features:\n experiments() - obtain the ",
+    cat("Functionality:\n experiments() - obtain the ",
         sprintf("%s", c_elist), " instance",
-        "\n colData() - the primary/phenotype ", sprintf("%s", c_mp),
-        "\n sampleMap() - the sample availability ", sprintf("%s", c_sm),
+        "\n colData() - the primary/phenotype DataFrame",
+        "\n sampleMap() - the sample coordination DataFrame",
         "\n `$`, `[`, `[[` - extract colData columns, subset, or experiment",
-        "\n *Format() - convert ",
-        "into a long or wide ", sprintf("%s", c_mp),
+        "\n *Format() - convert ", "into a long or wide DataFrame",
         "\n assays() - convert ", sprintf("%s", c_elist),
-        " to a SimpleList of matrices\n", sep = "")
+        " to a SimpleList of matrices",
+        "\n exportClass() - save all data to files\n",
+    sep = "")
 })
 
 #' @name MultiAssayExperiment-methods
