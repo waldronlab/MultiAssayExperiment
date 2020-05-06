@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>A container for multi-experiment data — ExperimentList-class • MultiAssayExperiment</title>
+<title>ExperimentList - A container for multi-experiment data — ExperimentList-class • MultiAssayExperiment</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,7 @@
 
 
 
-<meta property="og:title" content="A container for multi-experiment data — ExperimentList-class" />
+<meta property="og:title" content="ExperimentList - A container for multi-experiment data — ExperimentList-class" />
 <meta property="og:description" content="The ExperimentList class is a container that builds on
 the SimpleList with additional
 checks for consistency in experiment names and length.
@@ -76,7 +76,7 @@ One element present per experiment performed." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MultiAssayExperiment</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.12.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.14.1</span>
       </span>
     </div>
 
@@ -106,12 +106,17 @@ One element present per experiment performed." />
     </li>
   </ul>
 </li>
-<li>
-  <a href="../news/index.html">
-    <span class="fa fa-newspaper-o"></span>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    News
      
-    NEWS
+    <span class="caret"></span>
   </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../news/index.html">Release Notes</a>
+    </li>
+  </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -134,7 +139,7 @@ One element present per experiment performed." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>A container for multi-experiment data</h1>
+    <h1>ExperimentList - A container for multi-experiment data</h1>
     <small class="dont-index">Source: <a href='https://github.com/waldronlab/MultiAssayExperiment/blob/master/R/ExperimentList-class.R'><code>R/ExperimentList-class.R</code></a>, <a href='https://github.com/waldronlab/MultiAssayExperiment/blob/master/R/MultiAssayExperiment-methods.R'><code>R/MultiAssayExperiment-methods.R</code></a>, <a href='https://github.com/waldronlab/MultiAssayExperiment/blob/master/R/MultiAssayExperiment-helpers.R'><code>R/MultiAssayExperiment-helpers.R</code></a>, and 1 more</small>
     <div class="hidden name"><code>ExperimentList-class.Rd</code></div>
     </div>
@@ -160,19 +165,19 @@ One element present per experiment performed.</p>
 <span class='fu'><a href='MultiAssayExperiment-helpers.html'>mergeReplicates</a></span>(<span class='no'>x</span>, <span class='kw'>replicates</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(), <span class='kw'>simplify</span> <span class='kw'>=</span> <span class='kw pkg'>BiocGenerics</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/BiocGenerics/man/mean.html'>mean</a></span>, <span class='no'>...</span>)
 
 <span class='co'># S4 method for ANY,missing</span>
-<span class='fu'>assay</span>(<span class='no'>x</span>, <span class='no'>i</span>, <span class='no'>...</span>)
+<span class='fu'>assay</span>(<span class='no'>x</span>, <span class='no'>i</span>, <span class='kw'>withDimnames</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)
 
 <span class='co'># S4 method for ExperimentList</span>
-<span class='fu'>assays</span>(<span class='no'>x</span>, <span class='no'>...</span>, <span class='kw'>withDimnames</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='fu'>assays</span>(<span class='no'>x</span>, <span class='kw'>withDimnames</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)
 
 <span class='co'># S4 method for ExperimentList,missing</span>
-<span class='fu'>assay</span>(<span class='no'>x</span>, <span class='no'>i</span>, <span class='no'>...</span>)
+<span class='fu'>assay</span>(<span class='no'>x</span>, <span class='no'>i</span>, <span class='kw'>withDimnames</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)
 
 <span class='co'># S4 method for ExperimentList,numeric</span>
-<span class='fu'>assay</span>(<span class='no'>x</span>, <span class='no'>i</span>, <span class='no'>...</span>)
+<span class='fu'>assay</span>(<span class='no'>x</span>, <span class='no'>i</span>, <span class='kw'>withDimnames</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)
 
 <span class='co'># S4 method for ExperimentList,character</span>
-<span class='fu'>assay</span>(<span class='no'>x</span>, <span class='no'>i</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>assay</span>(<span class='no'>x</span>, <span class='no'>i</span>, <span class='kw'>withDimnames</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -224,7 +229,7 @@ experiments</p></li>
 an <code>ExperimentList</code> using <code>CharacterList</code></p></li>
 <li><p><code>mergeReplicates</code>: Apply the mergeReplicates method on the
 ExperimentList elements</p></li>
-<li><p><code>assay</code>: Obtain the specified assay with a <code>numberic</code>
+<li><p><code>assay</code>: Obtain the specified assay with a <code>numeric</code>
 or <code>character</code> reference</p></li>
 <li><p><code>assays</code>: Get the assay data from each element in the
 <a href='ExperimentList.html'>ExperimentList</a></p></li>

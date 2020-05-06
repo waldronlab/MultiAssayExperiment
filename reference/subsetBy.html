@@ -73,7 +73,7 @@ MultiAssayExperiment" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MultiAssayExperiment</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.12.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.14.1</span>
       </span>
     </div>
 
@@ -103,12 +103,17 @@ MultiAssayExperiment" />
     </li>
   </ul>
 </li>
-<li>
-  <a href="../news/index.html">
-    <span class="fa fa-newspaper-o"></span>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    News
      
-    NEWS
+    <span class="caret"></span>
   </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../news/index.html">Release Notes</a>
+    </li>
+  </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -360,13 +365,14 @@ The order of the subsetting elements in the
 #&gt;  experiment with a user-defined name and respective class.
 #&gt;  Containing an ExperimentList class object of length 1:
 #&gt;  [1] Affy: SummarizedExperiment with 5 rows and 4 columns
-#&gt; Features:
+#&gt; Functionality:
 #&gt;  experiments() - obtain the ExperimentList instance
-#&gt;  colData() - the primary/phenotype DFrame
-#&gt;  sampleMap() - the sample availability DFrame
+#&gt;  colData() - the primary/phenotype DataFrame
+#&gt;  sampleMap() - the sample coordination DataFrame
 #&gt;  `$`, `[`, `[[` - extract colData columns, subset, or experiment
-#&gt;  *Format() - convert into a long or wide DFrame
-#&gt;  assays() - convert ExperimentList to a SimpleList of matrices</div><div class='input'>
+#&gt;  *Format() - convert into a long or wide DataFrame
+#&gt;  assays() - convert ExperimentList to a SimpleList of matrices
+#&gt;  exportClass() - save all data to files</div><div class='input'>
 <span class='co'>## Using numeric indices</span>
 <span class='fu'>subsetByAssay</span>(<span class='no'>mae</span>, <span class='fl'>1</span>:<span class='fl'>2</span>)</div><div class='output co'>#&gt; <span class='message'>harmonizing input:</span>
 #&gt; <span class='message'>  removing 7 sampleMap rows not in names(experiments)</span></div><div class='output co'>#&gt; A MultiAssayExperiment object of 2 listed
@@ -374,13 +380,14 @@ The order of the subsetting elements in the
 #&gt;  Containing an ExperimentList class object of length 2:
 #&gt;  [1] Affy: SummarizedExperiment with 5 rows and 4 columns
 #&gt;  [2] Methyl450k: matrix with 5 rows and 5 columns
-#&gt; Features:
+#&gt; Functionality:
 #&gt;  experiments() - obtain the ExperimentList instance
-#&gt;  colData() - the primary/phenotype DFrame
-#&gt;  sampleMap() - the sample availability DFrame
+#&gt;  colData() - the primary/phenotype DataFrame
+#&gt;  sampleMap() - the sample coordination DataFrame
 #&gt;  `$`, `[`, `[[` - extract colData columns, subset, or experiment
-#&gt;  *Format() - convert into a long or wide DFrame
-#&gt;  assays() - convert ExperimentList to a SimpleList of matrices</div><div class='input'>
+#&gt;  *Format() - convert into a long or wide DataFrame
+#&gt;  assays() - convert ExperimentList to a SimpleList of matrices
+#&gt;  exportClass() - save all data to files</div><div class='input'>
 <span class='co'>## Using a logical vector</span>
 <span class='fu'>subsetByAssay</span>(<span class='no'>mae</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>TRUE</span>, <span class='fl'>FALSE</span>, <span class='fl'>TRUE</span>))</div><div class='output co'>#&gt; <span class='message'>harmonizing input:</span>
 #&gt; <span class='message'>  removing 5 sampleMap rows not in names(experiments)</span></div><div class='output co'>#&gt; A MultiAssayExperiment object of 3 listed
@@ -389,13 +396,14 @@ The order of the subsetting elements in the
 #&gt;  [1] Affy: SummarizedExperiment with 5 rows and 4 columns
 #&gt;  [2] RNASeqGene: matrix with 5 rows and 4 columns
 #&gt;  [3] GISTIC: RangedSummarizedExperiment with 5 rows and 3 columns
-#&gt; Features:
+#&gt; Functionality:
 #&gt;  experiments() - obtain the ExperimentList instance
-#&gt;  colData() - the primary/phenotype DFrame
-#&gt;  sampleMap() - the sample availability DFrame
+#&gt;  colData() - the primary/phenotype DataFrame
+#&gt;  sampleMap() - the sample coordination DataFrame
 #&gt;  `$`, `[`, `[[` - extract colData columns, subset, or experiment
-#&gt;  *Format() - convert into a long or wide DFrame
-#&gt;  assays() - convert ExperimentList to a SimpleList of matrices</div><div class='input'>
+#&gt;  *Format() - convert into a long or wide DataFrame
+#&gt;  assays() - convert ExperimentList to a SimpleList of matrices
+#&gt;  exportClass() - save all data to files</div><div class='input'>
 <span class='co'>## Subset by character vector (Jack)</span>
 <span class='fu'>subsetByColData</span>(<span class='no'>mae</span>, <span class='st'>"Jack"</span>)</div><div class='output co'>#&gt; A MultiAssayExperiment object of 4 listed
 #&gt;  experiments with user-defined names and respective classes.
@@ -404,13 +412,14 @@ The order of the subsetting elements in the
 #&gt;  [2] Methyl450k: matrix with 5 rows and 2 columns
 #&gt;  [3] RNASeqGene: matrix with 5 rows and 1 columns
 #&gt;  [4] GISTIC: RangedSummarizedExperiment with 5 rows and 1 columns
-#&gt; Features:
+#&gt; Functionality:
 #&gt;  experiments() - obtain the ExperimentList instance
-#&gt;  colData() - the primary/phenotype DFrame
-#&gt;  sampleMap() - the sample availability DFrame
+#&gt;  colData() - the primary/phenotype DataFrame
+#&gt;  sampleMap() - the sample coordination DataFrame
 #&gt;  `$`, `[`, `[[` - extract colData columns, subset, or experiment
-#&gt;  *Format() - convert into a long or wide DFrame
-#&gt;  assays() - convert ExperimentList to a SimpleList of matrices</div><div class='input'>
+#&gt;  *Format() - convert into a long or wide DataFrame
+#&gt;  assays() - convert ExperimentList to a SimpleList of matrices
+#&gt;  exportClass() - save all data to files</div><div class='input'>
 <span class='co'>## Subset by numeric index of colData rows (Jack and Bob)</span>
 <span class='fu'>subsetByColData</span>(<span class='no'>mae</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>3</span>))</div><div class='output co'>#&gt; A MultiAssayExperiment object of 4 listed
 #&gt;  experiments with user-defined names and respective classes.
@@ -419,13 +428,14 @@ The order of the subsetting elements in the
 #&gt;  [2] Methyl450k: matrix with 5 rows and 3 columns
 #&gt;  [3] RNASeqGene: matrix with 5 rows and 2 columns
 #&gt;  [4] GISTIC: RangedSummarizedExperiment with 5 rows and 2 columns
-#&gt; Features:
+#&gt; Functionality:
 #&gt;  experiments() - obtain the ExperimentList instance
-#&gt;  colData() - the primary/phenotype DFrame
-#&gt;  sampleMap() - the sample availability DFrame
+#&gt;  colData() - the primary/phenotype DataFrame
+#&gt;  sampleMap() - the sample coordination DataFrame
 #&gt;  `$`, `[`, `[[` - extract colData columns, subset, or experiment
-#&gt;  *Format() - convert into a long or wide DFrame
-#&gt;  assays() - convert ExperimentList to a SimpleList of matrices</div><div class='input'>
+#&gt;  *Format() - convert into a long or wide DataFrame
+#&gt;  assays() - convert ExperimentList to a SimpleList of matrices
+#&gt;  exportClass() - save all data to files</div><div class='input'>
 <span class='co'>## Subset by logical indicator of colData rows (Jack and Jill)</span>
 <span class='fu'>subsetByColData</span>(<span class='no'>mae</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>TRUE</span>, <span class='fl'>TRUE</span>, <span class='fl'>FALSE</span>, <span class='fl'>FALSE</span>))</div><div class='output co'>#&gt; A MultiAssayExperiment object of 4 listed
 #&gt;  experiments with user-defined names and respective classes.
@@ -434,13 +444,14 @@ The order of the subsetting elements in the
 #&gt;  [2] Methyl450k: matrix with 5 rows and 3 columns
 #&gt;  [3] RNASeqGene: matrix with 5 rows and 2 columns
 #&gt;  [4] GISTIC: RangedSummarizedExperiment with 5 rows and 2 columns
-#&gt; Features:
+#&gt; Functionality:
 #&gt;  experiments() - obtain the ExperimentList instance
-#&gt;  colData() - the primary/phenotype DFrame
-#&gt;  sampleMap() - the sample availability DFrame
+#&gt;  colData() - the primary/phenotype DataFrame
+#&gt;  sampleMap() - the sample coordination DataFrame
 #&gt;  `$`, `[`, `[[` - extract colData columns, subset, or experiment
-#&gt;  *Format() - convert into a long or wide DFrame
-#&gt;  assays() - convert ExperimentList to a SimpleList of matrices</div><div class='input'>
+#&gt;  *Format() - convert into a long or wide DataFrame
+#&gt;  assays() - convert ExperimentList to a SimpleList of matrices
+#&gt;  exportClass() - save all data to files</div><div class='input'>
 <span class='fu'>subsetByColumn</span>(<span class='no'>mae</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>Affy</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>2</span>,
     <span class='kw'>Methyl450k</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>3</span>,<span class='fl'>5</span>,<span class='fl'>2</span>), <span class='kw'>RNASeqGene</span> <span class='kw'>=</span> <span class='fl'>2</span>:<span class='fl'>4</span>, <span class='kw'>GISTIC</span> <span class='kw'>=</span> <span class='fl'>1</span>))</div><div class='output co'>#&gt; <span class='message'>harmonizing input:</span>
 #&gt; <span class='message'>  removing 7 sampleMap rows with 'colname' not in colnames of experiments</span></div><div class='output co'>#&gt; A MultiAssayExperiment object of 4 listed
@@ -450,13 +461,14 @@ The order of the subsetting elements in the
 #&gt;  [2] Methyl450k: matrix with 5 rows and 3 columns
 #&gt;  [3] RNASeqGene: matrix with 5 rows and 3 columns
 #&gt;  [4] GISTIC: RangedSummarizedExperiment with 5 rows and 1 columns
-#&gt; Features:
+#&gt; Functionality:
 #&gt;  experiments() - obtain the ExperimentList instance
-#&gt;  colData() - the primary/phenotype DFrame
-#&gt;  sampleMap() - the sample availability DFrame
+#&gt;  colData() - the primary/phenotype DataFrame
+#&gt;  sampleMap() - the sample coordination DataFrame
 #&gt;  `$`, `[`, `[[` - extract colData columns, subset, or experiment
-#&gt;  *Format() - convert into a long or wide DFrame
-#&gt;  assays() - convert ExperimentList to a SimpleList of matrices</div><div class='input'>
+#&gt;  *Format() - convert into a long or wide DataFrame
+#&gt;  assays() - convert ExperimentList to a SimpleList of matrices
+#&gt;  exportClass() - save all data to files</div><div class='input'>
 <span class='no'>subsetWith</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>S4Vectors</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/S4Vectors/man/List-utils.html'>mendoapply</a></span>(<span class='no'>`[`</span>, <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='no'>mae</span>),
     <span class='kw'>MoreArgs</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fl'>1</span>:<span class='fl'>2</span>))
 <span class='fu'>subsetByColumn</span>(<span class='no'>mae</span>, <span class='no'>subsetWith</span>)</div><div class='output co'>#&gt; <span class='message'>harmonizing input:</span>
@@ -468,13 +480,14 @@ The order of the subsetting elements in the
 #&gt;  [2] Methyl450k: matrix with 5 rows and 2 columns
 #&gt;  [3] RNASeqGene: matrix with 5 rows and 2 columns
 #&gt;  [4] GISTIC: RangedSummarizedExperiment with 5 rows and 2 columns
-#&gt; Features:
+#&gt; Functionality:
 #&gt;  experiments() - obtain the ExperimentList instance
-#&gt;  colData() - the primary/phenotype DFrame
-#&gt;  sampleMap() - the sample availability DFrame
+#&gt;  colData() - the primary/phenotype DataFrame
+#&gt;  sampleMap() - the sample coordination DataFrame
 #&gt;  `$`, `[`, `[[` - extract colData columns, subset, or experiment
-#&gt;  *Format() - convert into a long or wide DFrame
-#&gt;  assays() - convert ExperimentList to a SimpleList of matrices</div><div class='input'>
+#&gt;  *Format() - convert into a long or wide DataFrame
+#&gt;  assays() - convert ExperimentList to a SimpleList of matrices
+#&gt;  exportClass() - save all data to files</div><div class='input'>
 <span class='co'>## Use a GRanges object to subset rows where ranged data present</span>
 <span class='no'>egr</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>GenomicRanges</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html'>GRanges</a></span>(<span class='kw'>seqnames</span> <span class='kw'>=</span> <span class='st'>"chr2"</span>,
     <span class='kw pkg'>IRanges</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/IRanges/man/IRanges-constructor.html'>IRanges</a></span>(<span class='kw'>start</span> <span class='kw'>=</span> <span class='fl'>11</span>, <span class='kw'>end</span> <span class='kw'>=</span> <span class='fl'>13</span>), <span class='kw'>strand</span> <span class='kw'>=</span> <span class='st'>"-"</span>)
@@ -485,13 +498,14 @@ The order of the subsetting elements in the
 #&gt;  [2] Methyl450k: matrix with 0 rows and 5 columns
 #&gt;  [3] RNASeqGene: matrix with 0 rows and 4 columns
 #&gt;  [4] GISTIC: RangedSummarizedExperiment with 1 rows and 3 columns
-#&gt; Features:
+#&gt; Functionality:
 #&gt;  experiments() - obtain the ExperimentList instance
-#&gt;  colData() - the primary/phenotype DFrame
-#&gt;  sampleMap() - the sample availability DFrame
+#&gt;  colData() - the primary/phenotype DataFrame
+#&gt;  sampleMap() - the sample coordination DataFrame
 #&gt;  `$`, `[`, `[[` - extract colData columns, subset, or experiment
-#&gt;  *Format() - convert into a long or wide DFrame
-#&gt;  assays() - convert ExperimentList to a SimpleList of matrices</div><div class='input'>
+#&gt;  *Format() - convert into a long or wide DataFrame
+#&gt;  assays() - convert ExperimentList to a SimpleList of matrices
+#&gt;  exportClass() - save all data to files</div><div class='input'>
 <span class='co'>## Use a logical vector (recycling used)</span>
 <span class='fu'>subsetByRow</span>(<span class='no'>mae</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>TRUE</span>, <span class='fl'>FALSE</span>))</div><div class='output co'>#&gt; A MultiAssayExperiment object of 4 listed
 #&gt;  experiments with user-defined names and respective classes.
@@ -500,13 +514,14 @@ The order of the subsetting elements in the
 #&gt;  [2] Methyl450k: matrix with 3 rows and 5 columns
 #&gt;  [3] RNASeqGene: matrix with 3 rows and 4 columns
 #&gt;  [4] GISTIC: RangedSummarizedExperiment with 3 rows and 3 columns
-#&gt; Features:
+#&gt; Functionality:
 #&gt;  experiments() - obtain the ExperimentList instance
-#&gt;  colData() - the primary/phenotype DFrame
-#&gt;  sampleMap() - the sample availability DFrame
+#&gt;  colData() - the primary/phenotype DataFrame
+#&gt;  sampleMap() - the sample coordination DataFrame
 #&gt;  `$`, `[`, `[[` - extract colData columns, subset, or experiment
-#&gt;  *Format() - convert into a long or wide DFrame
-#&gt;  assays() - convert ExperimentList to a SimpleList of matrices</div><div class='input'>
+#&gt;  *Format() - convert into a long or wide DataFrame
+#&gt;  assays() - convert ExperimentList to a SimpleList of matrices
+#&gt;  exportClass() - save all data to files</div><div class='input'>
 <span class='co'>## Use a character vector</span>
 <span class='fu'>subsetByRow</span>(<span class='no'>mae</span>, <span class='st'>"ENST00000355076"</span>)</div><div class='output co'>#&gt; A MultiAssayExperiment object of 4 listed
 #&gt;  experiments with user-defined names and respective classes.
@@ -515,13 +530,14 @@ The order of the subsetting elements in the
 #&gt;  [2] Methyl450k: matrix with 1 rows and 5 columns
 #&gt;  [3] RNASeqGene: matrix with 0 rows and 4 columns
 #&gt;  [4] GISTIC: RangedSummarizedExperiment with 0 rows and 3 columns
-#&gt; Features:
+#&gt; Functionality:
 #&gt;  experiments() - obtain the ExperimentList instance
-#&gt;  colData() - the primary/phenotype DFrame
-#&gt;  sampleMap() - the sample availability DFrame
+#&gt;  colData() - the primary/phenotype DataFrame
+#&gt;  sampleMap() - the sample coordination DataFrame
 #&gt;  `$`, `[`, `[[` - extract colData columns, subset, or experiment
-#&gt;  *Format() - convert into a long or wide DFrame
-#&gt;  assays() - convert ExperimentList to a SimpleList of matrices</div><div class='input'>
+#&gt;  *Format() - convert into a long or wide DataFrame
+#&gt;  assays() - convert ExperimentList to a SimpleList of matrices
+#&gt;  exportClass() - save all data to files</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

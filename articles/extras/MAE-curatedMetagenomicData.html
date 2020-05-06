@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">MultiAssayExperiment</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.12.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.14.1</span>
       </span>
     </div>
 
@@ -61,12 +61,17 @@
     </li>
   </ul>
 </li>
-<li>
-  <a href="../../news/index.html">
-    <span class="fa fa-newspaper-o"></span>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    News
      
-    NEWS
+    <span class="caret"></span>
   </a>
+  <ul class="dropdown-menu" role="menu">
+<li>
+      <a href="../../news/index.html">Release Notes</a>
+    </li>
+  </ul>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
@@ -129,7 +134,7 @@
 <span class="no">cmdsub</span> <span class="kw">&lt;-</span> <span class="no">cmdsub</span>[<span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span>(<span class="fu">assays</span>(<span class="no">cmdsub</span>), <span class="kw">function</span>(<span class="no">exper</span>) <span class="fu"><a href="https://rdrr.io/r/base/colSums.html">rowSums</a></span>(<span class="no">exper</span>) <span class="kw">&gt;</span> <span class="fl">0</span>), ]
 
 <span class="no">mcoin</span> <span class="kw">&lt;-</span> <span class="fu">mcia</span>(<span class="fu">assay</span>(<span class="no">cmdsub</span>))
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(<span class="no">mcoin</span>, <span class="kw">phenovec</span><span class="kw">=</span><span class="no">cmdsub</span>$<span class="no">disease</span>, <span class="kw">sample.lab</span><span class="kw">=</span><span class="fl">FALSE</span>)</pre></body></html></div>
+<span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">mcoin</span>, <span class="kw">phenovec</span><span class="kw">=</span><span class="no">cmdsub</span>$<span class="no">disease</span>, <span class="kw">sample.lab</span><span class="kw">=</span><span class="fl">FALSE</span>)</pre></body></html></div>
 </div>
 <div id="iclusterplus" class="section level2">
 <h2 class="hasAnchor">

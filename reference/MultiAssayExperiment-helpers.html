@@ -104,7 +104,7 @@ getWithColData: A convenience function for extracting an assay
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MultiAssayExperiment</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.12.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.14.1</span>
       </span>
     </div>
 
@@ -134,12 +134,17 @@ getWithColData: A convenience function for extracting an assay
     </li>
   </ul>
 </li>
-<li>
-  <a href="../news/index.html">
-    <span class="fa fa-newspaper-o"></span>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    News
      
-    NEWS
+    <span class="caret"></span>
   </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../news/index.html">Release Notes</a>
+    </li>
+  </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -253,7 +258,7 @@ for <code>ExperimentList</code> objects.</p>
 <span class='co'># S4 method for ExperimentList</span>
 <span class='fu'>hasRowRanges</span>(<span class='no'>x</span>)
 
-<span class='fu'>getWithColData</span>(<span class='no'>x</span>, <span class='no'>i</span>)</pre>
+<span class='fu'>getWithColData</span>(<span class='no'>x</span>, <span class='no'>i</span>, <span class='kw'>mode</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"append"</span>, <span class='st'>"replace"</span>))</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -289,7 +294,8 @@ index for <code>colData</code> columns to be included</p></td>
     <tr>
       <th>i</th>
       <td><p>The assay indicator for SummarizedExperiment
-objects (default 1L)</p></td>
+objects. A vector input is supported in the case that the
+SummarizedExperiment object(s) has more than one assay (default 1L)</p></td>
     </tr>
     <tr>
       <th>check.names</th>
@@ -302,6 +308,12 @@ if necessary</p></td>
       <td><p>(character default "_") A single string delimiter for output
 column names. In <code>wideFormat</code>, experiments and rownames (and when
 replicate samples are present, colnames) are seperated by this delimiter</p></td>
+    </tr>
+    <tr>
+      <th>mode</th>
+      <td><p>String indicating how <a href='MultiAssayExperiment-class.html'>MultiAssayExperiment</a>
+column-level metadata should be added to the
+SummarizedExperiment <code>colData</code>.</p></td>
     </tr>
     </table>
 
@@ -392,6 +404,14 @@ extracted object using the <code>colData&lt;-</code> replacement
 method when possible. Typically, this method is available for
 SummarizedExperiment and <code>RaggedExperiment</code>
 classes.</p>
+<p>The setting of <code>mode</code> determines how the <code>colData</code>
+is added. If <code>mode="append"</code>, the <a href='MultiAssayExperiment-class.html'>MultiAssayExperiment</a>
+metadata is appended onto that of the SummarizedExperiment.
+If any fields are duplicated by name, the values in the SummarizedExperiment
+are retained, with a warning emitted if the values are different.
+For <code>mode="replace"</code>, the <a href='MultiAssayExperiment-class.html'>MultiAssayExperiment</a>
+metadata replaces that of the SummarizedExperiment,
+while for <code>mode="none"</code>, no replacement or appending is performed.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

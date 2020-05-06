@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MultiAssayExperiment</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.12.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.14.1</span>
       </span>
     </div>
 
@@ -61,12 +61,17 @@
     </li>
   </ul>
 </li>
-<li>
-  <a href="../news/index.html">
-    <span class="fa fa-newspaper-o"></span>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    News
      
-    NEWS
+    <span class="caret"></span>
   </a>
+  <ul class="dropdown-menu" role="menu">
+<li>
+      <a href="../news/index.html">Release Notes</a>
+    </li>
+  </ul>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
@@ -92,7 +97,7 @@
       <h1 data-toc-skip>MultiAssayExperiment: The Integrative Bioconductor Container</h1>
                         <h4 class="author">MultiAssay Special Interest Group</h4>
             
-            <h4 class="date">April 23, 2020</h4>
+            <h4 class="date">May 06, 2020</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/waldronlab/MultiAssayExperiment/blob/master/vignettes/MultiAssayExperiment.Rmd"><code>vignettes/MultiAssayExperiment.Rmd</code></a></small>
       <div class="hidden name"><code>MultiAssayExperiment.Rmd</code></div>
@@ -132,13 +137,14 @@
 <pre><code>## A MultiAssayExperiment object of 0 listed
 ##  experiments with no user-defined names and respective classes.
 ##  Containing an ExperimentList class object of length 0:
-##  Features:
+##  Functionality:
 ##  experiments() - obtain the ExperimentList instance
-##  colData() - the primary/phenotype DFrame
-##  sampleMap() - the sample availability DFrame
+##  colData() - the primary/phenotype DataFrame
+##  sampleMap() - the sample coordination DataFrame
 ##  `$`, `[`, `[[` - extract colData columns, subset, or experiment
-##  *Format() - convert into a long or wide DFrame
-##  assays() - convert ExperimentList to a SimpleList of matrices</code></pre>
+##  *Format() - convert into a long or wide DataFrame
+##  assays() - convert ExperimentList to a SimpleList of matrices
+##  exportClass() - save all data to files</code></pre>
 <div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="fu">slotNames</span>(<span class="no">empty</span>)</pre></body></html></div>
 <pre><code>## [1] "ExperimentList" "colData"        "sampleMap"      "drops"         
 ## [5] "metadata"</code></pre>
@@ -269,23 +275,24 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 ##  Containing an ExperimentList class object of length 2:
 ##  [1] methyl 2k: matrix with 4 rows and 4 columns
 ##  [2] methyl 3k: matrix with 4 rows and 3 columns
-## Features:
+## Functionality:
 ##  experiments() - obtain the ExperimentList instance
-##  colData() - the primary/phenotype DFrame
-##  sampleMap() - the sample availability DFrame
+##  colData() - the primary/phenotype DataFrame
+##  sampleMap() - the sample coordination DataFrame
 ##  `$`, `[`, `[[` - extract colData columns, subset, or experiment
-##  *Format() - convert into a long or wide DFrame
-##  assays() - convert ExperimentList to a SimpleList of matrices</code></pre>
+##  *Format() - convert into a long or wide DataFrame
+##  assays() - convert ExperimentList to a SimpleList of matrices
+##  exportClass() - save all data to files</code></pre>
 <p>In the above example, the user did not provide the <code>colData</code> argument so the constructor function filled it with an empty <code>DataFrame</code>:</p>
 <div class="sourceCode" id="cb15"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html">colData</a></span>(<span class="no">simpleMultiAssay</span>)</pre></body></html></div>
 <pre><code>## DataFrame with 5 rows and 0 columns</code></pre>
 <p>But the <code>colData</code> can be provided. Here, note that any assay sample (column) that cannot be mapped to a corresponding row in the provided <code>colData</code> gets dropped. This is part of ensuring internal validity of the <code>MultiAssayExperiment</code>.</p>
 <div class="sourceCode" id="cb17"><html><body><pre class="r"><span class="no">simpleMultiAssay2</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/MultiAssayExperiment.html">MultiAssayExperiment</a></span>(<span class="kw">experiments</span><span class="kw">=</span><span class="no">doubleExp</span>,
                                           <span class="kw">colData</span><span class="kw">=</span><span class="no">patient.data</span>)</pre></body></html></div>
-<pre><code>## Warning in .sampleMapFromData(colData, experiments): Data from rows:
-##  NA - Bobby
-##  NA - Jane
-## dropped due to missing phenotype data</code></pre>
+<pre><code>## Warning: Data dropped from ExperimentList (element - column):
+##  methyl 2k - Bobby
+##  methyl 3k - Jane
+## Unable to map to rows of colData</code></pre>
 <pre><code>## harmonizing input:
 ##   removing 1 colData rownames not in sampleMap 'primary'</code></pre>
 <div class="sourceCode" id="cb20"><html><body><pre class="r"><span class="no">simpleMultiAssay2</span></pre></body></html></div>
@@ -294,20 +301,21 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 ##  Containing an ExperimentList class object of length 2:
 ##  [1] methyl 2k: matrix with 4 rows and 3 columns
 ##  [2] methyl 3k: matrix with 4 rows and 2 columns
-## Features:
+## Functionality:
 ##  experiments() - obtain the ExperimentList instance
-##  colData() - the primary/phenotype DFrame
-##  sampleMap() - the sample availability DFrame
+##  colData() - the primary/phenotype DataFrame
+##  sampleMap() - the sample coordination DataFrame
 ##  `$`, `[`, `[[` - extract colData columns, subset, or experiment
-##  *Format() - convert into a long or wide DFrame
-##  assays() - convert ExperimentList to a SimpleList of matrices</code></pre>
+##  *Format() - convert into a long or wide DataFrame
+##  assays() - convert ExperimentList to a SimpleList of matrices
+##  exportClass() - save all data to files</code></pre>
 <div class="sourceCode" id="cb22"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html">colData</a></span>(<span class="no">simpleMultiAssay2</span>)</pre></body></html></div>
 <pre><code>## DataFrame with 3 rows and 2 columns
-##           sex       age
-##      &lt;factor&gt; &lt;integer&gt;
-## Jack        M        38
-## Jill        F        39
-## Bob         M        40</code></pre>
+##              sex       age
+##      &lt;character&gt; &lt;integer&gt;
+## Jack           M        38
+## Jill           F        39
+## Bob            M        40</code></pre>
 </div>
 </div>
 </div>
@@ -463,13 +471,13 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 <pre><code>## DataFrame with 16 rows and 3 columns
 ##           assay     primary     colname
 ##        &lt;factor&gt; &lt;character&gt; &lt;character&gt;
-## 1          Affy        Jack      array1
-## 2          Affy        Jill      array2
-## 3          Affy     Barbara      array3
-## 4          Affy         Bob      array4
+## 1   Affy               Jack      array1
+## 2   Affy               Jill      array2
+## 3   Affy            Barbara      array3
+## 4   Affy                Bob      array4
 ## 5   Methyl 450k        Jack     methyl1
 ## ...         ...         ...         ...
-## 12        Mirna         Bob      micro3
+## 12   Mirna              Bob      micro3
 ## 13   CNV gistic        Jack mysnparray1
 ## 14   CNV gistic        Jill mysnparray2
 ## 15   CNV gistic         Bob mysnparray3
@@ -498,13 +506,14 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 ##  [2] Methyl 450k: matrix with 2 rows and 5 columns
 ##  [3] Mirna: matrix with 4 rows and 3 columns
 ##  [4] CNV gistic: RangedSummarizedExperiment with 5 rows and 4 columns
-## Features:
+## Functionality:
 ##  experiments() - obtain the ExperimentList instance
-##  colData() - the primary/phenotype DFrame
-##  sampleMap() - the sample availability DFrame
+##  colData() - the primary/phenotype DataFrame
+##  sampleMap() - the sample coordination DataFrame
 ##  `$`, `[`, `[[` - extract colData columns, subset, or experiment
-##  *Format() - convert into a long or wide DFrame
-##  assays() - convert ExperimentList to a SimpleList of matrices</code></pre>
+##  *Format() - convert into a long or wide DataFrame
+##  assays() - convert ExperimentList to a SimpleList of matrices
+##  exportClass() - save all data to files</code></pre>
 <p>The following extractor functions can be used to get extract data from the object:</p>
 <div class="sourceCode" id="cb53"><html><body><pre class="r"><span class="fu"><a href="../reference/MultiAssayExperiment-methods.html">experiments</a></span>(<span class="no">myMultiAssay</span>)</pre></body></html></div>
 <pre><code>## ExperimentList class object of length 4:
@@ -514,23 +523,23 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 ##  [4] CNV gistic: RangedSummarizedExperiment with 5 rows and 4 columns</code></pre>
 <div class="sourceCode" id="cb55"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html">colData</a></span>(<span class="no">myMultiAssay</span>)</pre></body></html></div>
 <pre><code>## DataFrame with 4 rows and 2 columns
-##              sex       age
-##         &lt;factor&gt; &lt;integer&gt;
-## Jack           M        38
-## Jill           F        39
-## Bob            M        40
-## Barbara        F        41</code></pre>
+##                 sex       age
+##         &lt;character&gt; &lt;integer&gt;
+## Jack              M        38
+## Jill              F        39
+## Bob               M        40
+## Barbara           F        41</code></pre>
 <div class="sourceCode" id="cb57"><html><body><pre class="r"><span class="fu"><a href="../reference/MultiAssayExperiment-methods.html">sampleMap</a></span>(<span class="no">myMultiAssay</span>)</pre></body></html></div>
 <pre><code>## DataFrame with 16 rows and 3 columns
 ##           assay     primary     colname
 ##        &lt;factor&gt; &lt;character&gt; &lt;character&gt;
-## 1          Affy        Jack      array1
-## 2          Affy        Jill      array2
-## 3          Affy     Barbara      array3
-## 4          Affy         Bob      array4
+## 1   Affy               Jack      array1
+## 2   Affy               Jill      array2
+## 3   Affy            Barbara      array3
+## 4   Affy                Bob      array4
 ## 5   Methyl 450k        Jack     methyl1
 ## ...         ...         ...         ...
-## 12        Mirna         Bob      micro3
+## 12   Mirna              Bob      micro3
 ## 13   CNV gistic        Jack mysnparray1
 ## 14   CNV gistic        Jill mysnparray2
 ## 15   CNV gistic         Bob mysnparray3
@@ -636,13 +645,14 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 ##  [2] Methyl 450k: matrix with 2 rows and 5 columns
 ##  [3] Mirna: matrix with 4 rows and 3 columns
 ##  [4] CNV gistic: RangedSummarizedExperiment with 5 rows and 4 columns
-## Features:
+## Functionality:
 ##  experiments() - obtain the ExperimentList instance
-##  colData() - the primary/phenotype DFrame
-##  sampleMap() - the sample availability DFrame
+##  colData() - the primary/phenotype DataFrame
+##  sampleMap() - the sample coordination DataFrame
 ##  `$`, `[`, `[[` - extract colData columns, subset, or experiment
-##  *Format() - convert into a long or wide DFrame
-##  assays() - convert ExperimentList to a SimpleList of matrices</code></pre>
+##  *Format() - convert into a long or wide DataFrame
+##  assays() - convert ExperimentList to a SimpleList of matrices
+##  exportClass() - save all data to files</code></pre>
 <p>Alternatively, use the <code>do.call</code> function to easily create a <code>MultiAssayExperiment</code> from the output of <code>prepMultiAssay</code> function:</p>
 <div class="sourceCode" id="cb91"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span>(<span class="no">MultiAssayExperiment</span>, <span class="no">prepped</span>)</pre></body></html></div>
 <pre><code>## A MultiAssayExperiment object of 4 listed
@@ -652,13 +662,14 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 ##  [2] Methyl 450k: matrix with 2 rows and 5 columns
 ##  [3] Mirna: matrix with 4 rows and 3 columns
 ##  [4] CNV gistic: RangedSummarizedExperiment with 5 rows and 4 columns
-## Features:
+## Functionality:
 ##  experiments() - obtain the ExperimentList instance
-##  colData() - the primary/phenotype DFrame
-##  sampleMap() - the sample availability DFrame
+##  colData() - the primary/phenotype DataFrame
+##  sampleMap() - the sample coordination DataFrame
 ##  `$`, `[`, `[[` - extract colData columns, subset, or experiment
-##  *Format() - convert into a long or wide DFrame
-##  assays() - convert ExperimentList to a SimpleList of matrices</code></pre>
+##  *Format() - convert into a long or wide DataFrame
+##  assays() - convert ExperimentList to a SimpleList of matrices
+##  exportClass() - save all data to files</code></pre>
 </div>
 <div id="helper-functions-to-create-bioconductor-classes-from-raw-data" class="section level2">
 <h2 class="hasAnchor">
@@ -732,13 +743,14 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 ##  Containing an ExperimentList class object of length 2:
 ##  [1] Affy: SummarizedExperiment with 1 rows and 4 columns
 ##  [2] Methyl 450k: matrix with 1 rows and 5 columns
-## Features:
+## Functionality:
 ##  experiments() - obtain the ExperimentList instance
-##  colData() - the primary/phenotype DFrame
-##  sampleMap() - the sample availability DFrame
+##  colData() - the primary/phenotype DataFrame
+##  sampleMap() - the sample coordination DataFrame
 ##  `$`, `[`, `[[` - extract colData columns, subset, or experiment
-##  *Format() - convert into a long or wide DFrame
-##  assays() - convert ExperimentList to a SimpleList of matrices</code></pre>
+##  *Format() - convert into a long or wide DataFrame
+##  assays() - convert ExperimentList to a SimpleList of matrices
+##  exportClass() - save all data to files</code></pre>
 <p>The above operation works across all types of assays, whether ID-based (e.g. <code>matrix</code>, <code>ExpressionSet</code>, <code>SummarizedExperiment</code>) or range-based (e.g. <code>RangedSummarizedExperiment</code>). Note that when using the bracket method <code><a href="https://rdrr.io/r/base/Extract.html">[</a></code>, the drop argument is <em>TRUE</em> by default.</p>
 <p>You can subset by rows, columns, and assays in a single bracket operation, and they will be performed in that order (rows, then columns, then assays). The following selects the <code>ENST00000355076</code> gene across all samples, then the first two samples of each assay, and finally the Affy and Methyl 450k assays:</p>
 <div class="sourceCode" id="cb104"><html><body><pre class="r"><span class="no">myMultiAssay</span>[<span class="st">"ENST00000355076"</span>, <span class="fl">1</span>:<span class="fl">2</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Affy"</span>, <span class="st">"Methyl 450k"</span>)]</pre></body></html></div>
@@ -749,13 +761,14 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 ##  Containing an ExperimentList class object of length 2:
 ##  [1] Affy: SummarizedExperiment with 1 rows and 2 columns
 ##  [2] Methyl 450k: matrix with 1 rows and 3 columns
-## Features:
+## Functionality:
 ##  experiments() - obtain the ExperimentList instance
-##  colData() - the primary/phenotype DFrame
-##  sampleMap() - the sample availability DFrame
+##  colData() - the primary/phenotype DataFrame
+##  sampleMap() - the sample coordination DataFrame
 ##  `$`, `[`, `[[` - extract colData columns, subset, or experiment
-##  *Format() - convert into a long or wide DFrame
-##  assays() - convert ExperimentList to a SimpleList of matrices</code></pre>
+##  *Format() - convert into a long or wide DataFrame
+##  assays() - convert ExperimentList to a SimpleList of matrices
+##  exportClass() - save all data to files</code></pre>
 </div>
 <div id="subsetting-by-character-integer-and-logical" class="section level2">
 <h2 class="hasAnchor">
@@ -769,13 +782,14 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 ##  [2] Methyl 450k: matrix with 2 rows and 2 columns
 ##  [3] Mirna: matrix with 4 rows and 1 columns
 ##  [4] CNV gistic: RangedSummarizedExperiment with 5 rows and 1 columns
-## Features:
+## Functionality:
 ##  experiments() - obtain the ExperimentList instance
-##  colData() - the primary/phenotype DFrame
-##  sampleMap() - the sample availability DFrame
+##  colData() - the primary/phenotype DataFrame
+##  sampleMap() - the sample coordination DataFrame
 ##  `$`, `[`, `[[` - extract colData columns, subset, or experiment
-##  *Format() - convert into a long or wide DFrame
-##  assays() - convert ExperimentList to a SimpleList of matrices</code></pre>
+##  *Format() - convert into a long or wide DataFrame
+##  assays() - convert ExperimentList to a SimpleList of matrices
+##  exportClass() - save all data to files</code></pre>
 <div class="sourceCode" id="cb109"><html><body><pre class="r"><span class="no">myMultiAssay</span>[, <span class="fl">1</span>, ]</pre></body></html></div>
 <pre><code>## A MultiAssayExperiment object of 4 listed
 ##  experiments with user-defined names and respective classes.
@@ -784,13 +798,14 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 ##  [2] Methyl 450k: matrix with 2 rows and 2 columns
 ##  [3] Mirna: matrix with 4 rows and 1 columns
 ##  [4] CNV gistic: RangedSummarizedExperiment with 5 rows and 1 columns
-## Features:
+## Functionality:
 ##  experiments() - obtain the ExperimentList instance
-##  colData() - the primary/phenotype DFrame
-##  sampleMap() - the sample availability DFrame
+##  colData() - the primary/phenotype DataFrame
+##  sampleMap() - the sample coordination DataFrame
 ##  `$`, `[`, `[[` - extract colData columns, subset, or experiment
-##  *Format() - convert into a long or wide DFrame
-##  assays() - convert ExperimentList to a SimpleList of matrices</code></pre>
+##  *Format() - convert into a long or wide DataFrame
+##  assays() - convert ExperimentList to a SimpleList of matrices
+##  exportClass() - save all data to files</code></pre>
 <div class="sourceCode" id="cb111"><html><body><pre class="r"><span class="no">myMultiAssay</span>[, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">TRUE</span>, <span class="fl">FALSE</span>, <span class="fl">FALSE</span>, <span class="fl">FALSE</span>), ]</pre></body></html></div>
 <pre><code>## A MultiAssayExperiment object of 4 listed
 ##  experiments with user-defined names and respective classes.
@@ -799,13 +814,14 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 ##  [2] Methyl 450k: matrix with 2 rows and 2 columns
 ##  [3] Mirna: matrix with 4 rows and 1 columns
 ##  [4] CNV gistic: RangedSummarizedExperiment with 5 rows and 1 columns
-## Features:
+## Functionality:
 ##  experiments() - obtain the ExperimentList instance
-##  colData() - the primary/phenotype DFrame
-##  sampleMap() - the sample availability DFrame
+##  colData() - the primary/phenotype DataFrame
+##  sampleMap() - the sample coordination DataFrame
 ##  `$`, `[`, `[[` - extract colData columns, subset, or experiment
-##  *Format() - convert into a long or wide DFrame
-##  assays() - convert ExperimentList to a SimpleList of matrices</code></pre>
+##  *Format() - convert into a long or wide DataFrame
+##  assays() - convert ExperimentList to a SimpleList of matrices
+##  exportClass() - save all data to files</code></pre>
 <p>By assay - character, integer, and logical are allowed:</p>
 <div class="sourceCode" id="cb113"><html><body><pre class="r"><span class="no">myMultiAssay</span>[, , <span class="st">"Mirna"</span>]</pre></body></html></div>
 <pre><code>## harmonizing input:
@@ -815,13 +831,14 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 ##  experiment with a user-defined name and respective class.
 ##  Containing an ExperimentList class object of length 1:
 ##  [1] Mirna: matrix with 4 rows and 3 columns
-## Features:
+## Functionality:
 ##  experiments() - obtain the ExperimentList instance
-##  colData() - the primary/phenotype DFrame
-##  sampleMap() - the sample availability DFrame
+##  colData() - the primary/phenotype DataFrame
+##  sampleMap() - the sample coordination DataFrame
 ##  `$`, `[`, `[[` - extract colData columns, subset, or experiment
-##  *Format() - convert into a long or wide DFrame
-##  assays() - convert ExperimentList to a SimpleList of matrices</code></pre>
+##  *Format() - convert into a long or wide DataFrame
+##  assays() - convert ExperimentList to a SimpleList of matrices
+##  exportClass() - save all data to files</code></pre>
 <div class="sourceCode" id="cb116"><html><body><pre class="r"><span class="no">myMultiAssay</span>[, , <span class="fl">3</span>]</pre></body></html></div>
 <pre><code>## harmonizing input:
 ##   removing 13 sampleMap rows not in names(experiments)
@@ -830,13 +847,14 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 ##  experiment with a user-defined name and respective class.
 ##  Containing an ExperimentList class object of length 1:
 ##  [1] Mirna: matrix with 4 rows and 3 columns
-## Features:
+## Functionality:
 ##  experiments() - obtain the ExperimentList instance
-##  colData() - the primary/phenotype DFrame
-##  sampleMap() - the sample availability DFrame
+##  colData() - the primary/phenotype DataFrame
+##  sampleMap() - the sample coordination DataFrame
 ##  `$`, `[`, `[[` - extract colData columns, subset, or experiment
-##  *Format() - convert into a long or wide DFrame
-##  assays() - convert ExperimentList to a SimpleList of matrices</code></pre>
+##  *Format() - convert into a long or wide DataFrame
+##  assays() - convert ExperimentList to a SimpleList of matrices
+##  exportClass() - save all data to files</code></pre>
 <div class="sourceCode" id="cb119"><html><body><pre class="r"><span class="no">myMultiAssay</span>[, , <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">FALSE</span>, <span class="fl">FALSE</span>, <span class="fl">TRUE</span>, <span class="fl">FALSE</span>, <span class="fl">FALSE</span>)]</pre></body></html></div>
 <pre><code>## harmonizing input:
 ##   removing 13 sampleMap rows not in names(experiments)
@@ -845,13 +863,14 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 ##  experiment with a user-defined name and respective class.
 ##  Containing an ExperimentList class object of length 1:
 ##  [1] Mirna: matrix with 4 rows and 3 columns
-## Features:
+## Functionality:
 ##  experiments() - obtain the ExperimentList instance
-##  colData() - the primary/phenotype DFrame
-##  sampleMap() - the sample availability DFrame
+##  colData() - the primary/phenotype DataFrame
+##  sampleMap() - the sample coordination DataFrame
 ##  `$`, `[`, `[[` - extract colData columns, subset, or experiment
-##  *Format() - convert into a long or wide DFrame
-##  assays() - convert ExperimentList to a SimpleList of matrices</code></pre>
+##  *Format() - convert into a long or wide DataFrame
+##  assays() - convert ExperimentList to a SimpleList of matrices
+##  exportClass() - save all data to files</code></pre>
 </div>
 <div id="the-drop-argument" class="section level2">
 <h2 class="hasAnchor">
@@ -865,13 +884,14 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 ##  [2] Methyl 450k: matrix with 1 rows and 5 columns
 ##  [3] Mirna: matrix with 0 rows and 3 columns
 ##  [4] CNV gistic: RangedSummarizedExperiment with 0 rows and 4 columns
-## Features:
+## Functionality:
 ##  experiments() - obtain the ExperimentList instance
-##  colData() - the primary/phenotype DFrame
-##  sampleMap() - the sample availability DFrame
+##  colData() - the primary/phenotype DataFrame
+##  sampleMap() - the sample coordination DataFrame
 ##  `$`, `[`, `[[` - extract colData columns, subset, or experiment
-##  *Format() - convert into a long or wide DFrame
-##  assays() - convert ExperimentList to a SimpleList of matrices</code></pre>
+##  *Format() - convert into a long or wide DataFrame
+##  assays() - convert ExperimentList to a SimpleList of matrices
+##  exportClass() - save all data to files</code></pre>
 <p>Using the default <code>drop=TRUE</code>, assays with no rows or no columns are removed:</p>
 <div class="sourceCode" id="cb124"><html><body><pre class="r"><span class="no">myMultiAssay</span>[<span class="st">"ENST00000355076"</span>, , , <span class="kw">drop</span><span class="kw">=</span><span class="fl">TRUE</span>]</pre></body></html></div>
 <pre><code>## harmonizing input:
@@ -881,13 +901,14 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 ##  Containing an ExperimentList class object of length 2:
 ##  [1] Affy: SummarizedExperiment with 1 rows and 4 columns
 ##  [2] Methyl 450k: matrix with 1 rows and 5 columns
-## Features:
+## Functionality:
 ##  experiments() - obtain the ExperimentList instance
-##  colData() - the primary/phenotype DFrame
-##  sampleMap() - the sample availability DFrame
+##  colData() - the primary/phenotype DataFrame
+##  sampleMap() - the sample coordination DataFrame
 ##  `$`, `[`, `[[` - extract colData columns, subset, or experiment
-##  *Format() - convert into a long or wide DFrame
-##  assays() - convert ExperimentList to a SimpleList of matrices</code></pre>
+##  *Format() - convert into a long or wide DataFrame
+##  assays() - convert ExperimentList to a SimpleList of matrices
+##  exportClass() - save all data to files</code></pre>
 </div>
 <div id="more-on-subsetting-by-columns" class="section level2">
 <h2 class="hasAnchor">
@@ -895,12 +916,12 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 <p>Experimental samples are stored in the rows of <code>colData</code> but the columns of elements of <code>ExperimentList</code>, so when we refer to subsetting by columns, we are referring to columns of the experimental assays. Subsetting by samples / columns will be more obvious after recalling the <code>colData</code>:</p>
 <div class="sourceCode" id="cb127"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html">colData</a></span>(<span class="no">myMultiAssay</span>)</pre></body></html></div>
 <pre><code>## DataFrame with 4 rows and 2 columns
-##              sex       age
-##         &lt;factor&gt; &lt;integer&gt;
-## Jack           M        38
-## Jill           F        39
-## Bob            M        40
-## Barbara        F        41</code></pre>
+##                 sex       age
+##         &lt;character&gt; &lt;integer&gt;
+## Jack              M        38
+## Jill              F        39
+## Bob               M        40
+## Barbara           F        41</code></pre>
 <p>Subsetting by samples identifies the selected samples in rows of the colData DataFrame, then selects all columns of the <code>ExperimentList</code> corresponding to these rows. Here we use an integer to keep the first two rows of colData, and all experimental assays associated to those two primary samples:</p>
 <div class="sourceCode" id="cb129"><html><body><pre class="r"><span class="no">myMultiAssay</span>[, <span class="fl">1</span>:<span class="fl">2</span>]</pre></body></html></div>
 <pre><code>## A MultiAssayExperiment object of 4 listed
@@ -910,22 +931,23 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 ##  [2] Methyl 450k: matrix with 2 rows and 3 columns
 ##  [3] Mirna: matrix with 4 rows and 1 columns
 ##  [4] CNV gistic: RangedSummarizedExperiment with 5 rows and 2 columns
-## Features:
+## Functionality:
 ##  experiments() - obtain the ExperimentList instance
-##  colData() - the primary/phenotype DFrame
-##  sampleMap() - the sample availability DFrame
+##  colData() - the primary/phenotype DataFrame
+##  sampleMap() - the sample coordination DataFrame
 ##  `$`, `[`, `[[` - extract colData columns, subset, or experiment
-##  *Format() - convert into a long or wide DFrame
-##  assays() - convert ExperimentList to a SimpleList of matrices</code></pre>
+##  *Format() - convert into a long or wide DataFrame
+##  assays() - convert ExperimentList to a SimpleList of matrices
+##  exportClass() - save all data to files</code></pre>
 <p>Note that the above operation keeps different numbers of columns / samples from each assay, reflecting the reality that some samples may not have been assayed in all experiments, and may have replicates in some.</p>
 <p>Columns can be subset using a logical vector. Here the dollar sign operator (<code><a href="https://rdrr.io/r/base/Extract.html">$</a></code>) accesses one of the columns in <code>colData</code>.</p>
 <div class="sourceCode" id="cb131"><html><body><pre class="r"><span class="no">malesMultiAssay</span> <span class="kw">&lt;-</span> <span class="no">myMultiAssay</span>[, <span class="no">myMultiAssay</span>$<span class="no">sex</span> <span class="kw">==</span> <span class="st">"M"</span>]
 <span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html">colData</a></span>(<span class="no">malesMultiAssay</span>)</pre></body></html></div>
 <pre><code>## DataFrame with 2 rows and 2 columns
-##           sex       age
-##      &lt;factor&gt; &lt;integer&gt;
-## Jack        M        38
-## Bob         M        40</code></pre>
+##              sex       age
+##      &lt;character&gt; &lt;integer&gt;
+## Jack           M        38
+## Bob            M        40</code></pre>
 <p>Finally, for special use cases you can exert detailed control of row or column subsetting, by using a <code>list</code> or <code>CharacterList</code> to subset. The following creates a <code>CharacterList</code> of the column names of each assay:</p>
 <div class="sourceCode" id="cb133"><html><body><pre class="r"><span class="no">allsamples</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span>(<span class="no">myMultiAssay</span>)
 <span class="no">allsamples</span></pre></body></html></div>
@@ -946,13 +968,14 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 ##  [2] Methyl 450k: matrix with 2 rows and 2 columns
 ##  [3] Mirna: matrix with 4 rows and 3 columns
 ##  [4] CNV gistic: RangedSummarizedExperiment with 5 rows and 4 columns
-## Features:
+## Functionality:
 ##  experiments() - obtain the ExperimentList instance
-##  colData() - the primary/phenotype DFrame
-##  sampleMap() - the sample availability DFrame
+##  colData() - the primary/phenotype DataFrame
+##  sampleMap() - the sample coordination DataFrame
 ##  `$`, `[`, `[[` - extract colData columns, subset, or experiment
-##  *Format() - convert into a long or wide DFrame
-##  assays() - convert ExperimentList to a SimpleList of matrices</code></pre>
+##  *Format() - convert into a long or wide DataFrame
+##  assays() - convert ExperimentList to a SimpleList of matrices
+##  exportClass() - save all data to files</code></pre>
 <div class="sourceCode" id="cb138"><html><body><pre class="r"><span class="fu"><a href="../reference/subsetBy.html">subsetByColumn</a></span>(<span class="no">myMultiAssay</span>,  <span class="fu"><a href="https://rdrr.io/r/base/list.html">as.list</a></span>(<span class="no">allsamples</span>))  <span class="co">#equivalent</span></pre></body></html></div>
 <pre><code>## harmonizing input:
 ##   removing 3 sampleMap rows with 'colname' not in colnames of experiments</code></pre>
@@ -963,13 +986,14 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 ##  [2] Methyl 450k: matrix with 2 rows and 2 columns
 ##  [3] Mirna: matrix with 4 rows and 3 columns
 ##  [4] CNV gistic: RangedSummarizedExperiment with 5 rows and 4 columns
-## Features:
+## Functionality:
 ##  experiments() - obtain the ExperimentList instance
-##  colData() - the primary/phenotype DFrame
-##  sampleMap() - the sample availability DFrame
+##  colData() - the primary/phenotype DataFrame
+##  sampleMap() - the sample coordination DataFrame
 ##  `$`, `[`, `[[` - extract colData columns, subset, or experiment
-##  *Format() - convert into a long or wide DFrame
-##  assays() - convert ExperimentList to a SimpleList of matrices</code></pre>
+##  *Format() - convert into a long or wide DataFrame
+##  assays() - convert ExperimentList to a SimpleList of matrices
+##  exportClass() - save all data to files</code></pre>
 </div>
 <div id="subsetting-assays" class="section level2">
 <h2 class="hasAnchor">
@@ -983,13 +1007,14 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 ##  Containing an ExperimentList class object of length 2:
 ##  [1] Affy: SummarizedExperiment with 2 rows and 4 columns
 ##  [2] CNV gistic: RangedSummarizedExperiment with 5 rows and 4 columns
-## Features:
+## Functionality:
 ##  experiments() - obtain the ExperimentList instance
-##  colData() - the primary/phenotype DFrame
-##  sampleMap() - the sample availability DFrame
+##  colData() - the primary/phenotype DataFrame
+##  sampleMap() - the sample coordination DataFrame
 ##  `$`, `[`, `[[` - extract colData columns, subset, or experiment
-##  *Format() - convert into a long or wide DFrame
-##  assays() - convert ExperimentList to a SimpleList of matrices</code></pre>
+##  *Format() - convert into a long or wide DataFrame
+##  assays() - convert ExperimentList to a SimpleList of matrices
+##  exportClass() - save all data to files</code></pre>
 <p>You can subset assays also using logical or integer vectors:</p>
 <div class="sourceCode" id="cb144"><html><body><pre class="r"><span class="no">is.cnv</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">grepl</a></span>(<span class="st">"CNV"</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span>(<span class="fu"><a href="../reference/MultiAssayExperiment-methods.html">experiments</a></span>(<span class="no">myMultiAssay</span>)))
 <span class="no">is.cnv</span></pre></body></html></div>
@@ -1001,13 +1026,14 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 ##  experiment with a user-defined name and respective class.
 ##  Containing an ExperimentList class object of length 1:
 ##  [1] CNV gistic: RangedSummarizedExperiment with 5 rows and 4 columns
-## Features:
+## Functionality:
 ##  experiments() - obtain the ExperimentList instance
-##  colData() - the primary/phenotype DFrame
-##  sampleMap() - the sample availability DFrame
+##  colData() - the primary/phenotype DataFrame
+##  sampleMap() - the sample coordination DataFrame
 ##  `$`, `[`, `[[` - extract colData columns, subset, or experiment
-##  *Format() - convert into a long or wide DFrame
-##  assays() - convert ExperimentList to a SimpleList of matrices</code></pre>
+##  *Format() - convert into a long or wide DataFrame
+##  assays() - convert ExperimentList to a SimpleList of matrices
+##  exportClass() - save all data to files</code></pre>
 <div class="sourceCode" id="cb149"><html><body><pre class="r"><span class="no">myMultiAssay</span>[, , <span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span>(<span class="no">is.cnv</span>)] <span class="co">#integer subsetting</span></pre></body></html></div>
 <pre><code>## harmonizing input:
 ##   removing 12 sampleMap rows not in names(experiments)</code></pre>
@@ -1015,13 +1041,14 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 ##  experiment with a user-defined name and respective class.
 ##  Containing an ExperimentList class object of length 1:
 ##  [1] CNV gistic: RangedSummarizedExperiment with 5 rows and 4 columns
-## Features:
+## Functionality:
 ##  experiments() - obtain the ExperimentList instance
-##  colData() - the primary/phenotype DFrame
-##  sampleMap() - the sample availability DFrame
+##  colData() - the primary/phenotype DataFrame
+##  sampleMap() - the sample coordination DataFrame
 ##  `$`, `[`, `[[` - extract colData columns, subset, or experiment
-##  *Format() - convert into a long or wide DFrame
-##  assays() - convert ExperimentList to a SimpleList of matrices</code></pre>
+##  *Format() - convert into a long or wide DataFrame
+##  assays() - convert ExperimentList to a SimpleList of matrices
+##  exportClass() - save all data to files</code></pre>
 </div>
 <div id="subsetting-rows-features-by-ids-integers-or-logicals" class="section level2">
 <h2 class="hasAnchor">
@@ -1042,13 +1069,14 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 ##  [2] Methyl 450k: matrix with 2 rows and 5 columns
 ##  [3] Mirna: matrix with 2 rows and 3 columns
 ##  [4] CNV gistic: RangedSummarizedExperiment with 5 rows and 4 columns
-## Features:
+## Functionality:
 ##  experiments() - obtain the ExperimentList instance
-##  colData() - the primary/phenotype DFrame
-##  sampleMap() - the sample availability DFrame
+##  colData() - the primary/phenotype DataFrame
+##  sampleMap() - the sample coordination DataFrame
 ##  `$`, `[`, `[[` - extract colData columns, subset, or experiment
-##  *Format() - convert into a long or wide DFrame
-##  assays() - convert ExperimentList to a SimpleList of matrices</code></pre>
+##  *Format() - convert into a long or wide DataFrame
+##  assays() - convert ExperimentList to a SimpleList of matrices
+##  exportClass() - save all data to files</code></pre>
 <div class="sourceCode" id="cb154"><html><body><pre class="r"><span class="co">## equivalently</span>
 <span class="fu"><a href="../reference/subsetBy.html">subsetByRow</a></span>(<span class="no">myMultiAssay</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">Mirna</span> <span class="kw">=</span> <span class="fl">1</span>:<span class="fl">2</span>))</pre></body></html></div>
 <pre><code>## A MultiAssayExperiment object of 4 listed
@@ -1058,13 +1086,14 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 ##  [2] Methyl 450k: matrix with 2 rows and 5 columns
 ##  [3] Mirna: matrix with 2 rows and 3 columns
 ##  [4] CNV gistic: RangedSummarizedExperiment with 5 rows and 4 columns
-## Features:
+## Functionality:
 ##  experiments() - obtain the ExperimentList instance
-##  colData() - the primary/phenotype DFrame
-##  sampleMap() - the sample availability DFrame
+##  colData() - the primary/phenotype DataFrame
+##  sampleMap() - the sample coordination DataFrame
 ##  `$`, `[`, `[[` - extract colData columns, subset, or experiment
-##  *Format() - convert into a long or wide DFrame
-##  assays() - convert ExperimentList to a SimpleList of matrices</code></pre>
+##  *Format() - convert into a long or wide DataFrame
+##  assays() - convert ExperimentList to a SimpleList of matrices
+##  exportClass() - save all data to files</code></pre>
 <p>Again, these operations always return a <code>MultiAssayExperiment</code> class, unless <code>drop=TRUE</code> is passed to the <code><a href="https://rdrr.io/r/base/Extract.html">[</a></code> backet subset, with any <code>ExperimentList</code> element not containing the feature having zero rows.</p>
 <p>For example, return a MultiAssayExperiment where <code>Affy</code> and <code>Methyl 450k</code> contain only “ENST0000035076”" row, and “Mirna” and “CNV gistic” have zero rows (<code>drop</code> argument is set to <code>FALSE</code> by default in <code>subsetBy*</code>):</p>
 <div class="sourceCode" id="cb156"><html><body><pre class="r"><span class="no">featSub0</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/subsetBy.html">subsetByRow</a></span>(<span class="no">myMultiAssay</span>, <span class="st">"ENST00000355076"</span>)
@@ -1165,12 +1194,12 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 <p>The <code>complete.cases</code> function returns a logical vector of <code>colData</code> rows identifying which primary units have data for all experiments. Recall that <code>myMultiAssay</code> provides data for four individuals:</p>
 <div class="sourceCode" id="cb179"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html">colData</a></span>(<span class="no">myMultiAssay</span>)</pre></body></html></div>
 <pre><code>## DataFrame with 4 rows and 2 columns
-##              sex       age
-##         &lt;factor&gt; &lt;integer&gt;
-## Jack           M        38
-## Jill           F        39
-## Bob            M        40
-## Barbara        F        41</code></pre>
+##                 sex       age
+##         &lt;character&gt; &lt;integer&gt;
+## Jack              M        38
+## Jill              F        39
+## Bob               M        40
+## Barbara           F        41</code></pre>
 <p>Of these, only Jack has data for all 5 experiments:</p>
 <div class="sourceCode" id="cb181"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/stats/complete.cases.html">complete.cases</a></span>(<span class="no">myMultiAssay</span>)</pre></body></html></div>
 <pre><code>## [1]  TRUE FALSE  TRUE  TRUE</code></pre>
@@ -1186,13 +1215,14 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 ##  [2] Methyl 450k: matrix with 2 rows and 4 columns
 ##  [3] Mirna: matrix with 4 rows and 3 columns
 ##  [4] CNV gistic: RangedSummarizedExperiment with 5 rows and 3 columns
-## Features:
+## Functionality:
 ##  experiments() - obtain the ExperimentList instance
-##  colData() - the primary/phenotype DFrame
-##  sampleMap() - the sample availability DFrame
+##  colData() - the primary/phenotype DataFrame
+##  sampleMap() - the sample coordination DataFrame
 ##  `$`, `[`, `[[` - extract colData columns, subset, or experiment
-##  *Format() - convert into a long or wide DFrame
-##  assays() - convert ExperimentList to a SimpleList of matrices</code></pre>
+##  *Format() - convert into a long or wide DataFrame
+##  assays() - convert ExperimentList to a SimpleList of matrices
+##  exportClass() - save all data to files</code></pre>
 </div>
 <div id="replicated" class="section level2">
 <h2 class="hasAnchor">
@@ -1240,13 +1270,14 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 ##  Containing an ExperimentList class object of length 2:
 ##  [1] Affy: SummarizedExperiment with 1 rows and 4 columns
 ##  [2] Methyl 450k: matrix with 1 rows and 5 columns
-## Features:
+## Functionality:
 ##  experiments() - obtain the ExperimentList instance
-##  colData() - the primary/phenotype DFrame
-##  sampleMap() - the sample availability DFrame
+##  colData() - the primary/phenotype DataFrame
+##  sampleMap() - the sample coordination DataFrame
 ##  `$`, `[`, `[[` - extract colData columns, subset, or experiment
-##  *Format() - convert into a long or wide DFrame
-##  assays() - convert ExperimentList to a SimpleList of matrices</code></pre>
+##  *Format() - convert into a long or wide DataFrame
+##  assays() - convert ExperimentList to a SimpleList of matrices
+##  exportClass() - save all data to files</code></pre>
 <div class="sourceCode" id="cb192"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span>(<span class="no">ensmblMatches</span>)</pre></body></html></div>
 <pre><code>## CharacterList of length 2
 ## [["Affy"]] ENST00000355076
@@ -1265,13 +1296,14 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 ##  [2] Methyl 450k: matrix with 2 rows and 4 columns
 ##  [3] Mirna: matrix with 4 rows and 3 columns
 ##  [4] CNV gistic: RangedSummarizedExperiment with 5 rows and 3 columns
-## Features:
+## Functionality:
 ##  experiments() - obtain the ExperimentList instance
-##  colData() - the primary/phenotype DFrame
-##  sampleMap() - the sample availability DFrame
+##  colData() - the primary/phenotype DataFrame
+##  sampleMap() - the sample coordination DataFrame
 ##  `$`, `[`, `[[` - extract colData columns, subset, or experiment
-##  *Format() - convert into a long or wide DFrame
-##  assays() - convert ExperimentList to a SimpleList of matrices</code></pre>
+##  *Format() - convert into a long or wide DataFrame
+##  assays() - convert ExperimentList to a SimpleList of matrices
+##  exportClass() - save all data to files</code></pre>
 </div>
 <div id="mergereplicates" class="section level2">
 <h2 class="hasAnchor">
@@ -1288,13 +1320,14 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 ##  [2] Methyl 450k: matrix with 2 rows and 3 columns
 ##  [3] Mirna: matrix with 4 rows and 3 columns
 ##  [4] CNV gistic: RangedSummarizedExperiment with 5 rows and 3 columns
-## Features:
+## Functionality:
 ##  experiments() - obtain the ExperimentList instance
-##  colData() - the primary/phenotype DFrame
-##  sampleMap() - the sample availability DFrame
+##  colData() - the primary/phenotype DataFrame
+##  sampleMap() - the sample coordination DataFrame
 ##  `$`, `[`, `[[` - extract colData columns, subset, or experiment
-##  *Format() - convert into a long or wide DFrame
-##  assays() - convert ExperimentList to a SimpleList of matrices</code></pre>
+##  *Format() - convert into a long or wide DataFrame
+##  assays() - convert ExperimentList to a SimpleList of matrices
+##  exportClass() - save all data to files</code></pre>
 </div>
 <div id="combine-c" class="section level2">
 <h2 class="hasAnchor">
@@ -1316,13 +1349,14 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 ##  [3] Mirna: matrix with 4 rows and 3 columns
 ##  [4] CNV gistic: RangedSummarizedExperiment with 5 rows and 4 columns
 ##  [5] ExpScores: matrix with 2 rows and 4 columns
-## Features:
+## Functionality:
 ##  experiments() - obtain the ExperimentList instance
-##  colData() - the primary/phenotype DFrame
-##  sampleMap() - the sample availability DFrame
+##  colData() - the primary/phenotype DataFrame
+##  sampleMap() - the sample coordination DataFrame
 ##  `$`, `[`, `[[` - extract colData columns, subset, or experiment
-##  *Format() - convert into a long or wide DFrame
-##  assays() - convert ExperimentList to a SimpleList of matrices</code></pre>
+##  *Format() - convert into a long or wide DataFrame
+##  assays() - convert ExperimentList to a SimpleList of matrices
+##  exportClass() - save all data to files</code></pre>
 <p><em>Note</em>: Alternatively, a <code>sampleMap</code> for the additional dataset can be provided.</p>
 <p style="text-align: right;">
 <a href="#header">back to top</a>
@@ -1347,16 +1381,16 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 ## assays(1): ''
 ## rownames(2): ENST00000294241 ENST00000355076
 ## rowData names(0):
-## colnames(4): Jack Jill Bob Barbara
-## colData names(2): sex age</code></pre>
+## colnames(4): array1 array2 array3 array4
+## colData names(3): slope53 sex age</code></pre>
 <div class="sourceCode" id="cb205"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html">colData</a></span>(<span class="no">affex</span>)</pre></body></html></div>
-<pre><code>## DataFrame with 4 rows and 2 columns
-##              sex       age
-##         &lt;factor&gt; &lt;integer&gt;
-## Jack           M        38
-## Jill           F        39
-## Bob            M        40
-## Barbara        F        41</code></pre>
+<pre><code>## DataFrame with 4 rows and 3 columns
+##          slope53         sex       age
+##        &lt;numeric&gt; &lt;character&gt; &lt;integer&gt;
+## array1  0.284771           M        38
+## array2  1.319831           F        39
+## array3 -0.268640           F        41
+## array4  0.228149           M        40</code></pre>
 <div class="sourceCode" id="cb207"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span>(<span class="no">affex</span>)</pre></body></html></div>
 <pre><code>## [1] "SummarizedExperiment"
 ## attr(,"package")
@@ -1409,11 +1443,11 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 ##   removing 1 sampleMap rows with 'colname' not in colnames of experiments</code></pre>
 <div class="sourceCode" id="cb217"><html><body><pre class="r"><span class="fu"><a href="../reference/MultiAssayExperiment-helpers.html">wideFormat</a></span>(<span class="no">maemerge</span>, <span class="kw">colDataCols</span><span class="kw">=</span><span class="st">"sex"</span>)[, <span class="fl">1</span>:<span class="fl">5</span>]</pre></body></html></div>
 <pre><code>## DataFrame with 3 rows and 5 columns
-##       primary      sex Affy_ENST00000294241 Affy_ENST00000355076
-##   &lt;character&gt; &lt;factor&gt;            &lt;integer&gt;            &lt;integer&gt;
-## 1        Jack        M                  101                  102
-## 2         Bob        M                  107                  108
-## 3     Barbara        F                  105                  106
+##       primary         sex Affy_ENST00000294241 Affy_ENST00000355076
+##   &lt;character&gt; &lt;character&gt;            &lt;integer&gt;            &lt;integer&gt;
+## 1        Jack           M                  101                  102
+## 2         Bob           M                  107                  108
+## 3     Barbara           F                  105                  106
 ##   Methyl.450k_ENST00000355076
 ##                     &lt;numeric&gt;
 ## 1                           2
@@ -1530,7 +1564,7 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 <h1 class="hasAnchor">
 <a href="#sessioninfo" class="anchor"></a>sessionInfo()</h1>
 <div class="sourceCode" id="cb234"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo</a></span>()</pre></body></html></div>
-<pre><code>## R version 3.6.3 Patched (2020-03-11 r78281)
+<pre><code>## R version 4.0.0 beta (2020-04-14 r78225)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
 ## Running under: Ubuntu 19.10
 ## 
@@ -1551,31 +1585,30 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 ## [8] methods   base     
 ## 
 ## other attached packages:
-##  [1] RaggedExperiment_1.10.0     MultiAssayExperiment_1.12.6
-##  [3] SummarizedExperiment_1.16.1 DelayedArray_0.12.3        
-##  [5] BiocParallel_1.20.1         matrixStats_0.56.0         
-##  [7] Biobase_2.46.0              GenomicRanges_1.38.0       
-##  [9] GenomeInfoDb_1.22.1         IRanges_2.20.2             
-## [11] S4Vectors_0.24.4            BiocGenerics_0.32.0        
-## [13] BiocStyle_2.14.4           
+##  [1] RaggedExperiment_1.12.0     MultiAssayExperiment_1.14.1
+##  [3] SummarizedExperiment_1.18.1 DelayedArray_0.14.0        
+##  [5] matrixStats_0.56.0          Biobase_2.48.0             
+##  [7] GenomicRanges_1.40.0        GenomeInfoDb_1.24.0        
+##  [9] IRanges_2.22.1              S4Vectors_0.26.0           
+## [11] BiocGenerics_0.34.0         BiocStyle_2.16.0           
 ## 
 ## loaded via a namespace (and not attached):
 ##  [1] tidyselect_1.0.0       xfun_0.13              purrr_0.3.4           
 ##  [4] lattice_0.20-41        vctrs_0.2.4            htmltools_0.4.0       
-##  [7] yaml_2.2.1             rlang_0.4.5            pkgdown_1.5.1         
-## [10] pillar_1.4.3           glue_1.4.0             GenomeInfoDbData_1.2.2
-## [13] lifecycle_0.2.0        stringr_1.4.0          zlibbioc_1.32.0       
+##  [7] yaml_2.2.1             rlang_0.4.6            pkgdown_1.5.1         
+## [10] pillar_1.4.4           glue_1.4.0             GenomeInfoDbData_1.2.3
+## [13] lifecycle_0.2.0        stringr_1.4.0          zlibbioc_1.34.0       
 ## [16] memoise_1.1.0          evaluate_0.14          knitr_1.28            
 ## [19] highr_0.8              Rcpp_1.0.4.6           backports_1.1.6       
-## [22] BiocManager_1.30.10    desc_1.2.0             XVector_0.26.0        
+## [22] BiocManager_1.30.10    desc_1.2.0             XVector_0.28.0        
 ## [25] fs_1.4.1               digest_0.6.25          stringi_1.4.6         
 ## [28] bookdown_0.18          dplyr_0.8.5            rprojroot_1.3-2       
-## [31] grid_3.6.3             tools_3.6.3            bitops_1.0-6          
+## [31] grid_4.0.0             tools_4.0.0            bitops_1.0-6          
 ## [34] magrittr_1.5           RCurl_1.98-1.2         tibble_3.0.1          
 ## [37] crayon_1.3.4           tidyr_1.0.2            pkgconfig_2.0.3       
-## [40] MASS_7.3-51.5          ellipsis_0.3.0         Matrix_1.2-18         
+## [40] MASS_7.3-51.6          ellipsis_0.3.0         Matrix_1.2-18         
 ## [43] assertthat_0.2.1       rmarkdown_2.1          R6_2.4.1              
-## [46] compiler_3.6.3</code></pre>
+## [46] compiler_4.0.0</code></pre>
 <p style="text-align: right;">
 <a href="#header">back to top</a>
 </p>

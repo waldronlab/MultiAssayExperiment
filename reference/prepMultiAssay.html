@@ -75,7 +75,7 @@ the colData, or sampleMap." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MultiAssayExperiment</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.12.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.14.1</span>
       </span>
     </div>
 
@@ -105,12 +105,17 @@ the colData, or sampleMap." />
     </li>
   </ul>
 </li>
-<li>
-  <a href="../news/index.html">
-    <span class="fa fa-newspaper-o"></span>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    News
      
-    NEWS
+    <span class="caret"></span>
   </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../news/index.html">Release Notes</a>
+    </li>
+  </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -306,13 +311,14 @@ necessary.</p>
 #&gt;  [2] Methyl450k: matrix with 5 rows and 5 columns
 #&gt;  [3] RNASeqGene: matrix with 5 rows and 4 columns
 #&gt;  [4] GISTIC: RangedSummarizedExperiment with 5 rows and 3 columns
-#&gt; Features:
+#&gt; Functionality:
 #&gt;  experiments() - obtain the ExperimentList instance
-#&gt;  colData() - the primary/phenotype DFrame
-#&gt;  sampleMap() - the sample availability DFrame
+#&gt;  colData() - the primary/phenotype DataFrame
+#&gt;  sampleMap() - the sample coordination DataFrame
 #&gt;  `$`, `[`, `[[` - extract colData columns, subset, or experiment
-#&gt;  *Format() - convert into a long or wide DFrame
-#&gt;  assays() - convert ExperimentList to a SimpleList of matrices</div><div class='input'>
+#&gt;  *Format() - convert into a long or wide DataFrame
+#&gt;  assays() - convert ExperimentList to a SimpleList of matrices
+#&gt;  exportClass() - save all data to files</div><div class='input'>
 <span class='co'>## Alternatively, use the do.call function</span>
 <span class='fu'><a href='https://rdrr.io/r/base/do.call.html'>do.call</a></span>(<span class='no'>MultiAssayExperiment</span>, <span class='no'>preparedMAE</span>)</div><div class='output co'>#&gt; A MultiAssayExperiment object of 4 listed
 #&gt;  experiments with user-defined names and respective classes.
@@ -321,13 +327,14 @@ necessary.</p>
 #&gt;  [2] Methyl450k: matrix with 5 rows and 5 columns
 #&gt;  [3] RNASeqGene: matrix with 5 rows and 4 columns
 #&gt;  [4] GISTIC: RangedSummarizedExperiment with 5 rows and 3 columns
-#&gt; Features:
+#&gt; Functionality:
 #&gt;  experiments() - obtain the ExperimentList instance
-#&gt;  colData() - the primary/phenotype DFrame
-#&gt;  sampleMap() - the sample availability DFrame
+#&gt;  colData() - the primary/phenotype DataFrame
+#&gt;  sampleMap() - the sample coordination DataFrame
 #&gt;  `$`, `[`, `[[` - extract colData columns, subset, or experiment
-#&gt;  *Format() - convert into a long or wide DFrame
-#&gt;  assays() - convert ExperimentList to a SimpleList of matrices</div><div class='input'>
+#&gt;  *Format() - convert into a long or wide DataFrame
+#&gt;  assays() - convert ExperimentList to a SimpleList of matrices
+#&gt;  exportClass() - save all data to files</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

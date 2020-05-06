@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MultiAssayExperiment</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.12.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.14.0</span>
       </span>
     </div>
 
@@ -101,12 +101,17 @@
     </li>
   </ul>
 </li>
-<li>
-  <a href="../news/index.html">
-    <span class="fa fa-newspaper-o"></span>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    News
      
-    NEWS
+    <span class="caret"></span>
   </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../news/index.html">Release Notes</a>
+    </li>
+  </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -141,20 +146,27 @@
 <li>Package now in <code>Bioc-devel</code>!</li>
 <li>More to come!</li>
 </ul>
-<div id="new-features-35" class="section level2">
+<div id="new-features-36" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-features-35" class="anchor"></a>New features</h2>
+<a href="#new-features-36" class="anchor"></a>New features</h2>
 <ul>
 <li>Replacement method for <code>colnames</code> now available for the <code>RangedRaggedAssay</code> class.</li>
+</ul>
+</div>
+<div id="bug-fixes-and-minor-improvements-28" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-fixes-and-minor-improvements-28" class="anchor"></a>Bug fixes and minor improvements</h2>
+<ul>
+<li>Documentation additions</li>
 </ul>
 </div>
 </div>
     <div id="multiassayexperiment-099194" class="section level1">
 <h1 class="page-header" data-toc-text="0.99.194">
 <a href="#multiassayexperiment-099194" class="anchor"></a>MultiAssayExperiment 0.99.194</h1>
-<div id="new-features-34" class="section level2">
+<div id="new-features-35" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-features-34" class="anchor"></a>New features</h2>
+<a href="#new-features-35" class="anchor"></a>New features</h2>
 <ul>
 <li>Subsetting by non-character i (<a href='https://github.com/waldronlab/MultiAssayExperiment/issues/108'>#108</a>)</li>
 <li>
@@ -163,13 +175,24 @@
 <li>Preliminary assay method for RangedRaggedAssay</li>
 </ul>
 </div>
+<div id="bug-fixes-and-minor-improvements-27" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-fixes-and-minor-improvements-27" class="anchor"></a>Bug fixes and minor improvements</h2>
+<ul>
+<li>superflous <code>subset</code> function removed</li>
+<li>
+<code>sampleMap</code> uses character vectors instead of Rle</li>
+<li>Elist order consistent when subsetting</li>
+<li>mapToList preserves list order</li>
+</ul>
+</div>
 </div>
     <div id="multiassayexperiment-099202" class="section level1">
 <h1 class="page-header" data-toc-text="0.99.202">
 <a href="#multiassayexperiment-099202" class="anchor"></a>MultiAssayExperiment 0.99.202</h1>
-<div id="new-features-33" class="section level2">
+<div id="new-features-34" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-features-33" class="anchor"></a>New features</h2>
+<a href="#new-features-34" class="anchor"></a>New features</h2>
 <ul>
 <li>
 <code>assay</code> method available for <code>RangedRaggedAssay</code> and other classes. Created to obtain raw data from certain classes (see <code>?assay,(class),ANY-method</code>).</li>

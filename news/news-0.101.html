@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MultiAssayExperiment</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.12.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.14.0</span>
       </span>
     </div>
 
@@ -101,12 +101,17 @@
     </li>
   </ul>
 </li>
-<li>
-  <a href="../news/index.html">
-    <span class="fa fa-newspaper-o"></span>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    News
      
-    NEWS
+    <span class="caret"></span>
   </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../news/index.html">Release Notes</a>
+    </li>
+  </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -164,22 +169,31 @@
     <div id="multiassayexperiment-010137" class="section level1">
 <h1 class="page-header" data-toc-text="0.101.37">
 <a href="#multiassayexperiment-010137" class="anchor"></a>MultiAssayExperiment 0.101.37</h1>
-<div id="new-features-32" class="section level2">
+<div id="new-features-33" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-features-32" class="anchor"></a>New features</h2>
+<a href="#new-features-33" class="anchor"></a>New features</h2>
 <ul>
 <li>
 <code>sampleMap</code> column names renamed to <strong>assay</strong> (prev. “assayname”), <strong>primary</strong>, and <strong>colname</strong> (prev. “assay”)</li>
 <li>New vignete available for creating <code>MultiAssayExperiment</code> objects with TCGA data</li>
 </ul>
 </div>
+<div id="bug-fixes-and-minor-improvements-26" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-fixes-and-minor-improvements-26" class="anchor"></a>Bug fixes and minor improvements</h2>
+<ul>
+<li>Added informative error to <code>MultiAssayExperiment</code> constructor</li>
+<li>Improved <code>show</code> method display</li>
+<li>Removed warning message when only <code>ExperimentList</code> argument provided</li>
+</ul>
+</div>
 </div>
     <div id="multiassayexperiment-010138" class="section level1">
 <h1 class="page-header" data-toc-text="0.101.38">
 <a href="#multiassayexperiment-010138" class="anchor"></a>MultiAssayExperiment 0.101.38</h1>
-<div id="new-features-31" class="section level2">
+<div id="new-features-32" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-features-31" class="anchor"></a>New features</h2>
+<a href="#new-features-32" class="anchor"></a>New features</h2>
 <ul>
 <li>
 <code>complete.cases</code> method available for the <code>MultiAssayExperiment</code> class</li>
@@ -189,9 +203,9 @@
     <div id="multiassayexperiment-010139" class="section level1">
 <h1 class="page-header" data-toc-text="0.101.39">
 <a href="#multiassayexperiment-010139" class="anchor"></a>MultiAssayExperiment 0.101.39</h1>
-<div id="new-features-30" class="section level2">
+<div id="new-features-31" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-features-30" class="anchor"></a>New features</h2>
+<a href="#new-features-31" class="anchor"></a>New features</h2>
 <ul>
 <li>
 <code>updateObject</code> method now available for old instances of the <code>MultiAssayExperiment</code>
@@ -199,13 +213,21 @@
 <li>Users with invalid <code>MultiAssayExperiments</code> should update and re-serialize them</li>
 </ul>
 </div>
+<div id="bug-fixes-and-minor-improvements-25" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-fixes-and-minor-improvements-25" class="anchor"></a>Bug fixes and minor improvements</h2>
+<ul>
+<li>
+<code>drop</code> argument now works as intended when using <code>List</code> inherited objects</li>
+</ul>
+</div>
 </div>
     <div id="multiassayexperiment-010140" class="section level1">
 <h1 class="page-header" data-toc-text="0.101.40">
 <a href="#multiassayexperiment-010140" class="anchor"></a>MultiAssayExperiment 0.101.40</h1>
-<div id="new-features-29" class="section level2">
+<div id="new-features-30" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-features-29" class="anchor"></a>New features</h2>
+<a href="#new-features-30" class="anchor"></a>New features</h2>
 <ul>
 <li>Improved <code>MultiAssayExperiment</code> constructor with renamed argument “experiments” for the <code>ExperimentList</code> or <code>list</code> input.</li>
 </ul>
@@ -214,26 +236,42 @@
     <div id="multiassayexperiment-010142" class="section level1">
 <h1 class="page-header" data-toc-text="0.101.42">
 <a href="#multiassayexperiment-010142" class="anchor"></a>MultiAssayExperiment 0.101.42</h1>
-<div id="new-features-28" class="section level2">
+<div id="new-features-29" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-features-28" class="anchor"></a>New features</h2>
+<a href="#new-features-29" class="anchor"></a>New features</h2>
 <ul>
 <li>
 <code>metadata&lt;-</code> set method now available for the <code>MultiAssayExperiment</code>
 </li>
 </ul>
 </div>
+<div id="bug-fixes-and-minor-improvements-24" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-fixes-and-minor-improvements-24" class="anchor"></a>Bug fixes and minor improvements</h2>
+<ul>
+<li>
+<code>metadata</code> argument available in the <code>MultiAssayExperiment</code> constructor function</li>
+<li>Fix bug when subsetting for unmatched samples/colnames (drop = FALSE) in constructor</li>
+</ul>
+</div>
 </div>
     <div id="multiassayexperiment-010143" class="section level1">
 <h1 class="page-header" data-toc-text="0.101.43">
 <a href="#multiassayexperiment-010143" class="anchor"></a>MultiAssayExperiment 0.101.43</h1>
+<div id="bug-fixes-and-minor-improvements-23" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-fixes-and-minor-improvements-23" class="anchor"></a>Bug fixes and minor improvements</h2>
+<ul>
+<li>Improved <code>MultiAssayExperiment</code> constructor now handles stray assays, colnames, pData rownames, and <code>sampleMap</code> rows</li>
+</ul>
+</div>
 </div>
     <div id="multiassayexperiment-010144" class="section level1">
 <h1 class="page-header" data-toc-text="0.101.44">
 <a href="#multiassayexperiment-010144" class="anchor"></a>MultiAssayExperiment 0.101.44</h1>
-<div id="new-features-27" class="section level2">
+<div id="new-features-28" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-features-27" class="anchor"></a>New features</h2>
+<a href="#new-features-28" class="anchor"></a>New features</h2>
 <ul>
 <li>
 <code><a href="https://rdrr.io/r/base/Extract.html">$</a></code> (DollarSign) method available for <code>MultiAssayExperiment</code> to access <code>pData</code> column</li>
@@ -243,33 +281,41 @@
     <div id="multiassayexperiment-010145" class="section level1">
 <h1 class="page-header" data-toc-text="0.101.45">
 <a href="#multiassayexperiment-010145" class="anchor"></a>MultiAssayExperiment 0.101.45</h1>
-<div id="new-features-26" class="section level2">
+<div id="new-features-27" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-features-26" class="anchor"></a>New features</h2>
+<a href="#new-features-27" class="anchor"></a>New features</h2>
 <ul>
 <li>
 <code>dimnames</code> method added to <code>RangedRaggedAssay</code>
 </li>
 </ul>
 </div>
+<div id="bug-fixes-and-minor-improvements-22" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-fixes-and-minor-improvements-22" class="anchor"></a>Bug fixes and minor improvements</h2>
+<ul>
+<li>Improved <code>RangedRaggedAssay</code> rowname construction</li>
+<li>Improved <code>show</code> method for the <code>RangedRaggedAssay</code> class</li>
+</ul>
+</div>
 </div>
     <div id="multiassayexperiment-010149" class="section level1">
 <h1 class="page-header" data-toc-text="0.101.49">
 <a href="#multiassayexperiment-010149" class="anchor"></a>MultiAssayExperiment 0.101.49</h1>
-<div id="new-features-25" class="section level2">
+<div id="new-features-26" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-features-25" class="anchor"></a>New features</h2>
+<a href="#new-features-26" class="anchor"></a>New features</h2>
 <ul>
 <li>Example section added to vignette for converting data frames to Bioconductor objects</li>
 </ul>
-</div>
-<div id="minor-improvements" class="section level2">
-<h2 class="hasAnchor">
-<a href="#minor-improvements" class="anchor"></a>Minor improvements</h2>
+<div id="minor-improvements" class="section level3">
+<h3 class="hasAnchor">
+<a href="#minor-improvements" class="anchor"></a>Minor improvements</h3>
 <ul>
 <li>A proper <code>dimnames</code> method added to <code>MultiAssayExperiment</code>
 </li>
 </ul>
+</div>
 </div>
 </div>
   </div>

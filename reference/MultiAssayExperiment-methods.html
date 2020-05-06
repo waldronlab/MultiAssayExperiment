@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Accessing/modifying slot information — MultiAssayExperiment-methods • MultiAssayExperiment</title>
+<title>Accessing and modifying information in MultiAssayExperiment — MultiAssayExperiment-methods • MultiAssayExperiment</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,7 @@
 
 
 
-<meta property="og:title" content="Accessing/modifying slot information — MultiAssayExperiment-methods" />
+<meta property="og:title" content="Accessing and modifying information in MultiAssayExperiment — MultiAssayExperiment-methods" />
 <meta property="og:description" content="A set of accessor and setter generic functions to extract
 either the sampleMap, the ExperimentList,
 colData, or metadata slots of a
@@ -75,7 +75,7 @@ MultiAssayExperiment object" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MultiAssayExperiment</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.12.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.14.1</span>
       </span>
     </div>
 
@@ -105,12 +105,17 @@ MultiAssayExperiment object" />
     </li>
   </ul>
 </li>
-<li>
-  <a href="../news/index.html">
-    <span class="fa fa-newspaper-o"></span>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    News
      
-    NEWS
+    <span class="caret"></span>
   </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../news/index.html">Release Notes</a>
+    </li>
+  </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -133,7 +138,7 @@ MultiAssayExperiment object" />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Accessing/modifying slot information</h1>
+    <h1>Accessing and modifying information in MultiAssayExperiment</h1>
     <small class="dont-index">Source: <a href='https://github.com/waldronlab/MultiAssayExperiment/blob/master/R/MultiAssayExperiment-class.R'><code>R/MultiAssayExperiment-class.R</code></a>, <a href='https://github.com/waldronlab/MultiAssayExperiment/blob/master/R/MultiAssayExperiment-methods.R'><code>R/MultiAssayExperiment-methods.R</code></a></small>
     <div class="hidden name"><code>MultiAssayExperiment-methods.Rd</code></div>
     </div>
@@ -160,10 +165,16 @@ metadata(x)
 # S4 method for MultiAssayExperiment,DataFrame
 sampleMap(object) &lt;- value
 
+# S4 method for MultiAssayExperiment,ANY
+sampleMap(object) &lt;- value
+
 # S4 method for MultiAssayExperiment,ExperimentList
 experiments(object) &lt;- value
 
 # S4 method for MultiAssayExperiment,DataFrame
+colData(x) &lt;- value
+
+# S4 method for MultiAssayExperiment,ANY
 colData(x) &lt;- value
 
 # S4 method for MultiAssayExperiment
@@ -182,15 +193,11 @@ $(x, name)</pre>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>A <code>MultiAssayExperiment</code> object</p></td>
-    </tr>
-    <tr>
       <th>...</th>
       <td><p>Argument not in use</p></td>
     </tr>
     <tr>
-      <th>object</th>
+      <th>object, x</th>
       <td><p>A <code>MultiAssayExperiment</code> object</p></td>
     </tr>
     <tr>
@@ -337,26 +344,23 @@ exception of the <a href='ExperimentList.html'>ExperimentList</a> accessor named
 <span class='fu'>sampleMap</span>(<span class='no'>mae</span>)</div><div class='output co'>#&gt; DataFrame with 16 rows and 3 columns
 #&gt;          assay     primary     colname
 #&gt;       &lt;factor&gt; &lt;character&gt; &lt;character&gt;
-#&gt; 1         Affy        Jack      array1
-#&gt; 2         Affy        Jill      array2
-#&gt; 3         Affy     Barbara      array3
-#&gt; 4         Affy         Bob      array4
+#&gt; 1   Affy              Jack      array1
+#&gt; 2   Affy              Jill      array2
+#&gt; 3   Affy           Barbara      array3
+#&gt; 4   Affy               Bob      array4
 #&gt; 5   Methyl450k        Jack     methyl1
 #&gt; ...        ...         ...         ...
 #&gt; 12  RNASeqGene         Bob  samparray3
 #&gt; 13  RNASeqGene     Barbara  samparray4
-#&gt; 14      GISTIC        Jack       samp0
-#&gt; 15      GISTIC         Bob       samp1
-#&gt; 16      GISTIC        Jill       samp2</div><div class='input'>
+#&gt; 14  GISTIC            Jack       samp0
+#&gt; 15  GISTIC             Bob       samp1
+#&gt; 16  GISTIC            Jill       samp2</div><div class='input'>
 <span class='co'>## Replacement method for a MultiAssayExperiment sampleMap</span>
-<span class='fu'>sampleMap</span>(<span class='no'>mae</span>) <span class='kw'>&lt;-</span> <span class='kw pkg'>S4Vectors</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/S4Vectors/man/DataFrame-class.html'>DataFrame</a></span>()
-
+<span class='fu'>sampleMap</span>(<span class='no'>mae</span>) <span class='kw'>&lt;-</span> <span class='kw pkg'>S4Vectors</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/S4Vectors/man/DataFrame-class.html'>DataFrame</a></span>()</div><div class='output co'>#&gt; <span class='message'>harmonizing input:</span>
+#&gt; <span class='message'>  removing 4 colData rownames not in sampleMap 'primary'</span></div><div class='input'>
 <span class='co'>## Access the ExperimentList</span>
-<span class='fu'>experiments</span>(<span class='no'>mae</span>)</div><div class='output co'>#&gt; ExperimentList class object of length 4:
-#&gt;  [1] Affy: SummarizedExperiment with 5 rows and 4 columns
-#&gt;  [2] Methyl450k: matrix with 5 rows and 5 columns
-#&gt;  [3] RNASeqGene: matrix with 5 rows and 4 columns
-#&gt;  [4] GISTIC: RangedSummarizedExperiment with 5 rows and 3 columns</div><div class='input'>
+<span class='fu'>experiments</span>(<span class='no'>mae</span>)</div><div class='output co'>#&gt; ExperimentList class object of length 0:
+#&gt;  </div><div class='input'>
 <span class='co'>## Replace with an empty ExperimentList</span>
 <span class='fu'>experiments</span>(<span class='no'>mae</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='ExperimentList.html'>ExperimentList</a></span>()
 
@@ -367,15 +371,9 @@ exception of the <a href='ExperimentList.html'>ExperimentList</a> accessor named
     <span class='fu'><a href='https://rdrr.io/r/base/format.html'>format</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.time</a></span>(), <span class='st'>"%B %d, %Y"</span>))
 
 <span class='co'>## Access the colData</span>
-<span class='fu'>colData</span>(<span class='no'>mae</span>)</div><div class='output co'>#&gt; DataFrame with 4 rows and 2 columns
-#&gt;              sex       age
-#&gt;         &lt;factor&gt; &lt;integer&gt;
-#&gt; Jack           M        38
-#&gt; Jill           F        39
-#&gt; Bob            M        40
-#&gt; Barbara        F        41</div><div class='input'>
+<span class='fu'>colData</span>(<span class='no'>mae</span>)</div><div class='output co'>#&gt; DataFrame with 0 rows and 2 columns</div><div class='input'>
 <span class='co'>## Access a column in colData</span>
-<span class='no'>mae</span>$<span class='no'>age</span></div><div class='output co'>#&gt; [1] 38 39 40 41</div><div class='input'>
+<span class='no'>mae</span>$<span class='no'>age</span></div><div class='output co'>#&gt; integer(0)</div><div class='input'>
 <span class='co'>## Replace a column in colData</span>
 <span class='no'>mae</span>$<span class='no'>age</span> <span class='kw'>&lt;-</span> <span class='no'>mae</span>$<span class='no'>age</span> + <span class='fl'>1</span></div></pre>
   </div>

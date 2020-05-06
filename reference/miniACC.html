@@ -78,7 +78,7 @@ additional details are provided by metadata(miniACC)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MultiAssayExperiment</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.12.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.14.1</span>
       </span>
     </div>
 
@@ -108,12 +108,17 @@ additional details are provided by metadata(miniACC)." />
     </li>
   </ul>
 </li>
-<li>
-  <a href="../news/index.html">
-    <span class="fa fa-newspaper-o"></span>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    News
      
-    NEWS
+    <span class="caret"></span>
   </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../news/index.html">Release Notes</a>
+    </li>
+  </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -174,6 +179,7 @@ additional details are provided by metadata(miniACC).</p>
     5 samples were removed.</p></dd>
 
 </dl>
+
     <h2 class="hasAnchor" id="source"><a class="anchor" href="#source"></a>Source</h2>
 
     <p>https://github.com/waldronlab/multiassayexperiment-tcga</p>
@@ -191,13 +197,14 @@ Adrenocortical Carcinoma. Cancer Cell 2016, 29:723-736.</p>
 #&gt;  [3] RPPAArray: SummarizedExperiment with 33 rows and 46 columns
 #&gt;  [4] Mutations: matrix with 97 rows and 90 columns
 #&gt;  [5] miRNASeqGene: SummarizedExperiment with 471 rows and 80 columns
-#&gt; Features:
+#&gt; Functionality:
 #&gt;  experiments() - obtain the ExperimentList instance
-#&gt;  colData() - the primary/phenotype DFrame
-#&gt;  sampleMap() - the sample availability DFrame
+#&gt;  colData() - the primary/phenotype DataFrame
+#&gt;  sampleMap() - the sample coordination DataFrame
 #&gt;  `$`, `[`, `[[` - extract colData columns, subset, or experiment
-#&gt;  *Format() - convert into a long or wide DFrame
-#&gt;  assays() - convert ExperimentList to a SimpleList of matrices</div><div class='input'><span class='fu'>metadata</span>(<span class='no'>miniACC</span>)</div><div class='output co'>#&gt; $title
+#&gt;  *Format() - convert into a long or wide DataFrame
+#&gt;  assays() - convert ExperimentList to a SimpleList of matrices
+#&gt;  exportClass() - save all data to files</div><div class='input'><span class='fu'>metadata</span>(<span class='no'>miniACC</span>)</div><div class='output co'>#&gt; $title
 #&gt; [1] "Comprehensive Pan-Genomic Characterization of Adrenocortical Carcinoma"
 #&gt; 
 #&gt; $PMID
@@ -259,11 +266,11 @@ Adrenocortical Carcinoma. Cancer Cell 2016, 29:723-736.</p>
 #&gt; 169         gistict TCGA-PK-A5HC       MAPK3 TCGA-PK-A5HC-01A-11D-A309-01
 #&gt;         value vital_status days_to_death
 #&gt;     &lt;numeric&gt;    &lt;integer&gt;     &lt;integer&gt;
-#&gt; 1    946.6811            1          1355
-#&gt; 2   1699.3821            1          1677
-#&gt; 3   2347.2434            0            NA
-#&gt; 4   1299.1557            1           365
-#&gt; 5   2543.4239            0            NA
+#&gt; 1     946.681            1          1355
+#&gt; 2    1699.382            1          1677
+#&gt; 3    2347.243            0            NA
+#&gt; 4    1299.156            1           365
+#&gt; 5    2543.424            0            NA
 #&gt; ...       ...          ...           ...
 #&gt; 165         1            0            NA
 #&gt; 166         0            0            NA
@@ -273,17 +280,17 @@ Adrenocortical Carcinoma. Cancer Cell 2016, 29:723-736.</p>
 #&gt; <span class='message'>  removing 216 sampleMap rows not in names(experiments)</span></div><div class='output co'>#&gt; DataFrame with 92 rows and 5 columns
 #&gt;          primary vital_status days_to_death RNASeq2GeneNorm_MAPK3 gistict_MAPK3
 #&gt;      &lt;character&gt;    &lt;integer&gt;     &lt;integer&gt;             &lt;numeric&gt;     &lt;numeric&gt;
-#&gt; 1   TCGA-OR-A5J1            1          1355              946.6811             0
-#&gt; 2   TCGA-OR-A5J2            1          1677             1699.3821             0
-#&gt; 3   TCGA-OR-A5J3            0            NA             2347.2434             1
+#&gt; 1   TCGA-OR-A5J1            1          1355               946.681             0
+#&gt; 2   TCGA-OR-A5J2            1          1677              1699.382             0
+#&gt; 3   TCGA-OR-A5J3            0            NA              2347.243             1
 #&gt; 4   TCGA-OR-A5J4            1           423                    NA             0
-#&gt; 5   TCGA-OR-A5J5            1           365             1299.1557             1
+#&gt; 5   TCGA-OR-A5J5            1           365              1299.156             1
 #&gt; ...          ...          ...           ...                   ...           ...
-#&gt; 88  TCGA-PK-A5H9            0            NA             1013.4694             0
-#&gt; 89  TCGA-PK-A5HA            0            NA             2446.1246             0
-#&gt; 90  TCGA-PK-A5HB            0            NA             1463.3079             0
+#&gt; 88  TCGA-PK-A5H9            0            NA               1013.47             0
+#&gt; 89  TCGA-PK-A5HA            0            NA               2446.12             0
+#&gt; 90  TCGA-PK-A5HB            0            NA               1463.31             0
 #&gt; 91  TCGA-PK-A5HC            0            NA                    NA             1
-#&gt; 92  TCGA-P6-A5OG            1           383             1310.8799            -1</div><div class='input'>
+#&gt; 92  TCGA-P6-A5OG            1           383               1310.88            -1</div><div class='input'>
 <span class='co'>##</span>
 <span class='co'>## The following is the code used to create this mini dataset from the full ACC dataset.</span>
 <span class='co'>## The full ACC MultiAssayExperiment was created by the pipeline at</span>
