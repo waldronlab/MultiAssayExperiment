@@ -17,7 +17,7 @@ NULL
 ### MultiAssayExperiment class
 ### ----------------------------------------------
 
-#' An integrative multi-assay class for experiment data
+#' MultiAssayExperiment - An integrative multi-assay class for experiment data
 #'
 #' @description
 #' The \code{MultiAssayExperiment} class can be used to manage results of
@@ -179,7 +179,8 @@ setClass(
     list(experiments=experiments, sampleMap=sampleMap, colData=colData)
 }
 
-#' Construct a \code{MultiAssayExperiment} object
+#' Construct an integrative representation of multi-omic data with
+#' \code{MultiAssayExperiment}
 #'
 #' The constructor function for the \link{MultiAssayExperiment-class} combines
 #' multiple data elements from the different hierarchies of data
@@ -388,7 +389,7 @@ setMethod("show", "MultiAssayExperiment", function(object) {
 })
 
 #' @name MultiAssayExperiment-methods
-#' @title Accessing/modifying slot information
+#' @title Accessing and modifying information in MultiAssayExperiment
 #'
 #' @description A set of accessor and setter generic functions to extract
 #' either the \code{sampleMap}, the \code{\link{ExperimentList}},
@@ -644,7 +645,7 @@ setMethod("updateObject", "MultiAssayExperiment",
 ### MatchedAssayExperiment class
 ### ----------------------------------------------
 
-#' An integrative and matched-samples class for experiment data
+#' MatchedAssayExperiment - A matched-samples MultiAssayExperiment class
 #'
 #' @description
 #' This class supports the use of matched samples where an equal number
@@ -706,7 +707,6 @@ S4Vectors::setValidity2("MatchedAssayExperiment", .validMatchedAssayExperiment)
 
 #' @describeIn MatchedAssayExperiment-class Construct a
 #' \code{MatchedAssayExperiment} class from \linkS4class{MultiAssayExperiment}
-#' inputs.
 #'
 #' @param ... Either a single MultiAssayExperiment or the components to create
 #' a valid MultiAssayExperiment

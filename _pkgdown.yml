@@ -1,0 +1,66 @@
+title: MultiAssayExperiment
+
+template:
+  params:
+    bootswatch: flatly
+
+reference:
+  - title: Classes
+    desc: Exported classes
+    contents:
+      - ExperimentList-class
+      - MultiAssayExperiment-class
+      - MatchedAssayExperiment-class
+  - title: Constructors
+    desc: Build objects with designated constructor functions
+    contents:
+      - MultiAssayExperiment
+      - ExperimentList
+  - title: Methods and Accessors
+    desc: Discover content within MultiAssayExperiment
+    contents:
+      - MultiAssayExperiment-class
+      - MultiAssayExperiment-methods
+  - title: Subsetting
+    desc: Easy operations for selecting rows, columns, and/or biological units
+    contents:
+      - subsetBy
+  - title: Management and Reshaping
+    desc: Work with and reshape data
+    contents:
+      - MultiAssayExperiment-helpers
+      - upsetSamples
+      - listToMap
+      - prepMultiAssay
+  - title: Misc. Package Docs
+    desc: Other package information and data
+    contents:
+      - MultiAssayExperiment-package
+      - hasAssay
+      - reexports 
+      - miniACC
+
+navbar:
+  title: ~
+  type: default
+  left:
+    - text: Quick Reference
+      href: reference/index.html
+    - text: Vignettes
+      menu:
+      - text: Quick Start Guide
+        href: articles/QuickStartMultiAssay.html
+      - text: Getting Started
+        href: articles/MultiAssayExperiment.html
+      - text: Using DelayedMatrix
+        href: articles/UsingHDF5Array.html
+      - text: MultiAssayExperiment in Practice
+        href: articles/extras/MAE-curatedMetagenomicData.html
+    - text: News
+      menu:
+      - text: "Release Notes"
+        href: news/index.html
+  right:
+  - icon: fa-github fa-lg
+    href: https://github.com/waldronlab/MultiAssayExperiment
+
