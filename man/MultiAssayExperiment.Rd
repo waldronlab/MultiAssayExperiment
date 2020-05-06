@@ -2,7 +2,8 @@
 % Please edit documentation in R/MultiAssayExperiment-class.R
 \name{MultiAssayExperiment}
 \alias{MultiAssayExperiment}
-\title{Construct a \code{MultiAssayExperiment} object}
+\title{Construct an integrative representation of multi-omic data with
+\code{MultiAssayExperiment}}
 \usage{
 MultiAssayExperiment(
   experiments = ExperimentList(),

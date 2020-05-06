@@ -20,7 +20,7 @@
 \alias{$<-,MultiAssayExperiment-method}
 \alias{names<-,MultiAssayExperiment-method}
 \alias{$,MultiAssayExperiment-method}
-\title{Accessing/modifying slot information}
+\title{Accessing and modifying information in MultiAssayExperiment}
 \usage{
 \S4method{sampleMap}{MultiAssayExperiment}(x)
 

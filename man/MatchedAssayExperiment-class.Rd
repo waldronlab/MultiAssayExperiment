@@ -5,7 +5,7 @@
 \alias{MatchedAssayExperiment-class}
 \alias{MatchedAssayExperiment}
 \alias{coerce,MultiAssayExperiment,MatchedAssayExperiment-method}
-\title{An integrative and matched-samples class for experiment data}
+\title{MatchedAssayExperiment - A matched-samples MultiAssayExperiment class}
 \usage{
 MatchedAssayExperiment(...)
 }
@@ -24,7 +24,6 @@ of observations per biological unit are present in all assays.
 \itemize{
 \item \code{MatchedAssayExperiment}: Construct a
 \code{MatchedAssayExperiment} class from \linkS4class{MultiAssayExperiment}
-inputs.
 }}
 
 \examples{

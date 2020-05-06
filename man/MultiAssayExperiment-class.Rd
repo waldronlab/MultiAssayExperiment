@@ -16,7 +16,7 @@
 \alias{assay,MultiAssayExperiment,missing-method}
 \alias{assay,MultiAssayExperiment,numeric-method}
 \alias{assay,MultiAssayExperiment,character-method}
-\title{An integrative multi-assay class for experiment data}
+\title{MultiAssayExperiment - An integrative multi-assay class for experiment data}
 \usage{
 \S4method{show}{MultiAssayExperiment}(object)
 

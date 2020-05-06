@@ -2,8 +2,7 @@
 % Please edit documentation in R/ExperimentList-class.R
 \name{ExperimentList}
 \alias{ExperimentList}
-\title{Construct an \code{ExperimentList} object for the \code{MultiAssayExperiment}
-object slot.}
+\title{Represent multiple experiments as a List-derivative \code{ExperimentList}}
 \usage{
 ExperimentList(...)
 }
