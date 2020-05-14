@@ -172,7 +172,7 @@ coerceToExperimentList <- function(from) {
 }
 
 #' @rdname ExperimentList-class
-#' @name coerce
+#' @name coerce-ExperimentList
 #'
 #' @aliases coerce,list,ExperimentList-method coerce,List,ExperimentList-method
 #'

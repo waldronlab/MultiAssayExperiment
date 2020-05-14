@@ -670,7 +670,7 @@ setMethod("updateObject", "MultiAssayExperiment",
 }
 
 #' @rdname MultiAssayExperiment-class
-#' @name coerce
+#' @name coerce-MultiAssayExperiment
 #'
 #' @aliases coerce,list,MultiAssayExperiment-method
 #'     coerce,List,MultiAssayExperiment-method

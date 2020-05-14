@@ -8,7 +8,7 @@
 \alias{length,MultiAssayExperiment-method}
 \alias{names,MultiAssayExperiment-method}
 \alias{updateObject,MultiAssayExperiment-method}
-\alias{coerce}
+\alias{coerce-MultiAssayExperiment}
 \alias{coerce,list,MultiAssayExperiment-method}
 \alias{coerce,List,MultiAssayExperiment-method}
 \alias{dimnames,MultiAssayExperiment-method}

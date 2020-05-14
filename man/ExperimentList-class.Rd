@@ -6,7 +6,7 @@
 \name{ExperimentList-class}
 \alias{ExperimentList-class}
 \alias{show,ExperimentList-method}
-\alias{coerce}
+\alias{coerce-ExperimentList}
 \alias{coerce,list,ExperimentList-method}
 \alias{coerce,List,ExperimentList-method}
 \alias{isEmpty,ExperimentList-method}
