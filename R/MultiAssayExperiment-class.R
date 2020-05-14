@@ -570,7 +570,6 @@ setReplaceMethod("colData", c("MultiAssayExperiment", "ANY"),
     }
 )
 
-
 .rearrangeMap <- function(sampMap) {
     return(DataFrame(assay = factor(sampMap[["assayname"]]),
                      primary = sampMap[["primary"]],
@@ -642,214 +641,66 @@ setMethod("updateObject", "MultiAssayExperiment",
             drops = object@drops)
     })
 
-### ==============================================
-### MatchedAssayExperiment class
-### ----------------------------------------------
-
-#' MatchedAssayExperiment - A matched-samples MultiAssayExperiment class
-#'
-#' @description
-#' This class supports the use of matched samples where an equal number
-#' of observations per biological unit are present in all assays.
-#'
-#' @return A \code{MatchedAssayExperiment} object
-#'
-#' @exportClass MatchedAssayExperiment
-#' @seealso \link{MultiAssayExperiment}
-#'
-setClass("MatchedAssayExperiment", contains="MultiAssayExperiment")
-
-.checkEqualPrimaries <- function(object) {
-    listMap <- mapToList(sampleMap(object))
-    primaryIDs <- lapply(listMap, function(x) x[["primary"]])
-    allIDsEqual <- all(vapply(seq_along(primaryIDs)[-1], function(i, prim) {
-        identical(prim[[1L]], prim[[i]])
-    }, FUN.VALUE = logical(1L), prim = primaryIDs))
-    if (!allIDsEqual)
-        "Primary identifiers are not equal across assays"
-    else
-        NULL
-}
-
-.checkPrimaryOrder <- function(object) {
-    colPrimary <- rownames(colData(object))
-    listMap <- mapToList(sampleMap(object))
-    primaryIDs <- lapply(listMap, function(x) x[["primary"]])
-    allOrdered <- all(vapply(primaryIDs, function(prim) {
-        identical(colPrimary, prim)
-    }, logical(1L)))
-    if (!allOrdered)
-        "colData row identifiers not identical to sampleMap primary column"
-    else
-        NULL
-}
-
-.validMatchedAssayExperiment <- function(object) {
-    if (length(object) != 0L) {
-    c(.checkEqualPrimaries(object),
-      .checkPrimaryOrder(object))
-    }
-}
-
-S4Vectors::setValidity2("MatchedAssayExperiment", .validMatchedAssayExperiment)
-
-.doMatching <- function(from) {
-    if (!isEmpty(from)) {
-    from <- intersectColumns(from)
-
-    if (all(!lengths(colnames(from))))
-        stop("No biological unit(s) measured across all assays")
-
-    if (any(anyReplicated(from)))
-        stop("Resolve replicate columns")
-    }
-    from
-}
-
-#' @describeIn MatchedAssayExperiment-class Construct a
-#' \code{MatchedAssayExperiment} class from \linkS4class{MultiAssayExperiment}
-#'
-#' @param ... Either a single MultiAssayExperiment or the components to create
-#' a valid MultiAssayExperiment
-#'
-#' @examples
-#' data("miniACC")
-#' acc <- as(miniACC, "MatchedAssayExperiment")
-#' acc
-#'
-#' @aliases MatchedAssayExperiment
-#' coerce,MultiAssayExperiment,MatchedAssayExperiment-method
-#'
-#' @export MatchedAssayExperiment
-MatchedAssayExperiment <- function(...) {
-    listData <- list(...)
-    if (length(listData) && is(listData[[1L]], "MultiAssayExperiment"))
-            multiassay <- listData[[1L]]
-    else
-        multiassay <- MultiAssayExperiment(...)
-    multiassay <- .doMatching(multiassay)
-    new("MatchedAssayExperiment", multiassay)
-}
-
-setAs("MultiAssayExperiment", "MatchedAssayExperiment", function(from) {
-    from <- .doMatching(from)
-    new("MatchedAssayExperiment", from)
-})
-
-.metasize <- function(metlist) {
-    atmos <- vapply(metlist, is.atomic, logical(1L))
-    sum(any(atmos), !atmos)
-}
-
-.chr2fxn <- function(fmt) {
-    sep <- switch(fmt, csv = ",", "\t")
-    cols <- switch(fmt, csv = NA, TRUE)
-    qme <- switch(fmt, csv = "double", "escape")
-    function(...) utils::write.table(..., sep = sep,
-        col.names = cols, qmethod = qme)
-}
-
-.sortMetadata <- function(object, objname, dir, fmt, ext, ...) {
-    metas <- metadata(object)
-    stopifnot(is.list(metas))
-    atmos <- vapply(metas, is.atomic, logical(1L))
-    metatxt <- metas[atmos]
-
-    fnames <- character(0L)
-    if (length(metatxt)) {
-        fpath <- file.path(dir, paste0(objname, "_META_0", ext))
-        if (!is.function(fmt))
-            fmt <- .chr2fxn(fmt)
-        fmt(as.data.frame(metatxt), fpath, ...)
-        fnames <- fpath
-    }
-    if (any(!atmos)) {
-        nonato <- metas[!atmos]
-        nonatos <- seq_along(nonato)
-        mpaths <- file.path(dir, paste0(objname, "_META_", nonatos, ext))
-        tryCatch({
-            invisible(
-                lapply(nonatos, function(i) {
-                    fmt(as(nonato[[i]], "data.frame"), mpaths[[i]], ...)
-                })
+.mergeColData <- function(inlist) {
+    CDbyEXP <- lapply(names(inlist),
+        function(i, x) {
+            tryCatch({
+                S4Vectors::DataFrame(colData(x[[i]]), experiment_name = i)
+            }, error = function(e) {
+                S4Vectors::DataFrame(row.names = colnames(x[[i]]))
+            } )
+        }, x = inlist
+    )
+    colDatas <- Filter(function(y) { !isEmpty(y) }, CDbyEXP)
+    if (length(colDatas)) {
+        rnames <- unlist(lapply(colDatas, rownames))
+        res <- Reduce(function(x, y) {
+            S4Vectors::merge(
+                x, y, by = intersect(names(x), names(y)),
+                all = TRUE, sort = FALSE
             )
-        }, error = function(e) conditionMessage(e))
-        fnames <- c(fnames, mpaths)
+        }, colDatas)
+        rownames(res) <- rnames
+    } else {
+        res <- S4Vectors::DataFrame(
+            row.names = unlist(lapply(CDbyEXP, rownames))
+        )
     }
-    fnames
+    res
 }
 
-#' @export
-setGeneric("exportClass",
-    function(object, dir = tempdir(), fmt, ext, match = FALSE,
-        verbose = TRUE, ...) {
-        standardGeneric("exportClass")
+#' @rdname MultiAssayExperiment-class
+#' @name coerce
+#'
+#' @aliases coerce,list,MultiAssayExperiment-method
+#'     coerce,List,MultiAssayExperiment-method
+#'
+#' @section
+#' coercion:
+#'   Convert a `list` or S4 `List` to a MultiAssayExperiment object using the
+#'   \link[methods]{as} function.
+#'
+#' In the following example, `x` is either a `list` or \linkS4class{List}:
+#'
+#'     `as(x, "MultiAssayExperiment")`
+#'
+#' @md
+#'
+#' @exportMethod coerce
+
+setAs("list", "MultiAssayExperiment", function(from) {
+        newfrom <- as(from, "List")
+        as(newfrom, "MultiAssayExperiment")
     }
 )
 
-#' @describeIn MultiAssayExperiment Export data from class to a series
-#'     of text files
-#'
-#' @param dir character(1) A directory for saving exported data (default:
-#'     `tempdir()`)
-#'
-#' @param fmt character(1) or function() Either a format character atomic as
-#'     supported by `write.table` either ('csv', or 'tsv') or a function whose
-#'     first two arguments are 'object to save' and 'file location'
-#'
-#' @param ext character(1) A file extension supported by the format argument
-#'
-#' @param match logical(1) Whether to coerce the current object to a
-#'     'MatchedAssayExperiment' object (default: FALSE)
-#'
-#' @param verbose logical(1) Whether to print additional information (default
-#'     TRUE)
-#'
-#' @aliases exportClass
-#' @exportMethod exportClass
-setMethod("exportClass", "MultiAssayExperiment",
-    function(object, dir = tempdir(), fmt, ext, match = FALSE,
-            verbose = TRUE, ...) {
-        if (missing(dir) || !dir.exists(dir))
-            stop("Specify a valid folder location for saving data files")
-        objname <- as.character(substitute(object))
-
-        if (isTRUE(match))
-            object <- as(object, "MatchedAssayExperiment")
-
-        nfiles <- sum(length(object), !isEmpty(colData(object)),
-            !isEmpty(sampleMap(object)), .metasize(metadata(object)))
-        if (missing(verbose) || !isFALSE(verbose))
-            message("Writing about ", nfiles, " files to disk...")
-
-        if (is.function(fmt) && missing(ext))
-            stop("Provide a valid file extention, see 'ext' argument")
-
-        if (!is.function(fmt) && !is.character(fmt))
-            stop("Invalid format type: must be 'character' or 'function'")
-
-        if (is.character(fmt)) {
-            if (missing(ext))
-                ext <- paste0(".", fmt)
-            fmt <- .chr2fxn(fmt)
-        }
-
-        coldatname <- paste0(objname, "_", "colData", ext)
-        sampmapname <- paste0(objname, "_", "sampleMap", ext)
-
-        exfnames <- file.path(dir,
-            c(paste0(objname, "_", names(experiments(object)), ext),
-            coldatname, sampmapname))
-        alists <- lapply(assays(object), as.data.frame)
-        lists <- c(alists, list(coldat = as.data.frame(colData(object)),
-            sampmap = as.data.frame(sampleMap(object))))
-
-        metafs <- .sortMetadata(object, objname, dir, fmt, ext)
-
-        invisible(Map(function(fname, lobject) {
-            fmt(lobject, fname, ...)
-        }, exfnames, lists))
-
-        c(metafs, exfnames)
+setAs("List", "MultiAssayExperiment", function(from) {
+        metaf <- metadata(from)
+        explist <- as(from, "ExperimentList")
+        colData <- .mergeColData(from)
+        MultiAssayExperiment(
+            experiments = explist, colData = colData, metadata = metaf
+        )
     }
 )
+

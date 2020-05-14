@@ -180,3 +180,127 @@ setMethod("c", "MultiAssayExperiment",
     }
     return(x)
 })
+
+### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+### Converter - exportClass
+###
+
+.metasize <- function(metlist) {
+    atmos <- vapply(metlist, is.atomic, logical(1L))
+    sum(any(atmos), !atmos)
+}
+
+.chr2fxn <- function(fmt) {
+    sep <- switch(fmt, csv = ",", "\t")
+    cols <- switch(fmt, csv = NA, TRUE)
+    qme <- switch(fmt, csv = "double", "escape")
+    function(...) utils::write.table(..., sep = sep,
+        col.names = cols, qmethod = qme)
+}
+
+.sortMetadata <- function(object, objname, dir, fmt, ext, ...) {
+    metas <- metadata(object)
+    stopifnot(is.list(metas))
+    atmos <- vapply(metas, is.atomic, logical(1L))
+    metatxt <- metas[atmos]
+
+    fnames <- character(0L)
+    if (length(metatxt)) {
+        fpath <- file.path(dir, paste0(objname, "_META_0", ext))
+        if (!is.function(fmt))
+            fmt <- .chr2fxn(fmt)
+        fmt(as.data.frame(metatxt), fpath, ...)
+        fnames <- fpath
+    }
+    if (any(!atmos)) {
+        nonato <- metas[!atmos]
+        nonatos <- seq_along(nonato)
+        mpaths <- file.path(dir, paste0(objname, "_META_", nonatos, ext))
+        tryCatch({
+            invisible(
+                lapply(nonatos, function(i) {
+                    fmt(as(nonato[[i]], "data.frame"), mpaths[[i]], ...)
+                })
+            )
+        }, error = function(e) conditionMessage(e))
+        fnames <- c(fnames, mpaths)
+    }
+    fnames
+}
+
+
+#' @export
+setGeneric("exportClass",
+    function(object, dir = tempdir(), fmt, ext, match = FALSE,
+        verbose = TRUE, ...) {
+        standardGeneric("exportClass")
+    }
+)
+
+#' @describeIn MultiAssayExperiment Export data from class to a series
+#'     of text files
+#'
+#' @param dir character(1) A directory for saving exported data (default:
+#'     `tempdir()`)
+#'
+#' @param fmt character(1) or function() Either a format character atomic as
+#'     supported by `write.table` either ('csv', or 'tsv') or a function whose
+#'     first two arguments are 'object to save' and 'file location'
+#'
+#' @param ext character(1) A file extension supported by the format argument
+#'
+#' @param match logical(1) Whether to coerce the current object to a
+#'     'MatchedAssayExperiment' object (default: FALSE)
+#'
+#' @param verbose logical(1) Whether to print additional information (default
+#'     TRUE)
+#'
+#' @aliases exportClass
+#' @exportMethod exportClass
+setMethod("exportClass", "MultiAssayExperiment",
+    function(object, dir = tempdir(), fmt, ext, match = FALSE,
+            verbose = TRUE, ...) {
+        if (missing(dir) || !dir.exists(dir))
+            stop("Specify a valid folder location for saving data files")
+        objname <- as.character(substitute(object))
+
+        if (isTRUE(match))
+            object <- as(object, "MatchedAssayExperiment")
+
+        nfiles <- sum(length(object), !isEmpty(colData(object)),
+            !isEmpty(sampleMap(object)), .metasize(metadata(object)))
+        if (missing(verbose) || !isFALSE(verbose))
+            message("Writing about ", nfiles, " files to disk...")
+
+        if (is.function(fmt) && missing(ext))
+            stop("Provide a valid file extention, see 'ext' argument")
+
+        if (!is.function(fmt) && !is.character(fmt))
+            stop("Invalid format type: must be 'character' or 'function'")
+
+        if (is.character(fmt)) {
+            if (missing(ext))
+                ext <- paste0(".", fmt)
+            fmt <- .chr2fxn(fmt)
+        }
+
+        coldatname <- paste0(objname, "_", "colData", ext)
+        sampmapname <- paste0(objname, "_", "sampleMap", ext)
+
+        exfnames <- file.path(dir,
+            c(paste0(objname, "_", names(experiments(object)), ext),
+            coldatname, sampmapname))
+        alists <- lapply(assays(object), as.data.frame)
+        lists <- c(alists, list(coldat = as.data.frame(colData(object)),
+            sampmap = as.data.frame(sampleMap(object))))
+
+        metafs <- .sortMetadata(object, objname, dir, fmt, ext)
+
+        invisible(Map(function(fname, lobject) {
+            fmt(lobject, fname, ...)
+        }, exfnames, lists))
+
+        c(metafs, exfnames)
+    }
+)
+

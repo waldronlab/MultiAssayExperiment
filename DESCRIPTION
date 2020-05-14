@@ -46,6 +46,7 @@ BugReports: https://github.com/waldronlab/MultiAssayExperiment/issues
 Collate: 
     'ExperimentList-class.R'
     'MultiAssayExperiment-class.R'
+    'MatchedAssayExperiment-class.R'
     'subsetBy-methods.R'
     'MultiAssayExperiment-subset.R'
     'MultiAssayExperiment-methods.R'

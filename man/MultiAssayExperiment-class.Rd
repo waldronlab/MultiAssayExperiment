@@ -8,10 +8,13 @@
 \alias{length,MultiAssayExperiment-method}
 \alias{names,MultiAssayExperiment-method}
 \alias{updateObject,MultiAssayExperiment-method}
-\alias{exportClass,MultiAssayExperiment-method}
-\alias{exportClass}
+\alias{coerce}
+\alias{coerce,list,MultiAssayExperiment-method}
+\alias{coerce,List,MultiAssayExperiment-method}
 \alias{dimnames,MultiAssayExperiment-method}
 \alias{c,MultiAssayExperiment-method}
+\alias{exportClass,MultiAssayExperiment-method}
+\alias{exportClass}
 \alias{assays,MultiAssayExperiment-method}
 \alias{assay,MultiAssayExperiment,missing-method}
 \alias{assay,MultiAssayExperiment,numeric-method}
@@ -26,6 +29,10 @@
 
 \S4method{updateObject}{MultiAssayExperiment}(object, ..., verbose = FALSE)
 
+\S4method{dimnames}{MultiAssayExperiment}(x)
+
+\S4method{c}{MultiAssayExperiment}(x, ..., sampleMap = NULL, mapFrom = NULL)
+
 \S4method{exportClass}{MultiAssayExperiment}(
   object,
   dir = tempdir(),
@@ -35,10 +42,6 @@
   verbose = TRUE,
   ...
 )
-
-\S4method{dimnames}{MultiAssayExperiment}(x)
-
-\S4method{c}{MultiAssayExperiment}(x, ..., sampleMap = NULL, mapFrom = NULL)
 
 \S4method{assays}{MultiAssayExperiment}(x, withDimnames = TRUE, ...)
 
@@ -56,6 +59,13 @@
 \item{verbose}{logical(1) Whether to print additional information (default
 TRUE)}
 
+\item{sampleMap}{\code{c} method: a \code{sampleMap} \code{list} or
+\code{DataFrame} to guide merge}
+
+\item{mapFrom}{Either a \code{logical}, \code{character}, or \code{integer}
+vector indicating the experiment(s) that have an identical colname order as
+the experiment input(s)}
+
 \item{dir}{character(1) A directory for saving exported data (default:
 `tempdir()`)}
 
@@ -67,13 +77,6 @@ first two arguments are 'object to save' and 'file location'}
 
 \item{match}{logical(1) Whether to coerce the current object to a
 'MatchedAssayExperiment' object (default: FALSE)}
-
-\item{sampleMap}{\code{c} method: a \code{sampleMap} \code{list} or
-\code{DataFrame} to guide merge}
-
-\item{mapFrom}{Either a \code{logical}, \code{character}, or \code{integer}
-vector indicating the experiment(s) that have an identical colname order as
-the experiment input(s)}
 
 \item{withDimnames}{logical (default TRUE) whether to return dimension names
 included in the object}
@@ -123,14 +126,14 @@ arguments in several instances.
 \item \code{updateObject}: Update old serialized MultiAssayExperiment
 objects to new API
 
-\item \code{exportClass}: Export data from class to a series
-of text files
-
 \item \code{dimnames}: Get the dimension names
 for a \code{MultiAssayExperiment} object
 
 \item \code{c}: Add a supported data class to the
 \code{ExperimentList}
+
+\item \code{exportClass}: Export data from class to a series
+of text files
 
 \item \code{assays}: Obtain a \code{\link{SimpleList}} of assay
 data for all available experiments in the object
@@ -177,6 +180,15 @@ each experiment/assay. It contains a \linkS4class{SimpleList}.
 The \code{\link{sampleMap}} contains a \code{DataFrame} of translatable
 identifiers of samples and participants or biological units. Standard column
 names of the sampleMap are "assay", "primary", and "colname".
+}
+
+\section{coercion}{
+
+Convert a \code{list} or S4 \code{List} to a MultiAssayExperiment object using the
+\link[methods]{as} function.
+
+In the following example, \code{x} is either a \code{list} or \linkS4class{List}:\preformatted{`as(x, "MultiAssayExperiment")`
+}
 }
 
 \examples{
