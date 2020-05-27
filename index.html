@@ -118,6 +118,21 @@ library(BiocManager)
 
 install("MultiAssayExperiment")</code></pre>
 </div>
+<div id="schematic" class="section level2">
+<h2 class="hasAnchor">
+<a href="#schematic" class="anchor"></a>Schematic</h2>
+<p>Here is a visual overview of the <code>MultiAssayExperiment</code> class. The three main components are:</p>
+<ul>
+<li>
+<code>colData</code> - phenotype data</li>
+<li>
+<code>ExperimentList</code> - a list of tables from experimental results</li>
+<li>
+<code>sampleMap</code> - a graph representation of ‘samples’ and ‘participants’</li>
+</ul>
+<p><em>Note</em>. For simplicity, we use the terms ‘samples’ and ‘participants’ to elucidate the relationship although <code>MultiAssayExperiment</code> can work on other biological specimens.</p>
+<p><img src="articles/MultiAssayExperiment.png" alt="MultiAssayExperiment schematic"></p>
+</div>
 <div id="cheatsheet" class="section level2">
 <h2 class="hasAnchor">
 <a href="#cheatsheet" class="anchor"></a>Cheatsheet</h2>
