@@ -26,6 +26,21 @@ library(BiocManager)
 install("MultiAssayExperiment")
 ```
 
+## Schematic
+
+Here is a visual overview of the `MultiAssayExperiment` class.
+The three main components are:
+
+* `colData` - phenotype data
+* `ExperimentList` - a list of tables from experimental results
+* `sampleMap` - a graph representation of 'samples' and 'participants'
+
+_Note_. For simplicity, we use the terms 'samples' and 'participants' to
+elucidate the relationship although `MultiAssayExperiment` can work on other
+biological specimens.
+
+<img src="vignettes/MultiAssayExperiment.png" alt="MultiAssayExperiment schematic"/>
+
 ## Cheatsheet
 
 <a href="https://github.com/waldronlab/cheatsheets/blob/master/MultiAssayExperiment_QuickRef.pdf"><img src="https://raw.githubusercontent.com/waldronlab/cheatsheets/master/pngs/MultiAssayExperiment_QuickRef.png" width="989" height="1091"/></a>
