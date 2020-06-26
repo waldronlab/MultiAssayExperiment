@@ -58,7 +58,9 @@ setClass("ExperimentList", contains = "SimpleList")
 #' @export
 ExperimentList <- function(...) {
     listData <- list(...)
-    if (length(listData) == 1L) {
+    if (!length(listData))
+        listData <- structure(list(), .Names = character())
+    else {
         if (is(listData[[1L]], "MultiAssayExperiment"))
             stop("MultiAssayExperiment input detected. ",
                 "Did you mean 'experiments()'?")
@@ -73,10 +75,6 @@ ExperimentList <- function(...) {
                         "ExperimentList contains data.frame or DataFrame,\n",
                         "  potential for errors with mixed data types")
         }
-    } else if (!length(listData)) {
-        return(new("ExperimentList",
-            S4Vectors::SimpleList(structure(list(), .Names = character())))
-        )
     }
     new("ExperimentList", S4Vectors::SimpleList(listData))
 }
@@ -201,8 +199,107 @@ setAs("List", "ExperimentList", function(from) {
 #' @describeIn ExperimentList check for zero length across all
 #' experiments
 setMethod("isEmpty", "ExperimentList", function(x) {
-    x <- Filter(function(y) {
-        !(is.matrix(y) && identical(dim(y), c(1L, 1L)) && isTRUE(is.na(y)))
-    }, x)
+    all(
+        vapply(x, .isEmpty, logical(1L))
+    )
+})
+
+
+.subsetExperimentList <- function(x, i, j, k, ..., drop = TRUE) {
+    if (missing(i) && missing(j) && missing(k)) {
+        return(x)
+    }
+    if (!missing(j)) {
+        x <- subsetByColumn(x, j)
+    }
+    if (!missing(k)) {
+        x <- subsetByAssay(x, k)
+    }
+    if (!missing(i)) {
+        x <- subsetByRow(x, i, ...)
+    }
+    if (drop) {
+        emptyAssays <- vapply(x, .isEmpty, logical(1L))
+        if (any(emptyAssays)) {
+            keeps <- names(emptyAssays)[emptyAssays]
+            x <- subsetByAssay(x, keeps)
+        }
+    }
+    return(x)
+}
+
+#' @rdname subsetBy
+#' @aliases [,ExperimentList,ANY,ANY,ANY-method
+setMethod("[", c("ExperimentList", "ANY", "ANY", "ANY"),
+    .subsetExperimentList
+)
+
+#' @export
+#' @rdname subsetBy
+setMethod("[[", "ExperimentList", function(x, i, j, ...) {
     callNextMethod()
+})
+
+#' @rdname subsetBy
+#' @export
+#' @param value An assay compatible with ExperimentList
+setReplaceMethod("[[", "ExperimentList", function(x, i, j, ..., value) {
+    if (!missing(j) || length(list(...)))
+        stop("invalid replacement")
+    if (is.list(value) || (is(value, "List") && !is(value, "DataFrame")))
+        stop("Provide a compatible object for replacement")
+    return(
+        S4Vectors::setListElement(x, i, value)
+    )
+})
+
+## modified from S4Vectors
+
+.replace_list_element <- function (x, i, value) {
+    value <- S4Vectors:::.wrap_in_length_one_list_like_object(
+        value, names(x)[[i]], x
+    )
+    if (is(x, "Vector"))
+        x_mcols <- mcols(x, use.names = FALSE)
+    x[, , i] <- value
+    if (is(x, "Vector"))
+        mcols(x) <- x_mcols
+    x
+}
+
+.remove_list_element <- function (x, i) {
+    stopifnot(isSingleNumberOrNA(i))
+    if (is.na(i) || i < 1L || i > length(x))
+        return(x)
+    if (is.data.frame(x)) {
+        x[[i]] <- NULL
+        return(x)
+    }
+    x[, , -i]
+}
+
+setMethod("setListElement", "ExperimentList", function(x, i, value) {
+    i2 <- normalizeDoubleBracketSubscript(i, x, allow.append = TRUE,
+        allow.nomatch = TRUE)
+    if (is.null(value))
+        return(.remove_list_element(x, i2))
+    if (is.na(i2) || i2 > length(x)) {
+        name <- if (is.na(i2))
+            as.character(i)
+        else NULL
+        return(S4Vectors:::.append_list_element(x, value, name))
+    }
+    .replace_list_element(x, i2, value)
+})
+
+#' @rdname subsetBy
+#' @export
+setReplaceMethod("[", "ExperimentList", function(x, i, j, ..., value) {
+    if (!missing(j) || !missing(i))
+        stop("invalid replacement, only 'k' replacement supported")
+    args <- list(...)
+    if (length(args[[1]]) > 1L)
+        stop("Provide a single 'k' index vector")
+    indx <- args[[1L]]
+    callNextMethod(x, i = indx, value = value)
 })
