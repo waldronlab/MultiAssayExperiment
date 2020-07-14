@@ -10,7 +10,7 @@ https://doi.org/10.1158/0008-5472.CAN-17-0344
 [![Travis status](https://travis-ci.org/waldronlab/MultiAssayExperiment.svg?branch=master "TravisCI status")](https://travis-ci.org/waldronlab/MultiAssayExperiment)
 [![Appveyor status](https://ci.appveyor.com/api/projects/status/rf25e9h995wnto7n/branch/master?svg=true "Appveyor status")](https://ci.appveyor.com/project/LiNk-NY/multiassayexperiment-94gjw/branch/master)
 [![Wercker status](https://app.wercker.com/status/2aa523f23142715771256b85187d7bcb/s/master "Wercker status")](https://app.wercker.com/project/byKey/2aa523f23142715771256b85187d7bcb)
-[![Coverage](https://codecov.io/github/waldronlab/MultiAssayExperiment/coverage.svg?branch=master "CodeCov coverage")](https://codecov.io/github/waldronlab/MultiAssayExperiment?branch=master)
+[![codecov](https://codecov.io/gh/waldronlab/MultiAssayExperiment/branch/master/graph/badge.svg "codecov coverage")](https://codecov.io/gh/waldronlab/MultiAssayExperiment)
 
 ## Installation
 
