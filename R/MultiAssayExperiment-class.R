@@ -78,24 +78,34 @@ NULL
 #' @return A \code{MultiAssayExperiment} object
 #'
 #' @examples
+#'
 #' example("MultiAssayExperiment")
 #'
-#' ## Subsetting
-#' # Rows (i) Rows/Features in each experiment
+#' # --------------------
+#' # Row (i) subsetting
+#' # --------------------
+#'
 #' mae[1, , ]
 #' mae[c(TRUE, FALSE), , ]
 #'
-#' # Columns (j) Rows in colData
+#' # --------------------
+#' # Column (j) subsetting
+#' # --------------------
+#'
 #' mae[, rownames(colData(mae))[3:2],  ]
 #'
-#' # Assays (k)
-#' mae[, , "Affy"]
+#' ## subset colData by complete cases
 #'
-#' ## Complete cases (returns logical vector)
 #' completes <- complete.cases(mae)
 #' compMAE <- mae[, completes, ]
 #' compMAE
 #' colData(compMAE)
+#'
+#' # --------------------
+#' # Assay (k) subsetting
+#' # --------------------
+#'
+#' mae[, , "Affy"]
 #'
 #' @exportClass MultiAssayExperiment
 #' @seealso

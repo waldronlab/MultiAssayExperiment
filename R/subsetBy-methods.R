@@ -51,24 +51,33 @@ NULL
     assayMap[positions, ]
 }
 
-#' @name subsetBy
+#' @name MultiAssayExperiment-subset
+#'
 #' @title Subsetting a MultiAssayExperiment object
+#'
 #' @description A set of functions for extracting and dividing a
-#' \code{MultiAssayExperiment}
+#' \code{MultiAssayExperiment}. These include base R type of bracket operations
+#' (using the `[`) and the `subsetBy*` methods. For more details, see the
+#' appropriate sections below.
 #'
 #' @param x A \code{MultiAssayExperiment} or \code{ExperimentList}
+#'
 #' @param i Either a \code{character}, \code{integer}, \code{logical} or
 #' \code{GRanges} object for subsetting by rows
+#'
 #' @param j Either a \code{character}, \code{logical}, or \code{numeric} vector
 #' for subsetting by \code{colData} rows. See details for more information.
+#'
 #' @param k Either a \code{character}, \code{logical}, or \code{numeric} vector
 #' for subsetting by assays
+#'
 #' @param ... Additional arguments passed on to lower level functions.
+#'
 #' @param drop logical (default TRUE) whether to drop empty assay elements
 #' in the \code{ExperimentList}
 #'
 #' @aliases [,MultiAssayExperiment,ANY-method subsetByColData subsetByRow
-#' subsetByColumn subsetByAssay subset subsetBy
+#' subsetByColumn subsetByAssay subsetBy
 #'
 #' @details
 #' Subsetting a MultiAssayExperiment by the \strong{j} index can yield a call
@@ -80,16 +89,33 @@ NULL
 #' \code{List} must match that of the \code{ExperimentList} in the
 #' \code{MultiAssayExperiment}.
 #'
+#' @section subsetBy*-methods:
+#' `subsetBy*` methods provide a semantic alternative to the bracket
+#' operations, where the suffix gives the user an idea of what part of the
+#' `MultiAssayExperiment` representation is being extracted or divided. For
+#' example, `subsetByAssay` allows the user to extract a number of assays
+#' as provided in the input. `subsetByAssay(mae, 1:2)` gives the user the
+#' first two assays.
+#'
 #' \itemize{
-#' \item subsetBycolData: Select biological units by vector input types
-#' \item subsetByColumn: Select observations by assay or for each assay
-#' \item subsetByRow: Select rows by assay or for each assay
-#' \item subsetByAssay: Select experiments
+#'     \item subsetBycolData: Select biological units (rows in the `colData`)
+#'     by vector input types
+#'     \item subsetByColumn: Select observations for each assay or provide
+#'     a vector input to use for subsetting with the `colData`
+#'     \item subsetByRow: Select rows vector recycling or for each assay by
+#'     using a `List`-like subsettor
+#'     \item subsetByAssay: Select experiments by names, positions, or logical
 #' }
 #'
+#' @md
+#'
 #' @examples
-#' ## Load the example MultiAssayExperiment
+#'
 #' example("MultiAssayExperiment")
+#'
+#' # --------------------
+#' # subsetByAssay
+#' # --------------------
 #'
 #' ## Using experiment names
 #' subsetByAssay(mae, "Affy")
@@ -100,6 +126,10 @@ NULL
 #' ## Using a logical vector
 #' subsetByAssay(mae, c(TRUE, FALSE, TRUE))
 #'
+#' # --------------------
+#' # subsetByColData
+#' # --------------------
+#'
 #' ## Subset by character vector (Jack)
 #' subsetByColData(mae, "Jack")
 #'
@@ -109,12 +139,20 @@ NULL
 #' ## Subset by logical indicator of colData rows (Jack and Jill)
 #' subsetByColData(mae, c(TRUE, TRUE, FALSE, FALSE))
 #'
+#' # --------------------
+#' # subsetByColumn
+#' # --------------------
+#'
 #' subsetByColumn(mae, list(Affy = 1:2,
 #'     Methyl450k = c(3,5,2), RNASeqGene = 2:4, GISTIC = 1))
 #'
 #' subsetWith <- S4Vectors::mendoapply(`[`, colnames(mae),
 #'     MoreArgs = list(1:2))
 #' subsetByColumn(mae, subsetWith)
+#'
+#' # --------------------
+#' # subsetByRow
+#' # --------------------
 #'
 #' ## Use a GRanges object to subset rows where ranged data present
 #' egr <- GenomicRanges::GRanges(seqnames = "chr2",
@@ -131,19 +169,19 @@ NULL
 
 # subsetBy Generics -------------------------------------------------------
 
-#' @rdname subsetBy
+#' @rdname MultiAssayExperiment-subset
 #' @export subsetByRow
 setGeneric("subsetByRow", function(x, y, ...) standardGeneric("subsetByRow"))
 
-#' @rdname subsetBy
+#' @rdname MultiAssayExperiment-subset
 #' @export subsetByColData
 setGeneric("subsetByColData", function(x, y) standardGeneric("subsetByColData"))
 
-#' @rdname subsetBy
+#' @rdname MultiAssayExperiment-subset
 #' @export subsetByColumn
 setGeneric("subsetByColumn", function(x, y) standardGeneric("subsetByColumn"))
 
-#' @rdname subsetBy
+#' @rdname MultiAssayExperiment-subset
 #' @export subsetByAssay
 #' @param y Any argument used for subsetting, can be a \code{character},
 #' \code{logical}, \code{integer}, \code{list} or \code{List} vector
@@ -180,7 +218,7 @@ setGeneric("subsetByAssay", function(x, y) standardGeneric("subsetByAssay"))
 
 # subsetByRow,ExperimentList-methods -----------------------------------------
 
-#' @rdname subsetBy
+#' @rdname MultiAssayExperiment-subset
 setMethod("subsetByRow", c("ExperimentList", "ANY"), function(x, y, ...) {
     rowIds <- .rowIdx(x)
     if (is.integer(y)) {
@@ -193,13 +231,13 @@ setMethod("subsetByRow", c("ExperimentList", "ANY"), function(x, y, ...) {
     subsetByRow(x, subsetor)
 })
 
-#' @rdname subsetBy
+#' @rdname MultiAssayExperiment-subset
 setMethod("subsetByRow", c("ExperimentList", "list"), function(x, y) {
     y <- .fillEmptyExps(x, y)
     .subsetROWS(x, y)
 })
 
-#' @rdname subsetBy
+#' @rdname MultiAssayExperiment-subset
 setMethod("subsetByRow", c("ExperimentList", "List"), function(x, y) {
     if (is(y, "DataFrame") || is(y, "GRangesList"))
         stop("Provide a list of indices for subsetting")
@@ -209,7 +247,7 @@ setMethod("subsetByRow", c("ExperimentList", "List"), function(x, y) {
     subsetByRow(x, y)
 })
 
-#' @rdname subsetBy
+#' @rdname MultiAssayExperiment-subset
 setMethod("subsetByRow", c("ExperimentList", "logical"), function(x, y) {
     logi <- LogicalList(rep(list(y), length(x)))
     x[logi]
@@ -217,19 +255,19 @@ setMethod("subsetByRow", c("ExperimentList", "logical"), function(x, y) {
 
 # subsetByColumn,ExperimentList-methods -----------------------------------
 
-#' @rdname subsetBy
+#' @rdname MultiAssayExperiment-subset
 setMethod("subsetByColumn", c("ExperimentList", "list"), function(x, y) {
     y <- .fillEmptyExps(x, y)
     .subsetCOLS(x, y)
 })
 
-#' @rdname subsetBy
+#' @rdname MultiAssayExperiment-subset
 setMethod("subsetByColumn", c("ExperimentList", "List"), function(x, y) {
     Y <- as.list(y)
     subsetByColumn(x, Y)
 })
 
-#' @rdname subsetBy
+#' @rdname MultiAssayExperiment-subset
 setMethod("subsetByColumn", c("ExperimentList", "logical"), function(x, y) {
     Y <- endoapply(colnames(x), `[`, y)
     .subsetCOLS(x, Y)
@@ -237,14 +275,14 @@ setMethod("subsetByColumn", c("ExperimentList", "logical"), function(x, y) {
 
 # subsetByAssay,ExperimentList-methods ------------------------------------
 
-#' @rdname subsetBy
+#' @rdname MultiAssayExperiment-subset
 setMethod("subsetByAssay", c("ExperimentList", "ANY"), function(x, y) {
     x[y]
 })
 
 # subsetByColData,MultiAssayExperiment-methods -----------------------------------------
 
-#' @rdname subsetBy
+#' @rdname MultiAssayExperiment-subset
 setMethod("subsetByColData", c("MultiAssayExperiment", "ANY"), function(x, y) {
     rcols <- rownames(colData(x))
     if (length(y) > length(rcols))
@@ -275,7 +313,7 @@ setMethod("subsetByColData", c("MultiAssayExperiment", "ANY"), function(x, y) {
         check = FALSE)
 })
 
-#' @rdname subsetBy
+#' @rdname MultiAssayExperiment-subset
 setMethod("subsetByColData", c("MultiAssayExperiment", "character"),
     function(x, y) {
         y <- unique(y)
@@ -288,7 +326,7 @@ setMethod("subsetByColData", c("MultiAssayExperiment", "character"),
 
 # subsetByRow,MultiAssayExperiment-method ---------------------------------
 
-#' @rdname subsetBy
+#' @rdname MultiAssayExperiment-subset
 setMethod("subsetByRow", c("MultiAssayExperiment", "ANY"), function(x, y, ...) {
     experiments(x) <- subsetByRow(experiments(x), y)
     return(x)
@@ -296,7 +334,7 @@ setMethod("subsetByRow", c("MultiAssayExperiment", "ANY"), function(x, y, ...) {
 
 # subsetByColumn,MultiAssayExperiment-method ------------------------------
 
-#' @rdname subsetBy
+#' @rdname MultiAssayExperiment-subset
 setMethod("subsetByColumn", c("MultiAssayExperiment", "ANY"), function(x, y) {
     if (is.character(y) || is.logical(y) || is.numeric(y))
         subsetByColData(x, y)
@@ -308,7 +346,7 @@ setMethod("subsetByColumn", c("MultiAssayExperiment", "ANY"), function(x, y) {
 
 # subsetByAssay,MultiAssayExperiment-method -------------------------------
 
-#' @rdname subsetBy
+#' @rdname MultiAssayExperiment-subset
 setMethod("subsetByAssay", c("MultiAssayExperiment", "ANY"), function(x, y) {
     experiments(x) <- experiments(x)[y]
     return(x)
