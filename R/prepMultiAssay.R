@@ -64,7 +64,8 @@ prepMultiAssay <- function(ExperimentList, colData, sampleMap, ...) {
 
     dotargs <- list(...)
     drops <- if (!is.null(dotargs[["drops"]])) dotargs[["drops"]] else list()
-    metadata <- if (!is.null(dotargs[["metadata"]])) dotargs[["metadata"]] else list()
+    metadata <- if (!is.null(dotargs[["metadata"]]))
+        dotargs[["metadata"]] else list()
     ExperimentList <- ExperimentList(ExperimentList)
 
     charTypes <- list(

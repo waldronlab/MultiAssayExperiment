@@ -53,6 +53,9 @@ by replicates}
 
 \item{withDimnames}{logical (default TRUE) whether to return dimension names}
 }
+\value{
+An \code{ExperimentList} class object
+}
 \description{
 The \code{ExperimentList} class is a container that builds on
 the \code{SimpleList} with additional

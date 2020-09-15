@@ -92,6 +92,11 @@ in the \code{ExperimentList}}
 
 \item{value}{An assay compatible with the MultiAssayExperiment API}
 }
+\value{
+Generally, a \code{MultiAssayExperiment} class object unless double
+bracket extraction is used \code{[[}. In such case, the internal data class
+is returned.
+}
 \description{
 A set of functions for extracting and dividing a
 \code{MultiAssayExperiment}. These include base R type of bracket operations

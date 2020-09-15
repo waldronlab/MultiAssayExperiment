@@ -1,3 +1,10 @@
+# MultiAssayExperiment 1.16.0
+
+## Bug fixes and minor improvements
+
+* Improved documentation for accessor function return values, helper function
+examples (@llrs, #281)
+
 # MultiAssayExperiment 1.14.0
 
 ## New features

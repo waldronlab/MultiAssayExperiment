@@ -107,6 +107,10 @@ NULL
 #'     \item subsetByAssay: Select experiments by names, positions, or logical
 #' }
 #'
+#' @return Generally, a \code{MultiAssayExperiment} class object unless double
+#'     bracket extraction is used `[[`. In such case, the internal data class
+#'     is returned.
+#'
 #' @md
 #'
 #' @examples

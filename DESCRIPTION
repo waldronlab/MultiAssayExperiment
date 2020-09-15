@@ -8,10 +8,12 @@ Authors@R: c(person("Marcel", "Ramos", email = "marcel.ramos@roswellpark.org",
     person("MultiAssay", "SIG", email = "biocmultiassay@googlegroups.com",
     role = "ctb"))
 Description: MultiAssayExperiment harmonizes data management of
-    multiple assays performed on an overlapping set of specimens. It provides a 
-    familiar Bioconductor user experience by extending concepts from 
-    SummarizedExperiment, supporting an open-ended mix of standard data classes
-    for individual assays, and allowing subsetting by genomic ranges or rownames.
+    multiple experimental assays performed on an overlapping set of specimens.
+    It provides a familiar Bioconductor user experience by extending concepts
+    from SummarizedExperiment, supporting an open-ended mix of standard data
+    classes for individual assays, and allowing subsetting by genomic ranges
+    or rownames. Facilities are provided for reshaping data into wide and
+    long formats for adaptability to graphing and downstream analysis.
 Depends:
     R (>= 3.6.0),
     SummarizedExperiment (>= 1.3.81)

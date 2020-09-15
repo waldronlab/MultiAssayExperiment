@@ -200,14 +200,19 @@ setClass(
 #'
 #' @param experiments A \code{list} or \link{ExperimentList} of all
 #' combined experiments
+#'
 #' @param colData A \code{\linkS4class{DataFrame}} or \code{data.frame} of
 #' characteristics for all biological units
+#'
 #' @param sampleMap A \code{DataFrame} or \code{data.frame} of assay names,
 #' sample identifiers, and colname samples
+#'
 #' @param metadata An optional argument of "ANY" class (usually list) for
 #' content describing the experiments
+#'
 #' @param drops A \code{list} of unmatched information
 #' (included after subsetting)
+#'
 #' @return A \code{MultiAssayExperiment} object that can store
 #' experiment and phenotype data
 #'
@@ -407,6 +412,21 @@ setMethod("show", "MultiAssayExperiment", function(object) {
 #' \code{colData}, or \code{metadata} slots of a
 #' \code{\link{MultiAssayExperiment}} object
 #'
+#' @details Replacement values depend on the part of the MultiAssayExperiment
+#' being replaced. When replacing the \code{sampleMap}, ensure that the
+#' "assay", "primary", and "colname" columns are present in the
+#' \code{DataFrame} or \code{data.frame}. Each column corresponds to the
+#' \code{names(ExperimentList)}, \code{rownames(colData)} and
+#' \code{colnames(ExperimentList)}, respectively. \code{colData} replacement
+#' values should be either \code{DataFrame} or \code{data.frame}. The
+#' \code{experiments<-} replacement value should be an \code{ExperimentList}
+#' class object. The \code{metadata} replacement value should be a \code{list}.
+#' To replace the names of the \code{MultiAssayExperiment} assays, users should
+#' use the \code{names(x) <- value} replacement function with a character
+#' vector as the value. Direct replacement of columns is possible with the
+#' \code{mae$column <- value} type of command. The value here can be any
+#' vector-type object supported by `DataFrame`.
+#'
 #' @section Accessors:
 #' Eponymous names for accessing \code{MultiAssayExperiment} slots with the
 #' exception of the \link{ExperimentList} accessor named \code{experiments}.
@@ -431,6 +451,16 @@ setMethod("show", "MultiAssayExperiment", function(object) {
 #'     \item `[[<-`: Equivalent to the \code{experiments<-} setter method for
 #'     convenience
 #'     \item `$<-`: A vector to replace the indicated column in \code{colData}
+#' }
+#'
+#' @section Returns:
+#' Accessor functions return the following:
+#' \itemize{
+#'    \item colData: A \code{DataFrame} of information on the biological units
+#'    \item { sampleMap: A \code{DataFrame} with standard column names
+#'        "assay", "primary", and "colname" }
+#'    \item experiments: An \code{ExperimentList} of experiment data
+#'    \item metadata: An unstructured \code{list} of metadata
 #' }
 #'
 #' @param object,x A \code{MultiAssayExperiment} object

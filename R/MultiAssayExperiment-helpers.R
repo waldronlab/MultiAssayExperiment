@@ -2,10 +2,13 @@
 NULL
 
 #' @name MultiAssayExperiment-helpers
+#'
 #' @title A group of helper functions for manipulating and cleaning a
 #' MultiAssayExperiment
+#'
 #' @aliases intersectRows intersectColumns mergeReplicates replicated
 #' complete.cases,MultiAssayExperiment-method
+#'
 #' @description A set of helper functions were created to help clean and
 #' manipulate a MultiAssayExperiment object. \code{intersectRows} also works
 #' for \code{ExperimentList} objects.
@@ -39,7 +42,23 @@ NULL
 #' }
 #'
 #' @param x A MultiAssayExperiment or ExperimentList
+#'
 #' @param ... Additional arguments. See details for more information.
+#'
+#' @examples
+#'
+#' example(MultiAssayExperiment)
+#'
+#' complete.cases(mae)
+#'
+#' isEmpty(mae)
+#'
+#' intersectRows(mae)
+#' intersectColumns(mae)
+#'
+#' anyReplicated(mae)
+#'
+#' hasRowRanges(mae)
 #'
 #' @exportMethod complete.cases
 setMethod("complete.cases", "MultiAssayExperiment", function(...) {
@@ -535,6 +554,7 @@ setMethod("hasRowRanges", "ExperimentList", function(x) {
 #' @rdname MultiAssayExperiment-helpers
 #'
 #' @aliases getWithColData
+#'
 #' @section getWithColData:
 #' The \code{getWithColData} function allows the user to conveniently extract
 #' a particular assay as indicated by the \strong{\code{i}} index argument. It
@@ -553,6 +573,8 @@ setMethod("hasRowRanges", "ExperimentList", function(x) {
 #' For \code{mode="replace"}, the \linkS4class{MultiAssayExperiment}
 #' metadata replaces that of the \linkS4class{SummarizedExperiment},
 #' while for \code{mode="none"}, no replacement or appending is performed.
+#'
+#' @return See section details.
 #'
 #' @export getWithColData
 getWithColData <- function(x, i, mode=c("append", "replace")) {
