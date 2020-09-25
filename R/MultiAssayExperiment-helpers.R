@@ -285,7 +285,7 @@ setMethod("mergeReplicates", "ANY",
     if (is(object, "SummarizedExperiment") || is(object, "RaggedExperiment"))
         object <- assay(object, i = i)
     if (is(object, "matrix"))
-        object <- as.data.frame(object)
+        object <- as.data.frame(object, stringsAsFactors = FALSE)
 
     ## use stats::reshape instead of reshape2::melt
     if (nullROWS)
