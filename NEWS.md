@@ -4,6 +4,8 @@
 
 * Improved documentation for accessor function return values, helper function
 examples (@llrs, #281)
+* Fixed bug when using `longFormat` with character assay matrices
+(@jonocarroll, #282)
 
 # MultiAssayExperiment 1.14.0
 
