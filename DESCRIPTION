@@ -44,6 +44,7 @@ Encoding: UTF-8
 LazyData: true
 VignetteBuilder: knitr, R.rsp
 URL: http://waldronlab.io/MultiAssayExperiment/
+Video: https://youtu.be/w6HWAHaDpyk, https://youtu.be/Vh0hVVUKKFM
 BugReports: https://github.com/waldronlab/MultiAssayExperiment/issues
 Collate: 
     'ExperimentList-class.R'
