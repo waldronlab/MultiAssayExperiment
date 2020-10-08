@@ -104,8 +104,8 @@ test_that("subsetByColumn works with lists", {
 
     expect_equal(length(mae[, affySub, ]), length(mae))
     expect_equal(length(mae[, affySimple, ]), length(mae))
-    expect_equal(length(experiments(mae)[affySub]), length(affySub))
-    expect_equal(length(experiments(mae)[affySimple]), length(affySimple))
+    expect_equal(length(experiments(mae)[, , affySub]), length(affySub))
+    expect_equal(length(experiments(mae)[, , affySimple]), length(affySimple))
 
     # incomplete lists
     fuLL <- colnames(mae)
