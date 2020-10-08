@@ -1,5 +1,11 @@
 # MultiAssayExperiment 1.16.0
 
+## New features
+
+* The `ExperimentList` subsetting interface now follows that of
+`MultiAssayExperiment` as opposed to the `List` type subsetting. See
+`?'ExperimentList-subset'` for more details (@cvanderaa, #276).
+
 ## Bug fixes and minor improvements
 
 * Improved documentation for accessor function return values, helper function
