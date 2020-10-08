@@ -61,4 +61,4 @@ Collate:
     'reexports.R'
     'upsetSamples.R'
     'utilities.R'
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1

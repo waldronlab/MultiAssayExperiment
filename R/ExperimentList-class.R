@@ -205,6 +205,43 @@ setMethod("isEmpty", "ExperimentList", function(x) {
 })
 
 
+### - - - - - - - - - - - - - - - - - - - - - - - -
+### Subsetting
+###
+
+#' @name ExperimentList-subset
+#'
+#' @title Bracket subsetting operations for an ExperimentList object
+#'
+#' @description Single and double bracket extraction work similarly to
+#' the equivalent methods in MultiAssayExperiment with the exception that
+#' `sampleMap` information is not available for subsetting.
+#'
+#' @inheritParams subsetBy
+#'
+#' @seealso subsetBy
+#'
+#' @examples
+#'
+#' example(MultiAssayExperiment)
+#'
+#' ## row subsetting for all assays
+#' ExpList[1, ]
+#'
+#' ## column subsetting for a single assay
+#' ExpList[, list(Affy = 1:2)]
+#'
+#' ## column subsetting for a single assay
+#' ExpList[, , 1]
+#'
+#' gr <- GRanges(c("chr2:11-12:+", "chr2:12-13:-"))
+#' ExpList[gr, ]
+#'
+#' ## Extraction of the object
+#' ExpList[[1L]]
+#'
+NULL
+
 .subsetExperimentList <- function(x, i, j, k, ..., drop = TRUE) {
     if (missing(i) && missing(j) && missing(k)) {
         return(x)
@@ -221,28 +258,39 @@ setMethod("isEmpty", "ExperimentList", function(x) {
     if (drop) {
         emptyAssays <- vapply(x, .isEmpty, logical(1L))
         if (any(emptyAssays)) {
-            keeps <- names(emptyAssays)[emptyAssays]
+            keeps <- names(emptyAssays)[!emptyAssays]
             x <- subsetByAssay(x, keeps)
         }
     }
     return(x)
 }
 
-#' @rdname subsetBy
+#' @rdname ExperimentList-subset
 #' @aliases [,ExperimentList,ANY,ANY,ANY-method
+#' @export
 setMethod("[", c("ExperimentList", "ANY", "ANY", "ANY"),
     .subsetExperimentList
 )
 
+#' @rdname ExperimentList-subset
+#' @aliases [,ExperimentList,ANY,ANY,ANY-method
 #' @export
-#' @rdname subsetBy
+setMethod("[", c("ExperimentList", "GRanges", "ANY", "ANY"),
+    .subsetExperimentList
+)
+
+
+#' @rdname ExperimentList-subset
+#' @aliases [[,ExperimentList,ANY,ANY,ANY-method
+#' @export
 setMethod("[[", "ExperimentList", function(x, i, j, ...) {
     callNextMethod()
 })
 
-#' @rdname subsetBy
-#' @export
+#' @rdname ExperimentList-subset
+#' @aliases [[<-,ExperimentList,ANY,ANY,ANY-method
 #' @param value An assay compatible with ExperimentList
+#' @export
 setReplaceMethod("[[", "ExperimentList", function(x, i, j, ..., value) {
     if (!missing(j) || length(list(...)))
         stop("invalid replacement")
@@ -292,7 +340,8 @@ setMethod("setListElement", "ExperimentList", function(x, i, value) {
     .replace_list_element(x, i2, value)
 })
 
-#' @rdname subsetBy
+#' @rdname ExperimentList-subset
+#' @aliases [<-,ExperimentList,ANY,ANY,ANY-method
 #' @export
 setReplaceMethod("[", "ExperimentList", function(x, i, j, ..., value) {
     if (!missing(j) || !missing(i))
