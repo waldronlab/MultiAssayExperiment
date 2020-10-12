@@ -211,9 +211,8 @@ setMethod("subsetByRow", c("ExperimentList", "List"), function(x, y) {
 
 #' @rdname subsetBy
 setMethod("subsetByRow", c("ExperimentList", "logical"), function(x, y) {
-    logi <- stats::setNames(rep(list(y), length(x)), names(x))
-    logi <- LogicalList(logi)
-    subsetByRow(x, logi)
+    logi <- LogicalList(rep(list(y), length(x)))
+    x[logi]
 })
 
 # subsetByColumn,ExperimentList-methods -----------------------------------
@@ -240,8 +239,7 @@ setMethod("subsetByColumn", c("ExperimentList", "logical"), function(x, y) {
 
 #' @rdname subsetBy
 setMethod("subsetByAssay", c("ExperimentList", "ANY"), function(x, y) {
-    x <- as(x, "List")[y]
-    as(x, "ExperimentList")
+    x[y]
 })
 
 # subsetByColData,MultiAssayExperiment-methods -----------------------------------------
@@ -265,7 +263,10 @@ setMethod("subsetByColData", c("MultiAssayExperiment", "ANY"), function(x, y) {
         mapChunk[, "colname", drop = TRUE]
     })
     columns <- columns[names(experiments(x))]
-    newSubset <- subsetByColumn(experiments(x), columns)
+    newSubset <- Map(function(x, j) {x[, j, drop = FALSE]},
+        x = experiments(x), j = columns)
+    newSubset <- ExperimentList(newSubset)
+
     harmon <- .harmonize(newSubset, newcolData, newMap)
     BiocGenerics:::replaceSlots(x,
         ExperimentList = harmon[["experiments"]],
@@ -309,6 +310,6 @@ setMethod("subsetByColumn", c("MultiAssayExperiment", "ANY"), function(x, y) {
 
 #' @rdname subsetBy
 setMethod("subsetByAssay", c("MultiAssayExperiment", "ANY"), function(x, y) {
-    experiments(x) <- subsetByAssay(experiments(x), y)
+    experiments(x) <- experiments(x)[y]
     return(x)
 })

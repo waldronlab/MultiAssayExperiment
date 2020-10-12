@@ -138,12 +138,11 @@ test_that("getWithColData works", {
     colData(MAE0[["rnaseq"]]) <- eCol
     cData <- colData(getWithColData(MAE0, 1L, "replace"))
     matchedData <- colData(MAE0)[
-        match(
-            mapToList(sampleMap(MAE0))[["rnaseq"]][["primary"]],
-            rownames(colData)
-        ), , drop = FALSE
-    ]
+        match(mapToList(sampleMap(MAE0))[["rnaseq"]][["primary"]],
+            rownames(colData)), ,
+        drop = FALSE]
     expect_identical(cData, matchedData)
+
 
     MAE0 <- MAE
     eCol <- DataFrame(row.names = rownames(colData(MAE0[["rnaseq"]])))

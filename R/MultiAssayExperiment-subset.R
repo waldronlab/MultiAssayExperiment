@@ -7,14 +7,7 @@ NULL
 
 
 .isEmpty <- function(object) {
-    if (
-        is.matrix(object) &&
-        identical(dim(object), c(1L, 1L)) &&
-        isTRUE(is.na(object))
-    )
-        TRUE
-    else
-        any(dim(object) == 0L)
+    isTRUE(unname(dim(object)[1]) == 0L || unname(dim(object)[2]) == 0L)
 }
 
 .subsetMultiAssayExperiment <- function(x, i, j, k, ..., drop = TRUE) {
@@ -77,7 +70,9 @@ setReplaceMethod("[", "MultiAssayExperiment", function(x, i, j, ..., value) {
     if (!missing(j) || !missing(i))
         stop("invalid replacement, only 'k' replacement supported")
     args <- list(...)
-    for (i in args[[1]])
-        experiments(x)[[i]] <- value[[i]]
+    if (length(args) > 1L)
+        stop("Provide a single 'k' index vector")
+    indx <- args[[1L]]
+    experiments(x)[indx] <- value
     return(x)
 })
