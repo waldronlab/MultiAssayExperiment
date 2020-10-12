@@ -201,8 +201,7 @@ setAs("List", "ExperimentList", function(from) {
 #' @describeIn ExperimentList check for zero length across all
 #' experiments
 setMethod("isEmpty", "ExperimentList", function(x) {
-    x <- Filter(function(y) {
-        !(is.matrix(y) && identical(dim(y), c(1L, 1L)) && isTRUE(is.na(y)))
-    }, x)
-    callNextMethod()
+    all(
+        vapply(x, .isEmpty, logical(1L))
+    )
 })
