@@ -1,11 +1,4 @@
-<<<<<<< HEAD
 # MultiAssayExperiment 1.16.0
-
-## New features
-
-* The `ExperimentList` subsetting interface now follows that of
-`MultiAssayExperiment` as opposed to the `List` type subsetting. See
-`?'ExperimentList-subset'` for more details (@cvanderaa, #276).
 
 ## Bug fixes and minor improvements
 
@@ -14,8 +7,6 @@ examples (@llrs, #281)
 * Fixed bug when using `longFormat` with character assay matrices
 (@jonocarroll, #282)
 
-=======
->>>>>>> parent of a856689... Merge branch 'expsubset'
 # MultiAssayExperiment 1.14.0
 
 ## New features
