@@ -32,8 +32,6 @@
 #' \strong{mergeReplicates} method, additional arguments are passed to the
 #' given \code{simplify} function argument (e.g., na.rm = TRUE)
 #'
-#' @return An \code{ExperimentList} class object
-#'
 #' @examples
 #' ExperimentList()
 #'

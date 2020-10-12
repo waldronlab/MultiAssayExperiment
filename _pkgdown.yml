@@ -24,7 +24,7 @@ reference:
   - title: Subsetting
     desc: Easy operations for selecting rows, columns, and/or biological units
     contents:
-      - MultiAssayExperiment-subset
+      - subsetBy
   - title: Management and Reshaping
     desc: Work with and reshape data
     contents:

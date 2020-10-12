@@ -100,9 +100,6 @@ replicate samples are present, colnames) are seperated by this delimiter}
 column-level metadata should be added to the
 \linkS4class{SummarizedExperiment} \code{colData}.}
 }
-\value{
-See section details.
-}
 \description{
 A set of helper functions were created to help clean and
 manipulate a MultiAssayExperiment object. \code{intersectRows} also works
@@ -238,19 +235,3 @@ metadata replaces that of the \linkS4class{SummarizedExperiment},
 while for \code{mode="none"}, no replacement or appending is performed.
 }
 
-\examples{
-
-example(MultiAssayExperiment)
-
-complete.cases(mae)
-
-isEmpty(mae)
-
-intersectRows(mae)
-intersectColumns(mae)
-
-anyReplicated(mae)
-
-hasRowRanges(mae)
-
-}

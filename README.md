@@ -4,13 +4,13 @@
 
 https://doi.org/10.1158/0008-5472.CAN-17-0344
 
-[![Download Rank](https://bioconductor.org/shields/downloads/release/MultiAssayExperiment.svg "download rank")](https://bioconductor.org/packages/stats/bioc/MultiAssayExperiment)
-[![BioC status](http://www.bioconductor.org/shields/build/release/bioc/MultiAssayExperiment.svg "Bioc build status")](https://bioconductor.org/checkResults/release/bioc-LATEST/MultiAssayExperiment)
-[![Platforms](http://www.bioconductor.org/shields/availability/release/MultiAssayExperiment.svg "Platform availability")](https://www.bioconductor.org/packages/release/bioc/html/MultiAssayExperiment.html#archives)
-[![Travis status](https://travis-ci.org/waldronlab/MultiAssayExperiment.svg?branch=master "TravisCI status")](https://travis-ci.org/waldronlab/MultiAssayExperiment)
-[![Appveyor status](https://ci.appveyor.com/api/projects/status/rf25e9h995wnto7n/branch/master?svg=true "Appveyor status")](https://ci.appveyor.com/project/LiNk-NY/multiassayexperiment-94gjw/branch/master)
-[![Wercker status](https://app.wercker.com/status/2aa523f23142715771256b85187d7bcb/s/master "Wercker status")](https://app.wercker.com/project/byKey/2aa523f23142715771256b85187d7bcb)
-[![codecov](https://codecov.io/gh/waldronlab/MultiAssayExperiment/branch/master/graph/badge.svg "codecov coverage")](https://codecov.io/gh/waldronlab/MultiAssayExperiment)
+[![BioC status](http://www.bioconductor.org/shields/build/release/bioc/MultiAssayExperiment.svg)](https://bioconductor.org/checkResults/release/bioc-LATEST/MultiAssayExperiment)
+[![Platforms](http://www.bioconductor.org/shields/availability/release/MultiAssayExperiment.svg)](https://www.bioconductor.org/packages/release/bioc/html/MultiAssayExperiment.html#archives)
+[![Travis Build Status](https://travis-ci.org/waldronlab/MultiAssayExperiment.svg?branch=master)](https://travis-ci.org/waldronlab/MultiAssayExperiment)
+[![Build status](https://ci.appveyor.com/api/projects/status/rf25e9h995wnto7n/branch/master?svg=true)](https://ci.appveyor.com/project/LiNk-NY/multiassayexperiment-94gjw/branch/master)
+[![wercker status](https://app.wercker.com/status/2aa523f23142715771256b85187d7bcb/s/master "wercker status")](https://app.wercker.com/project/byKey/2aa523f23142715771256b85187d7bcb)
+[![Coverage Status](https://codecov.io/github/waldronlab/MultiAssayExperiment/coverage.svg?branch=master)](https://codecov.io/github/waldronlab/MultiAssayExperiment?branch=master)
+[![Downloads](http://www.bioconductor.org/shields/downloads/MultiAssayExperiment.svg)](https://bioconductor.org/packages/stats/bioc/MultiAssayExperiment)
 
 ## Installation
 

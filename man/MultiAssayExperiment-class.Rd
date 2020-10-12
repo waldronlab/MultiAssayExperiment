@@ -192,34 +192,24 @@ In the following example, \code{x} is either a \code{list} or \linkS4class{List}
 }
 
 \examples{
-
 example("MultiAssayExperiment")
 
-# --------------------
-# Row (i) subsetting
-# --------------------
-
+## Subsetting
+# Rows (i) Rows/Features in each experiment
 mae[1, , ]
 mae[c(TRUE, FALSE), , ]
 
-# --------------------
-# Column (j) subsetting
-# --------------------
-
+# Columns (j) Rows in colData
 mae[, rownames(colData(mae))[3:2],  ]
 
-## subset colData by complete cases
+# Assays (k)
+mae[, , "Affy"]
 
+## Complete cases (returns logical vector)
 completes <- complete.cases(mae)
 compMAE <- mae[, completes, ]
 compMAE
 colData(compMAE)
-
-# --------------------
-# Assay (k) subsetting
-# --------------------
-
-mae[, , "Affy"]
 
 example("MultiAssayExperiment")
 

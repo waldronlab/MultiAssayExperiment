@@ -48,18 +48,18 @@ NULL
     return(x)
 }
 
-#' @rdname MultiAssayExperiment-subset
+#' @rdname subsetBy
 #' @aliases [,MultiAssayExperiment,ANY,ANY,ANY-method
 setMethod("[", c("MultiAssayExperiment", "ANY", "ANY", "ANY"),
     .subsetMultiAssayExperiment)
 
 #' @export
-#' @rdname MultiAssayExperiment-subset
+#' @rdname subsetBy
 setMethod("[[", "MultiAssayExperiment", function(x, i, j, ...) {
     experiments(x)[[i]]
 })
 
-#' @rdname MultiAssayExperiment-subset
+#' @rdname subsetBy
 #' @export
 #' @param value An assay compatible with the MultiAssayExperiment API
 setReplaceMethod("[[", "MultiAssayExperiment", function(x, i, j, ..., value) {
@@ -71,7 +71,7 @@ setReplaceMethod("[[", "MultiAssayExperiment", function(x, i, j, ..., value) {
     return(x)
 })
 
-#' @rdname MultiAssayExperiment-subset
+#' @rdname subsetBy
 #' @export
 setReplaceMethod("[", "MultiAssayExperiment", function(x, i, j, ..., value) {
     if (!missing(j) || !missing(i))

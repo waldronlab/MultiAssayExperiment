@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # MultiAssayExperiment 1.16.0
 
 ## New features
@@ -13,6 +14,8 @@ examples (@llrs, #281)
 * Fixed bug when using `longFormat` with character assay matrices
 (@jonocarroll, #282)
 
+=======
+>>>>>>> parent of a856689... Merge branch 'expsubset'
 # MultiAssayExperiment 1.14.0
 
 ## New features
