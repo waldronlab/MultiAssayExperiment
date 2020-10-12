@@ -15,7 +15,7 @@ Description: MultiAssayExperiment harmonizes data management of
     or rownames. Facilities are provided for reshaping data into wide and
     long formats for adaptability to graphing and downstream analysis.
 Depends:
-    R (>= 3.6.0),
+    R (>= 4.0.0),
     SummarizedExperiment (>= 1.3.81)
 Imports:
     methods,

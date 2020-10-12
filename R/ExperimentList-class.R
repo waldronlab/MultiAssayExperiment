@@ -19,7 +19,11 @@
 ### ExperimentList class
 ### ----------------------------------------------
 
-#' ExperimentList - A container for multi-experiment data
+#' @name ExperimentList-class
+#'
+#' @docType class
+#'
+#' @title ExperimentList - A container for multi-experiment data
 #'
 #' The \code{ExperimentList} class is a container that builds on
 #' the \code{SimpleList} with additional
@@ -32,12 +36,13 @@
 #' \strong{mergeReplicates} method, additional arguments are passed to the
 #' given \code{simplify} function argument (e.g., na.rm = TRUE)
 #'
+#' @return An \code{ExperimentList} class object
+#'
 #' @examples
+#'
 #' ExperimentList()
 #'
 #' @exportClass ExperimentList
-#' @name ExperimentList-class
-#' @docType class
 setClass("ExperimentList", contains = "SimpleList")
 
 ### - - - - - - - - - - - - - - - - - - - - - - - -

@@ -100,6 +100,9 @@ replicate samples are present, colnames) are seperated by this delimiter}
 column-level metadata should be added to the
 \linkS4class{SummarizedExperiment} \code{colData}.}
 }
+\value{
+See the itemized list in the description section for details.
+}
 \description{
 A set of helper functions were created to help clean and
 manipulate a MultiAssayExperiment object. \code{intersectRows} also works
@@ -228,10 +231,20 @@ classes.
 The setting of \code{mode} determines how the \code{\link{colData}}
 is added. If \code{mode="append"}, the \linkS4class{MultiAssayExperiment}
 metadata is appended onto that of the \linkS4class{SummarizedExperiment}.
-If any fields are duplicated by name, the values in the \linkS4class{SummarizedExperiment}
-are retained, with a warning emitted if the values are different.
-For \code{mode="replace"}, the \linkS4class{MultiAssayExperiment}
-metadata replaces that of the \linkS4class{SummarizedExperiment},
-while for \code{mode="none"}, no replacement or appending is performed.
+If any fields are duplicated by name, the values in the
+\linkS4class{SummarizedExperiment} are retained, with a warning emitted if
+the values are different.  For \code{mode="replace"}, the
+\linkS4class{MultiAssayExperiment} metadata replaces that of the
+\linkS4class{SummarizedExperiment}, while for \code{mode="none"},
+no replacement or appending is performed.
 }
 
+\examples{
+
+example(MultiAssayExperiment)
+
+complete.cases(mae)
+
+isEmpty(MultiAssayExperiment())
+
+}

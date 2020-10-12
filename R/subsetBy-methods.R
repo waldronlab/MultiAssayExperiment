@@ -52,18 +52,25 @@ NULL
 }
 
 #' @name subsetBy
+#'
 #' @title Subsetting a MultiAssayExperiment object
+#'
 #' @description A set of functions for extracting and dividing a
 #' \code{MultiAssayExperiment}
 #'
 #' @param x A \code{MultiAssayExperiment} or \code{ExperimentList}
+#'
 #' @param i Either a \code{character}, \code{integer}, \code{logical} or
 #' \code{GRanges} object for subsetting by rows
+#'
 #' @param j Either a \code{character}, \code{logical}, or \code{numeric} vector
 #' for subsetting by \code{colData} rows. See details for more information.
+#'
 #' @param k Either a \code{character}, \code{logical}, or \code{numeric} vector
 #' for subsetting by assays
+#'
 #' @param ... Additional arguments passed on to lower level functions.
+#'
 #' @param drop logical (default TRUE) whether to drop empty assay elements
 #' in the \code{ExperimentList}
 #'
@@ -86,6 +93,10 @@ NULL
 #' \item subsetByRow: Select rows by assay or for each assay
 #' \item subsetByAssay: Select experiments
 #' }
+#'
+#' @return \code{subsetBy*} operations are endomorphic and return either
+#' \code{MultiAssayExperiment} or \code{ExperimentList} depending on the
+#' input.
 #'
 #' @examples
 #' ## Load the example MultiAssayExperiment

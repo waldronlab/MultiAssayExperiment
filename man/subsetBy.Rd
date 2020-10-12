@@ -92,6 +92,11 @@ in the \code{ExperimentList}}
 
 \item{value}{An assay compatible with the MultiAssayExperiment API}
 }
+\value{
+\code{subsetBy*} operations are endomorphic and return either
+\code{MultiAssayExperiment} or \code{ExperimentList} depending on the
+input.
+}
 \description{
 A set of functions for extracting and dividing a
 \code{MultiAssayExperiment}

@@ -2,10 +2,13 @@
 NULL
 
 #' @name MultiAssayExperiment-helpers
+#'
 #' @title A group of helper functions for manipulating and cleaning a
 #' MultiAssayExperiment
+#'
 #' @aliases intersectRows intersectColumns mergeReplicates replicated
 #' complete.cases,MultiAssayExperiment-method
+#'
 #' @description A set of helper functions were created to help clean and
 #' manipulate a MultiAssayExperiment object. \code{intersectRows} also works
 #' for \code{ExperimentList} objects.
@@ -40,6 +43,16 @@ NULL
 #'
 #' @param x A MultiAssayExperiment or ExperimentList
 #' @param ... Additional arguments. See details for more information.
+#'
+#' @return See the itemized list in the description section for details.
+#'
+#' @examples
+#'
+#' example(MultiAssayExperiment)
+#'
+#' complete.cases(mae)
+#'
+#' isEmpty(MultiAssayExperiment())
 #'
 #' @exportMethod complete.cases
 setMethod("complete.cases", "MultiAssayExperiment", function(...) {
@@ -92,6 +105,7 @@ setGeneric("replicated", function(x) standardGeneric("replicated"))
 }
 
 #' @rdname MultiAssayExperiment-helpers
+#'
 #' @details The \code{replicated} function finds replicate measurements in each
 #' assay and returns a list of \linkS4class{LogicalList}s.
 #' Each element in a single \linkS4class{LogicalList} corresponds to a
@@ -185,11 +199,14 @@ setMethod("mergeReplicates", "MultiAssayExperiment",
 
 #' @describeIn ExperimentList Apply the mergeReplicates method on the
 #' ExperimentList elements
+#'
 #' @param replicates mergeReplicates: A \code{list} or \linkS4class{LogicalList}
 #' where each element represents a sample and a vector of repeated measurements
 #' for the sample
+#'
 #' @param simplify A function for merging columns where duplicates are indicated
 #' by replicates
+#'
 #' @param ... Additional arguments. See details for more information.
 setMethod("mergeReplicates", "ExperimentList",
     function(x, replicates = list(), simplify = BiocGenerics::mean, ...) {
@@ -206,6 +223,7 @@ setMethod("mergeReplicates", "ExperimentList",
     })
 
 #' @rdname MultiAssayExperiment-helpers
+#'
 #' @details The \code{mergeReplicates} "ANY" method consolidates duplicate
 #' measurements for rectangular data structures, returns object of the same
 #' class (endomorphic). The ellipsis or \code{\ldots} argument allows the
@@ -428,6 +446,7 @@ longFormat <- function(object, colDataCols = NULL, i = 1L) {
 #' @param check.names (logical default TRUE) Column names of the output
 #' \code{DataFrame} will be checked for syntactic validity and made unique,
 #' if necessary
+#'
 #' @param collapse (character default "_") A single string delimiter for output
 #' column names. In \code{wideFormat}, experiments and rownames (and when
 #' replicate samples are present, colnames) are seperated by this delimiter
@@ -466,8 +485,9 @@ wideFormat <- function(object, colDataCols = NULL, check.names = TRUE,
             x = longList[indx], y = lVects)
 
         longList <- lapply(longList, function(x)
-            tidyr::unite(x[, names(x) != "colname"], col = !!key, colsofinterest,
-                sep = collSymbol))
+            tidyr::unite(x[, names(x) != "colname"], col = !!key,
+                colsofinterest, sep = collSymbol)
+        )
 
         repList <- lapply(repList, function(x)
             tidyr::unite(x, col = !!key, c(colsofinterest, "colname"),
@@ -509,6 +529,7 @@ wideFormat <- function(object, colDataCols = NULL, check.names = TRUE,
 #' @rdname MultiAssayExperiment-helpers
 #'
 #' @aliases hasRowRanges
+#'
 #' @section hasRowRanges:
 #' The \code{hasRowRanges} method identifies assays with associated ranged
 #' row data by directly testing the method on the object. The result from the
@@ -535,6 +556,7 @@ setMethod("hasRowRanges", "ExperimentList", function(x) {
 #' @rdname MultiAssayExperiment-helpers
 #'
 #' @aliases getWithColData
+#'
 #' @section getWithColData:
 #' The \code{getWithColData} function allows the user to conveniently extract
 #' a particular assay as indicated by the \strong{\code{i}} index argument. It
@@ -548,11 +570,12 @@ setMethod("hasRowRanges", "ExperimentList", function(x) {
 #' The setting of \code{mode} determines how the \code{\link{colData}}
 #' is added. If \code{mode="append"}, the \linkS4class{MultiAssayExperiment}
 #' metadata is appended onto that of the \linkS4class{SummarizedExperiment}.
-#' If any fields are duplicated by name, the values in the \linkS4class{SummarizedExperiment}
-#' are retained, with a warning emitted if the values are different.
-#' For \code{mode="replace"}, the \linkS4class{MultiAssayExperiment}
-#' metadata replaces that of the \linkS4class{SummarizedExperiment},
-#' while for \code{mode="none"}, no replacement or appending is performed.
+#' If any fields are duplicated by name, the values in the
+#' \linkS4class{SummarizedExperiment} are retained, with a warning emitted if
+#' the values are different.  For \code{mode="replace"}, the
+#' \linkS4class{MultiAssayExperiment} metadata replaces that of the
+#' \linkS4class{SummarizedExperiment}, while for \code{mode="none"},
+#' no replacement or appending is performed.
 #'
 #' @export getWithColData
 getWithColData <- function(x, i, mode=c("append", "replace")) {
