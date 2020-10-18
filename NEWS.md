@@ -1,7 +1,13 @@
 # MultiAssayExperiment 1.16.0
 
+## New features
+
+* Coercion methods from `list`/`List` to `MultiAssayExperiment` method now
+available.
+
 ## Bug fixes and minor improvements
 
+* Provide more details in documentation for `mergeReplicates`
 * Improved documentation for accessor function return values, helper function
 examples (@llrs, #281)
 * Fixed bug when using `longFormat` with character assay matrices

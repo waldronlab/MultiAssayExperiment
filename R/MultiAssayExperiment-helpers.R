@@ -165,16 +165,23 @@ setGeneric("mergeReplicates",
 #'
 #' @details The \code{mergeReplicates} function is a house-keeping method
 #' for a \code{MultiAssayExperiment} where only \code{complete.cases} are
-#' returned, replicate measurements are averaged (by default), and columns are
-#' aligned by the row order in \code{colData}. Additional arguments can be
-#' passed on to the \code{simplify} function.
+#' returned. This by-assay operation averages replicate measurements
+#' (by default) and columns are aligned by the row order in \code{colData}.
+#' Users can provide their own function for merging replicates with the
+#' \code{simplify} functional argument. Additional inputs \code{\ldots} are
+#' sent to the 'simplify' function.
 #'
 #' @section mergeReplicates:
 #' The \code{mergeReplicates} function makes use of the output from
 #' \code{replicated} which will point out the duplicate measurements by
-#' biological unit in the \code{MultiAssayExperiment}. This function will return
-#' a \code{MultiAssayExperiment} with merged replicates. Additional arguments
-#' can be provided to the simplify argument via the ellipsis (\ldots).
+#' biological unit in the \code{MultiAssayExperiment}. This function will
+#' return a \code{MultiAssayExperiment} with merged replicates. Additional
+#' arguments can be provided to the simplify argument via the ellipsis
+#' (\ldots). For example, when replicates "TCGA-B" and "TCGA-A" are found in
+#' the assay, the name of the first appearing replicate is taken (i.e., "B").
+#' Note that a typical use case of merging replicates occurs when there are
+#' multiple measurements on the \strong{same} sample (within the same assay)
+#' and can therefore be averaged.
 #'
 #' @param replicates A list of \linkS4class{LogicalList}s
 #' indicating multiple / duplicate entries for each biological unit per assay,
