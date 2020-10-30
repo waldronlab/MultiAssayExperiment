@@ -509,7 +509,7 @@ wideFormat <- function(object, colDataCols = NULL, check.names = TRUE,
     }
 
     wideData <- lapply(wideData, function(flox) {
-        flox <- tidyr::spread(flox, key = {key}, value = "value")
+        flox <- tidyr::pivot_wider(flox, names_from = key)
         .matchAddColData(flox, colData(object), colDataCols)
     })
     wideDF <- Reduce(function(x, y)
