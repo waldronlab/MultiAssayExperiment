@@ -1,4 +1,4 @@
-# MultiAssayExperiment 1.16.0
+# Changes in version 1.16.0
 
 ## New features
 
@@ -13,7 +13,7 @@ examples (@llrs, #281)
 * Fixed bug when using `longFormat` with character assay matrices
 (@jonocarroll, #282)
 
-# MultiAssayExperiment 1.14.0
+# Changes in version 1.14.0
 
 ## New features
 
@@ -39,7 +39,7 @@ and `names(ExperimentList)` (@jonocarroll, #269)
 * Enforcement of `validObject` with replacement methods `colData` and
 `sampleMap` (@vobencha, #271)
 
-# MultiAssayExperiment 1.12.0
+# Changes in version 1.12.0
 
 ## Bug fixes and minor improvements
 
@@ -51,7 +51,7 @@ schematic now included (@mtmorgan, #261)
 inside a `MultiAssayExperiment` object (@lawremi, #259)
 * Fixed the formatting of the NEWS file
 
-# MultiAssayExperiment 1.10.0
+# Changes in version 1.10.0
 
 ## New features
 
@@ -71,7 +71,7 @@ row metadata
 compared to empty rows (i.e., `character(0L)`)
 * Improved README.md
 
-# MultiAssayExperiment 1.8.0
+# Changes in version 1.8.0
 
 ## New features
 
@@ -91,7 +91,7 @@ subsetting
 * Added tests for `anyReplicated`, `c`, and `names<-` functions
 * Unit tests added for replacement method testing
 
-# MultiAssayExperiment 1.7.14
+# Changes in version 1.7.14
 
 ## New features
 
@@ -108,7 +108,7 @@ returns experiments in the input order for rows, columns, and assays
 * Various improvements to subsetting mechanism
 * `subsetByAssay` bug fixed when using an integer index (@vjcitn, #)
 
-# MultiAssayExperiment 1.5.108
+# Changes in version 5.108
 
 ## New features
 
@@ -123,14 +123,14 @@ returns experiments in the input order for rows, columns, and assays
 `MultiAssayExperiment-helpers`
 * `c` internals improved
 
-# MultiAssayExperiment 1.5.102
+# Changes in version 5.102
 
 ## New features
 
 * The `MatchedAssayExperiment` constructor function now works either a
 single `MultiAssayExperiment` or the essential components of one.
 
-# MultiAssayExperiment 1.5.101
+# Changes in version 5.101
 
 ## New features
 
@@ -146,7 +146,7 @@ single `MultiAssayExperiment` or the essential components of one.
 * Minor vignette changes
 * Supply a collapse character for `wideFormat` column names
 
-# MultiAssayExperiment 1.5.65
+# Changes in version 1.5.65
 
 ## Bug fixes and minor improvements
 
@@ -155,14 +155,14 @@ single `MultiAssayExperiment` or the essential components of one.
 `nameFilter` functional argument allows operations such as `substr` on the
 experiment names. (@vjcitn, #231)
 
-# MultiAssayExperiment 1.5.64
+# Changes in version 1.5.64
 
 ## New features
 
 * Remove `clusterOn` function and move to `Bioconductor/MultiOmicQC` package
 on GitHub
 
-# MultiAssayExperiment 1.5.63
+# Changes in version 1.5.63
 
 ## New features
 
@@ -175,7 +175,7 @@ on GitHub
 * Enhancements to the main vignette
 * New format for NEWS section
 
-# MultiAssayExperiment 1.5.38
+# Changes in version 1.5.38
 
 ## New features
 
@@ -197,7 +197,7 @@ entries
 * Improved examples (removed `ExpressionSet` legacy objects)
 * Improved test scripts
 
-# MultiAssayExperiment 1.1.37
+# Changes in version 1.1.37
 
 ## New features
 
@@ -215,7 +215,7 @@ entries
 * default sampleMap representation as empty DataFrame with colnames
 * added combine `c` vignette section for adding experiments to an existing
 
-# MultiAssayExperiment 1.1.59
+# Changes in version 1.1.59
 
 ## New features
 
@@ -229,14 +229,14 @@ entries
 * The `longFormat,ExperimentList-method` now returns a long DataFrame
 * Minor improvements to tests
 
-# MultiAssayExperiment 1.1.52
+# Changes in version 1.1.52
 
 ## New features
 
 * `reduce` removed and broken up into `mergeReplicates` and `intersectColumns`
 * Additional helper introduced: `intersectRows`
 
-# MultiAssayExperiment 1.1.49
+# Changes in version 1.1.49
 
 ## New features
 
@@ -249,13 +249,13 @@ entries
 * Removed coercion to old `RangedRaggedAssay` class
 * Improved `listToMap`
 
-# MultiAssayExperiment 1.1.44
+# Changes in version 1.1.44
 
 ## Bug fixes and minor improvements
 
 * Renamed `PrepMultiAssay` to `prepMultiAssay` (lower `p` following convention)
 
-# MultiAssayExperiment 1.1.43
+# Changes in version 1.1.43
 
 ## New features
 
@@ -277,7 +277,7 @@ instead.
 * `prepMultiAssay` helper now returns a `list` with names corresponding to the
 `MultiAssayExperiment` constructor function
 
-# MultiAssayExperiment 1.1.27
+# Changes in version 1.1.27
 
 ## New features
 
@@ -295,13 +295,13 @@ instead.
 * Numerous bug fixes
 * `mapToList` uses the more efficient `splitAsList` function
 
-# MultiAssayExperiment 1.1.17
+# Changes in version 1.1.17
 
 ## New features
 
 * `upsetSamples` function implemented
 
-# MultiAssayExperiment 1.1.16
+# Changes in version 1.1.16
 
 ## New features
 
@@ -311,7 +311,7 @@ instead.
 
 * Updated vignettes: `DelayedMatrix` & PRAD `MultiAssayExperiment` object
 
-# MultiAssayExperiment 1.1.15
+# Changes in version 1.1.15
 
 ## New features
 
@@ -322,26 +322,26 @@ instead.
 * `show` method for `RangedRaggedAssay` abbreviated. No longer summarizes data with `assay`
 * Documentation changes for `reduce` and `disjoin`
 
-# MultiAssayExperiment 1.1.12
+# Changes in version 1.1.12
 
 ## New features
 
 * `gather`/`collect` function name changed to `rearrange`
 * `clusterSex` now `clusterOn`, works with characteristic of choice
 
-# MultiAssayExperiment 1.1.11
+# Changes in version 1.1.11
 
 ## New features
 
 * Renamed `gather` function to `collect`
 
-# MultiAssayExperiment 1.1.10
+# Changes in version 1.1.10
 
 ## New features
 
 * Double bracket method for MultiAssayExperiment available
 
-# MultiAssayExperiment 1.1.9
+# Changes in version 1.1.9
 
 ## New features
 
@@ -351,7 +351,7 @@ instead.
 
 * Improvements to documentation
 
-# MultiAssayExperiment 1.1.6
+# Changes in version 1.1.6
 
 ## New features
 
@@ -364,7 +364,7 @@ instead.
 * Removed method pollution for other Bioconductor classes
 * `assay` method only shows numeric or character data
 
-# MultiAssayExperiment 1.1.2
+# Changes in version 1.1.2
 
 ## New features
 
@@ -379,7 +379,7 @@ assay names, and optional pData columns
 * Fix `assay` arguments for the `RangedRaggedAssay` method
 * Subsetting by column now arranges `sampleMap` in proper order
 
-# MultiAssayExperiment 1.1.1
+# Changes in version 1.1.1
 
 ## New features
 
@@ -391,7 +391,7 @@ from data
 
 * Documentation updated with new roxygen version
 
-# MultiAssayExperiment 0.101.49
+# Changes in version 101.49
 
 ## New features
 
@@ -402,7 +402,7 @@ objects
 
 * A proper `dimnames` method added to `MultiAssayExperiment`
 
-# MultiAssayExperiment 0.101.45
+# Changes in version 101.45
 
 ## New features
 
@@ -413,21 +413,21 @@ objects
 * Improved `RangedRaggedAssay` rowname construction
 * Improved `show` method for the `RangedRaggedAssay` class
 
-# MultiAssayExperiment 0.101.44
+# Changes in version 101.44
 
 ## New features
 
 * `$` (DollarSign) method available for `MultiAssayExperiment` to access `pData`
 column
 
-# MultiAssayExperiment 0.101.43
+# Changes in version 101.43
 
 ## Bug fixes and minor improvements
 
 * Improved `MultiAssayExperiment` constructor now handles stray assays, colnames,
 pData rownames, and `sampleMap` rows
 
-# MultiAssayExperiment 0.101.42
+# Changes in version 101.42
 
 ## New features
 
@@ -438,14 +438,14 @@ pData rownames, and `sampleMap` rows
 * `metadata` argument available in the `MultiAssayExperiment` constructor function
 * Fix bug when subsetting for unmatched samples/colnames (drop = FALSE) in constructor
 
-# MultiAssayExperiment 0.101.40
+# Changes in version 101.40
 
 ## New features
 
 * Improved `MultiAssayExperiment` constructor with renamed argument "experiments"
 for the `ExperimentList` or `list` input.
 
-# MultiAssayExperiment 0.101.39
+# Changes in version 101.39
 
 ## New features
 
@@ -456,13 +456,13 @@ for the `ExperimentList` or `list` input.
 
 * `drop` argument now works as intended when using `List` inherited objects
 
-# MultiAssayExperiment 0.101.38
+# Changes in version 101.38
 
 ## New features
 
 * `complete.cases` method available for the `MultiAssayExperiment` class
 
-# MultiAssayExperiment 0.101.37
+# Changes in version 101.37
 
 ## New features
 
@@ -476,7 +476,7 @@ and __colname__ (prev. "assay")
 * Improved `show` method display
 * Removed warning message when only `ExperimentList` argument provided
 
-# MultiAssayExperiment 0.101.36
+# Changes in version 101.36
 
 * `Elist` class renamed to `ExperimentList`
 * `ExperimentList` constructor is homonymous
@@ -484,20 +484,20 @@ and __colname__ (prev. "assay")
 * `ExperimentList` replacement method is now `experiments<-`
 * Updated vignettes to reflect change of names
 
-# MultiAssayExperiment 0.101.34
+# Changes in version 101.34
 
 * `assay` method for `RangedRaggedAssay` works on inner metadata columns now
 * vignette examples available for `HDF5Array` package
 * Improved outline for main vignette
 
-# MultiAssayExperiment 0.99.202
+# Changes in version 9.202
 
 ## New features
 
 * `assay` method available for `RangedRaggedAssay` and other classes.
 Created to obtain raw data from certain classes (see `?assay,(class),ANY-method`).
 
-# MultiAssayExperiment 0.99.194
+# Changes in version 9.194
 
 ## New features
 
@@ -513,7 +513,7 @@ Created to obtain raw data from certain classes (see `?assay,(class),ANY-method`
 * Elist order consistent when subsetting
 * mapToList preserves list order
 
-# MultiAssayExperiment 0.99.14
+# Changes in version 0.99.14
 
 * NEWS file is now live!
 * Package now in `Bioc-devel`!
