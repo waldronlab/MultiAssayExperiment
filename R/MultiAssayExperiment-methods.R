@@ -116,7 +116,8 @@ setMethod("$", "MultiAssayExperiment", function(x, name) {
 #' \code{DataFrame} to guide merge
 #' @param mapFrom Either a \code{logical}, \code{character}, or \code{integer}
 #' vector indicating the experiment(s) that have an identical colname order as
-#' the experiment input(s)
+#' the experiment input(s). If using a character input, the name must match
+#' exactly.
 #'
 #' @examples
 #' example("MultiAssayExperiment")
@@ -131,6 +132,9 @@ setMethod("$", "MultiAssayExperiment", function(x, name) {
 #'
 #' test2 <- mae[[3L]]
 #' c(mae, newExp = test2, mapFrom = 3L)
+#'
+#' ## Add experiment using experiment name in mapFrom
+#' c(mae, RNASeqGeneV2 = test2, mapFrom = "RNASeqGene")
 #'
 setMethod("c", "MultiAssayExperiment",
     function(x, ..., sampleMap = NULL, mapFrom = NULL) {
