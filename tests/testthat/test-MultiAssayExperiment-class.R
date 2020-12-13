@@ -53,6 +53,33 @@ test_that("constructors work", {
     expect_true(
         is(conv, "MatchedAssayExperiment")
     )
+
+    mat <- matrix(rpois(10000, 5), nrow=10)
+    rownames(mat) <- paste0("CD", seq_len(nrow(mat))) # made-up markers
+    colnames(mat) <- paste0("BARCODE_", seq_len(ncol(mat))) # made-up barcodes
+
+    # barcodes come from a range of primaries
+    primaries <- rep(LETTERS[1:10], each=100)
+
+    # test constructor function works with only sampleMap and colData info
+    mae <- MultiAssayExperiment(
+        experiments = list(markers = mat),
+        sampleMap = data.frame(
+            assay = "markers", primary = primaries, colname = colnames(mat)
+        ),
+        colData=DataFrame(row.names=LETTERS[1:10])
+    )
+    expect_true(validObject(mae))
+    expect_equal(unique(sampleMap(mae)[["primary"]]), unique(primaries))
+
+    mae <- MultiAssayExperiment(
+        experiments = list(markers = mat),
+        sampleMap = data.frame(
+            assay = "markers", primary = primaries, colname = colnames(mat)
+        ),
+    )
+    expect_true(validObject(mae))
+    expect_equal(sampleMap(mae)[["primary"]], primaries)
 })
 
 test_that("replace methods are using rebliss and replace", {
