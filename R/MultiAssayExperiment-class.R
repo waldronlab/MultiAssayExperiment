@@ -206,13 +206,17 @@ setClass(
 #' @export MultiAssayExperiment
 #' @seealso \link{MultiAssayExperiment-class}
 MultiAssayExperiment <-
-    function(experiments = ExperimentList(), colData = S4Vectors::DataFrame(),
+    function(
+        experiments = ExperimentList(),
+        colData = S4Vectors::DataFrame(),
         sampleMap = S4Vectors::DataFrame(
             assay = factor(),
             primary = character(),
-            colname = character()),
-            metadata = list(),
-            drops = list())
+            colname = character()
+        ),
+        metadata = list(),
+        drops = list()
+    )
 {
     experiments <- as(experiments, "ExperimentList")
 

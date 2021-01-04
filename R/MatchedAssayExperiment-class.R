@@ -45,8 +45,7 @@ setClass("MatchedAssayExperiment", contains="MultiAssayExperiment")
 
 .validMatchedAssayExperiment <- function(object) {
     if (length(object) != 0L) {
-    c(.checkEqualPrimaries(object),
-      .checkPrimaryOrder(object))
+        c(.checkEqualPrimaries(object), .checkPrimaryOrder(object))
     }
 }
 
@@ -54,13 +53,13 @@ S4Vectors::setValidity2("MatchedAssayExperiment", .validMatchedAssayExperiment)
 
 .doMatching <- function(from) {
     if (!isEmpty(from)) {
-    from <- intersectColumns(from)
+        from <- intersectColumns(from)
 
-    if (all(!lengths(colnames(from))))
-        stop("No biological unit(s) measured across all assays")
+        if (all(!lengths(colnames(from))))
+            stop("No biological unit(s) measured across all assays")
 
-    if (any(anyReplicated(from)))
-        stop("Resolve replicate columns")
+        if (any(anyReplicated(from)))
+            stop("Resolve replicate columns")
     }
     from
 }
