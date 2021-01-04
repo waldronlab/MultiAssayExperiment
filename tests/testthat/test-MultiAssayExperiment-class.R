@@ -80,6 +80,29 @@ test_that("constructors work", {
     )
     expect_true(validObject(mae))
     expect_equal(sampleMap(mae)[["primary"]], primaries)
+
+
+    exprss1 <- matrix(rnorm(16), ncol = 4,
+        dimnames = list(sprintf("ENST00000%i", sample(288754:290000, 4)),
+            c("Jack", "Jill", "Bob", "Bobby"))
+    )
+    exprss2 <- matrix(rnorm(12), ncol = 3,
+        dimnames = list(sprintf("ENST00000%i", sample(288754:290000, 4)),
+            c("Jack", "Jane", "Bob"))
+    )
+    expl <- list("methyl 2k"  = exprss1, "methyl 3k" = exprss2)
+    ptdata <- data.frame(
+        sex=c("M", "F", "M", "F"),
+        age=38:41,
+        row.names=c("Jack", "Jill", "Bob", "Barbara")
+    )
+
+    mae <- MultiAssayExperiment(experiments=expl, colData=ptdata)
+    expect_true(validObject(mae))
+    expect_true(!isEmpty(mae))
+    expect_true(length(mae) == 2L)
+    expect_equivalent(vapply(experiments(mae), nrow, integer(1L)), c(4L, 4L))
+    expect_equivalent(vapply(experiments(mae), ncol, integer(1L)), c(3L, 2L))
 })
 
 test_that("replace methods are using rebliss and replace", {
