@@ -217,15 +217,15 @@ MultiAssayExperiment <-
     experiments <- as(experiments, "ExperimentList")
 
     allsamps <- unique(unlist(unname(colnames(experiments))))
-    if (missing(colData)) {
-        if (missing(sampleMap)) {
+    if (missing(sampleMap)) {
+        if (missing(colData))
             colData <- S4Vectors::DataFrame(row.names = allsamps)
-            sampleMap <- .sampleMapFromData(colData, experiments)
-        } else {
+        sampleMap <- .sampleMapFromData(colData, experiments)
+    } else {
+        if (missing(colData))
             colData <- S4Vectors::DataFrame(
                 row.names = unique(sampleMap[["primary"]])
             )
-        }
     }
 
     colData <- as(colData, "DataFrame")
