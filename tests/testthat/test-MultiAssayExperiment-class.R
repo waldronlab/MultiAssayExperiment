@@ -133,4 +133,19 @@ test_that("replace methods are using rebliss and replace", {
         ))
     )
     expect_true(validObject(mae0))
+
+    cc <- colnames(mae)
+    cc[[1]] <- toupper(cc[[1]])
+    cc[[3]] <- toupper(cc[[3]])
+
+    mae0 <- mae
+    colnames(mae0) <- cc
+    expect_identical(colnames(mae0), cc)
+
+    mae0 <- mae
+    cc <- as.list(cc)
+    colnames(mae0) <- cc
+    expect_identical(
+        colnames(mae0), as(cc, "CompressedCharacterList")
+    )
 })

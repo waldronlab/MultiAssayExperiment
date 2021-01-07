@@ -314,7 +314,7 @@ MultiAssayExperiment <-
         rownames(colData(object)),
         sampleMap(object)[["primary"]]
     ))) {
-        msg <- "All samples in the 'sampleMap' must be in the 'colData'"
+        msg <- "All 'sampleMap[[primary]]' must be in 'rownames(colData)'"
         errors <- c(errors, msg)
     }
     if (!is.factor(sampleMap(object)[["assay"]])) {
@@ -334,7 +334,7 @@ MultiAssayExperiment <-
     if (!logchecks)
         NULL
     else
-        "All sample identifiers in the assays must be unique"
+        "All colname identifiers in assays must be unique"
 }
 
 .validMultiAssayExperiment <- function(object) {
@@ -620,6 +620,50 @@ setReplaceMethod("names", c("MultiAssayExperiment", "ANY"),
         sampleMap = sampmap,
         check = FALSE)
 })
+
+#' @exportMethod colnames<-
+#' @rdname MultiAssayExperiment-methods
+setReplaceMethod("colnames", c("MultiAssayExperiment", "List"),
+    function(x, value)
+{
+    if (!is(value, "CharacterList"))
+        stop("'value' must be a 'CharacterList' in 'colnames(x) <- value'")
+    if (length(value) != length(x))
+        stop("'colnames(x)' and 'value' not equal in length")
+
+    cnames <- colnames(x)
+    if (!identical(lengths(value), lengths(cnames)))
+        stop("'value' names and lengths should all be identical to 'names(x)'")
+
+    smp <- sampleMap(x)
+    splitmp <- mapToList(smp)
+    splitmp <- Map(function(x, y) {
+        x[["colname"]] <- y
+        x
+    }, x = splitmp, y = value)
+    exps <- experiments(x)
+    exps <- S4Vectors::mendoapply(function(x, y) {
+        colnames(x) <- y
+        x
+    }, x = exps, y = value)
+
+    BiocGenerics:::replaceSlots(
+        object = x,
+        ExperimentList = exps,
+        sampleMap = listToMap(splitmp)
+    )
+})
+
+#' @exportMethod colnames<-
+#' @rdname MultiAssayExperiment-methods
+setReplaceMethod("colnames", c("MultiAssayExperiment", "list"),
+    function(x, value)
+{
+    value <- as(value, "CharacterList")
+    colnames(x) <- value
+    x
+})
+
 
 #' @exportMethod updateObject
 #' @param verbose logical (default FALSE) whether to print extra messages
