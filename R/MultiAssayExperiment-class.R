@@ -553,6 +553,10 @@ setReplaceMethod("experiments", c("MultiAssayExperiment", "ExperimentList"),
 #' @rdname MultiAssayExperiment-methods
 setReplaceMethod("colData", c("MultiAssayExperiment", "DataFrame"),
     function(x, value) {
+        if (!any(rownames(value) %in% rownames(colData(x))) && !isEmpty(value))
+            stop("'rownames(value)' have no match in 'rownames(colData)';\n  ",
+                "See '?renamePrimary' for renaming primary units")
+
         rebliss <- .harmonize(experiments(x),
             value,
             sampleMap(x))

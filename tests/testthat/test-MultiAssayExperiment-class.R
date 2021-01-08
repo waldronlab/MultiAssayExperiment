@@ -134,6 +134,11 @@ test_that("replace methods are using rebliss and replace", {
     )
     expect_true(validObject(mae0))
 
+    mae0 <- mae
+    expect_error(
+        colData(mae0) <- DataFrame(rownames = "Blue")
+    )
+
     cc <- colnames(mae)
     cc[[1]] <- toupper(cc[[1]])
     cc[[3]] <- toupper(cc[[3]])
