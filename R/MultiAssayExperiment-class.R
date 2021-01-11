@@ -472,7 +472,8 @@ setMethod("colData", "MultiAssayExperiment", function(x, ...) {
 #' @exportMethod metadata
 #' @rdname MultiAssayExperiment-methods
 setMethod("metadata", "MultiAssayExperiment", function(x)
-    getElement(x, "metadata"))
+    c(metadata = getElement(x, "metadata"), drops = getElement(x, "drops"))
+)
 
 ### - - - - - - - - - - - - - - - - - - - - - - - -
 ### Getters
@@ -531,6 +532,8 @@ setReplaceMethod("sampleMap", c("MultiAssayExperiment", "ANY"),
 #' @export
 setGeneric("experiments<-", function(object, value)
     standardGeneric("experiments<-"))
+
+setGeneric("drops<-", function(x, ..., value) standardGeneric("drops<-"))
 
 #' @exportMethod experiments<-
 #' @rdname MultiAssayExperiment-methods
@@ -592,6 +595,12 @@ setReplaceMethod("metadata", c("MultiAssayExperiment", "ANY"),
                      slot(x, "metadata") <- value
                      return(x)
                  })
+
+setReplaceMethod("drops", c("MultiAssayExperiment", "ANY"),
+    function(x, ..., value) {
+    slot(x, "drops") <- value
+    return(x)
+})
 
 #' @exportMethod $<-
 #' @rdname MultiAssayExperiment-methods
@@ -691,7 +700,8 @@ setMethod("updateObject", "MultiAssayExperiment",
                 .rearrangeMap(sampleMap(object))
             else sampleMap(object),
             metadata = metadata(object),
-            drops = object@drops)
+            drops = getElement(object, "drops")
+        )
     })
 
 .mergeColData <- function(inlist) {

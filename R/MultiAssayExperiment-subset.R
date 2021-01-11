@@ -30,11 +30,12 @@ NULL
         isEmptyAssay <- vapply(experiments(x), FUN = .isEmpty,
             FUN.VALUE = logical(1L))
         if (all(isEmptyAssay)) {
+            drops(x) <- list(experiments = names(x))
             experiments(x) <- ExperimentList()
         } else if (any(isEmptyAssay)) {
-            keeps <- names(isEmptyAssay)[
-                vapply(isEmptyAssay, function(k) {
-                    !isTRUE(k)}, logical(1L))]
+            empties <- vapply(isEmptyAssay, isTRUE, logical(1L))
+            keeps <- names(isEmptyAssay)[!empties]
+            drops(x) <- list(experiments = names(isEmptyAssay)[empties])
             x <- subsetByAssay(x, keeps)
         }
     }
