@@ -36,6 +36,7 @@ NULL
             empties <- vapply(isEmptyAssay, isTRUE, logical(1L))
             keeps <- names(isEmptyAssay)[!empties]
             drops(x) <- list(experiments = names(isEmptyAssay)[empties])
+            warning("'experiments' dropped; see 'metadata'", call. = FALSE)
             x <- subsetByAssay(x, keeps)
         }
     }

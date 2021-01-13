@@ -542,6 +542,12 @@ setReplaceMethod("experiments", c("MultiAssayExperiment", "ExperimentList"),
 
         rebliss <- .harmonize(value, colData(object), sampleMap(object))
 
+        if (!any(names(object) %in% names(value)) && !isEmpty(object)) {
+            drops(object) <-
+                list(experiments = setdiff(names(object), names(value)))
+            warning("'experiments' dropped; see 'metadata'", call. = FALSE)
+        }
+
         BiocGenerics:::replaceSlots(
             object = object,
             ExperimentList = rebliss[["experiments"]],
@@ -590,15 +596,18 @@ setReplaceMethod("colData", c("MultiAssayExperiment", "ANY"),
 #' @exportMethod metadata<-
 #' @rdname MultiAssayExperiment-methods
 setReplaceMethod("metadata", c("MultiAssayExperiment", "ANY"),
-                 function(x, ..., value) {
-                     slot(x, "metadata") <- value
-                     return(x)
-                 })
+    function(x, ..., value) {
+        slot(x, "metadata") <- value
+        return(x)
+})
 
 setReplaceMethod("drops", c("MultiAssayExperiment", "ANY"),
     function(x, ..., value) {
-    slot(x, "drops") <- value
-    return(x)
+        anydrops <- getElement(x, "drops")[["experiments"]]
+        if (length(anydrops))
+            value[["experiments"]] <- union(anydrops, value[["experiments"]])
+        slot(x, "drops") <- value
+        return(x)
 })
 
 #' @exportMethod $<-

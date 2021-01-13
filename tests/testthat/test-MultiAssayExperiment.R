@@ -117,6 +117,27 @@ test_that("MultiAssayExperiment .harmonize construction helper works", {
 
 })
 
+test_that("dropping experiments is noisy and traced", {
+    m <- matrix(0, 3, 3, dimnames=list(letters[1:3], letters[1:3]))
+    m2 <- matrix(0, 0, 0)
+    m3 <- matrix(0, 1, 1, dimnames=list("d", "d"))
+    mae <- MultiAssayExperiment(list(m=m, m2=m2, m3=m3))
+    ## check warning about experiments
+    expect_warning( dp <- mae[, list(m = 1:3, m2 = 0, m3 = 1), , drop = TRUE] )
+    ## check drops in metadata
+    expect_identical(metadata(dp)[["drops.experiments"]], "m2")
+
+    ## check warning about experiments
+    expect_warning( dp <- mae[character(0L), , drop = TRUE] )
+    ## check drops in metadata
+    expect_identical(metadata(dp)[["drops.experiments"]], names(mae))
+
+    ## check warning about experiments
+    expect_warning( dp <- mae[, , 0, drop = TRUE] )
+    ## check drops in metadata
+    expect_identical(metadata(dp)[["drops.experiments"]], names(mae))
+})
+
 test_that("MultiAssayExperiment replacements work", {
     pDF <- DataFrame(a = 1:4, b = letters[1:4])
     obs <- MultiAssayExperiment()
