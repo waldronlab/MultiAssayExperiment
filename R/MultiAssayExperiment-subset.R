@@ -61,7 +61,12 @@ setReplaceMethod("[[", "MultiAssayExperiment", function(x, i, j, ..., value) {
         stop("invalid replacement")
     if (is.list(value) || (is(value, "List") && !is(value, "DataFrame")))
         stop("Provide a compatible API object for replacement")
+    if (!any(colnames(value) %in% colnames(x)[[i]]) && !.isEmpty(value))
+        stop("'colnames(value)' have no match in 'colnames(x)[[i]]';\n",
+            "See '?renameColname' for renaming colname identifiers")
+
     experiments(x) <- S4Vectors::setListElement(experiments(x), i, value)
+
     return(x)
 })
 
