@@ -667,18 +667,18 @@ getWithColData <- function(x, i, mode=c("append", "replace")) {
 #'
 #' @export renamePrimary
 renamePrimary <- function(x, value) {
-    cdat <- colData(x)
-    old <- rownames(cdat)
+    coldata <- colData(x)
+    old <- rownames(coldata)
     if (length(old) != length(value))
         stop("'value' length does not match 'length(rownames(colData))'")
-    smp <- sampleMap(x)
-    nprime <- value[match(smp[["primary"]], old)]
-    smp[["primary"]] <- nprime
-    rownames(cdat) <- value
+    samplemap <- sampleMap(x)
+    nprime <- value[match(samplemap[["primary"]], old)]
+    samplemap[["primary"]] <- nprime
+    rownames(coldata) <- value
     BiocGenerics:::replaceSlots(
         object = x,
-        sampleMap = smp,
-        colData = cdat
+        sampleMap = samplemap,
+        colData = coldata
     )
 }
 

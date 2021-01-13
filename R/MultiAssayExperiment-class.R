@@ -539,11 +539,11 @@ setGeneric("drops<-", function(x, ..., value) standardGeneric("drops<-"))
 #' @rdname MultiAssayExperiment-methods
 setReplaceMethod("experiments", c("MultiAssayExperiment", "ExperimentList"),
     function(object, value) {
-        rebliss <- .harmonize(value,
-            colData(object),
-            sampleMap(object))
 
-        BiocGenerics:::replaceSlots(object,
+        rebliss <- .harmonize(value, colData(object), sampleMap(object))
+
+        BiocGenerics:::replaceSlots(
+            object = object,
             ExperimentList = rebliss[["experiments"]],
             colData = rebliss[["colData"]],
             sampleMap = rebliss[["sampleMap"]],
@@ -560,11 +560,10 @@ setReplaceMethod("colData", c("MultiAssayExperiment", "DataFrame"),
             stop("'rownames(value)' have no match in 'rownames(colData)';\n  ",
                 "See '?renamePrimary' for renaming primary units")
 
-        rebliss <- .harmonize(experiments(x),
-            value,
-            sampleMap(x))
+        rebliss <- .harmonize(experiments(x), value, sampleMap(x))
 
-        BiocGenerics:::replaceSlots(x,
+        BiocGenerics:::replaceSlots(
+            object = x,
             ExperimentList = rebliss[["experiments"]],
             colData = rebliss[["colData"]],
             sampleMap = rebliss[["sampleMap"]],
@@ -648,12 +647,12 @@ setReplaceMethod("colnames", c("MultiAssayExperiment", "List"),
     if (!identical(lengths(value), lengths(cnames)))
         stop("'value' names and lengths should all be identical to 'names(x)'")
 
-    smp <- sampleMap(x)
-    splitmp <- mapToList(smp)
-    splitmp <- Map(function(x, y) {
+    samplemap <- sampleMap(x)
+    splitmap <- mapToList(samplemap)
+    splitmap <- Map(function(x, y) {
         x[["colname"]] <- y
         x
-    }, x = splitmp, y = value)
+    }, x = splitmap, y = value)
     exps <- experiments(x)
     exps <- S4Vectors::mendoapply(function(x, y) {
         colnames(x) <- y
@@ -663,7 +662,7 @@ setReplaceMethod("colnames", c("MultiAssayExperiment", "List"),
     BiocGenerics:::replaceSlots(
         object = x,
         ExperimentList = exps,
-        sampleMap = listToMap(splitmp)
+        sampleMap = listToMap(splitmap)
     )
 })
 
