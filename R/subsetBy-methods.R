@@ -321,6 +321,10 @@ setMethod("subsetByColumn", c("MultiAssayExperiment", "ANY"), function(x, y) {
 
 #' @rdname subsetBy
 setMethod("subsetByAssay", c("MultiAssayExperiment", "ANY"), function(x, y) {
-    experiments(x) <- experiments(x)[y]
+    subexp <- experiments(x)[y]
+    dropnames <- setdiff(names(experiments(x)), names(subexp))
+    drops(x) <- list(experiments = dropnames)
+    warning("'experiments' dropped; see 'metadata'", call. = FALSE)
+    experiments(x) <- subexp
     return(x)
 })
