@@ -472,7 +472,7 @@ setMethod("colData", "MultiAssayExperiment", function(x, ...) {
 #' @exportMethod metadata
 #' @rdname MultiAssayExperiment-methods
 setMethod("metadata", "MultiAssayExperiment", function(x)
-    c(metadata = getElement(x, "metadata"), drops = getElement(x, "drops"))
+    c(getElement(x, "metadata"), drops = getElement(x, "drops"))
 )
 
 ### - - - - - - - - - - - - - - - - - - - - - - - -
