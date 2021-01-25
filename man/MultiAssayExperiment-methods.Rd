@@ -19,6 +19,8 @@
 \alias{metadata<-,MultiAssayExperiment-method}
 \alias{$<-,MultiAssayExperiment-method}
 \alias{names<-,MultiAssayExperiment-method}
+\alias{colnames<-,MultiAssayExperiment,List-method}
+\alias{colnames<-,MultiAssayExperiment,list-method}
 \alias{$,MultiAssayExperiment-method}
 \title{Accessing and modifying information in MultiAssayExperiment}
 \usage{
@@ -45,6 +47,10 @@
 \S4method{$}{MultiAssayExperiment}(x, name) <- value
 
 \S4method{names}{MultiAssayExperiment}(x) <- value
+
+\S4method{colnames}{MultiAssayExperiment,List}(x) <- value
+
+\S4method{colnames}{MultiAssayExperiment,list}(x) <- value
 
 \S4method{$}{MultiAssayExperiment}(x, name)
 }

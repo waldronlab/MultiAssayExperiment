@@ -206,26 +206,30 @@ setClass(
 #' @export MultiAssayExperiment
 #' @seealso \link{MultiAssayExperiment-class}
 MultiAssayExperiment <-
-    function(experiments = ExperimentList(), colData = S4Vectors::DataFrame(),
+    function(
+        experiments = ExperimentList(),
+        colData = S4Vectors::DataFrame(),
         sampleMap = S4Vectors::DataFrame(
             assay = factor(),
             primary = character(),
-            colname = character()),
-            metadata = list(),
-            drops = list())
+            colname = character()
+        ),
+        metadata = list(),
+        drops = list()
+    )
 {
     experiments <- as(experiments, "ExperimentList")
 
     allsamps <- unique(unlist(unname(colnames(experiments))))
-    if (missing(colData)) {
-        if (missing(sampleMap)) {
+    if (missing(sampleMap)) {
+        if (missing(colData))
             colData <- S4Vectors::DataFrame(row.names = allsamps)
-            sampleMap <- .sampleMapFromData(colData, experiments)
-        } else {
+        sampleMap <- .sampleMapFromData(colData, experiments)
+    } else {
+        if (missing(colData))
             colData <- S4Vectors::DataFrame(
                 row.names = unique(sampleMap[["primary"]])
             )
-        }
     }
 
     colData <- as(colData, "DataFrame")
@@ -310,7 +314,7 @@ MultiAssayExperiment <-
         rownames(colData(object)),
         sampleMap(object)[["primary"]]
     ))) {
-        msg <- "All samples in the 'sampleMap' must be in the 'colData'"
+        msg <- "All 'sampleMap[[primary]]' must be in 'rownames(colData)'"
         errors <- c(errors, msg)
     }
     if (!is.factor(sampleMap(object)[["assay"]])) {
@@ -330,7 +334,7 @@ MultiAssayExperiment <-
     if (!logchecks)
         NULL
     else
-        "All sample identifiers in the assays must be unique"
+        "All colname identifiers in assays must be unique"
 }
 
 .validMultiAssayExperiment <- function(object) {
@@ -468,7 +472,8 @@ setMethod("colData", "MultiAssayExperiment", function(x, ...) {
 #' @exportMethod metadata
 #' @rdname MultiAssayExperiment-methods
 setMethod("metadata", "MultiAssayExperiment", function(x)
-    getElement(x, "metadata"))
+    c(getElement(x, "metadata"), drops = getElement(x, "drops"))
+)
 
 ### - - - - - - - - - - - - - - - - - - - - - - - -
 ### Getters
@@ -528,15 +533,23 @@ setReplaceMethod("sampleMap", c("MultiAssayExperiment", "ANY"),
 setGeneric("experiments<-", function(object, value)
     standardGeneric("experiments<-"))
 
+setGeneric("drops<-", function(x, ..., value) standardGeneric("drops<-"))
+
 #' @exportMethod experiments<-
 #' @rdname MultiAssayExperiment-methods
 setReplaceMethod("experiments", c("MultiAssayExperiment", "ExperimentList"),
     function(object, value) {
-        rebliss <- .harmonize(value,
-            colData(object),
-            sampleMap(object))
 
-        BiocGenerics:::replaceSlots(object,
+        rebliss <- .harmonize(value, colData(object), sampleMap(object))
+
+        if (!any(names(object) %in% names(value)) && !isEmpty(object)) {
+            drops(object) <-
+                list(experiments = setdiff(names(object), names(value)))
+            warning("'experiments' dropped; see 'metadata'", call. = FALSE)
+        }
+
+        BiocGenerics:::replaceSlots(
+            object = object,
             ExperimentList = rebliss[["experiments"]],
             colData = rebliss[["colData"]],
             sampleMap = rebliss[["sampleMap"]],
@@ -549,11 +562,14 @@ setReplaceMethod("experiments", c("MultiAssayExperiment", "ExperimentList"),
 #' @rdname MultiAssayExperiment-methods
 setReplaceMethod("colData", c("MultiAssayExperiment", "DataFrame"),
     function(x, value) {
-        rebliss <- .harmonize(experiments(x),
-            value,
-            sampleMap(x))
+        if (!any(rownames(value) %in% rownames(colData(x))) && !isEmpty(value))
+            stop("'rownames(value)' have no match in 'rownames(colData)';\n  ",
+                "See '?renamePrimary' for renaming primary units")
 
-        BiocGenerics:::replaceSlots(x,
+        rebliss <- .harmonize(experiments(x), value, sampleMap(x))
+
+        BiocGenerics:::replaceSlots(
+            object = x,
             ExperimentList = rebliss[["experiments"]],
             colData = rebliss[["colData"]],
             sampleMap = rebliss[["sampleMap"]],
@@ -580,10 +596,19 @@ setReplaceMethod("colData", c("MultiAssayExperiment", "ANY"),
 #' @exportMethod metadata<-
 #' @rdname MultiAssayExperiment-methods
 setReplaceMethod("metadata", c("MultiAssayExperiment", "ANY"),
-                 function(x, ..., value) {
-                     slot(x, "metadata") <- value
-                     return(x)
-                 })
+    function(x, ..., value) {
+        slot(x, "metadata") <- value
+        return(x)
+})
+
+setReplaceMethod("drops", c("MultiAssayExperiment", "ANY"),
+    function(x, ..., value) {
+        anydrops <- getElement(x, "drops")[["experiments"]]
+        if (length(anydrops))
+            value[["experiments"]] <- union(anydrops, value[["experiments"]])
+        slot(x, "drops") <- value
+        return(x)
+})
 
 #' @exportMethod $<-
 #' @rdname MultiAssayExperiment-methods
@@ -617,6 +642,50 @@ setReplaceMethod("names", c("MultiAssayExperiment", "ANY"),
         check = FALSE)
 })
 
+#' @exportMethod colnames<-
+#' @rdname MultiAssayExperiment-methods
+setReplaceMethod("colnames", c("MultiAssayExperiment", "List"),
+    function(x, value)
+{
+    if (!is(value, "CharacterList"))
+        stop("'value' must be a 'CharacterList' in 'colnames(x) <- value'")
+    if (length(value) != length(x))
+        stop("'colnames(x)' and 'value' not equal in length")
+
+    cnames <- colnames(x)
+    if (!identical(lengths(value), lengths(cnames)))
+        stop("'value' names and lengths should all be identical to 'names(x)'")
+
+    samplemap <- sampleMap(x)
+    splitmap <- mapToList(samplemap)
+    splitmap <- Map(function(x, y) {
+        x[["colname"]] <- y
+        x
+    }, x = splitmap, y = value)
+    exps <- experiments(x)
+    exps <- S4Vectors::mendoapply(function(x, y) {
+        colnames(x) <- y
+        x
+    }, x = exps, y = value)
+
+    BiocGenerics:::replaceSlots(
+        object = x,
+        ExperimentList = exps,
+        sampleMap = listToMap(splitmap)
+    )
+})
+
+#' @exportMethod colnames<-
+#' @rdname MultiAssayExperiment-methods
+setReplaceMethod("colnames", c("MultiAssayExperiment", "list"),
+    function(x, value)
+{
+    value <- as(value, "CharacterList")
+    colnames(x) <- value
+    x
+})
+
+
 #' @exportMethod updateObject
 #' @param verbose logical (default FALSE) whether to print extra messages
 #' @describeIn MultiAssayExperiment Update old serialized MultiAssayExperiment
@@ -639,7 +708,8 @@ setMethod("updateObject", "MultiAssayExperiment",
                 .rearrangeMap(sampleMap(object))
             else sampleMap(object),
             metadata = metadata(object),
-            drops = object@drops)
+            drops = getElement(object, "drops")
+        )
     })
 
 .mergeColData <- function(inlist) {

@@ -39,9 +39,14 @@ NULL
 #'     that have a \link[=RangedSummarizedExperiment-class]{rowRanges} method
 #'     \item getWithColData: A convenience function for extracting an assay
 #'     and associated colData
+#'     \item renamePrimary: A convenience function to rename the primary
+#'     biological units as represented in the \code{rownames(colData)}
+#'     \item renameColname: A convenience function to rename the colnames
+#'     of a particular assay
 #' }
 #'
 #' @param x A MultiAssayExperiment or ExperimentList
+#'
 #' @param ... Additional arguments. See details for more information.
 #'
 #' @return See the itemized list in the description section for details.
@@ -345,7 +350,7 @@ setMethod("mergeReplicates", "ANY",
 #' to provide a consistent long and skinny \link{DataFrame}.
 #'
 #' @section longFormat:
-#' The longFormat method takes data from the \code{\link{ExperimentList}}
+#' The 'longFormat' method takes data from the \code{\link{ExperimentList}}
 #' in a \code{\link{MultiAssayExperiment}} and returns a uniform
 #' \code{\link{DataFrame}}. The resulting DataFrame has columns indicating
 #' primary, rowname, colname and value. This method can optionally include
@@ -360,9 +365,12 @@ setMethod("mergeReplicates", "ANY",
 #' @param colDataCols A \code{character}, \code{logical}, or \code{numeric}
 #'     index for \code{colData} columns to be included
 #'
-#' @param i The assay indicator for \linkS4class{SummarizedExperiment}
-#'     objects. A vector input is supported in the case that the
-#'     SummarizedExperiment object(s) has more than one assay (default 1L)
+#' @param i longFormat: The i-th assay in
+#'     \linkS4class{SummarizedExperiment}-like objects. A vector input is
+#'     supported in the case that the SummarizedExperiment object(s) has more
+#'     than one assay (default 1L),
+#'     renameColname: Either a \code{numeric} or \code{character} index
+#'     indicating the assay whose colnames are to be renamed
 #'
 #' @param mode String indicating how \linkS4class{MultiAssayExperiment}
 #'     column-level metadata should be added to the
@@ -632,3 +640,80 @@ getWithColData <- function(x, i, mode=c("append", "replace")) {
     exObj
 }
 
+#' @rdname MultiAssayExperiment-helpers
+#'
+#' @aliases renamePrimary
+#'
+#' @section rename*:
+#' The \code{renamePrimary} function allows the user to conveniently change the
+#' actual names of the primary biological units as seen in
+#' \code{rownames(colData)}. \code{renameColname} allows the user to change the
+#' names of a particular assay based on index \code{i}. \code{i} can either be
+#' a single numeric or character value. See \code{colnames<-} method for
+#' renaming multiple colnames in a \code{MultiAssayExperiment}.
+#'
+#' @param value renamePrimary: A \code{character} vector of the same length as
+#' the existing \code{rownames(colData)} to use for replacement,
+#' renameColname: A \code{CharacterList} or \code{list} with matching
+#' \code{lengths} to replace \code{colnames(x)}
+#'
+#' @examples
+#'
+#' ## renaming biological units (primary)
+#'
+#' mae2 <- renamePrimary(mae, paste0("pt", 1:4))
+#' colData(mae2)
+#' sampleMap(mae2)
+#'
+#' @export renamePrimary
+renamePrimary <- function(x, value) {
+    coldata <- colData(x)
+    old <- rownames(coldata)
+    if (length(old) != length(value))
+        stop("'value' length does not match 'length(rownames(colData))'")
+    samplemap <- sampleMap(x)
+    nprime <- value[match(samplemap[["primary"]], old)]
+    samplemap[["primary"]] <- nprime
+    rownames(coldata) <- value
+    BiocGenerics:::replaceSlots(
+        object = x,
+        sampleMap = samplemap,
+        colData = coldata
+    )
+}
+
+#' @rdname MultiAssayExperiment-helpers
+#'
+#' @aliases renameColname
+#'
+#' @examples
+#'
+#' ## renaming observational units (colname)
+#'
+#' mae2 <- renameColname(mae, i = "Affy", paste0("ARRAY", 1:4))
+#' colnames(mae2)
+#' sampleMap(mae2)
+#'
+#'
+#' @export renameColname
+renameColname <- function(x, i, value) {
+    stopifnot(length(i) == 1L, !is.na(i), !missing(i))
+    exps <- experiments(x)
+    expAssay <- x[[i]]
+    splitmp <- mapToList(sampleMap(x))
+    expmap <- splitmp[[i]]
+    old <- expmap[["colname"]]
+    if (length(old) != length(value))
+        stop("'value' length does not match 'length(colnames(x[[i]]))'")
+    newcns <- value[match(expmap[["colname"]], old)]
+    expmap[["colname"]] <- newcns
+    splitmp[[i]] <- expmap
+    smp <- listToMap(splitmp)
+    colnames(expAssay) <- value
+    exps[[i]] <- expAssay
+    BiocGenerics:::replaceSlots(
+        object = x,
+        sampleMap = smp,
+        ExperimentList = exps
+    )
+}

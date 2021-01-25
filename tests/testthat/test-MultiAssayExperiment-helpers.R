@@ -154,3 +154,24 @@ test_that("getWithColData works", {
         drop = FALSE]
     expect_identical(cData, matchedData)
 })
+
+test_that("renaming helpers work", {
+    ## renamePrimary
+    newnames <- c("Red", "Green", "Blue", "Yellow")
+    mae0 <- renamePrimary(mae, newnames)
+    expect_identical(
+        rownames(colData(mae0)),
+        newnames
+    )
+    expect_true(
+        all(newnames %in% sampleMap(mae0)[["primary"]])
+    )
+
+    ## renameColname
+    newaffynames <- paste0("Affy", 1:4)
+    mae0 <- renameColname(mae, "Affy", newaffynames)
+    expect_identical(
+        colnames(mae0)[["Affy"]],
+        newaffynames
+    )
+})

@@ -30,11 +30,13 @@ NULL
         isEmptyAssay <- vapply(experiments(x), FUN = .isEmpty,
             FUN.VALUE = logical(1L))
         if (all(isEmptyAssay)) {
+            drops(x) <- list(experiments = names(x))
             experiments(x) <- ExperimentList()
         } else if (any(isEmptyAssay)) {
-            keeps <- names(isEmptyAssay)[
-                vapply(isEmptyAssay, function(k) {
-                    !isTRUE(k)}, logical(1L))]
+            empties <- vapply(isEmptyAssay, isTRUE, logical(1L))
+            keeps <- names(isEmptyAssay)[!empties]
+            drops(x) <- list(experiments = names(isEmptyAssay)[empties])
+            warning("'experiments' dropped; see 'metadata'", call. = FALSE)
             x <- subsetByAssay(x, keeps)
         }
     }
@@ -60,7 +62,12 @@ setReplaceMethod("[[", "MultiAssayExperiment", function(x, i, j, ..., value) {
         stop("invalid replacement")
     if (is.list(value) || (is(value, "List") && !is(value, "DataFrame")))
         stop("Provide a compatible API object for replacement")
+    if (!any(colnames(value) %in% colnames(x)[[i]]) && !.isEmpty(value))
+        stop("'colnames(value)' have no match in 'colnames(x)[[i]]';\n",
+            "See '?renameColname' for renaming colname identifiers")
+
     experiments(x) <- S4Vectors::setListElement(experiments(x), i, value)
+
     return(x)
 })
 

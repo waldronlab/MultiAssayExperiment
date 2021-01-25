@@ -1,3 +1,21 @@
+# Changes in version 1.18.0
+
+## New features
+
+* `renameColname` and `renamePrimary` provide renaming facilities for column
+names in experiments and `rownames` in the `colData`, respectively
+* Users can now rename some or all the column names in experiments using
+`colnames(mae) <- value`
+* When replacing `colData` or `experiments` (including `[[<-`), new `rownames`
+and `colnames` (respectively) are checked against existing values and an error
+is given when none match
+
+## Bug fixes and minor improvements
+
+* Updated the constructor function to auto-populate `rownames` in `colData`
+when it is missing (@LTLA, #287)
+* The metadata now includes names of dropped experiments
+
 # Changes in version 1.16.0
 
 ## New features
