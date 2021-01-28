@@ -717,3 +717,55 @@ renameColname <- function(x, i, value) {
         ExperimentList = exps
     )
 }
+
+setGeneric("splitAssays", function(x, matchList = list(), ...)
+        standardGeneric("splitAssays")
+)
+
+setMethod("splitAssays", "MultiAssayExperiment", function(x, matchList, ...) {
+    stopifnot(is(matchList, "LogicalList"))
+    if (length(names(logicalList)))
+        Map(...)
+    else
+        exps[, logicalList]
+
+    }
+)
+
+patts <- list(normals = "TCGA-OR-[A-Z0-9]{4}-11", tumors = "TCGA-OR-[A-Z0-9]{4}-01")
+# patternList <- patts
+# mae <- miniACC
+makeMatchList <- function(mae, patternList, ...) {
+    Colnames <- colnames(mae)
+    res <- lapply(
+        names(patternList), function(pattname, patt) {
+            setNames(
+                grepl(patt[[pattname]], unlist(Colnames)),
+                rep(pattname, length(unlist(Colnames)))
+            )
+        }, patt = patternList
+    )
+    reslist <- lapply(res, relist, Colnames)
+    sums <- do.call(function(...) Map(`+`, ...), reslist)
+    if (any(unlist(sums) > 1))
+        stop("Groups are not mutually exclusive")
+    do.call(function(...) Map(`|`, ...), reslist)
+#    dummyVector <- rep(FALSE, length(res[[1]]))
+    lapply(reslist, function(true) {
+        trues <- unlist(true, use.names = FALSE)
+        dummyVector <- rep(FALSE, length(trues))
+        dummyVector[trues] <- TRUE
+        names(dummyVector)[trues] <- names(trues[trues])
+        relist(dummyVector, true)
+    })
+    unlist(reslist[[2]], use.names = FALSE)
+    names(unlist(reslist[[2]], use.names = FALSE))
+
+    lapply(expnames, function(x) eFUN(x = colnames(x)))
+    patlist <- as.list(patterns)
+    for (pats in patterns) {
+        lapply(colnames(mae), function(assayColnames) {
+            })
+    }
+}
+
