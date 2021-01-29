@@ -718,54 +718,83 @@ renameColname <- function(x, i, value) {
     )
 }
 
-setGeneric("splitAssays", function(x, matchList = list(), ...)
+#' @rdname MultiAssayExperiment-helpers
+#'
+#' @aliases splitAssays
+#'
+#' @section splitAssays:
+#' The \code{splitAssays} method separates columns in each of the assays based
+#' on the \code{hitList} input. The \code{hitList} can be generated using
+#' the \code{makeHitList} helper function. To use the \code{makeHitList}
+#' helper, the user should input a list of patterns that will match on the
+#' column names of each assay. These matches should be mutually exclusive as
+#' to avoid repetition of columns across assays. See the examples section.
+#'
+#' @param hitList a named \code{list} or \code{List} of logical vectors that
+#' indicate groupings in the assays
+#'
+#' @param patternList a named \code{list} or \code{List} of atomic character
+#' vectors that are the input to \code{grepl} for identifying groupings in
+#' the assays
+#'
+#' @export hasRowRanges
+setGeneric("splitAssays", function(x, hitList)
         standardGeneric("splitAssays")
 )
 
-setMethod("splitAssays", "MultiAssayExperiment", function(x, matchList, ...) {
-    stopifnot(is(matchList, "LogicalList"))
-    if (length(names(logicalList)))
-        Map(...)
-    else
-        exps[, logicalList]
+#' @rdname MultiAssayExperiment-helpers
+#' @exportMethod splitAssays
+setMethod("splitAssays", "MultiAssayExperiment",
+    function(x, hitList) {
+        stopifnot(is.list(hitList) || is(hitList, "List"))
+        exps <- experiments(x)
+        innames <- lapply(hitList, names)
+        validENames <- unique(unlist(innames))
+        exps <- exps[names(exps) %in% validENames]
+        sublist <- lapply(hitList, function(logilist) {
+            Map(function(x, y) {
+                x[, y, drop = FALSE]
+            }, x = exps, y = logilist)
+        })
+        sublist <- unlist(sublist, recursive = FALSE)
+        names(sublist) <- gsub("\\.", "_", names(sublist))
 
+        BiocGenerics:::replaceSlots(
+            object = x,
+            ExperimentList = ExperimentList(sublist)
+        )
     }
 )
 
-patts <- list(normals = "TCGA-OR-[A-Z0-9]{4}-11", tumors = "TCGA-OR-[A-Z0-9]{4}-01")
-# patternList <- patts
-# mae <- miniACC
-makeMatchList <- function(mae, patternList, ...) {
-    Colnames <- colnames(mae)
+#' @rdname MultiAssayExperiment-helpers
+#'
+#' @aliases makeMatchList
+#'
+#' @examples
+#'
+#' patts <- list(
+#'     normals = "TCGA-OR-[A-Z0-9]{4}-11",
+#'     tumors = "TCGA-OR-[A-Z0-9]{4}-01"
+#' )
+#'
+#' hits <- makeHitList(miniACC, patts)
+#'
+#' splitAssays(miniACC, hits)
+#'
+#' @export
+makeHitList <- function(x, patternList) {
+    Colnames <- colnames(x)
     res <- lapply(
-        names(patternList), function(pattname, patt) {
-            setNames(
-                grepl(patt[[pattname]], unlist(Colnames)),
-                rep(pattname, length(unlist(Colnames)))
-            )
+        stats::setNames(nm = names(patternList)),
+        function(pattname, patt) {
+            grepl(patt[[pattname]], unlist(Colnames))
         }, patt = patternList
     )
     reslist <- lapply(res, relist, Colnames)
     sums <- do.call(function(...) Map(`+`, ...), reslist)
     if (any(unlist(sums) > 1))
-        stop("Groups are not mutually exclusive")
-    do.call(function(...) Map(`|`, ...), reslist)
-#    dummyVector <- rep(FALSE, length(res[[1]]))
-    lapply(reslist, function(true) {
-        trues <- unlist(true, use.names = FALSE)
-        dummyVector <- rep(FALSE, length(trues))
-        dummyVector[trues] <- TRUE
-        names(dummyVector)[trues] <- names(trues[trues])
-        relist(dummyVector, true)
-    })
-    unlist(reslist[[2]], use.names = FALSE)
-    names(unlist(reslist[[2]], use.names = FALSE))
-
-    lapply(expnames, function(x) eFUN(x = colnames(x)))
-    patlist <- as.list(patterns)
-    for (pats in patterns) {
-        lapply(colnames(mae), function(assayColnames) {
-            })
-    }
+        stop("Groupings are not mutually exclusive")
+    matching <- vapply(reslist, function(x) any(any(x)), logical(1L))
+    reslist[matching]
 }
 

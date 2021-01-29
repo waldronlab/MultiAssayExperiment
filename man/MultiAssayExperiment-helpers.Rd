@@ -21,6 +21,10 @@
 \alias{getWithColData}
 \alias{renamePrimary}
 \alias{renameColname}
+\alias{splitAssays}
+\alias{splitAssays,MultiAssayExperiment-method}
+\alias{makeHitList}
+\alias{makeMatchList}
 \title{A group of helper functions for manipulating and cleaning a
 MultiAssayExperiment}
 \usage{
@@ -72,6 +76,12 @@ getWithColData(x, i, mode = c("append", "replace"))
 renamePrimary(x, value)
 
 renameColname(x, i, value)
+
+splitAssays(x, hitList)
+
+\S4method{splitAssays}{MultiAssayExperiment}(x, hitList)
+
+makeHitList(x, patternList)
 }
 \arguments{
 \item{...}{Additional arguments. See details for more information.}
@@ -113,6 +123,13 @@ column-level metadata should be added to the
 the existing \code{rownames(colData)} to use for replacement,
 renameColname: A \code{CharacterList} or \code{list} with matching
 \code{lengths} to replace \code{colnames(x)}}
+
+\item{hitList}{a named \code{list} or \code{List} of logical vectors that
+indicate groupings in the assays}
+
+\item{patternList}{a named \code{list} or \code{List} of atomic character
+vectors that are the input to \code{grepl} for identifying groupings in
+the assays}
 }
 \value{
 See the itemized list in the description section for details.
@@ -274,6 +291,16 @@ a single numeric or character value. See \code{colnames<-} method for
 renaming multiple colnames in a \code{MultiAssayExperiment}.
 }
 
+\section{splitAssays}{
+
+The \code{splitAssays} method separates columns in each of the assays based
+on the \code{hitList} input. The \code{hitList} can be generated using
+the \code{makeHitList} helper function. To use the \code{makeHitList}
+helper, the user should input a list of patterns that will match on the
+column names of each assay. These matches should be mutually exclusive as
+to avoid repetition of columns across assays. See the examples section.
+}
+
 \examples{
 
 example(MultiAssayExperiment)
@@ -296,5 +323,13 @@ mae2 <- renameColname(mae, i = "Affy", paste0("ARRAY", 1:4))
 colnames(mae2)
 sampleMap(mae2)
 
+
+
+patts <- list(
+    normals = "TCGA-OR-[A-Z0-9]{4}-11",
+    tumors = "TCGA-OR-[A-Z0-9]{4}-01"
+)
+
+makeHitList(miniACC, patts)
 
 }
