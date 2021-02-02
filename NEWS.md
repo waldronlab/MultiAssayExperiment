@@ -9,6 +9,9 @@ names in experiments and `rownames` in the `colData`, respectively
 * When replacing `colData` or `experiments` (including `[[<-`), new `rownames`
 and `colnames` (respectively) are checked against existing values and an error
 is given when none match
+* `splitAssay` allows users to separate / split columns across assays
+* `makeHitList` is a facilitator function to create the logical lists that
+are required as input to `splitAssay`
 
 ## Bug fixes and minor improvements
 
