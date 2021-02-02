@@ -33,6 +33,27 @@ test_that("longFormat on MultiAssayExperiment returns DataFrame", {
     expect_true(is(wideDF, "DataFrame"))
 })
 
+test_that("longFormat removes empty assays", {
+    ## knocking out the GISTIC rows
+    emae <- mae[
+        structure(
+            .Data = list(1:5, 1:5, 1:5, 0), .Names = names(mae)
+        ), , drop = FALSE
+    ]
+    lemae <- longFormat(emae)
+    expect_false(
+        any("GISTIC" %in% unique(lemae[["assay"]]))
+    )
+    expect_equal(
+        c("assay", "primary", "rowname", "colname", "value"),
+        names(lemae)
+    )
+    wemae <- wideFormat(emae)
+    expect_false(
+        any(grepl("GISTIC", names(wemae)))
+    )
+})
+
 test_that("wideFormat returns primary column order identical to colData rownames", {
     data("miniACC")
     acc <- miniACC["EZH2", , ]
