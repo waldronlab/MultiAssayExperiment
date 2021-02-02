@@ -9,6 +9,8 @@ names in experiments and `rownames` in the `colData`, respectively
 * When replacing `colData` or `experiments` (including `[[<-`), new `rownames`
 and `colnames` (respectively) are checked against existing values and an error
 is given when none match
+* `drop` argument when subsetting a `MultiAssayExperiment` is now `FALSE` by
+default
 
 ## Bug fixes and minor improvements
 

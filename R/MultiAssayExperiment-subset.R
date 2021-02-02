@@ -5,12 +5,32 @@ NULL
 ### Subsetting
 ###
 
-
 .isEmpty <- function(object) {
     isTRUE(unname(dim(object)[1]) == 0L || unname(dim(object)[2]) == 0L)
 }
 
-.subsetMultiAssayExperiment <- function(x, i, j, k, ..., drop = TRUE) {
+.emptyAssays <- function(x) {
+    vapply(x, FUN = .isEmpty, FUN.VALUE = logical(1L))
+}
+
+.dropEmpty <- function(object, warn = TRUE) {
+    isEmptyAssay <- .emptyAssays(experiments(object))
+    if (all(isEmptyAssay)) {
+        drops(object) <- list(experiments = names(object))
+        experiments(object) <- ExperimentList()
+    } else if (any(isEmptyAssay)) {
+        empties <- vapply(isEmptyAssay, isTRUE, logical(1L))
+        keeps <- names(isEmptyAssay)[!empties]
+        drops(object) <- list(experiments = names(isEmptyAssay)[empties])
+        if (warn)
+            warning("'experiments' dropped; see 'metadata'", call. = FALSE)
+        FUN <- if (warn) force else suppressWarnings
+        object <- FUN(subsetByAssay(object, keeps))
+    }
+    object
+}
+
+.subsetMultiAssayExperiment <- function(x, i, j, k, ..., drop = FALSE) {
     if (missing(i) && missing(j) && missing(k)) {
         return(x)
     }
@@ -27,18 +47,7 @@ NULL
         x <- subsetByRow(x, i, ...)
     }
     if (drop) {
-        isEmptyAssay <- vapply(experiments(x), FUN = .isEmpty,
-            FUN.VALUE = logical(1L))
-        if (all(isEmptyAssay)) {
-            drops(x) <- list(experiments = names(x))
-            experiments(x) <- ExperimentList()
-        } else if (any(isEmptyAssay)) {
-            empties <- vapply(isEmptyAssay, isTRUE, logical(1L))
-            keeps <- names(isEmptyAssay)[!empties]
-            drops(x) <- list(experiments = names(isEmptyAssay)[empties])
-            warning("'experiments' dropped; see 'metadata'", call. = FALSE)
-            x <- subsetByAssay(x, keeps)
-        }
+        x <- .dropEmpty(x)
     }
     return(x)
 }
