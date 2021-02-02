@@ -30,16 +30,14 @@ rpparowData <-
 rpparowData <- AnnotatedDataFrame(rpparowData)
 featureData(miniACC[["RPPAArray"]]) <- rpparowData
 
-md <-
-    list(
-        title = "Comprehensive Pan-Genomic Characterization of Adrenocortical Carcinoma",
-        PMID = "27165744",
-        sourceURL = "http://s3.amazonaws.com/multiassayexperiments/accMAEO.rds",
-        RPPAfeatureDataURL = paste0("http://genomeportal.stanford.edu/",
-                                    "pan-tcga/show_target_selection_file",
-                                    "?filename=Allprotein.txt"),
-        colDataExtrasURL = "http://www.cell.com/cms/attachment/2062093088/2063584534/mmc3.xlsx"
-    )
+md <- list(
+    title = "Comprehensive Pan-Genomic Characterization of Adrenocortical Carcinoma",
+    PMID = "27165744",
+    RPPAfeatureDataURL = paste0("http://genomeportal.stanford.edu/",
+        "pan-tcga/show_target_selection_file",
+        "?filename=Allprotein.txt"),
+    colDataExtrasURL = "http://www.cell.com/cms/attachment/2062093088/2063584534/mmc3.xlsx"
+)
 metadata(miniACC) <- md
 
 mirna <- acc[["miRNASeqGene"]]

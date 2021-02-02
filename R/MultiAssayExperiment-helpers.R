@@ -383,6 +383,9 @@ longFormat <- function(object, colDataCols = NULL, i = 1L) {
     else if (!is(object, "MultiAssayExperiment"))
         return(.longFormatANY(object, i = i))
 
+    if (any(.emptyAssays(experiments(object))))
+        object <- .dropEmpty(object, warn = FALSE)
+
     longDataFrame <- do.call(function(...) rbind(..., make.row.names = FALSE),
         .longFormatElist(experiments(object), i = i))
 
@@ -472,6 +475,9 @@ wideFormat <- function(object, colDataCols = NULL, check.names = TRUE,
 
     collSymbol <- "///"
     key <- "feature"
+
+    if (any(.emptyAssays(experiments(object))))
+        object <- .dropEmpty(object, warn = FALSE)
 
     if (is.null(colDataCols)) colDataCols <- character(0L)
     nameFUN <- if (check.names) make.names else I

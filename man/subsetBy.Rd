@@ -62,7 +62,7 @@ subsetByAssay(x, y)
 
 \S4method{subsetByAssay}{MultiAssayExperiment}(x, y)
 
-\S4method{[}{MultiAssayExperiment,ANY,ANY,ANY}(x, i, j, k, ..., drop = TRUE)
+\S4method{[}{MultiAssayExperiment,ANY,ANY,ANY}(x, i, j, k, ..., drop = FALSE)
 
 \S4method{[[}{MultiAssayExperiment,ANY,ANY}(x, i, j, ...)
 
@@ -87,7 +87,7 @@ for subsetting by \code{colData} rows. See details for more information.}
 \item{k}{Either a \code{character}, \code{logical}, or \code{numeric} vector
 for subsetting by assays}
 
-\item{drop}{logical (default TRUE) whether to drop empty assay elements
+\item{drop}{logical (default FALSE) whether to drop empty assay elements
 in the \code{ExperimentList}}
 
 \item{value}{An assay compatible with the MultiAssayExperiment API}

@@ -12,6 +12,8 @@ is given when none match
 * `splitAssay` allows users to separate / split columns across assays
 * `makeHitList` is a facilitator function to create the logical lists that
 are required as input to `splitAssay`
+* `drop` argument when subsetting a `MultiAssayExperiment` is now `FALSE` by
+default
 
 ## Bug fixes and minor improvements
 
