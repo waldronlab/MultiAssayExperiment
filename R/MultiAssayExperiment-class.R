@@ -801,17 +801,19 @@ MultiAssayExperimentToMAF <-
     sy <- grep(synAssay, names(mae), value = TRUE, ignore.case = TRUE)
     if (!length(ns) || !length(sy))
         stop("ExperimentList must have valid 'maf_nonsyn' or 'maf_syn' assays")
-    nonsyn <- .getRangedData(mae[[ns]])
-    syn <- .getRangedData(mae[[sy]])
+    nonsyn <- data.table::as.data.table(.getRangedData(mae[[ns]]))
+    syn <- data.table::as.data.table(.getRangedData(mae[[sy]]))
+    colnames(nonsyn)[1:3] <- colnames(syn)[1:3] <- c("Chromosome", "Start_Position", "End_Position")
     mafSummary <- maftools:::summarizeMaf(
         maf = nonsyn,
         anno = data.table::as.data.table(colData(mae)),
         chatty = TRUE
     )
-    mafSummary[["data"]] <- nonsyn
-    mafSummary[["maf.silent"]] <- syn
-
-    do.call(maftools:::MAF, mafSummary)
+    
+    maftools:::MAF(data = nonsyn, variants.per.sample = mafSummary$variants.per.sample, variant.type.summary = mafSummary$variant.type.summary,
+                   variant.classification.summary = mafSummary$variant.classification.summary, gene.summary = mafSummary$gene.summary,
+                   summary = mafSummary$summary, maf.silent = syn, clinical.data = mafSummary$sample.anno)
+    
 }
 
 setAs("MultiAssayExperiment", "MAF", function(from) {
