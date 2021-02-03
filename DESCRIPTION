@@ -29,15 +29,16 @@ Imports:
     utils
 Suggests:
     BiocStyle,
-    testthat,
+    HDF5Array,
     knitr,
+    MAF,
     rmarkdown,
     R.rsp,
-    HDF5Array,
     RaggedExperiment,
     UpSetR,
     survival,
-    survminer
+    survminer,
+    testthat
 biocViews: Infrastructure, DataRepresentation
 License: Artistic-2.0
 Encoding: UTF-8
