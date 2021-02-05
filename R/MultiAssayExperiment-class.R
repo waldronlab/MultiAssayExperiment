@@ -808,6 +808,9 @@ MultiAssayExperimentToMAF <-
         anno = data.table::as.data.table(colData(mae)),
         chatty = TRUE
     )
+    clinName <- names(mafSummary) == "sample.anno"
+    names(mafSummary)[clinName] <-  "clinical.data"
+
     mafSummary[["data"]] <- nonsyn
     mafSummary[["maf.silent"]] <- syn
 
