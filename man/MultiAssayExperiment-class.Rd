@@ -11,7 +11,6 @@
 \alias{coerce-MultiAssayExperiment}
 \alias{coerce,list,MultiAssayExperiment-method}
 \alias{coerce,List,MultiAssayExperiment-method}
-\alias{coerce,MultiAssayExperiment,MAF-method}
 \alias{dimnames,MultiAssayExperiment-method}
 \alias{c,MultiAssayExperiment-method}
 \alias{exportClass,MultiAssayExperiment-method}
@@ -195,7 +194,7 @@ In the following example, \code{x} is either a \code{list} or \linkS4class{List}
 Convert a \code{MultiAssayExperiment} to \code{MAF} class object using the
 \link[methods]{as} function.
 
-In the following example, \code{x} is a \linkS4class{MultiAssayExperiment}:\preformatted{`as(x, "MAF")`
+In the following example, \code{x} is a \linkS4class{MultiAssayExperiment}:\preformatted{`MultiAssayExperimentToMAF(x)`
 }
 }
 

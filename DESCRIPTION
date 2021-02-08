@@ -31,7 +31,7 @@ Suggests:
     BiocStyle,
     HDF5Array,
     knitr,
-    MAF,
+    maftools,
     rmarkdown,
     R.rsp,
     RaggedExperiment,
@@ -56,6 +56,7 @@ Collate:
     'MultiAssayExperiment-methods.R'
     'MultiAssayExperiment-helpers.R'
     'MultiAssayExperiment-pkg.R'
+    'MultiAssayExperimentToMAF.R'
     'assay-methods.R'
     'data.R'
     'hasAssay.R'

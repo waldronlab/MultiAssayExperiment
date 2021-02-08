@@ -741,11 +741,11 @@ setMethod("updateObject", "MultiAssayExperiment",
 }
 
 #' @rdname MultiAssayExperiment-class
+#'
 #' @name coerce-MultiAssayExperiment
 #'
 #' @aliases coerce,list,MultiAssayExperiment-method
 #'     coerce,List,MultiAssayExperiment-method
-#'     coerce,MultiAssayExperiment,MAF-method
 #'
 #' @section
 #' coercion:
@@ -761,7 +761,7 @@ setMethod("updateObject", "MultiAssayExperiment",
 #'
 #' In the following example, `x` is a \linkS4class{MultiAssayExperiment}:
 #'
-#'     `as(x, "MAF")`
+#'     `MultiAssayExperimentToMAF(x)`
 #'
 #' @md
 #'
@@ -780,45 +780,6 @@ setAs("List", "MultiAssayExperiment", function(from) {
         MultiAssayExperiment(
             experiments = explist, colData = colData, metadata = metaf
         )
-    }
-)
-
-.getRangedData <- function(obj) {
-    if (is(obj, "RaggedExperiment"))
-        unlist(as(obj, "GRangesList"))
-    else if (is(obj, "RangedSummarizedExperiment"))
-        rowRanges(obj)
-    else
-        stop("<internal> Don't know how to get range data from 'obj'")
-}
-
-MultiAssayExperimentToMAF <-
-    function(mae, synAssay = "maf_syn", nonSynAssay = "maf_nonSyn")
-{
-    if (!requireNamespace("maftools"))
-        stop("Install the 'maftools' package to convert to MAF")
-    ns <- grep(nonSynAssay, names(mae), value = TRUE, ignore.case = TRUE)
-    sy <- grep(synAssay, names(mae), value = TRUE, ignore.case = TRUE)
-    if (!length(ns) || !length(sy))
-        stop("ExperimentList must have valid 'maf_nonsyn' or 'maf_syn' assays")
-    nonsyn <- .getRangedData(mae[[ns]])
-    syn <- .getRangedData(mae[[sy]])
-    mafSummary <- maftools:::summarizeMaf(
-        maf = nonsyn,
-        anno = data.table::as.data.table(colData(mae)),
-        chatty = TRUE
-    )
-    clinName <- names(mafSummary) == "sample.anno"
-    names(mafSummary)[clinName] <-  "clinical.data"
-
-    mafSummary[["data"]] <- nonsyn
-    mafSummary[["maf.silent"]] <- syn
-
-    do.call(maftools:::MAF, mafSummary)
-}
-
-setAs("MultiAssayExperiment", "MAF", function(from) {
-        MultiAssayExperimentToMAF(from)
     }
 )
 
