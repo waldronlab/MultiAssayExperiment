@@ -37,8 +37,8 @@ upsetSamples <- function(MultiAssayExperiment,
     nsets = length(MultiAssayExperiment), nintersects = 24, order.by = "freq",
     nameFilter = force, check.names = FALSE, ... )
 {
-    if (!requireNamespace("UpSetR"))
-        stop("Please install the 'UpSetR' package to make venn diagrams")
+    if (!requireNamespace("UpSetR", quietly = TRUE))
+        stop("Please install the 'UpSetR' package to use 'upsetSamples()'")
     mae <- MultiAssayExperiment
     datf <- do.call(
         function(...) { data.frame(..., check.names = check.names) },
