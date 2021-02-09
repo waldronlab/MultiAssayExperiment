@@ -558,6 +558,17 @@ setReplaceMethod("experiments", c("MultiAssayExperiment", "ExperimentList"),
     }
 )
 
+#' @exportMethod experiments<-
+#' @rdname MultiAssayExperiment-methods
+setReplaceMethod("experiments", c("MultiAssayExperiment", "List"),
+    function(object, value) {
+        value <- as(value, "ExperimentList")
+        experiments(object) <- value
+        object
+    }
+)
+
+
 #' @exportMethod colData<-
 #' @rdname MultiAssayExperiment-methods
 setReplaceMethod("colData", c("MultiAssayExperiment", "DataFrame"),
