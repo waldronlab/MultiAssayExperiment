@@ -323,8 +323,10 @@ setMethod("subsetByColumn", c("MultiAssayExperiment", "ANY"), function(x, y) {
 setMethod("subsetByAssay", c("MultiAssayExperiment", "ANY"), function(x, y) {
     subexp <- experiments(x)[y]
     dropnames <- setdiff(names(experiments(x)), names(subexp))
-    drops(x) <- list(experiments = dropnames)
-    warning("'experiments' dropped; see 'metadata'", call. = FALSE)
+    if (length(dropnames)) {
+        drops(x) <- list(experiments = dropnames)
+        warning("'experiments' dropped; see 'metadata'", call. = FALSE)
+    }
     experiments(x) <- subexp
     return(x)
 })
