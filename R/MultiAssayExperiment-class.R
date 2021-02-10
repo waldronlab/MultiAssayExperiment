@@ -799,22 +799,10 @@ MultiAssayExperimentToMAF <- function(mae, synAssay = "maf_syn", nonSynAssay = "
   sy <- grep(synAssay, names(mae), value = TRUE, ignore.case = TRUE)
   if (!length(ns) || !length(sy))
     stop("ExperimentList must have valid 'maf_nonsyn' or 'maf_syn' assays")
-  nonsyn <- .getRangedData(mae[[ns]])
-  syn <- .getRangedData(mae[[sy]])
-  mafSummary <- maftools:::summarizeMaf(
-    maf = nonsyn,
-    anno = as(object = colData(mae), Class = "data.frame"),
-    chatty = TRUE
-  )
-  #summarizeMaf mad has clinical.data slot named as sample.anno. Rename it
-  clin_data_idx = which(names(mafSummary) == "sample.anno")
-  if(length(clin_data_idx) == 1){
-    names(mafSummary)[clin_data_idx] <-  "clinical.data"
-  }
-    
-  mafSummary[["data"]] <- nonsyn
-  mafSummary[["maf.silent"]] <- syn
   
-  maftools:::create_maf(mafSummary)
-  #do.call(maftools:::MAF, mafSummary)
+  maftools::MAF(
+    nonSyn = .getRangedData(mae[[ns]]),
+    syn = .getRangedData(mae[[sy]]),
+    clinicalData = as.data.frame(colData(mae))
+  )
 }
