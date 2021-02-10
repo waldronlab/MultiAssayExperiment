@@ -23,14 +23,16 @@
 .write_h5_dimnames <- function(x, h5_path) {
     dimnamesList <- lapply(experiments(x), dimnames)
     h5_names <- sprintf("assay%03d", seq_along(x))
-    Map(
-        function(x, y) {
-            HDF5Array:::h5writeDimnames(
-                dimnames = x, filepath = h5_path, name = y,
-                group = NA, h5dimnames = NULL
-            )
-        },
-        x = dimnamesList, y = h5_names
+    invisible(
+        Map(
+            function(dl, al) {
+                HDF5Array:::h5writeDimnames(
+                    dimnames = dl, filepath = h5_path, name = al,
+                    group = NA, h5dimnames = NULL
+                )
+            },
+            dl = dimnamesList, al = h5_names
+        )
     )
 }
 
@@ -43,16 +45,33 @@
     if (!is(x, "MultiAssayExperiment"))
         stop("<internal> 'x' must be a MultiAssayExperiment object")
 
-    experiments(x) <- HDF5Array:::.write_h5_assays(
+    exps <- HDF5Array:::.write_h5_assays(
         assays(x), h5_path, chunkdim, level, as.sparse, verbose
     )
     ## write Dimnames
     .write_h5_dimnames(x, h5_path)
 
+    experiments(x) <- exps
     .serialize_HDF5MultiAssayExperiment(x, rds_path, verbose)
     invisible(x)
 }
 
+#' Save a MultiAssayExperiment class object to HDF5 and Rds files
+#'
+#' This function takes a `MultiAssayExperiment` object and uses the `assays`
+#' functionality to create data matrices out of ti
+#'
+#' @rd
+#'
+#' @examples
+#'
+#' testDir <- tempdir()
+#' saveHDF5MultiAssayExperiment(
+#'     miniACC, dir = file.path(tempdir(), "test_mae"), replace = TRUE
+#' )
+#'
+#'
+#' @export
 saveHDF5MultiAssayExperiment <-
     function(
         x, dir = tempdir(), prefix = NULL, replace = FALSE, chunkdim = NULL,
@@ -60,7 +79,7 @@ saveHDF5MultiAssayExperiment <-
     )
 {
     if (is.null(prefix))
-        prefix <- as.character(substitute(x))
+        prefix <- paste0(as.character(substitute(x)), "_")
 
     .load_HDF5Array_package()
 
@@ -87,4 +106,41 @@ saveHDF5MultiAssayExperiment <-
         rds_path=rds_path, h5_path=h5_path, chunkdim=chunkdim, level=level,
         as.sparse=as.sparse, verbose=verbose
     )
+}
+
+loadHDF5MultiAssayExperiment <- function(dir = "h5_mae", prefix = "")
+{
+    .load_HDF5Array_package()
+
+    stopifnot(.isSingleString(dir), .isSingleString(prefix))
+
+    if (!dir.exists(dir)) {
+        if (file.exists(dir))
+            stop(wmsg("\"", dir, "\" is a file, not a directory"))
+        stop(wmsg("directory \"", dir, "\" not found"))
+    }
+
+    rds_path <- file.path(dir, paste0(prefix, .MAE_RDS_BASENAME))
+    ans <- try(.read_HDF5MultiAssayExperiment(rds_path), silent=TRUE)
+    if (inherits(ans, "try-error"))
+        HDF5Array:::.stop_if_bad_dir(dir, prefix)
+    ans
+}
+
+.read_HDF5MultiAssayExperiment <- function(rds_path)
+{
+    if (!file.exists(rds_path))
+        stop(wmsg("file not found: ", rds_path))
+    if (dir.exists(rds_path))
+        stop(wmsg("'", rds_path, "' is a directory, not a file"))
+
+    ans <- updateObject(readRDS(rds_path), check=FALSE)
+    if (!is(ans, "MultiAssayExperiment"))
+        stop(wmsg("the object serialized in \"", rds_path, "\" is not ",
+                  "a MultiAssayExperiment object or derivative"))
+    dir <- dirname(rds_path)
+    ans@ExperimentList <- HDF5Array:::.restore_absolute_assay2h5_links(
+        ans@ExperimentList, dir
+    )
+    ans
 }
