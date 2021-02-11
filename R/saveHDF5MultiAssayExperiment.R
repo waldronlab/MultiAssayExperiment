@@ -12,7 +12,8 @@
 
 .serialize_HDF5MultiAssayExperiment <- function(x, rds_path, verbose)
 {
-    experiments(x) <- ExperimentList(.shorten_assay2h5_links(assays(x)))
+    exps <- as(.shorten_assay2h5_links(assays(x)), "ExperimentList")
+    x <- BiocGenerics:::replaceSlots(x, ExperimentList = exps, check = FALSE)
     if (verbose)
         message("Serialize ", class(x), " object to ",
                 ifelse(file.exists(rds_path), "existing ", ""),
@@ -108,9 +109,14 @@ saveHDF5MultiAssayExperiment <-
     )
 }
 
-loadHDF5MultiAssayExperiment <- function(dir = "h5_mae", prefix = "")
+loadHDF5MultiAssayExperiment <- function(dir = "h5_mae", prefix = NULL)
 {
     .load_HDF5Array_package()
+
+    if (is.null(prefix))
+        prefix <- unique(
+            vapply(strsplit(dir(dir), "_"), '[', character(1L), 1L)
+        )
 
     stopifnot(.isSingleString(dir), .isSingleString(prefix))
 
@@ -134,13 +140,14 @@ loadHDF5MultiAssayExperiment <- function(dir = "h5_mae", prefix = "")
     if (dir.exists(rds_path))
         stop(wmsg("'", rds_path, "' is a directory, not a file"))
 
-    ans <- updateObject(readRDS(rds_path), check=FALSE)
-    if (!is(ans, "MultiAssayExperiment"))
-        stop(wmsg("the object serialized in \"", rds_path, "\" is not ",
-                  "a MultiAssayExperiment object or derivative"))
     dir <- dirname(rds_path)
+    ans <- readRDS(rds_path)
     ans@ExperimentList <- HDF5Array:::.restore_absolute_assay2h5_links(
         ans@ExperimentList, dir
     )
+    ans <- updateObject(ans, check=FALSE)
+    if (!is(ans, "MultiAssayExperiment"))
+        stop(wmsg("the object serialized in \"", rds_path, "\" is not ",
+                  "a MultiAssayExperiment object or derivative"))
     ans
 }
