@@ -98,11 +98,11 @@
 #' unlink(testDir, recursive = TRUE)
 #'
 #' saveHDF5MultiAssayExperiment(
-#'     miniACC, dir = "test_mae", verbose = TRUE
+#'     miniACC, dir = testDir, verbose = TRUE
 #' )
 #'
 #' loadHDF5MultiAssayExperiment(
-#'     dir = file.path(tempdir(), "test_mae")
+#'     dir = testDir
 #' )
 #'
 #'

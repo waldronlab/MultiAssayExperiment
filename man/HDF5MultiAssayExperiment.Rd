@@ -84,13 +84,16 @@ functionality to create data matrices out of ti
 }
 \examples{
 
-testDir <- tempdir()
+testDir <- file.path(tempdir(), "test_mae")
+unlink(testDir, recursive = TRUE)
+
 saveHDF5MultiAssayExperiment(
-    miniACC, dir = file.path(tempdir(), "test_mae"), replace = TRUE
+    miniACC, dir = "test_mae", verbose = TRUE
 )
 
 loadHDF5MultiAssayExperiment(
     dir = file.path(tempdir(), "test_mae")
+)
 
 
 }
