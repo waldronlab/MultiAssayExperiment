@@ -57,12 +57,40 @@
     invisible(x)
 }
 
-#' Save a MultiAssayExperiment class object to HDF5 and Rds files
+#' @rdname HDF5MultiAssayExperiment
+#'
+#' @title Save a MultiAssayExperiment class object to HDF5 and Rds files
 #'
 #' This function takes a `MultiAssayExperiment` object and uses the `assays`
 #' functionality to create data matrices out of ti
 #'
-#' @rd
+#'
+#' @inheritParams HDF5Array::saveHDF5SummarizedExperiment
+#'
+#' @param x A \linkS4class{MultiAssayExperiment} object or derivative
+#'
+#' @param dir The path (as a single string) to the directory where to save the
+#'     HDF5-based \linkS4class{MultiAssayExperiment} object or to load it from.
+#'
+#'     When saving, the directory will be created if it doesn't already exist.
+#'     If the directory already exists and no prefix is specified and
+#'     `replace` is set to `TRUE`, then it's replaced with an
+#'     empty directory.
+#'
+#' @param prefix An optional prefix to add to the names of the files created
+#'     inside `dir`. Allows saving more than one object in the same
+#'     directory. When the prefix is `NULL`, the name of the
+#'     `MultiAssayExperiment` object is used. To avoid the default setting
+#'     use an empty character string i.e., `""`.
+#'
+#' @param verbose Set to `TRUE` to make the function display progress.
+#'
+#'     In the case of `saveHDF5MultiAssayExperiment()`, `verbose`
+#'     is set to `NA` by default, in which case verbosity is controlled
+#'     by `DelayedArray:::get_verbose_block_processing()`. Setting
+#'     `verbose` to `TRUE` or `FALSE` overrides this.
+#'
+#' @md
 #'
 #' @examples
 #'
@@ -71,11 +99,14 @@
 #'     miniACC, dir = file.path(tempdir(), "test_mae"), replace = TRUE
 #' )
 #'
+#' loadHDF5MultiAssayExperiment(
+#'     dir = file.path(tempdir(), "test_mae")
+#'
 #'
 #' @export
 saveHDF5MultiAssayExperiment <-
     function(
-        x, dir = tempdir(), prefix = NULL, replace = FALSE, chunkdim = NULL,
+        x, dir = "h5_mae", prefix = NULL, replace = FALSE, chunkdim = NULL,
         level = NULL, as.sparse = NA, verbose = NA
     )
 {
@@ -109,14 +140,19 @@ saveHDF5MultiAssayExperiment <-
     )
 }
 
+#' @name HDF5MultiAssayExperiment
+#'
+#' @export
 loadHDF5MultiAssayExperiment <- function(dir = "h5_mae", prefix = NULL)
 {
     .load_HDF5Array_package()
 
-    if (is.null(prefix))
+    if (is.null(prefix)) {
         prefix <- unique(
             vapply(strsplit(dir(dir), "_"), '[', character(1L), 1L)
         )
+        prefix <- paste0(prefix, "_")
+    }
 
     stopifnot(.isSingleString(dir), .isSingleString(prefix))
 
