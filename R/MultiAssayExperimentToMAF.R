@@ -26,27 +26,15 @@ MultiAssayExperimentToMAF <-
 {
     if (!requireNamespace("maftools"))
         stop("Install the 'maftools' package to convert to MAF")
-
     ns <- grep(nonSynAssay, names(x), value = TRUE, ignore.case = TRUE)
     sy <- grep(synAssay, names(x), value = TRUE, ignore.case = TRUE)
-
     if (!length(ns) || !length(sy))
         stop("ExperimentList must have valid 'maf_nonsyn' or 'maf_syn' assays")
-
-    nonsyn <- .getRangedData(x[[ns]])
-    syn <- .getRangedData(x[[sy]])
-    mafSummary <- maftools:::summarizeMaf(
-        maf = nonsyn,
-        anno = colData(x),
-        chatty = TRUE
+        
+    maftools::MAF(
+        nonSyn = .getRangedData(x[[ns]]),
+        syn = .getRangedData(x[[sy]]),
+        clinicalData = as.data.frame(colData(x))
     )
-
-    clinName <- names(mafSummary) == "sample.anno"
-    names(mafSummary)[clinName] <-  "clinical.data"
-
-    mafSummary[["data"]] <- nonsyn
-    mafSummary[["maf.silent"]] <- syn
-
-    maftools:::create_maf(mafSummary)
 }
 
