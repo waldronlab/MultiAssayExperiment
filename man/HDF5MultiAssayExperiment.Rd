@@ -7,7 +7,10 @@
 \title{Save a MultiAssayExperiment class object to HDF5 and Rds files
 
 This function takes a \code{MultiAssayExperiment} object and uses the \code{assays}
-functionality to create data matrices out of ti}
+functionality to create data matrices out of the experiments. These are
+then saved into the \code{.h5} file format. This operation is lossy because
+the original data structures inside the \code{MultiAssayExperiment} are
+reduced to \code{matrix} and subsequently to \code{HDF5Matrix}.}
 \usage{
 saveHDF5MultiAssayExperiment(
   x,
@@ -80,16 +83,21 @@ by `DelayedArray:::get_verbose_block_processing()`. Setting
 Save a MultiAssayExperiment class object to HDF5 and Rds files
 
 This function takes a \code{MultiAssayExperiment} object and uses the \code{assays}
-functionality to create data matrices out of ti
+functionality to create data matrices out of the experiments. These are
+then saved into the \code{.h5} file format. This operation is lossy because
+the original data structures inside the \code{MultiAssayExperiment} are
+reduced to \code{matrix} and subsequently to \code{HDF5Matrix}.
 }
 \examples{
 
 testDir <- file.path(tempdir(), "test_mae")
-unlink(testDir, recursive = TRUE)
 
 saveHDF5MultiAssayExperiment(
     miniACC, dir = testDir, verbose = TRUE
 )
+
+## inspect the files in the dir
+list.files(testDir)
 
 loadHDF5MultiAssayExperiment(
     dir = testDir

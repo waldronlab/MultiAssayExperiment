@@ -62,7 +62,10 @@
 #' @title Save a MultiAssayExperiment class object to HDF5 and Rds files
 #'
 #' This function takes a `MultiAssayExperiment` object and uses the `assays`
-#' functionality to create data matrices out of ti
+#' functionality to create data matrices out of the experiments. These are
+#' then saved into the `.h5` file format. This operation is lossy because
+#' the original data structures inside the `MultiAssayExperiment` are
+#' reduced to `matrix` and subsequently to `HDF5Matrix`.
 #'
 #'
 #' @inheritParams HDF5Array::saveHDF5SummarizedExperiment
@@ -95,11 +98,13 @@
 #' @examples
 #'
 #' testDir <- file.path(tempdir(), "test_mae")
-#' unlink(testDir, recursive = TRUE)
 #'
 #' saveHDF5MultiAssayExperiment(
 #'     miniACC, dir = testDir, verbose = TRUE
 #' )
+#'
+#' ## inspect the files in the dir
+#' list.files(testDir)
 #'
 #' loadHDF5MultiAssayExperiment(
 #'     dir = testDir
