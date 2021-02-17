@@ -22,7 +22,7 @@
 }
 
 .write_h5_dimnames <- function(x, h5_path) {
-    dimnamesList <- lapply(experiments(x), dimnames)
+    dimnamesList <- lapply(x, dimnames)
     h5_names <- sprintf("assay%03d", seq_along(x))
     invisible(
         Map(
@@ -46,11 +46,12 @@
     if (!is(x, "MultiAssayExperiment"))
         stop("<internal> 'x' must be a MultiAssayExperiment object")
 
+    assaylist <- assays(x)
     exps <- HDF5Array:::.write_h5_assays(
-        assays(x), h5_path, chunkdim, level, as.sparse, verbose
+        assaylist, h5_path, chunkdim, level, as.sparse, verbose
     )
     ## write Dimnames
-    .write_h5_dimnames(x, h5_path)
+    .write_h5_dimnames(assaylist, h5_path)
 
     experiments(x) <- exps
     .serialize_HDF5MultiAssayExperiment(x, rds_path, verbose)
