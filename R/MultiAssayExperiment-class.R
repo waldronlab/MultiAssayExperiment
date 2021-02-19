@@ -741,6 +741,7 @@ setMethod("updateObject", "MultiAssayExperiment",
 }
 
 #' @rdname MultiAssayExperiment-class
+#'
 #' @name coerce-MultiAssayExperiment
 #'
 #' @aliases coerce,list,MultiAssayExperiment-method
@@ -754,6 +755,13 @@ setMethod("updateObject", "MultiAssayExperiment",
 #' In the following example, `x` is either a `list` or \linkS4class{List}:
 #'
 #'     `as(x, "MultiAssayExperiment")`
+#'
+#'   Convert a `MultiAssayExperiment` to `MAF` class object using the
+#'   \link[methods]{as} function.
+#'
+#' In the following example, `x` is a \linkS4class{MultiAssayExperiment}:
+#'
+#'     `MultiAssayExperimentToMAF(x)`
 #'
 #' @md
 #'

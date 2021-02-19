@@ -29,15 +29,16 @@ Imports:
     utils
 Suggests:
     BiocStyle,
-    testthat,
+    HDF5Array,
     knitr,
+    maftools (>= 2.7.10),
     rmarkdown,
     R.rsp,
-    HDF5Array,
     RaggedExperiment,
     UpSetR,
     survival,
-    survminer
+    survminer,
+    testthat
 biocViews: Infrastructure, DataRepresentation
 License: Artistic-2.0
 Encoding: UTF-8
@@ -55,6 +56,7 @@ Collate:
     'MultiAssayExperiment-methods.R'
     'MultiAssayExperiment-helpers.R'
     'MultiAssayExperiment-pkg.R'
+    'MultiAssayExperimentToMAF.R'
     'assay-methods.R'
     'data.R'
     'hasAssay.R'
