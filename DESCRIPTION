@@ -64,6 +64,7 @@ Collate:
     'mapToList.R'
     'prepMultiAssay.R'
     'reexports.R'
+    'saveHDF5MultiAssayExperiment.R'
     'upsetSamples.R'
     'utilities.R'
 RoxygenNote: 7.1.1
