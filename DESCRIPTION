@@ -31,7 +31,7 @@ Suggests:
     BiocStyle,
     HDF5Array,
     knitr,
-    maftools,
+    maftools (>= 2.7.10),
     rmarkdown,
     R.rsp,
     RaggedExperiment,
