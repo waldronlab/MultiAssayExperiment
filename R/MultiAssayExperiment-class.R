@@ -170,10 +170,14 @@ setClass(
                   "colData rownames not in sampleMap 'primary'"))
     }
 
-    experiments <- mendoapply(function(x, idx) {
-        x[, colnames(x) %in% idx, drop=FALSE]
-    }, experiments[assay], experiments_columns[assay])
-
+    ## update experiments
+    unchanged <- Map(identical, experiments_columns[assay], colnames(experiments)[assay])
+    subset_assay <- assay[!as.logical(unchanged)]
+    if (length(subset_assay))
+        experiments <- mendoapply(function(x, idx) {
+            x[, colnames(x) %in% idx, drop = FALSE]
+        }, experiments[subset_assay], experiments_columns[subset_assay])
+    
     if (length(harmony))
         message("harmonizing input:\n  ", paste(harmony, collapse="\n  "))
     list(experiments=experiments, sampleMap=sampleMap, colData=colData)
