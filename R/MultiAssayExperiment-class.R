@@ -171,7 +171,10 @@ setClass(
     }
 
     experiments <- mendoapply(function(x, idx) {
-        x[, colnames(x) %in% idx, drop=FALSE]
+        colmatch <- colnames(x) %in% idx
+        if (!all(colmatch))
+            x <- x[, colmatch, drop=FALSE]
+        x
     }, experiments[assay], experiments_columns[assay])
 
     if (length(harmony))
