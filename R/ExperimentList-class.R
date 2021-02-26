@@ -74,8 +74,8 @@ ExperimentList <- function(...) {
             listData <- listData[[1L]]
             listData <- lapply(listData, .checkGRL)
                 if (.hasDataFrames(listData))
-                    message(
-                        "ExperimentList contains data.frame or DataFrame,\n",
+                    message("'ExperimentList' contains 'data.frame' or",
+                        " 'DataFrame',\n",
                         "  potential for errors with mixed data types")
         }
     } else if (!length(listData)) {
@@ -90,10 +90,18 @@ ExperimentList <- function(...) {
 ### Validity
 ###
 
+.checkDimnames <- function(x) {
+    dims <- dimnames(x)
+    !is.null(dims) && length(dimnames(x)) >= 2L
+}
+
 ## Helper function for .testMethodsTable
 .getMethErr <- function(object) {
-    supportedMethodFUN <- list(dimnames = dimnames, `[` =
-        function(x) {x[integer(0L), ]}, dim = dim)
+    supportedMethodFUN <- list(
+        dimnames = .checkDimnames,
+        `[` = function(x) hasMethod(`[`, class(x)),
+        dim = function(x) length(dimnames(x)) >= 2L
+    )
     methErr <- vapply(supportedMethodFUN, function(f) {
         "try-error" %in% class(try(f(object), silent = TRUE))
     }, logical(1L))
@@ -151,6 +159,10 @@ ExperimentList <- function(...) {
 
 S4Vectors::setValidity2("ExperimentList", .validExperimentList)
 
+.getDim <- function(x, pos) {
+    vapply(x, `[`, integer(1L), pos)
+}
+
 #' @describeIn ExperimentList Show method for
 #' \code{\linkS4class{ExperimentList}} class
 #'
@@ -160,9 +172,9 @@ setMethod("show", "ExperimentList", function(object) {
     elem_cl <- vapply(object, function(o) { class(o)[[1L]] }, character(1L))
     o_len <- length(object)
     o_names <- names(object)
-    ldims <- vapply(object, dim, integer(2L))
-    featdim <- ldims[1L, ]
-    sampdim <- ldims[2L, ]
+    o_dim <- lapply(object, dim)
+    featdim <- .getDim(o_dim, 1L)
+    sampdim <- .getDim(o_dim, 2L)
     cat(sprintf("%s", o_class),
         "class object of length",
         paste0(o_len, ":\n"),

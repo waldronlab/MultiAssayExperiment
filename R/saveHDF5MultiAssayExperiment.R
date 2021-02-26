@@ -52,7 +52,6 @@
     )
     ## write Dimnames
     .write_h5_dimnames(assaylist, h5_path)
-
     experiments(x) <- exps
     .serialize_HDF5MultiAssayExperiment(x, rds_path, verbose)
     invisible(x)
@@ -62,11 +61,12 @@
 #'
 #' @title Save a MultiAssayExperiment class object to HDF5 and Rds files
 #'
-#' This function takes a `MultiAssayExperiment` object and uses the `assays`
-#' functionality to create data matrices out of the experiments. These are
-#' then saved into the `.h5` file format. This operation is lossy because
-#' the original data structures inside the `MultiAssayExperiment` are
-#' reduced to `matrix` and subsequently to `HDF5Matrix`.
+#' @description
+#'     This function takes a `MultiAssayExperiment` object and uses the `assays`
+#'     functionality to create data matrices out of the experiments. These are
+#'     then saved into the `.h5` file format. This operation is lossy because
+#'     the original data structures inside the `MultiAssayExperiment` are
+#'     reduced to `matrix` and subsequently to `HDF5Matrix`.
 #'
 #'
 #' @inheritParams HDF5Array::saveHDF5SummarizedExperiment

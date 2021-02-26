@@ -13,9 +13,17 @@ setMethod("assay", c("ANY", "missing"),
 #' @param withDimnames logical (default TRUE) whether to return dimension names
 #' @aliases assay,ExperimentList,missing-method
 setMethod("assays", "ExperimentList", function(x, withDimnames = TRUE, ...) {
-    as(S4Vectors::endoapply(x,
-        FUN = function(y) assay(y, withDimnames = withDimnames, ...)
-    ), "SimpleList")
+    as(
+        lapply(X = stats::setNames(nm = names(x)),
+            FUN = function(i, y) {
+                y <- y[[i]]
+                if (is(y, "SummarizedExperiment") && length(assays(y)) > 1L)
+                    warning("Dropping internal assays in '", i,
+                        "'; taking first one", call. = FALSE)
+                assay(y, withDimnames = withDimnames, ...)
+            }, y = x
+        ), "SimpleList"
+    )
 })
 
 #' @rdname ExperimentList-class

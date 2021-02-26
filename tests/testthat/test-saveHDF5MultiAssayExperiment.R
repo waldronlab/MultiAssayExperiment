@@ -28,3 +28,14 @@ test_that("saveHDF5MultiAssayExperiment is working", {
         list.files(testDir), c("experiments.h5", "mae.rds")
     )
 })
+
+test_that("array assays work with saveHDF5MultiAssayExperiment", {
+    A <- array(1:24, 4:2, dimnames =
+        list(letters[1:4], LETTERS[1:3], c("A", "B"))
+    )
+    B <- matrix(1:12, ncol=3, dimnames = list(LETTERS[1:4], letters[1:3]))
+    se2 <- SummarizedExperiment(list(A=A, B=B))
+    mae2 <- MultiAssayExperiment(ExperimentList(one_more_se=se2))
+    saveHDF5MultiAssayExperiment(mae2, "mae2", replace = TRUE)
+    loadHDF5MultiAssayExperiment("mae2")
+})
