@@ -6,27 +6,49 @@ test_that("saveHDF5MultiAssayExperiment is working", {
     miniACC <- env[["miniACC"]]
 
     testDir <- file.path(tempdir(), "test_mae")
-    dir.create(testDir)
-    if (!file.exists(file.path(testDir, "miniACC_experiments.h5")))
-        saveHDF5MultiAssayExperiment(miniACC, dir = testDir, replace = TRUE)
+    saveHDF5MultiAssayExperiment(miniACC, dir = testDir, replace = TRUE)
 
     expect_identical(
         list.files(testDir), c("miniACC_experiments.h5", "miniACC_mae.rds")
     )
 
     x <- loadHDF5MultiAssayExperiment(dir = testDir)
+    expect_true(validObject(x))
     expect_true(is(x, "MultiAssayExperiment"))
-    vapply(experiments(x), function(expr) {
-        expect_true(is(expr, "HDF5Matrix"))
-    }, logical(1L))
 
+    ## test may change with improved saveHDF5MAE
+    for (expr in names(experiments(x))) {
+        expect_true(is(x[[expr]], "HDF5Matrix"))
+    }
+    on.exit(unlink(testDir, recursive = TRUE))
+})
+
+test_that("prefix argument works as intended", {
     testDir <- file.path(tempdir(), "test_mae")
     saveHDF5MultiAssayExperiment(
         miniACC, dir = testDir, prefix = "", replace = TRUE
     )
-    expect_identical(
-        list.files(testDir), c("experiments.h5", "mae.rds")
+    exp_files <- c("experiments.h5", "mae.rds")
+
+    expect_identical(list.files(testDir), exp_files)
+
+    mae <- miniACC
+    testDir0 <- file.path(tempdir(), "test_mae0", .Platform$file.sep)
+    saveHDF5MultiAssayExperiment(
+        mae, dir = testDir0, replace = TRUE
     )
+    file.copy(from = file.path(testDir, exp_files), to = testDir0)
+    expect_error(loadHDF5MultiAssayExperiment(testDir0))
+    expect_true(
+        validObject(loadHDF5MultiAssayExperiment(testDir0, "mae"))
+    )
+    expect_true(
+        validObject(loadHDF5MultiAssayExperiment(testDir0, ""))
+    )
+    on.exit({
+        unlink(testDir0, recursive = TRUE)
+        unlink(testDir, recursive = TRUE)
+    })
 })
 
 test_that("array assays work with saveHDF5MultiAssayExperiment", {
@@ -36,6 +58,13 @@ test_that("array assays work with saveHDF5MultiAssayExperiment", {
     B <- matrix(1:12, ncol=3, dimnames = list(LETTERS[1:4], letters[1:3]))
     se2 <- SummarizedExperiment(list(A=A, B=B))
     mae2 <- MultiAssayExperiment(ExperimentList(one_more_se=se2))
-    saveHDF5MultiAssayExperiment(mae2, "mae2", replace = TRUE)
-    loadHDF5MultiAssayExperiment("mae2")
+    testDir <- file.path(tempdir(), "test_mae")
+    saveHDF5MultiAssayExperiment(mae2, testDir, replace = TRUE)
+    expect_true(
+        validObject(loadHDF5MultiAssayExperiment(testDir))
+    )
+    expect_true(
+        validObject(loadHDF5MultiAssayExperiment(testDir, "mae2"))
+    )
+    on.exit(unlink(testDir, recursive = TRUE))
 })

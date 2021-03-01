@@ -111,6 +111,8 @@
 #'     dir = testDir
 #' )
 #'
+#' ## remove example files
+#' unlink(testDir, recursive = TRUE)
 #'
 #' @export
 saveHDF5MultiAssayExperiment <-
@@ -160,8 +162,10 @@ loadHDF5MultiAssayExperiment <- function(dir = "h5_mae", prefix = NULL)
         prefix <- unique(
             vapply(strsplit(dir(dir), "_"), '[', character(1L), 1L)
         )
-        prefix <- paste0(prefix, "_")
+        if (length(prefix) > 1L)
+            stop("More than one object saved in 'dir', specify a 'prefix'")
     }
+    prefix <- if (nchar(prefix)) paste0(prefix, "_") else prefix
 
     stopifnot(.isSingleString(dir), .isSingleString(prefix))
 
