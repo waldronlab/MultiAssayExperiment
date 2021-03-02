@@ -1,18 +1,18 @@
 ## Ensure ExperimentList elements are appropriate for the API and rownames
 ## are present
-.checkGRL <- function(object) {
-    ## use is() to exclude RangedRaggedAssay
-    if (is(object, "GRangesList") && !is(object, "RangedRaggedAssay")) {
-        stop(sQuote("GRangesList"), " class is not supported, use ",
-             sQuote("RaggedExperiment"), " instead")
-    }
-    object
-}
+.DF_WARN <- paste0("'ExperimentList' contains 'data.frame' or",
+    " 'DataFrame',\n", "  potential for errors with mixed data types")
 
-.hasDataFrames <- function(object) {
-    hasdf <- vapply(object, is.data.frame, logical(1L))
-    hasDF <- vapply(object, is, logical(1L), "DataFrame")
-    any(hasdf, hasDF)
+.checkClasses <- function(object) {
+    ## use is() to exclude RangedRaggedAssay
+    if (is(object, "GRangesList") && !is(object, "RangedRaggedAssay"))
+        stop("'GRangesList' class is not supported, use ",
+             "'RaggedExperiment' instead")
+    if (is.vector(object))
+        stop("'vector' class is not supported, use a rectangular class")
+    if (is.data.frame(object) || is(object, "DataFrame"))
+        warning(.DF_WARN, call. = FALSE)
+    object
 }
 
 ### ==============================================
@@ -72,11 +72,10 @@ ExperimentList <- function(...) {
         if (is.list(listData[[1L]]) || (is(listData[[1L]], "List") &&
             !is(listData[[1L]], "DataFrame"))) {
             listData <- listData[[1L]]
-            listData <- lapply(listData, .checkGRL)
-                if (.hasDataFrames(listData))
-                    message("'ExperimentList' contains 'data.frame' or",
-                        " 'DataFrame',\n",
-                        "  potential for errors with mixed data types")
+            listData <- lapply(listData, .checkClasses)
+        } else if (is(listData[[1]], "DataFrame") ||
+            is.data.frame(listData[[1]])) {
+            warning(.DF_WARN, call. = FALSE)
         }
     } else if (!length(listData)) {
         return(new("ExperimentList",
