@@ -74,11 +74,12 @@ by `DelayedArray:::get_verbose_block_processing()`. Setting
 }}
 }
 \description{
-This function takes a \code{MultiAssayExperiment} object and uses the \code{assays}
+\preformatted{This function takes a `MultiAssayExperiment` object and uses the `assays`
 functionality to create data matrices out of the experiments. These are
-then saved into the \code{.h5} file format. This operation is lossy because
-the original data structures inside the \code{MultiAssayExperiment} are
-reduced to \code{matrix} and subsequently to \code{HDF5Matrix}.
+then saved into the `.h5` file format. This operation is lossy because
+the original data structures inside the `MultiAssayExperiment` are
+reduced to `matrix` and subsequently to `HDF5Matrix`.
+}
 }
 \examples{
 
@@ -95,5 +96,7 @@ loadHDF5MultiAssayExperiment(
     dir = testDir
 )
 
+## remove example files
+unlink(testDir, recursive = TRUE)
 
 }

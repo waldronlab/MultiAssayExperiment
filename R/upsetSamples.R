@@ -23,6 +23,7 @@
 #' useful to simplify resulting outputs.
 #'
 #' @examples
+#'
 #' data(miniACC)
 #' upsetSamples(miniACC)
 #' upsetSamples(miniACC, nameFilter = function(x) substr(x, 1, 5))

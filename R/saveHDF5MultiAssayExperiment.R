@@ -8,11 +8,10 @@
 }
 
 .isSingleString <- S4Vectors::isSingleString
-.shorten_assay2h5_links <- HDF5Array:::.shorten_assay2h5_links
 
 .serialize_HDF5MultiAssayExperiment <- function(x, rds_path, verbose)
 {
-    exps <- as(.shorten_assay2h5_links(assays(x)), "ExperimentList")
+    exps <- as(HDF5Array:::.shorten_assay2h5_links(assays(x)), "ExperimentList")
     x <- BiocGenerics:::replaceSlots(x, ExperimentList = exps, check = FALSE)
     if (verbose)
         message("Serialize ", class(x), " object to ",
@@ -67,7 +66,6 @@
 #'     then saved into the `.h5` file format. This operation is lossy because
 #'     the original data structures inside the `MultiAssayExperiment` are
 #'     reduced to `matrix` and subsequently to `HDF5Matrix`.
-#'
 #'
 #' @inheritParams HDF5Array::saveHDF5SummarizedExperiment
 #'
