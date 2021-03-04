@@ -13,11 +13,9 @@ output:
     toc_depth: 4
 ---
 
-```{r, echo=FALSE, warning=FALSE}
-suppressPackageStartupMessages({
-    library(MultiAssayExperiment)
-    library(S4Vectors)
-    })
+```{r,include=TRUE,results="hide",message=FALSE,warning=FALSE}
+library(MultiAssayExperiment)
+library(S4Vectors)
 ```
 
 This quick-start guide shows key features of `MultiAssayExperiment` using a
@@ -38,7 +36,7 @@ miniACC
 
 # Component slots
 
-## colData - information biological units
+## colData - information on biological units
 
 A `DataFrame` describing the characteristics of biological units, for example
 clinical data for patients. In the prepared datasets from
@@ -129,7 +127,7 @@ Additionally, the `DataFrame` class used by `sampleMap` and `colData`, as well
 as the `ExperimentList` class, similarly support metadata. Finally, many
 experimental data objects that can be used in the `ExperimentList` support
 metadata. These provide flexible options to users and to developers of derived
-classes. 
+classes.
 
 # Subsetting
 
@@ -233,7 +231,7 @@ rownames(accmatched2)
 
 The `assay` and `assays` methods follow `SummarizedExperiment` convention.
 The `assay` (singular) method will extract the first element of the
-`ExperimentList` and will return a `matrix`. 
+`ExperimentList` and will return a `matrix`.
 
 ```{r}
 class(assay(miniACC))
@@ -285,7 +283,7 @@ mutation, etc), and following these are the *vital_status* and *days_to_death*
 colData columns that have been added:
 
 ```{r}
-longFormat(miniACC[c("TP53", "CTNNB1"), , ], 
+longFormat(miniACC[c("TP53", "CTNNB1"), , ],
            colDataCols = c("vital_status", "days_to_death"))
 ```
 
@@ -296,7 +294,7 @@ one row per primary identifier (patient). Here, each variable becomes a new
 column:
 
 ```{r}
-wideFormat(miniACC[c("TP53", "CTNNB1"), , ], 
+wideFormat(miniACC[c("TP53", "CTNNB1"), , ],
            colDataCols = c("vital_status", "days_to_death"))
 ```
 
@@ -392,7 +390,7 @@ Choose the *EZH2* gene for demonstration. This subsetting will drop assays with
 no row named EZH2:
 
 ```{r}
-wideacc <- wideFormat(miniACC["EZH2", , ], 
+wideacc <- wideFormat(miniACC["EZH2", , ],
     colDataCols = c("vital_status", "days_to_death", "pathology_N_stage"))
 wideacc$y <- Surv(wideacc$days_to_death, wideacc$vital_status)
 head(wideacc)

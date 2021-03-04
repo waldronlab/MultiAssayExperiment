@@ -1,25 +1,29 @@
 ## Ensure ExperimentList elements are appropriate for the API and rownames
 ## are present
-.checkGRL <- function(object) {
-    ## use is() to exclude RangedRaggedAssay
-    if (is(object, "GRangesList") && !is(object, "RangedRaggedAssay")) {
-        stop(sQuote("GRangesList"), " class is not supported, use ",
-             sQuote("RaggedExperiment"), " instead")
-    }
-    object
-}
+.DF_WARN <- paste0("'ExperimentList' contains 'data.frame' or",
+    " 'DataFrame',\n", "  potential for errors with mixed data types")
 
-.hasDataFrames <- function(object) {
-    hasdf <- vapply(object, is.data.frame, logical(1L))
-    hasDF <- vapply(object, is, logical(1L), "DataFrame")
-    any(hasdf, hasDF)
+.checkClasses <- function(object) {
+    ## use is() to exclude RangedRaggedAssay
+    if (is(object, "GRangesList") && !is(object, "RangedRaggedAssay"))
+        stop("'GRangesList' class is not supported, use ",
+             "'RaggedExperiment' instead")
+    if (is.vector(object))
+        stop("'vector' class is not supported, use a rectangular class")
+    if (is.data.frame(object) || is(object, "DataFrame"))
+        warning(.DF_WARN, call. = FALSE)
+    object
 }
 
 ### ==============================================
 ### ExperimentList class
 ### ----------------------------------------------
 
-#' A container for multi-experiment data
+#' @name ExperimentList-class
+#'
+#' @docType class
+#'
+#' @title ExperimentList - A container for multi-experiment data
 #'
 #' The \code{ExperimentList} class is a container that builds on
 #' the \code{SimpleList} with additional
@@ -32,20 +36,20 @@
 #' \strong{mergeReplicates} method, additional arguments are passed to the
 #' given \code{simplify} function argument (e.g., na.rm = TRUE)
 #'
+#' @return An \code{ExperimentList} class object
+#'
 #' @examples
+#'
 #' ExperimentList()
 #'
 #' @exportClass ExperimentList
-#' @name ExperimentList-class
-#' @docType class
 setClass("ExperimentList", contains = "SimpleList")
 
 ### - - - - - - - - - - - - - - - - - - - - - - - -
 ### Constructor
 ###
 
-#' Construct an \code{ExperimentList} object for the \code{MultiAssayExperiment}
-#' object slot.
+#' Represent multiple experiments as a List-derivative \code{ExperimentList}
 #'
 #' The \code{ExperimentList} class can contain several different types of data.
 #' The only requirements for an \code{ExperimentList} class are that the
@@ -60,14 +64,18 @@ setClass("ExperimentList", contains = "SimpleList")
 ExperimentList <- function(...) {
     listData <- list(...)
     if (length(listData) == 1L) {
+        if (is(listData[[1L]], "MultiAssayExperiment"))
+            stop("MultiAssayExperiment input detected. ",
+                "Did you mean 'experiments()'?")
+        if (is(listData[[1L]], "ExperimentList"))
+            return(listData[[1L]])
         if (is.list(listData[[1L]]) || (is(listData[[1L]], "List") &&
             !is(listData[[1L]], "DataFrame"))) {
             listData <- listData[[1L]]
-            listData <- lapply(listData, .checkGRL)
-                if (.hasDataFrames(listData))
-                    message(
-                        "ExperimentList contains data.frame or DataFrame,\n",
-                        "  potential for errors with mixed data types")
+            listData <- lapply(listData, .checkClasses)
+        } else if (is(listData[[1]], "DataFrame") ||
+            is.data.frame(listData[[1]])) {
+            warning(.DF_WARN, call. = FALSE)
         }
     } else if (!length(listData)) {
         return(new("ExperimentList",
@@ -81,12 +89,20 @@ ExperimentList <- function(...) {
 ### Validity
 ###
 
+.checkDimnames <- function(x) {
+    dims <- dimnames(x)
+    !is.null(dims) && length(dimnames(x)) >= 2L
+}
+
 ## Helper function for .testMethodsTable
 .getMethErr <- function(object) {
-    supportedMethodFUN <- list(dimnames = dimnames, `[` =
-        function(x) {x[integer(0L), ]}, dim = dim)
+    supportedMethodFUN <- list(
+        dimnames = .checkDimnames,
+        `[` = function(x) hasMethod(`[`, class(x)),
+        dim = function(x) length(dimnames(x)) >= 2L
+    )
     methErr <- vapply(supportedMethodFUN, function(f) {
-        class(try(f(object), silent = TRUE)) == "try-error"
+        "try-error" %in% class(try(f(object), silent = TRUE))
     }, logical(1L))
     if (any(methErr)) {
         unsupported <- names(which(methErr))
@@ -142,26 +158,27 @@ ExperimentList <- function(...) {
 
 S4Vectors::setValidity2("ExperimentList", .validExperimentList)
 
+.getDim <- function(x, pos) {
+    vapply(x, `[`, integer(1L), pos)
+}
+
 #' @describeIn ExperimentList Show method for
 #' \code{\linkS4class{ExperimentList}} class
 #'
 #' @param object,x An \code{\linkS4class{ExperimentList}} object
 setMethod("show", "ExperimentList", function(object) {
     o_class <- class(object)
-    elem_cl <- vapply(object, class, character(1L))
+    elem_cl <- vapply(object, function(o) { class(o)[[1L]] }, character(1L))
     o_len <- length(object)
     o_names <- names(object)
-    featdim <- vapply(object, FUN = function(obj) {
-        dim(obj)[1]
-    }, FUN.VALUE = integer(1L))
-    sampdim <- vapply(object, FUN = function(obj) {
-        dim(obj)[2]
-    }, FUN.VALUE = integer(1L))
+    o_dim <- lapply(object, dim)
+    featdim <- .getDim(o_dim, 1L)
+    sampdim <- .getDim(o_dim, 2L)
     cat(sprintf("%s", o_class),
         "class object of length",
-        paste0(o_len, ":"),
-        sprintf("\n [%i] %s: %s with %s rows and %s columns",
-                seq(o_len), o_names, elem_cl, featdim, sampdim), "\n")
+        paste0(o_len, ":\n"),
+        sprintf("[%i] %s: %s with %s rows and %s columns\n",
+                seq(o_len), o_names, elem_cl, featdim, sampdim))
 })
 
 
@@ -171,7 +188,7 @@ coerceToExperimentList <- function(from) {
 }
 
 #' @rdname ExperimentList-class
-#' @name coerce
+#' @name coerce-ExperimentList
 #'
 #' @aliases coerce,list,ExperimentList-method coerce,List,ExperimentList-method
 #'
@@ -200,8 +217,7 @@ setAs("List", "ExperimentList", function(from) {
 #' @describeIn ExperimentList check for zero length across all
 #' experiments
 setMethod("isEmpty", "ExperimentList", function(x) {
-    x <- Filter(function(y) {
-        !(is.matrix(y) && dim(y) == c(1, 1) && as.vector(is.na(y)))
-    }, x)
-    callNextMethod()
+    all(
+        vapply(x, .isEmpty, logical(1L))
+    )
 })

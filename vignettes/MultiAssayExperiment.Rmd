@@ -12,25 +12,17 @@ output:
     toc: true
 ---
 
-```{r, echo=FALSE, warning=FALSE}
-suppressPackageStartupMessages({
-    library(MultiAssayExperiment)
-    library(GenomicRanges)
-    library(SummarizedExperiment)
-    library(RaggedExperiment)
-})
-```
-
 # Installation
 
 ```{r, eval = FALSE}
-source("https://bioconductor.org/biocLite.R")
-BiocInstaller::biocLite("MultiAssayExperiment")
+if (!require("BiocManager"))
+    install.packages("BiocManager")
+BiocManager::install("MultiAssayExperiment")
 ```
 
 Loading the packages:
 
-```{r, eval = FALSE}
+```{r,include=TRUE,results="hide",message=FALSE,warning=FALSE}
 library(MultiAssayExperiment)
 library(GenomicRanges)
 library(SummarizedExperiment)
@@ -61,6 +53,17 @@ empty
 slotNames(empty)
 ```
 
+A visual representation of the MultiAssayExperiment class and its accessor
+functions can be seen below. There are three main components:
+
+1) `ExperimentList`
+2) `colData`
+3) `sampleMap`
+
+```{r, echo = FALSE, fig.cap = "MultiAssayExperiment object schematic shows the design of the infrastructure class. The colData provides data about the patients, cell lines, or other biological units, with one row per unit and one column per variable. The experiments are a list of assay datasets of arbitrary class, with one column per observation. The sampleMap links a single table of patient data (colData) to a list of experiments via a simple but powerful table of experiment:patient edges (relationships), that can be created automatically in simple cases or in a spreadsheet if assay-specific sample identifiers are used. sampleMap relates each column (observation) in the assays (experiments) to exactly one row (biological unit) in colData; however, one row of colData may map to zero, one, or more columns per assay, allowing for missing and replicate assays. Green stripes indicate a mapping of one subject to multiple observations across experiments.", out.width = "\\maxwidth"}
+knitr::include_graphics("MultiAssayExperiment.png")
+```
+
 ## Components of the `MultiAssayExperiment`
 
 ### `ExperimentList`: experimental data
@@ -78,11 +81,11 @@ The elements of the `ExperimentList` can contain **ID-based** and
 are listed in the API.
 
 The following base and Bioconductor classes are known to work as elements of
-the ExperimentList: 
+the ExperimentList:
 
 - `base::matrix`: the base class, can be used for ID-based datasets such as
 gene expression summarized per-gene, microRNA, metabolomics, or microbiome
-data. 
+data.
 
 - `SummarizedExperiment::SummarizedExperiment`: A richer representation compared
 to a ordinary matrix of ID-based datasets capable of storing additional assay-
@@ -94,7 +97,7 @@ supported for convenience and supplanted by `SummarizedExperiment`.
 - `SummarizedExperiment::RangedSummarizedExperiment`: For rectangular
 range-based datasets, one set of genomic ranges are assayed for multiple
 samples. It can be used for gene expression, methylation, or other data
-types that refer to genomic positions. 
+types that refer to genomic positions.
 
 - `RaggedExperiment::RaggedExperiment`: For range-based datasets, such as
 copy number and mutation data, the `RaggedExperiment` class can be used
@@ -105,7 +108,7 @@ to represent measurements by genomic positions.
 See the [API section](#application-programming-interface-api) for details on
 requirements for using other data classes. In general, data classes meeting
 minimum requirements, including support for square bracket `[` subsetting and
-`dimnames()` will work by default. 
+`dimnames()` will work by default.
 
 The datasets contained in elements of the `ExperimentList` can have:
 
@@ -113,7 +116,7 @@ The datasets contained in elements of the `ExperimentList` can have:
 * row names (optional)
 
 The column names correspond to samples, and are used to match assay data to
-specimen metadata stored in `colData`. 
+specimen metadata stored in `colData`.
 
 The row names can correspond to a variety of features in the data including
 but not limited to gene names, probe IDs, proteins, and named ranges.
@@ -140,10 +143,10 @@ a *patient*.
 #### `colData` slot requirements
 
 The `colData` dataset should be of class `DataFrame` but can accept a
-`data.frame` class object that will be coerced.  
+`data.frame` class object that will be coerced.
 
 In order to relate metadata of the biological unit, the row names of the
-`colData` dataset must contain patient identifiers. 
+`colData` dataset must contain patient identifiers.
 
 ```{r}
 patient.data <- data.frame(sex=c("M", "F", "M", "F"),
@@ -155,8 +158,8 @@ patient.data
 Key points:
 
 - one row of `colData` *can* map to zero, one, or more columns in any `ExperimentList` element
-- each row of `colData` *must* map to at least one column in at least one `ExperimentList` element. 
-- each column of each `ExperimentList` element *must* map to *exactly* one row of `colData`. 
+- each row of `colData` *must* map to at least one column in at least one `ExperimentList` element.
+- each column of each `ExperimentList` element *must* map to *exactly* one row of `colData`.
 
 These relationships are defined by the [sampleMap](#sampleMap).
 
@@ -178,7 +181,7 @@ The `sampleMap` is a `DataFrame` that relates the "primary" data
 (`colData`) to the experimental assays:
 
 ```{r}
-class(sampleMap(empty)) # DataFrame
+is(sampleMap(empty), "DataFrame") # TRUE
 ```
 
 The `sampleMap` provides an unambiguous map from every experimental
@@ -264,7 +267,7 @@ colData(simpleMultiAssay2)
 Metadata can be added at different levels of the `MultiAssayExperiment`.
 
 Can be of *ANY* class, for storing study-wide metadata, such as citation
-information. For an empty `MultiAssayExperiment` object, it is NULL. 
+information. For an empty `MultiAssayExperiment` object, it is NULL.
 
 ```{r}
 class(metadata(empty)) # NULL (class "ANY")
@@ -286,7 +289,7 @@ to use `metadata` at the `ExperimentList` level.
 # Creating a `MultiAssayExperiment` object: a rich example
 
 In this section we demonstrate all core supported data classes, using different
-sample ID conventions for each assay, with primary `colData`. The some 
+sample ID conventions for each assay, with primary `colData`. The some
 supported classes such as, `matrix`, `SummarizedExperiment`, and `RangedSummarizedExperiment`.
 
 ## Create toy datasets demonstrating all supported data types
@@ -372,7 +375,7 @@ rse <- SummarizedExperiment(assays=SimpleList(counts=counts),
     rowRanges=rowRanges, colData=colData)
 ```
 
-And we map the `colData` samples to the `RangedSummarizedExperiment`: 
+And we map the `colData` samples to the `RangedSummarizedExperiment`:
 
 ```{r}
 (rangemap <-
@@ -479,7 +482,7 @@ prepMultiAssay(objlist3, patient.data, dfmap)$experiments
 ```
 
 When `colnames` in the `ExperimentList` cannot be matched back to the primary
-data (`colData`), these will be dropped and added to the drops element. 
+data (`colData`), these will be dropped and added to the drops element.
 
 ```{r}
 exampleMap <- sampleMap(simpleMultiAssay2)
@@ -578,7 +581,7 @@ rownames, and colnames, across all experiments simultaneously while
 guaranteeing continued matching of samples.
 
 Subsetting can be done most compactly by the square bracket method, or more
-verbosely and potentially more flexibly by the `subsetBy*()` methods. 
+verbosely and potentially more flexibly by the `subsetBy*()` methods.
 
 ## Subsetting by square bracket `[`
 
@@ -725,7 +728,7 @@ as a `head` function, for example to look at the first 6 rows of each assay.
 - a **logical vector** that will be passed directly to the row subsetting
 operation for each assay.
 
-- a **list** or **List** with element names matching those in the 
+- a **list** or **List** with element names matching those in the
 `ExperimentList`. Each element of the subsetting list will be passed on exactly
 to subset rows of the corresponding element of the `ExperimentList`.
 
@@ -845,7 +848,7 @@ This output can be used to select individuals with complete data:
 myMultiAssay[, complete.cases(myMultiAssay), ]
 ```
 
-## `replicated` (formerly `duplicated`)
+## `replicated`
 
 The `replicated` function identifies `primary` column values or biological units
 that have multiple observations per `assay`. It returns a `list` of
@@ -882,7 +885,7 @@ intersectColumns(myMultiAssay)
 The `mergeReplicates` function allows the user to specify a function (default:
 `mean`) for combining replicate columns in each assay element. This can be
 combined with `intersectColumns` to create a `MultiAssayExperiment` object with
-one measurement in each experiment per biological unit. 
+one measurement in each experiment per biological unit.
 
 ```{r}
 mergeReplicates(intersectColumns(myMultiAssay))
@@ -894,7 +897,7 @@ The combine `c` function allows the user to append an experiment to the list
 of experiments already present in `MultiAssayExperiment`.
 In the case that additional observations on the same set of samples were
 performed, the `c` function can conveniently be referenced to an existing assay
-that contains the same ordering of sample measurements. 
+that contains the same ordering of sample measurements.
 
 The `mapFrom` argument indicates what experiment has the exact same
 organization of samples that will be introduced by the new experiment
@@ -916,8 +919,23 @@ _Note_: Alternatively, a `sampleMap` for the additional dataset can be provided.
 # Extractor functions
 
 Extractor functions convert a `MultiAssayExperiment` into other forms that are
-convenient for analyzing. These would normally be called after any desired 
+convenient for analyzing. These would normally be called after any desired
 subsetting has been performed.
+
+## `getWithColData`
+
+Provides a single assay along with any associated 'colData' columns while
+keeping the assay class constant.
+
+```{r}
+(affex <- getWithColData(myMultiAssay, 1L))
+colData(affex)
+class(affex)
+```
+
+It will error when the target data class does not support a `colData`
+replacement method, meaning that it typically works with `SummarizedExperiment`
+and `RaggedExperiment` assays and their extensions.
 
 ## `longFormat` & `wideFormat`
 
@@ -970,7 +988,7 @@ as `MultiAssayExperiment` objects. Please see the package vignette for more
 details.
 
 ```{r, eval = FALSE}
-BiocInstaller::biocLite("curatedTCGAData")
+BiocManager::install("curatedTCGAData")
 ```
 
 # Dimension names: `rownames` and `colnames`
@@ -1010,7 +1028,7 @@ try(MultiAssayExperiment(objlist2, patient.data, dfmap),
 
 For more information on the formal API of `MultiAssayExperiment`, please see
 the [API wiki][] document on GitHub. An API package is available for
-download on GitHub via `biocLite("waldronlab/MultiAssayShiny")`. It provides
+download on GitHub via `install("waldronlab/MultiAssayShiny")`. It provides
 visual exploration of available methods in `MultiAssayExperiment`.
 
 <p style="text-align: right;"> <a href="#header">back to top</a> </p>

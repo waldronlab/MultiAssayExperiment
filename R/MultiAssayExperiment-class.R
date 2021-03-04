@@ -17,7 +17,7 @@ NULL
 ### MultiAssayExperiment class
 ### ----------------------------------------------
 
-#' An integrative multi-assay class for experiment data
+#' MultiAssayExperiment - An integrative multi-assay class for experiment data
 #'
 #' @description
 #' The \code{MultiAssayExperiment} class can be used to manage results of
@@ -72,7 +72,7 @@ NULL
 #' \code{MultiAssayExperiment} object
 #' @slot drops A metadata \code{list} of dropped information
 #'
-#' @param x A \code{MultiAssayExperiment} object
+#' @param object,x A \code{MultiAssayExperiment} object
 #' @param ... Additional arguments for supporting functions. See details.
 #'
 #' @return A \code{MultiAssayExperiment} object
@@ -82,18 +82,18 @@ NULL
 #'
 #' ## Subsetting
 #' # Rows (i) Rows/Features in each experiment
-#' myMultiAssayExperiment[1, , ]
-#' myMultiAssayExperiment[c(TRUE, FALSE), , ]
+#' mae[1, , ]
+#' mae[c(TRUE, FALSE), , ]
 #'
 #' # Columns (j) Rows in colData
-#' myMultiAssayExperiment[, rownames(colData(myMultiAssayExperiment))[3:2],  ]
+#' mae[, rownames(colData(mae))[3:2],  ]
 #'
 #' # Assays (k)
-#' myMultiAssayExperiment[, , "Affy"]
+#' mae[, , "Affy"]
 #'
 #' ## Complete cases (returns logical vector)
-#' completes <- complete.cases(myMultiAssayExperiment)
-#' compMAE <- myMultiAssayExperiment[, completes, ]
+#' completes <- complete.cases(mae)
+#' compMAE <- mae[, completes, ]
 #' compMAE
 #' colData(compMAE)
 #'
@@ -102,14 +102,15 @@ NULL
 #'     \link{MultiAssayExperiment-methods} for slot modifying methods
 #'     \href{https://github.com/waldronlab/MultiAssayExperiment/wiki/MultiAssayExperiment-API}{MultiAssayExperiment API}
 #' @include ExperimentList-class.R
-setClass("MultiAssayExperiment",
-         slots = list(
-           ExperimentList = "ExperimentList",
-           colData = "DataFrame",
-           sampleMap = "DataFrame",
-           metadata = "ANY",
-           drops = "list"
-         )
+setClass(
+    "MultiAssayExperiment",
+     slots = list(
+       ExperimentList = "ExperimentList",
+       colData = "DataFrame",
+       sampleMap = "DataFrame",
+       drops = "list"
+     ),
+    contains = "Annotated"
 )
 
 ### ==============================================
@@ -119,7 +120,7 @@ setClass("MultiAssayExperiment",
 .harmonize <- function(experiments, colData, sampleMap) {
     harmony <- character()
     ## sampleMap assays agree with experiment names
-    assay <- intersect(names(experiments), levels(sampleMap[["assay"]]))
+    assay <- intersect(levels(sampleMap[["assay"]]), names(experiments))
     keep_sampleMap_assay <- sampleMap[["assay"]] %in% assay
     if (!all(keep_sampleMap_assay)) {
         sampleMap <- sampleMap[keep_sampleMap_assay, , drop=FALSE]
@@ -131,7 +132,7 @@ setClass("MultiAssayExperiment",
     }
 
     ## sampleMap colname agrees with experiment colnames
-    grp <- sampleMap[["assay"]]
+    grp <- droplevels(sampleMap[["assay"]])
     colnm <- split(sampleMap[["colname"]], grp)
     keep <- Map(intersect, colnm, colnames(experiments)[names(colnm)])
     keep_sampleMap_colname <- logical(nrow(sampleMap))
@@ -169,22 +170,20 @@ setClass("MultiAssayExperiment",
                   "colData rownames not in sampleMap 'primary'"))
     }
 
-    experiments <- ExperimentList(Map(function(x, idx) {
-        x[, colnames(x) %in% idx, drop=FALSE]
-    }, experiments[assay], experiments_columns[assay]))
-
-    ## experiment assay names and sampleMap assays need to be in the same order
-    if (!identical(levels(sampleMap[["assay"]]), names(experiments))) {
-        tempMap <- mapToList(sampleMap)[names(experiments)]
-        sampleMap <- listToMap(tempMap)
-    }
+    experiments <- mendoapply(function(x, idx) {
+        colmatch <- colnames(x) %in% idx
+        if (!all(colmatch))
+            x <- x[, colmatch, drop=FALSE]
+        x
+    }, experiments[assay], experiments_columns[assay])
 
     if (length(harmony))
         message("harmonizing input:\n  ", paste(harmony, collapse="\n  "))
     list(experiments=experiments, sampleMap=sampleMap, colData=colData)
 }
 
-#' Construct a \code{MultiAssayExperiment} object
+#' Construct an integrative representation of multi-omic data with
+#' \code{MultiAssayExperiment}
 #'
 #' The constructor function for the \link{MultiAssayExperiment-class} combines
 #' multiple data elements from the different hierarchies of data
@@ -210,55 +209,56 @@ setClass("MultiAssayExperiment",
 #' @export MultiAssayExperiment
 #' @seealso \link{MultiAssayExperiment-class}
 MultiAssayExperiment <-
-    function(experiments = ExperimentList(),
-            colData = S4Vectors::DataFrame(),
-            sampleMap =
-                S4Vectors::DataFrame(
-                    assay = factor(),
-                    primary = character(),
-                    colname = character()),
-            metadata = NULL,
-            drops = list()) {
+    function(
+        experiments = ExperimentList(),
+        colData = S4Vectors::DataFrame(),
+        sampleMap = S4Vectors::DataFrame(
+            assay = factor(),
+            primary = character(),
+            colname = character()
+        ),
+        metadata = list(),
+        drops = list()
+    )
+{
+    experiments <- as(experiments, "ExperimentList")
 
-        if (missing(experiments))
-            experiments <- ExperimentList()
-        else
-            experiments <- ExperimentList(experiments)
-
-        if (missing(colData)){
-            allsamps <- unique(unlist(unname(colnames(experiments))))
+    allsamps <- unique(unlist(unname(colnames(experiments))))
+    if (missing(sampleMap)) {
+        if (missing(colData))
             colData <- S4Vectors::DataFrame(row.names = allsamps)
-        } else if (!is(colData, "DataFrame"))
-            colData <- S4Vectors::DataFrame(colData)
-
-
-        if (missing(sampleMap)) {
-            sampleMap <- .sampleMapFromData(colData, experiments)
-        } else {
-            sampleMap <- S4Vectors::DataFrame(sampleMap)
-            if (!all(c("assay", "primary", "colname") %in% colnames(sampleMap)))
-                stop("'sampleMap' does not have required columns")
-            if (!is.factor(sampleMap[["assay"]]))
-                sampleMap[["assay"]] <- factor(sampleMap[["assay"]])
-            if (!is.character(sampleMap[["primary"]])) {
-                warning("sampleMap[['primary']] coerced to character()")
-                sampleMap[["primary"]] <- as.character(sampleMap[["primary"]])
-            }
-            if (!is.character(sampleMap[["colname"]])) {
-                warning("sampleMap[['colname']] coerced to character()")
-                sampleMap[["colname"]] <- as.character(sampleMap[["colname"]])
-            }
-        }
-
-        bliss <- .harmonize(experiments, colData, sampleMap)
-
-        newMultiAssay <- new("MultiAssayExperiment",
-                             ExperimentList = bliss[["experiments"]],
-                             colData = bliss[["colData"]],
-                             sampleMap = bliss[["sampleMap"]],
-                             metadata = metadata)
-        return(newMultiAssay)
+        sampleMap <- .sampleMapFromData(colData, experiments)
+    } else {
+        if (missing(colData))
+            colData <- S4Vectors::DataFrame(
+                row.names = unique(sampleMap[["primary"]])
+            )
     }
+
+    colData <- as(colData, "DataFrame")
+    sampleMap <- as(sampleMap, "DataFrame")
+
+    if (!all(c("assay", "primary", "colname") %in% colnames(sampleMap)))
+        stop("'sampleMap' does not have required columns")
+    if (!is.factor(sampleMap[["assay"]]))
+        sampleMap[["assay"]] <- factor(sampleMap[["assay"]])
+    if (!is.character(sampleMap[["primary"]])) {
+        warning("sampleMap[['primary']] coerced to character()")
+        sampleMap[["primary"]] <- as.character(sampleMap[["primary"]])
+    }
+    if (!is.character(sampleMap[["colname"]])) {
+        warning("sampleMap[['colname']] coerced to character()")
+        sampleMap[["colname"]] <- as.character(sampleMap[["colname"]])
+    }
+
+    bliss <- .harmonize(experiments, colData, sampleMap)
+
+    new("MultiAssayExperiment",
+        ExperimentList = bliss[["experiments"]],
+        colData = bliss[["colData"]],
+        sampleMap = bliss[["sampleMap"]],
+        metadata = metadata)
+}
 
 ### - - - - - - - - - - - - - - - - - - - - - - - -
 ### Validity
@@ -291,12 +291,14 @@ MultiAssayExperiment <-
 .checkSampleNames <- function(object) {
     sampMap <- sampleMap(object)
     assayCols <- mapToList(sampMap[, c("assay", "colname")])
-    colNams <- colnames(object)
-    logicResult <- mapply(function(columnNames, assayColumns) {
-        identical(sort(columnNames), sort(assayColumns))
-    }, columnNames = colNams,
-    assayColumns = assayCols)
-    if (!all(logicResult)) {
+    colNams <- Filter(function(x) !isEmpty(x), colnames(object))
+    if (length(colNams)) {
+        logicResult <- mapply(function(x, y) {
+            identical(sort(x), sort(y))
+        }, x = colNams, y = assayCols)
+    if (all(logicResult))
+        NULL
+    else
         "not all samples in the ExperimentList are found in the sampleMap"
     }
     NULL
@@ -315,7 +317,7 @@ MultiAssayExperiment <-
         rownames(colData(object)),
         sampleMap(object)[["primary"]]
     ))) {
-        msg <- "All samples in the 'sampleMap' must be in the 'colData'"
+        msg <- "All 'sampleMap[[primary]]' must be in 'rownames(colData)'"
         errors <- c(errors, msg)
     }
     if (!is.factor(sampleMap(object)[["assay"]])) {
@@ -332,10 +334,10 @@ MultiAssayExperiment <-
     logchecks <- any(vapply(lcheckdups, FUN = function(x) {
         as.logical(anyDuplicated(x))
     }, FUN.VALUE = logical(1L)))
-    if (logchecks) {
-        return("All sample identifiers in the assays must be unique")
-    }
-    NULL
+    if (!logchecks)
+        NULL
+    else
+        "All colname identifiers in assays must be unique"
 }
 
 .validMultiAssayExperiment <- function(object) {
@@ -357,7 +359,6 @@ S4Vectors::setValidity2("MultiAssayExperiment", .validMultiAssayExperiment)
 #' @exportMethod show
 #' @describeIn MultiAssayExperiment Show method for a
 #' \code{MultiAssayExperiment}
-#' @param object A \code{MultiAssayExperiment} object
 setMethod("show", "MultiAssayExperiment", function(object) {
     if (.hasOldAPI(object)) {
         stop("MultiAssayExperiment is outdated, please run updateObject()")
@@ -368,7 +369,6 @@ setMethod("show", "MultiAssayExperiment", function(object) {
     if (length(o_names) == 0L) {
         o_names <- "none"
     }
-    classes <- vapply(experiments(object), class, character(1))
     c_elist <- class(experiments(object))
     c_mp <- class(colData(object))
     c_sm <- class(sampleMap(object))
@@ -381,23 +381,24 @@ setMethod("show", "MultiAssayExperiment", function(object) {
                       "user-defined names")),
         ifelse(length(o_len) == 0L, "or", "and"),
         ifelse(length(o_len) == 0L, "classes.",
-               ifelse(length(classes) == 1L,
-                      "respective class.", "respective classes.")),
-        "\n Containing an ")
+               ifelse(o_len == 1L,
+                      "respective class.\n", "respective classes.\n")),
+        "Containing an ")
     show(experiments(object))
-    cat("Features: \n experiments() - obtain the",
-        sprintf("%s", c_elist), "instance",
-        "\n colData() - the primary/phenotype", sprintf("%s", c_mp),
-        "\n sampleMap() - the sample availability", sprintf("%s", c_sm),
+    cat("Functionality:\n experiments() - obtain the ",
+        sprintf("%s", c_elist), " instance",
+        "\n colData() - the primary/phenotype DataFrame",
+        "\n sampleMap() - the sample coordination DataFrame",
         "\n `$`, `[`, `[[` - extract colData columns, subset, or experiment",
-        "\n *Format() - convert",
-        "into a long or wide", sprintf("%s", c_mp),
-        "\n assays() - convert", sprintf("%s", c_elist),
-        "to a SimpleList of matrices\n")
+        "\n *Format() - convert ", "into a long or wide DataFrame",
+        "\n assays() - convert ", sprintf("%s", c_elist),
+        " to a SimpleList of matrices",
+        "\n exportClass() - save all data to files\n",
+    sep = "")
 })
 
 #' @name MultiAssayExperiment-methods
-#' @title Accessing/modifying slot information
+#' @title Accessing and modifying information in MultiAssayExperiment
 #'
 #' @description A set of accessor and setter generic functions to extract
 #' either the \code{sampleMap}, the \code{\link{ExperimentList}},
@@ -430,8 +431,7 @@ setMethod("show", "MultiAssayExperiment", function(object) {
 #'     \item `$<-`: A vector to replace the indicated column in \code{colData}
 #' }
 #'
-#' @param x A \code{MultiAssayExperiment} object
-#' @param object A \code{MultiAssayExperiment} object
+#' @param object,x A \code{MultiAssayExperiment} object
 #' @param name A column in \code{colData}
 #' @param value See details.
 #' @param ... Argument not in use
@@ -449,6 +449,7 @@ NULL
 ### Accessor methods
 ###
 
+#' @export
 setGeneric("sampleMap", function(x) standardGeneric("sampleMap"))
 
 #' @exportMethod sampleMap
@@ -465,7 +466,6 @@ setMethod("experiments", "MultiAssayExperiment", function(x)
     getElement(x, "ExperimentList"))
 
 
-#' @export
 #' @exportMethod colData
 #' @rdname MultiAssayExperiment-methods
 setMethod("colData", "MultiAssayExperiment", function(x, ...) {
@@ -475,7 +475,8 @@ setMethod("colData", "MultiAssayExperiment", function(x, ...) {
 #' @exportMethod metadata
 #' @rdname MultiAssayExperiment-methods
 setMethod("metadata", "MultiAssayExperiment", function(x)
-    getElement(x, "metadata"))
+    c(getElement(x, "metadata"), drops = getElement(x, "drops"))
+)
 
 ### - - - - - - - - - - - - - - - - - - - - - - - -
 ### Getters
@@ -497,6 +498,7 @@ setMethod("names", "MultiAssayExperiment", function(x)
 ### Replacers
 ###
 
+#' @export
 setGeneric("sampleMap<-", function(object, value) {
     standardGeneric("sampleMap<-")
 })
@@ -504,41 +506,100 @@ setGeneric("sampleMap<-", function(object, value) {
 #' @exportMethod sampleMap<-
 #' @rdname MultiAssayExperiment-methods
 setReplaceMethod("sampleMap", c("MultiAssayExperiment", "DataFrame"),
-                function(object, value) {
-                    slot(object, "sampleMap") <- value
-                    return(object)
-                })
+    function(object, value) {
+        if (isEmpty(value))
+            value <- DataFrame(assay = factor(), primary = character(),
+                colname = character())
+        rebliss <- .harmonize(experiments(object),
+            colData(object),
+            value)
 
+        BiocGenerics:::replaceSlots(object,
+            ExperimentList = rebliss[["experiments"]],
+            colData = rebliss[["colData"]],
+            sampleMap = rebliss[["sampleMap"]],
+            check = FALSE
+        )
+    }
+)
+
+#' @rdname MultiAssayExperiment-methods
+setReplaceMethod("sampleMap", c("MultiAssayExperiment", "ANY"),
+    function(object, value) {
+        stopifnot(is.data.frame(value))
+        value <- as(value, "DataFrame")
+        `sampleMap<-`(object, value)
+    }
+)
+
+#' @export
 setGeneric("experiments<-", function(object, value)
     standardGeneric("experiments<-"))
+
+setGeneric("drops<-", function(x, ..., value) standardGeneric("drops<-"))
 
 #' @exportMethod experiments<-
 #' @rdname MultiAssayExperiment-methods
 setReplaceMethod("experiments", c("MultiAssayExperiment", "ExperimentList"),
     function(object, value) {
-        if (!length(value)) {
-            slot(object, "ExperimentList") <- value
-            return(object)
+
+        rebliss <- .harmonize(value, colData(object), sampleMap(object))
+
+        if (!any(names(object) %in% names(value)) && !isEmpty(object)) {
+            drops(object) <-
+                list(experiments = setdiff(names(object), names(value)))
+            warning("'experiments' dropped; see 'metadata'", call. = FALSE)
         }
-        rebliss <- .harmonize(value,
-            colData(object),
-            sampleMap(object))
+
         BiocGenerics:::replaceSlots(
-            object,
+            object = object,
             ExperimentList = rebliss[["experiments"]],
             colData = rebliss[["colData"]],
             sampleMap = rebliss[["sampleMap"]],
-            metadata = metadata(object)
-            )
-    })
+            check = FALSE
+        )
+    }
+)
+
+#' @exportMethod experiments<-
+#' @rdname MultiAssayExperiment-methods
+setReplaceMethod("experiments", c("MultiAssayExperiment", "List"),
+    function(object, value) {
+        value <- as(value, "ExperimentList")
+        experiments(object) <- value
+        object
+    }
+)
+
 
 #' @exportMethod colData<-
 #' @rdname MultiAssayExperiment-methods
 setReplaceMethod("colData", c("MultiAssayExperiment", "DataFrame"),
     function(x, value) {
-        slot(x, "colData") <- value
-        return(x)
-    })
+        if (!any(rownames(value) %in% rownames(colData(x))) && !isEmpty(value))
+            stop("'rownames(value)' have no match in 'rownames(colData)';\n  ",
+                "See '?renamePrimary' for renaming primary units")
+
+        rebliss <- .harmonize(experiments(x), value, sampleMap(x))
+
+        BiocGenerics:::replaceSlots(
+            object = x,
+            ExperimentList = rebliss[["experiments"]],
+            colData = rebliss[["colData"]],
+            sampleMap = rebliss[["sampleMap"]],
+            check = FALSE
+        )
+    }
+)
+
+#' @rdname MultiAssayExperiment-methods
+setReplaceMethod("colData", c("MultiAssayExperiment", "ANY"),
+    function(x, value) {
+        stopifnot(is.data.frame(value))
+        value <- as(value, "DataFrame")
+        `colData<-`(x, value)
+    }
+)
 
 .rearrangeMap <- function(sampMap) {
     return(DataFrame(assay = factor(sampMap[["assayname"]]),
@@ -549,10 +610,19 @@ setReplaceMethod("colData", c("MultiAssayExperiment", "DataFrame"),
 #' @exportMethod metadata<-
 #' @rdname MultiAssayExperiment-methods
 setReplaceMethod("metadata", c("MultiAssayExperiment", "ANY"),
-                 function(x, ..., value) {
-                     slot(x, "metadata") <- value
-                     return(x)
-                 })
+    function(x, ..., value) {
+        slot(x, "metadata") <- value
+        return(x)
+})
+
+setReplaceMethod("drops", c("MultiAssayExperiment", "ANY"),
+    function(x, ..., value) {
+        anydrops <- getElement(x, "drops")[["experiments"]]
+        if (length(anydrops))
+            value[["experiments"]] <- union(anydrops, value[["experiments"]])
+        slot(x, "drops") <- value
+        return(x)
+})
 
 #' @exportMethod $<-
 #' @rdname MultiAssayExperiment-methods
@@ -560,6 +630,75 @@ setReplaceMethod("$", "MultiAssayExperiment", function(x, name, value) {
     colData(x)[[name]] <- value
     return(x)
 })
+
+#' @exportMethod names<-
+#' @rdname MultiAssayExperiment-methods
+setReplaceMethod("names", c("MultiAssayExperiment", "ANY"),
+    function(x, value)
+{
+    if (!is.character(value))
+        stop("'value' must be a character vector",
+                "in names(x) <- value")
+    if (length(value) != length(x))
+        stop("experiment names and experiments not equal in length")
+
+    explist <- experiments(x)
+    oldNames <- names(explist)
+    names(explist) <- value
+    sampmap <- sampleMap(x)
+    map <- stats::setNames(value, oldNames)
+    sampmap[, "assay"] <-
+        factor(unname(map[sampmap[["assay"]]]), levels = value)
+
+    BiocGenerics:::replaceSlots(x,
+        ExperimentList = explist,
+        sampleMap = sampmap,
+        check = FALSE)
+})
+
+#' @exportMethod colnames<-
+#' @rdname MultiAssayExperiment-methods
+setReplaceMethod("colnames", c("MultiAssayExperiment", "List"),
+    function(x, value)
+{
+    if (!is(value, "CharacterList"))
+        stop("'value' must be a 'CharacterList' in 'colnames(x) <- value'")
+    if (length(value) != length(x))
+        stop("'colnames(x)' and 'value' not equal in length")
+
+    cnames <- colnames(x)
+    if (!identical(lengths(value), lengths(cnames)))
+        stop("'value' names and lengths should all be identical to 'names(x)'")
+
+    samplemap <- sampleMap(x)
+    splitmap <- mapToList(samplemap)
+    splitmap <- Map(function(x, y) {
+        x[["colname"]] <- y
+        x
+    }, x = splitmap, y = value)
+    exps <- experiments(x)
+    exps <- S4Vectors::mendoapply(function(x, y) {
+        colnames(x) <- y
+        x
+    }, x = exps, y = value)
+
+    BiocGenerics:::replaceSlots(
+        object = x,
+        ExperimentList = exps,
+        sampleMap = listToMap(splitmap)
+    )
+})
+
+#' @exportMethod colnames<-
+#' @rdname MultiAssayExperiment-methods
+setReplaceMethod("colnames", c("MultiAssayExperiment", "list"),
+    function(x, value)
+{
+    value <- as(value, "CharacterList")
+    colnames(x) <- value
+    x
+})
+
 
 #' @exportMethod updateObject
 #' @param verbose logical (default FALSE) whether to print extra messages
@@ -583,104 +722,78 @@ setMethod("updateObject", "MultiAssayExperiment",
                 .rearrangeMap(sampleMap(object))
             else sampleMap(object),
             metadata = metadata(object),
-            drops = object@drops)
+            drops = getElement(object, "drops")
+        )
     })
 
-### ==============================================
-### MatchedAssayExperiment class
-### ----------------------------------------------
-
-#' An integrative and matched-samples class for experiment data
-#'
-#' @description
-#' This class supports the use of matched samples where an equal number
-#' of observations per biological unit are present in all assays.
-#'
-#' @return A \code{MatchedAssayExperiment} object
-#'
-#' @exportClass MatchedAssayExperiment
-#' @seealso \link{MultiAssayExperiment}
-#'
-setClass("MatchedAssayExperiment", contains="MultiAssayExperiment")
-
-.checkEqualPrimaries <- function(object) {
-    listMap <- mapToList(sampleMap(object))
-    primaryIDs <- lapply(listMap, function(x) x[["primary"]])
-    allIDsEqual <- all(vapply(seq_along(primaryIDs)[-1], function(i, prim) {
-        identical(prim[[1L]], prim[[i]])
-    }, FUN.VALUE = logical(1L), prim = primaryIDs))
-    if (!allIDsEqual)
-        "Primary identifiers are not equal across assays"
-    else
-        NULL
-}
-
-.checkPrimaryOrder <- function(object) {
-    colPrimary <- rownames(colData(object))
-    listMap <- mapToList(sampleMap(object))
-    primaryIDs <- lapply(listMap, function(x) x[["primary"]])
-    allOrdered <- all(vapply(primaryIDs, function(prim) {
-        identical(colPrimary, prim)
-    }, logical(1L)))
-    if (!allOrdered)
-        "colData row identifiers not identical to sampleMap primary column"
-    else
-        NULL
-}
-
-.validMatchedAssayExperiment <- function(object) {
-    if (length(object) != 0L) {
-    c(.checkEqualPrimaries(object),
-      .checkPrimaryOrder(object))
-    }
-}
-
-S4Vectors::setValidity2("MatchedAssayExperiment", .validMatchedAssayExperiment)
-
-.doMatching <- function(from) {
-    if (!isEmpty(from)) {
-    from <- intersectColumns(from)
-
-    if (all(!lengths(colnames(from))))
-        stop("No biological unit(s) measured across all assays")
-
-    if (any(anyReplicated(from)))
-        stop("Resolve replicate columns")
-    }
-    from
-}
-
-#' @describeIn MatchedAssayExperiment-class Construct a
-#' \code{MatchedAssayExperiment} class from \linkS4class{MultiAssayExperiment}
-#' inputs.
-#'
-#' @param ... Either a single MultiAssayExperiment or the components to create
-#' a valid MultiAssayExperiment
-#'
-#' @examples
-#' data("miniACC")
-#' acc <- as(miniACC, "MatchedAssayExperiment")
-#' acc
-#'
-#' @aliases MatchedAssayExperiment
-#' coerce,MultiAssayExperiment,MatchedAssayExperiment-method
-#'
-#' @export MatchedAssayExperiment
-MatchedAssayExperiment <- function(...) {
-    listData <- list(...)
-    if (length(listData) == 1L) {
-        if (is(listData[[1L]], "MultiAssayExperiment"))
-            multiassay <- listData[[1L]]
-        else
-            stop("Provide a 'MultiAssayExperiment' or its basic components")
+.mergeColData <- function(inlist) {
+    CDbyEXP <- lapply(names(inlist),
+        function(i, x) {
+            tryCatch({
+                S4Vectors::DataFrame(colData(x[[i]]), experiment_name = i)
+            }, error = function(e) {
+                S4Vectors::DataFrame(row.names = colnames(x[[i]]))
+            } )
+        }, x = inlist
+    )
+    colDatas <- Filter(function(y) { !isEmpty(y) }, CDbyEXP)
+    if (length(colDatas)) {
+        rnames <- unlist(lapply(colDatas, rownames))
+        res <- Reduce(function(x, y) {
+            S4Vectors::merge(
+                x, y, by = intersect(names(x), names(y)),
+                all = TRUE, sort = FALSE
+            )
+        }, colDatas)
+        rownames(res) <- rnames
     } else {
-        multiassay <- MultiAssayExperiment(...)
+        res <- S4Vectors::DataFrame(
+            row.names = unlist(lapply(CDbyEXP, rownames))
+        )
     }
-    multiassay <- .doMatching(multiassay)
-    new("MatchedAssayExperiment", multiassay)
+    res
 }
 
-setAs("MultiAssayExperiment", "MatchedAssayExperiment", function(from) {
-    from <- .doMatching(from)
-    new("MatchedAssayExperiment", from)
-})
+#' @rdname MultiAssayExperiment-class
+#'
+#' @name coerce-MultiAssayExperiment
+#'
+#' @aliases coerce,list,MultiAssayExperiment-method
+#'     coerce,List,MultiAssayExperiment-method
+#'
+#' @section
+#' coercion:
+#'   Convert a `list` or S4 `List` to a MultiAssayExperiment object using the
+#'   \link[methods]{as} function.
+#'
+#' In the following example, `x` is either a `list` or \linkS4class{List}:
+#'
+#'     `as(x, "MultiAssayExperiment")`
+#'
+#'   Convert a `MultiAssayExperiment` to `MAF` class object using the
+#'   \link[methods]{as} function.
+#'
+#' In the following example, `x` is a \linkS4class{MultiAssayExperiment}:
+#'
+#'     `MultiAssayExperimentToMAF(x)`
+#'
+#' @md
+#'
+#' @exportMethod coerce
+
+setAs("list", "MultiAssayExperiment", function(from) {
+        newfrom <- as(from, "List")
+        as(newfrom, "MultiAssayExperiment")
+    }
+)
+
+setAs("List", "MultiAssayExperiment", function(from) {
+        metaf <- metadata(from)
+        explist <- as(from, "ExperimentList")
+        colData <- .mergeColData(from)
+        MultiAssayExperiment(
+            experiments = explist, colData = colData, metadata = metaf
+        )
+    }
+)
+

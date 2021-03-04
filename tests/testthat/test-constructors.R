@@ -28,10 +28,10 @@ arraypdat <- as(data.frame(
   "AnnotatedDataFrame")
 exprdat <- Biobase::ExpressionSet(assayData=arraydat, phenoData=arraypdat)
 
-ExpList <- list(RagExp, exprdat)
-names(ExpList) <- c("CNVgistic", "Affy")
-myExperimentList <- ExperimentList(ExpList)
+assayList <- list(RagExp, exprdat)
+names(assayList) <- c("CNVgistic", "Affy")
+ExpList <- ExperimentList(assayList)
 
 test_that("the appropriate class is returned", {
-  expect_true(is(myExperimentList, "ExperimentList"))
+  expect_true(is(ExpList, "ExperimentList"))
 })

@@ -2,6 +2,7 @@
 # Git
 #----------------------------
 ^\.git$
+^\.github$
 ^\.gitignore$
 ^\.gitattributes$
 
@@ -26,7 +27,11 @@
 ^.*\.rda$
 ^.*\.tar\.gz$
 ^\.lintr$
-^NEWS\.md$
 ^README\.md$
 ^docs$
 
+#----------------------------
+# Docs
+#----------------------------
+^_pkgdown\.yml$
+revdep

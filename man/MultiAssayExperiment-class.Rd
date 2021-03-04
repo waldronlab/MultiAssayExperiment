@@ -8,13 +8,18 @@
 \alias{length,MultiAssayExperiment-method}
 \alias{names,MultiAssayExperiment-method}
 \alias{updateObject,MultiAssayExperiment-method}
+\alias{coerce-MultiAssayExperiment}
+\alias{coerce,list,MultiAssayExperiment-method}
+\alias{coerce,List,MultiAssayExperiment-method}
 \alias{dimnames,MultiAssayExperiment-method}
 \alias{c,MultiAssayExperiment-method}
+\alias{exportClass,MultiAssayExperiment-method}
+\alias{exportClass}
 \alias{assays,MultiAssayExperiment-method}
 \alias{assay,MultiAssayExperiment,missing-method}
 \alias{assay,MultiAssayExperiment,numeric-method}
 \alias{assay,MultiAssayExperiment,character-method}
-\title{An integrative multi-assay class for experiment data}
+\title{MultiAssayExperiment - An integrative multi-assay class for experiment data}
 \usage{
 \S4method{show}{MultiAssayExperiment}(object)
 
@@ -28,29 +33,51 @@
 
 \S4method{c}{MultiAssayExperiment}(x, ..., sampleMap = NULL, mapFrom = NULL)
 
-\S4method{assays}{MultiAssayExperiment}(x, ..., withDimnames = TRUE)
+\S4method{exportClass}{MultiAssayExperiment}(
+  object,
+  dir = tempdir(),
+  fmt,
+  ext,
+  match = FALSE,
+  verbose = TRUE,
+  ...
+)
 
-\S4method{assay}{MultiAssayExperiment,missing}(x, i, ...)
+\S4method{assays}{MultiAssayExperiment}(x, withDimnames = TRUE, ...)
 
-\S4method{assay}{MultiAssayExperiment,numeric}(x, i, ...)
+\S4method{assay}{MultiAssayExperiment,missing}(x, i, withDimnames = TRUE, ...)
 
-\S4method{assay}{MultiAssayExperiment,character}(x, i, ...)
+\S4method{assay}{MultiAssayExperiment,numeric}(x, i, withDimnames = TRUE, ...)
+
+\S4method{assay}{MultiAssayExperiment,character}(x, i, withDimnames = TRUE, ...)
 }
 \arguments{
-\item{object}{A \code{MultiAssayExperiment} object}
-
-\item{x}{A \code{MultiAssayExperiment} object}
+\item{object, x}{A \code{MultiAssayExperiment} object}
 
 \item{...}{Additional arguments for supporting functions. See details.}
 
-\item{verbose}{logical (default FALSE) whether to print extra messages}
+\item{verbose}{logical(1) Whether to print additional information (default
+TRUE)}
 
 \item{sampleMap}{\code{c} method: a \code{sampleMap} \code{list} or
 \code{DataFrame} to guide merge}
 
 \item{mapFrom}{Either a \code{logical}, \code{character}, or \code{integer}
 vector indicating the experiment(s) that have an identical colname order as
-the experiment input(s)}
+the experiment input(s). If using a character input, the name must match
+exactly.}
+
+\item{dir}{character(1) A directory for saving exported data (default:
+`tempdir()`)}
+
+\item{fmt}{character(1) or function() Either a format character atomic as
+supported by `write.table` either ('csv', or 'tsv') or a function whose
+first two arguments are 'object to save' and 'file location'}
+
+\item{ext}{character(1) A file extension supported by the format argument}
+
+\item{match}{logical(1) Whether to coerce the current object to a
+'MatchedAssayExperiment' object (default: FALSE)}
 
 \item{withDimnames}{logical (default TRUE) whether to return dimension names
 included in the object}
@@ -106,17 +133,15 @@ for a \code{MultiAssayExperiment} object
 \item \code{c}: Add a supported data class to the
 \code{ExperimentList}
 
+\item \code{exportClass}: Export data from class to a series
+of text files
+
 \item \code{assays}: Obtain a \code{\link{SimpleList}} of assay
 data for all available experiments in the object
 
 \item \code{assay}: Convenience function for extracting the
-assay of the first element in the \code{ExperimentList}
-
-\item \code{assay}: Obtain the specified assay from the
-MultiAssayExperiment with a \code{numeric} index
-
-\item \code{assay}: Get the specified assay from the
-MultiAssayExperiment with a \code{character} index
+assay of the first element (default) in the \code{ExperimentList}. A
+\code{numeric} or \code{character} index can also be provided
 }}
 
 \section{Slots}{
@@ -158,38 +183,56 @@ identifiers of samples and participants or biological units. Standard column
 names of the sampleMap are "assay", "primary", and "colname".
 }
 
+\section{coercion}{
+
+Convert a \code{list} or S4 \code{List} to a MultiAssayExperiment object using the
+\link[methods]{as} function.
+
+In the following example, \code{x} is either a \code{list} or \linkS4class{List}:\preformatted{`as(x, "MultiAssayExperiment")`
+}
+
+Convert a \code{MultiAssayExperiment} to \code{MAF} class object using the
+\link[methods]{as} function.
+
+In the following example, \code{x} is a \linkS4class{MultiAssayExperiment}:\preformatted{`MultiAssayExperimentToMAF(x)`
+}
+}
+
 \examples{
 example("MultiAssayExperiment")
 
 ## Subsetting
 # Rows (i) Rows/Features in each experiment
-myMultiAssayExperiment[1, , ]
-myMultiAssayExperiment[c(TRUE, FALSE), , ]
+mae[1, , ]
+mae[c(TRUE, FALSE), , ]
 
 # Columns (j) Rows in colData
-myMultiAssayExperiment[, rownames(colData(myMultiAssayExperiment))[3:2],  ]
+mae[, rownames(colData(mae))[3:2],  ]
 
 # Assays (k)
-myMultiAssayExperiment[, , "Affy"]
+mae[, , "Affy"]
 
 ## Complete cases (returns logical vector)
-completes <- complete.cases(myMultiAssayExperiment)
-compMAE <- myMultiAssayExperiment[, completes, ]
+completes <- complete.cases(mae)
+compMAE <- mae[, completes, ]
 compMAE
 colData(compMAE)
 
 example("MultiAssayExperiment")
 
 ## Add an experiment
-test1 <- myMultiAssayExperiment[[1L]]
-colnames(test1) <- rownames(colData(myMultiAssayExperiment))
+test1 <- mae[[1L]]
+colnames(test1) <- rownames(colData(mae))
 
 ## Combine current MultiAssayExperiment with additional experiment
 ## (no sampleMap)
-c(myMultiAssayExperiment, newExperiment = test1)
+c(mae, newExperiment = test1)
 
-test2 <- myMultiAssayExperiment[[1L]]
-c(myMultiAssayExperiment, newExp = test2, mapFrom = 3L)
+test2 <- mae[[3L]]
+c(mae, newExp = test2, mapFrom = 3L)
+
+## Add experiment using experiment name in mapFrom
+c(mae, RNASeqGeneV2 = test2, mapFrom = "RNASeqGene")
 
 }
 \seealso{

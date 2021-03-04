@@ -1,5 +1,8 @@
-MultiAssayExperiment
-==============
+# MultiAssayExperiment <a href='https://waldronlab.io/MultiAssayExperiment'><img src='https://raw.githubusercontent.com/Bioconductor/BiocStickers/master/MultiAssayExperiment/MultiAssayExperiment.png' align="right" height="139" /></a>
+
+## Software For The Integration Of Multi-Omics Experiments In Bioconductor
+
+https://doi.org/10.1158/0008-5472.CAN-17-0344
 
 [![BioC status](http://www.bioconductor.org/shields/build/release/bioc/MultiAssayExperiment.svg)](https://bioconductor.org/checkResults/release/bioc-LATEST/MultiAssayExperiment)
 [![Platforms](http://www.bioconductor.org/shields/availability/release/MultiAssayExperiment.svg)](https://www.bioconductor.org/packages/release/bioc/html/MultiAssayExperiment.html#archives)
@@ -9,26 +12,56 @@ MultiAssayExperiment
 [![Coverage Status](https://codecov.io/github/waldronlab/MultiAssayExperiment/coverage.svg?branch=master)](https://codecov.io/github/waldronlab/MultiAssayExperiment?branch=master)
 [![Downloads](http://www.bioconductor.org/shields/downloads/MultiAssayExperiment.svg)](https://bioconductor.org/packages/stats/bioc/MultiAssayExperiment)
 
-## Installation of release and development versions
+## Installation
 
-MultiAssayExperiment is under active development, and we highly recommend
-installing a current development version rather than the release Bioconductor
-version. This can be done by installing the
-[development version of Bioconductor](https://www.bioconductor.org/developers/how-to/useDevel/):
+We recommend installing the stable release version of MultiAssayExperiment in
+Bioconductor. This can be done using `BiocManager`:
 
 ```
-library(BiocInstaller)
-useDevel()
-biocLite("MultiAssayExperiment")
+if (!require("BiocManager"))
+    install.packages("BiocManager")
+
+library(BiocManager)
+
+install("MultiAssayExperiment")
 ```
+
+## Schematic
+
+Here is a visual overview of the `MultiAssayExperiment` class.
+The three main components are:
+
+* `colData` - phenotype data
+* `ExperimentList` - a list of tables from experimental results
+* `sampleMap` - a graph representation of 'samples' and 'participants'
+
+_Note_. For simplicity, we use the terms 'samples' and 'participants' to
+elucidate the relationship although `MultiAssayExperiment` can work on other
+biological specimens.
+
+<img src="vignettes/MultiAssayExperiment.png" alt="MultiAssayExperiment schematic"/>
+
+## Cheatsheet
+
+<a href="https://github.com/waldronlab/cheatsheets/blob/master/MultiAssayExperiment_QuickRef.pdf"><img src="https://raw.githubusercontent.com/waldronlab/cheatsheets/master/pngs/MultiAssayExperiment_QuickRef.png" width="989" height="1091"/></a>
 
 ## Ready-to-use `MultiAssayExperiment` objects
 
-See the newly released `curatedTCGAData` `ExperimentHub` package for
-ready-packaged MultiAssayExperiment TCGA objects.
+For easy-to-use and ready-made MultiAssayExperiment objects, use the
+`curatedTCGAData` experiment data package.
 
 ```
-biocLite("curatedTCGAData")
+install("curatedTCGAData")
+```
+
+## Companion package for working with TCGA data
+
+TCGAutils is a handy package for working with `MultiAssayExperiment` data
+objects from `curatedTCGAData`. It is highly recommended to use `TCGAutils` for
+identifier manipulation, sample identification and more.
+
+```
+install("TCGAutils")
 ```
 
 ## Documentation

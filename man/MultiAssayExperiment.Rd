@@ -2,12 +2,17 @@
 % Please edit documentation in R/MultiAssayExperiment-class.R
 \name{MultiAssayExperiment}
 \alias{MultiAssayExperiment}
-\title{Construct a \code{MultiAssayExperiment} object}
+\title{Construct an integrative representation of multi-omic data with
+\code{MultiAssayExperiment}}
 \usage{
-MultiAssayExperiment(experiments = ExperimentList(),
-  colData = S4Vectors::DataFrame(), sampleMap = S4Vectors::DataFrame(assay =
-  factor(), primary = character(), colname = character()), metadata = NULL,
-  drops = list())
+MultiAssayExperiment(
+  experiments = ExperimentList(),
+  colData = S4Vectors::DataFrame(),
+  sampleMap = S4Vectors::DataFrame(assay = factor(), primary = character(), colname =
+    character()),
+  metadata = list(),
+  drops = list()
+)
 }
 \arguments{
 \item{experiments}{A \code{list} or \link{ExperimentList} of all
@@ -62,18 +67,18 @@ gistmap <- data.frame(
     stringsAsFactors = FALSE)
 
 ## Combine as a named list and convert to a DataFrame
-mylist <- list(Affy = exprmap, Methyl450k = methylmap,
+maplist <- list(Affy = exprmap, Methyl450k = methylmap,
     RNASeqGene = rnamap, GISTIC = gistmap)
 
 ## Create a sampleMap
-mySampleMap <- listToMap(mylist)
+sampMap <- listToMap(maplist)
 ## Create an example phenotype data
 colDat <- data.frame(sex = c("M", "F", "M", "F"), age = 38:41,
     row.names = c("Jack", "Jill", "Bob", "Barbara"))
 
 ## Create a MultiAssayExperiment instance
-myMultiAssayExperiment <- MultiAssayExperiment(experiments = ExpList,
-    colData = colDat, sampleMap = mySampleMap)
+mae <- MultiAssayExperiment(experiments = ExpList, colData = colDat,
+    sampleMap = sampMap)
 }
 \seealso{
 \link{MultiAssayExperiment-class}

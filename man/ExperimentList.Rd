@@ -2,8 +2,7 @@
 % Please edit documentation in R/ExperimentList-class.R
 \name{ExperimentList}
 \alias{ExperimentList}
-\title{Construct an \code{ExperimentList} object for the \code{MultiAssayExperiment}
-object slot.}
+\title{Represent multiple experiments as a List-derivative \code{ExperimentList}}
 \usage{
 ExperimentList(...)
 }
@@ -61,14 +60,14 @@ rnadat <- matrix(
 rangedat <- data.frame(chr="chr2", start = 11:15, end = 12:16,
     strand = c("+", "-", "+", "*", "."),
     samp0 = c(0,0,1,1,1), samp1 = c(1,0,1,0,1), samp2 = c(0,1,0,1,0),
-    row.names = paste0("GENE", letters[5:1]))
+    row.names = c(paste0("ENST", "00000", 135411:135414), "ENST00000383323"))
 
 rangeSE <- SummarizedExperiment::makeSummarizedExperimentFromDataFrame(rangedat)
 
 ## Combine to a named list and call the ExperimentList constructor function
-ExpList <- list(Affy = exprdat, Methyl450k = methyldat, RNASeqGene = rnadat,
+assayList <- list(Affy = exprdat, Methyl450k = methyldat, RNASeqGene = rnadat,
                 GISTIC = rangeSE)
 
 ## Use the ExperimentList constructor
-myExperimentList <- ExperimentList(ExpList)
+ExpList <- ExperimentList(assayList)
 }

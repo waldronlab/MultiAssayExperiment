@@ -4,6 +4,8 @@
 NULL
 
 .checkOverlapsAny <- function(obj_cl) {
+    if (identical(obj_cl, c("matrix", "array")))
+        obj_cl <- "matrix"
     return(any(
         hasMethod("overlapsAny", signature(obj_cl, "GRanges"),
             getNamespace("GenomicRanges")),
@@ -21,21 +23,19 @@ NULL
 
 .getHits <- function(expList, i, ...) {
     IntegerList(lapply(expList, function(element) {
+        rnames <- rownames(element)
         if (is(i, "Vector")) {
             if (is(element, "RangedSummarizedExperiment"))
                 element <- rowRanges(element)
             if (is(element, "VcfStack"))
-                i <- which(rownames(element) %in% as.character(seqnames(i)))
+                i <- which(rnames %in% as.character(seqnames(i)))
             if (.checkOverlapsAny(class(element)) &&
                 !is(element, "SummarizedExperiment"))
                 i <- which(overlapsAny(element, i, ...))
             else
-                i <- match(intersect(as.character(i), rownames(element)),
-                    rownames(element))
-                # i <- na.omit(match(rownames(element), as.character(i)))
+                i <- match(intersect(as.character(i), rnames), rnames)
         } else if (is.character(i)) {
-            i <- match(intersect(i, rownames(element)), rownames(element))
-            # i <- na.omit(match(rownames(element), i))
+            i <- match(intersect(i, rnames), rnames)
         } else {
             i <- as.integer(i)
         }
@@ -52,19 +52,26 @@ NULL
 }
 
 #' @name subsetBy
+#'
 #' @title Subsetting a MultiAssayExperiment object
+#'
 #' @description A set of functions for extracting and dividing a
 #' \code{MultiAssayExperiment}
 #'
 #' @param x A \code{MultiAssayExperiment} or \code{ExperimentList}
+#'
 #' @param i Either a \code{character}, \code{integer}, \code{logical} or
 #' \code{GRanges} object for subsetting by rows
+#'
 #' @param j Either a \code{character}, \code{logical}, or \code{numeric} vector
 #' for subsetting by \code{colData} rows. See details for more information.
+#'
 #' @param k Either a \code{character}, \code{logical}, or \code{numeric} vector
 #' for subsetting by assays
+#'
 #' @param ... Additional arguments passed on to lower level functions.
-#' @param drop logical (default TRUE) whether to drop empty assay elements
+#'
+#' @param drop logical (default FALSE) whether to drop empty assay elements
 #' in the \code{ExperimentList}
 #'
 #' @aliases [,MultiAssayExperiment,ANY-method subsetByColData subsetByRow
@@ -87,45 +94,49 @@ NULL
 #' \item subsetByAssay: Select experiments
 #' }
 #'
+#' @return \code{subsetBy*} operations are endomorphic and return either
+#' \code{MultiAssayExperiment} or \code{ExperimentList} depending on the
+#' input.
+#'
 #' @examples
 #' ## Load the example MultiAssayExperiment
 #' example("MultiAssayExperiment")
 #'
 #' ## Using experiment names
-#' subsetByAssay(myMultiAssayExperiment, "Affy")
+#' subsetByAssay(mae, "Affy")
 #'
 #' ## Using numeric indices
-#' subsetByAssay(myMultiAssayExperiment, 1:2)
+#' subsetByAssay(mae, 1:2)
 #'
 #' ## Using a logical vector
-#' subsetByAssay(myMultiAssayExperiment, c(TRUE, FALSE, TRUE))
+#' subsetByAssay(mae, c(TRUE, FALSE, TRUE))
 #'
 #' ## Subset by character vector (Jack)
-#' subsetByColData(myMultiAssayExperiment, "Jack")
+#' subsetByColData(mae, "Jack")
 #'
 #' ## Subset by numeric index of colData rows (Jack and Bob)
-#' subsetByColData(myMultiAssayExperiment, c(1, 3))
+#' subsetByColData(mae, c(1, 3))
 #'
 #' ## Subset by logical indicator of colData rows (Jack and Jill)
-#' subsetByColData(myMultiAssayExperiment, c(TRUE, TRUE, FALSE, FALSE))
+#' subsetByColData(mae, c(TRUE, TRUE, FALSE, FALSE))
 #'
-#' subsetByColumn(myMultiAssayExperiment, list(Affy = 1:2,
+#' subsetByColumn(mae, list(Affy = 1:2,
 #'     Methyl450k = c(3,5,2), RNASeqGene = 2:4, GISTIC = 1))
 #'
-#' subsetWith <- S4Vectors::mendoapply(`[`, colnames(myMultiAssayExperiment),
+#' subsetWith <- S4Vectors::mendoapply(`[`, colnames(mae),
 #'     MoreArgs = list(1:2))
-#' subsetByColumn(myMultiAssayExperiment, subsetWith)
+#' subsetByColumn(mae, subsetWith)
 #'
 #' ## Use a GRanges object to subset rows where ranged data present
 #' egr <- GenomicRanges::GRanges(seqnames = "chr2",
 #'     IRanges::IRanges(start = 11, end = 13), strand = "-")
-#' subsetByRow(myMultiAssayExperiment, egr)
+#' subsetByRow(mae, egr)
 #'
 #' ## Use a logical vector (recycling used)
-#' subsetByRow(myMultiAssayExperiment, c(TRUE, FALSE))
+#' subsetByRow(mae, c(TRUE, FALSE))
 #'
 #' ## Use a character vector
-#' subsetByRow(myMultiAssayExperiment, "ENST00000355076")
+#' subsetByRow(mae, "ENST00000355076")
 #'
 NULL
 
@@ -151,13 +162,31 @@ setGeneric("subsetByAssay", function(x, y) standardGeneric("subsetByAssay"))
 
 .subsetCOLS <- function(object, cutter) {
     mendoapply(function(x, j) {
-        x[, j, drop = FALSE]
+        if (!is.null(j))
+            x[, j, drop = FALSE]
+        else
+            x
     }, x = object, j = cutter)
 }
+
 .subsetROWS <- function(object, cutter) {
     mendoapply(function(x, i) {
-        x[i, , drop = FALSE]
+        if (!is.null(rownames(x)) && !is.null(i))
+            x[i, , drop = FALSE]
+        else
+            x
     }, x = object, i = cutter)
+}
+
+.fillEmptyExps <- function(exps, subr) {
+    if (!any(names(subr) %in% names(exps)))
+        stop("No matching experiment names in subset list", call. = FALSE)
+    if (!all(names(exps) %in% names(subr))) {
+        outnames <- setdiff(names(exps), names(subr))
+        names(outnames) <- outnames
+        subr <- c(subr, lapply(outnames, function(x) NULL))
+    }
+    subr[names(exps)]
 }
 
 # subsetByRow,ExperimentList-methods -----------------------------------------
@@ -172,30 +201,23 @@ setMethod("subsetByRow", c("ExperimentList", "ANY"), function(x, y, ...) {
                 " use an ", sQuote("IntegerList"), " index for finer control")
     }
     subsetor <- .getHits(x, y, ...)
-    Y <- rowIds[subsetor]
-    subsetByRow(x, Y)
+    subsetByRow(x, subsetor)
 })
 
 #' @rdname subsetBy
 setMethod("subsetByRow", c("ExperimentList", "list"), function(x, y) {
-    if (!all(names(y) %in% names(x)))
-        stop("list-like subscript has names not in list-like object to subset")
-    inNames <- names(x) %in% names(y)
-    x[inNames] <- x[y]
-    x
+    y <- .fillEmptyExps(x, y)
+    .subsetROWS(x, y)
 })
 
 #' @rdname subsetBy
 setMethod("subsetByRow", c("ExperimentList", "List"), function(x, y) {
-    if (!all(names(y) %in% names(x)))
-        stop("list-like subscript has names not in list-like object to subset")
     if (is(y, "DataFrame") || is(y, "GRangesList"))
         stop("Provide a list of indices for subsetting")
     if (is(y, "GRanges"))
         return(callNextMethod())
-    inNames <- names(x) %in% names(y)
-    x[inNames] <- x[y]
-    x
+    y <- as.list(y)
+    subsetByRow(x, y)
 })
 
 #' @rdname subsetBy
@@ -208,10 +230,8 @@ setMethod("subsetByRow", c("ExperimentList", "logical"), function(x, y) {
 
 #' @rdname subsetBy
 setMethod("subsetByColumn", c("ExperimentList", "list"), function(x, y) {
-    y <- y[names(x)]
-    ExperimentList(mapply(function(exps, j) {
-        exps[, j, drop = FALSE]
-    }, exps = x, j = y, SIMPLIFY = FALSE))
+    y <- .fillEmptyExps(x, y)
+    .subsetCOLS(x, y)
 })
 
 #' @rdname subsetBy
@@ -237,27 +257,33 @@ setMethod("subsetByAssay", c("ExperimentList", "ANY"), function(x, y) {
 
 #' @rdname subsetBy
 setMethod("subsetByColData", c("MultiAssayExperiment", "ANY"), function(x, y) {
+    rcols <- rownames(colData(x))
+    if (length(y) > length(rcols))
+        warning("'j' in 'mae[i, j, k]' is greater than 'nrow(coldata(mae))'",
+            call. = FALSE)
     if (is.logical(y) || is.numeric(y))
-        y <- unique(rownames(colData(x))[y])
-    selectors <- y[y %in% rownames(colData(x))]
-    newcolData <- colData(x)[
-        match(selectors, rownames(colData(x))), , drop = FALSE]
+        y <- unique(rcols[y])
+    selectors <- y[y %in% rcols]
+    newcolData <- colData(x)[match(selectors, rcols), , drop = FALSE]
     listMap <- mapToList(sampleMap(x), "assay")
     listMap <- lapply(listMap, function(elementMap, keepers) {
         .matchReorderSub(elementMap, keepers)
-    }, keepers = selectors)
+        }, keepers = selectors)
     newMap <- listToMap(listMap)
     columns <- lapply(listMap, function(mapChunk) {
         mapChunk[, "colname", drop = TRUE]
     })
     columns <- columns[names(experiments(x))]
-    newSubset <- mapply(function(x, j) {x[, j, drop = FALSE]},
-        x = experiments(x), j = columns, SIMPLIFY = FALSE)
+    newSubset <- Map(function(x, j) {x[, j, drop = FALSE]},
+        x = experiments(x), j = columns)
     newSubset <- ExperimentList(newSubset)
-    experiments(x) <- newSubset
-    sampleMap(x) <- newMap
-    colData(x) <- newcolData
-    return(x)
+
+    harmon <- .harmonize(newSubset, newcolData, newMap)
+    BiocGenerics:::replaceSlots(x,
+        ExperimentList = harmon[["experiments"]],
+        colData = harmon[["colData"]],
+        sampleMap = harmon[["sampleMap"]],
+        check = FALSE)
 })
 
 #' @rdname subsetBy
@@ -286,17 +312,8 @@ setMethod("subsetByColumn", c("MultiAssayExperiment", "ANY"), function(x, y) {
     if (is.character(y) || is.logical(y) || is.numeric(y))
         subsetByColData(x, y)
     else {
-    experiments(x) <- subsetByColumn(experiments(x), y)
-    newSamps <- as.list(colnames(x))
-    listMap <- mapToList(sampleMap(x), "assay")
-    newMap <- mapply(function(lMap, nSamps) {
-        lMap[na.omit(match(nSamps, as.character(lMap[["colname"]]))), ]
-    }, lMap = listMap, nSamps = newSamps, SIMPLIFY = FALSE)
-    newMap <- listToMap(newMap)
-    selectors <- unique(as.character(newMap[["primary"]]))
-    colData(x) <- colData(x)[rownames(colData(x)) %in% selectors, , drop = FALSE]
-    sampleMap(x) <- newMap
-    return(x)
+        experiments(x) <- subsetByColumn(experiments(x), y)
+        return(x)
     }
 })
 
@@ -304,13 +321,12 @@ setMethod("subsetByColumn", c("MultiAssayExperiment", "ANY"), function(x, y) {
 
 #' @rdname subsetBy
 setMethod("subsetByAssay", c("MultiAssayExperiment", "ANY"), function(x, y) {
-    expers <- experiments(x)[y]
-    nametags <- names(expers)
-    listMap <- mapToList(sampleMap(x), "assay")
-    ## TODO: Add sensible error message here
-    newMap <- listMap[nametags]
-    newMap <- listToMap(newMap)
-    sampleMap(x) <- newMap
-    experiments(x) <- expers
-    x
+    subexp <- experiments(x)[y]
+    dropnames <- setdiff(names(experiments(x)), names(subexp))
+    if (length(dropnames)) {
+        drops(x) <- list(experiments = dropnames)
+        warning("'experiments' dropped; see 'metadata'", call. = FALSE)
+    }
+    experiments(x) <- subexp
+    return(x)
 })

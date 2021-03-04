@@ -5,19 +5,28 @@
 \title{Create a generalized Venn Diagram analog for sample membership in multiple
 assays, using the upset algorithm in \code{UpSetR}}
 \usage{
-upsetSamples(MultiAssayExperiment, nsets = length(MultiAssayExperiment),
-  nintersects = 24, order.by = "freq", nameFilter = force,
-  check.names = FALSE, ...)
+upsetSamples(
+  MultiAssayExperiment,
+  nsets = length(MultiAssayExperiment),
+  nintersects = 24,
+  order.by = "freq",
+  nameFilter = force,
+  check.names = FALSE,
+  ...
+)
 }
 \arguments{
-\item{MultiAssayExperiment}{instance of
-\code{\link[MultiAssayExperiment]{MultiAssayExperiment-class}}}
+\item{MultiAssayExperiment}{A
+\code{\link[MultiAssayExperiment:MultiAssayExperiment-class]{MultiAssayExperiment}}
+instance}
 
 \item{nsets}{integer number of sets to analyze}
 
-\item{nintersects}{Number of intersections to plot. If set to NA, all intersections will be plotted.}
+\item{nintersects}{Number of intersections to plot. If set to NA, all
+intersections will be plotted.}
 
-\item{order.by}{How the intersections in the matrix should be ordered by. Options include frequency (entered as "freq"), degree, or both in any order.}
+\item{order.by}{How the intersections in the matrix should be ordered by.
+Options include frequency (entered as "freq"), degree, or both in any order.}
 
 \item{nameFilter}{function, defaulting to force, to manipulate colnames of
 incidence matrix}
@@ -44,6 +53,7 @@ important for interpretability, and the \code{nameFilter} parameter may be
 useful to simplify resulting outputs.
 }
 \examples{
+
 data(miniACC)
 upsetSamples(miniACC)
 upsetSamples(miniACC, nameFilter = function(x) substr(x, 1, 5))

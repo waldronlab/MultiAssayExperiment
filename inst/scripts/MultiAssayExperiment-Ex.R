@@ -23,15 +23,15 @@ gistmap <- data.frame(
     stringsAsFactors = FALSE)
 
 ## Combine as a named list and convert to a DataFrame
-mylist <- list(Affy = exprmap, Methyl450k = methylmap,
+maplist <- list(Affy = exprmap, Methyl450k = methylmap,
     RNASeqGene = rnamap, GISTIC = gistmap)
 
 ## Create a sampleMap
-mySampleMap <- listToMap(mylist)
+sampMap <- listToMap(maplist)
 ## Create an example phenotype data
 colDat <- data.frame(sex = c("M", "F", "M", "F"), age = 38:41,
     row.names = c("Jack", "Jill", "Bob", "Barbara"))
 
 ## Create a MultiAssayExperiment instance
-myMultiAssayExperiment <- MultiAssayExperiment(experiments = ExpList,
-    colData = colDat, sampleMap = mySampleMap)
+mae <- MultiAssayExperiment(experiments = ExpList, colData = colDat,
+    sampleMap = sampMap)

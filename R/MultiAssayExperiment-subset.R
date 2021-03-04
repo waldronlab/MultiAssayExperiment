@@ -5,12 +5,32 @@ NULL
 ### Subsetting
 ###
 
-
 .isEmpty <- function(object) {
     isTRUE(unname(dim(object)[1]) == 0L || unname(dim(object)[2]) == 0L)
 }
 
-.subsetMultiAssayExperiment <- function(x, i, j, k, ..., drop = TRUE) {
+.emptyAssays <- function(x) {
+    vapply(x, FUN = .isEmpty, FUN.VALUE = logical(1L))
+}
+
+.dropEmpty <- function(object, warn = TRUE) {
+    isEmptyAssay <- .emptyAssays(experiments(object))
+    if (all(isEmptyAssay)) {
+        drops(object) <- list(experiments = names(object))
+        experiments(object) <- ExperimentList()
+    } else if (any(isEmptyAssay)) {
+        empties <- vapply(isEmptyAssay, isTRUE, logical(1L))
+        keeps <- names(isEmptyAssay)[!empties]
+        drops(object) <- list(experiments = names(isEmptyAssay)[empties])
+        if (warn)
+            warning("'experiments' dropped; see 'metadata'", call. = FALSE)
+        FUN <- if (warn) force else suppressWarnings
+        object <- FUN(subsetByAssay(object, keeps))
+    }
+    object
+}
+
+.subsetMultiAssayExperiment <- function(x, i, j, k, ..., drop = FALSE) {
     if (missing(i) && missing(j) && missing(k)) {
         return(x)
     }
@@ -27,16 +47,7 @@ NULL
         x <- subsetByRow(x, i, ...)
     }
     if (drop) {
-        isEmptyAssay <- vapply(experiments(x), FUN = .isEmpty,
-                               FUN.VALUE = logical(1L))
-        if (all(isEmptyAssay)) {
-            experiments(x) <- ExperimentList()
-        } else if (any(isEmptyAssay)) {
-            keeps <- names(isEmptyAssay)[
-                vapply(isEmptyAssay, function(k) {
-                    !isTRUE(k)}, logical(1L))]
-            x <- subsetByAssay(x, keeps)
-        }
+        x <- .dropEmpty(x)
     }
     return(x)
 }
@@ -56,11 +67,28 @@ setMethod("[[", "MultiAssayExperiment", function(x, i, j, ...) {
 #' @export
 #' @param value An assay compatible with the MultiAssayExperiment API
 setReplaceMethod("[[", "MultiAssayExperiment", function(x, i, j, ..., value) {
-    if (!missing(j) || length(list(...)) > 0)
+    if (!missing(j) || length(list(...)))
         stop("invalid replacement")
-    origLen <- length(x)
-    experiments(x) <- S4Vectors::setListElement( experiments(x), i, value)
-    if (origLen < length(x))
-        stop("replacement length greater than original")
+    if (is.list(value) || (is(value, "List") && !is(value, "DataFrame")))
+        stop("Provide a compatible API object for replacement")
+    if (!any(colnames(value) %in% colnames(x)[[i]]) && !.isEmpty(value))
+        stop("'colnames(value)' have no match in 'colnames(x)[[i]]';\n",
+            "See '?renameColname' for renaming colname identifiers")
+
+    experiments(x) <- S4Vectors::setListElement(experiments(x), i, value)
+
+    return(x)
+})
+
+#' @rdname subsetBy
+#' @export
+setReplaceMethod("[", "MultiAssayExperiment", function(x, i, j, ..., value) {
+    if (!missing(j) || !missing(i))
+        stop("invalid replacement, only 'k' replacement supported")
+    args <- list(...)
+    if (length(args) > 1L)
+        stop("Provide a single 'k' index vector")
+    indx <- args[[1L]]
+    experiments(x)[indx] <- value
     return(x)
 })

@@ -6,7 +6,7 @@
 \name{ExperimentList-class}
 \alias{ExperimentList-class}
 \alias{show,ExperimentList-method}
-\alias{coerce}
+\alias{coerce-ExperimentList}
 \alias{coerce,list,ExperimentList-method}
 \alias{coerce,List,ExperimentList-method}
 \alias{isEmpty,ExperimentList-method}
@@ -15,10 +15,20 @@
 \alias{assay,ANY,missing-method}
 \alias{assays,ExperimentList-method}
 \alias{assay,ExperimentList,missing-method}
-\alias{assay,ExperimentList,missing-method}
 \alias{assay,ExperimentList,numeric-method}
 \alias{assay,ExperimentList,character-method}
-\title{A container for multi-experiment data}
+\title{ExperimentList - A container for multi-experiment data
+
+The \code{ExperimentList} class is a container that builds on
+the \code{SimpleList} with additional
+checks for consistency in experiment names and length.
+It contains a \code{SimpleList} of experiments with sample identifiers.
+One element present per experiment performed.
+
+Convert from \code{SimpleList} or \code{list}
+to the multi-experiment data container. When using the
+\strong{mergeReplicates} method, additional arguments are passed to the
+given \code{simplify} function argument (e.g., na.rm = TRUE)}
 \usage{
 \S4method{show}{ExperimentList}(object)
 
@@ -26,18 +36,17 @@
 
 \S4method{dimnames}{ExperimentList}(x)
 
-\S4method{mergeReplicates}{ExperimentList}(x, replicates = list(),
-  simplify = BiocGenerics::mean, ...)
+\S4method{mergeReplicates}{ExperimentList}(x, replicates = list(), simplify = BiocGenerics::mean, ...)
 
-\S4method{assay}{ANY,missing}(x, i, ...)
+\S4method{assay}{ANY,missing}(x, i, withDimnames = TRUE, ...)
 
-\S4method{assays}{ExperimentList}(x, ..., withDimnames = TRUE)
+\S4method{assays}{ExperimentList}(x, withDimnames = TRUE, ...)
 
-\S4method{assay}{ExperimentList,missing}(x, i, ...)
+\S4method{assay}{ExperimentList,missing}(x, i, withDimnames = TRUE, ...)
 
-\S4method{assay}{ExperimentList,numeric}(x, i, ...)
+\S4method{assay}{ExperimentList,numeric}(x, i, withDimnames = TRUE, ...)
 
-\S4method{assay}{ExperimentList,character}(x, i, ...)
+\S4method{assay}{ExperimentList,character}(x, i, withDimnames = TRUE, ...)
 }
 \arguments{
 \item{object, x}{An \code{\linkS4class{ExperimentList}} object}
@@ -55,14 +64,18 @@ by replicates}
 
 \item{withDimnames}{logical (default TRUE) whether to return dimension names}
 }
+\value{
+An \code{ExperimentList} class object
+}
 \description{
+ExperimentList - A container for multi-experiment data
+
 The \code{ExperimentList} class is a container that builds on
 the \code{SimpleList} with additional
 checks for consistency in experiment names and length.
 It contains a \code{SimpleList} of experiments with sample identifiers.
 One element present per experiment performed.
-}
-\details{
+
 Convert from \code{SimpleList} or \code{list}
 to the multi-experiment data container. When using the
 \strong{mergeReplicates} method, additional arguments are passed to the
@@ -82,19 +95,11 @@ an \code{ExperimentList} using \code{\linkS4class{CharacterList}}
 \item \code{mergeReplicates}: Apply the mergeReplicates method on the
 ExperimentList elements
 
-\item \code{assay}: Get the assay data for the default ANY class
+\item \code{assay}: Obtain the specified assay with a \code{numeric}
+or \code{character} reference
 
 \item \code{assays}: Get the assay data from each element in the
 \link{ExperimentList}
-
-\item \code{assay}: Convenience function for the assay of the first
-element
-
-\item \code{assay}: Obtain the specified assay from ExperimentList
-with a \code{numeric} index
-
-\item \code{assay}: Get the specified assay from ExperimentList with
-a \code{character} index
 }}
 
 \section{coercion}{
@@ -109,6 +114,7 @@ In the following example, \code{x} is either a \code{list} or
 }
 
 \examples{
+
 ExperimentList()
 
 }
