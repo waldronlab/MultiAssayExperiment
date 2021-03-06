@@ -7,6 +7,36 @@ setMethod("assay", c("ANY", "missing"),
         return(x)
     }
 )
+## little convenience function from S4Vectors
+isTRUEorFALSE <- function(x) {
+    is.logical(x) && length(x) == 1L && !is.na(x)
+}
+
+setReplaceMethod("assay", c("ANY", "ANY"),
+    function(x, withDimnames=TRUE, ..., value)
+{
+    if (!isTRUEorFALSE(withDimnames))
+        stop(wmsg("'withDimnames' must be TRUE or FALSE"))
+    if (withDimnames && !identical(dimnames(value), dimnames(x)))
+        stop(
+            "The rownames and colnames of 'value' are not identical to 'x', ",
+            "use 'withDimnames=FALSE' "
+        )
+    tryCatch({
+        BiocGenerics:::replaceSlots(x, assays=value, check=FALSE)
+    }, error = function(e) {
+        value
+    })
+})
+
+setReplaceMethod("assays", c("ExperimentList", "ANY"),
+    function(x, withDimnames=TRUE, ..., value) {
+        mendoapply(function(x, y, ...) {
+            `assay<-`(x, withDimnames = withDimnames, ..., value = y)
+        }, x = x, y = value, ...)
+    }
+)
+
 
 #' @describeIn ExperimentList Get the assay data from each element in the
 #' \link{ExperimentList}
