@@ -11,7 +11,7 @@
 
 .serialize_HDF5MultiAssayExperiment <- function(x, rds_path, verbose)
 {
-    exps <- HDF5Array:::.shorten_assay2h5_links(assays(x))
+    exps <- HDF5Array:::.shorten_assay2h5_links(suppressWarnings(assays(x)))
     explist <- experiments(x)
     for (i in seq_along(exps)) {
         if (is(explist[[i]], "SummarizedExperiment")) {
@@ -53,14 +53,15 @@
     if (!is(x, "MultiAssayExperiment"))
         stop("<internal> 'x' must be a MultiAssayExperiment object")
 
+    explist <- experiments(x)
     assaylist <- assays(x)
     exps <- HDF5Array:::.write_h5_assays(
         assaylist, h5_path, chunkdim, level, as.sparse, verbose
     )
     ## write Dimnames
     .write_h5_dimnames(assaylist, h5_path)
-    explist <- experiments(x)
-    assays(explist) <- exps
+    ## avoid errors with arrays (withDimnames=FALSE)
+    assays(explist, withDimnames = FALSE) <- exps
     x <- BiocGenerics:::replaceSlots(
         x, ExperimentList = explist, check = FALSE
     )
@@ -204,29 +205,40 @@ loadHDF5MultiAssayExperiment <- function(dir = "h5_mae", prefix = NULL)
 
     for (i in seq_along(explist)) {
         if (is(explist[[i]], "SummarizedExperiment")) {
-            explist[[i]]@assays <- HDF5Array:::.restore_absolute_assay2h5_links(
-                explist[[i]]@assays, dir)
+            explist[[i]]@assays <-
+                HDF5Array:::.restore_absolute_assay2h5_links(
+                    explist[[i]]@assays, dir
+                )
         } else if (is(explist[[i]], "HDF5Array")) {
-            explist@listData[[i]] <- DelayedArray::modify_seeds(explist@listData[[i]],
-                function(x) {
-                h5_path <- file.path(dir, x@filepath)
-                ## file_path_as_absolute() will fail if the file does
-                ## not exist.
-                if (!file.exists(h5_path))
-                    stop(wmsg("assay ", i, " in the SummarizedExperiment ",
-                              "object to load points to an HDF5 file ",
-                              "that does not exist: ", h5_path))
-                x@filepath <- tools::file_path_as_absolute(h5_path)
-                ## Check that 'x' points to an HDF5 dataset that is accessible
-                ## and "as expected".
-                msg <- HDF5Array:::validate_HDF5ArraySeed_dataset(x)
-                if (!isTRUE(msg))
-                    stop(wmsg("assay ", i, " in the SummarizedExperiment ",
-                              "object to load ", msg))
-                x
-            })
+            explist <- S4Vectors::setListElement(explist, i,
+                DelayedArray::modify_seeds(
+                    explist[[i]],
+                    function(x) {
+                        h5_path <- file.path(dir, x@filepath)
+                        ## file_path_as_absolute() will fail if the file does
+                        ## not exist.
+                        if (!file.exists(h5_path))
+                            stop(wmsg("assay ", i,
+                                " in the SummarizedExperiment ",
+                                "object to load points to an HDF5 file ",
+                                "that does not exist: ", h5_path))
+                        x@filepath <- tools::file_path_as_absolute(h5_path)
+                        ## Check that 'x' points to an HDF5 dataset that is
+                        ## accessible and "as expected".
+                        msg <- HDF5Array:::validate_HDF5ArraySeed_dataset(x)
+                        if (!isTRUE(msg))
+                            stop(wmsg("assay ", i,
+                                " in the SummarizedExperiment ",
+                                "object to load ", msg))
+                        x
+                    }
+                )
+            )
         }
     }
+    ans <- BiocGenerics:::replaceSlots(
+        ans, ExperimentList = explist, check = FALSE
+    )
     ans <- updateObject(ans, check=FALSE)
     if (!is(ans, "MultiAssayExperiment"))
         stop(wmsg("the object serialized in \"", rds_path, "\" is not ",

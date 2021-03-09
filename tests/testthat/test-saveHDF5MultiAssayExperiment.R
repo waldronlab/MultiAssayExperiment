@@ -16,10 +16,15 @@ test_that("saveHDF5MultiAssayExperiment is working", {
     expect_true(validObject(x))
     expect_true(is(x, "MultiAssayExperiment"))
 
-    ## test may change with improved saveHDF5MAE
-    for (expr in names(experiments(x))) {
-        expect_true(is(x[[expr]], "HDF5Matrix"))
-    }
+    ## test that classes are largely the same (except matrix > HDF5Matrix)
+    resclasses <- c(
+        rep("SummarizedExperiment", 3), "HDF5Matrix", "SummarizedExperiment"
+    )
+    names(resclasses) <- names(x)
+    expect_equal(
+        vapply(experiments(x), class, character(1L)),
+        resclasses
+    )
     on.exit(unlink(testDir, recursive = TRUE))
 })
 
@@ -59,7 +64,9 @@ test_that("array assays work with saveHDF5MultiAssayExperiment", {
     se2 <- SummarizedExperiment(list(A=A, B=B))
     mae2 <- MultiAssayExperiment(ExperimentList(one_more_se=se2))
     testDir <- file.path(tempdir(), "test_mae")
-    saveHDF5MultiAssayExperiment(mae2, testDir, replace = TRUE)
+    expect_warning(
+        saveHDF5MultiAssayExperiment(mae2, testDir, replace = TRUE)
+    )
     expect_true(
         validObject(loadHDF5MultiAssayExperiment(testDir))
     )
