@@ -75,10 +75,19 @@ by `DelayedArray:::get_verbose_block_processing()`. Setting
 }
 \description{
 \preformatted{This function takes a `MultiAssayExperiment` object and uses the `assays`
-functionality to create data matrices out of the experiments. These are
-then saved into the `.h5` file format. This operation is lossy because
-the original data structures inside the `MultiAssayExperiment` are
-reduced to `matrix` and subsequently to `HDF5Matrix`.
+functionality to obtain data matrices out of the experiments. These are
+then saved into the `.h5` file format. This function relies heavily on
+the `HDF5Array` package whose installation is required before use.
+`saveHDF5MultiAssayExpeirment` preserves the classes contained in the
+\linkS4class{ExperimentList} with the exception of `matrix` which is
+converted to `HDF5Matrix`. Internal `SummarizedExperiment` assays are
+converted to HDF5-backed assays as in
+`HDF5Array::saveHDF5SummarizedExperiment`. `SummarizedExperiment`
+objects with multiple `i`-th assays will have the first assay take
+precedence and others assays will be dropped with a warning.
+If the first assay in a `SummarizedExperiment` contains an array,
+the array is preserved in the process of saving and loading the
+HDF5-backed `MultiAssayExperiment`.
 }
 }
 \examples{
@@ -86,7 +95,7 @@ reduced to `matrix` and subsequently to `HDF5Matrix`.
 testDir <- file.path(tempdir(), "test_mae")
 
 saveHDF5MultiAssayExperiment(
-    miniACC, dir = testDir, verbose = TRUE
+    miniACC, dir = testDir, verbose = TRUE, replace = TRUE
 )
 
 ## inspect the files in the dir
