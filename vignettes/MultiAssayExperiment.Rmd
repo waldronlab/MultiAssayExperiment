@@ -1016,12 +1016,16 @@ methods:
 
 Here is what happens if one of the methods doesn't:
 
-```{r}
+```{r, error = TRUE}
 objlist2 <- objlist
 objlist2[[2]] <- as.vector(objlist2[[2]])
 
-try(MultiAssayExperiment(objlist2, patient.data, dfmap),
-    outFile = stdout())
+tryCatch(
+    MultiAssayExperiment(objlist2, patient.data, dfmap),
+    error = function(e) {
+        conditionMessage(e)
+    }
+)
 ```
 
 # Application Programming Interface (API)
