@@ -145,7 +145,7 @@ ExperimentList <- function(...) {
     for (i in seq_along(object)) {
         class_err <- .checkClass(object[[i]])
         if (!is.null(class_err)) {
-            errors <- c(errors, paste0("'", class(i), "'", class_err))
+            errors <- c(errors, paste0("'", class(object[[i]]), "'", class_err))
         }
     }
     errors

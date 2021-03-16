@@ -63,4 +63,14 @@ test_that("ExperimentList validity function catches non-compatible classes", {
     expect_warning(ExperimentList(assay1 = list(a = testObj)))
     expect_warning(ExperimentList(assay1 = list(a = testObj, b = testObj1)))
     expect_warning(ExperimentList(assay1 = testObj))
+    ## GRangesList
+    expect_error(
+        ExperimentList(list(GR = GRangesList())),
+        "GRangesList"
+    )
+    ## vector
+    expect_error(
+        ExperimentList(list(int = 1:100L)),
+        "integer"
+    )
 })
