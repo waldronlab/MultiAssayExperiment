@@ -1,20 +1,3 @@
-## Ensure ExperimentList elements are appropriate for the API and rownames
-## are present
-.DF_WARN <- paste0("'ExperimentList' contains 'data.frame' or",
-    " 'DataFrame',\n", "  potential for errors with mixed data types")
-
-.checkClasses <- function(object) {
-    ## use is() to exclude RangedRaggedAssay
-    if (is(object, "GRangesList") && !is(object, "RangedRaggedAssay"))
-        stop("'GRangesList' class is not supported, use ",
-             "'RaggedExperiment' instead")
-    if (is.vector(object))
-        stop("'vector' class is not supported, use a rectangular class")
-    if (is.data.frame(object) || is(object, "DataFrame"))
-        warning(.DF_WARN, call. = FALSE)
-    object
-}
-
 ### ==============================================
 ### ExperimentList class
 ### ----------------------------------------------
@@ -72,7 +55,6 @@ ExperimentList <- function(...) {
         if (is.list(listData[[1L]]) || (is(listData[[1L]], "List") &&
             !is(listData[[1L]], "DataFrame"))) {
             listData <- listData[[1L]]
-            listData <- lapply(listData, .checkClasses)
         } else if (is(listData[[1]], "DataFrame") ||
             is.data.frame(listData[[1]])) {
             warning(.DF_WARN, call. = FALSE)
@@ -116,24 +98,20 @@ ExperimentList <- function(...) {
 
 ## 1.i. Check that [, colnames, rownames and dim methods are possible
 .testMethodsTable <- function(object) {
-    errors <- character(0L)
+    errors <- NULL
     for (i in seq_along(object)) {
         coll_err <- .getMethErr(object[[i]])
         if (!is.null(coll_err)) {
             errors <- c(errors, paste0("Element [", i, "] of ", coll_err))
         }
     }
-    if (length(errors) == 0L) {
-        NULL
-    } else {
-        errors
-    }
+    errors
 }
 
 ## 1.ii. Check for null rownames and colnames for each element in the
 ## ExperimentList and duplicated element names
 .checkExperimentListNames <- function(object) {
-    errors <- character(0L)
+    errors <- NULL
     if (is.null(names(object))) {
         msg <- "ExperimentList elements must be named"
         errors <- c(errors, msg)
@@ -142,17 +120,45 @@ ExperimentList <- function(...) {
         msg <- "Non-unique names provided"
         errors <- c(errors, msg)
     }
-    if (length(errors) == 0L) {
-        NULL
-    } else {
-        errors
-    }
+    errors
 }
 
+## 1.iii. Ensure ExperimentList elements are appropriate for the API
+## warn when DataFrame or data.frame present
+.DF_WARN <- paste0("'ExperimentList' contains 'data.frame' or",
+    " 'DataFrame',\n", "  potential for errors with mixed data types")
+
+.checkClass <- function(object) {
+    if (is.data.frame(object) || is(object, "DataFrame"))
+        warning(.DF_WARN, call. = FALSE)
+
+    if (is(object, "GRangesList") && !is(object, "RangedRaggedAssay"))
+        paste0(" class is not supported, use 'RaggedExperiment' instead")
+    else if (is.vector(object))
+        paste0(" class is not supported, use a rectangular class")
+    else
+        NULL
+}
+
+.checkExperimentListClasses <- function(object) {
+    errors <- NULL
+    for (i in seq_along(object)) {
+        class_err <- .checkClass(object[[i]])
+        if (!is.null(class_err)) {
+            errors <- c(errors, paste0("'", class(i), "'", class_err))
+        }
+    }
+    errors
+}
+
+
 .validExperimentList <- function(object) {
-    if (length(object) != 0L) {
-        c(.testMethodsTable(object),
-          .checkExperimentListNames(object))
+    if (length(object)) {
+        c(
+            .testMethodsTable(object),
+            .checkExperimentListNames(object),
+            .checkExperimentListClasses(object)
+        )
     }
 }
 

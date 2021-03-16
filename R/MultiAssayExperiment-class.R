@@ -221,7 +221,7 @@ MultiAssayExperiment <-
         drops = list()
     )
 {
-    experiments <- ExperimentList(experiments)
+    experiments <- as(experiments, "ExperimentList")
 
     allsamps <- unique(unlist(unname(colnames(experiments))))
     if (missing(sampleMap)) {
