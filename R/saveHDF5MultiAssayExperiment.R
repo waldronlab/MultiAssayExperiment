@@ -11,7 +11,7 @@
 
 .serialize_HDF5MultiAssayExperiment <- function(x, rds_path, verbose)
 {
-    exps <- HDF5Array:::.shorten_assay2h5_links(suppressWarnings(assays(x)))
+    exps <- HDF5Array::shorten_assay2h5_links(suppressWarnings(assays(x)))
     explist <- experiments(x)
     for (i in seq_along(exps)) {
         if (is(explist[[i]], "SummarizedExperiment")) {
@@ -55,7 +55,7 @@
 
     explist <- experiments(x)
     assaylist <- assays(x)
-    exps <- HDF5Array:::.write_h5_assays(
+    exps <- HDF5Array::write_h5_assays(
         assaylist, h5_path, chunkdim, level, as.sparse, verbose
     )
     ## write Dimnames
@@ -154,16 +154,16 @@ saveHDF5MultiAssayExperiment <-
     verbose <- DelayedArray:::normarg_verbose(verbose)
 
     if (!dir.exists(dir)) {
-        HDF5Array:::.create_dir(dir)
+        HDF5Array::create_dir(dir)
     } else {
-        HDF5Array:::.replace_dir(dir, replace)
+        HDF5Array::replace_dir(dir, replace)
     }
 
     rds_path <- file.path(dir, paste0(prefix, .MAE_RDS_BASENAME))
     h5_path <- file.path(dir, paste0(prefix, .EXPERIMENTS_H5_BASENAME))
 
     if (prefix != "")
-        HDF5Array:::.check_and_delete_files(rds_path, h5_path, replace)
+        HDF5Array::check_and_delete_files(rds_path, h5_path, replace)
 
     .write_HDF5MultiAssayExperiment(x,
         rds_path=rds_path, h5_path=h5_path, chunkdim=chunkdim, level=level,
@@ -197,7 +197,7 @@ loadHDF5MultiAssayExperiment <- function(dir = "h5_mae", prefix = NULL)
     rds_path <- file.path(dir, paste0(prefix, .MAE_RDS_BASENAME))
     ans <- try(.read_HDF5MultiAssayExperiment(rds_path), silent=TRUE)
     if (inherits(ans, "try-error"))
-        HDF5Array:::.stop_if_bad_dir(dir, prefix)
+        HDF5Array::stop_if_bad_dir(dir, prefix)
     ans
 }
 
@@ -215,7 +215,7 @@ loadHDF5MultiAssayExperiment <- function(dir = "h5_mae", prefix = NULL)
     for (i in seq_along(explist)) {
         if (is(explist[[i]], "SummarizedExperiment")) {
             explist[[i]]@assays <-
-                HDF5Array:::.restore_absolute_assay2h5_links(
+                HDF5Array::restore_absolute_assay2h5_links(
                     explist[[i]]@assays, dir
                 )
         } else if (is(explist[[i]], "HDF5Array")) {
@@ -234,7 +234,7 @@ loadHDF5MultiAssayExperiment <- function(dir = "h5_mae", prefix = NULL)
                         x@filepath <- tools::file_path_as_absolute(h5_path)
                         ## Check that 'x' points to an HDF5 dataset that is
                         ## accessible and "as expected".
-                        msg <- HDF5Array:::validate_HDF5ArraySeed_dataset(x)
+                        msg <- HDF5Array::validate_HDF5ArraySeed_dataset(x)
                         if (!isTRUE(msg))
                             stop(wmsg("assay ", i,
                                 " in the SummarizedExperiment ",
