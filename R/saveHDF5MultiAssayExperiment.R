@@ -34,7 +34,7 @@
     invisible(
         Map(
             function(dl, al) {
-                HDF5Array:::h5writeDimnames(
+                HDF5Array::h5writeDimnames(
                     dimnames = dl, filepath = h5_path, name = al,
                     group = NA, h5dimnames = NULL
                 )
