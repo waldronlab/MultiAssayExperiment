@@ -16,8 +16,8 @@ listToMap <- function(listmap) {
     if (!(is(listmap[[1]], "DataFrame") || is.data.frame(listmap[[1]])))
         stop("'listmap' elements are not all 'DataFrame' or 'data.frame'")
 
-    if (elementClass == "data.frame")
-        listmap <- lapply(listmap, DataFrame)
+    if (!is(listmap, "SplitDataFrameList"))
+        listmap <- IRanges::DataFrameList(listmap)
 
     listmap <- lapply(listmap, function(lmap) {
         if (isEmpty(lmap))
@@ -25,7 +25,7 @@ listToMap <- function(listmap) {
         else
             lmap
     })
-    listmap <- IRanges::SplitDataFrameList(listmap)
+    listmap <- as(listmap, "SplitDataFrameList")
     newmap <- IRanges::stack(listmap, "assay")
     newmap[["assay"]] <- factor(newmap[["assay"]])
     newmap
