@@ -64,7 +64,7 @@ ExperimentList <- function(...) {
             S4Vectors::SimpleList(structure(list(), .Names = character())))
         )
     }
-    new("ExperimentList", S4Vectors::SimpleList(listData))
+    new("ExperimentList", as(listData, "SimpleList"))
 }
 
 ### - - - - - - - - - - - - - - - - - - - - - - - -
