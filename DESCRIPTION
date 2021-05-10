@@ -1,6 +1,6 @@
 Package: MultiAssayExperiment
 Title: Software for the integration of multi-omics experiments in Bioconductor
-Version: 1.17.23
+Version: 1.17.24
 Authors@R: c(person("Marcel", "Ramos", email = "marcel.ramos@roswellpark.org",
     role = c("aut", "cre")),
     person("Levi", "Waldron", email = "lwaldron.research@gmail.com",
@@ -29,7 +29,7 @@ Imports:
     utils
 Suggests:
     BiocStyle,
-    HDF5Array (>= 1.19.11),
+    HDF5Array (>= 1.19.17),
     knitr,
     maftools (>= 2.7.10),
     rmarkdown,

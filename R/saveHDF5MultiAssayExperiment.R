@@ -223,22 +223,20 @@ loadHDF5MultiAssayExperiment <- function(dir = "h5_mae", prefix = NULL)
                 DelayedArray::modify_seeds(
                     explist[[i]],
                     function(x) {
+                        what <- c("experiment ", i, " in the ",
+                                  "MultiAssayExperiment object to load")
                         h5_path <- file.path(dir, x@filepath)
                         ## file_path_as_absolute() will fail if the file does
                         ## not exist.
                         if (!file.exists(h5_path))
-                            stop(wmsg("assay ", i,
-                                " in the SummarizedExperiment ",
-                                "object to load points to an HDF5 file ",
-                                "that does not exist: ", h5_path))
+                            stop(wmsg(what, " points to an HDF5 file ",
+                                      "that does not exist: ", h5_path))
                         x@filepath <- tools::file_path_as_absolute(h5_path)
                         ## Check that 'x' points to an HDF5 dataset that is
                         ## accessible and "as expected".
-                        msg <- HDF5Array::validate_HDF5ArraySeed_dataset(x)
+                        msg <- HDF5Array::validate_HDF5ArraySeed_dataset_geometry(x, what)
                         if (!isTRUE(msg))
-                            stop(wmsg("assay ", i,
-                                " in the SummarizedExperiment ",
-                                "object to load ", msg))
+                            stop(wmsg(msg))
                         x
                     }
                 )
