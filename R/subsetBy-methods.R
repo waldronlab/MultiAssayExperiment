@@ -274,8 +274,12 @@ setMethod("subsetByColData", c("MultiAssayExperiment", "ANY"), function(x, y) {
         mapChunk[, "colname", drop = TRUE]
     })
     columns <- columns[names(experiments(x))]
-    newSubset <- Map(function(x, j) {x[, j, drop = FALSE]},
-        x = experiments(x), j = columns)
+    newSubset <- Map(
+        function(x, j) {
+            x[, j, drop = FALSE]
+        },
+        x = experiments(x), j = columns
+    )
     newSubset <- ExperimentList(newSubset)
 
     harmon <- .harmonize(newSubset, newcolData, newMap)

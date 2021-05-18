@@ -18,7 +18,7 @@ mapToList <- function(dfmap, assayCol = "assay") {
         stop("assay column not found in dataframe")
     assayColIndex <- which(names(dfmap) == assayCol)
     if (is.data.frame(dfmap))
-        dfmap <- S4Vectors::DataFrame(dfmap)
+        dfmap <- as(dfmap, "DataFrame")
 
     grp <- dfmap[[assayCol]]
     levs <- if (!length(grp)) levels(grp) else unique(grp)
