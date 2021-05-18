@@ -2,6 +2,10 @@
 
 ## New features
 
+* `saveHDF5MultiAssayExperiment` allows users to save data from most classes
+(excluding `RaggedExperiment`) into a single H5 file (ctb @hpages)
+* Support for maftools conversion has been added as `MultiAssayExperimentToMAF`
+(ctb @PoisonAlien)
 * `renameColname` and `renamePrimary` provide renaming facilities for column
 names in experiments and `rownames` in the `colData`, respectively
 * Users can now rename some or all the column names in experiments using
@@ -9,6 +13,8 @@ names in experiments and `rownames` in the `colData`, respectively
 * When replacing `colData` or `experiments` (including `[[<-`), new `rownames`
 and `colnames` (respectively) are checked against existing values and an error
 is given when none match
+* Using `List` objects to replace the data in the `ExperimentList` is now
+supported
 * `splitAssay` allows users to separate / split columns across assays
 * `makeHitList` is a facilitator function to create the logical lists that
 are required as input to `splitAssay`
@@ -20,6 +26,8 @@ default
 * Updated the constructor function to auto-populate `rownames` in `colData`
 when it is missing (@LTLA, #287)
 * The metadata now includes names of dropped experiments
+* Updated validity checks to support array-like classes
+* Dropped experiments are tracked in the metadata
 
 # Changes in version 1.16.0
 
