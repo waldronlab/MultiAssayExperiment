@@ -75,7 +75,7 @@ MultiAssayExperiment object" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MultiAssayExperiment</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.14.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.18.0</span>
       </span>
     </div>
 
@@ -121,7 +121,7 @@ MultiAssayExperiment object" />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/waldronlab/MultiAssayExperiment">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -171,6 +171,9 @@ sampleMap(object) &lt;- value
 # S4 method for MultiAssayExperiment,ExperimentList
 experiments(object) &lt;- value
 
+# S4 method for MultiAssayExperiment,List
+experiments(object) &lt;- value
+
 # S4 method for MultiAssayExperiment,DataFrame
 colData(x) &lt;- value
 
@@ -185,6 +188,12 @@ $(x, name) &lt;- value
 
 # S4 method for MultiAssayExperiment
 names(x) &lt;- value
+
+# S4 method for MultiAssayExperiment,List
+colnames(x) &lt;- value
+
+# S4 method for MultiAssayExperiment,list
+colnames(x) &lt;- value
 
 # S4 method for MultiAssayExperiment
 $(x, name)</pre>
@@ -248,7 +257,8 @@ exception of the <a href='ExperimentList.html'>ExperimentList</a> accessor named
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>## Load example MultiAssayExperiment</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/example.html'>example</a></span>(<span class='no'>MultiAssayExperiment</span>)</div><div class='output co'>#&gt; 
+<span class='fu'><a href='https://rdrr.io/r/utils/example.html'>example</a></span><span class='op'>(</span><span class='va'>MultiAssayExperiment</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; 
 #&gt; MltAsE&gt; ## Run the example ExperimentList
 #&gt; MltAsE&gt; example("ExperimentList")
 #&gt; 
@@ -341,7 +351,8 @@ exception of the <a href='ExperimentList.html'>ExperimentList</a> accessor named
 #&gt; MltAsE&gt; mae &lt;- MultiAssayExperiment(experiments = ExpList, colData = colDat,
 #&gt; MltAsE+     sampleMap = sampMap)</div><div class='input'>
 <span class='co'>## Access the sampleMap</span>
-<span class='fu'>sampleMap</span>(<span class='no'>mae</span>)</div><div class='output co'>#&gt; DataFrame with 16 rows and 3 columns
+<span class='fu'>sampleMap</span><span class='op'>(</span><span class='va'>mae</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; DataFrame with 16 rows and 3 columns
 #&gt;          assay     primary     colname
 #&gt;       &lt;factor&gt; &lt;character&gt; &lt;character&gt;
 #&gt; 1   Affy              Jack      array1
@@ -356,26 +367,32 @@ exception of the <a href='ExperimentList.html'>ExperimentList</a> accessor named
 #&gt; 15  GISTIC             Bob       samp1
 #&gt; 16  GISTIC            Jill       samp2</div><div class='input'>
 <span class='co'>## Replacement method for a MultiAssayExperiment sampleMap</span>
-<span class='fu'>sampleMap</span>(<span class='no'>mae</span>) <span class='kw'>&lt;-</span> <span class='kw pkg'>S4Vectors</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/S4Vectors/man/DataFrame-class.html'>DataFrame</a></span>()</div><div class='output co'>#&gt; <span class='message'>harmonizing input:</span>
+<span class='fu'>sampleMap</span><span class='op'>(</span><span class='va'>mae</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='fu'>S4Vectors</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/S4Vectors/man/DataFrame-class.html'>DataFrame</a></span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>harmonizing input:</span>
 #&gt; <span class='message'>  removing 4 colData rownames not in sampleMap 'primary'</span></div><div class='input'>
 <span class='co'>## Access the ExperimentList</span>
-<span class='fu'>experiments</span>(<span class='no'>mae</span>)</div><div class='output co'>#&gt; ExperimentList class object of length 0:
+<span class='fu'>experiments</span><span class='op'>(</span><span class='va'>mae</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; ExperimentList class object of length 0:
 #&gt;  </div><div class='input'>
 <span class='co'>## Replace with an empty ExperimentList</span>
-<span class='fu'>experiments</span>(<span class='no'>mae</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='ExperimentList.html'>ExperimentList</a></span>()
+<span class='fu'>experiments</span><span class='op'>(</span><span class='va'>mae</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='fu'><a href='ExperimentList.html'>ExperimentList</a></span><span class='op'>(</span><span class='op'>)</span>
 
 <span class='co'>## Access the metadata</span>
-<span class='fu'>metadata</span>(<span class='no'>mae</span>)</div><div class='output co'>#&gt; list()</div><div class='input'>
+<span class='fu'>metadata</span><span class='op'>(</span><span class='va'>mae</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; list()</div><div class='input'>
 <span class='co'>## Replace metadata with a list</span>
-<span class='fu'>metadata</span>(<span class='no'>mae</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>runDate</span> <span class='kw'>=</span>
-    <span class='fu'><a href='https://rdrr.io/r/base/format.html'>format</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.time</a></span>(), <span class='st'>"%B %d, %Y"</span>))
+<span class='fu'>metadata</span><span class='op'>(</span><span class='va'>mae</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>runDate <span class='op'>=</span>
+    <span class='fu'><a href='https://rdrr.io/r/base/format.html'>format</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.time</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='st'>"%B %d, %Y"</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='co'>## Access the colData</span>
-<span class='fu'>colData</span>(<span class='no'>mae</span>)</div><div class='output co'>#&gt; DataFrame with 0 rows and 2 columns</div><div class='input'>
+<span class='fu'>colData</span><span class='op'>(</span><span class='va'>mae</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; DataFrame with 0 rows and 2 columns</div><div class='input'>
 <span class='co'>## Access a column in colData</span>
-<span class='no'>mae</span>$<span class='no'>age</span></div><div class='output co'>#&gt; integer(0)</div><div class='input'>
+<span class='va'>mae</span><span class='op'>$</span><span class='va'>age</span>
+</div><div class='output co'>#&gt; integer(0)</div><div class='input'>
 <span class='co'>## Replace a column in colData</span>
-<span class='no'>mae</span>$<span class='no'>age</span> <span class='kw'>&lt;-</span> <span class='no'>mae</span>$<span class='no'>age</span> + <span class='fl'>1</span></div></pre>
+<span class='va'>mae</span><span class='op'>$</span><span class='va'>age</span> <span class='op'>&lt;-</span> <span class='va'>mae</span><span class='op'>$</span><span class='va'>age</span> <span class='op'>+</span> <span class='fl'>1</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -391,7 +408,7 @@ exception of the <a href='ExperimentList.html'>ExperimentList</a> accessor named
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

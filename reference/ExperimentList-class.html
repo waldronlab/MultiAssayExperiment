@@ -6,7 +6,18 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>ExperimentList - A container for multi-experiment data — ExperimentList-class • MultiAssayExperiment</title>
+<title>ExperimentList - A container for multi-experiment data
+
+The ExperimentList class is a container that builds on
+the SimpleList with additional
+checks for consistency in experiment names and length.
+It contains a SimpleList of experiments with sample identifiers.
+One element present per experiment performed.
+
+Convert from SimpleList or list
+to the multi-experiment data container. When using the
+mergeReplicates method, additional arguments are passed to the
+given simplify function argument (e.g., na.rm = TRUE) — ExperimentList-class • MultiAssayExperiment</title>
 
 
 <!-- jquery -->
@@ -39,12 +50,28 @@
 
 
 
-<meta property="og:title" content="ExperimentList - A container for multi-experiment data — ExperimentList-class" />
-<meta property="og:description" content="The ExperimentList class is a container that builds on
+<meta property="og:title" content="ExperimentList - A container for multi-experiment data
+
+The ExperimentList class is a container that builds on
 the SimpleList with additional
 checks for consistency in experiment names and length.
 It contains a SimpleList of experiments with sample identifiers.
-One element present per experiment performed." />
+One element present per experiment performed.
+
+Convert from SimpleList or list
+to the multi-experiment data container. When using the
+mergeReplicates method, additional arguments are passed to the
+given simplify function argument (e.g., na.rm = TRUE) — ExperimentList-class" />
+<meta property="og:description" content="ExperimentList - A container for multi-experiment data
+The ExperimentList class is a container that builds on
+the SimpleList with additional
+checks for consistency in experiment names and length.
+It contains a SimpleList of experiments with sample identifiers.
+One element present per experiment performed.
+Convert from SimpleList or list
+to the multi-experiment data container. When using the
+mergeReplicates method, additional arguments are passed to the
+given simplify function argument (e.g., na.rm = TRUE)" />
 
 
 
@@ -76,7 +103,7 @@ One element present per experiment performed." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MultiAssayExperiment</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.14.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.18.0</span>
       </span>
     </div>
 
@@ -122,7 +149,7 @@ One element present per experiment performed." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/waldronlab/MultiAssayExperiment">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -139,45 +166,61 @@ One element present per experiment performed." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>ExperimentList - A container for multi-experiment data</h1>
+    <h1>ExperimentList - A container for multi-experiment data
+
+The <code>ExperimentList</code> class is a container that builds on
+the <code>SimpleList</code> with additional
+checks for consistency in experiment names and length.
+It contains a <code>SimpleList</code> of experiments with sample identifiers.
+One element present per experiment performed.
+
+Convert from <code>SimpleList</code> or <code>list</code>
+to the multi-experiment data container. When using the
+<strong>mergeReplicates</strong> method, additional arguments are passed to the
+given <code>simplify</code> function argument (e.g., na.rm = TRUE)</h1>
     <small class="dont-index">Source: <a href='https://github.com/waldronlab/MultiAssayExperiment/blob/master/R/ExperimentList-class.R'><code>R/ExperimentList-class.R</code></a>, <a href='https://github.com/waldronlab/MultiAssayExperiment/blob/master/R/MultiAssayExperiment-methods.R'><code>R/MultiAssayExperiment-methods.R</code></a>, <a href='https://github.com/waldronlab/MultiAssayExperiment/blob/master/R/MultiAssayExperiment-helpers.R'><code>R/MultiAssayExperiment-helpers.R</code></a>, and 1 more</small>
     <div class="hidden name"><code>ExperimentList-class.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>The <code>ExperimentList</code> class is a container that builds on
+    <p>ExperimentList - A container for multi-experiment data</p>
+<p>The <code>ExperimentList</code> class is a container that builds on
 the <code>SimpleList</code> with additional
 checks for consistency in experiment names and length.
 It contains a <code>SimpleList</code> of experiments with sample identifiers.
 One element present per experiment performed.</p>
+<p>Convert from <code>SimpleList</code> or <code>list</code>
+to the multi-experiment data container. When using the
+<strong>mergeReplicates</strong> method, additional arguments are passed to the
+given <code>simplify</code> function argument (e.g., na.rm = TRUE)</p>
     </div>
 
     <pre class="usage"><span class='co'># S4 method for ExperimentList</span>
-<span class='fu'>show</span>(<span class='no'>object</span>)
+<span class='fu'>show</span><span class='op'>(</span><span class='va'>object</span><span class='op'>)</span>
 
 <span class='co'># S4 method for ExperimentList</span>
-<span class='fu'>isEmpty</span>(<span class='no'>x</span>)
+<span class='fu'>isEmpty</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
 
 <span class='co'># S4 method for ExperimentList</span>
-<span class='fu'><a href='https://rdrr.io/r/base/dimnames.html'>dimnames</a></span>(<span class='no'>x</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/dimnames.html'>dimnames</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
 
 <span class='co'># S4 method for ExperimentList</span>
-<span class='fu'><a href='MultiAssayExperiment-helpers.html'>mergeReplicates</a></span>(<span class='no'>x</span>, <span class='kw'>replicates</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(), <span class='kw'>simplify</span> <span class='kw'>=</span> <span class='kw pkg'>BiocGenerics</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/BiocGenerics/man/mean.html'>mean</a></span>, <span class='no'>...</span>)
+<span class='fu'><a href='MultiAssayExperiment-helpers.html'>mergeReplicates</a></span><span class='op'>(</span><span class='va'>x</span>, replicates <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>, simplify <span class='op'>=</span> <span class='fu'>BiocGenerics</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/BiocGenerics/man/mean.html'>mean</a></span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S4 method for ANY,missing</span>
-<span class='fu'>assay</span>(<span class='no'>x</span>, <span class='no'>i</span>, <span class='kw'>withDimnames</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)
+<span class='fu'>assay</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>i</span>, withDimnames <span class='op'>=</span> <span class='cn'>TRUE</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S4 method for ExperimentList</span>
-<span class='fu'>assays</span>(<span class='no'>x</span>, <span class='kw'>withDimnames</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)
+<span class='fu'>assays</span><span class='op'>(</span><span class='va'>x</span>, withDimnames <span class='op'>=</span> <span class='cn'>TRUE</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S4 method for ExperimentList,missing</span>
-<span class='fu'>assay</span>(<span class='no'>x</span>, <span class='no'>i</span>, <span class='kw'>withDimnames</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)
+<span class='fu'>assay</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>i</span>, withDimnames <span class='op'>=</span> <span class='cn'>TRUE</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S4 method for ExperimentList,numeric</span>
-<span class='fu'>assay</span>(<span class='no'>x</span>, <span class='no'>i</span>, <span class='kw'>withDimnames</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)
+<span class='fu'>assay</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>i</span>, withDimnames <span class='op'>=</span> <span class='cn'>TRUE</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S4 method for ExperimentList,character</span>
-<span class='fu'>assay</span>(<span class='no'>x</span>, <span class='no'>i</span>, <span class='kw'>withDimnames</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>assay</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>i</span>, withDimnames <span class='op'>=</span> <span class='cn'>TRUE</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -211,12 +254,9 @@ by replicates</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Convert from <code>SimpleList</code> or <code>list</code>
-to the multi-experiment data container. When using the
-<strong>mergeReplicates</strong> method, additional arguments are passed to the
-given <code>simplify</code> function argument (e.g., na.rm = TRUE)</p>
+    <p>An <code>ExperimentList</code> class object</p>
     <h2 class="hasAnchor" id="methods-by-generic-"><a class="anchor" href="#methods-by-generic-"></a>Methods (by generic)</h2>
 
     
@@ -246,7 +286,9 @@ List:</p>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='ExperimentList.html'>ExperimentList</a></span>()</div><div class='output co'>#&gt; ExperimentList class object of length 0:
+    <pre class="examples"><div class='input'>
+<span class='fu'><a href='ExperimentList.html'>ExperimentList</a></span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; ExperimentList class object of length 0:
 #&gt;  </div><div class='input'>
 </div></pre>
   </div>
@@ -264,7 +306,7 @@ List:</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

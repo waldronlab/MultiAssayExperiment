@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Represent multiple experiments as a List-derivative <code>ExperimentList</code> — ExperimentList • MultiAssayExperiment</title>
+<title>Represent multiple experiments as a List-derivative ExperimentList — ExperimentList • MultiAssayExperiment</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,7 @@
 
 
 
-<meta property="og:title" content="Represent multiple experiments as a List-derivative <code>ExperimentList</code> — ExperimentList" />
+<meta property="og:title" content="Represent multiple experiments as a List-derivative ExperimentList — ExperimentList" />
 <meta property="og:description" content="The ExperimentList class can contain several different types of data.
 The only requirements for an ExperimentList class are that the
 objects contained have the following set of methods: dim, [,
@@ -75,7 +75,7 @@ dimnames" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MultiAssayExperiment</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.14.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.18.0</span>
       </span>
     </div>
 
@@ -121,7 +121,7 @@ dimnames" />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/waldronlab/MultiAssayExperiment">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -146,11 +146,11 @@ dimnames" />
     <div class="ref-description">
     <p>The <code>ExperimentList</code> class can contain several different types of data.
 The only requirements for an <code>ExperimentList</code> class are that the
-objects contained have the following set of methods: <code>dim</code>, <code>[</code>,
+objects contained have the following set of methods: <code>dim</code>, <code><a href='https://rdrr.io/r/base/Extract.html'>[</a></code>,
 <code>dimnames</code></p>
     </div>
 
-    <pre class="usage"><span class='fu'>ExperimentList</span>(<span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>ExperimentList</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -167,56 +167,58 @@ objects contained have the following set of methods: <code>dim</code>, <code>[</
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>## Create an empty ExperimentList instance</span>
-<span class='fu'>ExperimentList</span>()</div><div class='output co'>#&gt; ExperimentList class object of length 0:
+<span class='fu'>ExperimentList</span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; ExperimentList class object of length 0:
 #&gt;  </div><div class='input'>
 <span class='co'>## Create array matrix and AnnotatedDataFrame to create an ExpressionSet class</span>
-<span class='no'>arraydat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>101</span>, <span class='kw'>length.out</span> <span class='kw'>=</span> <span class='fl'>20</span>), <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>4</span>,
-    <span class='kw'>dimnames</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(
-        <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"ENST00000294241"</span>, <span class='st'>"ENST00000355076"</span>,
-        <span class='st'>"ENST00000383706"</span>,<span class='st'>"ENST00000234812"</span>, <span class='st'>"ENST00000383323"</span>),
-        <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"array1"</span>, <span class='st'>"array2"</span>, <span class='st'>"array3"</span>, <span class='st'>"array4"</span>)
-    ))
+<span class='va'>arraydat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>101</span>, length.out <span class='op'>=</span> <span class='fl'>20</span><span class='op'>)</span>, ncol <span class='op'>=</span> <span class='fl'>4</span>,
+    dimnames <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
+        <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"ENST00000294241"</span>, <span class='st'>"ENST00000355076"</span>,
+        <span class='st'>"ENST00000383706"</span>,<span class='st'>"ENST00000234812"</span>, <span class='st'>"ENST00000383323"</span><span class='op'>)</span>,
+        <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"array1"</span>, <span class='st'>"array2"</span>, <span class='st'>"array3"</span>, <span class='st'>"array4"</span><span class='op'>)</span>
+    <span class='op'>)</span><span class='op'>)</span>
 
-<span class='no'>colDat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>slope53</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>4</span>),
-    <span class='kw'>row.names</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"array1"</span>, <span class='st'>"array2"</span>, <span class='st'>"array3"</span>, <span class='st'>"array4"</span>))
+<span class='va'>colDat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>slope53 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>4</span><span class='op'>)</span>,
+    row.names <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"array1"</span>, <span class='st'>"array2"</span>, <span class='st'>"array3"</span>, <span class='st'>"array4"</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='co'>## SummarizedExperiment constructor</span>
-<span class='no'>exprdat</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>SummarizedExperiment</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/SummarizedExperiment/man/RangedSummarizedExperiment-class.html'>SummarizedExperiment</a></span>(<span class='no'>arraydat</span>,
-    <span class='kw'>colData</span> <span class='kw'>=</span> <span class='no'>colDat</span>)
+<span class='va'>exprdat</span> <span class='op'>&lt;-</span> <span class='fu'>SummarizedExperiment</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/SummarizedExperiment/man/RangedSummarizedExperiment-class.html'>SummarizedExperiment</a></span><span class='op'>(</span><span class='va'>arraydat</span>,
+    colData <span class='op'>=</span> <span class='va'>colDat</span><span class='op'>)</span>
 
 <span class='co'>## Create a sample methylation dataset</span>
-<span class='no'>methyldat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>1</span>, <span class='kw'>length.out</span> <span class='kw'>=</span> <span class='fl'>25</span>), <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>5</span>,
-    <span class='kw'>dimnames</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(
-        <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"ENST00000355076"</span>, <span class='st'>"ENST00000383706"</span>,
-          <span class='st'>"ENST00000383323"</span>, <span class='st'>"ENST00000234812"</span>, <span class='st'>"ENST00000294241"</span>),
-        <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"methyl1"</span>, <span class='st'>"methyl2"</span>, <span class='st'>"methyl3"</span>,
-          <span class='st'>"methyl4"</span>, <span class='st'>"methyl5"</span>)
-    ))
+<span class='va'>methyldat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>1</span>, length.out <span class='op'>=</span> <span class='fl'>25</span><span class='op'>)</span>, ncol <span class='op'>=</span> <span class='fl'>5</span>,
+    dimnames <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
+        <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"ENST00000355076"</span>, <span class='st'>"ENST00000383706"</span>,
+          <span class='st'>"ENST00000383323"</span>, <span class='st'>"ENST00000234812"</span>, <span class='st'>"ENST00000294241"</span><span class='op'>)</span>,
+        <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"methyl1"</span>, <span class='st'>"methyl2"</span>, <span class='st'>"methyl3"</span>,
+          <span class='st'>"methyl4"</span>, <span class='st'>"methyl5"</span><span class='op'>)</span>
+    <span class='op'>)</span><span class='op'>)</span>
 
 <span class='co'>## Create a sample RNASeqGene dataset</span>
-<span class='no'>rnadat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(
-    <span class='kw'>data</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>46851</span>, <span class='fl'>5</span>, <span class='fl'>19</span>, <span class='fl'>13</span>, <span class='fl'>2197</span>, <span class='fl'>507</span>,
-        <span class='fl'>84318</span>, <span class='fl'>126</span>, <span class='fl'>17</span>, <span class='fl'>21</span>, <span class='fl'>23979</span>, <span class='fl'>614</span>), <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>20</span>, <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>),
-    <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>4</span>,
-    <span class='kw'>dimnames</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(
-        <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"XIST"</span>, <span class='st'>"RPS4Y1"</span>, <span class='st'>"KDM5D"</span>, <span class='st'>"ENST00000383323"</span>, <span class='st'>"ENST00000234812"</span>),
-        <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"samparray1"</span>, <span class='st'>"samparray2"</span>, <span class='st'>"samparray3"</span>, <span class='st'>"samparray4"</span>)
-    ))
+<span class='va'>rnadat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span>
+    data <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>46851</span>, <span class='fl'>5</span>, <span class='fl'>19</span>, <span class='fl'>13</span>, <span class='fl'>2197</span>, <span class='fl'>507</span>,
+        <span class='fl'>84318</span>, <span class='fl'>126</span>, <span class='fl'>17</span>, <span class='fl'>21</span>, <span class='fl'>23979</span>, <span class='fl'>614</span><span class='op'>)</span>, size <span class='op'>=</span> <span class='fl'>20</span>, replace <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>,
+    ncol <span class='op'>=</span> <span class='fl'>4</span>,
+    dimnames <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
+        <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"XIST"</span>, <span class='st'>"RPS4Y1"</span>, <span class='st'>"KDM5D"</span>, <span class='st'>"ENST00000383323"</span>, <span class='st'>"ENST00000234812"</span><span class='op'>)</span>,
+        <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"samparray1"</span>, <span class='st'>"samparray2"</span>, <span class='st'>"samparray3"</span>, <span class='st'>"samparray4"</span><span class='op'>)</span>
+    <span class='op'>)</span><span class='op'>)</span>
 
 <span class='co'>## Create a mock RangedSummarizedExperiment from a data.frame</span>
-<span class='no'>rangedat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>chr</span><span class='kw'>=</span><span class='st'>"chr2"</span>, <span class='kw'>start</span> <span class='kw'>=</span> <span class='fl'>11</span>:<span class='fl'>15</span>, <span class='kw'>end</span> <span class='kw'>=</span> <span class='fl'>12</span>:<span class='fl'>16</span>,
-    <span class='kw'>strand</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"+"</span>, <span class='st'>"-"</span>, <span class='st'>"+"</span>, <span class='st'>"*"</span>, <span class='st'>"."</span>),
-    <span class='kw'>samp0</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>), <span class='kw'>samp1</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>1</span>), <span class='kw'>samp2</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>0</span>),
-    <span class='kw'>row.names</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"ENST"</span>, <span class='st'>"00000"</span>, <span class='fl'>135411</span>:<span class='fl'>135414</span>), <span class='st'>"ENST00000383323"</span>))
+<span class='va'>rangedat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>chr<span class='op'>=</span><span class='st'>"chr2"</span>, start <span class='op'>=</span> <span class='fl'>11</span><span class='op'>:</span><span class='fl'>15</span>, end <span class='op'>=</span> <span class='fl'>12</span><span class='op'>:</span><span class='fl'>16</span>,
+    strand <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"+"</span>, <span class='st'>"-"</span>, <span class='st'>"+"</span>, <span class='st'>"*"</span>, <span class='st'>"."</span><span class='op'>)</span>,
+    samp0 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span><span class='op'>)</span>, samp1 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>1</span><span class='op'>)</span>, samp2 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>0</span><span class='op'>)</span>,
+    row.names <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>"ENST"</span>, <span class='st'>"00000"</span>, <span class='fl'>135411</span><span class='op'>:</span><span class='fl'>135414</span><span class='op'>)</span>, <span class='st'>"ENST00000383323"</span><span class='op'>)</span><span class='op'>)</span>
 
-<span class='no'>rangeSE</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>SummarizedExperiment</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/SummarizedExperiment/man/makeSummarizedExperimentFromDataFrame.html'>makeSummarizedExperimentFromDataFrame</a></span>(<span class='no'>rangedat</span>)
+<span class='va'>rangeSE</span> <span class='op'>&lt;-</span> <span class='fu'>SummarizedExperiment</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/SummarizedExperiment/man/makeSummarizedExperimentFromDataFrame.html'>makeSummarizedExperimentFromDataFrame</a></span><span class='op'>(</span><span class='va'>rangedat</span><span class='op'>)</span>
 
 <span class='co'>## Combine to a named list and call the ExperimentList constructor function</span>
-<span class='no'>assayList</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>Affy</span> <span class='kw'>=</span> <span class='no'>exprdat</span>, <span class='kw'>Methyl450k</span> <span class='kw'>=</span> <span class='no'>methyldat</span>, <span class='kw'>RNASeqGene</span> <span class='kw'>=</span> <span class='no'>rnadat</span>,
-                <span class='kw'>GISTIC</span> <span class='kw'>=</span> <span class='no'>rangeSE</span>)
+<span class='va'>assayList</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>Affy <span class='op'>=</span> <span class='va'>exprdat</span>, Methyl450k <span class='op'>=</span> <span class='va'>methyldat</span>, RNASeqGene <span class='op'>=</span> <span class='va'>rnadat</span>,
+                GISTIC <span class='op'>=</span> <span class='va'>rangeSE</span><span class='op'>)</span>
 
 <span class='co'>## Use the ExperimentList constructor</span>
-<span class='no'>ExpList</span> <span class='kw'>&lt;-</span> <span class='fu'>ExperimentList</span>(<span class='no'>assayList</span>)</div></pre>
+<span class='va'>ExpList</span> <span class='op'>&lt;-</span> <span class='fu'>ExperimentList</span><span class='op'>(</span><span class='va'>assayList</span><span class='op'>)</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -232,7 +234,7 @@ objects contained have the following set of methods: <code>dim</code>, <code>[</
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

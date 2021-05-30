@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MultiAssayExperiment</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.14.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.18.0</span>
       </span>
     </div>
 
@@ -117,7 +117,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/waldronlab/MultiAssayExperiment">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -162,11 +162,22 @@
         <td>
           <p><code><a href="ExperimentList-class.html">show(<i>&lt;ExperimentList&gt;</i>)</a></code> <code><a href="ExperimentList-class.html">isEmpty(<i>&lt;ExperimentList&gt;</i>)</a></code> <code><a href="ExperimentList-class.html">dimnames(<i>&lt;ExperimentList&gt;</i>)</a></code> <code><a href="ExperimentList-class.html">mergeReplicates(<i>&lt;ExperimentList&gt;</i>)</a></code> <code><a href="ExperimentList-class.html">assay(<i>&lt;ANY&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="ExperimentList-class.html">assays(<i>&lt;ExperimentList&gt;</i>)</a></code> <code><a href="ExperimentList-class.html">assay(<i>&lt;ExperimentList&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="ExperimentList-class.html">assay(<i>&lt;ExperimentList&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> <code><a href="ExperimentList-class.html">assay(<i>&lt;ExperimentList&gt;</i>,<i>&lt;character&gt;</i>)</a></code> </p>
         </td>
-        <td><p>ExperimentList - A container for multi-experiment data</p></td>
+        <td><p>ExperimentList - A container for multi-experiment data
+
+The <code>ExperimentList</code> class is a container that builds on
+the <code>SimpleList</code> with additional
+checks for consistency in experiment names and length.
+It contains a <code>SimpleList</code> of experiments with sample identifiers.
+One element present per experiment performed.
+
+Convert from <code>SimpleList</code> or <code>list</code>
+to the multi-experiment data container. When using the
+<strong>mergeReplicates</strong> method, additional arguments are passed to the
+given <code>simplify</code> function argument (e.g., na.rm = TRUE)</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="MultiAssayExperiment-class.html">show(<i>&lt;MultiAssayExperiment&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-class.html">length(<i>&lt;MultiAssayExperiment&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-class.html">names(<i>&lt;MultiAssayExperiment&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-class.html">updateObject(<i>&lt;MultiAssayExperiment&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-class.html">exportClass(<i>&lt;MultiAssayExperiment&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-class.html">dimnames(<i>&lt;MultiAssayExperiment&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-class.html">c(<i>&lt;MultiAssayExperiment&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-class.html">assays(<i>&lt;MultiAssayExperiment&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-class.html">assay(<i>&lt;MultiAssayExperiment&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-class.html">assay(<i>&lt;MultiAssayExperiment&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-class.html">assay(<i>&lt;MultiAssayExperiment&gt;</i>,<i>&lt;character&gt;</i>)</a></code> </p>
+          <p><code><a href="MultiAssayExperiment-class.html">show(<i>&lt;MultiAssayExperiment&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-class.html">length(<i>&lt;MultiAssayExperiment&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-class.html">names(<i>&lt;MultiAssayExperiment&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-class.html">updateObject(<i>&lt;MultiAssayExperiment&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-class.html">dimnames(<i>&lt;MultiAssayExperiment&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-class.html">c(<i>&lt;MultiAssayExperiment&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-class.html">exportClass(<i>&lt;MultiAssayExperiment&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-class.html">assays(<i>&lt;MultiAssayExperiment&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-class.html">assay(<i>&lt;MultiAssayExperiment&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-class.html">assay(<i>&lt;MultiAssayExperiment&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-class.html">assay(<i>&lt;MultiAssayExperiment&gt;</i>,<i>&lt;character&gt;</i>)</a></code> </p>
         </td>
         <td><p>MultiAssayExperiment - An integrative multi-assay class for experiment data</p></td>
       </tr><tr>
@@ -217,13 +228,13 @@
       <tr>
         
         <td>
-          <p><code><a href="MultiAssayExperiment-class.html">show(<i>&lt;MultiAssayExperiment&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-class.html">length(<i>&lt;MultiAssayExperiment&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-class.html">names(<i>&lt;MultiAssayExperiment&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-class.html">updateObject(<i>&lt;MultiAssayExperiment&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-class.html">exportClass(<i>&lt;MultiAssayExperiment&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-class.html">dimnames(<i>&lt;MultiAssayExperiment&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-class.html">c(<i>&lt;MultiAssayExperiment&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-class.html">assays(<i>&lt;MultiAssayExperiment&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-class.html">assay(<i>&lt;MultiAssayExperiment&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-class.html">assay(<i>&lt;MultiAssayExperiment&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-class.html">assay(<i>&lt;MultiAssayExperiment&gt;</i>,<i>&lt;character&gt;</i>)</a></code> </p>
+          <p><code><a href="MultiAssayExperiment-class.html">show(<i>&lt;MultiAssayExperiment&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-class.html">length(<i>&lt;MultiAssayExperiment&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-class.html">names(<i>&lt;MultiAssayExperiment&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-class.html">updateObject(<i>&lt;MultiAssayExperiment&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-class.html">dimnames(<i>&lt;MultiAssayExperiment&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-class.html">c(<i>&lt;MultiAssayExperiment&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-class.html">exportClass(<i>&lt;MultiAssayExperiment&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-class.html">assays(<i>&lt;MultiAssayExperiment&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-class.html">assay(<i>&lt;MultiAssayExperiment&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-class.html">assay(<i>&lt;MultiAssayExperiment&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-class.html">assay(<i>&lt;MultiAssayExperiment&gt;</i>,<i>&lt;character&gt;</i>)</a></code> </p>
         </td>
         <td><p>MultiAssayExperiment - An integrative multi-assay class for experiment data</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="MultiAssayExperiment-methods.html">sampleMap(<i>&lt;MultiAssayExperiment&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-methods.html">experiments(<i>&lt;MultiAssayExperiment&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-methods.html">colData(<i>&lt;MultiAssayExperiment&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-methods.html">metadata(<i>&lt;MultiAssayExperiment&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-methods.html">`sampleMap&lt;-`(<i>&lt;MultiAssayExperiment&gt;</i>,<i>&lt;DataFrame&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-methods.html">`sampleMap&lt;-`(<i>&lt;MultiAssayExperiment&gt;</i>,<i>&lt;ANY&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-methods.html">`experiments&lt;-`(<i>&lt;MultiAssayExperiment&gt;</i>,<i>&lt;ExperimentList&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-methods.html">`colData&lt;-`(<i>&lt;MultiAssayExperiment&gt;</i>,<i>&lt;DataFrame&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-methods.html">`colData&lt;-`(<i>&lt;MultiAssayExperiment&gt;</i>,<i>&lt;ANY&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-methods.html">`metadata&lt;-`(<i>&lt;MultiAssayExperiment&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-methods.html">`$&lt;-`(<i>&lt;MultiAssayExperiment&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-methods.html">`names&lt;-`(<i>&lt;MultiAssayExperiment&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-methods.html">`$`(<i>&lt;MultiAssayExperiment&gt;</i>)</a></code> </p>
+          <p><code><a href="MultiAssayExperiment-methods.html">sampleMap(<i>&lt;MultiAssayExperiment&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-methods.html">experiments(<i>&lt;MultiAssayExperiment&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-methods.html">colData(<i>&lt;MultiAssayExperiment&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-methods.html">metadata(<i>&lt;MultiAssayExperiment&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-methods.html">`sampleMap&lt;-`(<i>&lt;MultiAssayExperiment&gt;</i>,<i>&lt;DataFrame&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-methods.html">`sampleMap&lt;-`(<i>&lt;MultiAssayExperiment&gt;</i>,<i>&lt;ANY&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-methods.html">`experiments&lt;-`(<i>&lt;MultiAssayExperiment&gt;</i>,<i>&lt;ExperimentList&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-methods.html">`experiments&lt;-`(<i>&lt;MultiAssayExperiment&gt;</i>,<i>&lt;List&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-methods.html">`colData&lt;-`(<i>&lt;MultiAssayExperiment&gt;</i>,<i>&lt;DataFrame&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-methods.html">`colData&lt;-`(<i>&lt;MultiAssayExperiment&gt;</i>,<i>&lt;ANY&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-methods.html">`metadata&lt;-`(<i>&lt;MultiAssayExperiment&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-methods.html">`$&lt;-`(<i>&lt;MultiAssayExperiment&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-methods.html">`names&lt;-`(<i>&lt;MultiAssayExperiment&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-methods.html">`colnames&lt;-`(<i>&lt;MultiAssayExperiment&gt;</i>,<i>&lt;List&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-methods.html">`colnames&lt;-`(<i>&lt;MultiAssayExperiment&gt;</i>,<i>&lt;list&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-methods.html">`$`(<i>&lt;MultiAssayExperiment&gt;</i>)</a></code> </p>
         </td>
         <td><p>Accessing and modifying information in MultiAssayExperiment</p></td>
       </tr>
@@ -261,7 +272,7 @@
       <tr>
         
         <td>
-          <p><code><a href="MultiAssayExperiment-helpers.html">complete.cases(<i>&lt;MultiAssayExperiment&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-helpers.html">isEmpty(<i>&lt;MultiAssayExperiment&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-helpers.html">intersectRows()</a></code> <code><a href="MultiAssayExperiment-helpers.html">intersectColumns()</a></code> <code><a href="MultiAssayExperiment-helpers.html">replicated()</a></code> <code><a href="MultiAssayExperiment-helpers.html">anyReplicated()</a></code> <code><a href="MultiAssayExperiment-helpers.html">mergeReplicates()</a></code> <code><a href="MultiAssayExperiment-helpers.html">longFormat()</a></code> <code><a href="MultiAssayExperiment-helpers.html">wideFormat()</a></code> <code><a href="MultiAssayExperiment-helpers.html">hasRowRanges()</a></code> <code><a href="MultiAssayExperiment-helpers.html">getWithColData()</a></code> </p>
+          <p><code><a href="MultiAssayExperiment-helpers.html">complete.cases(<i>&lt;MultiAssayExperiment&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-helpers.html">isEmpty(<i>&lt;MultiAssayExperiment&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-helpers.html">intersectRows()</a></code> <code><a href="MultiAssayExperiment-helpers.html">intersectColumns()</a></code> <code><a href="MultiAssayExperiment-helpers.html">replicated()</a></code> <code><a href="MultiAssayExperiment-helpers.html">anyReplicated()</a></code> <code><a href="MultiAssayExperiment-helpers.html">mergeReplicates()</a></code> <code><a href="MultiAssayExperiment-helpers.html">longFormat()</a></code> <code><a href="MultiAssayExperiment-helpers.html">wideFormat()</a></code> <code><a href="MultiAssayExperiment-helpers.html">hasRowRanges()</a></code> <code><a href="MultiAssayExperiment-helpers.html">getWithColData()</a></code> <code><a href="MultiAssayExperiment-helpers.html">renamePrimary()</a></code> <code><a href="MultiAssayExperiment-helpers.html">renameColname()</a></code> <code><a href="MultiAssayExperiment-helpers.html">splitAssays()</a></code> <code><a href="MultiAssayExperiment-helpers.html">makeHitList()</a></code> </p>
         </td>
         <td><p>A group of helper functions for manipulating and cleaning a
 MultiAssayExperiment</p></td>
@@ -340,7 +351,7 @@ assays, using the upset algorithm in <code>UpSetR</code></p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

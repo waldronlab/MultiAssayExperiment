@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Create a generalized Venn Diagram analog for sample membership in multiple
-assays, using the upset algorithm in <code>UpSetR</code> — upsetSamples • MultiAssayExperiment</title>
+assays, using the upset algorithm in UpSetR — upsetSamples • MultiAssayExperiment</title>
 
 
 <!-- jquery -->
@@ -41,7 +41,7 @@ assays, using the upset algorithm in <code>UpSetR</code> — upsetSamples • Mu
 
 
 <meta property="og:title" content="Create a generalized Venn Diagram analog for sample membership in multiple
-assays, using the upset algorithm in <code>UpSetR</code> — upsetSamples" />
+assays, using the upset algorithm in UpSetR — upsetSamples" />
 <meta property="og:description" content="Create a generalized Venn Diagram analog for sample membership in multiple
 assays, using the upset algorithm in UpSetR" />
 
@@ -75,7 +75,7 @@ assays, using the upset algorithm in UpSetR" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MultiAssayExperiment</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.14.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.18.0</span>
       </span>
     </div>
 
@@ -121,7 +121,7 @@ assays, using the upset algorithm in UpSetR" />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/waldronlab/MultiAssayExperiment">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -149,15 +149,15 @@ assays, using the upset algorithm in <code>UpSetR</code></h1>
 assays, using the upset algorithm in <code>UpSetR</code></p>
     </div>
 
-    <pre class="usage"><span class='fu'>upsetSamples</span>(
-  <span class='no'>MultiAssayExperiment</span>,
-  <span class='kw'>nsets</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='no'>MultiAssayExperiment</span>),
-  <span class='kw'>nintersects</span> <span class='kw'>=</span> <span class='fl'>24</span>,
-  <span class='kw'>order.by</span> <span class='kw'>=</span> <span class='st'>"freq"</span>,
-  <span class='kw'>nameFilter</span> <span class='kw'>=</span> <span class='no'>force</span>,
-  <span class='kw'>check.names</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='no'>...</span>
-)</pre>
+    <pre class="usage"><span class='fu'>upsetSamples</span><span class='op'>(</span>
+  <span class='va'>MultiAssayExperiment</span>,
+  nsets <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>MultiAssayExperiment</span><span class='op'>)</span>,
+  nintersects <span class='op'>=</span> <span class='fl'>24</span>,
+  order.by <span class='op'>=</span> <span class='st'>"freq"</span>,
+  nameFilter <span class='op'>=</span> <span class='va'>force</span>,
+  check.names <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -210,10 +210,16 @@ availability configurations in MultiAssayExperiment instances. The
 many parameters to tune appearance of the result. Assay name handling is
 important for interpretability, and the <code>nameFilter</code> parameter may be
 useful to simplify resulting outputs.</p>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Vincent J Carey</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>miniACC</span>)
-<span class='fu'>upsetSamples</span>(<span class='no'>miniACC</span>)</div><div class='output co'>#&gt; <span class='message'>Loading required namespace: UpSetR</span></div><div class='img'><img src='upsetSamples-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>upsetSamples</span>(<span class='no'>miniACC</span>, <span class='kw'>nameFilter</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>x</span>) <span class='fu'><a href='https://rdrr.io/r/base/substr.html'>substr</a></span>(<span class='no'>x</span>, <span class='fl'>1</span>, <span class='fl'>5</span>))</div><div class='img'><img src='upsetSamples-2.png' alt='' width='700' height='433' /></div><div class='input'>
+    <pre class="examples"><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>miniACC</span><span class='op'>)</span>
+<span class='fu'>upsetSamples</span><span class='op'>(</span><span class='va'>miniACC</span><span class='op'>)</span>
+</div><div class='img'><img src='upsetSamples-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>upsetSamples</span><span class='op'>(</span><span class='va'>miniACC</span>, nameFilter <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='fu'><a href='https://rdrr.io/r/base/substr.html'>substr</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='fl'>1</span>, <span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='img'><img src='upsetSamples-2.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -230,7 +236,7 @@ useful to simplify resulting outputs.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
