@@ -41,6 +41,40 @@ multiple data elements from the different hierarchies of data
 a \code{sampleMap} or a \code{colData} set is provided. Please see the
 MultiAssayExperiment API documentation for more information.
 }
+\section{colData}{
+
+The `colData` input can be either `DataFrame` or `data.frame` with
+subsequent coercion to DataFrame. The rownames in the `colData` must match
+the colnames in the experiments if no sampleMap is provided.
+}
+
+\section{experiments}{
+
+The `experiments` input can be of class \linkS4class{SimpleList} or `list`.
+This input becomes the \code{\link{ExperimentList}}. Each element of the
+input `list` or `List` must be named, rectangular with two dimensions, and
+have `dimnames`.
+}
+
+\section{sampleMap}{
+
+The \code{\link{sampleMap}} can either be input as `DataFrame` or
+`data.frame` with eventual coercion to `DataFrame`. The `sampleMap` relates
+biological units and biological measurements within each assay. Each row in
+the `sampleMap` is a single such link. The standard column names of the
+`sampleMap` are "assay", "primary", and "colname".  Note that the "assay"
+column is a factor corresponding to the names of each experiment in the
+`ExperimentList`. In the case where these names do not match between the
+`sampleMap` and the experiments, the documented experiments in the
+`sampleMap` take precedence and experiments are dropped by the harmonization
+procedure. The constructor function will generate a `sampleMap` in the case
+where it is not provided and this method may be a 'safer' alternative for
+creating the `MultiAssayExperiment` (so long as the rownames are identical
+in the `colData`, if provided).  An empty `sampleMap` may produce empty
+experiments if the levels of the "assay" factor in the `sampleMap` do not
+match the names in the `ExperimentList`.
+}
+
 \examples{
 ## Run the example ExperimentList
 example("ExperimentList")

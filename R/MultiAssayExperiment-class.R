@@ -58,9 +58,20 @@ NULL
 #' each experiment/assay. It contains a \linkS4class{SimpleList}.
 #'
 #' @section sampleMap:
-#' The \code{\link{sampleMap}} contains a \code{DataFrame} of translatable
-#' identifiers of samples and participants or biological units. Standard column
-#' names of the sampleMap are "assay", "primary", and "colname".
+#' The \code{\link{sampleMap}} contains a `DataFrame` of translatable
+#' identifiers of samples and participants or biological units. The standard
+#' column names of the `sampleMap` are "assay", "primary", and "colname".
+#' Note that the "assay" column is a factor corresponding to the names of each
+#' experiment in the `ExperimentList`. In the case where these names do
+#' not match between the `sampleMap` and the experiments, the documented
+#' experiments in the `sampleMap` take precedence and experiments are
+#' dropped by the harmonization procedure. The constructor function will
+#' generate a `sampleMap` in the case where it is not provided and this
+#' method may be a 'safer' alternative for creating the `MultiAssayExperiment`
+#' (so long as the rownames are identical in the `colData`, if provided).
+#' An empty `sampleMap` may produce empty experiments if the levels of the
+#' "assay" factor in the `sampleMap` do not match the names in the
+#' `ExperimentList`.
 #'
 #' @slot ExperimentList A \code{\link{ExperimentList}} class object for
 #' each assay dataset
@@ -75,7 +86,9 @@ NULL
 #' @param object,x A \code{MultiAssayExperiment} object
 #' @param ... Additional arguments for supporting functions. See details.
 #'
-#' @return A \code{MultiAssayExperiment} object
+#' @return A `MultiAssayExperiment` object
+#'
+#' @md
 #'
 #' @examples
 #' example("MultiAssayExperiment")
@@ -191,16 +204,49 @@ setClass(
 #' a \code{sampleMap} or a \code{colData} set is provided. Please see the
 #' MultiAssayExperiment API documentation for more information.
 #'
+#' @section colData:
+#' The `colData` input can be either `DataFrame` or `data.frame` with
+#' subsequent coercion to DataFrame. The rownames in the `colData` must match
+#' the colnames in the experiments if no sampleMap is provided.
+#'
+#' @section experiments:
+#' The `experiments` input can be of class \linkS4class{SimpleList} or `list`.
+#' This input becomes the \code{\link{ExperimentList}}. Each element of the
+#' input `list` or `List` must be named, rectangular with two dimensions, and
+#' have `dimnames`.
+#'
+#' @section sampleMap:
+#' The \code{\link{sampleMap}} can either be input as `DataFrame` or
+#' `data.frame` with eventual coercion to `DataFrame`. The `sampleMap` relates
+#' biological units and biological measurements within each assay. Each row in
+#' the `sampleMap` is a single such link. The standard column names of the
+#' `sampleMap` are "assay", "primary", and "colname".  Note that the "assay"
+#' column is a factor corresponding to the names of each experiment in the
+#' `ExperimentList`. In the case where these names do not match between the
+#' `sampleMap` and the experiments, the documented experiments in the
+#' `sampleMap` take precedence and experiments are dropped by the harmonization
+#' procedure. The constructor function will generate a `sampleMap` in the case
+#' where it is not provided and this method may be a 'safer' alternative for
+#' creating the `MultiAssayExperiment` (so long as the rownames are identical
+#' in the `colData`, if provided).  An empty `sampleMap` may produce empty
+#' experiments if the levels of the "assay" factor in the `sampleMap` do not
+#' match the names in the `ExperimentList`.
+#'
 #' @param experiments A \code{list} or \link{ExperimentList} of all
 #' combined experiments
+#'
 #' @param colData A \code{\linkS4class{DataFrame}} or \code{data.frame} of
 #' characteristics for all biological units
+#'
 #' @param sampleMap A \code{DataFrame} or \code{data.frame} of assay names,
 #' sample identifiers, and colname samples
+#'
 #' @param metadata An optional argument of "ANY" class (usually list) for
 #' content describing the experiments
+#'
 #' @param drops A \code{list} of unmatched information
 #' (included after subsetting)
+#'
 #' @return A \code{MultiAssayExperiment} object that can store
 #' experiment and phenotype data
 #'
@@ -435,8 +481,11 @@ setMethod("show", "MultiAssayExperiment", function(object) {
 #' }
 #'
 #' @param object,x A \code{MultiAssayExperiment} object
+#'
 #' @param name A column in \code{colData}
+#'
 #' @param value See details.
+#'
 #' @param ... Argument not in use
 #'
 #' @return Accessors: Either a \code{sampleMap}, \code{ExperimentList}, or
@@ -704,7 +753,9 @@ setReplaceMethod("colnames", c("MultiAssayExperiment", "list"),
 
 
 #' @exportMethod updateObject
+#'
 #' @param verbose logical (default FALSE) whether to print extra messages
+#'
 #' @describeIn MultiAssayExperiment Update old serialized MultiAssayExperiment
 #' objects to new API
 setMethod("updateObject", "MultiAssayExperiment",

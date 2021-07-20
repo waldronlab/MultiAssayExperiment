@@ -179,8 +179,19 @@ each experiment/assay. It contains a \linkS4class{SimpleList}.
 \section{sampleMap}{
 
 The \code{\link{sampleMap}} contains a \code{DataFrame} of translatable
-identifiers of samples and participants or biological units. Standard column
-names of the sampleMap are "assay", "primary", and "colname".
+identifiers of samples and participants or biological units. The standard
+column names of the \code{sampleMap} are "assay", "primary", and "colname".
+Note that the "assay" column is a factor corresponding to the names of each
+experiment in the \code{ExperimentList}. In the case where these names do
+not match between the \code{sampleMap} and the experiments, the documented
+experiments in the \code{sampleMap} take precedence and experiments are
+dropped by the harmonization procedure. The constructor function will
+generate a \code{sampleMap} in the case where it is not provided and this
+method may be a 'safer' alternative for creating the \code{MultiAssayExperiment}
+(so long as the rownames are identical in the \code{colData}, if provided).
+An empty \code{sampleMap} may produce empty experiments if the levels of the
+"assay" factor in the \code{sampleMap} do not match the names in the
+\code{ExperimentList}.
 }
 
 \section{coercion}{
