@@ -105,14 +105,14 @@ The dots (\code{\ldots}) argument allows the user to specify additional
 arguments in several instances.
 \itemize{
 \item subsetting \strong{[}: additional arguments sent to
-    \link[GenomicRanges:findOverlaps-methods]{findOverlaps}.
+\link[GenomicRanges:findOverlaps-methods]{findOverlaps}.
 \item mergeReplicates: used to specify arguments for the \code{simplify}
-    functional argument
+functional argument
 \item assay: may contain withDimnames, which is forwarded to assays
 \item combining \strong{c}: compatible \code{MultiAssayExperiment} classes
-    passed on to the \linkS4class{ExperimentList} constructor, can be a
-    \code{list}, \linkS4class{List}, or a series of named arguments. See
-    the examples below.
+passed on to the \code{\linkS4class{ExperimentList}} constructor,
+can be a \code{list}, \code{\linkS4class{List}}, or a series of
+named arguments. See the examples below.
 }
 }
 \section{Methods (by generic)}{
@@ -247,6 +247,6 @@ c(mae, RNASeqGeneV2 = test2, mapFrom = "RNASeqGene")
 
 }
 \seealso{
-\link{MultiAssayExperiment-methods} for slot modifying methods
-    \href{https://github.com/waldronlab/MultiAssayExperiment/wiki/MultiAssayExperiment-API}{MultiAssayExperiment API}
+\link{MultiAssayExperiment-methods} for slot modifying methods,
+\href{https://github.com/waldronlab/MultiAssayExperiment/wiki/MultiAssayExperiment-API}{MultiAssayExperiment API}
 }

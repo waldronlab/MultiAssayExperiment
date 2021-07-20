@@ -20,38 +20,38 @@ NULL
 #' MultiAssayExperiment - An integrative multi-assay class for experiment data
 #'
 #' @description
-#' The \code{MultiAssayExperiment} class can be used to manage results of
+#' The `MultiAssayExperiment` class can be used to manage results of
 #' diverse assays on a collection of specimen. Currently,  the class can handle
 #' assays that are organized instances of
 #' \code{\linkS4class{SummarizedExperiment}},
-#' \code{\linkS4class{ExpressionSet}}, \code{matrix},
+#' \code{\linkS4class{ExpressionSet}}, `matrix`,
 #' \code{\link[RaggedExperiment:RaggedExperiment-class]{RaggedExperiment}}
-#' (inherits from \code{\linkS4class{GRangesList}}), and \code{RangedVcfStack}.
-#' Create new \code{MultiAssayExperiment} instances with the homonymous
+#' (inherits from \code{\linkS4class{GRangesList}}), and `RangedVcfStack`.
+#' Create new `MultiAssayExperiment` instances with the homonymous
 #' constructor, minimally with the argument \code{\link{ExperimentList}},
-#' potentially also with the arguments \code{colData} (see section below) and
+#' potentially also with the arguments `colData` (see section below) and
 #' \code{\link{sampleMap}}.
 #'
 #' @details
 #' The dots (\code{\ldots}) argument allows the user to specify additional
 #' arguments in several instances.
 #' \itemize{
-#' \item subsetting \strong{[}: additional arguments sent to
-#'     \link[GenomicRanges:findOverlaps-methods]{findOverlaps}.
-#' \item mergeReplicates: used to specify arguments for the \code{simplify}
-#'     functional argument
-#' \item assay: may contain withDimnames, which is forwarded to assays
-#' \item combining \strong{c}: compatible \code{MultiAssayExperiment} classes
-#'     passed on to the \linkS4class{ExperimentList} constructor, can be a
-#'     \code{list}, \linkS4class{List}, or a series of named arguments. See
-#'     the examples below.
+#'     \item subsetting \strong{[}: additional arguments sent to
+#'         \link[GenomicRanges:findOverlaps-methods]{findOverlaps}.
+#'     \item mergeReplicates: used to specify arguments for the \code{simplify}
+#'         functional argument
+#'     \item assay: may contain withDimnames, which is forwarded to assays
+#'     \item combining \strong{c}: compatible \code{MultiAssayExperiment} classes
+#'         passed on to the \code{\linkS4class{ExperimentList}} constructor,
+#'         can be a \code{list}, \code{\linkS4class{List}}, or a series of
+#'         named arguments. See the examples below.
 #' }
 #'
 #' @section colData:
-#' The \code{colData} slot is a collection of primary specimen data valid
+#' The `colData` slot is a collection of primary specimen data valid
 #' across all experiments. This slot is strictly of class
 #' \code{\linkS4class{DataFrame}} but arguments for the constructor function
-#' allow arguments to be of class \code{data.frame} and subsequently coerced.
+#' allow arguments to be of class `data.frame` and subsequently coerced.
 #'
 #' @section ExperimentList:
 #' The \code{\link{ExperimentList}} slot is designed to contain results from
@@ -75,15 +75,20 @@ NULL
 #'
 #' @slot ExperimentList A \code{\link{ExperimentList}} class object for
 #' each assay dataset
-#' @slot colData A \code{DataFrame} of all clinical/specimen data available
-#' across experiments
-#' @slot sampleMap A \code{DataFrame} of translatable identifiers
-#' of samples and participants
-#' @slot metadata Additional data describing the
-#' \code{MultiAssayExperiment} object
-#' @slot drops A metadata \code{list} of dropped information
 #'
-#' @param object,x A \code{MultiAssayExperiment} object
+#' @slot colData A `DataFrame` of all clinical/specimen data available
+#' across experiments
+#'
+#' @slot sampleMap A `DataFrame` of translatable identifiers
+#' of samples and participants
+#'
+#' @slot metadata Additional data describing the
+#' `MultiAssayExperiment` object
+#'
+#' @slot drops A metadata `list` of dropped information
+#'
+#' @param object,x A `MultiAssayExperiment` object
+#'
 #' @param ... Additional arguments for supporting functions. See details.
 #'
 #' @return A `MultiAssayExperiment` object
@@ -111,9 +116,10 @@ NULL
 #' colData(compMAE)
 #'
 #' @exportClass MultiAssayExperiment
-#' @seealso
-#'     \link{MultiAssayExperiment-methods} for slot modifying methods
+#'
+#' @seealso \link{MultiAssayExperiment-methods} for slot modifying methods,
 #'     \href{https://github.com/waldronlab/MultiAssayExperiment/wiki/MultiAssayExperiment-API}{MultiAssayExperiment API}
+#'
 #' @include ExperimentList-class.R
 setClass(
     "MultiAssayExperiment",
