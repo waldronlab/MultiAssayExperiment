@@ -139,6 +139,25 @@ test_that("replace methods are using rebliss and replace", {
         colData(mae0) <- DataFrame(rownames = "Blue")
     )
 
+    mae0 <- mae
+    vcol <- colData(mae0)
+    vcol <- DataFrame(vcol, treat = c(0, 0, 1, 1))
+    expect_silent(
+        colData(mae0) <- vcol
+    )
+    expect_true(validObject(mae0))
+
+    mae0 <- mae
+    vcol <- colData(mae0)
+    vcol <- vcol[-1, ]
+    expect_message(
+        colData(mae0) <- vcol,
+        "harmonizing input:.*"
+    )
+    expect_identical(
+        colData(mae0), vcol
+    )
+
     cc <- colnames(mae)
     cc[[1]] <- toupper(cc[[1]])
     cc[[3]] <- toupper(cc[[3]])

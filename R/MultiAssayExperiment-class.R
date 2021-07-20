@@ -634,19 +634,30 @@ setReplaceMethod("experiments", c("MultiAssayExperiment", "List"),
 #' @rdname MultiAssayExperiment-methods
 setReplaceMethod("colData", c("MultiAssayExperiment", "DataFrame"),
     function(x, value) {
-        if (!any(rownames(value) %in% rownames(colData(x))) && !isEmpty(value))
+        x_rnames <- rownames(colData(x))
+        v_rnames <- rownames(value)
+
+        if (!any(v_rnames %in% x_rnames) && !isEmpty(value))
             stop("'rownames(value)' have no match in 'rownames(colData)';\n  ",
                 "See '?renamePrimary' for renaming primary units")
 
-        rebliss <- .harmonize(experiments(x), value, sampleMap(x))
+        if (identical(x_rnames, v_rnames))
+            BiocGenerics:::replaceSlots(
+                object = x,
+                colData = value,
+                check = FALSE
+            )
+        else {
+            rebliss <- .harmonize(experiments(x), value, sampleMap(x))
 
-        BiocGenerics:::replaceSlots(
-            object = x,
-            ExperimentList = rebliss[["experiments"]],
-            colData = rebliss[["colData"]],
-            sampleMap = rebliss[["sampleMap"]],
-            check = FALSE
-        )
+            BiocGenerics:::replaceSlots(
+                object = x,
+                ExperimentList = rebliss[["experiments"]],
+                colData = rebliss[["colData"]],
+                sampleMap = rebliss[["sampleMap"]],
+                check = FALSE
+            )
+        }
     }
 )
 
