@@ -1,3 +1,13 @@
+## Changes in version 1.20.0
+
+### Bug fixes and minor improvements
+
+* `colData<-` includes a check for identical row names. If so, direct
+replacement of the `colData` occurs without harmonization.
+* Added a warning when an empty `sampleMap` is provided in the constructor
+function which may cause unexpected behavior. Documentation is updated to
+include more details on the `sampleMap` input.
+
 ## Changes in version 1.18.0
 
 ### New features
