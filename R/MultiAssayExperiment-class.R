@@ -241,7 +241,7 @@ MultiAssayExperiment <-
     if (!all(c("assay", "primary", "colname") %in% colnames(sampleMap)))
         stop("'sampleMap' does not have required columns")
     if (!is.factor(sampleMap[["assay"]]))
-        sampleMap[["assay"]] <- factor(sampleMap[["assay"]])
+        sampleMap[["assay"]] <- as.factor(sampleMap[["assay"]])
     if (!is.character(sampleMap[["primary"]])) {
         warning("sampleMap[['primary']] coerced to character()")
         sampleMap[["primary"]] <- as.character(sampleMap[["primary"]])
@@ -250,6 +250,9 @@ MultiAssayExperiment <-
         warning("sampleMap[['colname']] coerced to character()")
         sampleMap[["colname"]] <- as.character(sampleMap[["colname"]])
     }
+
+    if (isEmpty(sampleMap) && !missing(sampleMap))
+        warning("An empty 'sampleMap' may cause unexpected behavior")
 
     bliss <- .harmonize(experiments, colData, sampleMap)
 
