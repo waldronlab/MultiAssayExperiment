@@ -122,15 +122,44 @@ test_that("subsetByColumn works with lists", {
 })
 
 test_that("subsetByColData works as intended", {
-    trues <- sum(mae$sex == "M")
-    expect_equal(
-        nrow(colData(subsetByColData(mae,
-            mae$sex == "M"))),
-        trues
+    mae0 <- mae
+    mae0 <- subsetByColData(mae, mae$sex == "M")
+    expect_identical(
+        colData(mae0),
+        colData(mae)[mae$sex == "M", ]
     )
-    expect_equal(
-        nrow(colData(mae[, mae$sex == "M"])),
-        trues
+
+    ## probably a harmonize check..
+    newsm <- sampleMap(mae)
+    newsm <-
+        newsm[newsm$primary %in% rownames(colData(mae)[mae$sex == "M", ]), ]
+    expect_identical(
+        sampleMap(mae0),
+        newsm
+    )
+
+    longLogi <- rep(c(TRUE, FALSE), 3)
+    expect_error(
+        subsetByColData(mae, longLogi)
+    )
+
+    chars <- rownames(colData(mae))[c(TRUE, FALSE)]
+    mae0 <- subsetByColData(mae, chars)
+    expect_identical(
+        colData(mae0),
+        colData(mae)[chars, ]
+    )
+
+    mae0 <- subsetByColData(mae, rev(chars))
+    expect_identical(
+        colData(mae0),
+        colData(mae)[rev(chars), ]
+    )
+
+    mae0 <- subsetByColData(mae, c(1, 4))
+    expect_identical(
+        colData(mae0),
+        colData(mae)[c(1, 4), ]
     )
 })
 

@@ -32,6 +32,32 @@ test_that("MultiAssayExperiment anyReplicated returns same order", {
     )
 })
 
+
+test_that("merging replicates orders columns of each experiment the same", {
+
+    check_mergeReps_colorder <- function(mae) {
+        maeredux <- mergeReplicates(intersectColumns(mae))
+        maeassay <- assays(maeredux)
+        matchednames <- lapply(maeassay, function(x) {
+            sampleMap(maeredux)[
+                match(colnames(x), sampleMap(maeredux)$colname),
+                "primary"
+            ]
+        })
+        for (i in seq_along(matchednames)[-1])
+            expect_identical(matchednames[[1]], matchednames[[i]])
+    }
+
+    mae0 <- mae
+    check_mergeReps_colorder(mae0)
+
+    mae0[[1]] <- mae[[1]][, 4:1]
+    check_mergeReps_colorder(mae0)
+    check_mergeReps_colorder(mae0[, , 1:2])
+    check_mergeReps_colorder(mae0[, , 1:3])
+})
+
+
 test_that("getWithColData works", {
     Y1 <- matrix(rnorm(200), ncol=10)
     colnames(Y1) <- c("A.1", "A.2",
