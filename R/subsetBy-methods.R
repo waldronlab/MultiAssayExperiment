@@ -257,18 +257,15 @@ setMethod("subsetByAssay", c("ExperimentList", "ANY"), function(x, y) {
 
 #' @rdname subsetBy
 setMethod("subsetByColData", c("MultiAssayExperiment", "ANY"), function(x, y) {
-    rcols <- rownames(colData(x))
-    if (length(y) > length(rcols))
+    coldata <- colData(x)
+    if (length(y) > nrow(coldata))
         warning("'j' in 'mae[i, j, k]' is greater than 'nrow(coldata(mae))'",
             call. = FALSE)
-    if (is.logical(y) || is.numeric(y))
-        y <- unique(rcols[y])
-    selectors <- y[y %in% rcols]
-    newcolData <- colData(x)[match(selectors, rcols), , drop = FALSE]
+    newcoldata <- coldata[y, , drop = FALSE]
     listMap <- mapToList(sampleMap(x), "assay")
     listMap <- lapply(listMap, function(elementMap, keepers) {
         .matchReorderSub(elementMap, keepers)
-        }, keepers = selectors)
+        }, keepers = rownames(newcoldata))
     newMap <- listToMap(listMap)
     columns <- lapply(listMap, function(mapChunk) {
         mapChunk[, "colname", drop = TRUE]
