@@ -2,6 +2,8 @@
 
 ### Bug fixes and minor improvements
 
+* `subsetByColData` now errors on subscript vectors longer than the `nrow`
+of the `colData` (previously a `warning`).
 * `colData<-` includes a check for identical row names. If so, direct
 replacement of the `colData` occurs without harmonization.
 * Added a warning when an empty `sampleMap` is provided in the constructor
