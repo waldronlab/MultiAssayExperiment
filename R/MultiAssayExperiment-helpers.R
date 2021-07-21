@@ -232,7 +232,8 @@ setMethod("mergeReplicates", "ExperimentList",
                     replicates = replicate[[i]], ...)
             }, element = x, simply = simplify, replicate = replicates, ...)
         ExperimentList(redList)
-    })
+    }
+)
 
 #' @rdname MultiAssayExperiment-helpers
 #'

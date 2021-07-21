@@ -282,12 +282,14 @@ setMethod("subsetByColData", c("MultiAssayExperiment", "ANY"), function(x, y) {
     )
     newSubset <- ExperimentList(newSubset)
 
-    harmon <- .harmonize(newSubset, newcolData, newMap)
+    bliss <- .harmonize(newSubset, newcoldata, newMap)
+
     BiocGenerics:::replaceSlots(x,
-        ExperimentList = harmon[["experiments"]],
-        colData = harmon[["colData"]],
-        sampleMap = harmon[["sampleMap"]],
-        check = FALSE)
+        ExperimentList = bliss[["experiments"]],
+        colData = bliss[["colData"]],
+        sampleMap = bliss[["sampleMap"]],
+        check = FALSE
+    )
 })
 
 #' @rdname subsetBy
