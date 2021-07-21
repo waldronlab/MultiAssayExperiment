@@ -259,7 +259,7 @@ setMethod("subsetByAssay", c("ExperimentList", "ANY"), function(x, y) {
 setMethod("subsetByColData", c("MultiAssayExperiment", "ANY"), function(x, y) {
     coldata <- colData(x)
     if (length(y) > nrow(coldata))
-        warning("'j' in 'mae[i, j, k]' is greater than 'nrow(coldata(mae))'",
+        stop("subscript vector 'j' in 'mae[i, j, k]' is out-of-bounds",
             call. = FALSE)
     newcoldata <- coldata[y, , drop = FALSE]
     listMap <- mapToList(sampleMap(x), "assay")
@@ -292,11 +292,15 @@ setMethod("subsetByColData", c("MultiAssayExperiment", "ANY"), function(x, y) {
 #' @rdname subsetBy
 setMethod("subsetByColData", c("MultiAssayExperiment", "character"),
     function(x, y) {
+        coldata <- colData(x)
+        if (length(y) > nrow(coldata))
+            stop("subscript vector 'j' in 'mae[i, j, k]' is out-of-bounds",
+                call. = FALSE)
         y <- unique(y)
         if (!any(rownames(colData(x)) %in% y))
-            stop("No matching identifiers found")
+            stop("No matching 'colData' row identifiers provided")
         if (!all(y %in% rownames(colData(x))))
-            warning("Not all identifiers found in data")
+            warning("Not all provided identifiers found in 'colData'")
         callNextMethod(x = x, y = y)
 })
 
