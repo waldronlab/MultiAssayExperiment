@@ -1,4 +1,4 @@
-box: bioconductor/bioconductor_full:devel
+box: bioconductor/bioconductor_docker:devel
 build:
   steps:
     - script:
