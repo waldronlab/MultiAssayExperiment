@@ -155,7 +155,9 @@ The following will keep only patients of pathological stage iv, and all their
 associated assays:
 
 ```{r, results='hide'}
-miniACC[, miniACC$pathologic_stage == "stage iv", ]
+stg4 <- miniACC$pathologic_stage == "stage iv"
+# remove NA values from vector
+miniACC[, stg4 & !is.na(stg4), ]
 ```
 
 And the following will keep only the RNA-seq dataset, and only patients for
