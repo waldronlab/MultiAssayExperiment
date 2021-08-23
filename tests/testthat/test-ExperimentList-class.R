@@ -54,7 +54,7 @@ test_that("ExperimentList validity function catches non-compatible classes", {
     A <- array(1:24, 4:2, dimnames =
         list(letters[1:4], LETTERS[1:3], c("A", "B"))
     )
-    B <- matrix(1:12, ncol=3, dimnames = list(LETTERS[1:4], letters[1:3]))
+    B <- matrix(1:12, ncol=3, dimnames = list(letters[1:4], LETTERS[1:3]))
     se2 <- SummarizedExperiment(list(A=A, B=B))
     expect_true(validObject(ExperimentList(se2 = se2)))
     # top-level DataFrame / data.frame
