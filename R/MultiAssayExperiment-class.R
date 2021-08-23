@@ -303,7 +303,7 @@ MultiAssayExperiment <-
         sampleMap[["colname"]] <- as.character(sampleMap[["colname"]])
     }
 
-    if (isEmpty(sampleMap) && !missing(sampleMap))
+    if ((isEmpty(sampleMap) && !missing(sampleMap)) & !isEmpty(experiments))
         warning("An empty 'sampleMap' may cause unexpected behavior")
 
     bliss <- .harmonize(experiments, colData, sampleMap)
