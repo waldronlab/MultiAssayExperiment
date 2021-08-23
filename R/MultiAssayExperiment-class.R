@@ -600,9 +600,6 @@ setGeneric("drops<-", function(x, ..., value) standardGeneric("drops<-"))
 #' @rdname MultiAssayExperiment-methods
 setReplaceMethod("experiments", c("MultiAssayExperiment", "ExperimentList"),
     function(object, value) {
-
-        rebliss <- .harmonize(value, colData(object), sampleMap(object))
-
         if (!any(names(object) %in% names(value)) && !isEmpty(object)) {
             drops(object) <-
                 list(experiments = setdiff(names(object), names(value)))
@@ -611,10 +608,7 @@ setReplaceMethod("experiments", c("MultiAssayExperiment", "ExperimentList"),
 
         BiocGenerics:::replaceSlots(
             object = object,
-            ExperimentList = rebliss[["experiments"]],
-            colData = rebliss[["colData"]],
-            sampleMap = rebliss[["sampleMap"]],
-            check = FALSE
+            ExperimentList = value
         )
     }
 )
@@ -664,7 +658,8 @@ setReplaceMethod("colData", c("MultiAssayExperiment", "DataFrame"),
 #' @rdname MultiAssayExperiment-methods
 setReplaceMethod("colData", c("MultiAssayExperiment", "ANY"),
     function(x, value) {
-        stopifnot(is.data.frame(value))
+        if (!is.data.frame(value))
+            stop("'colData' can be either 'data.frame' or 'DataFrame'")
         value <- as(value, "DataFrame")
         `colData<-`(x, value)
     }
