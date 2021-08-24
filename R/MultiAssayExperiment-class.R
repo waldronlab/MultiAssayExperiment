@@ -605,11 +605,25 @@ setReplaceMethod("experiments", c("MultiAssayExperiment", "ExperimentList"),
                 list(experiments = setdiff(names(object), names(value)))
             warning("'experiments' dropped; see 'metadata'", call. = FALSE)
         }
+        o_cnames <- colnames(object)
+        v_cnames <- colnames(value)
+        if (identical(o_cnames, v_cnames))
+            BiocGenerics:::replaceSlots(
+                object = object,
+                ExperimentList = value,
+                check = FALSE
+            )
+        else {
+            rebliss <- .harmonize(value, colData(object), sampleMap(object))
 
-        BiocGenerics:::replaceSlots(
-            object = object,
-            ExperimentList = value
-        )
+            BiocGenerics:::replaceSlots(
+                object = object,
+                ExperimentList = rebliss[["experiments"]],
+                colData = rebliss[["colData"]],
+                sampleMap = rebliss[["sampleMap"]],
+                check = FALSE
+            )
+        }
     }
 )
 
