@@ -3,7 +3,7 @@
 ### Bug fixes and minor improvements
 
 * Calls to the internal `.harmonize` operation are reduced to increase
-memory efficiency, where possible (@LTLA, #299).
+memory efficiency, when identical experiment colnames present (@LTLA, #299).
 * `subsetByColData` now errors on subscript vectors longer than the `nrow`
 of the `colData` (previously a `warning`).
 * `colData<-` includes a check for identical row names. If so, direct
