@@ -2,6 +2,8 @@
 
 ### Bug fixes and minor improvements
 
+* `getWithColData` was using the old default (`drop = TRUE`) and causing an
+error when the experiment is empty (@danielinteractive, #300).
 * Calls to the internal `.harmonize` operation are reduced to increase
 memory efficiency, when identical experiment colnames present (@LTLA, #299).
 * `subsetByColData` now errors on subscript vectors longer than the `nrow`
