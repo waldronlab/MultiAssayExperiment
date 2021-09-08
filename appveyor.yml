@@ -89,6 +89,3 @@ notifications:
   incoming_webhook:
     secure: 5CUebSKaHY7HA1RR+HIF9n2+yYF3A/3pykI5rxp4J6bgntGZIGa7iOY1RBXo8BGWq5N6uCGrlQj4Cu1xqzSQotPz/3i6TpDit9Z+wnpBrTs=
 
-environment:
-  GITHUB_PAT:
-    secure: 8wFXXacUea6cCoH16l6vcn0khtaYDe+evyTdHLAyprIjRrO4NMmYkEZVqZt+xzhv
