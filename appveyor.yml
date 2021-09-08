@@ -91,4 +91,4 @@ notifications:
 
 environment:
   GITHUB_PAT:
-    secure: JMJ0k8+ohC6QmhLSz0uMSR/H+OOCMSSCAVOoFqKUTfdBzR6D8VZZdEV+mfYAxx95
+    secure: 8wFXXacUea6cCoH16l6vcn0khtaYDe+evyTdHLAyprIjRrO4NMmYkEZVqZt+xzhv
