@@ -90,5 +90,5 @@ notifications:
     secure: 5CUebSKaHY7HA1RR+HIF9n2+yYF3A/3pykI5rxp4J6bgntGZIGa7iOY1RBXo8BGWq5N6uCGrlQj4Cu1xqzSQotPz/3i6TpDit9Z+wnpBrTs=
 
 environment:
-  access_token:
+  GITHUB_PAT:
     secure: JMJ0k8+ohC6QmhLSz0uMSR/H+OOCMSSCAVOoFqKUTfdBzR6D8VZZdEV+mfYAxx95
