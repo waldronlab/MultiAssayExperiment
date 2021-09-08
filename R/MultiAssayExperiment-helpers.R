@@ -607,7 +607,7 @@ getWithColData <- function(x, i, mode=c("append", "replace")) {
         identical(length(i), 1L), !is.na(i), !is.logical(i),
         is.character(mode), !is.na(mode), !is.logical(mode))
 
-    mae <- x[, , i, drop = TRUE]
+    mae <- x[, , i, drop = FALSE]
     prims <- sampleMap(mae)[["primary"]]
     if (anyDuplicated(prims))
         warning("Duplicating colData rows due to replicates in 'replicated(x)'",

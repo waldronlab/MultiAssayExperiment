@@ -71,7 +71,7 @@ NULL
 #'
 #' @param ... Additional arguments passed on to lower level functions.
 #'
-#' @param drop logical (default FALSE) whether to drop empty assay elements
+#' @param drop logical (default FALSE) whether to drop all empty assay elements
 #' in the \code{ExperimentList}
 #'
 #' @aliases [,MultiAssayExperiment,ANY-method subsetByColData subsetByRow
