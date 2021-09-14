@@ -101,11 +101,13 @@ test_that("getWithColData works", {
         sampleMap=sampleMap, colData=colData)
 
     expect_warning(
-        getWithColData(MAE, 1L, "append")
+        getWithColData(MAE, 1L, "append"),
+        "^Duplicating"
     )
 
     expect_warning(
-        getWithColData(MAE, 1L, "replace")
+        getWithColData(MAE, 1L, "replace"),
+        "^Duplicating"
     )
 
     cData <- colData(getWithColData(MAE, 1L, "append"))

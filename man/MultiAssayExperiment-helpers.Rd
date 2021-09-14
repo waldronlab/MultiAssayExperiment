@@ -71,7 +71,7 @@ hasRowRanges(x)
 
 \S4method{hasRowRanges}{ExperimentList}(x)
 
-getWithColData(x, i, mode = c("append", "replace"))
+getWithColData(x, i, mode = c("append", "replace"), verbose = FALSE)
 
 renamePrimary(x, value)
 
@@ -118,6 +118,9 @@ replicate samples are present, colnames) are seperated by this delimiter}
 \item{mode}{String indicating how \linkS4class{MultiAssayExperiment}
 column-level metadata should be added to the
 \linkS4class{SummarizedExperiment} \code{colData}.}
+
+\item{verbose}{logical(1) Whether to `suppressMessages` on subsetting
+operations in `getWithColData` (default FALSE)}
 
 \item{value}{renamePrimary: A \code{character} vector of the same length as
 the existing \code{rownames(colData)} to use for replacement,

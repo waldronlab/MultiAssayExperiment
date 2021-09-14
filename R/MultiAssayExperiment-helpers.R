@@ -576,6 +576,9 @@ setMethod("hasRowRanges", "ExperimentList", function(x) {
 
 #' @rdname MultiAssayExperiment-helpers
 #'
+#' @param verbose logical(1) Whether to `suppressMessages` on subsetting
+#'     operations in `getWithColData` (default FALSE)
+#'
 #' @aliases getWithColData
 #'
 #' @section getWithColData:
@@ -599,7 +602,7 @@ setMethod("hasRowRanges", "ExperimentList", function(x) {
 #' no replacement or appending is performed.
 #'
 #' @export getWithColData
-getWithColData <- function(x, i, mode=c("append", "replace")) {
+getWithColData <- function(x, i, mode=c("append", "replace"), verbose = FALSE) {
     if (!is(x, "MultiAssayExperiment"))
         stop("Provide a MultiAssayExperiment as input")
 
@@ -607,7 +610,8 @@ getWithColData <- function(x, i, mode=c("append", "replace")) {
         identical(length(i), 1L), !is.na(i), !is.logical(i),
         is.character(mode), !is.na(mode), !is.logical(mode))
 
-    mae <- x[, , i, drop = FALSE]
+    FUN <- if (!verbose) suppressMessages else force
+    mae <- FUN(x[, , i, drop = FALSE])
     prims <- sampleMap(mae)[["primary"]]
     if (anyDuplicated(prims))
         warning("Duplicating colData rows due to replicates in 'replicated(x)'",

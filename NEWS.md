@@ -2,6 +2,8 @@
 
 ### Bug fixes and minor improvements
 
+* `getWithColData` suppresses messages from natural subsetting operations by
+default with `verbose = FALSE` (@bhagwataditya, #301)
 * `getWithColData` was using the old default (`drop = TRUE`) and causing an
 error when the experiment is empty (@danielinteractive, #300).
 * Calls to the internal `.harmonize` operation are reduced to increase
