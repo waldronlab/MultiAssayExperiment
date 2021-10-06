@@ -440,7 +440,7 @@ from data
 
 * Documentation updated with new roxygen version
 
-## Changes in version 101.49
+## Changes in version 0.101.49
 
 ### New features
 
@@ -451,7 +451,7 @@ objects
 
 * A proper `dimnames` method added to `MultiAssayExperiment`
 
-## Changes in version 101.45
+## Changes in version 0.101.45
 
 ### New features
 
@@ -462,21 +462,21 @@ objects
 * Improved `RangedRaggedAssay` rowname construction
 * Improved `show` method for the `RangedRaggedAssay` class
 
-## Changes in version 101.44
+## Changes in version 0.101.44
 
 ### New features
 
 * `$` (DollarSign) method available for `MultiAssayExperiment` to access `pData`
 column
 
-## Changes in version 101.43
+## Changes in version 0.101.43
 
 ### Bug fixes and minor improvements
 
 * Improved `MultiAssayExperiment` constructor now handles stray assays, colnames,
 pData rownames, and `sampleMap` rows
 
-## Changes in version 101.42
+## Changes in version 0.101.42
 
 ### New features
 
@@ -487,14 +487,14 @@ pData rownames, and `sampleMap` rows
 * `metadata` argument available in the `MultiAssayExperiment` constructor function
 * Fix bug when subsetting for unmatched samples/colnames (drop = FALSE) in constructor
 
-## Changes in version 101.40
+## Changes in version 0.101.40
 
 ### New features
 
 * Improved `MultiAssayExperiment` constructor with renamed argument "experiments"
 for the `ExperimentList` or `list` input.
 
-## Changes in version 101.39
+## Changes in version 0.101.39
 
 ### New features
 
@@ -505,13 +505,13 @@ for the `ExperimentList` or `list` input.
 
 * `drop` argument now works as intended when using `List` inherited objects
 
-## Changes in version 101.38
+## Changes in version 0.101.38
 
 ### New features
 
 * `complete.cases` method available for the `MultiAssayExperiment` class
 
-## Changes in version 101.37
+## Changes in version 0.101.37
 
 ### New features
 
@@ -525,7 +525,7 @@ and __colname__ (prev. "assay")
 * Improved `show` method display
 * Removed warning message when only `ExperimentList` argument provided
 
-## Changes in version 101.36
+## Changes in version 0.101.36
 
 * `Elist` class renamed to `ExperimentList`
 * `ExperimentList` constructor is homonymous
@@ -533,20 +533,20 @@ and __colname__ (prev. "assay")
 * `ExperimentList` replacement method is now `experiments<-`
 * Updated vignettes to reflect change of names
 
-## Changes in version 101.34
+## Changes in version 0.101.34
 
 * `assay` method for `RangedRaggedAssay` works on inner metadata columns now
 * vignette examples available for `HDF5Array` package
 * Improved outline for main vignette
 
-## Changes in version 9.202
+## Changes in version 0.99.202
 
 ### New features
 
 * `assay` method available for `RangedRaggedAssay` and other classes.
 Created to obtain raw data from certain classes (see `?assay,(class),ANY-method`).
 
-## Changes in version 9.194
+## Changes in version 0.99.194
 
 ### New features
 
