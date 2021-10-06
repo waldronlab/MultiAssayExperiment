@@ -157,7 +157,7 @@ returns experiments in the input order for rows, columns, and assays
 * Various improvements to subsetting mechanism
 * `subsetByAssay` bug fixed when using an integer index (@vjcitn, #)
 
-## Changes in version 5.108
+## Changes in version 1.5.108
 
 ### New features
 
@@ -172,14 +172,14 @@ returns experiments in the input order for rows, columns, and assays
 `MultiAssayExperiment-helpers`
 * `c` internals improved
 
-## Changes in version 5.102
+## Changes in version 1.5.102
 
 ### New features
 
 * The `MatchedAssayExperiment` constructor function now works either a
 single `MultiAssayExperiment` or the essential components of one.
 
-## Changes in version 5.101
+## Changes in version 1.5.101
 
 ### New features
 
