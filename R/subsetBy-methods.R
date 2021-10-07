@@ -270,7 +270,7 @@ setMethod("subsetByColData", c("MultiAssayExperiment", "ANY"), function(x, y) {
     columns <- lapply(listMap, function(mapChunk) {
         mapChunk[, "colname", drop = TRUE]
     })
-    columns <- columns[names(experiments(x))]
+    columns <- .fillEmptyExps(experiments(x), columns)
     newSubset <- Map(
         function(x, j) {
             x[, j, drop = FALSE]
@@ -279,12 +279,10 @@ setMethod("subsetByColData", c("MultiAssayExperiment", "ANY"), function(x, y) {
     )
     newSubset <- ExperimentList(newSubset)
 
-    bliss <- .harmonize(newSubset, newcoldata, newMap)
-
     BiocGenerics:::replaceSlots(x,
-        ExperimentList = bliss[["experiments"]],
-        colData = bliss[["colData"]],
-        sampleMap = bliss[["sampleMap"]],
+        ExperimentList = newSubset,
+        colData = newcoldata,
+        sampleMap = newMap,
         check = FALSE
     )
 })
