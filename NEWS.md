@@ -2,6 +2,8 @@
 
 ### Bug fixes and minor improvements
 
+* Avoid dropping experiments with repeated calls to `subsetByColData` and
+remove harmonization (@cvanderaa, #302)
 * `getWithColData` suppresses messages from natural subsetting operations by
 default with `verbose = FALSE` (@bhagwataditya, #301)
 * `getWithColData` was using the old default (`drop = TRUE`) and causing an

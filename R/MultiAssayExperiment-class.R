@@ -448,7 +448,7 @@ setMethod("show", "MultiAssayExperiment", function(object) {
         "\n *Format() - convert ", "into a long or wide DataFrame",
         "\n assays() - convert ", sprintf("%s", c_elist),
         " to a SimpleList of matrices",
-        "\n exportClass() - save all data to files\n",
+        "\n exportClass() - save data to flat files\n",
     sep = "")
 })
 
