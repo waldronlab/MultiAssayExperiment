@@ -15,7 +15,7 @@ Description: MultiAssayExperiment harmonizes data management of
     or rownames. Facilities are provided for reshaping data into wide and
     long formats for adaptability to graphing and downstream analysis.
 Depends:
-    R (>= 4.0.0),
+    R (>= 4.2.0),
     SummarizedExperiment (>= 1.3.81)
 Imports:
     methods,
@@ -42,7 +42,6 @@ Suggests:
 biocViews: Infrastructure, DataRepresentation
 License: Artistic-2.0
 Encoding: UTF-8
-LazyData: true
 VignetteBuilder: knitr, R.rsp
 URL: http://waldronlab.io/MultiAssayExperiment/
 Video: https://youtu.be/w6HWAHaDpyk, https://youtu.be/Vh0hVVUKKFM

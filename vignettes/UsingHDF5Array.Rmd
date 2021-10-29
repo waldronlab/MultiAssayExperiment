@@ -117,3 +117,9 @@ MultiAssayExperiment(list(HDF5SE = HDF5SE))
 Additional scenarios are currently in development where an `HDF5Matrix` is
 hosted remotely. Many opportunities exist when considering on-disk and off-disk
 representations of data with `MultiAssayExperiment`.
+
+# Session info
+
+```{r}
+sessionInfo()
+```
