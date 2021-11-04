@@ -92,6 +92,8 @@ HDF5-backed `MultiAssayExperiment`.
 }
 \examples{
 
+data("miniACC")
+
 testDir <- file.path(tempdir(), "test_mae")
 
 saveHDF5MultiAssayExperiment(

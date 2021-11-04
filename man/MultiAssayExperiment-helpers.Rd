@@ -332,6 +332,8 @@ patts <- list(
     tumors = "TCGA-OR-[A-Z0-9]{4}-01"
 )
 
+data("miniACC")
+
 hits <- makeHitList(miniACC, patts)
 
 splitAssays(miniACC, hits)

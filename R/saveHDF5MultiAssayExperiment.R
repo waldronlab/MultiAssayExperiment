@@ -118,6 +118,8 @@
 #'
 #' @examples
 #'
+#' data("miniACC")
+#'
 #' testDir <- file.path(tempdir(), "test_mae")
 #'
 #' saveHDF5MultiAssayExperiment(

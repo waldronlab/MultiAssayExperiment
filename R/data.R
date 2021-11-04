@@ -43,7 +43,7 @@
 #'
 #' @examples
 #'
-#' miniACC
+#' data("miniACC")
 #' metadata(miniACC)
 #' colnames(colData(miniACC))
 #' table(miniACC$vital_status)
