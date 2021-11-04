@@ -1,3 +1,9 @@
+## Changes in version 1.22.0
+
+### Bug fixes and minor improvements
+
+* Add `data("miniACC")` to examples after removing lazy loading.
+
 ## Changes in version 1.20.0
 
 ### Bug fixes and minor improvements
