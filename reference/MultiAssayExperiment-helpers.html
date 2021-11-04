@@ -108,7 +108,7 @@ renameColname: A convenience function to rename the colnames
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MultiAssayExperiment</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.18.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.20.0</span>
       </span>
     </div>
 
@@ -154,7 +154,7 @@ renameColname: A convenience function to rename the colnames
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/waldronlab/MultiAssayExperiment">
-    <span class="fas fa-github fa-lg"></span>
+    <span class="fa fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -208,7 +208,7 @@ for <code>ExperimentList</code> objects.</p>
 <li><p>getWithColData: A convenience function for extracting an assay
     and associated colData</p></li>
 <li><p>renamePrimary: A convenience function to rename the primary
-    biological units as represented in the <code><a href='https://rdrr.io/r/base/colnames.html'>rownames(colData)</a></code></p></li>
+    biological units as represented in the <code>rownames(colData)</code></p></li>
 <li><p>renameColname: A convenience function to rename the colnames
     of a particular assay</p></li>
 </ul>
@@ -266,7 +266,7 @@ for <code>ExperimentList</code> objects.</p>
 <span class='co'># S4 method for ExperimentList</span>
 <span class='fu'>hasRowRanges</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
 
-<span class='fu'>getWithColData</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>i</span>, mode <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"append"</span>, <span class='st'>"replace"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'>getWithColData</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>i</span>, mode <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"append"</span>, <span class='st'>"replace"</span><span class='op'>)</span>, verbose <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 
 <span class='fu'>renamePrimary</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>value</span><span class='op'>)</span>
 
@@ -338,11 +338,16 @@ column-level metadata should be added to the
 SummarizedExperiment <code>colData</code>.</p></td>
     </tr>
     <tr>
+      <th>verbose</th>
+      <td><p>logical(1) Whether to `suppressMessages` on subsetting
+operations in `getWithColData` (default FALSE)</p></td>
+    </tr>
+    <tr>
       <th>value</th>
       <td><p>renamePrimary: A <code>character</code> vector of the same length as
-the existing <code><a href='https://rdrr.io/r/base/colnames.html'>rownames(colData)</a></code> to use for replacement,
+the existing <code>rownames(colData)</code> to use for replacement,
 renameColname: A <code>CharacterList</code> or <code>list</code> with matching
-<code>lengths</code> to replace <code><a href='https://rdrr.io/r/base/colnames.html'>colnames(x)</a></code></p></td>
+<code>lengths</code> to replace <code>colnames(x)</code></p></td>
     </tr>
     <tr>
       <th>hitList</th>
@@ -468,7 +473,7 @@ no replacement or appending is performed.</p>
 
 <p>The <code>renamePrimary</code> function allows the user to conveniently change the
 actual names of the primary biological units as seen in
-<code><a href='https://rdrr.io/r/base/colnames.html'>rownames(colData)</a></code>. <code>renameColname</code> allows the user to change the
+<code>rownames(colData)</code>. <code>renameColname</code> allows the user to change the
 names of a particular assay based on index <code>i</code>. <code>i</code> can either be
 a single numeric or character value. See <code>colnames&lt;-</code> method for
 renaming multiple colnames in a <code>MultiAssayExperiment</code>.</p>
@@ -484,181 +489,189 @@ column names of each assay. These matches should be mutually exclusive as
 to avoid repetition of columns across assays. See the examples section.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/utils/example.html'>example</a></span><span class='op'>(</span><span class='va'>MultiAssayExperiment</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; 
-#&gt; MltAsE&gt; ## Run the example ExperimentList
-#&gt; MltAsE&gt; example("ExperimentList")
-#&gt; 
-#&gt; ExprmL&gt; ## Create an empty ExperimentList instance
-#&gt; ExprmL&gt; ExperimentList()
-#&gt; ExperimentList class object of length 0:
-#&gt;  
-#&gt; ExprmL&gt; ## Create array matrix and AnnotatedDataFrame to create an ExpressionSet class
-#&gt; ExprmL&gt; arraydat &lt;- matrix(data = seq(101, length.out = 20), ncol = 4,
-#&gt; ExprmL+     dimnames = list(
-#&gt; ExprmL+         c("ENST00000294241", "ENST00000355076",
-#&gt; ExprmL+         "ENST00000383706","ENST00000234812", "ENST00000383323"),
-#&gt; ExprmL+         c("array1", "array2", "array3", "array4")
-#&gt; ExprmL+     ))
-#&gt; 
-#&gt; ExprmL&gt; colDat &lt;- data.frame(slope53 = rnorm(4),
-#&gt; ExprmL+     row.names = c("array1", "array2", "array3", "array4"))
-#&gt; 
-#&gt; ExprmL&gt; ## SummarizedExperiment constructor
-#&gt; ExprmL&gt; exprdat &lt;- SummarizedExperiment::SummarizedExperiment(arraydat,
-#&gt; ExprmL+     colData = colDat)
-#&gt; 
-#&gt; ExprmL&gt; ## Create a sample methylation dataset
-#&gt; ExprmL&gt; methyldat &lt;- matrix(data = seq(1, length.out = 25), ncol = 5,
-#&gt; ExprmL+     dimnames = list(
-#&gt; ExprmL+         c("ENST00000355076", "ENST00000383706",
-#&gt; ExprmL+           "ENST00000383323", "ENST00000234812", "ENST00000294241"),
-#&gt; ExprmL+         c("methyl1", "methyl2", "methyl3",
-#&gt; ExprmL+           "methyl4", "methyl5")
-#&gt; ExprmL+     ))
-#&gt; 
-#&gt; ExprmL&gt; ## Create a sample RNASeqGene dataset
-#&gt; ExprmL&gt; rnadat &lt;- matrix(
-#&gt; ExprmL+     data = sample(c(46851, 5, 19, 13, 2197, 507,
-#&gt; ExprmL+         84318, 126, 17, 21, 23979, 614), size = 20, replace = TRUE),
-#&gt; ExprmL+     ncol = 4,
-#&gt; ExprmL+     dimnames = list(
-#&gt; ExprmL+         c("XIST", "RPS4Y1", "KDM5D", "ENST00000383323", "ENST00000234812"),
-#&gt; ExprmL+         c("samparray1", "samparray2", "samparray3", "samparray4")
-#&gt; ExprmL+     ))
-#&gt; 
-#&gt; ExprmL&gt; ## Create a mock RangedSummarizedExperiment from a data.frame
-#&gt; ExprmL&gt; rangedat &lt;- data.frame(chr="chr2", start = 11:15, end = 12:16,
-#&gt; ExprmL+     strand = c("+", "-", "+", "*", "."),
-#&gt; ExprmL+     samp0 = c(0,0,1,1,1), samp1 = c(1,0,1,0,1), samp2 = c(0,1,0,1,0),
-#&gt; ExprmL+     row.names = c(paste0("ENST", "00000", 135411:135414), "ENST00000383323"))
-#&gt; 
-#&gt; ExprmL&gt; rangeSE &lt;- SummarizedExperiment::makeSummarizedExperimentFromDataFrame(rangedat)
-#&gt; 
-#&gt; ExprmL&gt; ## Combine to a named list and call the ExperimentList constructor function
-#&gt; ExprmL&gt; assayList &lt;- list(Affy = exprdat, Methyl450k = methyldat, RNASeqGene = rnadat,
-#&gt; ExprmL+                 GISTIC = rangeSE)
-#&gt; 
-#&gt; ExprmL&gt; ## Use the ExperimentList constructor
-#&gt; ExprmL&gt; ExpList &lt;- ExperimentList(assayList)
-#&gt; 
-#&gt; MltAsE&gt; ## Create sample maps for each experiment
-#&gt; MltAsE&gt; exprmap &lt;- data.frame(
-#&gt; MltAsE+     primary = c("Jack", "Jill", "Barbara", "Bob"),
-#&gt; MltAsE+     colname = c("array1", "array2", "array3", "array4"),
-#&gt; MltAsE+     stringsAsFactors = FALSE)
-#&gt; 
-#&gt; MltAsE&gt; methylmap &lt;- data.frame(
-#&gt; MltAsE+     primary = c("Jack", "Jack", "Jill", "Barbara", "Bob"),
-#&gt; MltAsE+     colname = c("methyl1", "methyl2", "methyl3", "methyl4", "methyl5"),
-#&gt; MltAsE+     stringsAsFactors = FALSE)
-#&gt; 
-#&gt; MltAsE&gt; rnamap &lt;- data.frame(
-#&gt; MltAsE+     primary = c("Jack", "Jill", "Bob", "Barbara"),
-#&gt; MltAsE+     colname = c("samparray1", "samparray2", "samparray3", "samparray4"),
-#&gt; MltAsE+     stringsAsFactors = FALSE)
-#&gt; 
-#&gt; MltAsE&gt; gistmap &lt;- data.frame(
-#&gt; MltAsE+     primary = c("Jack", "Bob", "Jill"),
-#&gt; MltAsE+     colname = c("samp0", "samp1", "samp2"),
-#&gt; MltAsE+     stringsAsFactors = FALSE)
-#&gt; 
-#&gt; MltAsE&gt; ## Combine as a named list and convert to a DataFrame
-#&gt; MltAsE&gt; maplist &lt;- list(Affy = exprmap, Methyl450k = methylmap,
-#&gt; MltAsE+     RNASeqGene = rnamap, GISTIC = gistmap)
-#&gt; 
-#&gt; MltAsE&gt; ## Create a sampleMap
-#&gt; MltAsE&gt; sampMap &lt;- listToMap(maplist)
-#&gt; 
-#&gt; MltAsE&gt; ## Create an example phenotype data
-#&gt; MltAsE&gt; colDat &lt;- data.frame(sex = c("M", "F", "M", "F"), age = 38:41,
-#&gt; MltAsE+     row.names = c("Jack", "Jill", "Bob", "Barbara"))
-#&gt; 
-#&gt; MltAsE&gt; ## Create a MultiAssayExperiment instance
-#&gt; MltAsE&gt; mae &lt;- MultiAssayExperiment(experiments = ExpList, colData = colDat,
-#&gt; MltAsE+     sampleMap = sampMap)</div><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/stats/complete.cases.html'>complete.cases</a></span><span class='op'>(</span><span class='va'>mae</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1]  TRUE  TRUE  TRUE FALSE</div><div class='input'>
-<span class='fu'>isEmpty</span><span class='op'>(</span><span class='fu'><a href='MultiAssayExperiment.html'>MultiAssayExperiment</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
-
-<span class='co'>## renaming biological units (primary)</span>
-
-<span class='va'>mae2</span> <span class='op'>&lt;-</span> <span class='fu'>renamePrimary</span><span class='op'>(</span><span class='va'>mae</span>, <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>"pt"</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'>colData</span><span class='op'>(</span><span class='va'>mae2</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; DataFrame with 4 rows and 2 columns
-#&gt;             sex       age
-#&gt;     &lt;character&gt; &lt;integer&gt;
-#&gt; pt1           M        38
-#&gt; pt2           F        39
-#&gt; pt3           M        40
-#&gt; pt4           F        41</div><div class='input'><span class='fu'><a href='MultiAssayExperiment-methods.html'>sampleMap</a></span><span class='op'>(</span><span class='va'>mae2</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; DataFrame with 16 rows and 3 columns
-#&gt;          assay     primary     colname
-#&gt;       &lt;factor&gt; &lt;character&gt; &lt;character&gt;
-#&gt; 1   Affy               pt1      array1
-#&gt; 2   Affy               pt2      array2
-#&gt; 3   Affy               pt4      array3
-#&gt; 4   Affy               pt3      array4
-#&gt; 5   Methyl450k         pt1     methyl1
-#&gt; ...        ...         ...         ...
-#&gt; 12  RNASeqGene         pt3  samparray3
-#&gt; 13  RNASeqGene         pt4  samparray4
-#&gt; 14  GISTIC             pt1       samp0
-#&gt; 15  GISTIC             pt3       samp1
-#&gt; 16  GISTIC             pt2       samp2</div><div class='input'>
-
-<span class='co'>## renaming observational units (colname)</span>
-
-<span class='va'>mae2</span> <span class='op'>&lt;-</span> <span class='fu'>renameColname</span><span class='op'>(</span><span class='va'>mae</span>, i <span class='op'>=</span> <span class='st'>"Affy"</span>, <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>"ARRAY"</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span><span class='op'>(</span><span class='va'>mae2</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; CharacterList of length 4
-#&gt; [["Affy"]] ARRAY1 ARRAY2 ARRAY3 ARRAY4
-#&gt; [["Methyl450k"]] methyl1 methyl2 methyl3 methyl4 methyl5
-#&gt; [["RNASeqGene"]] samparray1 samparray2 samparray3 samparray4
-#&gt; [["GISTIC"]] samp0 samp1 samp2</div><div class='input'><span class='fu'><a href='MultiAssayExperiment-methods.html'>sampleMap</a></span><span class='op'>(</span><span class='va'>mae2</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; DataFrame with 16 rows and 3 columns
-#&gt;          assay     primary     colname
-#&gt;       &lt;factor&gt; &lt;character&gt; &lt;character&gt;
-#&gt; 1   Affy              Jack      ARRAY1
-#&gt; 2   Affy              Jill      ARRAY2
-#&gt; 3   Affy           Barbara      ARRAY3
-#&gt; 4   Affy               Bob      ARRAY4
-#&gt; 5   Methyl450k        Jack     methyl1
-#&gt; ...        ...         ...         ...
-#&gt; 12  RNASeqGene         Bob  samparray3
-#&gt; 13  RNASeqGene     Barbara  samparray4
-#&gt; 14  GISTIC            Jack       samp0
-#&gt; 15  GISTIC             Bob       samp1
-#&gt; 16  GISTIC            Jill       samp2</div><div class='input'>
-
-
-<span class='va'>patts</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
-    normals <span class='op'>=</span> <span class='st'>"TCGA-OR-[A-Z0-9]{4}-11"</span>,
-    tumors <span class='op'>=</span> <span class='st'>"TCGA-OR-[A-Z0-9]{4}-01"</span>
-<span class='op'>)</span>
-
-<span class='va'>hits</span> <span class='op'>&lt;-</span> <span class='fu'>makeHitList</span><span class='op'>(</span><span class='va'>miniACC</span>, <span class='va'>patts</span><span class='op'>)</span>
-
-<span class='fu'>splitAssays</span><span class='op'>(</span><span class='va'>miniACC</span>, <span class='va'>hits</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; A MultiAssayExperiment object of 5 listed
-#&gt;  experiments with user-defined names and respective classes.
-#&gt;  Containing an ExperimentList class object of length 5:
-#&gt;  [1] tumors_RNASeq2GeneNorm: SummarizedExperiment with 198 rows and 71 columns
-#&gt;  [2] tumors_gistict: SummarizedExperiment with 198 rows and 82 columns
-#&gt;  [3] tumors_RPPAArray: SummarizedExperiment with 33 rows and 40 columns
-#&gt;  [4] tumors_Mutations: matrix with 97 rows and 81 columns
-#&gt;  [5] tumors_miRNASeqGene: SummarizedExperiment with 471 rows and 72 columns
-#&gt; Functionality:
-#&gt;  experiments() - obtain the ExperimentList instance
-#&gt;  colData() - the primary/phenotype DataFrame
-#&gt;  sampleMap() - the sample coordination DataFrame
-#&gt;  `$`, `[`, `[[` - extract colData columns, subset, or experiment
-#&gt;  *Format() - convert into a long or wide DataFrame
-#&gt;  assays() - convert ExperimentList to a SimpleList of matrices
-#&gt;  exportClass() - save all data to files</div><div class='input'>
-</div></pre>
+    <pre class="examples"><span class='r-in'></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/example.html'>example</a></span><span class='op'>(</span><span class='va'>MultiAssayExperiment</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MltAsE&gt; ## Run the example ExperimentList</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MltAsE&gt; example("ExperimentList")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL&gt; ## Create an empty ExperimentList instance</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL&gt; ExperimentList()</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExperimentList class object of length 0:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL&gt; ## Create array matrix and AnnotatedDataFrame to create an ExpressionSet class</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL&gt; arraydat &lt;- matrix(data = seq(101, length.out = 20), ncol = 4,</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL+     dimnames = list(</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL+         c("ENST00000294241", "ENST00000355076",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL+         "ENST00000383706","ENST00000234812", "ENST00000383323"),</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL+         c("array1", "array2", "array3", "array4")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL+     ))</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL&gt; colDat &lt;- data.frame(slope53 = rnorm(4),</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL+     row.names = c("array1", "array2", "array3", "array4"))</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL&gt; ## SummarizedExperiment constructor</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL&gt; exprdat &lt;- SummarizedExperiment::SummarizedExperiment(arraydat,</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL+     colData = colDat)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL&gt; ## Create a sample methylation dataset</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL&gt; methyldat &lt;- matrix(data = seq(1, length.out = 25), ncol = 5,</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL+     dimnames = list(</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL+         c("ENST00000355076", "ENST00000383706",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL+           "ENST00000383323", "ENST00000234812", "ENST00000294241"),</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL+         c("methyl1", "methyl2", "methyl3",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL+           "methyl4", "methyl5")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL+     ))</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL&gt; ## Create a sample RNASeqGene dataset</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL&gt; rnadat &lt;- matrix(</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL+     data = sample(c(46851, 5, 19, 13, 2197, 507,</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL+         84318, 126, 17, 21, 23979, 614), size = 20, replace = TRUE),</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL+     ncol = 4,</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL+     dimnames = list(</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL+         c("XIST", "RPS4Y1", "KDM5D", "ENST00000383323", "ENST00000234812"),</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL+         c("samparray1", "samparray2", "samparray3", "samparray4")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL+     ))</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL&gt; ## Create a mock RangedSummarizedExperiment from a data.frame</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL&gt; rangedat &lt;- data.frame(chr="chr2", start = 11:15, end = 12:16,</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL+     strand = c("+", "-", "+", "*", "."),</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL+     samp0 = c(0,0,1,1,1), samp1 = c(1,0,1,0,1), samp2 = c(0,1,0,1,0),</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL+     row.names = c(paste0("ENST", "00000", 135411:135414), "ENST00000383323"))</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL&gt; rangeSE &lt;- SummarizedExperiment::makeSummarizedExperimentFromDataFrame(rangedat)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL&gt; ## Combine to a named list and call the ExperimentList constructor function</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL&gt; assayList &lt;- list(Affy = exprdat, Methyl450k = methyldat, RNASeqGene = rnadat,</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL+                 GISTIC = rangeSE)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL&gt; ## Use the ExperimentList constructor</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL&gt; ExpList &lt;- ExperimentList(assayList)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MltAsE&gt; ## Create sample maps for each experiment</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MltAsE&gt; exprmap &lt;- data.frame(</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MltAsE+     primary = c("Jack", "Jill", "Barbara", "Bob"),</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MltAsE+     colname = c("array1", "array2", "array3", "array4"),</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MltAsE+     stringsAsFactors = FALSE)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MltAsE&gt; methylmap &lt;- data.frame(</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MltAsE+     primary = c("Jack", "Jack", "Jill", "Barbara", "Bob"),</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MltAsE+     colname = c("methyl1", "methyl2", "methyl3", "methyl4", "methyl5"),</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MltAsE+     stringsAsFactors = FALSE)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MltAsE&gt; rnamap &lt;- data.frame(</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MltAsE+     primary = c("Jack", "Jill", "Bob", "Barbara"),</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MltAsE+     colname = c("samparray1", "samparray2", "samparray3", "samparray4"),</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MltAsE+     stringsAsFactors = FALSE)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MltAsE&gt; gistmap &lt;- data.frame(</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MltAsE+     primary = c("Jack", "Bob", "Jill"),</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MltAsE+     colname = c("samp0", "samp1", "samp2"),</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MltAsE+     stringsAsFactors = FALSE)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MltAsE&gt; ## Combine as a named list and convert to a DataFrame</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MltAsE&gt; maplist &lt;- list(Affy = exprmap, Methyl450k = methylmap,</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MltAsE+     RNASeqGene = rnamap, GISTIC = gistmap)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MltAsE&gt; ## Create a sampleMap</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MltAsE&gt; sampMap &lt;- listToMap(maplist)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MltAsE&gt; ## Create an example phenotype data</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MltAsE&gt; colDat &lt;- data.frame(sex = c("M", "F", "M", "F"), age = 38:41,</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MltAsE+     row.names = c("Jack", "Jill", "Bob", "Barbara"))</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MltAsE&gt; ## Create a MultiAssayExperiment instance</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MltAsE&gt; mae &lt;- MultiAssayExperiment(experiments = ExpList, colData = colDat,</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MltAsE+     sampleMap = sampMap)</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/stats/complete.cases.html'>complete.cases</a></span><span class='op'>(</span><span class='va'>mae</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1]  TRUE  TRUE  TRUE FALSE</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>isEmpty</span><span class='op'>(</span><span class='fu'><a href='MultiAssayExperiment.html'>MultiAssayExperiment</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## renaming biological units (primary)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>mae2</span> <span class='op'>&lt;-</span> <span class='fu'>renamePrimary</span><span class='op'>(</span><span class='va'>mae</span>, <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>"pt"</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>colData</span><span class='op'>(</span><span class='va'>mae2</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> DataFrame with 4 rows and 2 columns</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             sex       age</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     &lt;character&gt; &lt;integer&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> pt1           M        38</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> pt2           F        39</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> pt3           M        40</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> pt4           F        41</span>
+<span class='r-in'><span class='fu'><a href='MultiAssayExperiment-methods.html'>sampleMap</a></span><span class='op'>(</span><span class='va'>mae2</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> DataFrame with 16 rows and 3 columns</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          assay     primary     colname</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       &lt;factor&gt; &lt;character&gt; &lt;character&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1   Affy               pt1      array1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2   Affy               pt2      array2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3   Affy               pt4      array3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4   Affy               pt3      array4</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5   Methyl450k         pt1     methyl1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ...        ...         ...         ...</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 12  RNASeqGene         pt3  samparray3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 13  RNASeqGene         pt4  samparray4</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 14  GISTIC             pt1       samp0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 15  GISTIC             pt3       samp1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 16  GISTIC             pt2       samp2</span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## renaming observational units (colname)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>mae2</span> <span class='op'>&lt;-</span> <span class='fu'>renameColname</span><span class='op'>(</span><span class='va'>mae</span>, i <span class='op'>=</span> <span class='st'>"Affy"</span>, <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>"ARRAY"</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span><span class='op'>(</span><span class='va'>mae2</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> CharacterList of length 4</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [["Affy"]] ARRAY1 ARRAY2 ARRAY3 ARRAY4</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [["Methyl450k"]] methyl1 methyl2 methyl3 methyl4 methyl5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [["RNASeqGene"]] samparray1 samparray2 samparray3 samparray4</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [["GISTIC"]] samp0 samp1 samp2</span>
+<span class='r-in'><span class='fu'><a href='MultiAssayExperiment-methods.html'>sampleMap</a></span><span class='op'>(</span><span class='va'>mae2</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> DataFrame with 16 rows and 3 columns</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          assay     primary     colname</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       &lt;factor&gt; &lt;character&gt; &lt;character&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1   Affy              Jack      ARRAY1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2   Affy              Jill      ARRAY2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3   Affy           Barbara      ARRAY3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4   Affy               Bob      ARRAY4</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5   Methyl450k        Jack     methyl1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ...        ...         ...         ...</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 12  RNASeqGene         Bob  samparray3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 13  RNASeqGene     Barbara  samparray4</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 14  GISTIC            Jack       samp0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 15  GISTIC             Bob       samp1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 16  GISTIC            Jill       samp2</span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>patts</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span></span>
+<span class='r-in'>    normals <span class='op'>=</span> <span class='st'>"TCGA-OR-[A-Z0-9]{4}-11"</span>,</span>
+<span class='r-in'>    tumors <span class='op'>=</span> <span class='st'>"TCGA-OR-[A-Z0-9]{4}-01"</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>hits</span> <span class='op'>&lt;-</span> <span class='fu'>makeHitList</span><span class='op'>(</span><span class='va'>miniACC</span>, <span class='va'>patts</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>splitAssays</span><span class='op'>(</span><span class='va'>miniACC</span>, <span class='va'>hits</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A MultiAssayExperiment object of 5 listed</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  experiments with user-defined names and respective classes.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Containing an ExperimentList class object of length 5:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] tumors_RNASeq2GeneNorm: SummarizedExperiment with 198 rows and 71 columns</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [2] tumors_gistict: SummarizedExperiment with 198 rows and 82 columns</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [3] tumors_RPPAArray: SummarizedExperiment with 33 rows and 40 columns</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [4] tumors_Mutations: matrix with 97 rows and 81 columns</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [5] tumors_miRNASeqGene: SummarizedExperiment with 471 rows and 72 columns</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Functionality:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  experiments() - obtain the ExperimentList instance</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  colData() - the primary/phenotype DataFrame</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  sampleMap() - the sample coordination DataFrame</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  `$`, `[`, `[[` - extract colData columns, subset, or experiment</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  *Format() - convert into a long or wide DataFrame</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  assays() - convert ExperimentList to a SimpleList of matrices</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  exportClass() - save data to flat files</span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

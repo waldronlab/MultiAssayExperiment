@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MultiAssayExperiment</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.18.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.20.0</span>
       </span>
     </div>
 
@@ -77,7 +77,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/waldronlab/MultiAssayExperiment">
-    <span class="fas fa-github fa-lg"></span>
+    <span class="fa fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -91,13 +91,13 @@
 
       
 
-      </header><script src="QuickStartMultiAssay_files/header-attrs-2.8/header-attrs.js"></script><div class="row">
+      </header><script src="QuickStartMultiAssay_files/header-attrs-2.11/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>MultiAssayExperiment: Quick Start Guide</h1>
                         <h4 class="author">Marcel Ramos &amp; Levi Waldron</h4>
             
-            <h4 class="date">May 30, 2021</h4>
+            <h4 class="date">November 04, 2021</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/waldronlab/MultiAssayExperiment/blob/master/vignettes/QuickStartMultiAssay.Rmd"><code>vignettes/QuickStartMultiAssay.Rmd</code></a></small>
       <div class="hidden name"><code>QuickStartMultiAssay.Rmd</code></div>
@@ -140,14 +140,14 @@
 ##  `$`, `[`, `[[` - extract colData columns, subset, or experiment
 ##  *Format() - convert into a long or wide DataFrame
 ##  assays() - convert ExperimentList to a SimpleList of matrices
-##  exportClass() - save all data to files</code></pre>
+##  exportClass() - save data to flat files</code></pre>
 <div id="component-slots" class="section level1">
 <h1 class="hasAnchor">
 <a href="#component-slots" class="anchor"></a>Component slots</h1>
 <div id="coldata---information-on-biological-units" class="section level2">
 <h2 class="hasAnchor">
 <a href="#coldata---information-on-biological-units" class="anchor"></a>colData - information on biological units</h2>
-<p>A <code>DataFrame</code> describing the characteristics of biological units, for example clinical data for patients. In the prepared datasets from <a href="https://cancergenome.nih.gov/">The Cancer Genome Atlas</a>, each row is one patient and each column is a clinical, pathological, subtype, or other variable. The <code><a href="https://rdrr.io/r/base/Extract.html">$</a></code> function provides a shortcut for accessing or setting <code>colData</code> columns.</p>
+<p>A <code>DataFrame</code> describing the characteristics of biological units, for example clinical data for patients. In the prepared datasets from <a href="https://cancergenome.nih.gov/">The Cancer Genome Atlas</a>, each row is one patient and each column is a clinical, pathological, subtype, or other variable. The <code>$</code> function provides a shortcut for accessing or setting <code>colData</code> columns.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html">colData</a></span><span class="op">(</span><span class="va">miniACC</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span></code></pre></div>
 <pre><code>## DataFrame with 4 rows and 4 columns
@@ -158,7 +158,7 @@
 ## TCGA-OR-A5J3 TCGA-OR-A5J3             23            0            NA
 ## TCGA-OR-A5J4 TCGA-OR-A5J4             23            1           423</code></pre>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">miniACC</span><span class="op">$</span><span class="va">race</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/table.html">table</a></span><span class="op">(</span><span class="va">miniACC</span><span class="op">$</span><span class="va">race</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
 ##                     asian black or african american                     white 
 ##                         2                         1                        78</code></pre>
@@ -176,7 +176,7 @@
 ##  [3] RPPAArray: SummarizedExperiment with 33 rows and 46 columns
 ##  [4] Mutations: matrix with 97 rows and 90 columns
 ##  [5] miRNASeqGene: SummarizedExperiment with 471 rows and 80 columns</code></pre>
-<p><em>Key points:</em> * One matrix-like dataset per list element (although they do not even need to be matrix-like, see for example the <code>RaggedExperiment</code> package) * One matrix column per assayed specimen. Each matrix column must correspond to exactly one row of <code>colData</code>: in other words, you must know which patient or cell line the observation came from. However, multiple columns can come from the same patient, or there can be no data for that patient. * Matrix rows correspond to variables, e.g. genes or genomic ranges * <code>ExperimentList</code> elements can be genomic range-based (e.g. <code>SummarizedExperiment::RangedSummarizedExperiment-class</code> or <code>RaggedExperiment::RaggedExperiment-class</code>) or ID-based data (e.g. <code>SummarizedExperiment::SummarizedExperiment-class</code>, <code>Biobase::eSet-class</code> <code>base::matrix-class</code>, <code>DelayedArray::DelayedArray-class</code>, and derived classes) * Any data class can be included in the <code>ExperimentList</code>, as long as it supports: single-bracket subsetting (<code><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html">[</a></code>), <code>dimnames</code>, and <code>dim</code>. Most data classes defined in Bioconductor meet these requirements.</p>
+<p><em>Key points:</em> * One matrix-like dataset per list element (although they do not even need to be matrix-like, see for example the <code>RaggedExperiment</code> package) * One matrix column per assayed specimen. Each matrix column must correspond to exactly one row of <code>colData</code>: in other words, you must know which patient or cell line the observation came from. However, multiple columns can come from the same patient, or there can be no data for that patient. * Matrix rows correspond to variables, e.g. genes or genomic ranges * <code>ExperimentList</code> elements can be genomic range-based (e.g. <code>SummarizedExperiment::RangedSummarizedExperiment-class</code> or <code>RaggedExperiment::RaggedExperiment-class</code>) or ID-based data (e.g. <code>SummarizedExperiment::SummarizedExperiment-class</code>, <code>Biobase::eSet-class</code> <code>base::matrix-class</code>, <code>DelayedArray::DelayedArray-class</code>, and derived classes) * Any data class can be included in the <code>ExperimentList</code>, as long as it supports: single-bracket subsetting (<code>[</code>), <code>dimnames</code>, and <code>dim</code>. Most data classes defined in Bioconductor meet these requirements.</p>
 </div>
 <div id="samplemap---relationship-graph" class="section level2">
 <h2 class="hasAnchor">
@@ -250,7 +250,9 @@
 <code class="sourceCode R"><span class="va">miniACC</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html">c</a></span><span class="op">(</span><span class="st">"MAPK14"</span>, <span class="st">"IGFBP2"</span><span class="op">)</span>, , <span class="op">]</span></code></pre></div>
 <p>The following will keep only patients of pathological stage iv, and all their associated assays:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">miniACC</span><span class="op">[</span>, <span class="va">miniACC</span><span class="op">$</span><span class="va">pathologic_stage</span> <span class="op">==</span> <span class="st">"stage iv"</span>, <span class="op">]</span></code></pre></div>
+<code class="sourceCode R"><span class="va">stg4</span> <span class="op">&lt;-</span> <span class="va">miniACC</span><span class="op">$</span><span class="va">pathologic_stage</span> <span class="op">==</span> <span class="st">"stage iv"</span>
+<span class="co"># remove NA values from vector</span>
+<span class="va">miniACC</span><span class="op">[</span>, <span class="va">stg4</span> <span class="op">&amp;</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">stg4</span><span class="op">)</span>, <span class="op">]</span></code></pre></div>
 <p>And the following will keep only the RNA-seq dataset, and only patients for which this assay is available:</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">miniACC</span><span class="op">[</span>, , <span class="st">"RNASeq2GeneNorm"</span><span class="op">]</span></code></pre></div>
@@ -268,7 +270,7 @@
 <h2 class="hasAnchor">
 <a href="#double-bracket" class="anchor"></a>Double bracket <code>[[</code>
 </h2>
-<p>The “double bracket” method (<code><a href="https://rdrr.io/r/base/Extract.html">[[</a></code>) is a convenience function for extracting a single element of the <code>MultiAssayExperiment</code> <code>ExperimentList</code>. It avoids the use of <code>experiments(mae)[[1L]]</code>. For example, both of the following extract the <code>ExpressionSet</code> object containing RNA-seq data:</p>
+<p>The “double bracket” method (<code>[[</code>) is a convenience function for extracting a single element of the <code>MultiAssayExperiment</code> <code>ExperimentList</code>. It avoids the use of <code>experiments(mae)[[1L]]</code>. For example, both of the following extract the <code>ExpressionSet</code> object containing RNA-seq data:</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">miniACC</span><span class="op">[[</span><span class="fl">1L</span><span class="op">]</span><span class="op">]</span>  <span class="co">#or equivalently, miniACC[["RNASeq2GeneNorm"]]</span></code></pre></div>
 <pre><code>## class: SummarizedExperiment 
@@ -292,9 +294,9 @@
 <p>The above logical vector could be used for patient subsetting. More simply, <code><a href="../reference/MultiAssayExperiment-helpers.html">intersectColumns()</a></code> will select complete cases and rearrange each <code>ExperimentList</code> element so its columns correspond exactly to rows of <code>colData</code> in the same order:</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">accmatched</span> <span class="op">=</span> <span class="fu"><a href="../reference/MultiAssayExperiment-helpers.html">intersectColumns</a></span><span class="op">(</span><span class="va">miniACC</span><span class="op">)</span></code></pre></div>
-<p>Note, the column names of the assays in <code>accmatched</code> are not the same because of assay-specific identifiers, but they have been automatically re-arranged to correspond to the same patients. In these TCGA assays, the first three <code><a href="https://rdrr.io/r/base/Arithmetic.html">-</a></code> delimited positions correspond to patient, ie the first patient is <em>TCGA-OR-A5J2</em>:</p>
+<p>Note, the column names of the assays in <code>accmatched</code> are not the same because of assay-specific identifiers, but they have been automatically re-arranged to correspond to the same patients. In these TCGA assays, the first three <code>-</code> delimited positions correspond to patient, ie the first patient is <em>TCGA-OR-A5J2</em>:</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">accmatched</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html">colnames</a></span><span class="op">(</span><span class="va">accmatched</span><span class="op">)</span></code></pre></div>
 <pre><code>## CharacterList of length 5
 ## [["RNASeq2GeneNorm"]] TCGA-OR-A5J2-01A-11R-A29S-07 ...
 ## [["gistict"]] TCGA-OR-A5J2-01A-11D-A29H-01 ... TCGA-PK-A5HA-01A-11D-A29H-01
@@ -314,7 +316,7 @@
 <pre><code>## harmonizing input:
 ##   removing 126 sampleMap rows not in names(experiments)</code></pre>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">accmatched2</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html">rownames</a></span><span class="op">(</span><span class="va">accmatched2</span><span class="op">)</span></code></pre></div>
 <pre><code>## CharacterList of length 3
 ## [["RNASeq2GeneNorm"]] DIRAS3 G6PD KDR ERBB3 AKT1S1 ... RET CDKN2A MACC1 CHGA
 ## [["gistict"]] DIRAS3 G6PD KDR ERBB3 AKT1S1 ... PREX1 RET CDKN2A MACC1 CHGA
@@ -339,7 +341,7 @@
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html">assays</a></span><span class="op">(</span><span class="va">miniACC</span><span class="op">)</span></code></pre></div>
 <pre><code>## List of length 5
 ## names(5): RNASeq2GeneNorm gistict RPPAArray Mutations miRNASeqGene</code></pre>
-<p><em>Key point:</em> * Whereas the <code><a href="https://rdrr.io/r/base/Extract.html">[[</a></code> returned an assay as its original class, <code><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html">assay()</a></code> and <code><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html">assays()</a></code> convert the assay data to matrix form.</p>
+<p><em>Key point:</em> * Whereas the <code>[[</code> returned an assay as its original class, <code><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html">assay()</a></code> and <code><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html">assays()</a></code> convert the assay data to matrix form.</p>
 <p style="text-align: right;">
 <a href="#header">back to top</a>
 </p>
@@ -362,7 +364,7 @@
 <tr class="even">
 <td><code>colData</code></td>
 <td>
-<code><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html">colData()</a></code> and <code><a href="https://rdrr.io/r/base/Extract.html">$</a></code> *</td>
+<code><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html">colData()</a></code> and <code>$</code> *</td>
 </tr>
 <tr class="odd">
 <td><code>sampleMap</code></td>
@@ -374,7 +376,7 @@
 </tr>
 </tbody>
 </table>
-<p>__*__ The <code><a href="https://rdrr.io/r/base/Extract.html">$</a></code> operator on a <code>MultiAssayExperiment</code> returns a single column of the <code>colData</code>.</p>
+<p>__*__ The <code>$</code> operator on a <code>MultiAssayExperiment</code> returns a single column of the <code>colData</code>.</p>
 </div>
 <div id="transformation-reshaping" class="section level1">
 <h1 class="hasAnchor">
@@ -506,7 +508,7 @@
 ##  `$`, `[`, `[[` - extract colData columns, subset, or experiment
 ##  *Format() - convert into a long or wide DataFrame
 ##  assays() - convert ExperimentList to a SimpleList of matrices
-##  exportClass() - save all data to files</code></pre>
+##  exportClass() - save data to flat files</code></pre>
 </div>
 <div id="prepmultiassay---constructor-function-helper" class="section level2">
 <h2 class="hasAnchor">
@@ -552,13 +554,13 @@
   <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/therneau/survival">survival</a></span><span class="op">)</span>
   <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rpkgs.datanovia.com/survminer/index.html">survminer</a></span><span class="op">)</span>
 <span class="op">}</span><span class="op">)</span>
-<span class="va">coldat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html">colData</a></span><span class="op">(</span><span class="va">miniACC</span><span class="op">)</span><span class="op">)</span>
+<span class="va">coldat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html">colData</a></span><span class="op">(</span><span class="va">miniACC</span><span class="op">)</span><span class="op">)</span>
 <span class="va">coldat</span><span class="op">$</span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">miniACC</span><span class="op">$</span><span class="va">days_to_death</span>, <span class="va">miniACC</span><span class="op">$</span><span class="va">vital_status</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html">colData</a></span><span class="op">(</span><span class="va">miniACC</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/DataFrame-class.html">DataFrame</a></span><span class="op">(</span><span class="va">coldat</span><span class="op">)</span></code></pre></div>
 <p>And remove any patients missing overall survival information:</p>
 <div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">miniACC</span> <span class="op">&lt;-</span> <span class="va">miniACC</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/stats/complete.cases.html">complete.cases</a></span><span class="op">(</span><span class="va">coldat</span><span class="op">$</span><span class="va">y</span><span class="op">)</span>, <span class="op">]</span>
-<span class="va">coldat</span> <span class="op">&lt;-</span> <span class="fu">as</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html">colData</a></span><span class="op">(</span><span class="va">miniACC</span><span class="op">)</span>, <span class="st">"data.frame"</span><span class="op">)</span></code></pre></div>
+<span class="va">coldat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/methods/as.html">as</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html">colData</a></span><span class="op">(</span><span class="va">miniACC</span><span class="op">)</span>, <span class="st">"data.frame"</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/survfit.html">survfit</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">pathology_N_stage</span>, data <span class="op">=</span> <span class="va">coldat</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/survminer/man/ggsurvplot.html">ggsurvplot</a></span><span class="op">(</span><span class="va">fit</span>, data <span class="op">=</span> <span class="va">coldat</span>, risk.table <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
@@ -618,9 +620,9 @@
 <a href="#session-info" class="anchor"></a>Session info</h1>
 <div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<pre><code>## R version 4.1.0 (2021-05-18)
+<pre><code>## R version 4.1.1 (2021-08-10)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
-## Running under: Ubuntu 20.04.2 LTS
+## Running under: Ubuntu 20.04.3 LTS
 ## 
 ## Matrix products: default
 ## BLAS/LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.8.so
@@ -634,50 +636,50 @@
 ## [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
 ## 
 ## attached base packages:
-## [1] parallel  stats4    stats     graphics  grDevices utils     datasets 
-## [8] methods   base     
+## [1] stats4    stats     graphics  grDevices utils     datasets  methods  
+## [8] base     
 ## 
 ## other attached packages:
 ##  [1] survminer_0.4.9             ggpubr_0.4.0               
-##  [3] ggplot2_3.3.3               survival_3.2-11            
-##  [5] UpSetR_1.4.0                MultiAssayExperiment_1.18.0
-##  [7] SummarizedExperiment_1.22.0 Biobase_2.52.0             
-##  [9] GenomicRanges_1.44.0        GenomeInfoDb_1.28.0        
-## [11] IRanges_2.26.0              S4Vectors_0.30.0           
-## [13] BiocGenerics_0.38.0         MatrixGenerics_1.4.0       
-## [15] matrixStats_0.58.0          BiocStyle_2.20.0           
+##  [3] ggplot2_3.3.5               survival_3.2-13            
+##  [5] UpSetR_1.4.0                MultiAssayExperiment_1.20.0
+##  [7] SummarizedExperiment_1.24.0 Biobase_2.54.0             
+##  [9] GenomicRanges_1.46.0        GenomeInfoDb_1.30.0        
+## [11] IRanges_2.28.0              S4Vectors_0.32.0           
+## [13] BiocGenerics_0.40.0         MatrixGenerics_1.6.0       
+## [15] matrixStats_0.61.0          BiocStyle_2.22.0           
 ## 
 ## loaded via a namespace (and not attached):
 ##  [1] ggtext_0.1.1           bitops_1.0-7           fs_1.5.0              
-##  [4] rprojroot_2.0.2        tools_4.1.0            backports_1.2.1       
-##  [7] utf8_1.2.1             R6_2.5.0               colorspace_2.0-1      
+##  [4] rprojroot_2.0.2        tools_4.1.1            backports_1.3.0       
+##  [7] utf8_1.2.2             R6_2.5.1               colorspace_2.0-2      
 ## [10] withr_2.4.2            tidyselect_1.1.1       gridExtra_2.3         
-## [13] curl_4.3.1             compiler_4.1.0         textshaping_0.3.4     
-## [16] xml2_1.3.2             desc_1.3.0             DelayedArray_0.18.0   
-## [19] labeling_0.4.2         bookdown_0.22          scales_1.1.1          
-## [22] survMisc_0.5.5         pkgdown_1.6.1          systemfonts_1.0.2     
-## [25] stringr_1.4.0          digest_0.6.27          foreign_0.8-81        
-## [28] rmarkdown_2.8          rio_0.5.26             XVector_0.32.0        
-## [31] pkgconfig_2.0.3        htmltools_0.5.1.1      fastmap_1.1.0         
-## [34] highr_0.9              rlang_0.4.11           readxl_1.3.1          
-## [37] farver_2.1.0           generics_0.1.0         zoo_1.8-9             
-## [40] dplyr_1.0.6            zip_2.1.1              car_3.0-10            
-## [43] RCurl_1.98-1.3         magrittr_2.0.1         GenomeInfoDbData_1.2.6
-## [46] Matrix_1.3-3           Rcpp_1.0.6             munsell_0.5.0         
-## [49] fansi_0.5.0            abind_1.4-5            lifecycle_1.0.0       
-## [52] stringi_1.6.2          yaml_2.2.1             carData_3.0-4         
-## [55] zlibbioc_1.38.0        plyr_1.8.6             grid_4.1.0            
-## [58] forcats_0.5.1          crayon_1.4.1           lattice_0.20-44       
-## [61] haven_2.4.1            splines_4.1.0          gridtext_0.1.4        
-## [64] hms_1.1.0              knitr_1.33             pillar_1.6.1          
-## [67] markdown_1.1           ggsignif_0.6.1         glue_1.4.2            
-## [70] evaluate_0.14          data.table_1.14.0      BiocManager_1.30.15   
-## [73] vctrs_0.3.8            cellranger_1.1.0       gtable_0.3.0          
-## [76] purrr_0.3.4            tidyr_1.1.3            km.ci_0.5-2           
-## [79] cachem_1.0.5           xfun_0.23              openxlsx_4.2.3        
-## [82] xtable_1.8-4           broom_0.7.6            rstatix_0.7.0         
-## [85] ragg_1.1.2             tibble_3.1.2           KMsurv_0.1-5          
-## [88] memoise_2.0.0          ellipsis_0.3.2</code></pre>
+## [13] curl_4.3.2             compiler_4.1.1         textshaping_0.3.6     
+## [16] xml2_1.3.2             desc_1.4.0             DelayedArray_0.20.0   
+## [19] labeling_0.4.2         bookdown_0.24          scales_1.1.1          
+## [22] survMisc_0.5.5         pkgdown_1.6.1          systemfonts_1.0.3     
+## [25] stringr_1.4.0          digest_0.6.28          foreign_0.8-81        
+## [28] rmarkdown_2.11         rio_0.5.27             XVector_0.34.0        
+## [31] pkgconfig_2.0.3        htmltools_0.5.2        fastmap_1.1.0         
+## [34] highr_0.9              rlang_0.4.12           readxl_1.3.1          
+## [37] jquerylib_0.1.4        farver_2.1.0           generics_0.1.1        
+## [40] zoo_1.8-9              dplyr_1.0.7            zip_2.2.0             
+## [43] car_3.0-11             RCurl_1.98-1.5         magrittr_2.0.1        
+## [46] GenomeInfoDbData_1.2.7 Matrix_1.3-4           Rcpp_1.0.7            
+## [49] munsell_0.5.0          fansi_0.5.0            abind_1.4-5           
+## [52] lifecycle_1.0.1        stringi_1.7.5          yaml_2.2.1            
+## [55] carData_3.0-4          zlibbioc_1.40.0        plyr_1.8.6            
+## [58] grid_4.1.1             forcats_0.5.1          crayon_1.4.2          
+## [61] lattice_0.20-45        haven_2.4.3            splines_4.1.1         
+## [64] gridtext_0.1.4         hms_1.1.1              knitr_1.36            
+## [67] pillar_1.6.4           markdown_1.1           ggsignif_0.6.3        
+## [70] glue_1.4.2             evaluate_0.14          data.table_1.14.2     
+## [73] BiocManager_1.30.16    vctrs_0.3.8            cellranger_1.1.0      
+## [76] gtable_0.3.0           purrr_0.3.4            tidyr_1.1.4           
+## [79] km.ci_0.5-2            cachem_1.0.6           xfun_0.28             
+## [82] openxlsx_4.2.4         xtable_1.8-4           broom_0.7.10          
+## [85] rstatix_0.7.0          ragg_1.2.0             tibble_3.1.5          
+## [88] KMsurv_0.1-5           memoise_2.0.0          ellipsis_0.3.2</code></pre>
 <p style="text-align: right;">
 <a href="#header">back to top</a>
 </p>

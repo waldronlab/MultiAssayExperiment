@@ -73,7 +73,7 @@ MultiAssayExperiment" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MultiAssayExperiment</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.18.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.20.0</span>
       </span>
     </div>
 
@@ -119,7 +119,7 @@ MultiAssayExperiment" />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/waldronlab/MultiAssayExperiment">
-    <span class="fas fa-github fa-lg"></span>
+    <span class="fa fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -238,7 +238,7 @@ for subsetting by assays</p></td>
     </tr>
     <tr>
       <th>drop</th>
-      <td><p>logical (default FALSE) whether to drop empty assay elements
+      <td><p>logical (default FALSE) whether to drop all empty assay elements
 in the <code>ExperimentList</code></p></td>
     </tr>
     <tr>
@@ -271,291 +271,311 @@ The order of the subsetting elements in the
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>## Load the example MultiAssayExperiment</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/example.html'>example</a></span><span class='op'>(</span><span class='st'>"MultiAssayExperiment"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; 
-#&gt; MltAsE&gt; ## Run the example ExperimentList
-#&gt; MltAsE&gt; example("ExperimentList")
-#&gt; 
-#&gt; ExprmL&gt; ## Create an empty ExperimentList instance
-#&gt; ExprmL&gt; ExperimentList()
-#&gt; ExperimentList class object of length 0:
-#&gt;  
-#&gt; ExprmL&gt; ## Create array matrix and AnnotatedDataFrame to create an ExpressionSet class
-#&gt; ExprmL&gt; arraydat &lt;- matrix(data = seq(101, length.out = 20), ncol = 4,
-#&gt; ExprmL+     dimnames = list(
-#&gt; ExprmL+         c("ENST00000294241", "ENST00000355076",
-#&gt; ExprmL+         "ENST00000383706","ENST00000234812", "ENST00000383323"),
-#&gt; ExprmL+         c("array1", "array2", "array3", "array4")
-#&gt; ExprmL+     ))
-#&gt; 
-#&gt; ExprmL&gt; colDat &lt;- data.frame(slope53 = rnorm(4),
-#&gt; ExprmL+     row.names = c("array1", "array2", "array3", "array4"))
-#&gt; 
-#&gt; ExprmL&gt; ## SummarizedExperiment constructor
-#&gt; ExprmL&gt; exprdat &lt;- SummarizedExperiment::SummarizedExperiment(arraydat,
-#&gt; ExprmL+     colData = colDat)
-#&gt; 
-#&gt; ExprmL&gt; ## Create a sample methylation dataset
-#&gt; ExprmL&gt; methyldat &lt;- matrix(data = seq(1, length.out = 25), ncol = 5,
-#&gt; ExprmL+     dimnames = list(
-#&gt; ExprmL+         c("ENST00000355076", "ENST00000383706",
-#&gt; ExprmL+           "ENST00000383323", "ENST00000234812", "ENST00000294241"),
-#&gt; ExprmL+         c("methyl1", "methyl2", "methyl3",
-#&gt; ExprmL+           "methyl4", "methyl5")
-#&gt; ExprmL+     ))
-#&gt; 
-#&gt; ExprmL&gt; ## Create a sample RNASeqGene dataset
-#&gt; ExprmL&gt; rnadat &lt;- matrix(
-#&gt; ExprmL+     data = sample(c(46851, 5, 19, 13, 2197, 507,
-#&gt; ExprmL+         84318, 126, 17, 21, 23979, 614), size = 20, replace = TRUE),
-#&gt; ExprmL+     ncol = 4,
-#&gt; ExprmL+     dimnames = list(
-#&gt; ExprmL+         c("XIST", "RPS4Y1", "KDM5D", "ENST00000383323", "ENST00000234812"),
-#&gt; ExprmL+         c("samparray1", "samparray2", "samparray3", "samparray4")
-#&gt; ExprmL+     ))
-#&gt; 
-#&gt; ExprmL&gt; ## Create a mock RangedSummarizedExperiment from a data.frame
-#&gt; ExprmL&gt; rangedat &lt;- data.frame(chr="chr2", start = 11:15, end = 12:16,
-#&gt; ExprmL+     strand = c("+", "-", "+", "*", "."),
-#&gt; ExprmL+     samp0 = c(0,0,1,1,1), samp1 = c(1,0,1,0,1), samp2 = c(0,1,0,1,0),
-#&gt; ExprmL+     row.names = c(paste0("ENST", "00000", 135411:135414), "ENST00000383323"))
-#&gt; 
-#&gt; ExprmL&gt; rangeSE &lt;- SummarizedExperiment::makeSummarizedExperimentFromDataFrame(rangedat)
-#&gt; 
-#&gt; ExprmL&gt; ## Combine to a named list and call the ExperimentList constructor function
-#&gt; ExprmL&gt; assayList &lt;- list(Affy = exprdat, Methyl450k = methyldat, RNASeqGene = rnadat,
-#&gt; ExprmL+                 GISTIC = rangeSE)
-#&gt; 
-#&gt; ExprmL&gt; ## Use the ExperimentList constructor
-#&gt; ExprmL&gt; ExpList &lt;- ExperimentList(assayList)
-#&gt; 
-#&gt; MltAsE&gt; ## Create sample maps for each experiment
-#&gt; MltAsE&gt; exprmap &lt;- data.frame(
-#&gt; MltAsE+     primary = c("Jack", "Jill", "Barbara", "Bob"),
-#&gt; MltAsE+     colname = c("array1", "array2", "array3", "array4"),
-#&gt; MltAsE+     stringsAsFactors = FALSE)
-#&gt; 
-#&gt; MltAsE&gt; methylmap &lt;- data.frame(
-#&gt; MltAsE+     primary = c("Jack", "Jack", "Jill", "Barbara", "Bob"),
-#&gt; MltAsE+     colname = c("methyl1", "methyl2", "methyl3", "methyl4", "methyl5"),
-#&gt; MltAsE+     stringsAsFactors = FALSE)
-#&gt; 
-#&gt; MltAsE&gt; rnamap &lt;- data.frame(
-#&gt; MltAsE+     primary = c("Jack", "Jill", "Bob", "Barbara"),
-#&gt; MltAsE+     colname = c("samparray1", "samparray2", "samparray3", "samparray4"),
-#&gt; MltAsE+     stringsAsFactors = FALSE)
-#&gt; 
-#&gt; MltAsE&gt; gistmap &lt;- data.frame(
-#&gt; MltAsE+     primary = c("Jack", "Bob", "Jill"),
-#&gt; MltAsE+     colname = c("samp0", "samp1", "samp2"),
-#&gt; MltAsE+     stringsAsFactors = FALSE)
-#&gt; 
-#&gt; MltAsE&gt; ## Combine as a named list and convert to a DataFrame
-#&gt; MltAsE&gt; maplist &lt;- list(Affy = exprmap, Methyl450k = methylmap,
-#&gt; MltAsE+     RNASeqGene = rnamap, GISTIC = gistmap)
-#&gt; 
-#&gt; MltAsE&gt; ## Create a sampleMap
-#&gt; MltAsE&gt; sampMap &lt;- listToMap(maplist)
-#&gt; 
-#&gt; MltAsE&gt; ## Create an example phenotype data
-#&gt; MltAsE&gt; colDat &lt;- data.frame(sex = c("M", "F", "M", "F"), age = 38:41,
-#&gt; MltAsE+     row.names = c("Jack", "Jill", "Bob", "Barbara"))
-#&gt; 
-#&gt; MltAsE&gt; ## Create a MultiAssayExperiment instance
-#&gt; MltAsE&gt; mae &lt;- MultiAssayExperiment(experiments = ExpList, colData = colDat,
-#&gt; MltAsE+     sampleMap = sampMap)</div><div class='input'>
-<span class='co'>## Using experiment names</span>
-<span class='fu'>subsetByAssay</span><span class='op'>(</span><span class='va'>mae</span>, <span class='st'>"Affy"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: 'experiments' dropped; see 'metadata'</span></div><div class='output co'>#&gt; <span class='message'>harmonizing input:</span>
-#&gt; <span class='message'>  removing 12 sampleMap rows not in names(experiments)</span></div><div class='output co'>#&gt; A MultiAssayExperiment object of 1 listed
-#&gt;  experiment with a user-defined name and respective class.
-#&gt;  Containing an ExperimentList class object of length 1:
-#&gt;  [1] Affy: SummarizedExperiment with 5 rows and 4 columns
-#&gt; Functionality:
-#&gt;  experiments() - obtain the ExperimentList instance
-#&gt;  colData() - the primary/phenotype DataFrame
-#&gt;  sampleMap() - the sample coordination DataFrame
-#&gt;  `$`, `[`, `[[` - extract colData columns, subset, or experiment
-#&gt;  *Format() - convert into a long or wide DataFrame
-#&gt;  assays() - convert ExperimentList to a SimpleList of matrices
-#&gt;  exportClass() - save all data to files</div><div class='input'>
-<span class='co'>## Using numeric indices</span>
-<span class='fu'>subsetByAssay</span><span class='op'>(</span><span class='va'>mae</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: 'experiments' dropped; see 'metadata'</span></div><div class='output co'>#&gt; <span class='message'>harmonizing input:</span>
-#&gt; <span class='message'>  removing 7 sampleMap rows not in names(experiments)</span></div><div class='output co'>#&gt; A MultiAssayExperiment object of 2 listed
-#&gt;  experiments with user-defined names and respective classes.
-#&gt;  Containing an ExperimentList class object of length 2:
-#&gt;  [1] Affy: SummarizedExperiment with 5 rows and 4 columns
-#&gt;  [2] Methyl450k: matrix with 5 rows and 5 columns
-#&gt; Functionality:
-#&gt;  experiments() - obtain the ExperimentList instance
-#&gt;  colData() - the primary/phenotype DataFrame
-#&gt;  sampleMap() - the sample coordination DataFrame
-#&gt;  `$`, `[`, `[[` - extract colData columns, subset, or experiment
-#&gt;  *Format() - convert into a long or wide DataFrame
-#&gt;  assays() - convert ExperimentList to a SimpleList of matrices
-#&gt;  exportClass() - save all data to files</div><div class='input'>
-<span class='co'>## Using a logical vector</span>
-<span class='fu'>subsetByAssay</span><span class='op'>(</span><span class='va'>mae</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>TRUE</span>, <span class='cn'>FALSE</span>, <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: 'experiments' dropped; see 'metadata'</span></div><div class='output co'>#&gt; <span class='message'>harmonizing input:</span>
-#&gt; <span class='message'>  removing 5 sampleMap rows not in names(experiments)</span></div><div class='output co'>#&gt; A MultiAssayExperiment object of 3 listed
-#&gt;  experiments with user-defined names and respective classes.
-#&gt;  Containing an ExperimentList class object of length 3:
-#&gt;  [1] Affy: SummarizedExperiment with 5 rows and 4 columns
-#&gt;  [2] RNASeqGene: matrix with 5 rows and 4 columns
-#&gt;  [3] GISTIC: RangedSummarizedExperiment with 5 rows and 3 columns
-#&gt; Functionality:
-#&gt;  experiments() - obtain the ExperimentList instance
-#&gt;  colData() - the primary/phenotype DataFrame
-#&gt;  sampleMap() - the sample coordination DataFrame
-#&gt;  `$`, `[`, `[[` - extract colData columns, subset, or experiment
-#&gt;  *Format() - convert into a long or wide DataFrame
-#&gt;  assays() - convert ExperimentList to a SimpleList of matrices
-#&gt;  exportClass() - save all data to files</div><div class='input'>
-<span class='co'>## Subset by character vector (Jack)</span>
-<span class='fu'>subsetByColData</span><span class='op'>(</span><span class='va'>mae</span>, <span class='st'>"Jack"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; A MultiAssayExperiment object of 4 listed
-#&gt;  experiments with user-defined names and respective classes.
-#&gt;  Containing an ExperimentList class object of length 4:
-#&gt;  [1] Affy: SummarizedExperiment with 5 rows and 1 columns
-#&gt;  [2] Methyl450k: matrix with 5 rows and 2 columns
-#&gt;  [3] RNASeqGene: matrix with 5 rows and 1 columns
-#&gt;  [4] GISTIC: RangedSummarizedExperiment with 5 rows and 1 columns
-#&gt; Functionality:
-#&gt;  experiments() - obtain the ExperimentList instance
-#&gt;  colData() - the primary/phenotype DataFrame
-#&gt;  sampleMap() - the sample coordination DataFrame
-#&gt;  `$`, `[`, `[[` - extract colData columns, subset, or experiment
-#&gt;  *Format() - convert into a long or wide DataFrame
-#&gt;  assays() - convert ExperimentList to a SimpleList of matrices
-#&gt;  exportClass() - save all data to files</div><div class='input'>
-<span class='co'>## Subset by numeric index of colData rows (Jack and Bob)</span>
-<span class='fu'>subsetByColData</span><span class='op'>(</span><span class='va'>mae</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; A MultiAssayExperiment object of 4 listed
-#&gt;  experiments with user-defined names and respective classes.
-#&gt;  Containing an ExperimentList class object of length 4:
-#&gt;  [1] Affy: SummarizedExperiment with 5 rows and 2 columns
-#&gt;  [2] Methyl450k: matrix with 5 rows and 3 columns
-#&gt;  [3] RNASeqGene: matrix with 5 rows and 2 columns
-#&gt;  [4] GISTIC: RangedSummarizedExperiment with 5 rows and 2 columns
-#&gt; Functionality:
-#&gt;  experiments() - obtain the ExperimentList instance
-#&gt;  colData() - the primary/phenotype DataFrame
-#&gt;  sampleMap() - the sample coordination DataFrame
-#&gt;  `$`, `[`, `[[` - extract colData columns, subset, or experiment
-#&gt;  *Format() - convert into a long or wide DataFrame
-#&gt;  assays() - convert ExperimentList to a SimpleList of matrices
-#&gt;  exportClass() - save all data to files</div><div class='input'>
-<span class='co'>## Subset by logical indicator of colData rows (Jack and Jill)</span>
-<span class='fu'>subsetByColData</span><span class='op'>(</span><span class='va'>mae</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>TRUE</span>, <span class='cn'>TRUE</span>, <span class='cn'>FALSE</span>, <span class='cn'>FALSE</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; A MultiAssayExperiment object of 4 listed
-#&gt;  experiments with user-defined names and respective classes.
-#&gt;  Containing an ExperimentList class object of length 4:
-#&gt;  [1] Affy: SummarizedExperiment with 5 rows and 2 columns
-#&gt;  [2] Methyl450k: matrix with 5 rows and 3 columns
-#&gt;  [3] RNASeqGene: matrix with 5 rows and 2 columns
-#&gt;  [4] GISTIC: RangedSummarizedExperiment with 5 rows and 2 columns
-#&gt; Functionality:
-#&gt;  experiments() - obtain the ExperimentList instance
-#&gt;  colData() - the primary/phenotype DataFrame
-#&gt;  sampleMap() - the sample coordination DataFrame
-#&gt;  `$`, `[`, `[[` - extract colData columns, subset, or experiment
-#&gt;  *Format() - convert into a long or wide DataFrame
-#&gt;  assays() - convert ExperimentList to a SimpleList of matrices
-#&gt;  exportClass() - save all data to files</div><div class='input'>
-<span class='fu'>subsetByColumn</span><span class='op'>(</span><span class='va'>mae</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>Affy <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span>,
-    Methyl450k <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>5</span>,<span class='fl'>2</span><span class='op'>)</span>, RNASeqGene <span class='op'>=</span> <span class='fl'>2</span><span class='op'>:</span><span class='fl'>4</span>, GISTIC <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>harmonizing input:</span>
-#&gt; <span class='message'>  removing 7 sampleMap rows with 'colname' not in colnames of experiments</span></div><div class='output co'>#&gt; A MultiAssayExperiment object of 4 listed
-#&gt;  experiments with user-defined names and respective classes.
-#&gt;  Containing an ExperimentList class object of length 4:
-#&gt;  [1] Affy: SummarizedExperiment with 5 rows and 2 columns
-#&gt;  [2] Methyl450k: matrix with 5 rows and 3 columns
-#&gt;  [3] RNASeqGene: matrix with 5 rows and 3 columns
-#&gt;  [4] GISTIC: RangedSummarizedExperiment with 5 rows and 1 columns
-#&gt; Functionality:
-#&gt;  experiments() - obtain the ExperimentList instance
-#&gt;  colData() - the primary/phenotype DataFrame
-#&gt;  sampleMap() - the sample coordination DataFrame
-#&gt;  `$`, `[`, `[[` - extract colData columns, subset, or experiment
-#&gt;  *Format() - convert into a long or wide DataFrame
-#&gt;  assays() - convert ExperimentList to a SimpleList of matrices
-#&gt;  exportClass() - save all data to files</div><div class='input'>
-<span class='va'>subsetWith</span> <span class='op'>&lt;-</span> <span class='fu'>S4Vectors</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/S4Vectors/man/List-utils.html'>mendoapply</a></span><span class='op'>(</span><span class='va'>`[`</span>, <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span><span class='op'>(</span><span class='va'>mae</span><span class='op'>)</span>,
-    MoreArgs <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'>subsetByColumn</span><span class='op'>(</span><span class='va'>mae</span>, <span class='va'>subsetWith</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>harmonizing input:</span>
-#&gt; <span class='message'>  removing 8 sampleMap rows with 'colname' not in colnames of experiments</span>
-#&gt; <span class='message'>  removing 1 colData rownames not in sampleMap 'primary'</span></div><div class='output co'>#&gt; A MultiAssayExperiment object of 4 listed
-#&gt;  experiments with user-defined names and respective classes.
-#&gt;  Containing an ExperimentList class object of length 4:
-#&gt;  [1] Affy: SummarizedExperiment with 5 rows and 2 columns
-#&gt;  [2] Methyl450k: matrix with 5 rows and 2 columns
-#&gt;  [3] RNASeqGene: matrix with 5 rows and 2 columns
-#&gt;  [4] GISTIC: RangedSummarizedExperiment with 5 rows and 2 columns
-#&gt; Functionality:
-#&gt;  experiments() - obtain the ExperimentList instance
-#&gt;  colData() - the primary/phenotype DataFrame
-#&gt;  sampleMap() - the sample coordination DataFrame
-#&gt;  `$`, `[`, `[[` - extract colData columns, subset, or experiment
-#&gt;  *Format() - convert into a long or wide DataFrame
-#&gt;  assays() - convert ExperimentList to a SimpleList of matrices
-#&gt;  exportClass() - save all data to files</div><div class='input'>
-<span class='co'>## Use a GRanges object to subset rows where ranged data present</span>
-<span class='va'>egr</span> <span class='op'>&lt;-</span> <span class='fu'>GenomicRanges</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html'>GRanges</a></span><span class='op'>(</span>seqnames <span class='op'>=</span> <span class='st'>"chr2"</span>,
-    <span class='fu'>IRanges</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/IRanges/man/IRanges-constructor.html'>IRanges</a></span><span class='op'>(</span>start <span class='op'>=</span> <span class='fl'>11</span>, end <span class='op'>=</span> <span class='fl'>13</span><span class='op'>)</span>, strand <span class='op'>=</span> <span class='st'>"-"</span><span class='op'>)</span>
-<span class='fu'>subsetByRow</span><span class='op'>(</span><span class='va'>mae</span>, <span class='va'>egr</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; A MultiAssayExperiment object of 4 listed
-#&gt;  experiments with user-defined names and respective classes.
-#&gt;  Containing an ExperimentList class object of length 4:
-#&gt;  [1] Affy: SummarizedExperiment with 0 rows and 4 columns
-#&gt;  [2] Methyl450k: matrix with 0 rows and 5 columns
-#&gt;  [3] RNASeqGene: matrix with 0 rows and 4 columns
-#&gt;  [4] GISTIC: RangedSummarizedExperiment with 1 rows and 3 columns
-#&gt; Functionality:
-#&gt;  experiments() - obtain the ExperimentList instance
-#&gt;  colData() - the primary/phenotype DataFrame
-#&gt;  sampleMap() - the sample coordination DataFrame
-#&gt;  `$`, `[`, `[[` - extract colData columns, subset, or experiment
-#&gt;  *Format() - convert into a long or wide DataFrame
-#&gt;  assays() - convert ExperimentList to a SimpleList of matrices
-#&gt;  exportClass() - save all data to files</div><div class='input'>
-<span class='co'>## Use a logical vector (recycling used)</span>
-<span class='fu'>subsetByRow</span><span class='op'>(</span><span class='va'>mae</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>TRUE</span>, <span class='cn'>FALSE</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; A MultiAssayExperiment object of 4 listed
-#&gt;  experiments with user-defined names and respective classes.
-#&gt;  Containing an ExperimentList class object of length 4:
-#&gt;  [1] Affy: SummarizedExperiment with 3 rows and 4 columns
-#&gt;  [2] Methyl450k: matrix with 3 rows and 5 columns
-#&gt;  [3] RNASeqGene: matrix with 3 rows and 4 columns
-#&gt;  [4] GISTIC: RangedSummarizedExperiment with 3 rows and 3 columns
-#&gt; Functionality:
-#&gt;  experiments() - obtain the ExperimentList instance
-#&gt;  colData() - the primary/phenotype DataFrame
-#&gt;  sampleMap() - the sample coordination DataFrame
-#&gt;  `$`, `[`, `[[` - extract colData columns, subset, or experiment
-#&gt;  *Format() - convert into a long or wide DataFrame
-#&gt;  assays() - convert ExperimentList to a SimpleList of matrices
-#&gt;  exportClass() - save all data to files</div><div class='input'>
-<span class='co'>## Use a character vector</span>
-<span class='fu'>subsetByRow</span><span class='op'>(</span><span class='va'>mae</span>, <span class='st'>"ENST00000355076"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; A MultiAssayExperiment object of 4 listed
-#&gt;  experiments with user-defined names and respective classes.
-#&gt;  Containing an ExperimentList class object of length 4:
-#&gt;  [1] Affy: SummarizedExperiment with 1 rows and 4 columns
-#&gt;  [2] Methyl450k: matrix with 1 rows and 5 columns
-#&gt;  [3] RNASeqGene: matrix with 0 rows and 4 columns
-#&gt;  [4] GISTIC: RangedSummarizedExperiment with 0 rows and 3 columns
-#&gt; Functionality:
-#&gt;  experiments() - obtain the ExperimentList instance
-#&gt;  colData() - the primary/phenotype DataFrame
-#&gt;  sampleMap() - the sample coordination DataFrame
-#&gt;  `$`, `[`, `[[` - extract colData columns, subset, or experiment
-#&gt;  *Format() - convert into a long or wide DataFrame
-#&gt;  assays() - convert ExperimentList to a SimpleList of matrices
-#&gt;  exportClass() - save all data to files</div><div class='input'>
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='co'>## Load the example MultiAssayExperiment</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/example.html'>example</a></span><span class='op'>(</span><span class='st'>"MultiAssayExperiment"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MltAsE&gt; ## Run the example ExperimentList</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MltAsE&gt; example("ExperimentList")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL&gt; ## Create an empty ExperimentList instance</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL&gt; ExperimentList()</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExperimentList class object of length 0:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL&gt; ## Create array matrix and AnnotatedDataFrame to create an ExpressionSet class</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL&gt; arraydat &lt;- matrix(data = seq(101, length.out = 20), ncol = 4,</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL+     dimnames = list(</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL+         c("ENST00000294241", "ENST00000355076",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL+         "ENST00000383706","ENST00000234812", "ENST00000383323"),</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL+         c("array1", "array2", "array3", "array4")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL+     ))</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL&gt; colDat &lt;- data.frame(slope53 = rnorm(4),</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL+     row.names = c("array1", "array2", "array3", "array4"))</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL&gt; ## SummarizedExperiment constructor</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL&gt; exprdat &lt;- SummarizedExperiment::SummarizedExperiment(arraydat,</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL+     colData = colDat)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL&gt; ## Create a sample methylation dataset</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL&gt; methyldat &lt;- matrix(data = seq(1, length.out = 25), ncol = 5,</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL+     dimnames = list(</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL+         c("ENST00000355076", "ENST00000383706",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL+           "ENST00000383323", "ENST00000234812", "ENST00000294241"),</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL+         c("methyl1", "methyl2", "methyl3",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL+           "methyl4", "methyl5")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL+     ))</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL&gt; ## Create a sample RNASeqGene dataset</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL&gt; rnadat &lt;- matrix(</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL+     data = sample(c(46851, 5, 19, 13, 2197, 507,</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL+         84318, 126, 17, 21, 23979, 614), size = 20, replace = TRUE),</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL+     ncol = 4,</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL+     dimnames = list(</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL+         c("XIST", "RPS4Y1", "KDM5D", "ENST00000383323", "ENST00000234812"),</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL+         c("samparray1", "samparray2", "samparray3", "samparray4")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL+     ))</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL&gt; ## Create a mock RangedSummarizedExperiment from a data.frame</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL&gt; rangedat &lt;- data.frame(chr="chr2", start = 11:15, end = 12:16,</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL+     strand = c("+", "-", "+", "*", "."),</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL+     samp0 = c(0,0,1,1,1), samp1 = c(1,0,1,0,1), samp2 = c(0,1,0,1,0),</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL+     row.names = c(paste0("ENST", "00000", 135411:135414), "ENST00000383323"))</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL&gt; rangeSE &lt;- SummarizedExperiment::makeSummarizedExperimentFromDataFrame(rangedat)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL&gt; ## Combine to a named list and call the ExperimentList constructor function</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL&gt; assayList &lt;- list(Affy = exprdat, Methyl450k = methyldat, RNASeqGene = rnadat,</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL+                 GISTIC = rangeSE)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL&gt; ## Use the ExperimentList constructor</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ExprmL&gt; ExpList &lt;- ExperimentList(assayList)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MltAsE&gt; ## Create sample maps for each experiment</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MltAsE&gt; exprmap &lt;- data.frame(</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MltAsE+     primary = c("Jack", "Jill", "Barbara", "Bob"),</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MltAsE+     colname = c("array1", "array2", "array3", "array4"),</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MltAsE+     stringsAsFactors = FALSE)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MltAsE&gt; methylmap &lt;- data.frame(</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MltAsE+     primary = c("Jack", "Jack", "Jill", "Barbara", "Bob"),</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MltAsE+     colname = c("methyl1", "methyl2", "methyl3", "methyl4", "methyl5"),</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MltAsE+     stringsAsFactors = FALSE)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MltAsE&gt; rnamap &lt;- data.frame(</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MltAsE+     primary = c("Jack", "Jill", "Bob", "Barbara"),</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MltAsE+     colname = c("samparray1", "samparray2", "samparray3", "samparray4"),</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MltAsE+     stringsAsFactors = FALSE)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MltAsE&gt; gistmap &lt;- data.frame(</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MltAsE+     primary = c("Jack", "Bob", "Jill"),</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MltAsE+     colname = c("samp0", "samp1", "samp2"),</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MltAsE+     stringsAsFactors = FALSE)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MltAsE&gt; ## Combine as a named list and convert to a DataFrame</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MltAsE&gt; maplist &lt;- list(Affy = exprmap, Methyl450k = methylmap,</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MltAsE+     RNASeqGene = rnamap, GISTIC = gistmap)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MltAsE&gt; ## Create a sampleMap</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MltAsE&gt; sampMap &lt;- listToMap(maplist)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MltAsE&gt; ## Create an example phenotype data</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MltAsE&gt; colDat &lt;- data.frame(sex = c("M", "F", "M", "F"), age = 38:41,</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MltAsE+     row.names = c("Jack", "Jill", "Bob", "Barbara"))</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MltAsE&gt; ## Create a MultiAssayExperiment instance</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MltAsE&gt; mae &lt;- MultiAssayExperiment(experiments = ExpList, colData = colDat,</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MltAsE+     sampleMap = sampMap)</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Using experiment names</span></span>
+<span class='r-in'><span class='fu'>subsetByAssay</span><span class='op'>(</span><span class='va'>mae</span>, <span class='st'>"Affy"</span><span class='op'>)</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>'experiments' dropped; see 'metadata'</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> harmonizing input:</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>   removing 12 sampleMap rows not in names(experiments)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A MultiAssayExperiment object of 1 listed</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  experiment with a user-defined name and respective class.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Containing an ExperimentList class object of length 1:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] Affy: SummarizedExperiment with 5 rows and 4 columns</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Functionality:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  experiments() - obtain the ExperimentList instance</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  colData() - the primary/phenotype DataFrame</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  sampleMap() - the sample coordination DataFrame</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  `$`, `[`, `[[` - extract colData columns, subset, or experiment</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  *Format() - convert into a long or wide DataFrame</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  assays() - convert ExperimentList to a SimpleList of matrices</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  exportClass() - save data to flat files</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Using numeric indices</span></span>
+<span class='r-in'><span class='fu'>subsetByAssay</span><span class='op'>(</span><span class='va'>mae</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span><span class='op'>)</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>'experiments' dropped; see 'metadata'</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> harmonizing input:</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>   removing 7 sampleMap rows not in names(experiments)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A MultiAssayExperiment object of 2 listed</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  experiments with user-defined names and respective classes.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Containing an ExperimentList class object of length 2:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] Affy: SummarizedExperiment with 5 rows and 4 columns</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [2] Methyl450k: matrix with 5 rows and 5 columns</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Functionality:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  experiments() - obtain the ExperimentList instance</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  colData() - the primary/phenotype DataFrame</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  sampleMap() - the sample coordination DataFrame</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  `$`, `[`, `[[` - extract colData columns, subset, or experiment</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  *Format() - convert into a long or wide DataFrame</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  assays() - convert ExperimentList to a SimpleList of matrices</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  exportClass() - save data to flat files</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Using a logical vector</span></span>
+<span class='r-in'><span class='fu'>subsetByAssay</span><span class='op'>(</span><span class='va'>mae</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>TRUE</span>, <span class='cn'>FALSE</span>, <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>'experiments' dropped; see 'metadata'</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> harmonizing input:</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>   removing 5 sampleMap rows not in names(experiments)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A MultiAssayExperiment object of 3 listed</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  experiments with user-defined names and respective classes.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Containing an ExperimentList class object of length 3:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] Affy: SummarizedExperiment with 5 rows and 4 columns</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [2] RNASeqGene: matrix with 5 rows and 4 columns</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [3] GISTIC: RangedSummarizedExperiment with 5 rows and 3 columns</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Functionality:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  experiments() - obtain the ExperimentList instance</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  colData() - the primary/phenotype DataFrame</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  sampleMap() - the sample coordination DataFrame</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  `$`, `[`, `[[` - extract colData columns, subset, or experiment</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  *Format() - convert into a long or wide DataFrame</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  assays() - convert ExperimentList to a SimpleList of matrices</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  exportClass() - save data to flat files</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Subset by character vector (Jack)</span></span>
+<span class='r-in'><span class='fu'>subsetByColData</span><span class='op'>(</span><span class='va'>mae</span>, <span class='st'>"Jack"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A MultiAssayExperiment object of 4 listed</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  experiments with user-defined names and respective classes.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Containing an ExperimentList class object of length 4:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] Affy: SummarizedExperiment with 5 rows and 1 columns</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [2] Methyl450k: matrix with 5 rows and 2 columns</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [3] RNASeqGene: matrix with 5 rows and 1 columns</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [4] GISTIC: RangedSummarizedExperiment with 5 rows and 1 columns</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Functionality:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  experiments() - obtain the ExperimentList instance</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  colData() - the primary/phenotype DataFrame</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  sampleMap() - the sample coordination DataFrame</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  `$`, `[`, `[[` - extract colData columns, subset, or experiment</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  *Format() - convert into a long or wide DataFrame</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  assays() - convert ExperimentList to a SimpleList of matrices</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  exportClass() - save data to flat files</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Subset by numeric index of colData rows (Jack and Bob)</span></span>
+<span class='r-in'><span class='fu'>subsetByColData</span><span class='op'>(</span><span class='va'>mae</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A MultiAssayExperiment object of 4 listed</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  experiments with user-defined names and respective classes.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Containing an ExperimentList class object of length 4:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] Affy: SummarizedExperiment with 5 rows and 2 columns</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [2] Methyl450k: matrix with 5 rows and 3 columns</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [3] RNASeqGene: matrix with 5 rows and 2 columns</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [4] GISTIC: RangedSummarizedExperiment with 5 rows and 2 columns</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Functionality:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  experiments() - obtain the ExperimentList instance</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  colData() - the primary/phenotype DataFrame</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  sampleMap() - the sample coordination DataFrame</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  `$`, `[`, `[[` - extract colData columns, subset, or experiment</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  *Format() - convert into a long or wide DataFrame</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  assays() - convert ExperimentList to a SimpleList of matrices</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  exportClass() - save data to flat files</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Subset by logical indicator of colData rows (Jack and Jill)</span></span>
+<span class='r-in'><span class='fu'>subsetByColData</span><span class='op'>(</span><span class='va'>mae</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>TRUE</span>, <span class='cn'>TRUE</span>, <span class='cn'>FALSE</span>, <span class='cn'>FALSE</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A MultiAssayExperiment object of 4 listed</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  experiments with user-defined names and respective classes.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Containing an ExperimentList class object of length 4:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] Affy: SummarizedExperiment with 5 rows and 2 columns</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [2] Methyl450k: matrix with 5 rows and 3 columns</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [3] RNASeqGene: matrix with 5 rows and 2 columns</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [4] GISTIC: RangedSummarizedExperiment with 5 rows and 2 columns</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Functionality:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  experiments() - obtain the ExperimentList instance</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  colData() - the primary/phenotype DataFrame</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  sampleMap() - the sample coordination DataFrame</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  `$`, `[`, `[[` - extract colData columns, subset, or experiment</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  *Format() - convert into a long or wide DataFrame</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  assays() - convert ExperimentList to a SimpleList of matrices</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  exportClass() - save data to flat files</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>subsetByColumn</span><span class='op'>(</span><span class='va'>mae</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>Affy <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span>,</span>
+<span class='r-in'>    Methyl450k <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>5</span>,<span class='fl'>2</span><span class='op'>)</span>, RNASeqGene <span class='op'>=</span> <span class='fl'>2</span><span class='op'>:</span><span class='fl'>4</span>, GISTIC <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> harmonizing input:</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>   removing 7 sampleMap rows with 'colname' not in colnames of experiments</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A MultiAssayExperiment object of 4 listed</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  experiments with user-defined names and respective classes.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Containing an ExperimentList class object of length 4:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] Affy: SummarizedExperiment with 5 rows and 2 columns</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [2] Methyl450k: matrix with 5 rows and 3 columns</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [3] RNASeqGene: matrix with 5 rows and 3 columns</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [4] GISTIC: RangedSummarizedExperiment with 5 rows and 1 columns</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Functionality:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  experiments() - obtain the ExperimentList instance</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  colData() - the primary/phenotype DataFrame</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  sampleMap() - the sample coordination DataFrame</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  `$`, `[`, `[[` - extract colData columns, subset, or experiment</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  *Format() - convert into a long or wide DataFrame</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  assays() - convert ExperimentList to a SimpleList of matrices</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  exportClass() - save data to flat files</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>subsetWith</span> <span class='op'>&lt;-</span> <span class='fu'>S4Vectors</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/S4Vectors/man/List-utils.html'>mendoapply</a></span><span class='op'>(</span><span class='va'>`[`</span>, <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span><span class='op'>(</span><span class='va'>mae</span><span class='op'>)</span>,</span>
+<span class='r-in'>    MoreArgs <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>subsetByColumn</span><span class='op'>(</span><span class='va'>mae</span>, <span class='va'>subsetWith</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> harmonizing input:</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>   removing 8 sampleMap rows with 'colname' not in colnames of experiments</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>   removing 1 colData rownames not in sampleMap 'primary'</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A MultiAssayExperiment object of 4 listed</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  experiments with user-defined names and respective classes.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Containing an ExperimentList class object of length 4:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] Affy: SummarizedExperiment with 5 rows and 2 columns</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [2] Methyl450k: matrix with 5 rows and 2 columns</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [3] RNASeqGene: matrix with 5 rows and 2 columns</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [4] GISTIC: RangedSummarizedExperiment with 5 rows and 2 columns</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Functionality:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  experiments() - obtain the ExperimentList instance</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  colData() - the primary/phenotype DataFrame</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  sampleMap() - the sample coordination DataFrame</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  `$`, `[`, `[[` - extract colData columns, subset, or experiment</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  *Format() - convert into a long or wide DataFrame</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  assays() - convert ExperimentList to a SimpleList of matrices</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  exportClass() - save data to flat files</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Use a GRanges object to subset rows where ranged data present</span></span>
+<span class='r-in'><span class='va'>egr</span> <span class='op'>&lt;-</span> <span class='fu'>GenomicRanges</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html'>GRanges</a></span><span class='op'>(</span>seqnames <span class='op'>=</span> <span class='st'>"chr2"</span>,</span>
+<span class='r-in'>    <span class='fu'>IRanges</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/IRanges/man/IRanges-constructor.html'>IRanges</a></span><span class='op'>(</span>start <span class='op'>=</span> <span class='fl'>11</span>, end <span class='op'>=</span> <span class='fl'>13</span><span class='op'>)</span>, strand <span class='op'>=</span> <span class='st'>"-"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>subsetByRow</span><span class='op'>(</span><span class='va'>mae</span>, <span class='va'>egr</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A MultiAssayExperiment object of 4 listed</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  experiments with user-defined names and respective classes.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Containing an ExperimentList class object of length 4:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] Affy: SummarizedExperiment with 0 rows and 4 columns</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [2] Methyl450k: matrix with 0 rows and 5 columns</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [3] RNASeqGene: matrix with 0 rows and 4 columns</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [4] GISTIC: RangedSummarizedExperiment with 1 rows and 3 columns</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Functionality:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  experiments() - obtain the ExperimentList instance</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  colData() - the primary/phenotype DataFrame</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  sampleMap() - the sample coordination DataFrame</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  `$`, `[`, `[[` - extract colData columns, subset, or experiment</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  *Format() - convert into a long or wide DataFrame</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  assays() - convert ExperimentList to a SimpleList of matrices</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  exportClass() - save data to flat files</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Use a logical vector (recycling used)</span></span>
+<span class='r-in'><span class='fu'>subsetByRow</span><span class='op'>(</span><span class='va'>mae</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>TRUE</span>, <span class='cn'>FALSE</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A MultiAssayExperiment object of 4 listed</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  experiments with user-defined names and respective classes.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Containing an ExperimentList class object of length 4:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] Affy: SummarizedExperiment with 3 rows and 4 columns</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [2] Methyl450k: matrix with 3 rows and 5 columns</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [3] RNASeqGene: matrix with 3 rows and 4 columns</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [4] GISTIC: RangedSummarizedExperiment with 3 rows and 3 columns</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Functionality:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  experiments() - obtain the ExperimentList instance</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  colData() - the primary/phenotype DataFrame</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  sampleMap() - the sample coordination DataFrame</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  `$`, `[`, `[[` - extract colData columns, subset, or experiment</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  *Format() - convert into a long or wide DataFrame</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  assays() - convert ExperimentList to a SimpleList of matrices</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  exportClass() - save data to flat files</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Use a character vector</span></span>
+<span class='r-in'><span class='fu'>subsetByRow</span><span class='op'>(</span><span class='va'>mae</span>, <span class='st'>"ENST00000355076"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A MultiAssayExperiment object of 4 listed</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  experiments with user-defined names and respective classes.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Containing an ExperimentList class object of length 4:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] Affy: SummarizedExperiment with 1 rows and 4 columns</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [2] Methyl450k: matrix with 1 rows and 5 columns</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [3] RNASeqGene: matrix with 0 rows and 4 columns</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [4] GISTIC: RangedSummarizedExperiment with 0 rows and 3 columns</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Functionality:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  experiments() - obtain the ExperimentList instance</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  colData() - the primary/phenotype DataFrame</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  sampleMap() - the sample coordination DataFrame</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  `$`, `[`, `[[` - extract colData columns, subset, or experiment</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  *Format() - convert into a long or wide DataFrame</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  assays() - convert ExperimentList to a SimpleList of matrices</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  exportClass() - save data to flat files</span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

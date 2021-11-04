@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MultiAssayExperiment</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.18.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.20.0</span>
       </span>
     </div>
 
@@ -77,7 +77,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/waldronlab/MultiAssayExperiment">
-    <span class="fas fa-github fa-lg"></span>
+    <span class="fa fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -91,13 +91,13 @@
 
       
 
-      </header><script src="MultiAssayExperiment_files/header-attrs-2.8/header-attrs.js"></script><div class="row">
+      </header><script src="MultiAssayExperiment_files/header-attrs-2.11/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>MultiAssayExperiment: The Integrative Bioconductor Container</h1>
                         <h4 class="author">MultiAssay Special Interest Group</h4>
             
-            <h4 class="date">May 30, 2021</h4>
+            <h4 class="date">November 04, 2021</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/waldronlab/MultiAssayExperiment/blob/master/vignettes/MultiAssayExperiment.Rmd"><code>vignettes/MultiAssayExperiment.Rmd</code></a></small>
       <div class="hidden name"><code>MultiAssayExperiment.Rmd</code></div>
@@ -147,9 +147,9 @@
 ##  `$`, `[`, `[[` - extract colData columns, subset, or experiment
 ##  *Format() - convert into a long or wide DataFrame
 ##  assays() - convert ExperimentList to a SimpleList of matrices
-##  exportClass() - save all data to files</code></pre>
+##  exportClass() - save data to flat files</code></pre>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">slotNames</span><span class="op">(</span><span class="va">empty</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/methods/slot.html">slotNames</a></span><span class="op">(</span><span class="va">empty</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] "ExperimentList" "colData"        "sampleMap"      "drops"         
 ## [5] "metadata"</code></pre>
 <p>A visual representation of the MultiAssayExperiment class and its accessor functions can be seen below. There are three main components:</p>
@@ -188,7 +188,7 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 <div id="class-requirements-within-experimentlist-container" class="section level4">
 <h4 class="hasAnchor">
 <a href="#class-requirements-within-experimentlist-container" class="anchor"></a>Class requirements within <code>ExperimentList</code> container</h4>
-<p>See the <a href="#application-programming-interface-api">API section</a> for details on requirements for using other data classes. In general, data classes meeting minimum requirements, including support for square bracket <code><a href="https://rdrr.io/r/base/Extract.html">[</a></code> subsetting and <code><a href="https://rdrr.io/r/base/dimnames.html">dimnames()</a></code> will work by default.</p>
+<p>See the <a href="#application-programming-interface-api">API section</a> for details on requirements for using other data classes. In general, data classes meeting minimum requirements, including support for square bracket <code>[</code> subsetting and <code><a href="https://rdrr.io/pkg/Biobase/man/class.eSet.html">dimnames()</a></code> will work by default.</p>
 <p>The datasets contained in elements of the <code>ExperimentList</code> can have:</p>
 <ul>
 <li>column names (required)</li>
@@ -199,9 +199,9 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 <p>Classes contained in the <code>ExperimentList</code> must support the following list of methods:</p>
 <ul>
 <li>
-<code><a href="https://rdrr.io/r/base/Extract.html">[</a></code>: single square bracket subsetting, with a single comma. It is assumed that values before the comma subset rows, and values after the comma subset columns.</li>
+<code>[</code>: single square bracket subsetting, with a single comma. It is assumed that values before the comma subset rows, and values after the comma subset columns.</li>
 <li>
-<code><a href="https://rdrr.io/r/base/dimnames.html">dimnames()</a></code> : corresponding to features (such as genes, proteins, etc.) and experimental samples</li>
+<code><a href="https://rdrr.io/pkg/Biobase/man/class.eSet.html">dimnames()</a></code> : corresponding to features (such as genes, proteins, etc.) and experimental samples</li>
 <li>
 <code><a href="https://rdrr.io/r/base/dim.html">dim()</a></code>: returns a vector of the number of rows and number of columns</li>
 </ul>
@@ -217,9 +217,9 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 <p>The <code>colData</code> dataset should be of class <code>DataFrame</code> but can accept a <code>data.frame</code> class object that will be coerced.</p>
 <p>In order to relate metadata of the biological unit, the row names of the <code>colData</code> dataset must contain patient identifiers.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">patient.data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>sex<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"M"</span>, <span class="st">"F"</span>, <span class="st">"M"</span>, <span class="st">"F"</span><span class="op">)</span>,
+<code class="sourceCode R"><span class="va">patient.data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>sex<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html">c</a></span><span class="op">(</span><span class="st">"M"</span>, <span class="st">"F"</span>, <span class="st">"M"</span>, <span class="st">"F"</span><span class="op">)</span>,
     age<span class="op">=</span><span class="fl">38</span><span class="op">:</span><span class="fl">41</span>,
-    row.names<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Jack"</span>, <span class="st">"Jill"</span>, <span class="st">"Bob"</span>, <span class="st">"Barbara"</span><span class="op">)</span><span class="op">)</span>
+    row.names<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html">c</a></span><span class="op">(</span><span class="st">"Jack"</span>, <span class="st">"Jill"</span>, <span class="st">"Bob"</span>, <span class="st">"Barbara"</span><span class="op">)</span><span class="op">)</span>
 <span class="va">patient.data</span></code></pre></div>
 <pre><code>##         sex age
 ## Jack      M  38
@@ -246,7 +246,7 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 <a href="#sampleMap" class="anchor"></a><code>sampleMap</code>: relating <code>colData</code> to multiple assays</h3>
 <p>The <code>sampleMap</code> is a <code>DataFrame</code> that relates the “primary” data (<code>colData</code>) to the experimental assays:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">is</span><span class="op">(</span><span class="fu"><a href="../reference/MultiAssayExperiment-methods.html">sampleMap</a></span><span class="op">(</span><span class="va">empty</span><span class="op">)</span>, <span class="st">"DataFrame"</span><span class="op">)</span> <span class="co"># TRUE</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/methods/is.html">is</a></span><span class="op">(</span><span class="fu"><a href="../reference/MultiAssayExperiment-methods.html">sampleMap</a></span><span class="op">(</span><span class="va">empty</span><span class="op">)</span>, <span class="st">"DataFrame"</span><span class="op">)</span> <span class="co"># TRUE</span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 <p>The <code>sampleMap</code> provides an unambiguous map from every experimental observation to <em>one and only one</em> row in <code>colData</code>. It is, however, permissible for a row of <code>colData</code> to be associated with multiple experimental observations or no observations at all. In other words, there is a “many-to-one” mapping from experimental observations to rows of <code>colData</code>, and a “one-to-any-number” mapping from rows of <code>colData</code> to experimental observations.</p>
 <div id="samplemap-structure" class="section level4">
@@ -255,7 +255,7 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 <p>The <code>sampleMap</code> has three columns, with the following column names:</p>
 <ol style="list-style-type: decimal">
 <li><p><strong>assay</strong> provides the names of the different experiments / assays performed. These are user-defined, with the only requirement that the names of the <code>ExperimentList</code>, where the experimental assays are stored, must be contained in this column.</p></li>
-<li><p><strong>primary</strong> provides the “primary” sample names. All values in this column must also be present in the rownames of <code><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html">colData(MultiAssayExperiment)</a></code>. In this example, allowable values in this column are “Jack”, “Jill”, “Barbara”, and “Bob”.</p></li>
+<li><p><strong>primary</strong> provides the “primary” sample names. All values in this column must also be present in the rownames of <code>colData(MultiAssayExperiment)</code>. In this example, allowable values in this column are “Jack”, “Jill”, “Barbara”, and “Bob”.</p></li>
 <li><p><strong>colname</strong> provides the sample names used by experimental datasets, which in practice are often different than the primary sample names. For each assay, all column names must be found in this column. Otherwise, those assays would be orphaned: it would be impossible to match them up to samples in the overall experiment. As mentioned above, duplicate values are allowed, to represent replicates with the same overall experiment-level annotation.</p></li>
 </ol>
 <p>This design is motivated by the following situations:</p>
@@ -271,10 +271,10 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">exprss1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fl">16</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">4</span>,
         dimnames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span><span class="op">(</span><span class="st">"ENST00000%i"</span>, <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fl">288754</span><span class="op">:</span><span class="fl">290000</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span>,
-                <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Jack"</span>, <span class="st">"Jill"</span>, <span class="st">"Bob"</span>, <span class="st">"Bobby"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+                <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html">c</a></span><span class="op">(</span><span class="st">"Jack"</span>, <span class="st">"Jill"</span>, <span class="st">"Bob"</span>, <span class="st">"Bobby"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
 <span class="va">exprss2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fl">12</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">3</span>,
         dimnames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span><span class="op">(</span><span class="st">"ENST00000%i"</span>, <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fl">288754</span><span class="op">:</span><span class="fl">290000</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span>,
-                <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Jack"</span>, <span class="st">"Jane"</span>, <span class="st">"Bob"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+                <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html">c</a></span><span class="op">(</span><span class="st">"Jack"</span>, <span class="st">"Jane"</span>, <span class="st">"Bob"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
 <span class="va">doubleExp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="st">"methyl 2k"</span>  <span class="op">=</span> <span class="va">exprss1</span>, <span class="st">"methyl 3k"</span> <span class="op">=</span> <span class="va">exprss2</span><span class="op">)</span>
 <span class="va">simpleMultiAssay</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/MultiAssayExperiment.html">MultiAssayExperiment</a></span><span class="op">(</span>experiments<span class="op">=</span><span class="va">doubleExp</span><span class="op">)</span>
 <span class="va">simpleMultiAssay</span></code></pre></div>
@@ -290,7 +290,7 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 ##  `$`, `[`, `[[` - extract colData columns, subset, or experiment
 ##  *Format() - convert into a long or wide DataFrame
 ##  assays() - convert ExperimentList to a SimpleList of matrices
-##  exportClass() - save all data to files</code></pre>
+##  exportClass() - save data to flat files</code></pre>
 <p>In the above example, the user did not provide the <code>colData</code> argument so the constructor function filled it with an empty <code>DataFrame</code>:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html">colData</a></span><span class="op">(</span><span class="va">simpleMultiAssay</span><span class="op">)</span></code></pre></div>
@@ -319,7 +319,7 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 ##  `$`, `[`, `[[` - extract colData columns, subset, or experiment
 ##  *Format() - convert into a long or wide DataFrame
 ##  assays() - convert ExperimentList to a SimpleList of matrices
-##  exportClass() - save all data to files</code></pre>
+##  exportClass() - save data to flat files</code></pre>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html">colData</a></span><span class="op">(</span><span class="va">simpleMultiAssay2</span><span class="op">)</span></code></pre></div>
 <pre><code>## DataFrame with 3 rows and 2 columns
@@ -337,11 +337,11 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 <p>Metadata can be added at different levels of the <code>MultiAssayExperiment</code>.</p>
 <p>Can be of <em>ANY</em> class, for storing study-wide metadata, such as citation information. For an empty <code>MultiAssayExperiment</code> object, it is NULL.</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="fu">metadata</span><span class="op">(</span><span class="va">empty</span><span class="op">)</span><span class="op">)</span> <span class="co"># NULL (class "ANY")</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Annotated-class.html">metadata</a></span><span class="op">(</span><span class="va">empty</span><span class="op">)</span><span class="op">)</span> <span class="co"># NULL (class "ANY")</span></code></pre></div>
 <pre><code>## [1] "list"</code></pre>
 <p>At the <code>ExperimentList</code> level, the <code>metadata</code> function would allow the user to enter metadata as a <code>list</code>.</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">metadata</span><span class="op">(</span><span class="fu"><a href="../reference/MultiAssayExperiment-methods.html">experiments</a></span><span class="op">(</span><span class="va">empty</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Annotated-class.html">metadata</a></span><span class="op">(</span><span class="fu"><a href="../reference/MultiAssayExperiment-methods.html">experiments</a></span><span class="op">(</span><span class="va">empty</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## list()</code></pre>
 <p>At the individual assay level, certain classes <em>may</em> support metadata, for example, <code>metadata</code> and <code>mcols</code> for a <code>SummarizedExperiment</code>. It is recommended to use <code>metadata</code> at the <code>ExperimentList</code> level.</p>
 <p style="text-align: right;">
@@ -360,14 +360,14 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 <p>We have three matrix-like datasets. First, let’s represent expression data as a <code>SummarizedExperiment</code>:</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="op">(</span><span class="va">arraydat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">101</span>, <span class="fl">108</span><span class="op">)</span>, ncol<span class="op">=</span><span class="fl">4</span>,
-    dimnames<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"ENST00000294241"</span>, <span class="st">"ENST00000355076"</span><span class="op">)</span>,
-    <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"array1"</span>, <span class="st">"array2"</span>, <span class="st">"array3"</span>, <span class="st">"array4"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+    dimnames<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html">c</a></span><span class="op">(</span><span class="st">"ENST00000294241"</span>, <span class="st">"ENST00000355076"</span><span class="op">)</span>,
+    <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html">c</a></span><span class="op">(</span><span class="st">"array1"</span>, <span class="st">"array2"</span>, <span class="st">"array3"</span>, <span class="st">"array4"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>##                 array1 array2 array3 array4
 ## ENST00000294241    101    103    105    107
 ## ENST00000355076    102    104    106    108</code></pre>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">coldat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>slope53<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fl">4</span><span class="op">)</span>,
-    row.names<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"array1"</span>, <span class="st">"array2"</span>, <span class="st">"array3"</span>, <span class="st">"array4"</span><span class="op">)</span><span class="op">)</span>
+    row.names<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html">c</a></span><span class="op">(</span><span class="st">"array1"</span>, <span class="st">"array2"</span>, <span class="st">"array3"</span>, <span class="st">"array4"</span><span class="op">)</span><span class="op">)</span>
 
 <span class="va">exprdat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/RangedSummarizedExperiment-class.html">SummarizedExperiment</a></span><span class="op">(</span><span class="va">arraydat</span>, colData<span class="op">=</span><span class="va">coldat</span><span class="op">)</span>
 <span class="va">exprdat</span></code></pre></div>
@@ -381,8 +381,8 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 ## colData names(1): slope53</code></pre>
 <p>The following map matches <code>colData</code> sample names to <code>exprdata</code> sample names. Note that row orders aren’t initially matched up, and this is OK.</p>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="op">(</span><span class="va">exprmap</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>primary<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">patient.data</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">4</span>, <span class="fl">3</span><span class="op">)</span><span class="op">]</span>,
-                       colname<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"array1"</span>, <span class="st">"array2"</span>, <span class="st">"array3"</span>, <span class="st">"array4"</span><span class="op">)</span>,
+<code class="sourceCode R"><span class="op">(</span><span class="va">exprmap</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>primary<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html">rownames</a></span><span class="op">(</span><span class="va">patient.data</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">4</span>, <span class="fl">3</span><span class="op">)</span><span class="op">]</span>,
+                       colname<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html">c</a></span><span class="op">(</span><span class="st">"array1"</span>, <span class="st">"array2"</span>, <span class="st">"array3"</span>, <span class="st">"array4"</span><span class="op">)</span>,
                        stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>##   primary colname
 ## 1    Jack  array1
@@ -393,16 +393,16 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 <div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="op">(</span><span class="va">methyldat</span> <span class="op">&lt;-</span>
    <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, ncol<span class="op">=</span><span class="fl">5</span>,
-          dimnames<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"ENST00000355076"</span>, <span class="st">"ENST00000383706"</span><span class="op">)</span>,
-                        <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"methyl1"</span>, <span class="st">"methyl2"</span>, <span class="st">"methyl3"</span>,
+          dimnames<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html">c</a></span><span class="op">(</span><span class="st">"ENST00000355076"</span>, <span class="st">"ENST00000383706"</span><span class="op">)</span>,
+                        <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html">c</a></span><span class="op">(</span><span class="st">"methyl1"</span>, <span class="st">"methyl2"</span>, <span class="st">"methyl3"</span>,
                           <span class="st">"methyl4"</span>, <span class="st">"methyl5"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>##                 methyl1 methyl2 methyl3 methyl4 methyl5
 ## ENST00000355076       1       3       5       7       9
 ## ENST00000383706       2       4       6       8      10</code></pre>
 <p>The following map matches <code>colData</code> sample names to <code>methyldat</code> sample names.</p>
 <div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="op">(</span><span class="va">methylmap</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>primary <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Jack"</span>, <span class="st">"Jack"</span>, <span class="st">"Jill"</span>, <span class="st">"Barbara"</span>, <span class="st">"Bob"</span><span class="op">)</span>,
-    colname <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"methyl1"</span>, <span class="st">"methyl2"</span>, <span class="st">"methyl3"</span>, <span class="st">"methyl4"</span>, <span class="st">"methyl5"</span><span class="op">)</span>,
+<code class="sourceCode R"><span class="op">(</span><span class="va">methylmap</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>primary <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html">c</a></span><span class="op">(</span><span class="st">"Jack"</span>, <span class="st">"Jack"</span>, <span class="st">"Jill"</span>, <span class="st">"Barbara"</span>, <span class="st">"Bob"</span><span class="op">)</span>,
+    colname <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html">c</a></span><span class="op">(</span><span class="st">"methyl1"</span>, <span class="st">"methyl2"</span>, <span class="st">"methyl3"</span>, <span class="st">"methyl4"</span>, <span class="st">"methyl5"</span><span class="op">)</span>,
     stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>##   primary colname
 ## 1    Jack methyl1
@@ -413,9 +413,9 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 <p>Now we have a microRNA platform, which has no common identifiers with the other datasets, and which we also represent as a <code>matrix</code>. It is also missing data for “Jill”. We will use the same sample naming convention as we did for arrays.</p>
 <div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="op">(</span><span class="va">microdat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fl">201</span><span class="op">:</span><span class="fl">212</span>, ncol<span class="op">=</span><span class="fl">3</span>,
-                    dimnames<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"hsa-miR-21"</span>, <span class="st">"hsa-miR-191"</span>,
+                    dimnames<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html">c</a></span><span class="op">(</span><span class="st">"hsa-miR-21"</span>, <span class="st">"hsa-miR-191"</span>,
                                     <span class="st">"hsa-miR-148a"</span>, <span class="st">"hsa-miR148b"</span><span class="op">)</span>,
-                                  <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"micro1"</span>, <span class="st">"micro2"</span>, <span class="st">"micro3"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+                                  <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html">c</a></span><span class="op">(</span><span class="st">"micro1"</span>, <span class="st">"micro2"</span>, <span class="st">"micro3"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>##              micro1 micro2 micro3
 ## hsa-miR-21      201    205    209
 ## hsa-miR-191     202    206    210
@@ -423,8 +423,8 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 ## hsa-miR148b     204    208    212</code></pre>
 <p>And the following map matches <code>colData</code> sample names to <code>microdat</code> sample names.</p>
 <div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="op">(</span><span class="va">micromap</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>primary <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Jack"</span>, <span class="st">"Barbara"</span>, <span class="st">"Bob"</span><span class="op">)</span>,
-    colname <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"micro1"</span>, <span class="st">"micro2"</span>, <span class="st">"micro3"</span><span class="op">)</span>, stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="op">(</span><span class="va">micromap</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>primary <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html">c</a></span><span class="op">(</span><span class="st">"Jack"</span>, <span class="st">"Barbara"</span>, <span class="st">"Bob"</span><span class="op">)</span>,
+    colname <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html">c</a></span><span class="op">(</span><span class="st">"micro1"</span>, <span class="st">"micro2"</span>, <span class="st">"micro3"</span><span class="op">)</span>, stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>##   primary colname
 ## 1    Jack  micro1
 ## 2 Barbara  micro2
@@ -433,20 +433,20 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 <div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">nrows</span> <span class="op">&lt;-</span> <span class="fl">5</span>; <span class="va">ncols</span> <span class="op">&lt;-</span> <span class="fl">4</span>
 <span class="va">counts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span><span class="op">(</span><span class="va">nrows</span> <span class="op">*</span> <span class="va">ncols</span>, <span class="fl">1</span>, <span class="fl">1e4</span><span class="op">)</span>, <span class="va">nrows</span><span class="op">)</span>
-<span class="va">rowRanges</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html">GRanges</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"chr1"</span>, <span class="st">"chr2"</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="va">nrows</span> <span class="op">-</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span>,
-    <span class="fu">IRanges</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">floor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span><span class="op">(</span><span class="va">nrows</span>, <span class="fl">1e5</span>, <span class="fl">1e6</span><span class="op">)</span><span class="op">)</span>, width<span class="op">=</span><span class="fl">100</span><span class="op">)</span>,
-    strand<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"+"</span>, <span class="st">"-"</span><span class="op">)</span>, <span class="va">nrows</span>, <span class="cn">TRUE</span><span class="op">)</span>,
+<span class="va">rowRanges</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html">GRanges</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html">c</a></span><span class="op">(</span><span class="st">"chr1"</span>, <span class="st">"chr2"</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="va">nrows</span> <span class="op">-</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span>,
+    <span class="fu"><a href="https://rdrr.io/pkg/IRanges/man/IRanges-constructor.html">IRanges</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">floor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span><span class="op">(</span><span class="va">nrows</span>, <span class="fl">1e5</span>, <span class="fl">1e6</span><span class="op">)</span><span class="op">)</span>, width<span class="op">=</span><span class="fl">100</span><span class="op">)</span>,
+    strand<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html">c</a></span><span class="op">(</span><span class="st">"+"</span>, <span class="st">"-"</span><span class="op">)</span>, <span class="va">nrows</span>, <span class="cn">TRUE</span><span class="op">)</span>,
     feature_id<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span><span class="op">(</span><span class="st">"ID\\%03d"</span>, <span class="fl">1</span><span class="op">:</span><span class="va">nrows</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">rowRanges</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span>
-<span class="va">colData</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/DataFrame-class.html">DataFrame</a></span><span class="op">(</span>Treatment<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"ChIP"</span>, <span class="st">"Input"</span><span class="op">)</span>, <span class="fl">2</span><span class="op">)</span>,
-    row.names<span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"mysnparray1"</span>, <span class="st">"mysnparray2"</span>, <span class="st">"mysnparray3"</span>, <span class="st">"mysnparray4"</span><span class="op">)</span><span class="op">)</span>
-<span class="va">rse</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/RangedSummarizedExperiment-class.html">SummarizedExperiment</a></span><span class="op">(</span>assays<span class="op">=</span><span class="fu">SimpleList</span><span class="op">(</span>counts<span class="op">=</span><span class="va">counts</span><span class="op">)</span>,
+<span class="va">colData</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/DataFrame-class.html">DataFrame</a></span><span class="op">(</span>Treatment<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html">c</a></span><span class="op">(</span><span class="st">"ChIP"</span>, <span class="st">"Input"</span><span class="op">)</span>, <span class="fl">2</span><span class="op">)</span>,
+    row.names<span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html">c</a></span><span class="op">(</span><span class="st">"mysnparray1"</span>, <span class="st">"mysnparray2"</span>, <span class="st">"mysnparray3"</span>, <span class="st">"mysnparray4"</span><span class="op">)</span><span class="op">)</span>
+<span class="va">rse</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/RangedSummarizedExperiment-class.html">SummarizedExperiment</a></span><span class="op">(</span>assays<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/SimpleList-class.html">SimpleList</a></span><span class="op">(</span>counts<span class="op">=</span><span class="va">counts</span><span class="op">)</span>,
     rowRanges<span class="op">=</span><span class="va">rowRanges</span>, colData<span class="op">=</span><span class="va">colData</span><span class="op">)</span></code></pre></div>
 <p>And we map the <code>colData</code> samples to the <code>RangedSummarizedExperiment</code>:</p>
 <div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="op">(</span><span class="va">rangemap</span> <span class="op">&lt;-</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>primary <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Jack"</span>, <span class="st">"Jill"</span>, <span class="st">"Bob"</span>, <span class="st">"Barbara"</span><span class="op">)</span>,
-    colname <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"mysnparray1"</span>, <span class="st">"mysnparray2"</span>, <span class="st">"mysnparray3"</span>, <span class="st">"mysnparray4"</span><span class="op">)</span>,
+    <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>primary <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html">c</a></span><span class="op">(</span><span class="st">"Jack"</span>, <span class="st">"Jill"</span>, <span class="st">"Bob"</span>, <span class="st">"Barbara"</span><span class="op">)</span>,
+    colname <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html">c</a></span><span class="op">(</span><span class="st">"mysnparray1"</span>, <span class="st">"mysnparray2"</span>, <span class="st">"mysnparray3"</span>, <span class="st">"mysnparray4"</span><span class="op">)</span>,
         stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>##   primary     colname
 ## 1    Jack mysnparray1
@@ -460,7 +460,7 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 <p>The <code>MultiAssayExperiment</code> constructor function can create the <code>sampleMap</code> automatically if a single naming convention is used, but in this example it cannot because we used platform-specific sample identifiers (e.g. mysnparray1, etc). So we must provide an ID map that matches the samples of each experiment back to the <code>colData</code>, as a three-column <code>data.frame</code> or <code>DataFrame</code> with three columns named “assay”, primary“, and”colname". Here we start with a list:</p>
 <div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">listmap</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">exprmap</span>, <span class="va">methylmap</span>, <span class="va">micromap</span>, <span class="va">rangemap</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">listmap</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Affy"</span>, <span class="st">"Methyl 450k"</span>, <span class="st">"Mirna"</span>, <span class="st">"CNV gistic"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">listmap</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html">c</a></span><span class="op">(</span><span class="st">"Affy"</span>, <span class="st">"Methyl 450k"</span>, <span class="st">"Mirna"</span>, <span class="st">"CNV gistic"</span><span class="op">)</span>
 <span class="va">listmap</span></code></pre></div>
 <pre><code>## $Affy
 ##   primary colname
@@ -541,7 +541,7 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 ##  `$`, `[`, `[[` - extract colData columns, subset, or experiment
 ##  *Format() - convert into a long or wide DataFrame
 ##  assays() - convert ExperimentList to a SimpleList of matrices
-##  exportClass() - save all data to files</code></pre>
+##  exportClass() - save data to flat files</code></pre>
 <p>The following extractor functions can be used to get extract data from the object:</p>
 <div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/MultiAssayExperiment-methods.html">experiments</a></span><span class="op">(</span><span class="va">myMultiAssay</span><span class="op">)</span></code></pre></div>
@@ -576,7 +576,7 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 ## 15   CNV gistic         Bob mysnparray3
 ## 16   CNV gistic     Barbara mysnparray4</code></pre>
 <div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">metadata</span><span class="op">(</span><span class="va">myMultiAssay</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Annotated-class.html">metadata</a></span><span class="op">(</span><span class="va">myMultiAssay</span><span class="op">)</span></code></pre></div>
 <pre><code>## list()</code></pre>
 <p>Note that the <code>ExperimentList</code> class extends the <code>SimpleList</code> class to add some validity checks specific to <code>MultiAssayExperiment</code>. It can be used like a list.</p>
 </div>
@@ -600,7 +600,7 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">objlist3</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] "AFFY"        "METHYL 450K" "MIRNA"       "CNV GISTIC"</code></pre>
 <div class="sourceCode" id="cb67"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">dfmap</span><span class="op">[</span>, <span class="st">"assay"</span><span class="op">]</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/unique.html">unique</a></span><span class="op">(</span><span class="va">dfmap</span><span class="op">[</span>, <span class="st">"assay"</span><span class="op">]</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] Affy        Methyl 450k Mirna       CNV gistic 
 ## Levels: Affy Methyl 450k Mirna CNV gistic</code></pre>
 <div class="sourceCode" id="cb69"><pre class="downlit sourceCode r">
@@ -617,7 +617,7 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 <p>When <code>colnames</code> in the <code>ExperimentList</code> cannot be matched back to the primary data (<code>colData</code>), these will be dropped and added to the drops element.</p>
 <div class="sourceCode" id="cb73"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">exampleMap</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/MultiAssayExperiment-methods.html">sampleMap</a></span><span class="op">(</span><span class="va">simpleMultiAssay2</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="va">doubleExp</span>, <span class="va">colnames</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/lapply.html">sapply</a></span><span class="op">(</span><span class="va">doubleExp</span>, <span class="va">colnames</span><span class="op">)</span></code></pre></div>
 <pre><code>## $`methyl 2k`
 ## [1] "Jack"  "Jill"  "Bob"   "Bobby"
 ## 
@@ -650,7 +650,7 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 ## [1] "Jane"</code></pre>
 <p>A similar operation is performed for checking “primary” <code>sampleMap</code> names and <code>colData</code> rownames. In this example, we add a row corresponding to “Joe” that does not have a match in the experimental data.</p>
 <div class="sourceCode" id="cb81"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">exMap</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span><span class="op">(</span><span class="va">dfmap</span>,
+<code class="sourceCode R"><span class="va">exMap</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/cbind.html">rbind</a></span><span class="op">(</span><span class="va">dfmap</span>,
     <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/DataFrame-class.html">DataFrame</a></span><span class="op">(</span>assay <span class="op">=</span> <span class="st">"New methyl"</span>, primary <span class="op">=</span> <span class="st">"Joe"</span>,
         colname <span class="op">=</span> <span class="st">"Joe"</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span><span class="op">(</span><span class="fu"><a href="../reference/prepMultiAssay.html">prepMultiAssay</a></span><span class="op">(</span><span class="va">objlist</span>, <span class="va">patient.data</span>, <span class="va">exMap</span><span class="op">)</span><span class="op">)</span></code></pre></div>
@@ -695,10 +695,10 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 ##  `$`, `[`, `[[` - extract colData columns, subset, or experiment
 ##  *Format() - convert into a long or wide DataFrame
 ##  assays() - convert ExperimentList to a SimpleList of matrices
-##  exportClass() - save all data to files</code></pre>
+##  exportClass() - save data to flat files</code></pre>
 <p>Alternatively, use the <code>do.call</code> function to easily create a <code>MultiAssayExperiment</code> from the output of <code>prepMultiAssay</code> function:</p>
 <div class="sourceCode" id="cb91"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span><span class="op">(</span><span class="va">MultiAssayExperiment</span>, <span class="va">prepped</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/do.call.html">do.call</a></span><span class="op">(</span><span class="va">MultiAssayExperiment</span>, <span class="va">prepped</span><span class="op">)</span></code></pre></div>
 <pre><code>## A MultiAssayExperiment object of 4 listed
 ##  experiments with user-defined names and respective classes.
 ##  Containing an ExperimentList class object of length 4:
@@ -713,7 +713,7 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 ##  `$`, `[`, `[[` - extract colData columns, subset, or experiment
 ##  *Format() - convert into a long or wide DataFrame
 ##  assays() - convert ExperimentList to a SimpleList of matrices
-##  exportClass() - save all data to files</code></pre>
+##  exportClass() - save data to flat files</code></pre>
 </div>
 <div id="helper-functions-to-create-bioconductor-classes-from-raw-data" class="section level2">
 <h2 class="hasAnchor">
@@ -722,12 +722,12 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 <p>The function to create a <code>GRangesList</code> from a <code>data.frame</code>, called <code>makeGRangesListFromDataFrame</code> can be found in the <code>GenomicRanges</code> package. <code>makeSummarizedExperimentFromDataFrame</code> is available in the <code>SummarizedExperiment</code> package. It is also possible to create a <code>RangedSummarizedExperiment</code> class object from raw data when ranged data is available.</p>
 <p>A simple example can be obtained from the function documentation in <code>GenomicRanges</code>:</p>
 <div class="sourceCode" id="cb93"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">grlls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="st">"chr1"</span>, <span class="va">nrows</span><span class="op">)</span>, start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">11</span>, <span class="fl">15</span><span class="op">)</span>,
-    end <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">12</span>, <span class="fl">16</span><span class="op">)</span>, strand <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"+"</span>, <span class="st">"-"</span>, <span class="st">"+"</span>, <span class="st">"*"</span>, <span class="st">"*"</span><span class="op">)</span>,
-    score <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">5</span><span class="op">)</span>, specimen <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"b"</span>, <span class="st">"c"</span><span class="op">)</span>,
+<code class="sourceCode R"><span class="va">grlls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html">rep</a></span><span class="op">(</span><span class="st">"chr1"</span>, <span class="va">nrows</span><span class="op">)</span>, start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">11</span>, <span class="fl">15</span><span class="op">)</span>,
+    end <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">12</span>, <span class="fl">16</span><span class="op">)</span>, strand <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html">c</a></span><span class="op">(</span><span class="st">"+"</span>, <span class="st">"-"</span>, <span class="st">"+"</span>, <span class="st">"*"</span>, <span class="st">"*"</span><span class="op">)</span>,
+    score <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">5</span><span class="op">)</span>, specimen <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"b"</span>, <span class="st">"c"</span><span class="op">)</span>,
     gene_symbols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"GENE"</span>, <span class="va">letters</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_len</a></span><span class="op">(</span><span class="va">nrows</span><span class="op">)</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>
 
-<span class="va">grldf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">grlls</span>, stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+<span class="va">grldf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">grlls</span>, stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 
 <span class="va">GRL</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GenomicRanges/man/makeGRangesListFromDataFrame.html">makeGRangesListFromDataFrame</a></span><span class="op">(</span><span class="va">grldf</span>, split.field <span class="op">=</span> <span class="st">"specimen"</span>,
     names.field <span class="op">=</span> <span class="st">"gene_symbols"</span><span class="op">)</span></code></pre></div>
@@ -743,11 +743,11 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 <p><em>Note</em>. See the <code>RaggedExperiment</code> vignette for more details.</p>
 <p>In the <code>SummarizedExperiment</code> package:</p>
 <div class="sourceCode" id="cb96"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">sels</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="st">"chr2"</span>, <span class="va">nrows</span><span class="op">)</span>, start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">11</span>, <span class="fl">15</span><span class="op">)</span>,
-    end <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">12</span>, <span class="fl">16</span><span class="op">)</span>, strand <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"+"</span>, <span class="st">"-"</span>, <span class="st">"+"</span>, <span class="st">"*"</span>, <span class="st">"*"</span><span class="op">)</span>,
+<code class="sourceCode R"><span class="va">sels</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html">rep</a></span><span class="op">(</span><span class="st">"chr2"</span>, <span class="va">nrows</span><span class="op">)</span>, start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">11</span>, <span class="fl">15</span><span class="op">)</span>,
+    end <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">12</span>, <span class="fl">16</span><span class="op">)</span>, strand <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html">c</a></span><span class="op">(</span><span class="st">"+"</span>, <span class="st">"-"</span>, <span class="st">"+"</span>, <span class="st">"*"</span>, <span class="st">"*"</span><span class="op">)</span>,
     expr0 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">7</span><span class="op">)</span>, expr1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">8</span>, <span class="fl">12</span><span class="op">)</span>, expr2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">12</span>, <span class="fl">16</span><span class="op">)</span><span class="op">)</span>
-<span class="va">sedf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">sels</span>,
-    row.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"GENE"</span>, <span class="va">letters</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/rev.html">rev</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_len</a></span><span class="op">(</span><span class="va">nrows</span><span class="op">)</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>,
+<span class="va">sedf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">sels</span>,
+    row.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"GENE"</span>, <span class="va">letters</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html">rev</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_len</a></span><span class="op">(</span><span class="va">nrows</span><span class="op">)</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>,
     stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 <span class="va">sedf</span></code></pre></div>
 <pre><code>##        chr start end strand expr0 expr1 expr2
@@ -800,11 +800,11 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 ##  `$`, `[`, `[[` - extract colData columns, subset, or experiment
 ##  *Format() - convert into a long or wide DataFrame
 ##  assays() - convert ExperimentList to a SimpleList of matrices
-##  exportClass() - save all data to files</code></pre>
-<p>The above operation works across all types of assays, whether ID-based (e.g. <code>matrix</code>, <code>ExpressionSet</code>, <code>SummarizedExperiment</code>) or range-based (e.g. <code>RangedSummarizedExperiment</code>). Note that when using the bracket method <code><a href="https://rdrr.io/r/base/Extract.html">[</a></code>, the drop argument is <em>TRUE</em> by default.</p>
+##  exportClass() - save data to flat files</code></pre>
+<p>The above operation works across all types of assays, whether ID-based (e.g. <code>matrix</code>, <code>ExpressionSet</code>, <code>SummarizedExperiment</code>) or range-based (e.g. <code>RangedSummarizedExperiment</code>). Note that when using the bracket method <code>[</code>, the drop argument is <em>TRUE</em> by default.</p>
 <p>You can subset by rows, columns, and assays in a single bracket operation, and they will be performed in that order (rows, then columns, then assays). The following selects the <code>ENST00000355076</code> gene across all samples, then the first two samples of each assay, and finally the Affy and Methyl 450k assays:</p>
 <div class="sourceCode" id="cb103"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">myMultiAssay</span><span class="op">[</span><span class="st">"ENST00000355076"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Affy"</span>, <span class="st">"Methyl 450k"</span><span class="op">)</span><span class="op">]</span></code></pre></div>
+<code class="sourceCode R"><span class="va">myMultiAssay</span><span class="op">[</span><span class="st">"ENST00000355076"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html">c</a></span><span class="op">(</span><span class="st">"Affy"</span>, <span class="st">"Methyl 450k"</span><span class="op">)</span><span class="op">]</span></code></pre></div>
 <pre><code>## Warning: 'experiments' dropped; see 'metadata'</code></pre>
 <pre><code>## harmonizing input:
 ##   removing 3 sampleMap rows not in names(experiments)</code></pre>
@@ -820,7 +820,7 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 ##  `$`, `[`, `[[` - extract colData columns, subset, or experiment
 ##  *Format() - convert into a long or wide DataFrame
 ##  assays() - convert ExperimentList to a SimpleList of matrices
-##  exportClass() - save all data to files</code></pre>
+##  exportClass() - save data to flat files</code></pre>
 </div>
 <div id="subsetting-by-character-integer-and-logical" class="section level2">
 <h2 class="hasAnchor">
@@ -842,7 +842,7 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 ##  `$`, `[`, `[[` - extract colData columns, subset, or experiment
 ##  *Format() - convert into a long or wide DataFrame
 ##  assays() - convert ExperimentList to a SimpleList of matrices
-##  exportClass() - save all data to files</code></pre>
+##  exportClass() - save data to flat files</code></pre>
 <div class="sourceCode" id="cb109"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">myMultiAssay</span><span class="op">[</span>, <span class="fl">1</span>, <span class="op">]</span></code></pre></div>
 <pre><code>## A MultiAssayExperiment object of 4 listed
@@ -859,9 +859,9 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 ##  `$`, `[`, `[[` - extract colData columns, subset, or experiment
 ##  *Format() - convert into a long or wide DataFrame
 ##  assays() - convert ExperimentList to a SimpleList of matrices
-##  exportClass() - save all data to files</code></pre>
+##  exportClass() - save data to flat files</code></pre>
 <div class="sourceCode" id="cb111"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">myMultiAssay</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">FALSE</span>, <span class="cn">FALSE</span><span class="op">)</span>, <span class="op">]</span></code></pre></div>
+<code class="sourceCode R"><span class="va">myMultiAssay</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html">c</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">FALSE</span>, <span class="cn">FALSE</span><span class="op">)</span>, <span class="op">]</span></code></pre></div>
 <pre><code>## A MultiAssayExperiment object of 4 listed
 ##  experiments with user-defined names and respective classes.
 ##  Containing an ExperimentList class object of length 4:
@@ -876,7 +876,7 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 ##  `$`, `[`, `[[` - extract colData columns, subset, or experiment
 ##  *Format() - convert into a long or wide DataFrame
 ##  assays() - convert ExperimentList to a SimpleList of matrices
-##  exportClass() - save all data to files</code></pre>
+##  exportClass() - save data to flat files</code></pre>
 <p>By assay - character, integer, and logical are allowed:</p>
 <div class="sourceCode" id="cb113"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">myMultiAssay</span><span class="op">[</span>, , <span class="st">"Mirna"</span><span class="op">]</span></code></pre></div>
@@ -895,7 +895,7 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 ##  `$`, `[`, `[[` - extract colData columns, subset, or experiment
 ##  *Format() - convert into a long or wide DataFrame
 ##  assays() - convert ExperimentList to a SimpleList of matrices
-##  exportClass() - save all data to files</code></pre>
+##  exportClass() - save data to flat files</code></pre>
 <div class="sourceCode" id="cb117"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">myMultiAssay</span><span class="op">[</span>, , <span class="fl">3</span><span class="op">]</span></code></pre></div>
 <pre><code>## Warning: 'experiments' dropped; see 'metadata'</code></pre>
@@ -913,9 +913,9 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 ##  `$`, `[`, `[[` - extract colData columns, subset, or experiment
 ##  *Format() - convert into a long or wide DataFrame
 ##  assays() - convert ExperimentList to a SimpleList of matrices
-##  exportClass() - save all data to files</code></pre>
+##  exportClass() - save data to flat files</code></pre>
 <div class="sourceCode" id="cb121"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">myMultiAssay</span><span class="op">[</span>, , <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="cn">FALSE</span>, <span class="cn">FALSE</span>, <span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">FALSE</span><span class="op">)</span><span class="op">]</span></code></pre></div>
+<code class="sourceCode R"><span class="va">myMultiAssay</span><span class="op">[</span>, , <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html">c</a></span><span class="op">(</span><span class="cn">FALSE</span>, <span class="cn">FALSE</span>, <span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">FALSE</span><span class="op">)</span><span class="op">]</span></code></pre></div>
 <pre><code>## Warning: 'experiments' dropped; see 'metadata'</code></pre>
 <pre><code>## harmonizing input:
 ##   removing 13 sampleMap rows not in names(experiments)
@@ -931,7 +931,7 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 ##  `$`, `[`, `[[` - extract colData columns, subset, or experiment
 ##  *Format() - convert into a long or wide DataFrame
 ##  assays() - convert ExperimentList to a SimpleList of matrices
-##  exportClass() - save all data to files</code></pre>
+##  exportClass() - save data to flat files</code></pre>
 </div>
 <div id="the-drop-argument" class="section level2">
 <h2 class="hasAnchor">
@@ -953,7 +953,7 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 ##  `$`, `[`, `[[` - extract colData columns, subset, or experiment
 ##  *Format() - convert into a long or wide DataFrame
 ##  assays() - convert ExperimentList to a SimpleList of matrices
-##  exportClass() - save all data to files</code></pre>
+##  exportClass() - save data to flat files</code></pre>
 <p>Using the default <code>drop=TRUE</code>, assays with no rows or no columns are removed:</p>
 <div class="sourceCode" id="cb127"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">myMultiAssay</span><span class="op">[</span><span class="st">"ENST00000355076"</span>, , , drop<span class="op">=</span><span class="cn">TRUE</span><span class="op">]</span></code></pre></div>
@@ -974,7 +974,7 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 ##  `$`, `[`, `[[` - extract colData columns, subset, or experiment
 ##  *Format() - convert into a long or wide DataFrame
 ##  assays() - convert ExperimentList to a SimpleList of matrices
-##  exportClass() - save all data to files</code></pre>
+##  exportClass() - save data to flat files</code></pre>
 </div>
 <div id="more-on-subsetting-by-columns" class="section level2">
 <h2 class="hasAnchor">
@@ -1006,9 +1006,9 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 ##  `$`, `[`, `[[` - extract colData columns, subset, or experiment
 ##  *Format() - convert into a long or wide DataFrame
 ##  assays() - convert ExperimentList to a SimpleList of matrices
-##  exportClass() - save all data to files</code></pre>
+##  exportClass() - save data to flat files</code></pre>
 <p>Note that the above operation keeps different numbers of columns / samples from each assay, reflecting the reality that some samples may not have been assayed in all experiments, and may have replicates in some.</p>
-<p>Columns can be subset using a logical vector. Here the dollar sign operator (<code><a href="https://rdrr.io/r/base/Extract.html">$</a></code>) accesses one of the columns in <code>colData</code>.</p>
+<p>Columns can be subset using a logical vector. Here the dollar sign operator (<code>$</code>) accesses one of the columns in <code>colData</code>.</p>
 <div class="sourceCode" id="cb135"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">malesMultiAssay</span> <span class="op">&lt;-</span> <span class="va">myMultiAssay</span><span class="op">[</span>, <span class="va">myMultiAssay</span><span class="op">$</span><span class="va">sex</span> <span class="op">==</span> <span class="st">"M"</span><span class="op">]</span>
 <span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html">colData</a></span><span class="op">(</span><span class="va">malesMultiAssay</span><span class="op">)</span></code></pre></div>
@@ -1019,7 +1019,7 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 ## Bob            M        40</code></pre>
 <p>Finally, for special use cases you can exert detailed control of row or column subsetting, by using a <code>list</code> or <code>CharacterList</code> to subset. The following creates a <code>CharacterList</code> of the column names of each assay:</p>
 <div class="sourceCode" id="cb137"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">allsamples</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">myMultiAssay</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">allsamples</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html">colnames</a></span><span class="op">(</span><span class="va">myMultiAssay</span><span class="op">)</span>
 <span class="va">allsamples</span></code></pre></div>
 <pre><code>## CharacterList of length 4
 ## [["Affy"]] array1 array2 array3 array4
@@ -1029,7 +1029,7 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 <p>Now let’s get rid of three Methyl 450k arrays, those in positions 3, 4, and 5:</p>
 <div class="sourceCode" id="cb139"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">allsamples</span><span class="op">[[</span><span class="st">"Methyl 450k"</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">allsamples</span><span class="op">[[</span><span class="st">"Methyl 450k"</span><span class="op">]</span><span class="op">]</span><span class="op">[</span><span class="op">-</span><span class="fl">3</span><span class="op">:</span><span class="op">-</span><span class="fl">5</span><span class="op">]</span>
-<span class="va">myMultiAssay</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html">as.list</a></span><span class="op">(</span><span class="va">allsamples</span><span class="op">)</span>, <span class="op">]</span></code></pre></div>
+<span class="va">myMultiAssay</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/as.list.html">as.list</a></span><span class="op">(</span><span class="va">allsamples</span><span class="op">)</span>, <span class="op">]</span></code></pre></div>
 <pre><code>## harmonizing input:
 ##   removing 3 sampleMap rows with 'colname' not in colnames of experiments</code></pre>
 <pre><code>## A MultiAssayExperiment object of 4 listed
@@ -1046,9 +1046,9 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 ##  `$`, `[`, `[[` - extract colData columns, subset, or experiment
 ##  *Format() - convert into a long or wide DataFrame
 ##  assays() - convert ExperimentList to a SimpleList of matrices
-##  exportClass() - save all data to files</code></pre>
+##  exportClass() - save data to flat files</code></pre>
 <div class="sourceCode" id="cb142"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/subsetBy.html">subsetByColumn</a></span><span class="op">(</span><span class="va">myMultiAssay</span>,  <span class="fu"><a href="https://rdrr.io/r/base/list.html">as.list</a></span><span class="op">(</span><span class="va">allsamples</span><span class="op">)</span><span class="op">)</span>  <span class="co">#equivalent</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="../reference/subsetBy.html">subsetByColumn</a></span><span class="op">(</span><span class="va">myMultiAssay</span>,  <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/as.list.html">as.list</a></span><span class="op">(</span><span class="va">allsamples</span><span class="op">)</span><span class="op">)</span>  <span class="co">#equivalent</span></code></pre></div>
 <pre><code>## harmonizing input:
 ##   removing 3 sampleMap rows with 'colname' not in colnames of experiments</code></pre>
 <pre><code>## A MultiAssayExperiment object of 4 listed
@@ -1065,14 +1065,14 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 ##  `$`, `[`, `[[` - extract colData columns, subset, or experiment
 ##  *Format() - convert into a long or wide DataFrame
 ##  assays() - convert ExperimentList to a SimpleList of matrices
-##  exportClass() - save all data to files</code></pre>
+##  exportClass() - save data to flat files</code></pre>
 </div>
 <div id="subsetting-assays" class="section level2">
 <h2 class="hasAnchor">
 <a href="#subsetting-assays" class="anchor"></a>Subsetting assays</h2>
 <p>You can select certain assays / experiments using subset, by providing a character, logical, or integer vector. An example using character:</p>
 <div class="sourceCode" id="cb145"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">myMultiAssay</span><span class="op">[</span>, , <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Affy"</span>, <span class="st">"CNV gistic"</span><span class="op">)</span><span class="op">]</span></code></pre></div>
+<code class="sourceCode R"><span class="va">myMultiAssay</span><span class="op">[</span>, , <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html">c</a></span><span class="op">(</span><span class="st">"Affy"</span>, <span class="st">"CNV gistic"</span><span class="op">)</span><span class="op">]</span></code></pre></div>
 <pre><code>## Warning: 'experiments' dropped; see 'metadata'</code></pre>
 <pre><code>## harmonizing input:
 ##   removing 8 sampleMap rows not in names(experiments)</code></pre>
@@ -1088,10 +1088,10 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 ##  `$`, `[`, `[[` - extract colData columns, subset, or experiment
 ##  *Format() - convert into a long or wide DataFrame
 ##  assays() - convert ExperimentList to a SimpleList of matrices
-##  exportClass() - save all data to files</code></pre>
+##  exportClass() - save data to flat files</code></pre>
 <p>You can subset assays also using logical or integer vectors:</p>
 <div class="sourceCode" id="cb149"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">is.cnv</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">grepl</a></span><span class="op">(</span><span class="st">"CNV"</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="fu"><a href="../reference/MultiAssayExperiment-methods.html">experiments</a></span><span class="op">(</span><span class="va">myMultiAssay</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">is.cnv</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/grep.html">grepl</a></span><span class="op">(</span><span class="st">"CNV"</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="fu"><a href="../reference/MultiAssayExperiment-methods.html">experiments</a></span><span class="op">(</span><span class="va">myMultiAssay</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
 <span class="va">is.cnv</span></code></pre></div>
 <pre><code>## [1] FALSE FALSE FALSE  TRUE</code></pre>
 <div class="sourceCode" id="cb151"><pre class="downlit sourceCode r">
@@ -1110,9 +1110,9 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 ##  `$`, `[`, `[[` - extract colData columns, subset, or experiment
 ##  *Format() - convert into a long or wide DataFrame
 ##  assays() - convert ExperimentList to a SimpleList of matrices
-##  exportClass() - save all data to files</code></pre>
+##  exportClass() - save data to flat files</code></pre>
 <div class="sourceCode" id="cb155"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">myMultiAssay</span><span class="op">[</span>, , <span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="va">is.cnv</span><span class="op">)</span><span class="op">]</span> <span class="co">#integer subsetting</span></code></pre></div>
+<code class="sourceCode R"><span class="va">myMultiAssay</span><span class="op">[</span>, , <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/which.html">which</a></span><span class="op">(</span><span class="va">is.cnv</span><span class="op">)</span><span class="op">]</span> <span class="co">#integer subsetting</span></code></pre></div>
 <pre><code>## Warning: 'experiments' dropped; see 'metadata'</code></pre>
 <pre><code>## harmonizing input:
 ##   removing 12 sampleMap rows not in names(experiments)</code></pre>
@@ -1127,7 +1127,7 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 ##  `$`, `[`, `[[` - extract colData columns, subset, or experiment
 ##  *Format() - convert into a long or wide DataFrame
 ##  assays() - convert ExperimentList to a SimpleList of matrices
-##  exportClass() - save all data to files</code></pre>
+##  exportClass() - save data to flat files</code></pre>
 </div>
 <div id="subsetting-rows-features-by-ids-integers-or-logicals" class="section level2">
 <h2 class="hasAnchor">
@@ -1156,7 +1156,7 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 ##  `$`, `[`, `[[` - extract colData columns, subset, or experiment
 ##  *Format() - convert into a long or wide DataFrame
 ##  assays() - convert ExperimentList to a SimpleList of matrices
-##  exportClass() - save all data to files</code></pre>
+##  exportClass() - save data to flat files</code></pre>
 <div class="sourceCode" id="cb161"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## equivalently</span>
 <span class="fu"><a href="../reference/subsetBy.html">subsetByRow</a></span><span class="op">(</span><span class="va">myMultiAssay</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>Mirna <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span></code></pre></div>
@@ -1174,8 +1174,8 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 ##  `$`, `[`, `[[` - extract colData columns, subset, or experiment
 ##  *Format() - convert into a long or wide DataFrame
 ##  assays() - convert ExperimentList to a SimpleList of matrices
-##  exportClass() - save all data to files</code></pre>
-<p>Again, these operations always return a <code>MultiAssayExperiment</code> class, unless <code>drop=TRUE</code> is passed to the <code><a href="https://rdrr.io/r/base/Extract.html">[</a></code> backet subset, with any <code>ExperimentList</code> element not containing the feature having zero rows.</p>
+##  exportClass() - save data to flat files</code></pre>
+<p>Again, these operations always return a <code>MultiAssayExperiment</code> class, unless <code>drop=TRUE</code> is passed to the <code>[</code> backet subset, with any <code>ExperimentList</code> element not containing the feature having zero rows.</p>
 <p>For example, return a MultiAssayExperiment where <code>Affy</code> and <code>Methyl 450k</code> contain only “ENST0000035076”" row, and “Mirna” and “CNV gistic” have zero rows (<code>drop</code> argument is set to <code>FALSE</code> by default in <code>subsetBy*</code>):</p>
 <div class="sourceCode" id="cb163"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">featSub0</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/subsetBy.html">subsetByRow</a></span><span class="op">(</span><span class="va">myMultiAssay</span>, <span class="st">"ENST00000355076"</span><span class="op">)</span>
@@ -1202,7 +1202,7 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 <p>In the following, <code>Affy</code> <code>SummarizedExperiment</code> keeps both rows but with their order reversed, and <code>Methyl 450k</code> keeps only its second row.</p>
 <div class="sourceCode" id="cb171"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">featSubsetted</span> <span class="op">&lt;-</span>
-  <span class="fu"><a href="../reference/subsetBy.html">subsetByRow</a></span><span class="op">(</span><span class="va">myMultiAssay</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"ENST00000355076"</span>, <span class="st">"ENST00000294241"</span><span class="op">)</span><span class="op">)</span>
+  <span class="fu"><a href="../reference/subsetBy.html">subsetByRow</a></span><span class="op">(</span><span class="va">myMultiAssay</span>, <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html">c</a></span><span class="op">(</span><span class="st">"ENST00000355076"</span>, <span class="st">"ENST00000294241"</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html">assay</a></span><span class="op">(</span><span class="va">myMultiAssay</span>, <span class="fl">1L</span><span class="op">)</span></code></pre></div>
 <pre><code>##                 array1 array2 array3 array4
 ## ENST00000294241    101    103    105    107
@@ -1219,9 +1219,9 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 </h2>
 <p>For <code>MultiAssayExperiment</code> objects containing range-based objects (currently <code>RangedSummarizedExperiment</code>), these can be subset using a <code>GRanges</code> object, for example:</p>
 <div class="sourceCode" id="cb175"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">gr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html">GRanges</a></span><span class="op">(</span>seqnames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"chr1"</span>, <span class="st">"chr1"</span>, <span class="st">"chr2"</span><span class="op">)</span>, strand <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"-"</span>, <span class="st">"+"</span>, <span class="st">"+"</span><span class="op">)</span>,
-              ranges <span class="op">=</span> <span class="fu">IRanges</span><span class="op">(</span>start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">230602</span>, <span class="fl">443625</span>, <span class="fl">934533</span><span class="op">)</span>,
-                               end <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">330701</span>, <span class="fl">443724</span>, <span class="fl">934632</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="va">gr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html">GRanges</a></span><span class="op">(</span>seqnames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html">c</a></span><span class="op">(</span><span class="st">"chr1"</span>, <span class="st">"chr1"</span>, <span class="st">"chr2"</span><span class="op">)</span>, strand <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html">c</a></span><span class="op">(</span><span class="st">"-"</span>, <span class="st">"+"</span>, <span class="st">"+"</span><span class="op">)</span>,
+              ranges <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/IRanges/man/IRanges-constructor.html">IRanges</a></span><span class="op">(</span>start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html">c</a></span><span class="op">(</span><span class="fl">230602</span>, <span class="fl">443625</span>, <span class="fl">934533</span><span class="op">)</span>,
+                               end <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html">c</a></span><span class="op">(</span><span class="fl">330701</span>, <span class="fl">443724</span>, <span class="fl">934632</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p>Now do the subsetting. The function doing the work here is <code><a href="https://rdrr.io/pkg/IRanges/man/findOverlaps-methods.html">IRanges::subsetByOverlaps</a></code> - see its arguments for flexible types of subsetting by range. The first three arguments here are for <code>subset</code>, the rest passed on to <code><a href="https://rdrr.io/pkg/IRanges/man/findOverlaps-methods.html">IRanges::subsetByOverlaps</a></code> through “…”:</p>
 <div class="sourceCode" id="cb176"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">subsetted</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/subsetBy.html">subsetByRow</a></span><span class="op">(</span><span class="va">myMultiAssay</span>, <span class="va">gr</span>, maxgap <span class="op">=</span> <span class="fl">2L</span>, type <span class="op">=</span> <span class="st">"within"</span><span class="op">)</span>
@@ -1322,7 +1322,7 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 ##  `$`, `[`, `[[` - extract colData columns, subset, or experiment
 ##  *Format() - convert into a long or wide DataFrame
 ##  assays() - convert ExperimentList to a SimpleList of matrices
-##  exportClass() - save all data to files</code></pre>
+##  exportClass() - save data to flat files</code></pre>
 </div>
 <div id="replicated" class="section level2">
 <h2 class="hasAnchor">
@@ -1380,9 +1380,9 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 ##  `$`, `[`, `[[` - extract colData columns, subset, or experiment
 ##  *Format() - convert into a long or wide DataFrame
 ##  assays() - convert ExperimentList to a SimpleList of matrices
-##  exportClass() - save all data to files</code></pre>
+##  exportClass() - save data to flat files</code></pre>
 <div class="sourceCode" id="cb202"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">ensmblMatches</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html">rownames</a></span><span class="op">(</span><span class="va">ensmblMatches</span><span class="op">)</span></code></pre></div>
 <pre><code>## CharacterList of length 2
 ## [["Affy"]] ENST00000355076
 ## [["Methyl 450k"]] ENST00000355076</code></pre>
@@ -1408,7 +1408,7 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 ##  `$`, `[`, `[[` - extract colData columns, subset, or experiment
 ##  *Format() - convert into a long or wide DataFrame
 ##  assays() - convert ExperimentList to a SimpleList of matrices
-##  exportClass() - save all data to files</code></pre>
+##  exportClass() - save data to flat files</code></pre>
 </div>
 <div id="mergereplicates" class="section level2">
 <h2 class="hasAnchor">
@@ -1433,7 +1433,7 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 ##  `$`, `[`, `[[` - extract colData columns, subset, or experiment
 ##  *Format() - convert into a long or wide DataFrame
 ##  assays() - convert ExperimentList to a SimpleList of matrices
-##  exportClass() - save all data to files</code></pre>
+##  exportClass() - save data to flat files</code></pre>
 </div>
 <div id="combine-c" class="section level2">
 <h2 class="hasAnchor">
@@ -1443,8 +1443,8 @@ MultiAssayExperiment object schematic shows the design of the infrastructure cla
 <p>The <code>mapFrom</code> argument indicates what experiment has the exact same organization of samples that will be introduced by the new experiment dataset. If the number of columns in the new experiment do not match those in the reference experiment, an error will be thrown.</p>
 <p>Here we introduce a toy dataset created on the fly:</p>
 <div class="sourceCode" id="cb209"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">myMultiAssay</span>, ExpScores <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">8</span>, ncol <span class="op">=</span> <span class="fl">4</span>,
-dim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"ENSMBL0001"</span>, <span class="st">"ENSMBL0002"</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"pt"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html">c</a></span><span class="op">(</span><span class="va">myMultiAssay</span>, ExpScores <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">8</span>, ncol <span class="op">=</span> <span class="fl">4</span>,
+dim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html">c</a></span><span class="op">(</span><span class="st">"ENSMBL0001"</span>, <span class="st">"ENSMBL0002"</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"pt"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,
 mapFrom <span class="op">=</span> <span class="fl">1L</span><span class="op">)</span></code></pre></div>
 <pre><code>## Warning: Assuming column order in the data provided 
 ##  matches the order in 'mapFrom' experiment(s) colnames</code></pre>
@@ -1463,7 +1463,7 @@ mapFrom <span class="op">=</span> <span class="fl">1L</span><span class="op">)</
 ##  `$`, `[`, `[[` - extract colData columns, subset, or experiment
 ##  *Format() - convert into a long or wide DataFrame
 ##  assays() - convert ExperimentList to a SimpleList of matrices
-##  exportClass() - save all data to files</code></pre>
+##  exportClass() - save data to flat files</code></pre>
 <p><em>Note</em>: Alternatively, a <code>sampleMap</code> for the additional dataset can be provided.</p>
 <p style="text-align: right;">
 <a href="#header">back to top</a>
@@ -1482,8 +1482,6 @@ mapFrom <span class="op">=</span> <span class="fl">1L</span><span class="op">)</
 <div class="sourceCode" id="cb212"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="op">(</span><span class="va">affex</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/MultiAssayExperiment-helpers.html">getWithColData</a></span><span class="op">(</span><span class="va">myMultiAssay</span>, <span class="fl">1L</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## Warning: 'experiments' dropped; see 'metadata'</code></pre>
-<pre><code>## harmonizing input:
-##   removing 12 sampleMap rows not in names(experiments)</code></pre>
 <pre><code>## class: SummarizedExperiment 
 ## dim: 2 4 
 ## metadata(0):
@@ -1492,16 +1490,16 @@ mapFrom <span class="op">=</span> <span class="fl">1L</span><span class="op">)</
 ## rowData names(0):
 ## colnames(4): array1 array2 array3 array4
 ## colData names(3): slope53 sex age</code></pre>
-<div class="sourceCode" id="cb216"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb215"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html">colData</a></span><span class="op">(</span><span class="va">affex</span><span class="op">)</span></code></pre></div>
 <pre><code>## DataFrame with 4 rows and 3 columns
 ##          slope53         sex       age
 ##        &lt;numeric&gt; &lt;character&gt; &lt;integer&gt;
-## array1 -0.774737           M        38
-## array2 -0.396607           F        39
-## array3  3.484165           F        41
-## array4  1.586531           M        40</code></pre>
-<div class="sourceCode" id="cb218"><pre class="downlit sourceCode r">
+## array1  -1.04967           M        38
+## array2  -1.47333           F        39
+## array3   1.78996           F        41
+## array4  -0.40909           M        40</code></pre>
+<div class="sourceCode" id="cb217"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">affex</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] "SummarizedExperiment"
 ## attr(,"package")
@@ -1513,7 +1511,7 @@ mapFrom <span class="op">=</span> <span class="fl">1L</span><span class="op">)</
 <a href="#longformat-wideformat" class="anchor"></a><code>longFormat</code> &amp; <code>wideFormat</code>
 </h2>
 <p>Produces <em>long</em> (default) or <em>wide</em> <code>DataFrame</code> objects. The following produces a long <code>DataFrame</code> (the default) for the first two assays:</p>
-<div class="sourceCode" id="cb220"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb219"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/MultiAssayExperiment-helpers.html">longFormat</a></span><span class="op">(</span><span class="va">myMultiAssay</span><span class="op">[</span>, , <span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span></code></pre></div>
 <pre><code>## Warning: 'experiments' dropped; see 'metadata'</code></pre>
 <pre><code>## harmonizing input:
@@ -1533,7 +1531,7 @@ mapFrom <span class="op">=</span> <span class="fl">1L</span><span class="op">)</
 ## 17  Methyl 450k         Bob ENST00000355076     methyl5         9
 ## 18  Methyl 450k         Bob ENST00000383706     methyl5        10</code></pre>
 <p>This is especially useful for performing regression against patient or sample data from <code>colData</code> using the <code>pDataCols</code> argument:</p>
-<div class="sourceCode" id="cb224"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb223"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/MultiAssayExperiment-helpers.html">longFormat</a></span><span class="op">(</span><span class="va">myMultiAssay</span><span class="op">[</span>, , <span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span>, colDataCols<span class="op">=</span><span class="st">"age"</span><span class="op">)</span></code></pre></div>
 <pre><code>## Warning: 'experiments' dropped; see 'metadata'</code></pre>
 <pre><code>## harmonizing input:
@@ -1553,11 +1551,11 @@ mapFrom <span class="op">=</span> <span class="fl">1L</span><span class="op">)</
 ## 17  Methyl 450k         Bob ENST00000355076     methyl5         9        40
 ## 18  Methyl 450k         Bob ENST00000383706     methyl5        10        40</code></pre>
 <p>The “wide” format is useful for calculating correlations or performing regression against different genomic features. Wide format is in general not possible with replicate measurements, so we demonstrate on the cleaned <code>MultiAssayExperiment</code> for the first 5 columns:</p>
-<div class="sourceCode" id="cb228"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb227"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">maemerge</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/MultiAssayExperiment-helpers.html">mergeReplicates</a></span><span class="op">(</span><span class="fu"><a href="../reference/MultiAssayExperiment-helpers.html">intersectColumns</a></span><span class="op">(</span><span class="va">myMultiAssay</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## harmonizing input:
 ##   removing 1 sampleMap rows with 'colname' not in colnames of experiments</code></pre>
-<div class="sourceCode" id="cb230"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb229"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/MultiAssayExperiment-helpers.html">wideFormat</a></span><span class="op">(</span><span class="va">maemerge</span>, colDataCols<span class="op">=</span><span class="st">"sex"</span><span class="op">)</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></code></pre></div>
 <pre><code>## DataFrame with 3 rows and 5 columns
 ##       primary         sex Affy_ENST00000294241 Affy_ENST00000355076
@@ -1576,13 +1574,13 @@ mapFrom <span class="op">=</span> <span class="fl">1L</span><span class="op">)</
 <a href="#assay-assays" class="anchor"></a><code>assay</code> / <code>assays</code>
 </h2>
 <p>The <code>assay</code> (singular) function takes a particular experiment and returns a matrix. By default, it will return the <em>first</em> experiment as a matrix.</p>
-<div class="sourceCode" id="cb232"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb231"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html">assay</a></span><span class="op">(</span><span class="va">myMultiAssay</span><span class="op">)</span></code></pre></div>
 <pre><code>##                 array1 array2 array3 array4
 ## ENST00000294241    101    103    105    107
 ## ENST00000355076    102    104    106    108</code></pre>
 <p>The <code>assays</code> (plural) function returns a <code>SimpleList</code> of data matrices from the <code>ExperimentList</code>:</p>
-<div class="sourceCode" id="cb234"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb233"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html">assays</a></span><span class="op">(</span><span class="va">myMultiAssay</span><span class="op">)</span></code></pre></div>
 <pre><code>## List of length 4
 ## names(4): Affy Methyl 450k Mirna CNV gistic</code></pre>
@@ -1592,7 +1590,7 @@ mapFrom <span class="op">=</span> <span class="fl">1L</span><span class="op">)</
 <h1 class="hasAnchor">
 <a href="#the-cancer-genome-atlas-and-multiassayexperiment" class="anchor"></a>The Cancer Genome Atlas and MultiAssayExperiment</h1>
 <p>Our most recent efforts include the release of the experiment data package, <code>curatedTCGAData</code>. This package will allow users to selectively download cancer datasets from The Cancer Genome Atlas (TCGA) and represent the data as <code>MultiAssayExperiment</code> objects. Please see the package vignette for more details.</p>
-<div class="sourceCode" id="cb236"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb235"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html">install</a></span><span class="op">(</span><span class="st">"curatedTCGAData"</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="dimension-names-rownames-and-colnames" class="section level1">
@@ -1600,15 +1598,15 @@ mapFrom <span class="op">=</span> <span class="fl">1L</span><span class="op">)</
 <a href="#dimension-names-rownames-and-colnames" class="anchor"></a>Dimension names: <code>rownames</code> and <code>colnames</code>
 </h1>
 <p><code>rownames</code> and <code>colnames</code> return a <code>CharacterList</code> of row names and column names across all the assays. A <code>CharacterList</code> is an efficient alternative to <code>list</code> used when each element contains a character vector. It also provides a nice show method:</p>
-<div class="sourceCode" id="cb237"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">myMultiAssay</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb236"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html">rownames</a></span><span class="op">(</span><span class="va">myMultiAssay</span><span class="op">)</span></code></pre></div>
 <pre><code>## CharacterList of length 4
 ## [["Affy"]] ENST00000294241 ENST00000355076
 ## [["Methyl 450k"]] ENST00000355076 ENST00000383706
 ## [["Mirna"]] hsa-miR-21 hsa-miR-191 hsa-miR-148a hsa-miR148b
 ## [["CNV gistic"]] a b c d e</code></pre>
-<div class="sourceCode" id="cb239"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">myMultiAssay</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb238"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html">colnames</a></span><span class="op">(</span><span class="va">myMultiAssay</span><span class="op">)</span></code></pre></div>
 <pre><code>## CharacterList of length 4
 ## [["Affy"]] array1 array2 array3 array4
 ## [["Methyl 450k"]] methyl1 methyl2 methyl3 methyl4 methyl5
@@ -1624,13 +1622,13 @@ mapFrom <span class="op">=</span> <span class="fl">1L</span><span class="op">)</
 <p>Any data classes in the <code>ExperimentList</code> object must support the following methods:</p>
 <ul>
 <li><code>dimnames</code></li>
-<li><code><a href="https://rdrr.io/r/base/Extract.html">[</a></code></li>
+<li><code>[</code></li>
 <li><code><a href="https://rdrr.io/r/base/dim.html">dim()</a></code></li>
 </ul>
 <p>Here is what happens if one of the methods doesn’t:</p>
-<div class="sourceCode" id="cb241"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb240"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">objlist2</span> <span class="op">&lt;-</span> <span class="va">objlist</span>
-<span class="va">objlist2</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/vector.html">as.vector</a></span><span class="op">(</span><span class="va">objlist2</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>
+<span class="va">objlist2</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/as.vector.html">as.vector</a></span><span class="op">(</span><span class="va">objlist2</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>
 
 <span class="kw"><a href="https://rdrr.io/r/base/conditions.html">tryCatch</a></span><span class="op">(</span>
     <span class="fu"><a href="../reference/MultiAssayExperiment.html">MultiAssayExperiment</a></span><span class="op">(</span><span class="va">objlist2</span>, <span class="va">patient.data</span>, <span class="va">dfmap</span><span class="op">)</span>,
@@ -1643,7 +1641,7 @@ mapFrom <span class="op">=</span> <span class="fl">1L</span><span class="op">)</
 <div id="application-programming-interface-api" class="section level1">
 <h1 class="hasAnchor">
 <a href="#application-programming-interface-api" class="anchor"></a>Application Programming Interface (API)</h1>
-<p>For more information on the formal API of <code>MultiAssayExperiment</code>, please see the <a href="https://github.com/waldronlab/MultiAssayExperiment/wiki/MultiAssayExperiment-API">API wiki</a> document on GitHub. An API package is available for download on GitHub via <code><a href="https://rdrr.io/pkg/BiocManager/man/install.html">install("waldronlab/MultiAssayShiny")</a></code>. It provides visual exploration of available methods in <code>MultiAssayExperiment</code>.</p>
+<p>For more information on the formal API of <code>MultiAssayExperiment</code>, please see the <a href="https://github.com/waldronlab/MultiAssayExperiment/wiki/MultiAssayExperiment-API">API wiki</a> document on GitHub. An API package is available for download on GitHub via <code>install("waldronlab/MultiAssayShiny")</code>. It provides visual exploration of available methods in <code>MultiAssayExperiment</code>.</p>
 <p style="text-align: right;">
 <a href="#header">back to top</a>
 </p>
@@ -1652,7 +1650,7 @@ mapFrom <span class="op">=</span> <span class="fl">1L</span><span class="op">)</
 <h1 class="hasAnchor">
 <a href="#methods-for-multiassayexperiment" class="anchor"></a>Methods for MultiAssayExperiment</h1>
 <p>The following methods are defined for <code>MultiAssayExperiment</code>:</p>
-<div class="sourceCode" id="cb243"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb242"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/methods.html">methods</a></span><span class="op">(</span>class<span class="op">=</span><span class="st">"MultiAssayExperiment"</span><span class="op">)</span></code></pre></div>
 <pre><code>##  [1] [               [[              [[&lt;-            [&lt;-            
 ##  [5] $               $&lt;-             anyReplicated   assay          
@@ -1670,7 +1668,7 @@ mapFrom <span class="op">=</span> <span class="fl">1L</span><span class="op">)</
 <h1 class="hasAnchor">
 <a href="#citing-multiassayexperiment" class="anchor"></a>Citing MultiAssayExperiment</h1>
 <p>We are excited to announce the official citation for MultiAssayExperiment in <em>Cancer Research</em>.</p>
-<div class="sourceCode" id="cb245"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb244"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/citation.html">citation</a></span><span class="op">(</span><span class="st">"MultiAssayExperiment"</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
 ## To cite MultiAssayExperiment in publications use:
@@ -1692,11 +1690,11 @@ mapFrom <span class="op">=</span> <span class="fl">1L</span><span class="op">)</
 <div id="sessioninfo" class="section level1">
 <h1 class="hasAnchor">
 <a href="#sessioninfo" class="anchor"></a>sessionInfo()</h1>
-<div class="sourceCode" id="cb247"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb246"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<pre><code>## R version 4.1.0 (2021-05-18)
+<pre><code>## R version 4.1.1 (2021-08-10)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
-## Running under: Ubuntu 20.04.2 LTS
+## Running under: Ubuntu 20.04.3 LTS
 ## 
 ## Matrix products: default
 ## BLAS/LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.8.so
@@ -1710,35 +1708,36 @@ mapFrom <span class="op">=</span> <span class="fl">1L</span><span class="op">)</
 ## [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
 ## 
 ## attached base packages:
-## [1] parallel  stats4    stats     graphics  grDevices utils     datasets 
-## [8] methods   base     
+## [1] stats4    stats     graphics  grDevices utils     datasets  methods  
+## [8] base     
 ## 
 ## other attached packages:
-##  [1] RaggedExperiment_1.16.0     MultiAssayExperiment_1.18.0
-##  [3] SummarizedExperiment_1.22.0 Biobase_2.52.0             
-##  [5] GenomicRanges_1.44.0        GenomeInfoDb_1.28.0        
-##  [7] IRanges_2.26.0              S4Vectors_0.30.0           
-##  [9] BiocGenerics_0.38.0         MatrixGenerics_1.4.0       
-## [11] matrixStats_0.58.0          BiocStyle_2.20.0           
+##  [1] RaggedExperiment_1.18.0     MultiAssayExperiment_1.20.0
+##  [3] SummarizedExperiment_1.24.0 Biobase_2.54.0             
+##  [5] GenomicRanges_1.46.0        GenomeInfoDb_1.30.0        
+##  [7] IRanges_2.28.0              S4Vectors_0.32.0           
+##  [9] BiocGenerics_0.40.0         MatrixGenerics_1.6.0       
+## [11] matrixStats_0.61.0          BiocStyle_2.22.0           
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] tidyselect_1.1.1       xfun_0.23              purrr_0.3.4           
-##  [4] lattice_0.20-44        vctrs_0.3.8            generics_0.1.0        
-##  [7] htmltools_0.5.1.1      yaml_2.2.1             utf8_1.2.1            
-## [10] rlang_0.4.11           pkgdown_1.6.1          pillar_1.6.1          
-## [13] glue_1.4.2             GenomeInfoDbData_1.2.6 lifecycle_1.0.0       
-## [16] stringr_1.4.0          zlibbioc_1.38.0        ragg_1.1.2            
-## [19] memoise_2.0.0          evaluate_0.14          knitr_1.33            
-## [22] fastmap_1.1.0          fansi_0.5.0            highr_0.9             
-## [25] BiocManager_1.30.15    cachem_1.0.5           DelayedArray_0.18.0   
-## [28] desc_1.3.0             XVector_0.32.0         systemfonts_1.0.2     
-## [31] fs_1.5.0               textshaping_0.3.4      digest_0.6.27         
-## [34] stringi_1.6.2          bookdown_0.22          dplyr_1.0.6           
-## [37] rprojroot_2.0.2        grid_4.1.0             tools_4.1.0           
-## [40] bitops_1.0-7           magrittr_2.0.1         tibble_3.1.2          
-## [43] RCurl_1.98-1.3         pkgconfig_2.0.3        crayon_1.4.1          
-## [46] tidyr_1.1.3            ellipsis_0.3.2         Matrix_1.3-3          
-## [49] rmarkdown_2.8          R6_2.5.0               compiler_4.1.0</code></pre>
+##  [1] tidyselect_1.1.1       xfun_0.28              purrr_0.3.4           
+##  [4] lattice_0.20-45        vctrs_0.3.8            generics_0.1.1        
+##  [7] htmltools_0.5.2        yaml_2.2.1             utf8_1.2.2            
+## [10] rlang_0.4.12           pkgdown_1.6.1          jquerylib_0.1.4       
+## [13] pillar_1.6.4           glue_1.4.2             GenomeInfoDbData_1.2.7
+## [16] lifecycle_1.0.1        stringr_1.4.0          zlibbioc_1.40.0       
+## [19] ragg_1.2.0             memoise_2.0.0          evaluate_0.14         
+## [22] knitr_1.36             fastmap_1.1.0          fansi_0.5.0           
+## [25] highr_0.9              BiocManager_1.30.16    cachem_1.0.6          
+## [28] DelayedArray_0.20.0    desc_1.4.0             XVector_0.34.0        
+## [31] systemfonts_1.0.3      fs_1.5.0               textshaping_0.3.6     
+## [34] digest_0.6.28          stringi_1.7.5          bookdown_0.24         
+## [37] dplyr_1.0.7            rprojroot_2.0.2        grid_4.1.1            
+## [40] tools_4.1.1            bitops_1.0-7           magrittr_2.0.1        
+## [43] tibble_3.1.5           RCurl_1.98-1.5         pkgconfig_2.0.3       
+## [46] crayon_1.4.2           tidyr_1.1.4            ellipsis_0.3.2        
+## [49] Matrix_1.3-4           rmarkdown_2.11         R6_2.5.1              
+## [52] compiler_4.1.1</code></pre>
 <p style="text-align: right;">
 <a href="#header">back to top</a>
 </p>

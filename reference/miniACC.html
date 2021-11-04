@@ -78,7 +78,7 @@ additional details are provided by metadata(miniACC)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MultiAssayExperiment</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.18.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.20.0</span>
       </span>
     </div>
 
@@ -124,7 +124,7 @@ additional details are provided by metadata(miniACC)." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/waldronlab/MultiAssayExperiment">
-    <span class="fas fa-github fa-lg"></span>
+    <span class="fa fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -192,123 +192,131 @@ Adrenocortical Carcinoma. Cancer Cell 2016, 29:723-736.</p>
     <p>Levi Waldron <a href='mailto:lwaldron.research@gmail.com'>lwaldron.research@gmail.com</a></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='va'>miniACC</span>
-</div><div class='output co'>#&gt; A MultiAssayExperiment object of 5 listed
-#&gt;  experiments with user-defined names and respective classes.
-#&gt;  Containing an ExperimentList class object of length 5:
-#&gt;  [1] RNASeq2GeneNorm: SummarizedExperiment with 198 rows and 79 columns
-#&gt;  [2] gistict: SummarizedExperiment with 198 rows and 90 columns
-#&gt;  [3] RPPAArray: SummarizedExperiment with 33 rows and 46 columns
-#&gt;  [4] Mutations: matrix with 97 rows and 90 columns
-#&gt;  [5] miRNASeqGene: SummarizedExperiment with 471 rows and 80 columns
-#&gt; Functionality:
-#&gt;  experiments() - obtain the ExperimentList instance
-#&gt;  colData() - the primary/phenotype DataFrame
-#&gt;  sampleMap() - the sample coordination DataFrame
-#&gt;  `$`, `[`, `[[` - extract colData columns, subset, or experiment
-#&gt;  *Format() - convert into a long or wide DataFrame
-#&gt;  assays() - convert ExperimentList to a SimpleList of matrices
-#&gt;  exportClass() - save all data to files</div><div class='input'><span class='fu'>metadata</span><span class='op'>(</span><span class='va'>miniACC</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $title
-#&gt; [1] "Comprehensive Pan-Genomic Characterization of Adrenocortical Carcinoma"
-#&gt; 
-#&gt; $PMID
-#&gt; [1] "27165744"
-#&gt; 
-#&gt; $sourceURL
-#&gt; [1] "http://s3.amazonaws.com/multiassayexperiments/accMAEO.rds"
-#&gt; 
-#&gt; $RPPAfeatureDataURL
-#&gt; [1] "http://genomeportal.stanford.edu/pan-tcga/show_target_selection_file?filename=Allprotein.txt"
-#&gt; 
-#&gt; $colDataExtrasURL
-#&gt; [1] "http://www.cell.com/cms/attachment/2062093088/2063584534/mmc3.xlsx"
-#&gt; </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span><span class='op'>(</span><span class='fu'>colData</span><span class='op'>(</span><span class='va'>miniACC</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;  [1] "patientID"                           
-#&gt;  [2] "years_to_birth"                      
-#&gt;  [3] "vital_status"                        
-#&gt;  [4] "days_to_death"                       
-#&gt;  [5] "days_to_last_followup"               
-#&gt;  [6] "tumor_tissue_site"                   
-#&gt;  [7] "pathologic_stage"                    
-#&gt;  [8] "pathology_T_stage"                   
-#&gt;  [9] "pathology_N_stage"                   
-#&gt; [10] "gender"                              
-#&gt; [11] "date_of_initial_pathologic_diagnosis"
-#&gt; [12] "radiation_therapy"                   
-#&gt; [13] "histological_type"                   
-#&gt; [14] "residual_tumor"                      
-#&gt; [15] "number_of_lymph_nodes"               
-#&gt; [16] "race"                                
-#&gt; [17] "ethnicity"                           
-#&gt; [18] "Histology"                           
-#&gt; [19] "C1A.C1B"                             
-#&gt; [20] "mRNA_K4"                             
-#&gt; [21] "MethyLevel"                          
-#&gt; [22] "miRNA.cluster"                       
-#&gt; [23] "SCNA.cluster"                        
-#&gt; [24] "protein.cluster"                     
-#&gt; [25] "COC"                                 
-#&gt; [26] "OncoSign"                            
-#&gt; [27] "purity"                              
-#&gt; [28] "ploidy"                              
-#&gt; [29] "genome_doublings"                    
-#&gt; [30] "ADS"                                 </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span><span class='op'>(</span><span class='va'>miniACC</span><span class='op'>$</span><span class='va'>vital_status</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; 
-#&gt;  0  1 
-#&gt; 58 34 </div><div class='input'><span class='fu'><a href='MultiAssayExperiment-helpers.html'>longFormat</a></span><span class='op'>(</span>
-    <span class='va'>miniACC</span><span class='op'>[</span><span class='st'>"MAPK3"</span>, , <span class='op'>]</span>,
-    colDataCols <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"vital_status"</span>, <span class='st'>"days_to_death"</span><span class='op'>)</span>
-<span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>harmonizing input:</span>
-#&gt; <span class='message'>  removing 216 sampleMap rows not in names(experiments)</span></div><div class='output co'>#&gt; DataFrame with 169 rows and 7 columns
-#&gt;               assay      primary     rowname                colname     value
-#&gt;         &lt;character&gt;  &lt;character&gt; &lt;character&gt;            &lt;character&gt; &lt;numeric&gt;
-#&gt; 1   RNASeq2GeneNorm TCGA-OR-A5J1       MAPK3 TCGA-OR-A5J1-01A-11R..   946.681
-#&gt; 2   RNASeq2GeneNorm TCGA-OR-A5J2       MAPK3 TCGA-OR-A5J2-01A-11R..  1699.382
-#&gt; 3   RNASeq2GeneNorm TCGA-OR-A5J3       MAPK3 TCGA-OR-A5J3-01A-11R..  2347.243
-#&gt; 4   RNASeq2GeneNorm TCGA-OR-A5J5       MAPK3 TCGA-OR-A5J5-01A-11R..  1299.156
-#&gt; 5   RNASeq2GeneNorm TCGA-OR-A5J6       MAPK3 TCGA-OR-A5J6-01A-31R..  2543.424
-#&gt; ...             ...          ...         ...                    ...       ...
-#&gt; 165         gistict TCGA-PA-A5YG       MAPK3 TCGA-PA-A5YG-01A-11D..         1
-#&gt; 166         gistict TCGA-PK-A5H9       MAPK3 TCGA-PK-A5H9-01A-11D..         0
-#&gt; 167         gistict TCGA-PK-A5HA       MAPK3 TCGA-PK-A5HA-01A-11D..         0
-#&gt; 168         gistict TCGA-PK-A5HB       MAPK3 TCGA-PK-A5HB-01A-11D..         0
-#&gt; 169         gistict TCGA-PK-A5HC       MAPK3 TCGA-PK-A5HC-01A-11D..         1
-#&gt;     vital_status days_to_death
-#&gt;        &lt;integer&gt;     &lt;integer&gt;
-#&gt; 1              1          1355
-#&gt; 2              1          1677
-#&gt; 3              0            NA
-#&gt; 4              1           365
-#&gt; 5              0            NA
-#&gt; ...          ...           ...
-#&gt; 165            0            NA
-#&gt; 166            0            NA
-#&gt; 167            0            NA
-#&gt; 168            0            NA
-#&gt; 169            0            NA</div><div class='input'>
-<span class='fu'><a href='MultiAssayExperiment-helpers.html'>wideFormat</a></span><span class='op'>(</span>
-    <span class='va'>miniACC</span><span class='op'>[</span><span class='st'>"MAPK3"</span>, , <span class='op'>]</span>,
-    colDataCols <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"vital_status"</span>, <span class='st'>"days_to_death"</span><span class='op'>)</span>
-<span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>harmonizing input:</span>
-#&gt; <span class='message'>  removing 216 sampleMap rows not in names(experiments)</span></div><div class='output co'>#&gt; DataFrame with 92 rows and 5 columns
-#&gt;          primary vital_status days_to_death RNASeq2GeneNorm_MAPK3 gistict_MAPK3
-#&gt;      &lt;character&gt;    &lt;integer&gt;     &lt;integer&gt;             &lt;numeric&gt;     &lt;numeric&gt;
-#&gt; 1   TCGA-OR-A5J1            1          1355               946.681             0
-#&gt; 2   TCGA-OR-A5J2            1          1677              1699.382             0
-#&gt; 3   TCGA-OR-A5J3            0            NA              2347.243             1
-#&gt; 4   TCGA-OR-A5J4            1           423                    NA             0
-#&gt; 5   TCGA-OR-A5J5            1           365              1299.156             1
-#&gt; ...          ...          ...           ...                   ...           ...
-#&gt; 88  TCGA-PK-A5H9            0            NA               1013.47             0
-#&gt; 89  TCGA-PK-A5HA            0            NA               2446.12             0
-#&gt; 90  TCGA-PK-A5HB            0            NA               1463.31             0
-#&gt; 91  TCGA-PK-A5HC            0            NA                    NA             1
-#&gt; 92  TCGA-P6-A5OG            1           383               1310.88            -1</div><div class='input'>
-</div></pre>
+    <pre class="examples"><span class='r-in'></span>
+<span class='r-in'><span class='va'>miniACC</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A MultiAssayExperiment object of 5 listed</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  experiments with user-defined names and respective classes.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Containing an ExperimentList class object of length 5:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] RNASeq2GeneNorm: SummarizedExperiment with 198 rows and 79 columns</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [2] gistict: SummarizedExperiment with 198 rows and 90 columns</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [3] RPPAArray: SummarizedExperiment with 33 rows and 46 columns</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [4] Mutations: matrix with 97 rows and 90 columns</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [5] miRNASeqGene: SummarizedExperiment with 471 rows and 80 columns</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Functionality:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  experiments() - obtain the ExperimentList instance</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  colData() - the primary/phenotype DataFrame</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  sampleMap() - the sample coordination DataFrame</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  `$`, `[`, `[[` - extract colData columns, subset, or experiment</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  *Format() - convert into a long or wide DataFrame</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  assays() - convert ExperimentList to a SimpleList of matrices</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  exportClass() - save data to flat files</span>
+<span class='r-in'><span class='fu'>metadata</span><span class='op'>(</span><span class='va'>miniACC</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $title</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Comprehensive Pan-Genomic Characterization of Adrenocortical Carcinoma"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $PMID</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "27165744"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $sourceURL</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "http://s3.amazonaws.com/multiassayexperiments/accMAEO.rds"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $RPPAfeatureDataURL</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "http://genomeportal.stanford.edu/pan-tcga/show_target_selection_file?filename=Allprotein.txt"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $colDataExtrasURL</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "http://www.cell.com/cms/attachment/2062093088/2063584534/mmc3.xlsx"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span><span class='op'>(</span><span class='fu'>colData</span><span class='op'>(</span><span class='va'>miniACC</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] "patientID"                           </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [2] "years_to_birth"                      </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [3] "vital_status"                        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [4] "days_to_death"                       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [5] "days_to_last_followup"               </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [6] "tumor_tissue_site"                   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [7] "pathologic_stage"                    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [8] "pathology_T_stage"                   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [9] "pathology_N_stage"                   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [10] "gender"                              </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [11] "date_of_initial_pathologic_diagnosis"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [12] "radiation_therapy"                   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [13] "histological_type"                   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [14] "residual_tumor"                      </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [15] "number_of_lymph_nodes"               </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [16] "race"                                </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [17] "ethnicity"                           </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [18] "Histology"                           </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [19] "C1A.C1B"                             </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [20] "mRNA_K4"                             </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [21] "MethyLevel"                          </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [22] "miRNA.cluster"                       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [23] "SCNA.cluster"                        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [24] "protein.cluster"                     </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [25] "COC"                                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [26] "OncoSign"                            </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [27] "purity"                              </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [28] "ploidy"                              </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [29] "genome_doublings"                    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [30] "ADS"                                 </span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span><span class='op'>(</span><span class='va'>miniACC</span><span class='op'>$</span><span class='va'>vital_status</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  0  1 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 58 34 </span>
+<span class='r-in'><span class='fu'><a href='MultiAssayExperiment-helpers.html'>longFormat</a></span><span class='op'>(</span></span>
+<span class='r-in'>    <span class='va'>miniACC</span><span class='op'>[</span><span class='st'>"MAPK3"</span>, , <span class='op'>]</span>,</span>
+<span class='r-in'>    colDataCols <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"vital_status"</span>, <span class='st'>"days_to_death"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> harmonizing input:</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>   removing 216 sampleMap rows not in names(experiments)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> DataFrame with 169 rows and 7 columns</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>               assay      primary     rowname                colname     value</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         &lt;character&gt;  &lt;character&gt; &lt;character&gt;            &lt;character&gt; &lt;numeric&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1   RNASeq2GeneNorm TCGA-OR-A5J1       MAPK3 TCGA-OR-A5J1-01A-11R..   946.681</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2   RNASeq2GeneNorm TCGA-OR-A5J2       MAPK3 TCGA-OR-A5J2-01A-11R..  1699.382</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3   RNASeq2GeneNorm TCGA-OR-A5J3       MAPK3 TCGA-OR-A5J3-01A-11R..  2347.243</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4   RNASeq2GeneNorm TCGA-OR-A5J5       MAPK3 TCGA-OR-A5J5-01A-11R..  1299.156</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5   RNASeq2GeneNorm TCGA-OR-A5J6       MAPK3 TCGA-OR-A5J6-01A-31R..  2543.424</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ...             ...          ...         ...                    ...       ...</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 165         gistict TCGA-PA-A5YG       MAPK3 TCGA-PA-A5YG-01A-11D..         1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 166         gistict TCGA-PK-A5H9       MAPK3 TCGA-PK-A5H9-01A-11D..         0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 167         gistict TCGA-PK-A5HA       MAPK3 TCGA-PK-A5HA-01A-11D..         0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 168         gistict TCGA-PK-A5HB       MAPK3 TCGA-PK-A5HB-01A-11D..         0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 169         gistict TCGA-PK-A5HC       MAPK3 TCGA-PK-A5HC-01A-11D..         1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     vital_status days_to_death</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        &lt;integer&gt;     &lt;integer&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1              1          1355</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2              1          1677</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3              0            NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4              1           365</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5              0            NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ...          ...           ...</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 165            0            NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 166            0            NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 167            0            NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 168            0            NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 169            0            NA</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'><a href='MultiAssayExperiment-helpers.html'>wideFormat</a></span><span class='op'>(</span></span>
+<span class='r-in'>    <span class='va'>miniACC</span><span class='op'>[</span><span class='st'>"MAPK3"</span>, , <span class='op'>]</span>,</span>
+<span class='r-in'>    colDataCols <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"vital_status"</span>, <span class='st'>"days_to_death"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> harmonizing input:</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>   removing 216 sampleMap rows not in names(experiments)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> DataFrame with 92 rows and 5 columns</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          primary vital_status days_to_death RNASeq2GeneNorm_MAPK3 gistict_MAPK3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      &lt;character&gt;    &lt;integer&gt;     &lt;integer&gt;             &lt;numeric&gt;     &lt;numeric&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1   TCGA-OR-A5J1            1          1355               946.681             0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2   TCGA-OR-A5J2            1          1677              1699.382             0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3   TCGA-OR-A5J3            0            NA              2347.243             1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4   TCGA-OR-A5J4            1           423                    NA             0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5   TCGA-OR-A5J5            1           365              1299.156             1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ...          ...          ...           ...                   ...           ...</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 88  TCGA-PK-A5H9            0            NA               1013.47             0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 89  TCGA-PK-A5HA            0            NA               2446.12             0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 90  TCGA-PK-A5HB            0            NA               1463.31             0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 91  TCGA-PK-A5HC            0            NA                    NA             1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 92  TCGA-P6-A5OG            1           383               1310.88            -1</span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
