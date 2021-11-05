@@ -3,15 +3,9 @@ build:
   steps:
     - script:
         name: Install devtools
-        code: R -e "install.packages('devtools')"
+        code: R -e "install.packages(c('devtools', 'magick'))"
     - mr148/r-dependencies
     - mr148/r-check
 #    - mr148/r-lint
     - jimhester/r-coverage
-# notify via slack step
-  after-steps:
-    - install-packages:
-        packages: ruby
-    - wantedly/pretty-slack-notify:
-        webhook_url: $SLACK_WEBHOOK_URL
 
