@@ -788,23 +788,31 @@ setMethod("updateObject", "MultiAssayExperiment",
     function(object, ..., verbose = FALSE) {
         if (verbose)
             message("updateObject(object = 'MultiAssayExperiment')")
-        oldAPI <- try(object@ExperimentList, silent = TRUE)
-        new(class(object),
-            ExperimentList = if (is(oldAPI, "try-error"))
-                ExperimentList(object@Elist@listData)
-            else experiments(object),
-            colData = if (is(try(object@colData, silent = TRUE),
-                             "try-error"))
-                object@pData
-            else
-                colData(object),
-            sampleMap = if (is(oldAPI, "try-error"))
-                .rearrangeMap(sampleMap(object))
-            else sampleMap(object),
-            metadata = metadata(object),
-            drops = getElement(object, "drops")
+
+        oldEL <- try(object@ExperimentList, silent = TRUE)
+        if (is(oldEL, "try-error")) {
+            explist <- ExperimentList(object@Elist@listData)
+            samplemap <- .rearrangeMap(object@sampleMap)
+        } else {
+            explist <- experiments(object)
+            samplemap <- sampleMap(object)
+        }
+
+        oldCD <- try(object@colData, silent = TRUE)
+        if (is(oldCD, "try-error"))
+            coldata <- object@pData
+        else
+            coldata <- colData(object)
+
+        BiocGenerics:::replaceSlots(
+            object,
+            ExperimentList = explist,
+            colData = coldata,
+            sampleMap = samplemap,
+            check=FALSE
         )
-    })
+    }
+)
 
 .mergeColData <- function(inlist) {
     CDbyEXP <- lapply(names(inlist),
