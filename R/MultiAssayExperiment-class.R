@@ -804,6 +804,10 @@ setMethod("updateObject", "MultiAssayExperiment",
         else
             coldata <- colData(object)
 
+        explist <- updateObject(explist, ..., verbose = verbose)
+        coldata <- updateObject(coldata, ..., verbose = verbose)
+        samplemap <- updateObject(samplemap, ..., verbose = verbose)
+
         BiocGenerics:::replaceSlots(
             object,
             ExperimentList = explist,
