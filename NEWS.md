@@ -3,6 +3,8 @@
 ### Bug fixes and minor improvements
 
 * Add `data("miniACC")` to examples after removing lazy loading.
+* Class definition prototypes defined for cleaner extensibility
+(@hpages, #306).
 
 ## Changes in version 1.20.0
 
