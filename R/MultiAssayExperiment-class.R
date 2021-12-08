@@ -123,13 +123,17 @@ NULL
 #' @include ExperimentList-class.R
 setClass(
     "MultiAssayExperiment",
-     slots = list(
-       ExperimentList = "ExperimentList",
-       colData = "DataFrame",
-       sampleMap = "DataFrame",
-       drops = "list"
-     ),
-    contains = "Annotated"
+    contains = "Annotated",
+    slots = list(
+        ExperimentList = "ExperimentList",
+        colData = "DataFrame",
+        sampleMap = "DataFrame",
+        drops = "list"
+    ),
+    prototype = prototype(
+        colData = new("DFrame"),
+        sampleMap = new("DFrame")
+    )
 )
 
 ### ==============================================
