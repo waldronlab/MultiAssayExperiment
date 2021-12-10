@@ -42,7 +42,7 @@ biological specimens.
 
 ## Cheatsheet
 
-<a href="https://github.com/waldronlab/cheatsheets/blob/master/MultiAssayExperiment_QuickRef.pdf"><img src="https://raw.githubusercontent.com/waldronlab/cheatsheets/master/pngs/MultiAssayExperiment_QuickRef.png" width="989" height="1091"/></a>
+<a href="https://github.com/waldronlab/cheatsheets/blob/main/MultiAssayExperiment_QuickRef.pdf"><img src="https://raw.githubusercontent.com/waldronlab/cheatsheets/main/pngs/MultiAssayExperiment_QuickRef.png" width="989" height="1091"/></a>
 
 ## Ready-to-use `MultiAssayExperiment` objects
 
