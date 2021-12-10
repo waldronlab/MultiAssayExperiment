@@ -24,7 +24,7 @@ install:
 
 branches:
   only:
-    - master
+    - devel
 
 # Adapt as necessary starting from here
 build_script:
