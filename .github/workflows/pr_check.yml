@@ -1,27 +1,30 @@
-name: BiocDev R CMD check
+name: Devel PR CMD check
 
 on:
   push:
     branches-ignore:
-      - master
-      - RELEASE_3_14
+      - devel
+      - RELEASE_3_*
   pull_request:
     branches:
-      - master
+      - devel
 
 jobs:
   checkDevel:
     runs-on: ubuntu-20.04
     container: bioconductor/bioconductor_docker:devel
 
+    env:
+      R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Query dependencies
         run: |
-          install.packages('remotes')
-          devtools::install_github("Bioconductor/AnVIL")
+          BiocManager::install(c("remotes", "Bioconductor/BiocManager"))
           saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
         shell: Rscript {0}
 
@@ -33,11 +36,11 @@ jobs:
           key: ${{ runner.os }}-r-1-${{ hashFiles('.github/depends.Rds') }}
           restore-keys: ${{ runner.os }}-r-1-
 
-      - name: Install Package Dependencies
+      - name: Install Dependencies
         run: |
           options(repos = c(CRAN = "https://packagemanager.rstudio.com/cran/__linux__/focal/latest"))
-          remotes::install_deps(dependencies = TRUE, repos = AnVIL::repositories())
-          BiocManager::install("rcmdcheck", ask = FALSE, update = TRUE)
+          remotes::install_deps(dependencies = TRUE, repos = BiocManager::repositories())
+          BiocManager::install(c("rcmdcheck", "BiocCheck"), ask = FALSE, update = TRUE)
         shell: Rscript {0}
 
       - name: Check Package
