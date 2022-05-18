@@ -32,6 +32,11 @@ reference:
       - upsetSamples
       - listToMap
       - prepMultiAssay
+  - title: Interoperability
+    desc: Compatibility with external interfaces
+    contents:
+      - saveHDF5MultiAssayExperiment
+      - MultiAssayExperimentToMAF
   - title: Misc. Package Docs
     desc: Other package information and data
     contents:
