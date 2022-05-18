@@ -254,7 +254,8 @@ assays(miniACC)
 
 # Summary of slots and accessors
 
-Slot in the `MultiAssayExperiment` can be accessed or set using their accessor functions:
+Slot in the `MultiAssayExperiment` can be accessed or set using their accessor
+functions:
 
 | Slot | Accessor |
 |------|----------|
@@ -337,7 +338,8 @@ assumption. For example, to concatenate a matrix of log2-transformed RNA-seq
 results:
 
 ```{r}
-miniACC2 <- c(miniACC, log2rnaseq = log2(assays(miniACC)$RNASeq2GeneNorm), mapFrom=1L)
+miniACC2 <- c(miniACC,
+    log2rnaseq = log2(assays(miniACC)$RNASeq2GeneNorm), mapFrom=1L)
 assays(miniACC2)
 ```
 
@@ -365,11 +367,10 @@ column to the colData, containing the `Surv` object for survival analysis:
 _**Note**_: `survfit` method does not work well with `DataFrame`. To bypass
 the error, here we covert `colData` to a `data.frame`.
 
-```{r}
-suppressPackageStartupMessages({
-  library(survival)
-  library(survminer)
-})
+```{r,message=FALSE}
+library(survival)
+library(survminer)
+
 coldat <- as.data.frame(colData(miniACC))
 coldat$y <- Surv(miniACC$days_to_death, miniACC$vital_status)
 colData(miniACC) <- DataFrame(coldat)
@@ -410,8 +411,8 @@ coxph(Surv(days_to_death, vital_status) ~ gistict_EZH2 +
 We see that *EZH2* expression is significantly associated with overal survival
 (p < 0.001), but *EZH2* copy number and nodal status are not. This analysis
 could easily be extended to the whole genome for discovery of prognostic
-features by repeated univariate regressions over columns, penalized multivariate
-regression, etc.
+features by repeated univariate regressions over columns, penalized
+multivariate regression, etc.
 
 For further detail, see the main MultiAssayExperiment vignette.
 
