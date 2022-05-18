@@ -7,32 +7,31 @@ assays, using the upset algorithm in \code{UpSetR}}
 \usage{
 upsetSamples(
   MultiAssayExperiment,
-  nsets = length(MultiAssayExperiment),
-  nintersects = 24,
+  nsets = NULL,
+  sets = names(MultiAssayExperiment),
+  nintersects = NA_integer_,
   order.by = "freq",
-  nameFilter = force,
   check.names = FALSE,
   ...
 )
 }
 \arguments{
-\item{MultiAssayExperiment}{A
-\code{\link[MultiAssayExperiment:MultiAssayExperiment-class]{MultiAssayExperiment}}
-instance}
+\item{MultiAssayExperiment}{A \code{MultiAssayExperiment} object}
 
-\item{nsets}{integer number of sets to analyze}
+\item{nsets}{numeric(1) The number of sets to analyze. If specified,
+\code{sets} will be ignored.}
 
-\item{nintersects}{Number of intersections to plot. If set to NA, all
-intersections will be plotted.}
+\item{sets}{character() A character vector of names in MultiAssayExperiment
+to use. If specified, \code{nsets} will be ignored.}
+
+\item{nintersects}{numeric() The number of intersections to plot. By
+default, all intersections will be plotted.}
 
 \item{order.by}{How the intersections in the matrix should be ordered by.
 Options include frequency (entered as "freq"), degree, or both in any order.}
 
-\item{nameFilter}{function, defaulting to force, to manipulate colnames of
-incidence matrix}
-
-\item{check.names}{logical(1) used when incidence matrix is coerced to
-data.frame for use in UpSetR::upset}
+\item{check.names}{logical(1) Whether to munge names as in the
+\code{data.frame()} constructor (default FALSE).}
 
 \item{...}{parameters passed to \code{\link[UpSetR]{upset}}}
 }
@@ -47,16 +46,15 @@ assays, using the upset algorithm in \code{UpSetR}
 \note{
 This function is intended to provide convenient visualization of assay
 availability configurations in MultiAssayExperiment instances. The
-\code{\link[UpSetR]{upset}} function requires data.frame input and has
+\code{UpSetR::upset} function requires \code{data.frame} input and has
 many parameters to tune appearance of the result. Assay name handling is
-important for interpretability, and the \code{nameFilter} parameter may be
-useful to simplify resulting outputs.
+important for interpretability.
 }
 \examples{
 
 data(miniACC)
 upsetSamples(miniACC)
-upsetSamples(miniACC, nameFilter = function(x) substr(x, 1, 5))
+upsetSamples(miniACC, nsets = 3, nintersects = 3)
 
 }
 \author{
