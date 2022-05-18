@@ -9,13 +9,16 @@ MultiAssayExperimentToMAF(x, synAssay = "maf_syn", nonSynAssay = "maf_nonSyn")
 \arguments{
 \item{x}{A \code{MultiAssayExperiment} object}
 
-\item{synAssay}{character(1) The name of the synonymous variant
-classifications.}
+\item{synAssay}{character(1) The name of the \code{ExperimentList} element in the
+\code{MultiAssayExperiment} that identifies synonymous variant classifications.}
 
-\item{nonSynAssay}{character(1) The name of the assay with non-synonymous
-variant classifications.}
+\item{nonSynAssay}{character(1) The name of the \code{ExperimentList} element in
+the \code{MultiAssayExperiment} that identifies non-synonymous variant
+classifications.}
 }
 \description{
-Take a MultiAssayExperiment object with specific mutation
-    assays and convert these into a maftools representation.
+Take a \code{MultiAssayExperiment} object with specific mutation
+assays and convert these into a \code{maftools} representation. The names
+provided via \code{synAssay} and \code{nonSynAssay} must match exactly those
+assays in the \code{MultiAssayExperiment}.
 }
