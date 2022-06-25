@@ -199,14 +199,16 @@ An empty \code{sampleMap} may produce empty experiments if the levels of the
 Convert a \code{list} or S4 \code{List} to a MultiAssayExperiment object using the
 \link[methods]{as} function.
 
-In the following example, \code{x} is either a \code{list} or \linkS4class{List}:\preformatted{`as(x, "MultiAssayExperiment")`
-}
+In the following example, \code{x} is either a \code{list} or \linkS4class{List}:
+
+\code{as(x, "MultiAssayExperiment")}
 
 Convert a \code{MultiAssayExperiment} to \code{MAF} class object using the
 \link[methods]{as} function.
 
-In the following example, \code{x} is a \linkS4class{MultiAssayExperiment}:\preformatted{`MultiAssayExperimentToMAF(x)`
-}
+In the following example, \code{x} is a \linkS4class{MultiAssayExperiment}:
+
+\code{MultiAssayExperimentToMAF(x)}
 }
 
 \examples{

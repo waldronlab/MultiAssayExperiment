@@ -8,16 +8,15 @@
 #'
 #' @title ExperimentList - A container for multi-experiment data
 #'
-#' The \code{ExperimentList} class is a container that builds on
-#' the \code{SimpleList} with additional
-#' checks for consistency in experiment names and length.
-#' It contains a \code{SimpleList} of experiments with sample identifiers.
-#' One element present per experiment performed.
+#' @description The \code{ExperimentList} class is a container that builds on
+#'   the \code{SimpleList} with additional checks for consistency in experiment
+#'   names and length. It contains a \code{SimpleList} of experiments with
+#'   sample identifiers. One element present per experiment performed.
 #'
-#' Convert from \code{SimpleList} or \code{list}
-#' to the multi-experiment data container. When using the
-#' \strong{mergeReplicates} method, additional arguments are passed to the
-#' given \code{simplify} function argument (e.g., na.rm = TRUE)
+#'   Convert from \code{SimpleList} or \code{list} to the multi-experiment data
+#'   container. When using the \strong{mergeReplicates} method, additional
+#'   arguments are passed to the given \code{simplify} function argument (e.g.,
+#'   \code{na.rm = TRUE})
 #'
 #' @return An \code{ExperimentList} class object
 #'

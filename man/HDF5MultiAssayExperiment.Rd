@@ -23,11 +23,12 @@ loadHDF5MultiAssayExperiment(dir = "h5_mae", prefix = NULL)
 \item{x}{A \linkS4class{MultiAssayExperiment} object or derivative}
 
 \item{dir}{The path (as a single string) to the directory where to save the
-HDF5-based \linkS4class{MultiAssayExperiment} object or to load it from.\preformatted{When saving, the directory will be created if it doesn't already exist.
+HDF5-based \linkS4class{MultiAssayExperiment} object or to load it from.
+
+When saving, the directory will be created if it doesn't already exist.
 If the directory already exists and no prefix is specified and
-`replace` is set to `TRUE`, then it's replaced with an
-empty directory.
-}}
+\code{replace} is set to \code{TRUE}, then it's replaced with an
+empty directory.}
 
 \item{prefix}{An optional prefix to add to the names of the files created
 inside \code{dir}. Allows saving more than one object in the same
@@ -41,15 +42,7 @@ use an empty character string i.e., \code{""}.}
     be lost!
   }
 
-\item{chunkdim}{
-    The dimensions of the chunks and the compression level to use for
-    writing the assay data to disk.
-
-    Passed to the internal calls to \code{writeHDF5Array}.
-    See \code{?\link[HDF5Array]{writeHDF5Array}} for more information.
-  }
-
-\item{level}{
+\item{chunkdim, level}{
     The dimensions of the chunks and the compression level to use for
     writing the assay data to disk.
 
@@ -67,28 +60,29 @@ use an empty character string i.e., \code{""}.}
     IMPORTANT NOTE.
   }
 
-\item{verbose}{Set to \code{TRUE} to make the function display progress.\preformatted{In the case of `saveHDF5MultiAssayExperiment()`, `verbose`
+\item{verbose}{Set to \code{TRUE} to make the function display progress.
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{In the case of `saveHDF5MultiAssayExperiment()`, `verbose`
 is set to `NA` by default, in which case verbosity is controlled
 by `DelayedArray:::get_verbose_block_processing()`. Setting
 `verbose` to `TRUE` or `FALSE` overrides this.
-}}
+}\if{html}{\out{</div>}}}
 }
 \description{
-\preformatted{This function takes a `MultiAssayExperiment` object and uses the `assays`
+This function takes a \code{MultiAssayExperiment} object and uses the \code{assays}
 functionality to obtain data matrices out of the experiments. These are
-then saved into the `.h5` file format. This function relies heavily on
-the `HDF5Array` package whose installation is required before use.
-`saveHDF5MultiAssayExpeirment` preserves the classes contained in the
-\linkS4class{ExperimentList} with the exception of `matrix` which is
-converted to `HDF5Matrix`. Internal `SummarizedExperiment` assays are
+then saved into the \code{.h5} file format. This function relies heavily on
+the \code{HDF5Array} package whose installation is required before use.
+\code{saveHDF5MultiAssayExpeirment} preserves the classes contained in the
+\linkS4class{ExperimentList} with the exception of \code{matrix} which is
+converted to \code{HDF5Matrix}. Internal \code{SummarizedExperiment} assays are
 converted to HDF5-backed assays as in
-`HDF5Array::saveHDF5SummarizedExperiment`. `SummarizedExperiment`
-objects with multiple `i`-th assays will have the first assay take
+\code{HDF5Array::saveHDF5SummarizedExperiment}. \code{SummarizedExperiment}
+objects with multiple \code{i}-th assays will have the first assay take
 precedence and others assays will be dropped with a warning.
-If the first assay in a `SummarizedExperiment` contains an array,
+If the first assay in a \code{SummarizedExperiment} contains an array,
 the array is preserved in the process of saving and loading the
-HDF5-backed `MultiAssayExperiment`.
-}
+HDF5-backed \code{MultiAssayExperiment}.
 }
 \examples{
 

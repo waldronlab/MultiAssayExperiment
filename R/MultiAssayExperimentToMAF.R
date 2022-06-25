@@ -14,7 +14,7 @@
 #'     provided via `synAssay` and `nonSynAssay` must match exactly those
 #'     assays in the `MultiAssayExperiment`.
 #'
-#' @inheritParams MultiAssayExperiment-class
+#' @param x A `MultiAssayExperiment` object
 #'
 #' @param synAssay character(1) The name of the `ExperimentList` element in the
 #'   `MultiAssayExperiment` that identifies synonymous variant classifications.

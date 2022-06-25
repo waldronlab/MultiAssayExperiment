@@ -74,38 +74,38 @@
 #' @title Save a MultiAssayExperiment class object to HDF5 and Rds files
 #'
 #' @description
-#'     This function takes a `MultiAssayExperiment` object and uses the `assays`
-#'     functionality to obtain data matrices out of the experiments. These are
-#'     then saved into the `.h5` file format. This function relies heavily on
-#'     the `HDF5Array` package whose installation is required before use.
-#'     `saveHDF5MultiAssayExpeirment` preserves the classes contained in the
-#'     \linkS4class{ExperimentList} with the exception of `matrix` which is
-#'     converted to `HDF5Matrix`. Internal `SummarizedExperiment` assays are
-#'     converted to HDF5-backed assays as in
-#'     `HDF5Array::saveHDF5SummarizedExperiment`. `SummarizedExperiment`
-#'     objects with multiple `i`-th assays will have the first assay take
-#'     precedence and others assays will be dropped with a warning.
-#'     If the first assay in a `SummarizedExperiment` contains an array,
-#'     the array is preserved in the process of saving and loading the
-#'     HDF5-backed `MultiAssayExperiment`.
+#'   This function takes a `MultiAssayExperiment` object and uses the `assays`
+#'   functionality to obtain data matrices out of the experiments. These are
+#'   then saved into the `.h5` file format. This function relies heavily on
+#'   the `HDF5Array` package whose installation is required before use.
+#'   `saveHDF5MultiAssayExpeirment` preserves the classes contained in the
+#'   \linkS4class{ExperimentList} with the exception of `matrix` which is
+#'   converted to `HDF5Matrix`. Internal `SummarizedExperiment` assays are
+#'   converted to HDF5-backed assays as in
+#'   `HDF5Array::saveHDF5SummarizedExperiment`. `SummarizedExperiment`
+#'   objects with multiple `i`-th assays will have the first assay take
+#'   precedence and others assays will be dropped with a warning.
+#'   If the first assay in a `SummarizedExperiment` contains an array,
+#'   the array is preserved in the process of saving and loading the
+#'   HDF5-backed `MultiAssayExperiment`.
 #'
 #' @inheritParams HDF5Array::saveHDF5SummarizedExperiment
 #'
 #' @param x A \linkS4class{MultiAssayExperiment} object or derivative
 #'
 #' @param dir The path (as a single string) to the directory where to save the
-#'     HDF5-based \linkS4class{MultiAssayExperiment} object or to load it from.
+#'   HDF5-based \linkS4class{MultiAssayExperiment} object or to load it from.
 #'
-#'     When saving, the directory will be created if it doesn't already exist.
-#'     If the directory already exists and no prefix is specified and
-#'     `replace` is set to `TRUE`, then it's replaced with an
-#'     empty directory.
+#'   When saving, the directory will be created if it doesn't already exist.
+#'   If the directory already exists and no prefix is specified and
+#'   `replace` is set to `TRUE`, then it's replaced with an
+#'   empty directory.
 #'
 #' @param prefix An optional prefix to add to the names of the files created
-#'     inside `dir`. Allows saving more than one object in the same
-#'     directory. When the prefix is `NULL`, the name of the
-#'     `MultiAssayExperiment` object is used. To avoid the default setting
-#'     use an empty character string i.e., `""`.
+#'   inside `dir`. Allows saving more than one object in the same
+#'   directory. When the prefix is `NULL`, the name of the
+#'   `MultiAssayExperiment` object is used. To avoid the default setting
+#'   use an empty character string i.e., `""`.
 #'
 #' @param verbose Set to `TRUE` to make the function display progress.
 #'

@@ -17,18 +17,7 @@
 \alias{assay,ExperimentList,missing-method}
 \alias{assay,ExperimentList,numeric-method}
 \alias{assay,ExperimentList,character-method}
-\title{ExperimentList - A container for multi-experiment data
-
-The \code{ExperimentList} class is a container that builds on
-the \code{SimpleList} with additional
-checks for consistency in experiment names and length.
-It contains a \code{SimpleList} of experiments with sample identifiers.
-One element present per experiment performed.
-
-Convert from \code{SimpleList} or \code{list}
-to the multi-experiment data container. When using the
-\strong{mergeReplicates} method, additional arguments are passed to the
-given \code{simplify} function argument (e.g., na.rm = TRUE)}
+\title{ExperimentList - A container for multi-experiment data}
 \usage{
 \S4method{show}{ExperimentList}(object)
 
@@ -68,18 +57,15 @@ by replicates}
 An \code{ExperimentList} class object
 }
 \description{
-ExperimentList - A container for multi-experiment data
-
 The \code{ExperimentList} class is a container that builds on
-the \code{SimpleList} with additional
-checks for consistency in experiment names and length.
-It contains a \code{SimpleList} of experiments with sample identifiers.
-One element present per experiment performed.
+  the \code{SimpleList} with additional checks for consistency in experiment
+  names and length. It contains a \code{SimpleList} of experiments with
+  sample identifiers. One element present per experiment performed.
 
-Convert from \code{SimpleList} or \code{list}
-to the multi-experiment data container. When using the
-\strong{mergeReplicates} method, additional arguments are passed to the
-given \code{simplify} function argument (e.g., na.rm = TRUE)
+  Convert from \code{SimpleList} or \code{list} to the multi-experiment data
+  container. When using the \strong{mergeReplicates} method, additional
+  arguments are passed to the given \code{simplify} function argument (e.g.,
+  \code{na.rm = TRUE})
 }
 \section{Methods (by generic)}{
 \itemize{
