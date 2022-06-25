@@ -1,3 +1,10 @@
+## Changes in version 1.24.0
+
+### Bug fixes and minor improvements
+
+* Update `wideFormat` documentation, when replicates present additional sets
+of columns will be appended to the produced `DataFrame` (@DarioS, #312)
+
 ## Changes in version 1.22.0
 
 ### Bug fixes and minor improvements
