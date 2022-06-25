@@ -62,11 +62,10 @@ use an empty character string i.e., \code{""}.}
 
 \item{verbose}{Set to \code{TRUE} to make the function display progress.
 
-\if{html}{\out{<div class="sourceCode">}}\preformatted{In the case of `saveHDF5MultiAssayExperiment()`, `verbose`
-is set to `NA` by default, in which case verbosity is controlled
-by `DelayedArray:::get_verbose_block_processing()`. Setting
-`verbose` to `TRUE` or `FALSE` overrides this.
-}\if{html}{\out{</div>}}}
+In the case of \code{saveHDF5MultiAssayExperiment()}, \code{verbose}
+is set to \code{NA} by default, in which case verbosity is controlled
+by \code{DelayedArray:::get_verbose_block_processing()}. Setting
+\code{verbose} to \code{TRUE} or \code{FALSE} overrides this.}
 }
 \description{
 This function takes a \code{MultiAssayExperiment} object and uses the \code{assays}

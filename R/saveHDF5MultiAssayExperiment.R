@@ -109,10 +109,10 @@
 #'
 #' @param verbose Set to `TRUE` to make the function display progress.
 #'
-#'     In the case of `saveHDF5MultiAssayExperiment()`, `verbose`
-#'     is set to `NA` by default, in which case verbosity is controlled
-#'     by `DelayedArray:::get_verbose_block_processing()`. Setting
-#'     `verbose` to `TRUE` or `FALSE` overrides this.
+#'   In the case of `saveHDF5MultiAssayExperiment()`, `verbose`
+#'   is set to `NA` by default, in which case verbosity is controlled
+#'   by `DelayedArray:::get_verbose_block_processing()`. Setting
+#'   `verbose` to `TRUE` or `FALSE` overrides this.
 #'
 #' @md
 #'
