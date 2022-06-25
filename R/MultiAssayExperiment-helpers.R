@@ -32,9 +32,14 @@ NULL
 #'     \item longFormat: A \code{MultiAssayExperiment} method that
 #'     returns a small and skinny \link{DataFrame}. The \code{colDataCols}
 #'     arguments allows the user to append \code{colData} columns to the data.
-#'     \item wideFormat: A function to return a wide \link{DataFrame} where
-#'     each row represents an observation. Optional \code{colDataCols} can be
-#'     added when using a \code{MultiAssayExperiment}.
+#'     \item wideFormat: A function to reshape the data in a
+#'     `MultiAssayExperiment` to a "wide" format \link{DataFrame}. Each row in
+#'     the `DataFrame` represents an observation (corresponding to an entry in
+#'     the `colData`). If replicates are present, their data will be appended at
+#'     the end of the corresponding row and will generate additional `NA` data.
+#'     It is recommended to remove or consolidate technical replicates with
+#'     `mergeReplicates`. Optional \code{colDataCols} can be added when the
+#'     original object is a \code{MultiAssayExperiment}.
 #'     \item hasRowRanges: A function that identifies ExperimentList elements
 #'     that have a \link[=RangedSummarizedExperiment-class]{rowRanges} method
 #'     \item getWithColData: A convenience function for extracting an assay
@@ -50,6 +55,8 @@ NULL
 #' @param ... Additional arguments. See details for more information.
 #'
 #' @return See the itemized list in the description section for details.
+#'
+#' @md
 #'
 #' @examples
 #'

@@ -143,35 +143,40 @@ manipulate a MultiAssayExperiment object. \code{intersectRows} also works
 for \code{ExperimentList} objects.
 
 \itemize{
-    \item complete.cases: Returns a logical vector corresponding to 'colData'
-    rows that have data across all experiments
-    \item isEmpty: Returns a logical \code{TRUE} value for zero length
-    \code{MultiAssayExperiment} objects
-    \item intersectRows: Takes all common rows across experiments,
-    excludes experiments with empty rownames
-    \item intersectColumns: A wrapper for \code{complete.cases} to return a
-    \code{MultiAssayExperiment} with only those biological units that have
-    measurements across all experiments
-    \item replicated: A function that identifies multiple samples that
-    originate from a single biological unit within each assay
-    \item anyReplicated: Displays which assays have replicate measurements
-    \item mergeReplicates: A function that combines replicated / repeated
-    measurements across all experiments and is guided by the replicated
-    return value
-    \item longFormat: A \code{MultiAssayExperiment} method that
-    returns a small and skinny \link{DataFrame}. The \code{colDataCols}
-    arguments allows the user to append \code{colData} columns to the data.
-    \item wideFormat: A function to return a wide \link{DataFrame} where
-    each row represents an observation. Optional \code{colDataCols} can be
-    added when using a \code{MultiAssayExperiment}.
-    \item hasRowRanges: A function that identifies ExperimentList elements
-    that have a \link[=RangedSummarizedExperiment-class]{rowRanges} method
-    \item getWithColData: A convenience function for extracting an assay
-    and associated colData
-    \item renamePrimary: A convenience function to rename the primary
-    biological units as represented in the \code{rownames(colData)}
-    \item renameColname: A convenience function to rename the colnames
-    of a particular assay
+\item complete.cases: Returns a logical vector corresponding to 'colData'
+rows that have data across all experiments
+\item isEmpty: Returns a logical \code{TRUE} value for zero length
+\code{MultiAssayExperiment} objects
+\item intersectRows: Takes all common rows across experiments,
+excludes experiments with empty rownames
+\item intersectColumns: A wrapper for \code{complete.cases} to return a
+\code{MultiAssayExperiment} with only those biological units that have
+measurements across all experiments
+\item replicated: A function that identifies multiple samples that
+originate from a single biological unit within each assay
+\item anyReplicated: Displays which assays have replicate measurements
+\item mergeReplicates: A function that combines replicated / repeated
+measurements across all experiments and is guided by the replicated
+return value
+\item longFormat: A \code{MultiAssayExperiment} method that
+returns a small and skinny \link{DataFrame}. The \code{colDataCols}
+arguments allows the user to append \code{colData} columns to the data.
+\item wideFormat: A function to reshape the data in a
+\code{MultiAssayExperiment} to a "wide" format \link{DataFrame}. Each row in
+the \code{DataFrame} represents an observation (corresponding to an entry in
+the \code{colData}). If replicates are present, their data will be appended at
+the end of the corresponding row and will generate additional \code{NA} data.
+It is recommended to remove or consolidate technical replicates with
+\code{mergeReplicates}. Optional \code{colDataCols} can be added when the
+original object is a \code{MultiAssayExperiment}.
+\item hasRowRanges: A function that identifies ExperimentList elements
+that have a \link[=RangedSummarizedExperiment-class]{rowRanges} method
+\item getWithColData: A convenience function for extracting an assay
+and associated colData
+\item renamePrimary: A convenience function to rename the primary
+biological units as represented in the \code{rownames(colData)}
+\item renameColname: A convenience function to rename the colnames
+of a particular assay
 }
 }
 \details{
