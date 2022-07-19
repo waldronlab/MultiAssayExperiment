@@ -7,6 +7,7 @@ observations for a particular biological unit in the `sampleMap`
 
 ### Bug fixes and minor improvements
 
+* Improve performance for `replicated` method 
 * Update `wideFormat` documentation, when replicates present additional sets
 of columns will be appended to the produced `DataFrame` (@DarioS, #312)
 
