@@ -23,8 +23,10 @@ NULL
 #'     \item intersectColumns: A wrapper for \code{complete.cases} to return a
 #'     \code{MultiAssayExperiment} with only those biological units that have
 #'     measurements across all experiments
-#'     \item replicated: A function that identifies multiple samples that
+#'     \item replicated: Identifies, via logical vectors, \code{colname}s that
 #'     originate from a single biological unit within each assay
+#'     \item replicates: Provides the replicate \code{colname}s found with
+#'     the \code{replicated} function by their name, empty list if none
 #'     \item anyReplicated: Displays which assays have replicate measurements
 #'     \item mergeReplicates: A function that combines replicated / repeated
 #'     measurements across all experiments and is guided by the replicated
@@ -153,6 +155,36 @@ setGeneric("anyReplicated", function(x) standardGeneric("anyReplicated"))
 setMethod("anyReplicated", "MultiAssayExperiment", function(x) {
     reps <- replicated(x)
     vapply(reps, function(x) any(as.matrix(x)), logical(1L))
+})
+
+#' @rdname MultiAssayExperiment-helpers
+#' @export
+setGeneric("replicates", function(x, ...) standardGeneric("replicates"))
+
+#' @rdname MultiAssayExperiment-helpers
+#'
+#' @details The \code{replicates} function (noun) returns the \code{colname}s
+#'   from the \code{sampleMap} that were identified as replicates. It returns a
+#'   list of \linkS4class{CharacterList}s for each assay present in the
+#'   \code{MultiAssayExperiment} and an inner entry for each biological unit
+#'   that has replicate observations in that assay.
+#'
+#' @export
+setMethod("replicates", "MultiAssayExperiment", function(x, ...) {
+    listMap <- mapToList(sampleMap(x))
+    lapply(
+        X = listMap,
+        FUN = function(assayDF) {
+            Filter(
+                f = function(y) {
+                    length(y) > 1
+                },
+                x = S4Vectors::splitAsList(
+                    assayDF[["colname"]], assayDF[["primary"]]
+                )
+            )
+        }
+    )
 })
 
 # mergeReplicates function ------------------------------------------------

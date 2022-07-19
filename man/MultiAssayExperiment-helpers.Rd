@@ -11,6 +11,8 @@
 \alias{replicated,MultiAssayExperiment-method}
 \alias{anyReplicated}
 \alias{anyReplicated,MultiAssayExperiment-method}
+\alias{replicates}
+\alias{replicates,MultiAssayExperiment-method}
 \alias{mergeReplicates,MultiAssayExperiment-method}
 \alias{mergeReplicates,ANY-method}
 \alias{longFormat}
@@ -43,6 +45,10 @@ replicated(x)
 anyReplicated(x)
 
 \S4method{anyReplicated}{MultiAssayExperiment}(x)
+
+replicates(x, ...)
+
+\S4method{replicates}{MultiAssayExperiment}(x, ...)
 
 mergeReplicates(x, replicates = list(), simplify = BiocGenerics::mean, ...)
 
@@ -152,8 +158,10 @@ excludes experiments with empty rownames
 \item intersectColumns: A wrapper for \code{complete.cases} to return a
 \code{MultiAssayExperiment} with only those biological units that have
 measurements across all experiments
-\item replicated: A function that identifies multiple samples that
+\item replicated: Identifies, via logical vectors, \code{colname}s that
 originate from a single biological unit within each assay
+\item replicates: Provides the replicate \code{colname}s found with
+the \code{replicated} function by their name, empty list if none
 \item anyReplicated: Displays which assays have replicate measurements
 \item mergeReplicates: A function that combines replicated / repeated
 measurements across all experiments and is guided by the replicated
@@ -197,6 +205,12 @@ assay:
 replicate. \emph{Note}. These methods are not available for the
 \code{ExperimentList} class due to a missing \code{sampleMap} structure
 (by design).
+
+The \code{replicates} function (noun) returns the \code{colname}s
+  from the \code{sampleMap} that were identified as replicates. It returns a
+  list of \linkS4class{CharacterList}s for each assay present in the
+  \code{MultiAssayExperiment} and an inner entry for each biological unit
+  that has replicate observations in that assay.
 
 The \code{mergeReplicates} function is a house-keeping method
 for a \code{MultiAssayExperiment} where only \code{complete.cases} are
