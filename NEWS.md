@@ -1,5 +1,10 @@
 ## Changes in version 1.24.0
 
+### New features
+
+* `replicates` provides the actual `colname`s identified as replicate
+observations for a particular biological unit in the `sampleMap`
+
 ### Bug fixes and minor improvements
 
 * Update `wideFormat` documentation, when replicates present additional sets
