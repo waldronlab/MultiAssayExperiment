@@ -107,15 +107,6 @@ intersectColumns <- function(x) {
 #' @export
 setGeneric("replicated", function(x) standardGeneric("replicated"))
 
-.matrixToList <- function(mat) {
-    nout <- ncol(mat)
-    listout <- vector("list", nout)
-    for (i in seq_along(listout))
-        listout[[i]] <- unname(mat[, i])
-    names(listout) <- colnames(mat)
-    listout
-}
-
 #' @rdname MultiAssayExperiment-helpers
 #'
 #' @details The \code{replicated} function finds replicate measurements in each
@@ -140,17 +131,16 @@ setGeneric("replicated", function(x) standardGeneric("replicated"))
 setMethod("replicated", "MultiAssayExperiment", function(x) {
     listMap <- mapToList(sampleMap(x))
     lapply(listMap, function(assayDF) {
-        pnames <- unique(assayDF[["primary"]])
-        lvect <- unlist(lapply(pnames, function(g) {
-            tots <- assayDF[["primary"]] %in% g
-            if (sum(tots) <= 1L)
-                tots <- rep(FALSE, nrow(assayDF))
-            tots
-        }))
-        lmat <- matrix(
-            lvect, ncol = length(pnames), dimnames = list(NULL, pnames)
-        )
-        IRanges::LogicalList(.matrixToList(lmat))
+        pnames <- assayDF[["primary"]]
+        IRanges::LogicalList(lapply(
+            S4Vectors::splitAsList(pnames, pnames),
+            function(g) {
+                if (identical(length(g), 1L))
+                    rep(FALSE, length(pnames))
+                else
+                    pnames %in% g
+            }
+        ))
     })
 })
 
