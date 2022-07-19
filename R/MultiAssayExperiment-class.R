@@ -728,7 +728,7 @@ setReplaceMethod("names", c("MultiAssayExperiment", "ANY"),
     oldNames <- names(explist)
     names(explist) <- value
     sampmap <- sampleMap(x)
-    map <- stats::setNames(value, oldNames)
+    map <- .setNames(value, oldNames)
     sampmap[, "assay"] <-
         factor(unname(map[sampmap[["assay"]]]), levels = value)
 

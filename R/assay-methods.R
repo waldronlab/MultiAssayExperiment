@@ -44,7 +44,7 @@ setReplaceMethod("assays", c("ExperimentList", "ANY"),
 #' @aliases assay,ExperimentList,missing-method
 setMethod("assays", "ExperimentList", function(x, withDimnames = TRUE, ...) {
     as(
-        lapply(X = stats::setNames(nm = names(x)),
+        lapply(X = .setNames(nm = names(x)),
             FUN = function(i, y) {
                 y <- y[[i]]
                 if (is(y, "SummarizedExperiment") && length(assays(y)) > 1L)

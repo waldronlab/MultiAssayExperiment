@@ -18,3 +18,8 @@
     invisible(TRUE)
 }
 
+## stats::setNames
+.setNames <- function(object = nm, nm) {
+    names(object) <- nm
+    object
+}

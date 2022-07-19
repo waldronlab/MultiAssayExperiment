@@ -254,7 +254,7 @@ setMethod("mergeReplicates", "ExperimentList",
         if (!length(replicates))
             stop("'replicates' must be a 'list' of replicated column elements",
                  "\n per biological unit")
-        expnames <- stats::setNames(names(x), names(x))
+        expnames <- .setNames(names(x), names(x))
         redList <- lapply(expnames,
             function(i, element, simply, replicate, ...) {
                 mergeReplicates(x = element[[i]], simplify = simply,
@@ -826,7 +826,7 @@ setMethod("splitAssays", "MultiAssayExperiment",
 makeHitList <- function(x, patternList) {
     Colnames <- colnames(x)
     res <- lapply(
-        stats::setNames(nm = names(patternList)),
+        .setNames(nm = names(patternList)),
         function(pattname, patt) {
             grepl(patt[[pattname]], unlist(Colnames))
         }, patt = patternList
