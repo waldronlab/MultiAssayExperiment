@@ -41,6 +41,8 @@
 #'
 #' @source https://github.com/waldronlab/multiassayexperiment-tcga
 #'
+#' @usage data("miniACC")
+#' 
 #' @examples
 #'
 #' data("miniACC")

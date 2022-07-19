@@ -28,7 +28,7 @@ A \code{MultiAssayExperiment} with 5 experiments, providing:
 https://github.com/waldronlab/multiassayexperiment-tcga
 }
 \usage{
-miniACC
+data("miniACC")
 }
 \description{
 A \code{\link{MultiAssayExperiment}} object providing a reduced version of
