@@ -31,10 +31,12 @@ If the directory already exists and no prefix is specified and
 empty directory.}
 
 \item{prefix}{An optional prefix to add to the names of the files created
-inside \code{dir}. Allows saving more than one object in the same
-directory. When the prefix is \code{NULL}, the name of the
-\code{MultiAssayExperiment} object is used. To avoid the default setting
-use an empty character string i.e., \code{""}.}
+inside \code{dir}. This allows saving more than one object in the same
+directory. When the prefix is \code{NULL}, the name of the \code{x} input
+\code{MultiAssayExperiment} is used. To avoid the default setting
+use an empty character string i.e., \code{""}. An underscore (\verb{_}) is
+appended to the prefix when provided; therefore, typical inputs should be
+words, e.g., "test".}
 
 \item{replace}{
     When no prefix is specified, should a pre-existing directory be replaced
@@ -96,9 +98,7 @@ saveHDF5MultiAssayExperiment(
 ## inspect the files in the dir
 list.files(testDir)
 
-loadHDF5MultiAssayExperiment(
-    dir = testDir
-)
+loadHDF5MultiAssayExperiment(dir = testDir)
 
 ## remove example files
 unlink(testDir, recursive = TRUE)

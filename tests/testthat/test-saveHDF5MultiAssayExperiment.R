@@ -75,3 +75,54 @@ test_that("array assays work with saveHDF5MultiAssayExperiment", {
     )
     on.exit(unlink(testDir, recursive = TRUE))
 })
+
+context("check loadHDF5MultiAssayExperiment")
+
+test_that("loadHDF5MultiAssayExperiment is working", {
+    env <- new.env(parent = emptyenv())
+    data("miniACC",  envir = env)
+    miniACC <- env[["miniACC"]]
+
+    testDir <- file.path(tempdir(), "test_mae")
+    on.exit(unlink(testDir, recursive = TRUE))
+    
+    saveHDF5MultiAssayExperiment(
+        miniACC, prefix = "", dir = testDir, replace = TRUE
+    )
+
+    expect_true(
+        validObject(loadHDF5MultiAssayExperiment(dir = testDir, prefix = ""))
+    )
+    expect_true(
+        validObject(loadHDF5MultiAssayExperiment(dir = testDir))
+    )
+})
+
+test_that("loadHDF5MultiAssayExperiment prefix input is consistent", {
+    env <- new.env(parent = emptyenv())
+    data("miniACC",  envir = env)
+    miniACC <- env[["miniACC"]]
+
+    testDir <- file.path(tempdir(), "test_mae")
+    on.exit(unlink(testDir, recursive = TRUE))
+    
+    saveHDF5MultiAssayExperiment(
+        miniACC, prefix = "test", dir = testDir, replace = TRUE
+    )
+
+    expect_true(
+        validObject(
+            loadHDF5MultiAssayExperiment(dir = testDir, prefix = "test")
+        )
+    )
+    expect_true(
+        validObject(
+            loadHDF5MultiAssayExperiment(dir = testDir, prefix = "test_")
+        )
+    )
+    expect_error(
+        validObject(
+            loadHDF5MultiAssayExperiment(dir = testDir, prefix = "error")
+        )
+    )
+})

@@ -102,10 +102,12 @@
 #'   empty directory.
 #'
 #' @param prefix An optional prefix to add to the names of the files created
-#'   inside `dir`. Allows saving more than one object in the same
-#'   directory. When the prefix is `NULL`, the name of the
-#'   `MultiAssayExperiment` object is used. To avoid the default setting
-#'   use an empty character string i.e., `""`.
+#'   inside `dir`. This allows saving more than one object in the same
+#'   directory. When the prefix is `NULL`, the name of the `x` input
+#'   `MultiAssayExperiment` is used. To avoid the default setting
+#'   use an empty character string i.e., `""`. An underscore (`_`) is
+#'   appended to the prefix when provided; therefore, typical inputs should be
+#'   words, e.g., "test".
 #'
 #' @param verbose Set to `TRUE` to make the function display progress.
 #'
@@ -144,7 +146,10 @@ saveHDF5MultiAssayExperiment <-
     )
 {
     if (is.null(prefix))
-        prefix <- paste0(as.character(substitute(x)), "_")
+        prefix <- as.character(substitute(x))
+    
+    if (nzchar(prefix))
+        prefix <- paste0(prefix, "_")
 
     .load_HDF5Array_package()
 
@@ -180,13 +185,13 @@ loadHDF5MultiAssayExperiment <- function(dir = "h5_mae", prefix = NULL)
 {
     .load_HDF5Array_package()
     if (is.null(prefix)) {
-        prefix <- unique(
-            vapply(strsplit(dir(dir), "_"), '[', character(1L), 1L)
-        )
+        pattern <- paste0(.MAE_RDS_BASENAME, "|", .EXPERIMENTS_H5_BASENAME)
+        prefix <- unique(gsub(pattern, "", dir(dir)))
         if (length(prefix) > 1L)
             stop("More than one object saved in 'dir', specify a 'prefix'")
     }
-    prefix <- if (nchar(prefix)) { paste0(prefix, "_") } else { prefix }
+    if (nzchar(prefix) && !endsWith(prefix, "_"))
+        prefix <- paste0(prefix, "_")
 
     stopifnot(.isSingleString(dir), .isSingleString(prefix))
 
