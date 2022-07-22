@@ -98,7 +98,9 @@ saveHDF5MultiAssayExperiment(
 ## inspect the files in the dir
 list.files(testDir)
 
-loadHDF5MultiAssayExperiment(dir = testDir)
+loadHDF5MultiAssayExperiment(
+    dir = testDir
+)
 
 ## remove example files
 unlink(testDir, recursive = TRUE)

@@ -11,6 +11,8 @@
 \alias{coerce,List,ExperimentList-method}
 \alias{isEmpty,ExperimentList-method}
 \alias{dimnames,ExperimentList-method}
+\alias{colnames,ExperimentList-method}
+\alias{rownames,ExperimentList-method}
 \alias{mergeReplicates,ExperimentList-method}
 \alias{assay,ANY,missing-method}
 \alias{assays,ExperimentList-method}
@@ -24,6 +26,10 @@
 \S4method{isEmpty}{ExperimentList}(x)
 
 \S4method{dimnames}{ExperimentList}(x)
+
+\S4method{colnames}{ExperimentList}(x, do.NULL = TRUE, prefix = "col")
+
+\S4method{rownames}{ExperimentList}(x, do.NULL = TRUE, prefix = "row")
 
 \S4method{mergeReplicates}{ExperimentList}(x, replicates = list(), simplify = BiocGenerics::mean, ...)
 
@@ -39,6 +45,11 @@
 }
 \arguments{
 \item{object, x}{An \code{\linkS4class{ExperimentList}} object}
+
+\item{do.NULL, prefix}{
+    See \code{?base::\link[base]{rownames}} for a description of
+    these arguments.
+  }
 
 \item{replicates}{mergeReplicates: A \code{list} or \linkS4class{LogicalList}
 where each element represents a sample and a vector of repeated measurements
@@ -77,6 +88,12 @@ experiments
 
 \item \code{dimnames}: Get the dimension names for
 an \code{ExperimentList} using \code{\linkS4class{CharacterList}}
+
+\item \code{colnames}: Get the column names for an \code{ExperimentList}
+as a \code{\linkS4class{CharacterList}} slightly more efficiently
+
+\item \code{rownames}: Get the row names for an \code{ExperimentList}
+as a \code{\linkS4class{CharacterList}} slightly more efficiently
 
 \item \code{mergeReplicates}: Apply the mergeReplicates method on the
 ExperimentList elements

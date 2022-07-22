@@ -57,10 +57,38 @@ NULL
 
 #' @describeIn ExperimentList Get the dimension names for
 #' an \code{ExperimentList} using \code{\linkS4class{CharacterList}}
+#' @importFrom methods as
+#' @export
 setMethod("dimnames", "ExperimentList", function(x) {
-    list(IRanges::CharacterList(lapply(x, function(g) dimnames(g)[[1]])),
-    IRanges::CharacterList(lapply(x, function(g) dimnames(g)[[2]])))
+    list(
+        as(lapply(x, function(g) dimnames(g)[[1]]), "CompressedCharacterList"),
+        as(lapply(x, function(g) dimnames(g)[[2]]), "CompressedCharacterList")
+    )
 })
+
+#' @describeIn ExperimentList Get the column names for an \code{ExperimentList}
+#'   as a \code{\linkS4class{CharacterList}} slightly more efficiently
+#'   
+#' @importFrom BiocGenerics colnames
+#' @inheritParams BiocGenerics::colnames
+#' 
+#' @export
+setMethod("colnames", "ExperimentList",
+    function(x, do.NULL = TRUE, prefix = "col") {
+        as(lapply(x, colnames), "CompressedCharacterList")    
+    }
+)
+
+#' @describeIn ExperimentList Get the row names for an \code{ExperimentList}
+#'   as a \code{\linkS4class{CharacterList}} slightly more efficiently
+#'   
+#' @importFrom BiocGenerics rownames 
+#' @export
+setMethod("rownames", "ExperimentList",
+    function(x, do.NULL = TRUE, prefix = "row") {
+        as(lapply(x, rownames), "CompressedCharacterList")
+    }
+)
 
 #' @describeIn MultiAssayExperiment Get the dimension names
 #' for a \code{MultiAssayExperiment} object
