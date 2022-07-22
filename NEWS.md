@@ -7,6 +7,7 @@ observations for a particular biological unit in the `sampleMap`
 
 ### Bug fixes and minor improvements
 
+* Increase efficiency in `colnames` and `rownames` methods (@cvanderaa, #314)
 * Make 'prefix' inputs consistent in `saveHDF5MultiAssayExperiment` and
 `loadHDF5MultiAssayExperiment` (@asiyeka, #313)
 * Improve performance for `replicated` method 
