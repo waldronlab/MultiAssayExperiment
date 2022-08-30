@@ -72,3 +72,29 @@ test_that("concatenation of regular named list works", {
 
     expect_true(validObject(c(mae, as.list(elist))))
 })
+
+test_that("colData concatenation works with one column", {
+    arraydat <- matrix(
+        data = seq(101, length.out = 20),
+        ncol = 4, dimnames = list(NULL, letters[1:4])
+    )
+    mae1 <- MultiAssayExperiment(
+        ExperimentList(
+            exp1 = SummarizedExperiment(arraydat),
+            exp2 = SummarizedExperiment(arraydat)
+        )
+    )
+    newcd <- DataFrame(foo = rep("bar", 4), row.names = letters[1:4])
+    colData(mae1) <- newcd
+    mae2 <- MultiAssayExperiment(
+        ExperimentList(exp3 = SummarizedExperiment(arraydat))
+    )
+    expect_silent(
+        mae <- c(mae1, mae2)
+    )
+    expect_true(validObject(mae))
+    expect_identical(
+        colData(mae),
+        newcd
+    )
+})

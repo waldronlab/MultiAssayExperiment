@@ -68,21 +68,21 @@ setMethod("dimnames", "ExperimentList", function(x) {
 
 #' @describeIn ExperimentList Get the column names for an \code{ExperimentList}
 #'   as a \code{\linkS4class{CharacterList}} slightly more efficiently
-#'   
+#'
 #' @importFrom BiocGenerics colnames
 #' @inheritParams BiocGenerics::colnames
-#' 
+#'
 #' @export
 setMethod("colnames", "ExperimentList",
     function(x, do.NULL = TRUE, prefix = "col") {
-        as(lapply(x, colnames), "CompressedCharacterList")    
+        as(lapply(x, colnames), "CompressedCharacterList")
     }
 )
 
 #' @describeIn ExperimentList Get the row names for an \code{ExperimentList}
 #'   as a \code{\linkS4class{CharacterList}} slightly more efficiently
-#'   
-#' @importFrom BiocGenerics rownames 
+#'
+#' @importFrom BiocGenerics rownames
 #' @export
 setMethod("rownames", "ExperimentList",
     function(x, do.NULL = TRUE, prefix = "row") {
@@ -128,7 +128,7 @@ setMethod("$", "MultiAssayExperiment", function(x, name) {
         by = c("row.names", intersect(names(coldx), names(coldy))),
         all = TRUE, sort = FALSE, stringsAsFactors = FALSE)
     rownames(cdatz) <- cdatz[["Row.names"]]
-    cdatz <- cdatz[, names(cdatz) != "Row.names"]
+    cdatz <- cdatz[, names(cdatz) != "Row.names", drop = FALSE]
     metaz <- c(metadata(x), metadata(y))
     new("MultiAssayExperiment",
         ExperimentList = expz,
