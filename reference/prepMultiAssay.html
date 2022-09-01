@@ -85,26 +85,35 @@ the <code>colData</code>, or <code><a href="MultiAssayExperiment-methods.html">s
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">prepMultiAssay</span><span class="op">(</span><span class="va">ExperimentList</span>, <span class="va">colData</span>, <span class="va">sampleMap</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">prepMultiAssay</span><span class="op">(</span><span class="va">ExperimentList</span>, <span class="va">colData</span>, <span class="va">sampleMap</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>ExperimentList</dt>
 <dd><p>A <code>list</code> of all combined experiments</p></dd>
+
+
 <dt>colData</dt>
 <dd><p>A DataFrame of the phenotype
 data for all participants</p></dd>
+
+
 <dt>sampleMap</dt>
 <dd><p>A DataFrame of sample identifiers, assay
 samples, and assay names</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Optional arguments for the <code>MultiAssayExperiment</code> constructor
 function such as <code>metadata</code> and <code>drops</code>.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A <code>list</code> containing all the essential components of a
+    
+
+<p>A <code>list</code> containing all the essential components of a
 <code><a href="MultiAssayExperiment.html">MultiAssayExperiment</a></code> as well as a "drops" metadata element that
 indicates non-matched names. The names of the resulting list correspond to
 the arguments of the <code>MultiAssayExperiment</code> constructor function.</p>
@@ -134,8 +143,8 @@ necessary.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co">## Run example</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/example.html" class="external-link">example</a></span><span class="op">(</span><span class="st">"MultiAssayExperiment"</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co">## Run example</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/example.html" class="external-link">example</a></span><span class="op">(</span><span class="st">"MultiAssayExperiment"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> MltAsE&gt; ## Run the example ExperimentList</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> MltAsE&gt; example("ExperimentList")</span>
@@ -228,14 +237,14 @@ necessary.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> MltAsE&gt; ## Create a MultiAssayExperiment instance</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> MltAsE&gt; mae &lt;- MultiAssayExperiment(experiments = ExpList, colData = colDat,</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> MltAsE+     sampleMap = sampMap)</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Check if there are any inconsistencies within the different names</span></span>
-<span class="r-in"><span class="va">preparedMAE</span> <span class="op">&lt;-</span> <span class="fu">prepMultiAssay</span><span class="op">(</span><span class="va">ExpList</span>, <span class="va">colDat</span>, <span class="va">sampMap</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Results in a list of components for the MultiAssayExperiment constructor</span></span>
-<span class="r-in"><span class="co">## function</span></span>
-<span class="r-in"><span class="fu"><a href="MultiAssayExperiment.html">MultiAssayExperiment</a></span><span class="op">(</span><span class="va">preparedMAE</span><span class="op">$</span><span class="va">experiments</span>, <span class="va">preparedMAE</span><span class="op">$</span><span class="va">colData</span>,</span>
-<span class="r-in"><span class="va">preparedMAE</span><span class="op">$</span><span class="va">sampleMap</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Check if there are any inconsistencies within the different names</span></span></span>
+<span class="r-in"><span><span class="va">preparedMAE</span> <span class="op">&lt;-</span> <span class="fu">prepMultiAssay</span><span class="op">(</span><span class="va">ExpList</span>, <span class="va">colDat</span>, <span class="va">sampMap</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Results in a list of components for the MultiAssayExperiment constructor</span></span></span>
+<span class="r-in"><span><span class="co">## function</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="MultiAssayExperiment.html">MultiAssayExperiment</a></span><span class="op">(</span><span class="va">preparedMAE</span><span class="op">$</span><span class="va">experiments</span>, <span class="va">preparedMAE</span><span class="op">$</span><span class="va">colData</span>,</span></span>
+<span class="r-in"><span><span class="va">preparedMAE</span><span class="op">$</span><span class="va">sampleMap</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> A MultiAssayExperiment object of 4 listed</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  experiments with user-defined names and respective classes.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Containing an ExperimentList class object of length 4:</span>
@@ -251,9 +260,9 @@ necessary.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  *Format() - convert into a long or wide DataFrame</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  assays() - convert ExperimentList to a SimpleList of matrices</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  exportClass() - save data to flat files</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Alternatively, use the do.call function</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="va">MultiAssayExperiment</span>, <span class="va">preparedMAE</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Alternatively, use the do.call function</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="va">MultiAssayExperiment</span>, <span class="va">preparedMAE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> A MultiAssayExperiment object of 4 listed</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  experiments with user-defined names and respective classes.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Containing an ExperimentList class object of length 4:</span>
@@ -269,7 +278,7 @@ necessary.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  *Format() - convert into a long or wide DataFrame</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  assays() - convert ExperimentList to a SimpleList of matrices</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  exportClass() - save data to flat files</span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -284,7 +293,7 @@ necessary.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

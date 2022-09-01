@@ -111,24 +111,26 @@ HDF5-backed `MultiAssayExperiment`.
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">saveHDF5MultiAssayExperiment</span><span class="op">(</span>
-  <span class="va">x</span>,
-  dir <span class="op">=</span> <span class="st">"h5_mae"</span>,
-  prefix <span class="op">=</span> <span class="cn">NULL</span>,
-  replace <span class="op">=</span> <span class="cn">FALSE</span>,
-  chunkdim <span class="op">=</span> <span class="cn">NULL</span>,
-  level <span class="op">=</span> <span class="cn">NULL</span>,
-  as.sparse <span class="op">=</span> <span class="cn">NA</span>,
-  verbose <span class="op">=</span> <span class="cn">NA</span>
-<span class="op">)</span>
-
-<span class="fu">loadHDF5MultiAssayExperiment</span><span class="op">(</span>dir <span class="op">=</span> <span class="st">"h5_mae"</span>, prefix <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">saveHDF5MultiAssayExperiment</span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  dir <span class="op">=</span> <span class="st">"h5_mae"</span>,</span>
+<span>  prefix <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  replace <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  chunkdim <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  level <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  as.sparse <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">NA</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">loadHDF5MultiAssayExperiment</span><span class="op">(</span>dir <span class="op">=</span> <span class="st">"h5_mae"</span>, prefix <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>x</dt>
 <dd><p>A <a href="MultiAssayExperiment-class.html">MultiAssayExperiment</a> object or derivative</p></dd>
+
+
 <dt>dir</dt>
 <dd><p>The path (as a single string) to the directory where to save the
 HDF5-based <a href="MultiAssayExperiment-class.html">MultiAssayExperiment</a> object or to load it from.</p><div class="sourceCode"><pre><code>When saving, the directory will be created if it doesn't already exist.
@@ -136,26 +138,36 @@ If the directory already exists and no prefix is specified and
 `replace` is set to `TRUE`, then it's replaced with an
 empty directory.
 </code></pre></div></dd>
+
+
 <dt>prefix</dt>
 <dd><p>An optional prefix to add to the names of the files created
 inside <code>dir</code>. Allows saving more than one object in the same
 directory. When the prefix is <code>NULL</code>, the name of the
 <code>MultiAssayExperiment</code> object is used. To avoid the default setting
 use an empty character string i.e., <code>""</code>.</p></dd>
+
+
 <dt>replace</dt>
 <dd><p>When no prefix is specified, should a pre-existing directory be replaced
     with a new empty one? The content of the pre-existing directory will
     be lost!</p></dd>
+
+
 <dt>chunkdim</dt>
 <dd><p>The dimensions of the chunks and the compression level to use for
     writing the assay data to disk.</p>
 <p>Passed to the internal calls to <code>writeHDF5Array</code>.
     See <code>?<a href="https://rdrr.io/pkg/HDF5Array/man/writeHDF5Array.html" class="external-link">writeHDF5Array</a></code> for more information.</p></dd>
+
+
 <dt>level</dt>
 <dd><p>The dimensions of the chunks and the compression level to use for
     writing the assay data to disk.</p>
 <p>Passed to the internal calls to <code>writeHDF5Array</code>.
     See <code>?<a href="https://rdrr.io/pkg/HDF5Array/man/writeHDF5Array.html" class="external-link">writeHDF5Array</a></code> for more information.</p></dd>
+
+
 <dt>as.sparse</dt>
 <dd><p>Whether the assay data should be flagged as sparse or not. If set to
     <code>NA</code> (the default), then the specific <code>as.sparse</code> value to
@@ -163,74 +175,77 @@ use an empty character string i.e., <code>""</code>.</p></dd>
 <p>Passed to the internal calls to <code>writeHDF5Array</code>.
     See <code>?<a href="https://rdrr.io/pkg/HDF5Array/man/writeHDF5Array.html" class="external-link">writeHDF5Array</a></code> for more information and an
     IMPORTANT NOTE.</p></dd>
+
+
 <dt>verbose</dt>
 <dd><p>Set to <code>TRUE</code> to make the function display progress.</p><div class="sourceCode"><pre><code>In the case of `saveHDF5MultiAssayExperiment()`, `verbose`
 is set to `NA` by default, in which case verbosity is controlled
 by `DelayedArray:::get_verbose_block_processing()`. Setting
 `verbose` to `TRUE` or `FALSE` overrides this.
 </code></pre></div></dd>
+
 </dl></div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"miniACC"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">testDir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"test_mae"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">saveHDF5MultiAssayExperiment</span><span class="op">(</span></span>
-<span class="r-in">    <span class="va">miniACC</span>, dir <span class="op">=</span> <span class="va">testDir</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span>, replace <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span class="r-in"><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"miniACC"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">testDir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"test_mae"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">saveHDF5MultiAssayExperiment</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    <span class="va">miniACC</span>, dir <span class="op">=</span> <span class="va">testDir</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span>, replace <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Start writing assay 1/5 to HDF5 file:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   /tmp/RtmpDn9MMF/test_mae/miniACC_experiments.h5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   /tmp/Rtmp9RL1Rm/test_mae/miniACC_experiments.h5</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> / Reading and realizing block 1/1 ... </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> OK</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> \ Writing it ... </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> OK</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Finished writing assay 1/5 to HDF5 file:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   /tmp/RtmpDn9MMF/test_mae/miniACC_experiments.h5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   /tmp/Rtmp9RL1Rm/test_mae/miniACC_experiments.h5</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Start writing assay 2/5 to HDF5 file:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   /tmp/RtmpDn9MMF/test_mae/miniACC_experiments.h5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   /tmp/Rtmp9RL1Rm/test_mae/miniACC_experiments.h5</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> / Reading and realizing block 1/1 ... </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> OK</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> \ Writing it ... </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> OK</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Finished writing assay 2/5 to HDF5 file:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   /tmp/RtmpDn9MMF/test_mae/miniACC_experiments.h5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   /tmp/Rtmp9RL1Rm/test_mae/miniACC_experiments.h5</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Start writing assay 3/5 to HDF5 file:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   /tmp/RtmpDn9MMF/test_mae/miniACC_experiments.h5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   /tmp/Rtmp9RL1Rm/test_mae/miniACC_experiments.h5</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> / Reading and realizing block 1/1 ... </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> OK</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> \ Writing it ... </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> OK</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Finished writing assay 3/5 to HDF5 file:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   /tmp/RtmpDn9MMF/test_mae/miniACC_experiments.h5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   /tmp/Rtmp9RL1Rm/test_mae/miniACC_experiments.h5</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Start writing assay 4/5 to HDF5 file:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   /tmp/RtmpDn9MMF/test_mae/miniACC_experiments.h5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   /tmp/Rtmp9RL1Rm/test_mae/miniACC_experiments.h5</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> / Reading and realizing block 1/1 ... </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> OK</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> \ Writing it ... </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> OK</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Finished writing assay 4/5 to HDF5 file:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   /tmp/RtmpDn9MMF/test_mae/miniACC_experiments.h5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   /tmp/Rtmp9RL1Rm/test_mae/miniACC_experiments.h5</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Start writing assay 5/5 to HDF5 file:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   /tmp/RtmpDn9MMF/test_mae/miniACC_experiments.h5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   /tmp/Rtmp9RL1Rm/test_mae/miniACC_experiments.h5</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> / Reading and realizing block 1/1 ... </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> OK</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> \ Writing it ... </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> OK</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Finished writing assay 5/5 to HDF5 file:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   /tmp/RtmpDn9MMF/test_mae/miniACC_experiments.h5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   /tmp/Rtmp9RL1Rm/test_mae/miniACC_experiments.h5</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Serialize MultiAssayExperiment object to RDS file:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   /tmp/RtmpDn9MMF/test_mae/miniACC_mae.rds</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## inspect the files in the dir</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="va">testDir</span><span class="op">)</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   /tmp/Rtmp9RL1Rm/test_mae/miniACC_mae.rds</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## inspect the files in the dir</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="va">testDir</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "miniACC_experiments.h5" "miniACC_mae.rds"       </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">loadHDF5MultiAssayExperiment</span><span class="op">(</span></span>
-<span class="r-in">    dir <span class="op">=</span> <span class="va">testDir</span></span>
-<span class="r-in"><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">loadHDF5MultiAssayExperiment</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    dir <span class="op">=</span> <span class="va">testDir</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> A MultiAssayExperiment object of 5 listed</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  experiments with user-defined names and respective classes.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Containing an ExperimentList class object of length 5:</span>
@@ -247,10 +262,10 @@ by `DelayedArray:::get_verbose_block_processing()`. Setting
 <span class="r-out co"><span class="r-pr">#&gt;</span>  *Format() - convert into a long or wide DataFrame</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  assays() - convert ExperimentList to a SimpleList of matrices</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  exportClass() - save data to flat files</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## remove example files</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">testDir</span>, recursive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## remove example files</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">testDir</span>, recursive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -265,7 +280,7 @@ by `DelayedArray:::get_verbose_block_processing()`. Setting
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

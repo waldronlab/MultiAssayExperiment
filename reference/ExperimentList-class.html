@@ -130,55 +130,68 @@ given <code>simplify</code> function argument (e.g., na.rm = TRUE)</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="co"># S4 method for ExperimentList</span>
-<span class="fu">show</span><span class="op">(</span><span class="va">object</span><span class="op">)</span>
-
-<span class="co"># S4 method for ExperimentList</span>
-<span class="fu">isEmpty</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-
-<span class="co"># S4 method for ExperimentList</span>
-<span class="fu"><a href="https://rdrr.io/r/base/dimnames.html" class="external-link">dimnames</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-
-<span class="co"># S4 method for ExperimentList</span>
-<span class="fu"><a href="MultiAssayExperiment-helpers.html">mergeReplicates</a></span><span class="op">(</span><span class="va">x</span>, replicates <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>, simplify <span class="op">=</span> <span class="fu">BiocGenerics</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/BiocGenerics/man/mean.html" class="external-link">mean</a></span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S4 method for ANY,missing</span>
-<span class="fu">assay</span><span class="op">(</span><span class="va">x</span>, <span class="va">i</span>, withDimnames <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S4 method for ExperimentList</span>
-<span class="fu">assays</span><span class="op">(</span><span class="va">x</span>, withDimnames <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S4 method for ExperimentList,missing</span>
-<span class="fu">assay</span><span class="op">(</span><span class="va">x</span>, <span class="va">i</span>, withDimnames <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S4 method for ExperimentList,numeric</span>
-<span class="fu">assay</span><span class="op">(</span><span class="va">x</span>, <span class="va">i</span>, withDimnames <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S4 method for ExperimentList,character</span>
-<span class="fu">assay</span><span class="op">(</span><span class="va">x</span>, <span class="va">i</span>, withDimnames <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S4 method for ExperimentList</span></span>
+<span><span class="fu">show</span><span class="op">(</span><span class="va">object</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for ExperimentList</span></span>
+<span><span class="fu">isEmpty</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for ExperimentList</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/dimnames.html" class="external-link">dimnames</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for ExperimentList</span></span>
+<span><span class="fu"><a href="MultiAssayExperiment-helpers.html">mergeReplicates</a></span><span class="op">(</span><span class="va">x</span>, replicates <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>, simplify <span class="op">=</span> <span class="fu">BiocGenerics</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/BiocGenerics/man/mean.html" class="external-link">mean</a></span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for ANY,missing</span></span>
+<span><span class="fu">assay</span><span class="op">(</span><span class="va">x</span>, <span class="va">i</span>, withDimnames <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for ExperimentList</span></span>
+<span><span class="fu">assays</span><span class="op">(</span><span class="va">x</span>, withDimnames <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for ExperimentList,missing</span></span>
+<span><span class="fu">assay</span><span class="op">(</span><span class="va">x</span>, <span class="va">i</span>, withDimnames <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for ExperimentList,numeric</span></span>
+<span><span class="fu">assay</span><span class="op">(</span><span class="va">x</span>, <span class="va">i</span>, withDimnames <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for ExperimentList,character</span></span>
+<span><span class="fu">assay</span><span class="op">(</span><span class="va">x</span>, <span class="va">i</span>, withDimnames <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>object, x</dt>
 <dd><p>An <code>ExperimentList</code> object</p></dd>
+
+
 <dt>replicates</dt>
 <dd><p>mergeReplicates: A <code>list</code> or LogicalList
 where each element represents a sample and a vector of repeated measurements
 for the sample</p></dd>
+
+
 <dt>simplify</dt>
 <dd><p>A function for merging columns where duplicates are indicated
 by replicates</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Additional arguments. See details for more information.</p></dd>
+
+
 <dt>i</dt>
 <dd><p>A scalar <code>character</code> or <code>integer</code> index</p></dd>
+
+
 <dt>withDimnames</dt>
 <dd><p>logical (default TRUE) whether to return dimension names</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>An <code>ExperimentList</code> class object</p>
+    
+
+<p>An <code>ExperimentList</code> class object</p>
     </div>
     <div id="methods-by-generic-">
     <h2>Methods (by generic)</h2>
@@ -210,11 +223,11 @@ List:</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="ExperimentList.html">ExperimentList</a></span><span class="op">(</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="ExperimentList.html">ExperimentList</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ExperimentList class object of length 0:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -229,7 +242,7 @@ List:</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

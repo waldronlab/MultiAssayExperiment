@@ -90,14 +90,14 @@ MultiAssayExperiment API documentation for more information.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">MultiAssayExperiment</span><span class="op">(</span>
-  experiments <span class="op">=</span> <span class="fu"><a href="ExperimentList.html">ExperimentList</a></span><span class="op">(</span><span class="op">)</span>,
-  colData <span class="op">=</span> <span class="fu">S4Vectors</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/DataFrame-class.html" class="external-link">DataFrame</a></span><span class="op">(</span><span class="op">)</span>,
-  sampleMap <span class="op">=</span> <span class="fu">S4Vectors</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/DataFrame-class.html" class="external-link">DataFrame</a></span><span class="op">(</span>assay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="op">)</span>, primary <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span>, colname <span class="op">=</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>,
-  metadata <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,
-  drops <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">MultiAssayExperiment</span><span class="op">(</span></span>
+<span>  experiments <span class="op">=</span> <span class="fu"><a href="ExperimentList.html">ExperimentList</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  colData <span class="op">=</span> <span class="fu">S4Vectors</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/DataFrame-class.html" class="external-link">DataFrame</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  sampleMap <span class="op">=</span> <span class="fu">S4Vectors</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/DataFrame-class.html" class="external-link">DataFrame</a></span><span class="op">(</span>assay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="op">)</span>, primary <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span>, colname <span class="op">=</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  metadata <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  drops <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -105,22 +105,33 @@ MultiAssayExperiment API documentation for more information.</p>
     <dl><dt>experiments</dt>
 <dd><p>A <code>list</code> or <a href="ExperimentList.html">ExperimentList</a> of all
 combined experiments</p></dd>
+
+
 <dt>colData</dt>
 <dd><p>A <code>DataFrame</code> or <code>data.frame</code> of
 characteristics for all biological units</p></dd>
+
+
 <dt>sampleMap</dt>
 <dd><p>A <code>DataFrame</code> or <code>data.frame</code> of assay names,
 sample identifiers, and colname samples</p></dd>
+
+
 <dt>metadata</dt>
 <dd><p>An optional argument of "ANY" class (usually list) for
 content describing the experiments</p></dd>
+
+
 <dt>drops</dt>
 <dd><p>A <code>list</code> of unmatched information
 (included after subsetting)</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A <code>MultiAssayExperiment</code> object that can store
+    
+
+<p>A <code>MultiAssayExperiment</code> object that can store
 experiment and phenotype data</p>
     </div>
     <div id="coldata">
@@ -167,8 +178,8 @@ match the names in the `ExperimentList`.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co">## Run the example ExperimentList</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/example.html" class="external-link">example</a></span><span class="op">(</span><span class="st">"ExperimentList"</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co">## Run the example ExperimentList</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/example.html" class="external-link">example</a></span><span class="op">(</span><span class="st">"ExperimentList"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ExprmL&gt; ## Create an empty ExperimentList instance</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ExprmL&gt; ExperimentList()</span>
@@ -222,41 +233,41 @@ match the names in the `ExperimentList`.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ExprmL&gt; ## Use the ExperimentList constructor</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ExprmL&gt; ExpList &lt;- ExperimentList(assayList)</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Create sample maps for each experiment</span></span>
-<span class="r-in"><span class="va">exprmap</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
-<span class="r-in">    primary <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Jack"</span>, <span class="st">"Jill"</span>, <span class="st">"Barbara"</span>, <span class="st">"Bob"</span><span class="op">)</span>,</span>
-<span class="r-in">    colname <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"array1"</span>, <span class="st">"array2"</span>, <span class="st">"array3"</span>, <span class="st">"array4"</span><span class="op">)</span>,</span>
-<span class="r-in">    stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">methylmap</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
-<span class="r-in">    primary <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Jack"</span>, <span class="st">"Jack"</span>, <span class="st">"Jill"</span>, <span class="st">"Barbara"</span>, <span class="st">"Bob"</span><span class="op">)</span>,</span>
-<span class="r-in">    colname <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"methyl1"</span>, <span class="st">"methyl2"</span>, <span class="st">"methyl3"</span>, <span class="st">"methyl4"</span>, <span class="st">"methyl5"</span><span class="op">)</span>,</span>
-<span class="r-in">    stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">rnamap</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
-<span class="r-in">    primary <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Jack"</span>, <span class="st">"Jill"</span>, <span class="st">"Bob"</span>, <span class="st">"Barbara"</span><span class="op">)</span>,</span>
-<span class="r-in">    colname <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"samparray1"</span>, <span class="st">"samparray2"</span>, <span class="st">"samparray3"</span>, <span class="st">"samparray4"</span><span class="op">)</span>,</span>
-<span class="r-in">    stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">gistmap</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
-<span class="r-in">    primary <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Jack"</span>, <span class="st">"Bob"</span>, <span class="st">"Jill"</span><span class="op">)</span>,</span>
-<span class="r-in">    colname <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"samp0"</span>, <span class="st">"samp1"</span>, <span class="st">"samp2"</span><span class="op">)</span>,</span>
-<span class="r-in">    stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Combine as a named list and convert to a DataFrame</span></span>
-<span class="r-in"><span class="va">maplist</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>Affy <span class="op">=</span> <span class="va">exprmap</span>, Methyl450k <span class="op">=</span> <span class="va">methylmap</span>,</span>
-<span class="r-in">    RNASeqGene <span class="op">=</span> <span class="va">rnamap</span>, GISTIC <span class="op">=</span> <span class="va">gistmap</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Create a sampleMap</span></span>
-<span class="r-in"><span class="va">sampMap</span> <span class="op">&lt;-</span> <span class="fu"><a href="mapToList.html">listToMap</a></span><span class="op">(</span><span class="va">maplist</span><span class="op">)</span></span>
-<span class="r-in"><span class="co">## Create an example phenotype data</span></span>
-<span class="r-in"><span class="va">colDat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>sex <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"M"</span>, <span class="st">"F"</span>, <span class="st">"M"</span>, <span class="st">"F"</span><span class="op">)</span>, age <span class="op">=</span> <span class="fl">38</span><span class="op">:</span><span class="fl">41</span>,</span>
-<span class="r-in">    row.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Jack"</span>, <span class="st">"Jill"</span>, <span class="st">"Bob"</span>, <span class="st">"Barbara"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Create a MultiAssayExperiment instance</span></span>
-<span class="r-in"><span class="va">mae</span> <span class="op">&lt;-</span> <span class="fu">MultiAssayExperiment</span><span class="op">(</span>experiments <span class="op">=</span> <span class="va">ExpList</span>, colData <span class="op">=</span> <span class="va">colDat</span>,</span>
-<span class="r-in">    sampleMap <span class="op">=</span> <span class="va">sampMap</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Create sample maps for each experiment</span></span></span>
+<span class="r-in"><span><span class="va">exprmap</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    primary <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Jack"</span>, <span class="st">"Jill"</span>, <span class="st">"Barbara"</span>, <span class="st">"Bob"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    colname <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"array1"</span>, <span class="st">"array2"</span>, <span class="st">"array3"</span>, <span class="st">"array4"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">methylmap</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    primary <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Jack"</span>, <span class="st">"Jack"</span>, <span class="st">"Jill"</span>, <span class="st">"Barbara"</span>, <span class="st">"Bob"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    colname <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"methyl1"</span>, <span class="st">"methyl2"</span>, <span class="st">"methyl3"</span>, <span class="st">"methyl4"</span>, <span class="st">"methyl5"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">rnamap</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    primary <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Jack"</span>, <span class="st">"Jill"</span>, <span class="st">"Bob"</span>, <span class="st">"Barbara"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    colname <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"samparray1"</span>, <span class="st">"samparray2"</span>, <span class="st">"samparray3"</span>, <span class="st">"samparray4"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">gistmap</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    primary <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Jack"</span>, <span class="st">"Bob"</span>, <span class="st">"Jill"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    colname <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"samp0"</span>, <span class="st">"samp1"</span>, <span class="st">"samp2"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Combine as a named list and convert to a DataFrame</span></span></span>
+<span class="r-in"><span><span class="va">maplist</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>Affy <span class="op">=</span> <span class="va">exprmap</span>, Methyl450k <span class="op">=</span> <span class="va">methylmap</span>,</span></span>
+<span class="r-in"><span>    RNASeqGene <span class="op">=</span> <span class="va">rnamap</span>, GISTIC <span class="op">=</span> <span class="va">gistmap</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Create a sampleMap</span></span></span>
+<span class="r-in"><span><span class="va">sampMap</span> <span class="op">&lt;-</span> <span class="fu"><a href="mapToList.html">listToMap</a></span><span class="op">(</span><span class="va">maplist</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co">## Create an example phenotype data</span></span></span>
+<span class="r-in"><span><span class="va">colDat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>sex <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"M"</span>, <span class="st">"F"</span>, <span class="st">"M"</span>, <span class="st">"F"</span><span class="op">)</span>, age <span class="op">=</span> <span class="fl">38</span><span class="op">:</span><span class="fl">41</span>,</span></span>
+<span class="r-in"><span>    row.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Jack"</span>, <span class="st">"Jill"</span>, <span class="st">"Bob"</span>, <span class="st">"Barbara"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Create a MultiAssayExperiment instance</span></span></span>
+<span class="r-in"><span><span class="va">mae</span> <span class="op">&lt;-</span> <span class="fu">MultiAssayExperiment</span><span class="op">(</span>experiments <span class="op">=</span> <span class="va">ExpList</span>, colData <span class="op">=</span> <span class="va">colDat</span>,</span></span>
+<span class="r-in"><span>    sampleMap <span class="op">=</span> <span class="va">sampMap</span><span class="op">)</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -271,7 +282,7 @@ match the names in the `ExperimentList`.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

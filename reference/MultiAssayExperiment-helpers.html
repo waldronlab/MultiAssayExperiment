@@ -147,89 +147,101 @@ for <code>ExperimentList</code> objects.</p>
 </ul></div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="co"># S4 method for MultiAssayExperiment</span>
-<span class="fu"><a href="https://rdrr.io/r/stats/complete.cases.html" class="external-link">complete.cases</a></span><span class="op">(</span><span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S4 method for MultiAssayExperiment</span>
-<span class="fu">isEmpty</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-
-<span class="fu">intersectRows</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-
-<span class="fu">intersectColumns</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-
-<span class="fu">replicated</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-
-<span class="co"># S4 method for MultiAssayExperiment</span>
-<span class="fu">replicated</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-
-<span class="fu">anyReplicated</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-
-<span class="co"># S4 method for MultiAssayExperiment</span>
-<span class="fu">anyReplicated</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-
-<span class="fu">mergeReplicates</span><span class="op">(</span><span class="va">x</span>, replicates <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>, simplify <span class="op">=</span> <span class="fu">BiocGenerics</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/BiocGenerics/man/mean.html" class="external-link">mean</a></span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S4 method for MultiAssayExperiment</span>
-<span class="fu">mergeReplicates</span><span class="op">(</span>
-  <span class="va">x</span>,
-  replicates <span class="op">=</span> <span class="fu">replicated</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>,
-  simplify <span class="op">=</span> <span class="fu">BiocGenerics</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/BiocGenerics/man/mean.html" class="external-link">mean</a></span>,
-  <span class="va">...</span>
-<span class="op">)</span>
-
-<span class="co"># S4 method for ANY</span>
-<span class="fu">mergeReplicates</span><span class="op">(</span><span class="va">x</span>, replicates <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>, simplify <span class="op">=</span> <span class="fu">BiocGenerics</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/BiocGenerics/man/mean.html" class="external-link">mean</a></span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">longFormat</span><span class="op">(</span><span class="va">object</span>, colDataCols <span class="op">=</span> <span class="cn">NULL</span>, i <span class="op">=</span> <span class="fl">1L</span><span class="op">)</span>
-
-<span class="fu">wideFormat</span><span class="op">(</span>
-  <span class="va">object</span>,
-  colDataCols <span class="op">=</span> <span class="cn">NULL</span>,
-  check.names <span class="op">=</span> <span class="cn">TRUE</span>,
-  collapse <span class="op">=</span> <span class="st">"_"</span>,
-  i <span class="op">=</span> <span class="fl">1L</span>
-<span class="op">)</span>
-
-<span class="fu">hasRowRanges</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-
-<span class="co"># S4 method for MultiAssayExperiment</span>
-<span class="fu">hasRowRanges</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-
-<span class="co"># S4 method for ExperimentList</span>
-<span class="fu">hasRowRanges</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-
-<span class="fu">getWithColData</span><span class="op">(</span><span class="va">x</span>, <span class="va">i</span>, mode <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"append"</span>, <span class="st">"replace"</span><span class="op">)</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-
-<span class="fu">renamePrimary</span><span class="op">(</span><span class="va">x</span>, <span class="va">value</span><span class="op">)</span>
-
-<span class="fu">renameColname</span><span class="op">(</span><span class="va">x</span>, <span class="va">i</span>, <span class="va">value</span><span class="op">)</span>
-
-<span class="fu">splitAssays</span><span class="op">(</span><span class="va">x</span>, <span class="va">hitList</span><span class="op">)</span>
-
-<span class="co"># S4 method for MultiAssayExperiment</span>
-<span class="fu">splitAssays</span><span class="op">(</span><span class="va">x</span>, <span class="va">hitList</span><span class="op">)</span>
-
-<span class="fu">makeHitList</span><span class="op">(</span><span class="va">x</span>, <span class="va">patternList</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S4 method for MultiAssayExperiment</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/complete.cases.html" class="external-link">complete.cases</a></span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for MultiAssayExperiment</span></span>
+<span><span class="fu">isEmpty</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">intersectRows</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">intersectColumns</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">replicated</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for MultiAssayExperiment</span></span>
+<span><span class="fu">replicated</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">anyReplicated</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for MultiAssayExperiment</span></span>
+<span><span class="fu">anyReplicated</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">mergeReplicates</span><span class="op">(</span><span class="va">x</span>, replicates <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>, simplify <span class="op">=</span> <span class="fu">BiocGenerics</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/BiocGenerics/man/mean.html" class="external-link">mean</a></span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for MultiAssayExperiment</span></span>
+<span><span class="fu">mergeReplicates</span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  replicates <span class="op">=</span> <span class="fu">replicated</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>,</span>
+<span>  simplify <span class="op">=</span> <span class="fu">BiocGenerics</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/BiocGenerics/man/mean.html" class="external-link">mean</a></span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for ANY</span></span>
+<span><span class="fu">mergeReplicates</span><span class="op">(</span><span class="va">x</span>, replicates <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>, simplify <span class="op">=</span> <span class="fu">BiocGenerics</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/BiocGenerics/man/mean.html" class="external-link">mean</a></span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">longFormat</span><span class="op">(</span><span class="va">object</span>, colDataCols <span class="op">=</span> <span class="cn">NULL</span>, i <span class="op">=</span> <span class="fl">1L</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">wideFormat</span><span class="op">(</span></span>
+<span>  <span class="va">object</span>,</span>
+<span>  colDataCols <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  check.names <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  collapse <span class="op">=</span> <span class="st">"_"</span>,</span>
+<span>  i <span class="op">=</span> <span class="fl">1L</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">hasRowRanges</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for MultiAssayExperiment</span></span>
+<span><span class="fu">hasRowRanges</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for ExperimentList</span></span>
+<span><span class="fu">hasRowRanges</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">getWithColData</span><span class="op">(</span><span class="va">x</span>, <span class="va">i</span>, mode <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"append"</span>, <span class="st">"replace"</span><span class="op">)</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">renamePrimary</span><span class="op">(</span><span class="va">x</span>, <span class="va">value</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">renameColname</span><span class="op">(</span><span class="va">x</span>, <span class="va">i</span>, <span class="va">value</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">splitAssays</span><span class="op">(</span><span class="va">x</span>, <span class="va">hitList</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for MultiAssayExperiment</span></span>
+<span><span class="fu">splitAssays</span><span class="op">(</span><span class="va">x</span>, <span class="va">hitList</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">makeHitList</span><span class="op">(</span><span class="va">x</span>, <span class="va">patternList</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>...</dt>
 <dd><p>Additional arguments. See details for more information.</p></dd>
+
+
 <dt>x</dt>
 <dd><p>A MultiAssayExperiment or ExperimentList</p></dd>
+
+
 <dt>replicates</dt>
 <dd><p>A list of LogicalLists
 indicating multiple / duplicate entries for each biological unit per assay,
 see <code>replicated</code> (default <code>replicated(x)</code>).</p></dd>
+
+
 <dt>simplify</dt>
 <dd><p>A function for merging repeat measurements in experiments
 as indicated by the <code>replicated</code> method for <code>MultiAssayExperiment</code></p></dd>
+
+
 <dt>object</dt>
 <dd><p>Any supported class object</p></dd>
+
+
 <dt>colDataCols</dt>
 <dd><p>A <code>character</code>, <code>logical</code>, or <code>numeric</code>
 index for <code>colData</code> columns to be included</p></dd>
+
+
 <dt>i</dt>
 <dd><p>longFormat: The i-th assay in
 SummarizedExperiment-like objects. A vector input is
@@ -237,37 +249,54 @@ supported in the case that the SummarizedExperiment object(s) has more
 than one assay (default 1L),
 renameColname: Either a <code>numeric</code> or <code>character</code> index
 indicating the assay whose colnames are to be renamed</p></dd>
+
+
 <dt>check.names</dt>
 <dd><p>(logical default TRUE) Column names of the output
 <code>DataFrame</code> will be checked for syntactic validity and made unique,
 if necessary</p></dd>
+
+
 <dt>collapse</dt>
 <dd><p>(character default "_") A single string delimiter for output
 column names. In <code>wideFormat</code>, experiments and rownames (and when
 replicate samples are present, colnames) are seperated by this delimiter</p></dd>
+
+
 <dt>mode</dt>
 <dd><p>String indicating how <a href="MultiAssayExperiment-class.html">MultiAssayExperiment</a>
 column-level metadata should be added to the
 SummarizedExperiment <code>colData</code>.</p></dd>
+
+
 <dt>verbose</dt>
 <dd><p>logical(1) Whether to `suppressMessages` on subsetting
 operations in `getWithColData` (default FALSE)</p></dd>
+
+
 <dt>value</dt>
 <dd><p>renamePrimary: A <code>character</code> vector of the same length as
 the existing <code>rownames(colData)</code> to use for replacement,
 renameColname: A <code>CharacterList</code> or <code>list</code> with matching
 <code>lengths</code> to replace <code>colnames(x)</code></p></dd>
+
+
 <dt>hitList</dt>
 <dd><p>a named <code>list</code> or <code>List</code> of logical vectors that
 indicate groupings in the assays</p></dd>
+
+
 <dt>patternList</dt>
 <dd><p>a named <code>list</code> or <code>List</code> of atomic character
 vectors that are the input to <code>grepl</code> for identifying groupings in
 the assays</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>See the itemized list in the description section for details.</p>
+    
+
+<p>See the itemized list in the description section for details.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -402,8 +431,8 @@ to avoid repetition of columns across assays. See the examples section.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/example.html" class="external-link">example</a></span><span class="op">(</span><span class="va">MultiAssayExperiment</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/example.html" class="external-link">example</a></span><span class="op">(</span><span class="va">MultiAssayExperiment</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> MltAsE&gt; ## Run the example ExperimentList</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> MltAsE&gt; example("ExperimentList")</span>
@@ -496,18 +525,18 @@ to avoid repetition of columns across assays. See the examples section.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> MltAsE&gt; ## Create a MultiAssayExperiment instance</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> MltAsE&gt; mae &lt;- MultiAssayExperiment(experiments = ExpList, colData = colDat,</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> MltAsE+     sampleMap = sampMap)</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/stats/complete.cases.html" class="external-link">complete.cases</a></span><span class="op">(</span><span class="va">mae</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/complete.cases.html" class="external-link">complete.cases</a></span><span class="op">(</span><span class="va">mae</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1]  TRUE  TRUE  TRUE FALSE</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">isEmpty</span><span class="op">(</span><span class="fu"><a href="MultiAssayExperiment.html">MultiAssayExperiment</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">isEmpty</span><span class="op">(</span><span class="fu"><a href="MultiAssayExperiment.html">MultiAssayExperiment</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
-<span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## renaming biological units (primary)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">mae2</span> <span class="op">&lt;-</span> <span class="fu">renamePrimary</span><span class="op">(</span><span class="va">mae</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"pt"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">colData</span><span class="op">(</span><span class="va">mae2</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## renaming biological units (primary)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">mae2</span> <span class="op">&lt;-</span> <span class="fu">renamePrimary</span><span class="op">(</span><span class="va">mae</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"pt"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">colData</span><span class="op">(</span><span class="va">mae2</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 4 rows and 2 columns</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             sex       age</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;character&gt; &lt;integer&gt;</span>
@@ -515,7 +544,7 @@ to avoid repetition of columns across assays. See the examples section.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> pt2           F        39</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> pt3           M        40</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> pt4           F        41</span>
-<span class="r-in"><span class="fu"><a href="MultiAssayExperiment-methods.html">sampleMap</a></span><span class="op">(</span><span class="va">mae2</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="MultiAssayExperiment-methods.html">sampleMap</a></span><span class="op">(</span><span class="va">mae2</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 16 rows and 3 columns</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          assay     primary     colname</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;factor&gt; &lt;character&gt; &lt;character&gt;</span>
@@ -530,18 +559,18 @@ to avoid repetition of columns across assays. See the examples section.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 14  GISTIC             pt1       samp0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 15  GISTIC             pt3       samp1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 16  GISTIC             pt2       samp2</span>
-<span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## renaming observational units (colname)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">mae2</span> <span class="op">&lt;-</span> <span class="fu">renameColname</span><span class="op">(</span><span class="va">mae</span>, i <span class="op">=</span> <span class="st">"Affy"</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"ARRAY"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">mae2</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## renaming observational units (colname)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">mae2</span> <span class="op">&lt;-</span> <span class="fu">renameColname</span><span class="op">(</span><span class="va">mae</span>, i <span class="op">=</span> <span class="st">"Affy"</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"ARRAY"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">mae2</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> CharacterList of length 4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [["Affy"]] ARRAY1 ARRAY2 ARRAY3 ARRAY4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [["Methyl450k"]] methyl1 methyl2 methyl3 methyl4 methyl5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [["RNASeqGene"]] samparray1 samparray2 samparray3 samparray4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [["GISTIC"]] samp0 samp1 samp2</span>
-<span class="r-in"><span class="fu"><a href="MultiAssayExperiment-methods.html">sampleMap</a></span><span class="op">(</span><span class="va">mae2</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="MultiAssayExperiment-methods.html">sampleMap</a></span><span class="op">(</span><span class="va">mae2</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 16 rows and 3 columns</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          assay     primary     colname</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;factor&gt; &lt;character&gt; &lt;character&gt;</span>
@@ -556,19 +585,19 @@ to avoid repetition of columns across assays. See the examples section.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 14  GISTIC            Jack       samp0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 15  GISTIC             Bob       samp1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 16  GISTIC            Jill       samp2</span>
-<span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">patts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span class="r-in">    normals <span class="op">=</span> <span class="st">"TCGA-OR-[A-Z0-9]{4}-11"</span>,</span>
-<span class="r-in">    tumors <span class="op">=</span> <span class="st">"TCGA-OR-[A-Z0-9]{4}-01"</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"miniACC"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">hits</span> <span class="op">&lt;-</span> <span class="fu">makeHitList</span><span class="op">(</span><span class="va">miniACC</span>, <span class="va">patts</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">splitAssays</span><span class="op">(</span><span class="va">miniACC</span>, <span class="va">hits</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">patts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    normals <span class="op">=</span> <span class="st">"TCGA-OR-[A-Z0-9]{4}-11"</span>,</span></span>
+<span class="r-in"><span>    tumors <span class="op">=</span> <span class="st">"TCGA-OR-[A-Z0-9]{4}-01"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"miniACC"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">hits</span> <span class="op">&lt;-</span> <span class="fu">makeHitList</span><span class="op">(</span><span class="va">miniACC</span>, <span class="va">patts</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">splitAssays</span><span class="op">(</span><span class="va">miniACC</span>, <span class="va">hits</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> A MultiAssayExperiment object of 5 listed</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  experiments with user-defined names and respective classes.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Containing an ExperimentList class object of length 5:</span>
@@ -585,7 +614,7 @@ to avoid repetition of columns across assays. See the examples section.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  *Format() - convert into a long or wide DataFrame</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  assays() - convert ExperimentList to a SimpleList of matrices</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  exportClass() - save data to flat files</span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -600,7 +629,7 @@ to avoid repetition of columns across assays. See the examples section.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

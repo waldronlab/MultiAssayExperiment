@@ -145,29 +145,46 @@ subsetByAssay(x, y)
     <h2>Arguments</h2>
     <dl><dt>x</dt>
 <dd><p>A <code>MultiAssayExperiment</code> or <code>ExperimentList</code></p></dd>
+
+
 <dt>y</dt>
 <dd><p>Any argument used for subsetting, can be a <code>character</code>,
 <code>logical</code>, <code>integer</code>, <code>list</code> or <code>List</code> vector</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Additional arguments passed on to lower level functions.</p></dd>
+
+
 <dt>i</dt>
 <dd><p>Either a <code>character</code>, <code>integer</code>, <code>logical</code> or
 <code>GRanges</code> object for subsetting by rows</p></dd>
+
+
 <dt>j</dt>
 <dd><p>Either a <code>character</code>, <code>logical</code>, or <code>numeric</code> vector
 for subsetting by <code>colData</code> rows. See details for more information.</p></dd>
+
+
 <dt>k</dt>
 <dd><p>Either a <code>character</code>, <code>logical</code>, or <code>numeric</code> vector
 for subsetting by assays</p></dd>
+
+
 <dt>drop</dt>
 <dd><p>logical (default FALSE) whether to drop all empty assay elements
 in the <code>ExperimentList</code></p></dd>
+
+
 <dt>value</dt>
 <dd><p>An assay compatible with the MultiAssayExperiment API</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p><code>subsetBy*</code> operations are endomorphic and return either
+    
+
+<p><code>subsetBy*</code> operations are endomorphic and return either
 <code>MultiAssayExperiment</code> or <code>ExperimentList</code> depending on the
 input.</p>
     </div>
@@ -189,8 +206,8 @@ The order of the subsetting elements in the
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co">## Load the example MultiAssayExperiment</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/example.html" class="external-link">example</a></span><span class="op">(</span><span class="st">"MultiAssayExperiment"</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co">## Load the example MultiAssayExperiment</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/example.html" class="external-link">example</a></span><span class="op">(</span><span class="st">"MultiAssayExperiment"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> MltAsE&gt; ## Run the example ExperimentList</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> MltAsE&gt; example("ExperimentList")</span>
@@ -283,9 +300,9 @@ The order of the subsetting elements in the
 <span class="r-out co"><span class="r-pr">#&gt;</span> MltAsE&gt; ## Create a MultiAssayExperiment instance</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> MltAsE&gt; mae &lt;- MultiAssayExperiment(experiments = ExpList, colData = colDat,</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> MltAsE+     sampleMap = sampMap)</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Using experiment names</span></span>
-<span class="r-in"><span class="fu">subsetByAssay</span><span class="op">(</span><span class="va">mae</span>, <span class="st">"Affy"</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Using experiment names</span></span></span>
+<span class="r-in"><span><span class="fu">subsetByAssay</span><span class="op">(</span><span class="va">mae</span>, <span class="st">"Affy"</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>'experiments' dropped; see 'metadata'</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> harmonizing input:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   removing 12 sampleMap rows not in names(experiments)</span>
@@ -301,9 +318,9 @@ The order of the subsetting elements in the
 <span class="r-out co"><span class="r-pr">#&gt;</span>  *Format() - convert into a long or wide DataFrame</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  assays() - convert ExperimentList to a SimpleList of matrices</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  exportClass() - save data to flat files</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Using numeric indices</span></span>
-<span class="r-in"><span class="fu">subsetByAssay</span><span class="op">(</span><span class="va">mae</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Using numeric indices</span></span></span>
+<span class="r-in"><span><span class="fu">subsetByAssay</span><span class="op">(</span><span class="va">mae</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>'experiments' dropped; see 'metadata'</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> harmonizing input:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   removing 7 sampleMap rows not in names(experiments)</span>
@@ -320,9 +337,9 @@ The order of the subsetting elements in the
 <span class="r-out co"><span class="r-pr">#&gt;</span>  *Format() - convert into a long or wide DataFrame</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  assays() - convert ExperimentList to a SimpleList of matrices</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  exportClass() - save data to flat files</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Using a logical vector</span></span>
-<span class="r-in"><span class="fu">subsetByAssay</span><span class="op">(</span><span class="va">mae</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Using a logical vector</span></span></span>
+<span class="r-in"><span><span class="fu">subsetByAssay</span><span class="op">(</span><span class="va">mae</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>'experiments' dropped; see 'metadata'</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> harmonizing input:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   removing 5 sampleMap rows not in names(experiments)</span>
@@ -340,9 +357,9 @@ The order of the subsetting elements in the
 <span class="r-out co"><span class="r-pr">#&gt;</span>  *Format() - convert into a long or wide DataFrame</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  assays() - convert ExperimentList to a SimpleList of matrices</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  exportClass() - save data to flat files</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Subset by character vector (Jack)</span></span>
-<span class="r-in"><span class="fu">subsetByColData</span><span class="op">(</span><span class="va">mae</span>, <span class="st">"Jack"</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Subset by character vector (Jack)</span></span></span>
+<span class="r-in"><span><span class="fu">subsetByColData</span><span class="op">(</span><span class="va">mae</span>, <span class="st">"Jack"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> A MultiAssayExperiment object of 4 listed</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  experiments with user-defined names and respective classes.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Containing an ExperimentList class object of length 4:</span>
@@ -358,9 +375,9 @@ The order of the subsetting elements in the
 <span class="r-out co"><span class="r-pr">#&gt;</span>  *Format() - convert into a long or wide DataFrame</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  assays() - convert ExperimentList to a SimpleList of matrices</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  exportClass() - save data to flat files</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Subset by numeric index of colData rows (Jack and Bob)</span></span>
-<span class="r-in"><span class="fu">subsetByColData</span><span class="op">(</span><span class="va">mae</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Subset by numeric index of colData rows (Jack and Bob)</span></span></span>
+<span class="r-in"><span><span class="fu">subsetByColData</span><span class="op">(</span><span class="va">mae</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> A MultiAssayExperiment object of 4 listed</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  experiments with user-defined names and respective classes.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Containing an ExperimentList class object of length 4:</span>
@@ -376,9 +393,9 @@ The order of the subsetting elements in the
 <span class="r-out co"><span class="r-pr">#&gt;</span>  *Format() - convert into a long or wide DataFrame</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  assays() - convert ExperimentList to a SimpleList of matrices</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  exportClass() - save data to flat files</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Subset by logical indicator of colData rows (Jack and Jill)</span></span>
-<span class="r-in"><span class="fu">subsetByColData</span><span class="op">(</span><span class="va">mae</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Subset by logical indicator of colData rows (Jack and Jill)</span></span></span>
+<span class="r-in"><span><span class="fu">subsetByColData</span><span class="op">(</span><span class="va">mae</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> A MultiAssayExperiment object of 4 listed</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  experiments with user-defined names and respective classes.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Containing an ExperimentList class object of length 4:</span>
@@ -394,9 +411,9 @@ The order of the subsetting elements in the
 <span class="r-out co"><span class="r-pr">#&gt;</span>  *Format() - convert into a long or wide DataFrame</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  assays() - convert ExperimentList to a SimpleList of matrices</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  exportClass() - save data to flat files</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">subsetByColumn</span><span class="op">(</span><span class="va">mae</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>Affy <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span>,</span>
-<span class="r-in">    Methyl450k <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>,<span class="fl">5</span>,<span class="fl">2</span><span class="op">)</span>, RNASeqGene <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="fl">4</span>, GISTIC <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">subsetByColumn</span><span class="op">(</span><span class="va">mae</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>Affy <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span>,</span></span>
+<span class="r-in"><span>    Methyl450k <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>,<span class="fl">5</span>,<span class="fl">2</span><span class="op">)</span>, RNASeqGene <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="fl">4</span>, GISTIC <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> harmonizing input:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   removing 7 sampleMap rows with 'colname' not in colnames of experiments</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> A MultiAssayExperiment object of 4 listed</span>
@@ -414,10 +431,10 @@ The order of the subsetting elements in the
 <span class="r-out co"><span class="r-pr">#&gt;</span>  *Format() - convert into a long or wide DataFrame</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  assays() - convert ExperimentList to a SimpleList of matrices</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  exportClass() - save data to flat files</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">subsetWith</span> <span class="op">&lt;-</span> <span class="fu">S4Vectors</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/List-utils.html" class="external-link">mendoapply</a></span><span class="op">(</span><span class="va">`[`</span>, <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">mae</span><span class="op">)</span>,</span>
-<span class="r-in">    MoreArgs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">subsetByColumn</span><span class="op">(</span><span class="va">mae</span>, <span class="va">subsetWith</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">subsetWith</span> <span class="op">&lt;-</span> <span class="fu">S4Vectors</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/List-utils.html" class="external-link">mendoapply</a></span><span class="op">(</span><span class="va">`[`</span>, <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">mae</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    MoreArgs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">subsetByColumn</span><span class="op">(</span><span class="va">mae</span>, <span class="va">subsetWith</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> harmonizing input:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   removing 8 sampleMap rows with 'colname' not in colnames of experiments</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   removing 1 colData rownames not in sampleMap 'primary'</span>
@@ -436,11 +453,11 @@ The order of the subsetting elements in the
 <span class="r-out co"><span class="r-pr">#&gt;</span>  *Format() - convert into a long or wide DataFrame</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  assays() - convert ExperimentList to a SimpleList of matrices</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  exportClass() - save data to flat files</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Use a GRanges object to subset rows where ranged data present</span></span>
-<span class="r-in"><span class="va">egr</span> <span class="op">&lt;-</span> <span class="fu">GenomicRanges</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></span><span class="op">(</span>seqnames <span class="op">=</span> <span class="st">"chr2"</span>,</span>
-<span class="r-in">    <span class="fu">IRanges</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/IRanges/man/IRanges-constructor.html" class="external-link">IRanges</a></span><span class="op">(</span>start <span class="op">=</span> <span class="fl">11</span>, end <span class="op">=</span> <span class="fl">13</span><span class="op">)</span>, strand <span class="op">=</span> <span class="st">"-"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">subsetByRow</span><span class="op">(</span><span class="va">mae</span>, <span class="va">egr</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Use a GRanges object to subset rows where ranged data present</span></span></span>
+<span class="r-in"><span><span class="va">egr</span> <span class="op">&lt;-</span> <span class="fu">GenomicRanges</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></span><span class="op">(</span>seqnames <span class="op">=</span> <span class="st">"chr2"</span>,</span></span>
+<span class="r-in"><span>    <span class="fu">IRanges</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/IRanges/man/IRanges-constructor.html" class="external-link">IRanges</a></span><span class="op">(</span>start <span class="op">=</span> <span class="fl">11</span>, end <span class="op">=</span> <span class="fl">13</span><span class="op">)</span>, strand <span class="op">=</span> <span class="st">"-"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">subsetByRow</span><span class="op">(</span><span class="va">mae</span>, <span class="va">egr</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> A MultiAssayExperiment object of 4 listed</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  experiments with user-defined names and respective classes.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Containing an ExperimentList class object of length 4:</span>
@@ -456,9 +473,9 @@ The order of the subsetting elements in the
 <span class="r-out co"><span class="r-pr">#&gt;</span>  *Format() - convert into a long or wide DataFrame</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  assays() - convert ExperimentList to a SimpleList of matrices</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  exportClass() - save data to flat files</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Use a logical vector (recycling used)</span></span>
-<span class="r-in"><span class="fu">subsetByRow</span><span class="op">(</span><span class="va">mae</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Use a logical vector (recycling used)</span></span></span>
+<span class="r-in"><span><span class="fu">subsetByRow</span><span class="op">(</span><span class="va">mae</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> A MultiAssayExperiment object of 4 listed</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  experiments with user-defined names and respective classes.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Containing an ExperimentList class object of length 4:</span>
@@ -474,9 +491,9 @@ The order of the subsetting elements in the
 <span class="r-out co"><span class="r-pr">#&gt;</span>  *Format() - convert into a long or wide DataFrame</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  assays() - convert ExperimentList to a SimpleList of matrices</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  exportClass() - save data to flat files</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Use a character vector</span></span>
-<span class="r-in"><span class="fu">subsetByRow</span><span class="op">(</span><span class="va">mae</span>, <span class="st">"ENST00000355076"</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Use a character vector</span></span></span>
+<span class="r-in"><span><span class="fu">subsetByRow</span><span class="op">(</span><span class="va">mae</span>, <span class="st">"ENST00000355076"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> A MultiAssayExperiment object of 4 listed</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  experiments with user-defined names and respective classes.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Containing an ExperimentList class object of length 4:</span>
@@ -492,7 +509,7 @@ The order of the subsetting elements in the
 <span class="r-out co"><span class="r-pr">#&gt;</span>  *Format() - convert into a long or wide DataFrame</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  assays() - convert ExperimentList to a SimpleList of matrices</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  exportClass() - save data to flat files</span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -507,7 +524,7 @@ The order of the subsetting elements in the
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

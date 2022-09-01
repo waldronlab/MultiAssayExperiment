@@ -83,9 +83,9 @@ opposite by taking a <code>list</code> and converting it to <code>DataFrame</cod
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">listToMap</span><span class="op">(</span><span class="va">listmap</span><span class="op">)</span>
-
-<span class="fu">mapToList</span><span class="op">(</span><span class="va">dfmap</span>, assayCol <span class="op">=</span> <span class="st">"assay"</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">listToMap</span><span class="op">(</span><span class="va">listmap</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">mapToList</span><span class="op">(</span><span class="va">dfmap</span>, assayCol <span class="op">=</span> <span class="st">"assay"</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -93,17 +93,26 @@ opposite by taking a <code>list</code> and converting it to <code>DataFrame</cod
     <dl><dt>listmap</dt>
 <dd><p>A named <code>list</code> object containing <code>DataFrame</code>s
 with "primary" and "colname" columns</p></dd>
+
+
 <dt>dfmap</dt>
 <dd><p>A <code>data.frame</code> or <code>DataFrame</code> object with
 identifiers in the first column</p></dd>
+
+
 <dt>assayCol</dt>
 <dd><p>A character vector of length one indicating the assay
 names column</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A DataFrame class object of names
-A <code>list</code> object of DataFrames for each assay</p>
+    
+
+<p>A DataFrame class object of names</p>
+
+
+<p>A <code>list</code> object of DataFrames for each assay</p>
     </div>
     <div id="functions">
     <h2>Functions</h2>
@@ -113,7 +122,7 @@ A <code>list</code> object of DataFrames for each assay</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/example.html" class="external-link">example</a></span><span class="op">(</span><span class="st">"MultiAssayExperiment"</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/example.html" class="external-link">example</a></span><span class="op">(</span><span class="st">"MultiAssayExperiment"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> MltAsE&gt; ## Run the example ExperimentList</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> MltAsE&gt; example("ExperimentList")</span>
@@ -206,12 +215,12 @@ A <code>list</code> object of DataFrames for each assay</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> MltAsE&gt; ## Create a MultiAssayExperiment instance</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> MltAsE&gt; mae &lt;- MultiAssayExperiment(experiments = ExpList, colData = colDat,</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> MltAsE+     sampleMap = sampMap)</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Create a sampleMap from a list using the listToMap function</span></span>
-<span class="r-in"><span class="va">sampMap</span> <span class="op">&lt;-</span> <span class="fu">listToMap</span><span class="op">(</span><span class="va">maplist</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## The inverse operation is also available</span></span>
-<span class="r-in"><span class="va">maplist</span> <span class="op">&lt;-</span> <span class="fu">mapToList</span><span class="op">(</span><span class="va">sampMap</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Create a sampleMap from a list using the listToMap function</span></span></span>
+<span class="r-in"><span><span class="va">sampMap</span> <span class="op">&lt;-</span> <span class="fu">listToMap</span><span class="op">(</span><span class="va">maplist</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## The inverse operation is also available</span></span></span>
+<span class="r-in"><span><span class="va">maplist</span> <span class="op">&lt;-</span> <span class="fu">mapToList</span><span class="op">(</span><span class="va">sampMap</span><span class="op">)</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -226,7 +235,7 @@ A <code>list</code> object of DataFrames for each assay</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

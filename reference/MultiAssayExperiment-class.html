@@ -99,86 +99,109 @@ potentially also with the arguments <code>colData</code> (see section below) and
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="co"># S4 method for MultiAssayExperiment</span>
-<span class="fu">show</span><span class="op">(</span><span class="va">object</span><span class="op">)</span>
-
-<span class="co"># S4 method for MultiAssayExperiment</span>
-<span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-
-<span class="co"># S4 method for MultiAssayExperiment</span>
-<span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-
-<span class="co"># S4 method for MultiAssayExperiment</span>
-<span class="fu">updateObject</span><span class="op">(</span><span class="va">object</span>, <span class="va">...</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-
-<span class="co"># S4 method for MultiAssayExperiment</span>
-<span class="fu"><a href="https://rdrr.io/r/base/dimnames.html" class="external-link">dimnames</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-
-<span class="co"># S4 method for MultiAssayExperiment</span>
-<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span>, sampleMap <span class="op">=</span> <span class="cn">NULL</span>, mapFrom <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
-
-<span class="co"># S4 method for MultiAssayExperiment</span>
-<span class="fu">exportClass</span><span class="op">(</span>
-  <span class="va">object</span>,
-  dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>,
-  <span class="va">fmt</span>,
-  <span class="va">ext</span>,
-  match <span class="op">=</span> <span class="cn">FALSE</span>,
-  verbose <span class="op">=</span> <span class="cn">TRUE</span>,
-  <span class="va">...</span>
-<span class="op">)</span>
-
-<span class="co"># S4 method for MultiAssayExperiment</span>
-<span class="fu">assays</span><span class="op">(</span><span class="va">x</span>, withDimnames <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S4 method for MultiAssayExperiment,missing</span>
-<span class="fu">assay</span><span class="op">(</span><span class="va">x</span>, <span class="va">i</span>, withDimnames <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S4 method for MultiAssayExperiment,numeric</span>
-<span class="fu">assay</span><span class="op">(</span><span class="va">x</span>, <span class="va">i</span>, withDimnames <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S4 method for MultiAssayExperiment,character</span>
-<span class="fu">assay</span><span class="op">(</span><span class="va">x</span>, <span class="va">i</span>, withDimnames <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S4 method for MultiAssayExperiment</span></span>
+<span><span class="fu">show</span><span class="op">(</span><span class="va">object</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for MultiAssayExperiment</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for MultiAssayExperiment</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for MultiAssayExperiment</span></span>
+<span><span class="fu">updateObject</span><span class="op">(</span><span class="va">object</span>, <span class="va">...</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for MultiAssayExperiment</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/dimnames.html" class="external-link">dimnames</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for MultiAssayExperiment</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span>, sampleMap <span class="op">=</span> <span class="cn">NULL</span>, mapFrom <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for MultiAssayExperiment</span></span>
+<span><span class="fu">exportClass</span><span class="op">(</span></span>
+<span>  <span class="va">object</span>,</span>
+<span>  dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  <span class="va">fmt</span>,</span>
+<span>  <span class="va">ext</span>,</span>
+<span>  match <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for MultiAssayExperiment</span></span>
+<span><span class="fu">assays</span><span class="op">(</span><span class="va">x</span>, withDimnames <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for MultiAssayExperiment,missing</span></span>
+<span><span class="fu">assay</span><span class="op">(</span><span class="va">x</span>, <span class="va">i</span>, withDimnames <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for MultiAssayExperiment,numeric</span></span>
+<span><span class="fu">assay</span><span class="op">(</span><span class="va">x</span>, <span class="va">i</span>, withDimnames <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for MultiAssayExperiment,character</span></span>
+<span><span class="fu">assay</span><span class="op">(</span><span class="va">x</span>, <span class="va">i</span>, withDimnames <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>object, x</dt>
 <dd><p>A <code>MultiAssayExperiment</code> object</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Additional arguments for supporting functions. See details.</p></dd>
+
+
 <dt>verbose</dt>
 <dd><p>logical(1) Whether to print additional information (default
 TRUE)</p></dd>
+
+
 <dt>sampleMap</dt>
 <dd><p><code>c</code> method: a <code>sampleMap</code> <code>list</code> or
 <code>DataFrame</code> to guide merge</p></dd>
+
+
 <dt>mapFrom</dt>
 <dd><p>Either a <code>logical</code>, <code>character</code>, or <code>integer</code>
 vector indicating the experiment(s) that have an identical colname order as
 the experiment input(s). If using a character input, the name must match
 exactly.</p></dd>
+
+
 <dt>dir</dt>
 <dd><p>character(1) A directory for saving exported data (default:
 `tempdir()`)</p></dd>
+
+
 <dt>fmt</dt>
 <dd><p>character(1) or function() Either a format character atomic as
 supported by `write.table` either ('csv', or 'tsv') or a function whose
 first two arguments are 'object to save' and 'file location'</p></dd>
+
+
 <dt>ext</dt>
 <dd><p>character(1) A file extension supported by the format argument</p></dd>
+
+
 <dt>match</dt>
 <dd><p>logical(1) Whether to coerce the current object to a
 'MatchedAssayExperiment' object (default: FALSE)</p></dd>
+
+
 <dt>withDimnames</dt>
 <dd><p>logical (default TRUE) whether to return dimension names
 included in the object</p></dd>
+
+
 <dt>i</dt>
 <dd><p>An integer or character scalar indicating the assay to return</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A <code>MultiAssayExperiment</code> object</p>
+    
+
+<p>A <code>MultiAssayExperiment</code> object</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -284,11 +307,11 @@ An empty <code>sampleMap</code> may produce empty experiments if the levels of t
 
 <p>Convert a <code>list</code> or S4 <code>List</code> to a MultiAssayExperiment object using the
 <a href="https://rdrr.io/r/methods/as.html" class="external-link">as</a> function.</p>
-<p>In the following example, <code>x</code> is either a <code>list</code> or List:</p><div class="sourceCode"><pre><code><span class="va">`as(x, "MultiAssayExperiment")`</span></code></pre></div>
+<p>In the following example, <code>x</code> is either a <code>list</code> or List:</p><div class="sourceCode"><pre><code><span><span class="va">`as(x, "MultiAssayExperiment")`</span></span></code></pre></div>
 
 <p>Convert a <code>MultiAssayExperiment</code> to <code>MAF</code> class object using the
 <a href="https://rdrr.io/r/methods/as.html" class="external-link">as</a> function.</p>
-<p>In the following example, <code>x</code> is a MultiAssayExperiment:</p><div class="sourceCode"><pre><code><span class="va">`MultiAssayExperimentToMAF(x)`</span></code></pre></div>
+<p>In the following example, <code>x</code> is a MultiAssayExperiment:</p><div class="sourceCode"><pre><code><span><span class="va">`MultiAssayExperimentToMAF(x)`</span></span></code></pre></div>
 
     </div>
     <div id="see-also">
@@ -299,7 +322,7 @@ An empty <code>sampleMap</code> may produce empty experiments if the levels of t
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/example.html" class="external-link">example</a></span><span class="op">(</span><span class="st">"MultiAssayExperiment"</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/example.html" class="external-link">example</a></span><span class="op">(</span><span class="st">"MultiAssayExperiment"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> MltAsE&gt; ## Run the example ExperimentList</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> MltAsE&gt; example("ExperimentList")</span>
@@ -392,10 +415,10 @@ An empty <code>sampleMap</code> may produce empty experiments if the levels of t
 <span class="r-out co"><span class="r-pr">#&gt;</span> MltAsE&gt; ## Create a MultiAssayExperiment instance</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> MltAsE&gt; mae &lt;- MultiAssayExperiment(experiments = ExpList, colData = colDat,</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> MltAsE+     sampleMap = sampMap)</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Subsetting</span></span>
-<span class="r-in"><span class="co"># Rows (i) Rows/Features in each experiment</span></span>
-<span class="r-in"><span class="va">mae</span><span class="op">[</span><span class="fl">1</span>, , <span class="op">]</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Subsetting</span></span></span>
+<span class="r-in"><span><span class="co"># Rows (i) Rows/Features in each experiment</span></span></span>
+<span class="r-in"><span><span class="va">mae</span><span class="op">[</span><span class="fl">1</span>, , <span class="op">]</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> A MultiAssayExperiment object of 4 listed</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  experiments with user-defined names and respective classes.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Containing an ExperimentList class object of length 4:</span>
@@ -411,7 +434,7 @@ An empty <code>sampleMap</code> may produce empty experiments if the levels of t
 <span class="r-out co"><span class="r-pr">#&gt;</span>  *Format() - convert into a long or wide DataFrame</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  assays() - convert ExperimentList to a SimpleList of matrices</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  exportClass() - save data to flat files</span>
-<span class="r-in"><span class="va">mae</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="cn">FALSE</span><span class="op">)</span>, , <span class="op">]</span></span>
+<span class="r-in"><span><span class="va">mae</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="cn">FALSE</span><span class="op">)</span>, , <span class="op">]</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> A MultiAssayExperiment object of 4 listed</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  experiments with user-defined names and respective classes.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Containing an ExperimentList class object of length 4:</span>
@@ -427,9 +450,9 @@ An empty <code>sampleMap</code> may produce empty experiments if the levels of t
 <span class="r-out co"><span class="r-pr">#&gt;</span>  *Format() - convert into a long or wide DataFrame</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  assays() - convert ExperimentList to a SimpleList of matrices</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  exportClass() - save data to flat files</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Columns (j) Rows in colData</span></span>
-<span class="r-in"><span class="va">mae</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="fu">colData</span><span class="op">(</span><span class="va">mae</span><span class="op">)</span><span class="op">)</span><span class="op">[</span><span class="fl">3</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span>,  <span class="op">]</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Columns (j) Rows in colData</span></span></span>
+<span class="r-in"><span><span class="va">mae</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="fu">colData</span><span class="op">(</span><span class="va">mae</span><span class="op">)</span><span class="op">)</span><span class="op">[</span><span class="fl">3</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span>,  <span class="op">]</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> A MultiAssayExperiment object of 4 listed</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  experiments with user-defined names and respective classes.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Containing an ExperimentList class object of length 4:</span>
@@ -445,9 +468,9 @@ An empty <code>sampleMap</code> may produce empty experiments if the levels of t
 <span class="r-out co"><span class="r-pr">#&gt;</span>  *Format() - convert into a long or wide DataFrame</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  assays() - convert ExperimentList to a SimpleList of matrices</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  exportClass() - save data to flat files</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Assays (k)</span></span>
-<span class="r-in"><span class="va">mae</span><span class="op">[</span>, , <span class="st">"Affy"</span><span class="op">]</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Assays (k)</span></span></span>
+<span class="r-in"><span><span class="va">mae</span><span class="op">[</span>, , <span class="st">"Affy"</span><span class="op">]</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>'experiments' dropped; see 'metadata'</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> harmonizing input:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   removing 12 sampleMap rows not in names(experiments)</span>
@@ -463,11 +486,11 @@ An empty <code>sampleMap</code> may produce empty experiments if the levels of t
 <span class="r-out co"><span class="r-pr">#&gt;</span>  *Format() - convert into a long or wide DataFrame</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  assays() - convert ExperimentList to a SimpleList of matrices</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  exportClass() - save data to flat files</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Complete cases (returns logical vector)</span></span>
-<span class="r-in"><span class="va">completes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/complete.cases.html" class="external-link">complete.cases</a></span><span class="op">(</span><span class="va">mae</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">compMAE</span> <span class="op">&lt;-</span> <span class="va">mae</span><span class="op">[</span>, <span class="va">completes</span>, <span class="op">]</span></span>
-<span class="r-in"><span class="va">compMAE</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Complete cases (returns logical vector)</span></span></span>
+<span class="r-in"><span><span class="va">completes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/complete.cases.html" class="external-link">complete.cases</a></span><span class="op">(</span><span class="va">mae</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">compMAE</span> <span class="op">&lt;-</span> <span class="va">mae</span><span class="op">[</span>, <span class="va">completes</span>, <span class="op">]</span></span></span>
+<span class="r-in"><span><span class="va">compMAE</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> A MultiAssayExperiment object of 4 listed</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  experiments with user-defined names and respective classes.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Containing an ExperimentList class object of length 4:</span>
@@ -483,15 +506,15 @@ An empty <code>sampleMap</code> may produce empty experiments if the levels of t
 <span class="r-out co"><span class="r-pr">#&gt;</span>  *Format() - convert into a long or wide DataFrame</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  assays() - convert ExperimentList to a SimpleList of matrices</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  exportClass() - save data to flat files</span>
-<span class="r-in"><span class="fu">colData</span><span class="op">(</span><span class="va">compMAE</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">colData</span><span class="op">(</span><span class="va">compMAE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 3 rows and 2 columns</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>              sex       age</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      &lt;character&gt; &lt;integer&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Jack           M        38</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Jill           F        39</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Bob            M        40</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/example.html" class="external-link">example</a></span><span class="op">(</span><span class="st">"MultiAssayExperiment"</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/example.html" class="external-link">example</a></span><span class="op">(</span><span class="st">"MultiAssayExperiment"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> MltAsE&gt; ## Run the example ExperimentList</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> MltAsE&gt; example("ExperimentList")</span>
@@ -584,14 +607,14 @@ An empty <code>sampleMap</code> may produce empty experiments if the levels of t
 <span class="r-out co"><span class="r-pr">#&gt;</span> MltAsE&gt; ## Create a MultiAssayExperiment instance</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> MltAsE&gt; mae &lt;- MultiAssayExperiment(experiments = ExpList, colData = colDat,</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> MltAsE+     sampleMap = sampMap)</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Add an experiment</span></span>
-<span class="r-in"><span class="va">test1</span> <span class="op">&lt;-</span> <span class="va">mae</span><span class="op">[[</span><span class="fl">1L</span><span class="op">]</span><span class="op">]</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">test1</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="fu">colData</span><span class="op">(</span><span class="va">mae</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Combine current MultiAssayExperiment with additional experiment</span></span>
-<span class="r-in"><span class="co">## (no sampleMap)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">mae</span>, newExperiment <span class="op">=</span> <span class="va">test1</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Add an experiment</span></span></span>
+<span class="r-in"><span><span class="va">test1</span> <span class="op">&lt;-</span> <span class="va">mae</span><span class="op">[[</span><span class="fl">1L</span><span class="op">]</span><span class="op">]</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">test1</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="fu">colData</span><span class="op">(</span><span class="va">mae</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Combine current MultiAssayExperiment with additional experiment</span></span></span>
+<span class="r-in"><span><span class="co">## (no sampleMap)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">mae</span>, newExperiment <span class="op">=</span> <span class="va">test1</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> A MultiAssayExperiment object of 5 listed</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  experiments with user-defined names and respective classes.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Containing an ExperimentList class object of length 5:</span>
@@ -608,9 +631,9 @@ An empty <code>sampleMap</code> may produce empty experiments if the levels of t
 <span class="r-out co"><span class="r-pr">#&gt;</span>  *Format() - convert into a long or wide DataFrame</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  assays() - convert ExperimentList to a SimpleList of matrices</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  exportClass() - save data to flat files</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">test2</span> <span class="op">&lt;-</span> <span class="va">mae</span><span class="op">[[</span><span class="fl">3L</span><span class="op">]</span><span class="op">]</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">mae</span>, newExp <span class="op">=</span> <span class="va">test2</span>, mapFrom <span class="op">=</span> <span class="fl">3L</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">test2</span> <span class="op">&lt;-</span> <span class="va">mae</span><span class="op">[[</span><span class="fl">3L</span><span class="op">]</span><span class="op">]</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">mae</span>, newExp <span class="op">=</span> <span class="va">test2</span>, mapFrom <span class="op">=</span> <span class="fl">3L</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Assuming column order in the data provided </span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span>  matches the order in 'mapFrom' experiment(s) colnames</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> A MultiAssayExperiment object of 5 listed</span>
@@ -629,9 +652,9 @@ An empty <code>sampleMap</code> may produce empty experiments if the levels of t
 <span class="r-out co"><span class="r-pr">#&gt;</span>  *Format() - convert into a long or wide DataFrame</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  assays() - convert ExperimentList to a SimpleList of matrices</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  exportClass() - save data to flat files</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Add experiment using experiment name in mapFrom</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">mae</span>, RNASeqGeneV2 <span class="op">=</span> <span class="va">test2</span>, mapFrom <span class="op">=</span> <span class="st">"RNASeqGene"</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Add experiment using experiment name in mapFrom</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">mae</span>, RNASeqGeneV2 <span class="op">=</span> <span class="va">test2</span>, mapFrom <span class="op">=</span> <span class="st">"RNASeqGene"</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Assuming column order in the data provided </span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span>  matches the order in 'mapFrom' experiment(s) colnames</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> A MultiAssayExperiment object of 5 listed</span>
@@ -650,7 +673,7 @@ An empty <code>sampleMap</code> may produce empty experiments if the levels of t
 <span class="r-out co"><span class="r-pr">#&gt;</span>  *Format() - convert into a long or wide DataFrame</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  assays() - convert ExperimentList to a SimpleList of matrices</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  exportClass() - save data to flat files</span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -665,7 +688,7 @@ An empty <code>sampleMap</code> may produce empty experiments if the levels of t
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

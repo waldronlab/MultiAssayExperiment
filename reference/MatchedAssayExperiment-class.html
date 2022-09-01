@@ -81,7 +81,7 @@ of observations per biological unit are present in all assays.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">MatchedAssayExperiment</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">MatchedAssayExperiment</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -89,10 +89,13 @@ of observations per biological unit are present in all assays.</p>
     <dl><dt>...</dt>
 <dd><p>Either a single MultiAssayExperiment or the components to create
 a valid MultiAssayExperiment</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A <code>MatchedAssayExperiment</code> object</p>
+    
+
+<p>A <code>MatchedAssayExperiment</code> object</p>
     </div>
     <div id="functions">
     <h2>Functions</h2>
@@ -107,9 +110,9 @@ a valid MultiAssayExperiment</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"miniACC"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">acc</span> <span class="op">&lt;-</span> <span class="fu">as</span><span class="op">(</span><span class="va">miniACC</span>, <span class="st">"MatchedAssayExperiment"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">acc</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"miniACC"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">acc</span> <span class="op">&lt;-</span> <span class="fu">as</span><span class="op">(</span><span class="va">miniACC</span>, <span class="st">"MatchedAssayExperiment"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">acc</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> A MatchedAssayExperiment object of 5 listed</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  experiments with user-defined names and respective classes.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Containing an ExperimentList class object of length 5:</span>
@@ -126,7 +129,7 @@ a valid MultiAssayExperiment</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  *Format() - convert into a long or wide DataFrame</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  assays() - convert ExperimentList to a SimpleList of matrices</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  exportClass() - save data to flat files</span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -141,7 +144,7 @@ a valid MultiAssayExperiment</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

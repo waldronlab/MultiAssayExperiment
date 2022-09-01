@@ -84,15 +84,15 @@ assays, using the upset algorithm in <code>UpSetR</code></p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">upsetSamples</span><span class="op">(</span>
-  <span class="va">MultiAssayExperiment</span>,
-  nsets <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">MultiAssayExperiment</span><span class="op">)</span>,
-  nintersects <span class="op">=</span> <span class="fl">24</span>,
-  order.by <span class="op">=</span> <span class="st">"freq"</span>,
-  nameFilter <span class="op">=</span> <span class="va">force</span>,
-  check.names <span class="op">=</span> <span class="cn">FALSE</span>,
-  <span class="va">...</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">upsetSamples</span><span class="op">(</span></span>
+<span>  <span class="va">MultiAssayExperiment</span>,</span>
+<span>  nsets <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">MultiAssayExperiment</span><span class="op">)</span>,</span>
+<span>  nintersects <span class="op">=</span> <span class="fl">24</span>,</span>
+<span>  order.by <span class="op">=</span> <span class="st">"freq"</span>,</span>
+<span>  nameFilter <span class="op">=</span> <span class="va">force</span>,</span>
+<span>  check.names <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -101,26 +101,41 @@ assays, using the upset algorithm in <code>UpSetR</code></p>
 <dd><p>A
 <code><a href="MultiAssayExperiment-class.html">MultiAssayExperiment</a></code>
 instance</p></dd>
+
+
 <dt>nsets</dt>
 <dd><p>integer number of sets to analyze</p></dd>
+
+
 <dt>nintersects</dt>
 <dd><p>Number of intersections to plot. If set to NA, all
 intersections will be plotted.</p></dd>
+
+
 <dt>order.by</dt>
 <dd><p>How the intersections in the matrix should be ordered by.
 Options include frequency (entered as "freq"), degree, or both in any order.</p></dd>
+
+
 <dt>nameFilter</dt>
 <dd><p>function, defaulting to force, to manipulate colnames of
 incidence matrix</p></dd>
+
+
 <dt>check.names</dt>
 <dd><p>logical(1) used when incidence matrix is coerced to
 data.frame for use in UpSetR::upset</p></dd>
+
+
 <dt>...</dt>
 <dd><p>parameters passed to <code><a href="https://rdrr.io/pkg/UpSetR/man/upset.html" class="external-link">upset</a></code></p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>Produces a visualization of set intersections using the UpSet matrix
+    
+
+<p>Produces a visualization of set intersections using the UpSet matrix
 design</p>
     </div>
     <div id="note">
@@ -139,13 +154,13 @@ useful to simplify resulting outputs.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">miniACC</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">upsetSamples</span><span class="op">(</span><span class="va">miniACC</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">miniACC</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">upsetSamples</span><span class="op">(</span><span class="va">miniACC</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="upsetSamples-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span class="fu">upsetSamples</span><span class="op">(</span><span class="va">miniACC</span>, nameFilter <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/substr.html" class="external-link">substr</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">upsetSamples</span><span class="op">(</span><span class="va">miniACC</span>, nameFilter <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/substr.html" class="external-link">substr</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="upsetSamples-2.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -160,7 +175,7 @@ useful to simplify resulting outputs.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

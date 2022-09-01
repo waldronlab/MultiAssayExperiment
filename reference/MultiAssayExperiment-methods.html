@@ -138,18 +138,29 @@ $(x, name)</code></pre></div>
     <h2>Arguments</h2>
     <dl><dt>...</dt>
 <dd><p>Argument not in use</p></dd>
+
+
 <dt>object, x</dt>
 <dd><p>A <code>MultiAssayExperiment</code> object</p></dd>
+
+
 <dt>value</dt>
 <dd><p>See details.</p></dd>
+
+
 <dt>name</dt>
 <dd><p>A column in <code>colData</code></p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>Accessors: Either a <code>sampleMap</code>, <code>ExperimentList</code>, or
-<code>DataFrame</code> object
-Setters: A <code>MultiAssayExperiment</code> object</p>
+    
+
+<p>Accessors: Either a <code>sampleMap</code>, <code>ExperimentList</code>, or
+<code>DataFrame</code> object</p>
+
+
+<p>Setters: A <code>MultiAssayExperiment</code> object</p>
     </div>
     <div id="accessors">
     <h2>Accessors</h2>
@@ -180,8 +191,8 @@ exception of the <a href="ExperimentList.html">ExperimentList</a> accessor named
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co">## Load example MultiAssayExperiment</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/example.html" class="external-link">example</a></span><span class="op">(</span><span class="va">MultiAssayExperiment</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co">## Load example MultiAssayExperiment</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/example.html" class="external-link">example</a></span><span class="op">(</span><span class="va">MultiAssayExperiment</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> MltAsE&gt; ## Run the example ExperimentList</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> MltAsE&gt; example("ExperimentList")</span>
@@ -274,9 +285,9 @@ exception of the <a href="ExperimentList.html">ExperimentList</a> accessor named
 <span class="r-out co"><span class="r-pr">#&gt;</span> MltAsE&gt; ## Create a MultiAssayExperiment instance</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> MltAsE&gt; mae &lt;- MultiAssayExperiment(experiments = ExpList, colData = colDat,</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> MltAsE+     sampleMap = sampMap)</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Access the sampleMap</span></span>
-<span class="r-in"><span class="fu">sampleMap</span><span class="op">(</span><span class="va">mae</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Access the sampleMap</span></span></span>
+<span class="r-in"><span><span class="fu">sampleMap</span><span class="op">(</span><span class="va">mae</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 16 rows and 3 columns</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          assay     primary     colname</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;factor&gt; &lt;character&gt; &lt;character&gt;</span>
@@ -291,38 +302,38 @@ exception of the <a href="ExperimentList.html">ExperimentList</a> accessor named
 <span class="r-out co"><span class="r-pr">#&gt;</span> 14  GISTIC            Jack       samp0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 15  GISTIC             Bob       samp1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 16  GISTIC            Jill       samp2</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Replacement method for a MultiAssayExperiment sampleMap</span></span>
-<span class="r-in"><span class="fu">sampleMap</span><span class="op">(</span><span class="va">mae</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu">S4Vectors</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/DataFrame-class.html" class="external-link">DataFrame</a></span><span class="op">(</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Replacement method for a MultiAssayExperiment sampleMap</span></span></span>
+<span class="r-in"><span><span class="fu">sampleMap</span><span class="op">(</span><span class="va">mae</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu">S4Vectors</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/DataFrame-class.html" class="external-link">DataFrame</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> harmonizing input:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   removing 4 colData rownames not in sampleMap 'primary'</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Access the ExperimentList</span></span>
-<span class="r-in"><span class="fu">experiments</span><span class="op">(</span><span class="va">mae</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Access the ExperimentList</span></span></span>
+<span class="r-in"><span><span class="fu">experiments</span><span class="op">(</span><span class="va">mae</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ExperimentList class object of length 0:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Replace with an empty ExperimentList</span></span>
-<span class="r-in"><span class="fu">experiments</span><span class="op">(</span><span class="va">mae</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="ExperimentList.html">ExperimentList</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Access the metadata</span></span>
-<span class="r-in"><span class="fu">metadata</span><span class="op">(</span><span class="va">mae</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Replace with an empty ExperimentList</span></span></span>
+<span class="r-in"><span><span class="fu">experiments</span><span class="op">(</span><span class="va">mae</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="ExperimentList.html">ExperimentList</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Access the metadata</span></span></span>
+<span class="r-in"><span><span class="fu">metadata</span><span class="op">(</span><span class="va">mae</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> list()</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Replace metadata with a list</span></span>
-<span class="r-in"><span class="fu">metadata</span><span class="op">(</span><span class="va">mae</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>runDate <span class="op">=</span></span>
-<span class="r-in">    <span class="fu"><a href="https://rdrr.io/r/base/format.html" class="external-link">format</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.time</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"%B %d, %Y"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Access the colData</span></span>
-<span class="r-in"><span class="fu">colData</span><span class="op">(</span><span class="va">mae</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Replace metadata with a list</span></span></span>
+<span class="r-in"><span><span class="fu">metadata</span><span class="op">(</span><span class="va">mae</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>runDate <span class="op">=</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/format.html" class="external-link">format</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.time</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"%B %d, %Y"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Access the colData</span></span></span>
+<span class="r-in"><span><span class="fu">colData</span><span class="op">(</span><span class="va">mae</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 0 rows and 2 columns</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Access a column in colData</span></span>
-<span class="r-in"><span class="va">mae</span><span class="op">$</span><span class="va">age</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Access a column in colData</span></span></span>
+<span class="r-in"><span><span class="va">mae</span><span class="op">$</span><span class="va">age</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> integer(0)</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Replace a column in colData</span></span>
-<span class="r-in"><span class="va">mae</span><span class="op">$</span><span class="va">age</span> <span class="op">&lt;-</span> <span class="va">mae</span><span class="op">$</span><span class="va">age</span> <span class="op">+</span> <span class="fl">1</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Replace a column in colData</span></span></span>
+<span class="r-in"><span><span class="va">mae</span><span class="op">$</span><span class="va">age</span> <span class="op">&lt;-</span> <span class="va">mae</span><span class="op">$</span><span class="va">age</span> <span class="op">+</span> <span class="fl">1</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -337,7 +348,7 @@ exception of the <a href="ExperimentList.html">ExperimentList</a> accessor named
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

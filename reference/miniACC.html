@@ -91,7 +91,7 @@ additional details are provided by metadata(miniACC).</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="va">miniACC</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="va">miniACC</span></span></code></pre></div>
     </div>
 
     <div id="format">
@@ -139,9 +139,9 @@ Adrenocortical Carcinoma. Cancer Cell 2016, 29:723-736.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"miniACC"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">metadata</span><span class="op">(</span><span class="va">miniACC</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"miniACC"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">metadata</span><span class="op">(</span><span class="va">miniACC</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $title</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Comprehensive Pan-Genomic Characterization of Adrenocortical Carcinoma"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -157,7 +157,7 @@ Adrenocortical Carcinoma. Cancer Cell 2016, 29:723-736.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $colDataExtrasURL</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "http://www.cell.com/cms/attachment/2062093088/2063584534/mmc3.xlsx"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="fu">colData</span><span class="op">(</span><span class="va">miniACC</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="fu">colData</span><span class="op">(</span><span class="va">miniACC</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "patientID"                           </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [2] "years_to_birth"                      </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [3] "vital_status"                        </span>
@@ -188,14 +188,14 @@ Adrenocortical Carcinoma. Cancer Cell 2016, 29:723-736.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [28] "ploidy"                              </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [29] "genome_doublings"                    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [30] "ADS"                                 </span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">miniACC</span><span class="op">$</span><span class="va">vital_status</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">miniACC</span><span class="op">$</span><span class="va">vital_status</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  0  1 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 58 34 </span>
-<span class="r-in"><span class="fu"><a href="MultiAssayExperiment-helpers.html">longFormat</a></span><span class="op">(</span></span>
-<span class="r-in">    <span class="va">miniACC</span><span class="op">[</span><span class="st">"MAPK3"</span>, , <span class="op">]</span>,</span>
-<span class="r-in">    colDataCols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"vital_status"</span>, <span class="st">"days_to_death"</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="MultiAssayExperiment-helpers.html">longFormat</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    <span class="va">miniACC</span><span class="op">[</span><span class="st">"MAPK3"</span>, , <span class="op">]</span>,</span></span>
+<span class="r-in"><span>    colDataCols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"vital_status"</span>, <span class="st">"days_to_death"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> harmonizing input:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   removing 216 sampleMap rows not in names(experiments)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 169 rows and 7 columns</span>
@@ -225,11 +225,11 @@ Adrenocortical Carcinoma. Cancer Cell 2016, 29:723-736.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 167            0            NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 168            0            NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 169            0            NA</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="MultiAssayExperiment-helpers.html">wideFormat</a></span><span class="op">(</span></span>
-<span class="r-in">    <span class="va">miniACC</span><span class="op">[</span><span class="st">"MAPK3"</span>, , <span class="op">]</span>,</span>
-<span class="r-in">    colDataCols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"vital_status"</span>, <span class="st">"days_to_death"</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="MultiAssayExperiment-helpers.html">wideFormat</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    <span class="va">miniACC</span><span class="op">[</span><span class="st">"MAPK3"</span>, , <span class="op">]</span>,</span></span>
+<span class="r-in"><span>    colDataCols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"vital_status"</span>, <span class="st">"days_to_death"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> harmonizing input:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   removing 216 sampleMap rows not in names(experiments)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 92 rows and 5 columns</span>
@@ -246,7 +246,7 @@ Adrenocortical Carcinoma. Cancer Cell 2016, 29:723-736.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 90  TCGA-PK-A5HB            0            NA               1463.31             0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 91  TCGA-PK-A5HC            0            NA                    NA             1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 92  TCGA-P6-A5OG            1           383               1310.88            -1</span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -261,7 +261,7 @@ Adrenocortical Carcinoma. Cancer Cell 2016, 29:723-736.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

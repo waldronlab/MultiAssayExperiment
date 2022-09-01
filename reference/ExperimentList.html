@@ -85,74 +85,77 @@ objects contained have the following set of methods: <code>dim</code>, <code>[</
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">ExperimentList</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">ExperimentList</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>...</dt>
 <dd><p>A named <code>list</code> class object</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A <code>ExperimentList</code> class object of experiment data</p>
+    
+
+<p>A <code>ExperimentList</code> class object of experiment data</p>
     </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co">## Create an empty ExperimentList instance</span></span>
-<span class="r-in"><span class="fu">ExperimentList</span><span class="op">(</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co">## Create an empty ExperimentList instance</span></span></span>
+<span class="r-in"><span><span class="fu">ExperimentList</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ExperimentList class object of length 0:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Create array matrix and AnnotatedDataFrame to create an ExpressionSet class</span></span>
-<span class="r-in"><span class="va">arraydat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span>data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">101</span>, length.out <span class="op">=</span> <span class="fl">20</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">4</span>,</span>
-<span class="r-in">    dimnames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span class="r-in">        <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ENST00000294241"</span>, <span class="st">"ENST00000355076"</span>,</span>
-<span class="r-in">        <span class="st">"ENST00000383706"</span>,<span class="st">"ENST00000234812"</span>, <span class="st">"ENST00000383323"</span><span class="op">)</span>,</span>
-<span class="r-in">        <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"array1"</span>, <span class="st">"array2"</span>, <span class="st">"array3"</span>, <span class="st">"array4"</span><span class="op">)</span></span>
-<span class="r-in">    <span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">colDat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>slope53 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">4</span><span class="op">)</span>,</span>
-<span class="r-in">    row.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"array1"</span>, <span class="st">"array2"</span>, <span class="st">"array3"</span>, <span class="st">"array4"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## SummarizedExperiment constructor</span></span>
-<span class="r-in"><span class="va">exprdat</span> <span class="op">&lt;-</span> <span class="fu">SummarizedExperiment</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/RangedSummarizedExperiment-class.html" class="external-link">SummarizedExperiment</a></span><span class="op">(</span><span class="va">arraydat</span>,</span>
-<span class="r-in">    colData <span class="op">=</span> <span class="va">colDat</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Create a sample methylation dataset</span></span>
-<span class="r-in"><span class="va">methyldat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span>data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, length.out <span class="op">=</span> <span class="fl">25</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">5</span>,</span>
-<span class="r-in">    dimnames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span class="r-in">        <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ENST00000355076"</span>, <span class="st">"ENST00000383706"</span>,</span>
-<span class="r-in">          <span class="st">"ENST00000383323"</span>, <span class="st">"ENST00000234812"</span>, <span class="st">"ENST00000294241"</span><span class="op">)</span>,</span>
-<span class="r-in">        <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"methyl1"</span>, <span class="st">"methyl2"</span>, <span class="st">"methyl3"</span>,</span>
-<span class="r-in">          <span class="st">"methyl4"</span>, <span class="st">"methyl5"</span><span class="op">)</span></span>
-<span class="r-in">    <span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Create a sample RNASeqGene dataset</span></span>
-<span class="r-in"><span class="va">rnadat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span></span>
-<span class="r-in">    data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">46851</span>, <span class="fl">5</span>, <span class="fl">19</span>, <span class="fl">13</span>, <span class="fl">2197</span>, <span class="fl">507</span>,</span>
-<span class="r-in">        <span class="fl">84318</span>, <span class="fl">126</span>, <span class="fl">17</span>, <span class="fl">21</span>, <span class="fl">23979</span>, <span class="fl">614</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">20</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
-<span class="r-in">    ncol <span class="op">=</span> <span class="fl">4</span>,</span>
-<span class="r-in">    dimnames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span class="r-in">        <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"XIST"</span>, <span class="st">"RPS4Y1"</span>, <span class="st">"KDM5D"</span>, <span class="st">"ENST00000383323"</span>, <span class="st">"ENST00000234812"</span><span class="op">)</span>,</span>
-<span class="r-in">        <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"samparray1"</span>, <span class="st">"samparray2"</span>, <span class="st">"samparray3"</span>, <span class="st">"samparray4"</span><span class="op">)</span></span>
-<span class="r-in">    <span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Create a mock RangedSummarizedExperiment from a data.frame</span></span>
-<span class="r-in"><span class="va">rangedat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>chr<span class="op">=</span><span class="st">"chr2"</span>, start <span class="op">=</span> <span class="fl">11</span><span class="op">:</span><span class="fl">15</span>, end <span class="op">=</span> <span class="fl">12</span><span class="op">:</span><span class="fl">16</span>,</span>
-<span class="r-in">    strand <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"+"</span>, <span class="st">"-"</span>, <span class="st">"+"</span>, <span class="st">"*"</span>, <span class="st">"."</span><span class="op">)</span>,</span>
-<span class="r-in">    samp0 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span>, samp1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span>, samp2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">0</span><span class="op">)</span>,</span>
-<span class="r-in">    row.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"ENST"</span>, <span class="st">"00000"</span>, <span class="fl">135411</span><span class="op">:</span><span class="fl">135414</span><span class="op">)</span>, <span class="st">"ENST00000383323"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">rangeSE</span> <span class="op">&lt;-</span> <span class="fu">SummarizedExperiment</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/makeSummarizedExperimentFromDataFrame.html" class="external-link">makeSummarizedExperimentFromDataFrame</a></span><span class="op">(</span><span class="va">rangedat</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Combine to a named list and call the ExperimentList constructor function</span></span>
-<span class="r-in"><span class="va">assayList</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>Affy <span class="op">=</span> <span class="va">exprdat</span>, Methyl450k <span class="op">=</span> <span class="va">methyldat</span>, RNASeqGene <span class="op">=</span> <span class="va">rnadat</span>,</span>
-<span class="r-in">                GISTIC <span class="op">=</span> <span class="va">rangeSE</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Use the ExperimentList constructor</span></span>
-<span class="r-in"><span class="va">ExpList</span> <span class="op">&lt;-</span> <span class="fu">ExperimentList</span><span class="op">(</span><span class="va">assayList</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Create array matrix and AnnotatedDataFrame to create an ExpressionSet class</span></span></span>
+<span class="r-in"><span><span class="va">arraydat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span>data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">101</span>, length.out <span class="op">=</span> <span class="fl">20</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">4</span>,</span></span>
+<span class="r-in"><span>    dimnames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>        <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ENST00000294241"</span>, <span class="st">"ENST00000355076"</span>,</span></span>
+<span class="r-in"><span>        <span class="st">"ENST00000383706"</span>,<span class="st">"ENST00000234812"</span>, <span class="st">"ENST00000383323"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>        <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"array1"</span>, <span class="st">"array2"</span>, <span class="st">"array3"</span>, <span class="st">"array4"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">colDat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>slope53 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">4</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    row.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"array1"</span>, <span class="st">"array2"</span>, <span class="st">"array3"</span>, <span class="st">"array4"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## SummarizedExperiment constructor</span></span></span>
+<span class="r-in"><span><span class="va">exprdat</span> <span class="op">&lt;-</span> <span class="fu">SummarizedExperiment</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/RangedSummarizedExperiment-class.html" class="external-link">SummarizedExperiment</a></span><span class="op">(</span><span class="va">arraydat</span>,</span></span>
+<span class="r-in"><span>    colData <span class="op">=</span> <span class="va">colDat</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Create a sample methylation dataset</span></span></span>
+<span class="r-in"><span><span class="va">methyldat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span>data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, length.out <span class="op">=</span> <span class="fl">25</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">5</span>,</span></span>
+<span class="r-in"><span>    dimnames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>        <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ENST00000355076"</span>, <span class="st">"ENST00000383706"</span>,</span></span>
+<span class="r-in"><span>          <span class="st">"ENST00000383323"</span>, <span class="st">"ENST00000234812"</span>, <span class="st">"ENST00000294241"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>        <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"methyl1"</span>, <span class="st">"methyl2"</span>, <span class="st">"methyl3"</span>,</span></span>
+<span class="r-in"><span>          <span class="st">"methyl4"</span>, <span class="st">"methyl5"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Create a sample RNASeqGene dataset</span></span></span>
+<span class="r-in"><span><span class="va">rnadat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">46851</span>, <span class="fl">5</span>, <span class="fl">19</span>, <span class="fl">13</span>, <span class="fl">2197</span>, <span class="fl">507</span>,</span></span>
+<span class="r-in"><span>        <span class="fl">84318</span>, <span class="fl">126</span>, <span class="fl">17</span>, <span class="fl">21</span>, <span class="fl">23979</span>, <span class="fl">614</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">20</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    ncol <span class="op">=</span> <span class="fl">4</span>,</span></span>
+<span class="r-in"><span>    dimnames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>        <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"XIST"</span>, <span class="st">"RPS4Y1"</span>, <span class="st">"KDM5D"</span>, <span class="st">"ENST00000383323"</span>, <span class="st">"ENST00000234812"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>        <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"samparray1"</span>, <span class="st">"samparray2"</span>, <span class="st">"samparray3"</span>, <span class="st">"samparray4"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Create a mock RangedSummarizedExperiment from a data.frame</span></span></span>
+<span class="r-in"><span><span class="va">rangedat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>chr<span class="op">=</span><span class="st">"chr2"</span>, start <span class="op">=</span> <span class="fl">11</span><span class="op">:</span><span class="fl">15</span>, end <span class="op">=</span> <span class="fl">12</span><span class="op">:</span><span class="fl">16</span>,</span></span>
+<span class="r-in"><span>    strand <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"+"</span>, <span class="st">"-"</span>, <span class="st">"+"</span>, <span class="st">"*"</span>, <span class="st">"."</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    samp0 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span>, samp1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span>, samp2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">0</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    row.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"ENST"</span>, <span class="st">"00000"</span>, <span class="fl">135411</span><span class="op">:</span><span class="fl">135414</span><span class="op">)</span>, <span class="st">"ENST00000383323"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">rangeSE</span> <span class="op">&lt;-</span> <span class="fu">SummarizedExperiment</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/makeSummarizedExperimentFromDataFrame.html" class="external-link">makeSummarizedExperimentFromDataFrame</a></span><span class="op">(</span><span class="va">rangedat</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Combine to a named list and call the ExperimentList constructor function</span></span></span>
+<span class="r-in"><span><span class="va">assayList</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>Affy <span class="op">=</span> <span class="va">exprdat</span>, Methyl450k <span class="op">=</span> <span class="va">methyldat</span>, RNASeqGene <span class="op">=</span> <span class="va">rnadat</span>,</span></span>
+<span class="r-in"><span>                GISTIC <span class="op">=</span> <span class="va">rangeSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Use the ExperimentList constructor</span></span></span>
+<span class="r-in"><span><span class="va">ExpList</span> <span class="op">&lt;-</span> <span class="fu">ExperimentList</span><span class="op">(</span><span class="va">assayList</span><span class="op">)</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -167,7 +170,7 @@ objects contained have the following set of methods: <code>dim</code>, <code>[</
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>
