@@ -1,4 +1,4 @@
-# MultiAssayExperiment <a href='https://waldronlab.io/MultiAssayExperiment'><img src='https://raw.githubusercontent.com/Bioconductor/BiocStickers/master/MultiAssayExperiment/MultiAssayExperiment.png' align="right" height="139" /></a>
+# MultiAssayExperiment <a href='https://waldronlab.io/MultiAssayExperiment'><img src='https://raw.githubusercontent.com/Bioconductor/BiocStickers/master/MultiAssayExperiment/MultiAssayExperiment.png' align="right" height="100" /></a>
 
 ## Software For The Integration Of Multi-Omics Experiments In Bioconductor
 
@@ -6,10 +6,9 @@ https://doi.org/10.1158/0008-5472.CAN-17-0344
 
 [![BioC status](http://www.bioconductor.org/shields/build/release/bioc/MultiAssayExperiment.svg)](https://bioconductor.org/checkResults/release/bioc-LATEST/MultiAssayExperiment)
 [![Platforms](http://www.bioconductor.org/shields/availability/release/MultiAssayExperiment.svg)](https://www.bioconductor.org/packages/release/bioc/html/MultiAssayExperiment.html#archives)
-[![Build status](https://ci.appveyor.com/api/projects/status/rf25e9h995wnto7n/branch/devel?svg=true)](https://ci.appveyor.com/project/LiNk-NY/multiassayexperiment-94gjw/branch/devel)
 [![wercker status](https://app.wercker.com/status/2aa523f23142715771256b85187d7bcb/s/devel "wercker status")](https://app.wercker.com/project/byKey/2aa523f23142715771256b85187d7bcb)
 [![Coverage Status](https://codecov.io/github/waldronlab/MultiAssayExperiment/coverage.svg?branch=devel)](https://codecov.io/github/waldronlab/MultiAssayExperiment?branch=devel)
-[![Downloads](http://www.bioconductor.org/shields/downloads/MultiAssayExperiment.svg)](https://bioconductor.org/packages/stats/bioc/MultiAssayExperiment)
+[![Downloads](http://www.bioconductor.org/shields/downloads/release/MultiAssayExperiment.svg)](https://bioconductor.org/packages/stats/bioc/MultiAssayExperiment)
 
 ## Installation
 
