@@ -22,6 +22,7 @@ Imports:
     GenomicRanges (>= 1.25.93),
     BiocBaseUtils,
     BiocGenerics,
+    DelayedArray,
     S4Vectors (>= 0.23.19),
     IRanges,
     Biobase,

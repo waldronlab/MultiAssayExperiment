@@ -66,8 +66,8 @@ words, e.g., "test".}
 
 In the case of \code{saveHDF5MultiAssayExperiment()}, \code{verbose}
 is set to \code{NA} by default, in which case verbosity is controlled
-by \code{DelayedArray:::get_verbose_block_processing()}. Setting
-\code{verbose} to \code{TRUE} or \code{FALSE} overrides this.}
+by \code{DelayedArray.verbose.block.processing} option. Setting
+\code{verbose} to \code{TRUE} or \code{FALSE} overrides the option.}
 }
 \description{
 This function takes a \code{MultiAssayExperiment} object and uses the \code{assays}
