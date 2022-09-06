@@ -7,6 +7,8 @@ observations for a particular biological unit in the `sampleMap`
 
 ### Bug fixes and minor improvements
 
+* Added an `assay<-` replacement method for robustifying
+`saveHDF5MultiAssayExperiment` with plain matrices
 * Use `BiocBaseUtils::setSlots` and avoid warnings of triple colon use.
 * Resolve issue when `colData` has one column when merging two
 `MultiAssayExperiment` objects, i.e., using the `c` method (@cvanderaa, #315)
