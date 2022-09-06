@@ -20,6 +20,7 @@ Depends:
 Imports:
     methods,
     GenomicRanges (>= 1.25.93),
+    BiocBaseUtils,
     BiocGenerics,
     S4Vectors (>= 0.23.19),
     IRanges,

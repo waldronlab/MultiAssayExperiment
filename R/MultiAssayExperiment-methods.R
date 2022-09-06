@@ -3,7 +3,7 @@ NULL
 
 .warnnomatch <- function(type, values) {
     warning("'", type, "': ",
-        paste(S4Vectors:::selectSome(values), collapse = ", "),
+        paste(BiocBaseUtils::selectSome(values), collapse = ", "),
             "\n  could not be matched")
 }
 
@@ -23,7 +23,7 @@ NULL
     if (nrow(autoMap) && any(missingPrimary)) {
         notFound <- autoMap[missingPrimary, ]
         warning("Data dropped from ExperimentList (element - column):",
-            Biobase::selectSome(
+            BiocBaseUtils::selectSome(
                 paste("\n", notFound[["assay"]], "-", notFound[["colname"]]),
             ), "\nUnable to map to rows of colData", call. = FALSE)
         autoMap <- autoMap[!missingPrimary, ]
@@ -40,7 +40,7 @@ NULL
         pnames <- colnames[na.omit(pmatch)]
         if (!length(pnames) || all(is.na(pnames)))
             stop("No 'colnames' in experiments could be matched:\n  ",
-                 paste(S4Vectors:::selectSome(colnames), collapse = ", "))
+                 paste(BiocBaseUtils::selectSome(colnames), collapse = ", "))
         else if (length(noPrim))
             .warnnomatch("primary", colnames[noPrim])
         DataFrame(primary = pnames, colname = pnames)
