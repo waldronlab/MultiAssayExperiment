@@ -25,6 +25,20 @@ setReplaceMethod("assay", c("ANY", "ANY"),
     })
 })
 
+
+setReplaceMethod("assay", c("matrix", "ANY"),
+    function(x, withDimnames = TRUE, ..., value)
+{
+    if (!BiocBaseUtils::isTRUEorFALSE(withDimnames))
+        stop(wmsg("'withDimnames' must be TRUE or FALSE"))
+    if (withDimnames && !identical(dimnames(value), dimnames(x)))
+        stop(
+            "The rownames and colnames of 'value' are not identical to 'x', ",
+            "use 'withDimnames=FALSE' "
+        )
+    value
+})
+
 setReplaceMethod("assays", c("ExperimentList", "ANY"),
     function(x, withDimnames=TRUE, ..., value) {
         mendoapply(function(x, y, ...) {
