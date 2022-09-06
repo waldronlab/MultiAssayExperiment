@@ -7,15 +7,11 @@ setMethod("assay", c("ANY", "missing"),
         return(x)
     }
 )
-## little convenience function from S4Vectors
-isTRUEorFALSE <- function(x) {
-    is.logical(x) && length(x) == 1L && !is.na(x)
-}
 
 setReplaceMethod("assay", c("ANY", "ANY"),
     function(x, withDimnames=TRUE, ..., value)
 {
-    if (!isTRUEorFALSE(withDimnames))
+    if (!BiocBaseUtils::isTRUEorFALSE(withDimnames))
         stop(wmsg("'withDimnames' must be TRUE or FALSE"))
     if (withDimnames && !identical(dimnames(value), dimnames(x)))
         stop(
@@ -23,7 +19,7 @@ setReplaceMethod("assay", c("ANY", "ANY"),
             "use 'withDimnames=FALSE' "
         )
     tryCatch({
-        BiocGenerics:::replaceSlots(x, assays=value, check=FALSE)
+        BiocBaseUtils::setSlots(x, assays=value, check=FALSE)
     }, error = function(e) {
         value
     })

@@ -714,7 +714,7 @@ renamePrimary <- function(x, value) {
     nprime <- value[match(samplemap[["primary"]], old)]
     samplemap[["primary"]] <- nprime
     rownames(coldata) <- value
-    BiocGenerics:::replaceSlots(
+    BiocBaseUtils::setSlots(
         object = x,
         sampleMap = samplemap,
         colData = coldata
@@ -750,7 +750,7 @@ renameColname <- function(x, i, value) {
     smp <- listToMap(splitmp)
     colnames(expAssay) <- value
     exps[[i]] <- expAssay
-    BiocGenerics:::replaceSlots(
+    BiocBaseUtils::setSlots(
         object = x,
         sampleMap = smp,
         ExperimentList = exps
@@ -798,7 +798,7 @@ setMethod("splitAssays", "MultiAssayExperiment",
         sublist <- unlist(sublist, recursive = FALSE)
         names(sublist) <- gsub("\\.", "_", names(sublist))
 
-        BiocGenerics:::replaceSlots(
+        BiocBaseUtils::setSlots(
             object = x,
             ExperimentList = ExperimentList(sublist)
         )

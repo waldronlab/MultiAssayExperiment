@@ -23,3 +23,12 @@
     names(object) <- nm
     object
 }
+
+.normarg_verbose <- function(verbose) {
+    if (!BiocBaseUtils::isTRUEorFALSE(verbose, na.ok = TRUE))
+        stop(S4Vectors::wmsg("'verbose' must be FALSE, TRUE, or NA"))
+    if (is.na(verbose))
+        verbose <-
+            getOption("DelayedArray.verbose.block.processing", default = FALSE)
+    verbose
+}

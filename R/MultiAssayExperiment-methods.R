@@ -205,7 +205,7 @@ setMethod("c", "MultiAssayExperiment",
             stop("'sampleMap' must be a 'DataFrame', 'data.frame', or 'list'")
         newListMap <- c(mapToList(xmap),
             IRanges::SplitDataFrameList(sampleMap))
-        x <- BiocGenerics:::replaceSlots(x,
+        x <- BiocBaseUtils::setSlots(x,
             ExperimentList = c(experiments(x), exps),
             sampleMap = listToMap(newListMap)
         )

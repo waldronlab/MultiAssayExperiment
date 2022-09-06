@@ -576,7 +576,7 @@ setReplaceMethod("sampleMap", c("MultiAssayExperiment", "DataFrame"),
             colData(object),
             value)
 
-        BiocGenerics:::replaceSlots(object,
+        BiocBaseUtils::setSlots(object,
             ExperimentList = rebliss[["experiments"]],
             colData = rebliss[["colData"]],
             sampleMap = rebliss[["sampleMap"]],
@@ -612,7 +612,7 @@ setReplaceMethod("experiments", c("MultiAssayExperiment", "ExperimentList"),
         o_cnames <- colnames(object)
         v_cnames <- colnames(value)
         if (identical(o_cnames, v_cnames))
-            BiocGenerics:::replaceSlots(
+            BiocBaseUtils::setSlots(
                 object = object,
                 ExperimentList = value,
                 check = FALSE
@@ -620,7 +620,7 @@ setReplaceMethod("experiments", c("MultiAssayExperiment", "ExperimentList"),
         else {
             rebliss <- .harmonize(value, colData(object), sampleMap(object))
 
-            BiocGenerics:::replaceSlots(
+            BiocBaseUtils::setSlots(
                 object = object,
                 ExperimentList = rebliss[["experiments"]],
                 colData = rebliss[["colData"]],
@@ -654,7 +654,7 @@ setReplaceMethod("colData", c("MultiAssayExperiment", "DataFrame"),
                 "See '?renamePrimary' for renaming primary units")
 
         if (identical(x_rnames, v_rnames))
-            BiocGenerics:::replaceSlots(
+            BiocBaseUtils::setSlots(
                 object = x,
                 colData = value,
                 check = FALSE
@@ -662,7 +662,7 @@ setReplaceMethod("colData", c("MultiAssayExperiment", "DataFrame"),
         else {
             rebliss <- .harmonize(experiments(x), value, sampleMap(x))
 
-            BiocGenerics:::replaceSlots(
+            BiocBaseUtils::setSlots(
                 object = x,
                 ExperimentList = rebliss[["experiments"]],
                 colData = rebliss[["colData"]],
@@ -732,7 +732,7 @@ setReplaceMethod("names", c("MultiAssayExperiment", "ANY"),
     sampmap[, "assay"] <-
         factor(unname(map[sampmap[["assay"]]]), levels = value)
 
-    BiocGenerics:::replaceSlots(x,
+    BiocBaseUtils::setSlots(x,
         ExperimentList = explist,
         sampleMap = sampmap,
         check = FALSE)
@@ -764,7 +764,7 @@ setReplaceMethod("colnames", c("MultiAssayExperiment", "List"),
         x
     }, x = exps, y = value)
 
-    BiocGenerics:::replaceSlots(
+    BiocBaseUtils::setSlots(
         object = x,
         ExperimentList = exps,
         sampleMap = listToMap(splitmap)
@@ -812,7 +812,7 @@ setMethod("updateObject", "MultiAssayExperiment",
         coldata <- updateObject(coldata, ..., verbose = verbose)
         samplemap <- updateObject(samplemap, ..., verbose = verbose)
 
-        BiocGenerics:::replaceSlots(
+        BiocBaseUtils::setSlots(
             object,
             ExperimentList = explist,
             colData = coldata,

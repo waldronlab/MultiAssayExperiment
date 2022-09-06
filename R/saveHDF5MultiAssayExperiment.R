@@ -20,7 +20,7 @@
             explist@listData[[i]] <- exps[[i]]
         }
     }
-    x <- BiocGenerics:::replaceSlots(x, ExperimentList = explist, check = FALSE)
+    x <- BiocBaseUtils::setSlots(x, ExperimentList = explist, check = FALSE)
     if (verbose)
         message("Serialize ", class(x), " object to ",
                 ifelse(file.exists(rds_path), "existing ", ""),
@@ -62,7 +62,7 @@
     .write_h5_dimnames(assaylist, h5_path)
     ## avoid errors with arrays (withDimnames=FALSE)
     assays(explist, withDimnames = FALSE) <- exps
-    x <- BiocGenerics:::replaceSlots(
+    x <- BiocBaseUtils::setSlots(
         x, ExperimentList = explist, check = FALSE
     )
     .serialize_HDF5MultiAssayExperiment(x, rds_path, verbose)
@@ -147,7 +147,7 @@ saveHDF5MultiAssayExperiment <-
 {
     if (is.null(prefix))
         prefix <- as.character(substitute(x))
-    
+
     if (nzchar(prefix))
         prefix <- paste0(prefix, "_")
 
@@ -155,10 +155,10 @@ saveHDF5MultiAssayExperiment <-
 
     stopifnot(.isSingleString(dir), .isSingleString(prefix))
 
-    if (!S4Vectors::isTRUEorFALSE(replace))
+    if (!BiocBaseUtils::isTRUEorFALSE(replace))
         stop("'replace' must be TRUE or FALSE")
 
-    verbose <- DelayedArray:::normarg_verbose(verbose)
+    verbose <- .normarg_verbose(verbose)
 
     if (!dir.exists(dir)) {
         HDF5Array::create_dir(dir)
@@ -250,7 +250,7 @@ loadHDF5MultiAssayExperiment <- function(dir = "h5_mae", prefix = NULL)
             )
         }
     }
-    ans <- BiocGenerics:::replaceSlots(
+    ans <- BiocBaseUtils::setSlots(
         ans, ExperimentList = explist, check = FALSE
     )
     ans <- updateObject(ans, check=FALSE)

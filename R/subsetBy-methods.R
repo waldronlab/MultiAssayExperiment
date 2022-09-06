@@ -279,7 +279,7 @@ setMethod("subsetByColData", c("MultiAssayExperiment", "ANY"), function(x, y) {
     )
     newSubset <- ExperimentList(newSubset)
 
-    BiocGenerics:::replaceSlots(x,
+    BiocBaseUtils::setSlots(x,
         ExperimentList = newSubset,
         colData = newcoldata,
         sampleMap = newMap,
