@@ -117,33 +117,33 @@ named arguments. See the examples below.
 }
 \section{Methods (by generic)}{
 \itemize{
-\item \code{show}: Show method for a
+\item \code{show(MultiAssayExperiment)}: Show method for a
 \code{MultiAssayExperiment}
 
-\item \code{length}: Get the length of ExperimentList
+\item \code{length(MultiAssayExperiment)}: Get the length of ExperimentList
 
-\item \code{names}: Get the names of the ExperimentList
+\item \code{names(MultiAssayExperiment)}: Get the names of the ExperimentList
 
-\item \code{updateObject}: Update old serialized MultiAssayExperiment
+\item \code{updateObject(MultiAssayExperiment)}: Update old serialized MultiAssayExperiment
 objects to new API
 
-\item \code{dimnames}: Get the dimension names
+\item \code{dimnames(MultiAssayExperiment)}: Get the dimension names
 for a \code{MultiAssayExperiment} object
 
-\item \code{c}: Add a supported data class to the
+\item \code{c(MultiAssayExperiment)}: Add a supported data class to the
 \code{ExperimentList}
 
-\item \code{exportClass}: Export data from class to a series
+\item \code{exportClass(MultiAssayExperiment)}: Export data from class to a series
 of text files
 
-\item \code{assays}: Obtain a \code{\link{SimpleList}} of assay
+\item \code{assays(MultiAssayExperiment)}: Obtain a \code{\link{SimpleList}} of assay
 data for all available experiments in the object
 
-\item \code{assay}: Convenience function for extracting the
+\item \code{assay(x = MultiAssayExperiment, i = missing)}: Convenience function for extracting the
 assay of the first element (default) in the \code{ExperimentList}. A
 \code{numeric} or \code{character} index can also be provided
-}}
 
+}}
 \section{Slots}{
 
 \describe{

@@ -80,31 +80,31 @@ The \code{ExperimentList} class is a container that builds on
 }
 \section{Methods (by generic)}{
 \itemize{
-\item \code{show}: Show method for
+\item \code{show(ExperimentList)}: Show method for
 \code{\linkS4class{ExperimentList}} class
 
-\item \code{isEmpty}: check for zero length across all
+\item \code{isEmpty(ExperimentList)}: check for zero length across all
 experiments
 
-\item \code{dimnames}: Get the dimension names for
+\item \code{dimnames(ExperimentList)}: Get the dimension names for
 an \code{ExperimentList} using \code{\linkS4class{CharacterList}}
 
-\item \code{colnames}: Get the column names for an \code{ExperimentList}
+\item \code{colnames(ExperimentList)}: Get the column names for an \code{ExperimentList}
 as a \code{\linkS4class{CharacterList}} slightly more efficiently
 
-\item \code{rownames}: Get the row names for an \code{ExperimentList}
+\item \code{rownames(ExperimentList)}: Get the row names for an \code{ExperimentList}
 as a \code{\linkS4class{CharacterList}} slightly more efficiently
 
-\item \code{mergeReplicates}: Apply the mergeReplicates method on the
+\item \code{mergeReplicates(ExperimentList)}: Apply the mergeReplicates method on the
 ExperimentList elements
 
-\item \code{assay}: Obtain the specified assay with a \code{numeric}
+\item \code{assay(x = ANY, i = missing)}: Obtain the specified assay with a \code{numeric}
 or \code{character} reference
 
-\item \code{assays}: Get the assay data from each element in the
+\item \code{assays(ExperimentList)}: Get the assay data from each element in the
 \link{ExperimentList}
-}}
 
+}}
 \section{coercion}{
 
 Convert a \code{list} or S4 \code{List} to an ExperimentList using the

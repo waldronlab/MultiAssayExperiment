@@ -67,4 +67,4 @@ Collate:
     'saveHDF5MultiAssayExperiment.R'
     'upsetSamples.R'
     'utilities.R'
-RoxygenNote: 7.2.0
+RoxygenNote: 7.2.1

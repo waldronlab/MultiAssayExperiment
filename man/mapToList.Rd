@@ -31,9 +31,9 @@ opposite by taking a \code{list} and converting it to \code{DataFrame}.
 }
 \section{Functions}{
 \itemize{
-\item \code{listToMap}: The inverse of the listToMap operation
-}}
+\item \code{listToMap()}: The inverse of the listToMap operation
 
+}}
 \examples{
 example("MultiAssayExperiment")
 

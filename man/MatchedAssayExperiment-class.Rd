@@ -22,10 +22,10 @@ of observations per biological unit are present in all assays.
 }
 \section{Functions}{
 \itemize{
-\item \code{MatchedAssayExperiment}: Construct a
+\item \code{MatchedAssayExperiment()}: Construct a
 \code{MatchedAssayExperiment} class from \linkS4class{MultiAssayExperiment}
-}}
 
+}}
 \examples{
 data("miniACC")
 acc <- as(miniACC, "MatchedAssayExperiment")
