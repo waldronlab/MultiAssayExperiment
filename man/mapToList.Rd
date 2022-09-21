@@ -5,13 +5,16 @@
 \alias{mapToList}
 \title{Convert map from data.frame or DataFrame to list and vice versa}
 \usage{
-listToMap(listmap)
+listToMap(listmap, fill = TRUE)
 
 mapToList(dfmap, assayCol = "assay")
 }
 \arguments{
 \item{listmap}{A named \code{list} object containing \code{DataFrame}s
 with "primary" and "colname" columns}
+
+\item{fill}{logical(1) Whether to fill the map with an empty \code{DataFrame}
+when empty elements are present in the input list}
 
 \item{dfmap}{A \code{data.frame} or \code{DataFrame} object with
 identifiers in the first column}
