@@ -63,3 +63,27 @@ test_that("listToMap works with SplitDataFrameList", {
 
     expect_identical(DFsamp, listToMap(SDFLsamp))
 })
+
+test_that("listToMap fill works with empty elements", {
+    samps <- paste0("samp", 1:2)
+    listMap <- list(
+        a1 = DataFrame(primary = samps, colname = samps),
+        a2 = DataFrame(primary = character(0L), colname = character(0L))
+    )
+    nmap <- listToMap(listMap, fill = FALSE)
+    expect_identical(
+        nmap,
+        DataFrame(
+            assay = factor(c("a1", "a1")), primary = samps, colname = samps
+        )
+    )
+    nmap <- listToMap(listMap, fill = TRUE)
+    expect_identical(
+        nmap,
+        DataFrame(
+            assay = factor(c("a1", "a1", "a2")),
+            primary = c(samps, NA_character_),
+            colname = c(samps, NA_character_)
+        )
+    )
+})
