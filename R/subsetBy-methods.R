@@ -266,7 +266,7 @@ setMethod("subsetByColData", c("MultiAssayExperiment", "ANY"), function(x, y) {
     listMap <- lapply(listMap, function(elementMap, keepers) {
         .matchReorderSub(elementMap, keepers)
         }, keepers = rownames(newcoldata))
-    newMap <- listToMap(listMap)
+    newMap <- listToMap(listMap, fill = FALSE)
     columns <- lapply(listMap, function(mapChunk) {
         mapChunk[, "colname", drop = TRUE]
     })
