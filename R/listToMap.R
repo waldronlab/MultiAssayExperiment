@@ -14,6 +14,7 @@ listToMap <- function(listmap, fill = TRUE) {
         stop("'fill' must be a logical value")
 
     elementClass <- unique(vapply(listmap, class, character(1L)))
+    elementNames <- names(listmap)
 
     if (length(elementClass) != 1L)
         stop("All 'listmap' elements must be of the same class")
@@ -32,6 +33,6 @@ listToMap <- function(listmap, fill = TRUE) {
     })
     listmap <- as(listmap, "SplitDataFrameList")
     newmap <- IRanges::stack(listmap, "assay")
-    newmap[["assay"]] <- factor(newmap[["assay"]])
+    newmap[["assay"]] <- factor(newmap[["assay"]], levels = elementNames)
     newmap
 }

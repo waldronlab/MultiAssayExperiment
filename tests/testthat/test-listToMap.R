@@ -87,3 +87,17 @@ test_that("listToMap fill works with empty elements", {
         )
     )
 })
+
+test_that("listToMap uses list names as factor levels", {
+    listMap <- list(
+        assay1 =
+            DataFrame(primary = paste0("A", 1:4), colname = paste0("A", 1:4)),
+        assay2 =
+            DataFrame(primary = character(0L), colname = character(0L))
+    )
+    result <- listToMap(listMap, fill = FALSE)
+    expect_identical(
+        levels(result[["assay"]]),
+        c("assay1", "assay2")
+    )
+})
