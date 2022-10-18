@@ -74,14 +74,16 @@ test_that("listToMap fill works with empty elements", {
     expect_identical(
         nmap,
         DataFrame(
-            assay = factor(c("a1", "a1")), primary = samps, colname = samps
+            assay = factor(c("a1", "a1"), levels = c("a1", "a2")),
+            primary = samps,
+            colname = samps
         )
     )
     nmap <- listToMap(listMap, fill = TRUE)
     expect_identical(
         nmap,
         DataFrame(
-            assay = factor(c("a1", "a1", "a2")),
+            assay = factor(c("a1", "a1", "a2"), levels = c("a1", "a2")),
             primary = c(samps, NA_character_),
             colname = c(samps, NA_character_)
         )
