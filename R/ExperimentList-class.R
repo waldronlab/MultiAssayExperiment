@@ -1,6 +1,6 @@
-### ==============================================
-### ExperimentList class
-### ----------------------------------------------
+# ExperimentList class ----------------------------------------------------
+
+# Structure ---------------------------------------------------------------
 
 #' @name ExperimentList-class
 #'
@@ -66,16 +66,13 @@ ExperimentList <- function(...) {
     new("ExperimentList", as(listData, "SimpleList"))
 }
 
-### - - - - - - - - - - - - - - - - - - - - - - - -
-### Validity
-###
+# Validity ----------------------------------------------------------------
 
 .checkDimnames <- function(x) {
     dims <- dimnames(x)
     !is.null(dims) && length(dimnames(x)) >= 2L
 }
 
-## Helper function for .testMethodsTable
 .getMethErr <- function(object) {
     supportedMethodFUN <- list(
         dimnames = .checkDimnames,
@@ -95,7 +92,9 @@ ExperimentList <- function(...) {
     NULL
 }
 
-## 1.i. Check that [, colnames, rownames and dim methods are possible
+## ExperimentList elements
+## 1.i For data classes stored in each ExperimentList element, ensure that
+## method functions [ (bracket), dimnames, and dim are possible.
 .testMethodsTable <- function(object) {
     errors <- NULL
     for (i in seq_along(object)) {
@@ -107,8 +106,8 @@ ExperimentList <- function(...) {
     errors
 }
 
-## 1.ii. Check for null rownames and colnames for each element in the
-## ExperimentList and duplicated element names
+## 1.ii. For each ExperimentList element, ensure that dimensions of non-zero
+## length in each ExperimentList element have non-null colnames.
 .checkExperimentListNames <- function(object) {
     errors <- NULL
     if (is.null(names(object))) {

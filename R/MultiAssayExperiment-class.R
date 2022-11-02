@@ -323,7 +323,7 @@ MultiAssayExperiment <-
 ### Validity
 ###
 
-## ELIST
+## EXPERIMENTLIST
 ## 1.i. ExperimentList length must be the same as the unique length of the
 ## sampleMap "assay" column.
 .checkExperimentList <- function(object) {
