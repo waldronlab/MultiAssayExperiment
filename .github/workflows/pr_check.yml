@@ -11,7 +11,7 @@ on:
 
 jobs:
   checkDevel:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     container: bioconductor/bioconductor_docker:devel
 
     env:
@@ -38,7 +38,7 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          options(repos = c(CRAN = "https://packagemanager.rstudio.com/cran/__linux__/focal/latest"))
+          options(repos = c(CRAN = "https://packagemanager.rstudio.com/cran/__linux__/jammy/latest"))
           remotes::install_deps(dependencies = TRUE, repos = BiocManager::repositories())
           BiocManager::install(c("rcmdcheck", "BiocCheck"), ask = FALSE, update = TRUE)
         shell: Rscript {0}
