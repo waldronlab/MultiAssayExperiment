@@ -13,8 +13,11 @@
 # Data Files
 .RData
 /vignettes/cache/
+*_cache/
+docs/
 *.[Rr][Dd][SsAa]
 *.txt
+*.html
 
 # News Files
 NEWS
