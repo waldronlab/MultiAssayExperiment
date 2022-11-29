@@ -1,0 +1,71 @@
+name: Release R CMD check and build site
+
+on:
+  push:
+    branches:
+      - RELEASE_3_16
+
+jobs:
+  checkRelease:
+    runs-on: ubuntu-20.04
+    container: bioconductor/bioconductor_docker:RELEASE_3_16
+
+    env:
+      R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      version-name: RELEASE_3_16
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Query dependencies
+        run: |
+          BiocManager::install("remotes")
+          saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
+        shell: Rscript {0}
+
+      - name: Cache R packages
+        if: runner.os != 'Windows'
+        uses: actions/cache@v2
+        with:
+          path: /usr/local/lib/R/site-library
+          key: ${{ runner.os }}-r-${{ env.version-name }}-${{ hashFiles('.github/depends.Rds') }}
+          restore-keys: ${{ runner.os }}-r-${{ env.version-name }}-
+
+      - name: Install Dependencies
+        run: |
+          options(repos = c(CRAN = "https://packagemanager.rstudio.com/cran/__linux__/focal/latest"))
+          remotes::install_deps(dependencies = TRUE, repos = BiocManager::repositories())
+          BiocManager::install(c("rcmdcheck", "pkgdown"), ask = FALSE, update = TRUE)
+        shell: Rscript {0}
+
+      - name: System dependencies
+        run: |
+          pip install ghp-import
+
+      - name: Check Package
+        id: rcmdcheck
+        env:
+          _R_CHECK_CRAN_INCOMING_REMOTE_: false
+        run: rcmdcheck::rcmdcheck(args = c("--no-manual"), error_on = "error", check_dir = "check")
+        shell: Rscript {0}
+
+      - name: Build pkgdown
+        run: |
+           PATH=$PATH:$HOME/bin/ Rscript -e 'pkgdown::build_site(".")'
+
+      - name: Install deploy dependencies
+        run: |
+          apt-get update
+          apt-get -y install rsync
+
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@v4.3.3
+        with:
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: gh-pages # The branch the action should deploy to.
+          FOLDER: docs # The folder the action should deploy.
+
+
+
