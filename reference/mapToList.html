@@ -19,7 +19,7 @@ opposite by taking a list and converting it to DataFrame."><!-- mathjax --><scri
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MultiAssayExperiment</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.22.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.24.0</span>
       </span>
     </div>
 
@@ -83,7 +83,7 @@ opposite by taking a <code>list</code> and converting it to <code>DataFrame</cod
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">listToMap</span><span class="op">(</span><span class="va">listmap</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">listToMap</span><span class="op">(</span><span class="va">listmap</span>, fill <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">mapToList</span><span class="op">(</span><span class="va">dfmap</span>, assayCol <span class="op">=</span> <span class="st">"assay"</span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -93,6 +93,11 @@ opposite by taking a <code>list</code> and converting it to <code>DataFrame</cod
     <dl><dt>listmap</dt>
 <dd><p>A named <code>list</code> object containing <code>DataFrame</code>s
 with "primary" and "colname" columns</p></dd>
+
+
+<dt>fill</dt>
+<dd><p>logical(1) Whether to fill the map with an empty <code>DataFrame</code>
+when empty elements are present in the input list</p></dd>
 
 
 <dt>dfmap</dt>
@@ -117,7 +122,7 @@ names column</p></dd>
     <div id="functions">
     <h2>Functions</h2>
     
-<ul><li><p><code>listToMap</code>: The inverse of the listToMap operation</p></li>
+<ul><li><p><code>listToMap()</code>: The inverse of the listToMap operation</p></li>
 </ul></div>
 
     <div id="ref-examples">

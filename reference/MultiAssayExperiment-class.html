@@ -27,7 +27,7 @@ sampleMap."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MultiAssayExperiment</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.22.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.24.0</span>
       </span>
     </div>
 
@@ -219,21 +219,21 @@ named arguments. See the examples below.</p></li>
     <div id="methods-by-generic-">
     <h2>Methods (by generic)</h2>
     
-<ul><li><p><code>show</code>: Show method for a
+<ul><li><p><code>show(MultiAssayExperiment)</code>: Show method for a
 <code>MultiAssayExperiment</code></p></li>
-<li><p><code>length</code>: Get the length of ExperimentList</p></li>
-<li><p><code>names</code>: Get the names of the ExperimentList</p></li>
-<li><p><code>updateObject</code>: Update old serialized MultiAssayExperiment
+<li><p><code>length(MultiAssayExperiment)</code>: Get the length of ExperimentList</p></li>
+<li><p><code>names(MultiAssayExperiment)</code>: Get the names of the ExperimentList</p></li>
+<li><p><code>updateObject(MultiAssayExperiment)</code>: Update old serialized MultiAssayExperiment
 objects to new API</p></li>
-<li><p><code>dimnames</code>: Get the dimension names
+<li><p><code>dimnames(MultiAssayExperiment)</code>: Get the dimension names
 for a <code>MultiAssayExperiment</code> object</p></li>
-<li><p><code>c</code>: Add a supported data class to the
+<li><p><code>c(MultiAssayExperiment)</code>: Add a supported data class to the
 <code>ExperimentList</code></p></li>
-<li><p><code>exportClass</code>: Export data from class to a series
+<li><p><code>exportClass(MultiAssayExperiment)</code>: Export data from class to a series
 of text files</p></li>
-<li><p><code>assays</code>: Obtain a <code>SimpleList</code> of assay
+<li><p><code>assays(MultiAssayExperiment)</code>: Obtain a <code>SimpleList</code> of assay
 data for all available experiments in the object</p></li>
-<li><p><code>assay</code>: Convenience function for extracting the
+<li><p><code>assay(x = MultiAssayExperiment, i = missing)</code>: Convenience function for extracting the
 assay of the first element (default) in the <code>ExperimentList</code>. A
 <code>numeric</code> or <code>character</code> index can also be provided</p></li>
 </ul></div>
@@ -307,12 +307,12 @@ An empty <code>sampleMap</code> may produce empty experiments if the levels of t
 
 <p>Convert a <code>list</code> or S4 <code>List</code> to a MultiAssayExperiment object using the
 <a href="https://rdrr.io/r/methods/as.html" class="external-link">as</a> function.</p>
-<p>In the following example, <code>x</code> is either a <code>list</code> or List:</p><div class="sourceCode"><pre><code><span><span class="va">`as(x, "MultiAssayExperiment")`</span></span></code></pre></div>
-
+<p>In the following example, <code>x</code> is either a <code>list</code> or List:</p>
+<p><code>as(x, "MultiAssayExperiment")</code></p>
 <p>Convert a <code>MultiAssayExperiment</code> to <code>MAF</code> class object using the
 <a href="https://rdrr.io/r/methods/as.html" class="external-link">as</a> function.</p>
-<p>In the following example, <code>x</code> is a MultiAssayExperiment:</p><div class="sourceCode"><pre><code><span><span class="va">`MultiAssayExperimentToMAF(x)`</span></span></code></pre></div>
-
+<p>In the following example, <code>x</code> is a MultiAssayExperiment:</p>
+<p><code>MultiAssayExperimentToMAF(x)</code></p>
     </div>
     <div id="see-also">
     <h2>See also</h2>

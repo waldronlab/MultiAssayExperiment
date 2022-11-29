@@ -20,7 +20,7 @@ assays, using the upset algorithm in UpSetR"><!-- mathjax --><script src="https:
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MultiAssayExperiment</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.22.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.24.0</span>
       </span>
     </div>
 
@@ -86,10 +86,10 @@ assays, using the upset algorithm in <code>UpSetR</code></p>
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">upsetSamples</span><span class="op">(</span></span>
 <span>  <span class="va">MultiAssayExperiment</span>,</span>
-<span>  nsets <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">MultiAssayExperiment</span><span class="op">)</span>,</span>
-<span>  nintersects <span class="op">=</span> <span class="fl">24</span>,</span>
+<span>  nsets <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  sets <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">MultiAssayExperiment</span><span class="op">)</span>,</span>
+<span>  nintersects <span class="op">=</span> <span class="cn">NA_integer_</span>,</span>
 <span>  order.by <span class="op">=</span> <span class="st">"freq"</span>,</span>
-<span>  nameFilter <span class="op">=</span> <span class="va">force</span>,</span>
 <span>  check.names <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -98,18 +98,22 @@ assays, using the upset algorithm in <code>UpSetR</code></p>
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>MultiAssayExperiment</dt>
-<dd><p>A
-<code><a href="MultiAssayExperiment-class.html">MultiAssayExperiment</a></code>
-instance</p></dd>
+<dd><p>A <code>MultiAssayExperiment</code> object</p></dd>
 
 
 <dt>nsets</dt>
-<dd><p>integer number of sets to analyze</p></dd>
+<dd><p>numeric(1) The number of sets to analyze. If specified,
+<code>sets</code> will be ignored.</p></dd>
+
+
+<dt>sets</dt>
+<dd><p>character() A character vector of names in MultiAssayExperiment
+to use. If specified, <code>nsets</code> will be ignored.</p></dd>
 
 
 <dt>nintersects</dt>
-<dd><p>Number of intersections to plot. If set to NA, all
-intersections will be plotted.</p></dd>
+<dd><p>numeric() The number of intersections to plot. By
+default, all intersections will be plotted.</p></dd>
 
 
 <dt>order.by</dt>
@@ -117,14 +121,9 @@ intersections will be plotted.</p></dd>
 Options include frequency (entered as "freq"), degree, or both in any order.</p></dd>
 
 
-<dt>nameFilter</dt>
-<dd><p>function, defaulting to force, to manipulate colnames of
-incidence matrix</p></dd>
-
-
 <dt>check.names</dt>
-<dd><p>logical(1) used when incidence matrix is coerced to
-data.frame for use in UpSetR::upset</p></dd>
+<dd><p>logical(1) Whether to munge names as in the
+<code><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame()</a></code> constructor (default FALSE).</p></dd>
 
 
 <dt>...</dt>
@@ -142,10 +141,9 @@ design</p>
     <h2>Note</h2>
     <p>This function is intended to provide convenient visualization of assay
 availability configurations in MultiAssayExperiment instances. The
-<code><a href="https://rdrr.io/pkg/UpSetR/man/upset.html" class="external-link">upset</a></code> function requires data.frame input and has
+<code><a href="https://rdrr.io/pkg/UpSetR/man/upset.html" class="external-link">UpSetR::upset</a></code> function requires <code>data.frame</code> input and has
 many parameters to tune appearance of the result. Assay name handling is
-important for interpretability, and the <code>nameFilter</code> parameter may be
-useful to simplify resulting outputs.</p>
+important for interpretability.</p>
     </div>
     <div id="author">
     <h2>Author</h2>
@@ -158,7 +156,7 @@ useful to simplify resulting outputs.</p>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">miniACC</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">upsetSamples</span><span class="op">(</span><span class="va">miniACC</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="upsetSamples-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span><span class="fu">upsetSamples</span><span class="op">(</span><span class="va">miniACC</span>, nameFilter <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/substr.html" class="external-link">substr</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">upsetSamples</span><span class="op">(</span><span class="va">miniACC</span>, nsets <span class="op">=</span> <span class="fl">3</span>, nintersects <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="upsetSamples-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

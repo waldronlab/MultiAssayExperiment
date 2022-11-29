@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MultiAssayExperiment</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.22.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.24.0</span>
       </span>
     </div>
 
@@ -77,20 +77,9 @@
           <p class="section-desc"></p><p>Exported classes</p>
         </th>
       </tr></tbody><tbody><tr><td>
-          <p><code><a href="ExperimentList-class.html">show(<i>&lt;ExperimentList&gt;</i>)</a></code> <code><a href="ExperimentList-class.html">isEmpty(<i>&lt;ExperimentList&gt;</i>)</a></code> <code><a href="ExperimentList-class.html">dimnames(<i>&lt;ExperimentList&gt;</i>)</a></code> <code><a href="ExperimentList-class.html">mergeReplicates(<i>&lt;ExperimentList&gt;</i>)</a></code> <code><a href="ExperimentList-class.html">assay(<i>&lt;ANY&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="ExperimentList-class.html">assays(<i>&lt;ExperimentList&gt;</i>)</a></code> <code><a href="ExperimentList-class.html">assay(<i>&lt;ExperimentList&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="ExperimentList-class.html">assay(<i>&lt;ExperimentList&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> <code><a href="ExperimentList-class.html">assay(<i>&lt;ExperimentList&gt;</i>,<i>&lt;character&gt;</i>)</a></code> </p>
+          <p><code><a href="ExperimentList-class.html">show(<i>&lt;ExperimentList&gt;</i>)</a></code> <code><a href="ExperimentList-class.html">isEmpty(<i>&lt;ExperimentList&gt;</i>)</a></code> <code><a href="ExperimentList-class.html">dimnames(<i>&lt;ExperimentList&gt;</i>)</a></code> <code><a href="ExperimentList-class.html">colnames(<i>&lt;ExperimentList&gt;</i>)</a></code> <code><a href="ExperimentList-class.html">rownames(<i>&lt;ExperimentList&gt;</i>)</a></code> <code><a href="ExperimentList-class.html">mergeReplicates(<i>&lt;ExperimentList&gt;</i>)</a></code> <code><a href="ExperimentList-class.html">assay(<i>&lt;ANY&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="ExperimentList-class.html">assays(<i>&lt;ExperimentList&gt;</i>)</a></code> <code><a href="ExperimentList-class.html">assay(<i>&lt;ExperimentList&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="ExperimentList-class.html">assay(<i>&lt;ExperimentList&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> <code><a href="ExperimentList-class.html">assay(<i>&lt;ExperimentList&gt;</i>,<i>&lt;character&gt;</i>)</a></code> </p>
         </td>
-        <td><p>ExperimentList - A container for multi-experiment data
-
-The <code>ExperimentList</code> class is a container that builds on
-the <code>SimpleList</code> with additional
-checks for consistency in experiment names and length.
-It contains a <code>SimpleList</code> of experiments with sample identifiers.
-One element present per experiment performed.
-
-Convert from <code>SimpleList</code> or <code>list</code>
-to the multi-experiment data container. When using the
-<strong>mergeReplicates</strong> method, additional arguments are passed to the
-given <code>simplify</code> function argument (e.g., na.rm = TRUE)</p></td>
+        <td><p>ExperimentList - A container for multi-experiment data</p></td>
       </tr><tr><td>
           <p><code><a href="MultiAssayExperiment-class.html">show(<i>&lt;MultiAssayExperiment&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-class.html">length(<i>&lt;MultiAssayExperiment&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-class.html">names(<i>&lt;MultiAssayExperiment&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-class.html">updateObject(<i>&lt;MultiAssayExperiment&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-class.html">dimnames(<i>&lt;MultiAssayExperiment&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-class.html">c(<i>&lt;MultiAssayExperiment&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-class.html">exportClass(<i>&lt;MultiAssayExperiment&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-class.html">assays(<i>&lt;MultiAssayExperiment&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-class.html">assay(<i>&lt;MultiAssayExperiment&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-class.html">assay(<i>&lt;MultiAssayExperiment&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-class.html">assay(<i>&lt;MultiAssayExperiment&gt;</i>,<i>&lt;character&gt;</i>)</a></code> </p>
         </td>
@@ -137,7 +126,7 @@ given <code>simplify</code> function argument (e.g., na.rm = TRUE)</p></td>
           <p class="section-desc"></p><p>Work with and reshape data</p>
         </th>
       </tr></tbody><tbody><tr><td>
-          <p><code><a href="MultiAssayExperiment-helpers.html">complete.cases(<i>&lt;MultiAssayExperiment&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-helpers.html">isEmpty(<i>&lt;MultiAssayExperiment&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-helpers.html">intersectRows()</a></code> <code><a href="MultiAssayExperiment-helpers.html">intersectColumns()</a></code> <code><a href="MultiAssayExperiment-helpers.html">replicated()</a></code> <code><a href="MultiAssayExperiment-helpers.html">anyReplicated()</a></code> <code><a href="MultiAssayExperiment-helpers.html">mergeReplicates()</a></code> <code><a href="MultiAssayExperiment-helpers.html">longFormat()</a></code> <code><a href="MultiAssayExperiment-helpers.html">wideFormat()</a></code> <code><a href="MultiAssayExperiment-helpers.html">hasRowRanges()</a></code> <code><a href="MultiAssayExperiment-helpers.html">getWithColData()</a></code> <code><a href="MultiAssayExperiment-helpers.html">renamePrimary()</a></code> <code><a href="MultiAssayExperiment-helpers.html">renameColname()</a></code> <code><a href="MultiAssayExperiment-helpers.html">splitAssays()</a></code> <code><a href="MultiAssayExperiment-helpers.html">makeHitList()</a></code> </p>
+          <p><code><a href="MultiAssayExperiment-helpers.html">complete.cases(<i>&lt;MultiAssayExperiment&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-helpers.html">isEmpty(<i>&lt;MultiAssayExperiment&gt;</i>)</a></code> <code><a href="MultiAssayExperiment-helpers.html">intersectRows()</a></code> <code><a href="MultiAssayExperiment-helpers.html">intersectColumns()</a></code> <code><a href="MultiAssayExperiment-helpers.html">replicated()</a></code> <code><a href="MultiAssayExperiment-helpers.html">anyReplicated()</a></code> <code><a href="MultiAssayExperiment-helpers.html">replicates()</a></code> <code><a href="MultiAssayExperiment-helpers.html">mergeReplicates()</a></code> <code><a href="MultiAssayExperiment-helpers.html">longFormat()</a></code> <code><a href="MultiAssayExperiment-helpers.html">wideFormat()</a></code> <code><a href="MultiAssayExperiment-helpers.html">hasRowRanges()</a></code> <code><a href="MultiAssayExperiment-helpers.html">getWithColData()</a></code> <code><a href="MultiAssayExperiment-helpers.html">renamePrimary()</a></code> <code><a href="MultiAssayExperiment-helpers.html">renameColname()</a></code> <code><a href="MultiAssayExperiment-helpers.html">splitAssays()</a></code> <code><a href="MultiAssayExperiment-helpers.html">makeHitList()</a></code> </p>
         </td>
         <td><p>A group of helper functions for manipulating and cleaning a
 MultiAssayExperiment</p></td>
@@ -155,8 +144,8 @@ assays, using the upset algorithm in <code>UpSetR</code></p></td>
         </td>
         <td><p>Prepare a <code>MultiAssayExperiment</code> instance</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
-          <h2 id="interoperability">Interoperability <a href="#interoperability" class="anchor" aria-hidden="true"></a></h2>
-          <p class="section-desc"></p><p>Compatibility with external interfaces</p>
+          <h2 id="external-interfaces">External interfaces <a href="#external-interfaces" class="anchor" aria-hidden="true"></a></h2>
+          <p class="section-desc"></p><p>Working with HDF5Array and maftools</p>
         </th>
       </tr></tbody><tbody><tr><td>
           <p><code><a href="HDF5MultiAssayExperiment.html">saveHDF5MultiAssayExperiment()</a></code> <code><a href="HDF5MultiAssayExperiment.html">loadHDF5MultiAssayExperiment()</a></code> </p>

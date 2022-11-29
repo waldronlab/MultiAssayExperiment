@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MultiAssayExperiment</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.22.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.24.0</span>
       </span>
     </div>
 
@@ -101,7 +101,7 @@ Bioconductor Container</h1>
                         <h4 data-toc-skip class="author">MultiAssay
 Special Interest Group</h4>
             
-            <h4 data-toc-skip class="date">September 01, 2022</h4>
+            <h4 data-toc-skip class="date">November 29, 2022</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/waldronlab/MultiAssayExperiment/blob/HEAD/vignettes/MultiAssayExperiment.Rmd" class="external-link"><code>vignettes/MultiAssayExperiment.Rmd</code></a></small>
       <div class="hidden name"><code>MultiAssayExperiment.Rmd</code></div>
@@ -1632,30 +1632,30 @@ replicates by default.</p>
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/MultiAssayExperiment-helpers.html">replicated</a></span><span class="op">(</span><span class="va">myMultiAssay</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## $Affy</span></span>
 <span><span class="co">## LogicalList of length 4</span></span>
-<span><span class="co">## [["Jack"]] FALSE FALSE FALSE FALSE</span></span>
-<span><span class="co">## [["Jill"]] FALSE FALSE FALSE FALSE</span></span>
 <span><span class="co">## [["Barbara"]] FALSE FALSE FALSE FALSE</span></span>
 <span><span class="co">## [["Bob"]] FALSE FALSE FALSE FALSE</span></span>
+<span><span class="co">## [["Jack"]] FALSE FALSE FALSE FALSE</span></span>
+<span><span class="co">## [["Jill"]] FALSE FALSE FALSE FALSE</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## $`Methyl 450k`</span></span>
 <span><span class="co">## LogicalList of length 4</span></span>
-<span><span class="co">## [["Jack"]] TRUE TRUE FALSE FALSE FALSE</span></span>
-<span><span class="co">## [["Jill"]] FALSE FALSE FALSE FALSE FALSE</span></span>
 <span><span class="co">## [["Barbara"]] FALSE FALSE FALSE FALSE FALSE</span></span>
 <span><span class="co">## [["Bob"]] FALSE FALSE FALSE FALSE FALSE</span></span>
+<span><span class="co">## [["Jack"]] TRUE TRUE FALSE FALSE FALSE</span></span>
+<span><span class="co">## [["Jill"]] FALSE FALSE FALSE FALSE FALSE</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## $Mirna</span></span>
 <span><span class="co">## LogicalList of length 3</span></span>
-<span><span class="co">## [["Jack"]] FALSE FALSE FALSE</span></span>
 <span><span class="co">## [["Barbara"]] FALSE FALSE FALSE</span></span>
 <span><span class="co">## [["Bob"]] FALSE FALSE FALSE</span></span>
+<span><span class="co">## [["Jack"]] FALSE FALSE FALSE</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## $`CNV gistic`</span></span>
 <span><span class="co">## LogicalList of length 4</span></span>
-<span><span class="co">## [["Jack"]] FALSE FALSE FALSE FALSE</span></span>
-<span><span class="co">## [["Jill"]] FALSE FALSE FALSE FALSE</span></span>
+<span><span class="co">## [["Barbara"]] FALSE FALSE FALSE FALSE</span></span>
 <span><span class="co">## [["Bob"]] FALSE FALSE FALSE FALSE</span></span>
-<span><span class="co">## [["Barbara"]] FALSE FALSE FALSE FALSE</span></span></code></pre>
+<span><span class="co">## [["Jack"]] FALSE FALSE FALSE FALSE</span></span>
+<span><span class="co">## [["Jill"]] FALSE FALSE FALSE FALSE</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="intersectrows">
@@ -1818,10 +1818,10 @@ while keeping the assay class constant.</p>
 <pre><code><span><span class="co">## DataFrame with 4 rows and 3 columns</span></span>
 <span><span class="co">##          slope53         sex       age</span></span>
 <span><span class="co">##        &lt;numeric&gt; &lt;character&gt; &lt;integer&gt;</span></span>
-<span><span class="co">## array1  0.124487           M        38</span></span>
-<span><span class="co">## array2  0.291306           F        39</span></span>
-<span><span class="co">## array3 -0.508874           F        41</span></span>
-<span><span class="co">## array4 -2.149837           M        40</span></span></code></pre>
+<span><span class="co">## array1 -0.511500           M        38</span></span>
+<span><span class="co">## array2 -1.091912           F        39</span></span>
+<span><span class="co">## array3  1.790185           F        41</span></span>
+<span><span class="co">## array4  0.345103           M        40</span></span></code></pre>
 <div class="sourceCode" id="cb217"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">affex</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] "SummarizedExperiment"</span></span>
@@ -2012,9 +2012,9 @@ provides visual exploration of available methods in
 <span><span class="co">## [17] experiments     experiments&lt;-   exportClass     hasRowRanges   </span></span>
 <span><span class="co">## [21] isEmpty         length          mergeReplicates metadata       </span></span>
 <span><span class="co">## [25] metadata&lt;-      names           names&lt;-         replicated     </span></span>
-<span><span class="co">## [29] sampleMap       sampleMap&lt;-     show            splitAssays    </span></span>
-<span><span class="co">## [33] subsetByAssay   subsetByColData subsetByColumn  subsetByRow    </span></span>
-<span><span class="co">## [37] updateObject   </span></span>
+<span><span class="co">## [29] replicates      sampleMap       sampleMap&lt;-     show           </span></span>
+<span><span class="co">## [33] splitAssays     subsetByAssay   subsetByColData subsetByColumn </span></span>
+<span><span class="co">## [37] subsetByRow     updateObject   </span></span>
 <span><span class="co">## see '?methods' for accessing help and source code</span></span></code></pre>
 </div>
 <div class="section level2">
@@ -2046,13 +2046,13 @@ MultiAssayExperiment in <em>Cancer Research</em>.</p>
 </h2>
 <div class="sourceCode" id="cb246"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## R version 4.2.1 (2022-06-23)</span></span>
+<pre><code><span><span class="co">## R version 4.2.2 (2022-10-31)</span></span>
 <span><span class="co">## Platform: x86_64-pc-linux-gnu (64-bit)</span></span>
-<span><span class="co">## Running under: Ubuntu 20.04.4 LTS</span></span>
+<span><span class="co">## Running under: Ubuntu 22.04.1 LTS</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Matrix products: default</span></span>
 <span><span class="co">## BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3</span></span>
-<span><span class="co">## LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/liblapack.so.3</span></span>
+<span><span class="co">## LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.20.so</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## locale:</span></span>
 <span><span class="co">##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              </span></span>
@@ -2067,33 +2067,33 @@ MultiAssayExperiment in <em>Cancer Research</em>.</p>
 <span><span class="co">## [8] base     </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## other attached packages:</span></span>
-<span><span class="co">##  [1] RaggedExperiment_1.20.0     MultiAssayExperiment_1.22.0</span></span>
-<span><span class="co">##  [3] SummarizedExperiment_1.26.1 Biobase_2.56.0             </span></span>
-<span><span class="co">##  [5] GenomicRanges_1.48.0        GenomeInfoDb_1.32.3        </span></span>
-<span><span class="co">##  [7] IRanges_2.30.1              S4Vectors_0.34.0           </span></span>
-<span><span class="co">##  [9] BiocGenerics_0.42.0         MatrixGenerics_1.8.1       </span></span>
-<span><span class="co">## [11] matrixStats_0.62.0          BiocStyle_2.24.0           </span></span>
+<span><span class="co">##  [1] RaggedExperiment_1.22.0     MultiAssayExperiment_1.24.0</span></span>
+<span><span class="co">##  [3] SummarizedExperiment_1.28.0 Biobase_2.58.0             </span></span>
+<span><span class="co">##  [5] GenomicRanges_1.50.1        GenomeInfoDb_1.34.3        </span></span>
+<span><span class="co">##  [7] IRanges_2.32.0              S4Vectors_0.36.0           </span></span>
+<span><span class="co">##  [9] BiocGenerics_0.44.0         MatrixGenerics_1.10.0      </span></span>
+<span><span class="co">## [11] matrixStats_0.63.0          BiocStyle_2.26.0           </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
-<span><span class="co">##  [1] tidyselect_1.1.2       xfun_0.32              bslib_0.4.0           </span></span>
-<span><span class="co">##  [4] purrr_0.3.4            lattice_0.20-45        vctrs_0.4.1           </span></span>
-<span><span class="co">##  [7] generics_0.1.3         htmltools_0.5.3        yaml_2.3.5            </span></span>
-<span><span class="co">## [10] utf8_1.2.2             rlang_1.0.5            pillar_1.8.1          </span></span>
-<span><span class="co">## [13] pkgdown_2.0.6          jquerylib_0.1.4        glue_1.6.2            </span></span>
-<span><span class="co">## [16] GenomeInfoDbData_1.2.8 lifecycle_1.0.1        stringr_1.4.1         </span></span>
-<span><span class="co">## [19] zlibbioc_1.42.0        ragg_1.2.2             memoise_2.0.1         </span></span>
-<span><span class="co">## [22] evaluate_0.16          knitr_1.40             fastmap_1.1.0         </span></span>
-<span><span class="co">## [25] fansi_1.0.3            highr_0.9              BiocManager_1.30.18   </span></span>
-<span><span class="co">## [28] cachem_1.0.6           DelayedArray_0.22.0    desc_1.4.1            </span></span>
-<span><span class="co">## [31] jsonlite_1.8.0         XVector_0.36.0         systemfonts_1.0.4     </span></span>
-<span><span class="co">## [34] fs_1.5.2               textshaping_0.3.6      digest_0.6.29         </span></span>
-<span><span class="co">## [37] stringi_1.7.8          bookdown_0.28          dplyr_1.0.9           </span></span>
-<span><span class="co">## [40] rprojroot_2.0.3        grid_4.2.1             cli_3.3.0             </span></span>
-<span><span class="co">## [43] tools_4.2.1            bitops_1.0-7           magrittr_2.0.3        </span></span>
-<span><span class="co">## [46] sass_0.4.2             tibble_3.1.8           RCurl_1.98-1.8        </span></span>
-<span><span class="co">## [49] pkgconfig_2.0.3        tidyr_1.2.0            ellipsis_0.3.2        </span></span>
-<span><span class="co">## [52] Matrix_1.4-1           rmarkdown_2.16         R6_2.5.1              </span></span>
-<span><span class="co">## [55] compiler_4.2.1</span></span></code></pre>
+<span><span class="co">##  [1] tidyselect_1.2.0       xfun_0.35              bslib_0.4.1           </span></span>
+<span><span class="co">##  [4] purrr_0.3.5            lattice_0.20-45        vctrs_0.5.1           </span></span>
+<span><span class="co">##  [7] generics_0.1.3         htmltools_0.5.3        yaml_2.3.6            </span></span>
+<span><span class="co">## [10] utf8_1.2.2             rlang_1.0.6            pillar_1.8.1          </span></span>
+<span><span class="co">## [13] pkgdown_2.0.6          jquerylib_0.1.4        withr_2.5.0           </span></span>
+<span><span class="co">## [16] glue_1.6.2             lifecycle_1.0.3        GenomeInfoDbData_1.2.9</span></span>
+<span><span class="co">## [19] stringr_1.4.1          zlibbioc_1.44.0        ragg_1.2.4            </span></span>
+<span><span class="co">## [22] memoise_2.0.1          evaluate_0.18          knitr_1.41            </span></span>
+<span><span class="co">## [25] fastmap_1.1.0          fansi_1.0.3            highr_0.9             </span></span>
+<span><span class="co">## [28] BiocManager_1.30.19    cachem_1.0.6           DelayedArray_0.24.0   </span></span>
+<span><span class="co">## [31] desc_1.4.2             jsonlite_1.8.3         XVector_0.38.0        </span></span>
+<span><span class="co">## [34] systemfonts_1.0.4      fs_1.5.2               textshaping_0.3.6     </span></span>
+<span><span class="co">## [37] digest_0.6.30          stringi_1.7.8          bookdown_0.30         </span></span>
+<span><span class="co">## [40] dplyr_1.0.10           rprojroot_2.0.3        grid_4.2.2            </span></span>
+<span><span class="co">## [43] cli_3.4.1              tools_4.2.2            bitops_1.0-7          </span></span>
+<span><span class="co">## [46] magrittr_2.0.3         sass_0.4.4             tibble_3.1.8          </span></span>
+<span><span class="co">## [49] RCurl_1.98-1.9         pkgconfig_2.0.3        tidyr_1.2.1           </span></span>
+<span><span class="co">## [52] BiocBaseUtils_1.0.0    ellipsis_0.3.2         Matrix_1.5-3          </span></span>
+<span><span class="co">## [55] rmarkdown_2.18         R6_2.5.1               compiler_4.2.2</span></span></code></pre>
 <p style="text-align: right;">
 <a href="#header">back to top</a>
 </p>

@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MultiAssayExperiment</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.22.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.24.0</span>
       </span>
     </div>
 
@@ -73,6 +73,25 @@
       <small>Source: <a href="https://github.com/waldronlab/MultiAssayExperiment/blob/HEAD/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="1.24.0" id="changes-in-version-1240">Changes in version 1.24.0<a class="anchor" aria-label="anchor" href="#changes-in-version-1240"></a></h2>
+<div class="section level3">
+<h3 id="new-features-1-24-0">New features<a class="anchor" aria-label="anchor" href="#new-features-1-24-0"></a></h3>
+<ul><li>
+<code>replicates</code> provides the actual <code>colname</code>s identified as replicate observations for a particular biological unit in the <code>sampleMap</code>
+</li>
+</ul></div>
+<div class="section level3">
+<h3 id="bug-fixes-and-minor-improvements-1-24-0">Bug fixes and minor improvements<a class="anchor" aria-label="anchor" href="#bug-fixes-and-minor-improvements-1-24-0"></a></h3>
+<ul><li>Added an <code>assay&lt;-</code> replacement method for robustifying <code>saveHDF5MultiAssayExperiment</code> with plain matrices</li>
+<li>Use <code><a href="https://rdrr.io/pkg/BiocBaseUtils/man/setSlots.html" class="external-link">BiocBaseUtils::setSlots</a></code> and avoid warnings of triple colon use.</li>
+<li>Resolve issue when <code>colData</code> has one column when merging two <code>MultiAssayExperiment</code> objects, i.e., using the <code>c</code> method (<a href="https://github.com/cvanderaa" class="external-link">@cvanderaa</a>, <a href="https://github.com/waldronlab/MultiAssayExperiment/issues/315" class="external-link">#315</a>)</li>
+<li>Increase efficiency in <code>colnames</code> and <code>rownames</code> methods (<a href="https://github.com/cvanderaa" class="external-link">@cvanderaa</a>, <a href="https://github.com/waldronlab/MultiAssayExperiment/issues/314" class="external-link">#314</a>)</li>
+<li>Make ‘prefix’ inputs consistent in <code>saveHDF5MultiAssayExperiment</code> and <code>loadHDF5MultiAssayExperiment</code> (<a href="https://github.com/asiyeka" class="external-link">@asiyeka</a>, <a href="https://github.com/waldronlab/MultiAssayExperiment/issues/313" class="external-link">#313</a>)</li>
+<li>Improve performance for <code>replicated</code> method</li>
+<li>Update <code>wideFormat</code> documentation, when replicates present additional sets of columns will be appended to the produced <code>DataFrame</code> (<a href="https://github.com/DarioS" class="external-link">@DarioS</a>, <a href="https://github.com/waldronlab/MultiAssayExperiment/issues/312" class="external-link">#312</a>)</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.22.0" id="changes-in-version-1220">Changes in version 1.22.0<a class="anchor" aria-label="anchor" href="#changes-in-version-1220"></a></h2>
 <div class="section level3">
