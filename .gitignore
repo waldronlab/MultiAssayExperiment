@@ -15,6 +15,11 @@
 /vignettes/cache/
 *.[Rr][Dd][SsAa]
 *.txt
+*.html
+docs/
+
+# Caches
+*_cache/
 
 # News Files
 NEWS
