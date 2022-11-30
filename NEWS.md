@@ -1,3 +1,11 @@
+## Changes in version 1.26.0
+
+### New features
+
+* The bracket replacement method `[<-` for `MultiAssayExperiment` now also
+replaces the names with those from the right-hand side of the operation, if
+any (@DarioS, #319)
+
 ## Changes in version 1.24.0
 
 ### New features
