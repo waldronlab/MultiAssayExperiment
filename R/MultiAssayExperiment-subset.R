@@ -90,5 +90,8 @@ setReplaceMethod("[", "MultiAssayExperiment", function(x, i, j, ..., value) {
         stop("Provide a single 'k' index vector")
     indx <- args[[1L]]
     experiments(x)[indx] <- value
+    exp_names <- names(value)
+    if (!is.null(exp_names))
+        names(x)[indx] <- exp_names
     return(x)
 })

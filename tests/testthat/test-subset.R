@@ -205,4 +205,11 @@ test_that("replacement methods work", {
     replace2 <- log(mae[[2L]] + 1)
     mae[, , 1:2] <- SimpleList(exse, replace2)
     expect_identical(mae[[2]], replace2)
+
+    ## test multiple replacements with names
+    replaceExList <- ExperimentList(logAffy = exse, logMeth = replace2)
+    mae[, , 1:2] <- replaceExList
+    expect_identical(mae[[1]], exse)
+    expect_identical(mae[[2]], replace2)
+    expect_identical(names(mae[, , 1:2]), names(replaceExList))
 })
