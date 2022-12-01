@@ -165,6 +165,9 @@ of assay datasets
 * `replicated` and `mergeReplicates` functions have been refactored and
 improved
 * combining MultiAssayExperiments now possible with `c` function
+* Subsetting `MultiAssayExperiment` by a `list` or `List` type class now
+returns experiments in the input order for rows, columns, and assays
+
 
 ### Bug fixes and minor improvements
 
@@ -173,16 +176,6 @@ subsetting
 * `BiocGenerics:::replaceSlots` used instead of replace methods
 * Added tests for `anyReplicated`, `c`, and `names<-` functions
 * Unit tests added for replacement method testing
-
-## Changes in version 1.7.14
-
-### New features
-
-* Subsetting `MultiAssayExperiment` by a `list` or `List` type class now
-returns experiments in the input order for rows, columns, and assays
-
-### Bug fixes and minor improvements
-
 * Renamed objects in examples for brevity and descriptiveness
 * Updated `importFrom` directives
 * Internal sample names check now only works on non-empty `colnames`
@@ -191,77 +184,22 @@ returns experiments in the input order for rows, columns, and assays
 * Various improvements to subsetting mechanism
 * `subsetByAssay` bug fixed when using an integer index (@vjcitn, #)
 
-## Changes in version 1.5.108
+## Changes in version 1.6.0
 
 ### New features
 
 * `DataFrame` now exported for users (@DarioS, #242)
 * `c` is smarter at matching `colnames` with `primary` names and creating a
 `sampleMap`
-
-### Bug fixes and minor improvements
-
-* Added an `isEmpty` method for `ExperimentList` to account for an empty matrix
-* Documentation improvements to `MultiAssayExperiment-class` and
-`MultiAssayExperiment-helpers`
-* `c` internals improved
-
-## Changes in version 1.5.102
-
-### New features
-
 * The `MatchedAssayExperiment` constructor function now works either a
 single `MultiAssayExperiment` or the essential components of one.
-
-## Changes in version 1.5.101
-
-### New features
-
 * Renamed `duplicated` function to `replicated`
 * Added coercion functions from `List` and `list` to `ExperimentList`
 * Improve speed of reshape functions from previous change (`wideFormat`)
-
-### Bug fixes and minor improvements
-
-* Explicitly check for `DataFrame` in `ExperimentList`
-* Fixed documentation warnings for inexact links
-* Fix subsetting order in bracket method (`[`)
-* Minor vignette changes
-* Supply a collapse character for `wideFormat` column names
-
-## Changes in version 1.5.65
-
-### Bug fixes and minor improvements
-
-* `upsetSamples` does not munge experiment names with special characters when
-`check.names = FALSE` (by default keeps hyphens, underscores, etc.). A
-`nameFilter` functional argument allows operations such as `substr` on the
-experiment names. (@vjcitn, #231)
-
-## Changes in version 1.5.64
-
-### New features
-
 * Remove `clusterOn` function and move to `Bioconductor/MultiOmicQC` package
 on GitHub
-
-## Changes in version 1.5.63
-
-### New features
-
 * duplicated has been deprecated, use `replicated` and `anyReplicated`
 * removed dependencies on `tidyr` and `reshape2`
-
-### Bug fixes and minor improvements
-
-* Updates to `prepMultiAssay`
-* Enhancements to the main vignette
-* New format for NEWS section
-
-## Changes in version 1.5.38
-
-### New features
-
 * Moved the API shiny function to waldronlab/MultiAssayShiny package
 * Reduced imports (removed shinydashboard and shiny)
 * Method requirement checks for classes are practical using `try()`
@@ -271,32 +209,29 @@ on GitHub
 
 ### Bug fixes and minor improvements
 
+* Added an `isEmpty` method for `ExperimentList` to account for an empty matrix
+* Documentation improvements to `MultiAssayExperiment-class` and
+`MultiAssayExperiment-helpers`
+* `c` internals improved
+* Explicitly check for `DataFrame` in `ExperimentList`
+* Fixed documentation warnings for inexact links
+* Fix subsetting order in bracket method (`[`)
+* Minor vignette changes
+* Supply a collapse character for `wideFormat` column names
+* `upsetSamples` does not munge experiment names with special characters when
+`check.names = FALSE` (by default keeps hyphens, underscores, etc.). A
+`nameFilter` functional argument allows operations such as `substr` on the
+experiment names. (@vjcitn, #231)
+* Updates to `prepMultiAssay`
+* Enhancements to the main vignette
+* New format for NEWS section
 * updated `duplicated` function now returns FALSE for non-duplicated samples
 * Improved `ExperimentList` constructor now handles multiple `key = value`
 entries
 * Removed `updateObject` before giving warning
-* Removed old RTCGAToolbox example vignette
+* Removed old `RTCGAToolbox` example vignette
 * Official manuscript citation added
 * Improved examples (removed `ExpressionSet` legacy objects)
-* Improved test scripts
-
-## Changes in version 1.1.37
-
-### New features
-
-* `MatchedAssayExperiment` subclass added for matched samples in all assays
-* Supply mini ACC dataset `data(miniACC)`
-* Provide reference table for methods in package, see vignettes
-* Merge with GitHub development version
-
-### Bug fixes and minor improvements
-
-* ensure assay column in sampleMap is a factor
-* rearrange long DataFrame correctly
-* remove support for RangedRaggedAssay - deprecate
-* `drop = FALSE` in single column subset of colData
-* default sampleMap representation as empty DataFrame with colnames
-* added combine `c` vignette section for adding experiments to an existing
 
 ## Changes in version 1.1.59
 
@@ -359,6 +294,24 @@ instead.
 * removal of internal `getHits` method, simplified helper function in place
 * `prepMultiAssay` helper now returns a `list` with names corresponding to the
 `MultiAssayExperiment` constructor function
+
+## Changes in version 1.1.37
+
+### New features
+
+* `MatchedAssayExperiment` subclass added for matched samples in all assays
+* Supply mini ACC dataset `data(miniACC)`
+* Provide reference table for methods in package, see vignettes
+* Merge with GitHub development version
+
+### Bug fixes and minor improvements
+
+* ensure assay column in sampleMap is a factor
+* rearrange long DataFrame correctly
+* remove support for RangedRaggedAssay - deprecate
+* `drop = FALSE` in single column subset of colData
+* default sampleMap representation as empty DataFrame with colnames
+* added combine `c` vignette section for adding experiments to an existing
 
 ## Changes in version 1.1.27
 
@@ -466,146 +419,60 @@ assay names, and optional pData columns
 
 ### New features
 
-* MultiAssayExperiment now in release!
-* `extract` method not available for common classes - creates `tidy` data.frame
+* `extract` method now available for common classes - creates `tidy` data.frame
 from data
-
-### Bug fixes and minor improvements
-
-* Documentation updated with new roxygen version
-
-## Changes in version 0.101.49
-
-### New features
-
 * Example section added to vignette for converting data frames to Bioconductor
 objects
-
-#### Minor improvements
-
-* A proper `dimnames` method added to `MultiAssayExperiment`
-
-## Changes in version 0.101.45
-
-### New features
-
 * `dimnames` method added to `RangedRaggedAssay`
-
-### Bug fixes and minor improvements
-
-* Improved `RangedRaggedAssay` rowname construction
-* Improved `show` method for the `RangedRaggedAssay` class
-
-## Changes in version 0.101.44
-
-### New features
-
 * `$` (DollarSign) method available for `MultiAssayExperiment` to access `pData`
 column
-
-## Changes in version 0.101.43
-
-### Bug fixes and minor improvements
-
-* Improved `MultiAssayExperiment` constructor now handles stray assays, colnames,
-pData rownames, and `sampleMap` rows
-
-## Changes in version 0.101.42
-
-### New features
-
 * `metadata<-` set method now available for the `MultiAssayExperiment`
-
-### Bug fixes and minor improvements
-
-* `metadata` argument available in the `MultiAssayExperiment` constructor function
-* Fix bug when subsetting for unmatched samples/colnames (drop = FALSE) in constructor
-
-## Changes in version 0.101.40
-
-### New features
-
-* Improved `MultiAssayExperiment` constructor with renamed argument "experiments"
-for the `ExperimentList` or `list` input.
-
-## Changes in version 0.101.39
-
-### New features
-
-* `updateObject` method now available for old instances of the `MultiAssayExperiment`
-* Users with invalid `MultiAssayExperiments` should update and re-serialize them
-
-### Bug fixes and minor improvements
-
-* `drop` argument now works as intended when using `List` inherited objects
-
-## Changes in version 0.101.38
-
-### New features
-
+* Improved `MultiAssayExperiment` constructor with renamed argument
+"experiments" for the `ExperimentList` or `list` input.
+* `updateObject` method now available for old instances of the
+`MultiAssayExperiment`
+* Users with invalid `MultiAssayExperiments` should update and re-serialize
+them
 * `complete.cases` method available for the `MultiAssayExperiment` class
-
-## Changes in version 0.101.37
-
-### New features
-
-* `sampleMap` column names renamed to __assay__ (prev. "assayname"), __primary__,
-and __colname__ (prev. "assay")
-* New vignete available for creating `MultiAssayExperiment` objects with TCGA data
-
-### Bug fixes and minor improvements
-
-* Added informative error to `MultiAssayExperiment` constructor
-* Improved `show` method display
-* Removed warning message when only `ExperimentList` argument provided
-
-## Changes in version 0.101.36
-
+* `sampleMap` column names renamed to __assay__ (prev. "assayname"),
+__primary__, and __colname__ (prev. "assay")
+* New vignete available for creating `MultiAssayExperiment` objects with TCGA
+data
 * `Elist` class renamed to `ExperimentList`
 * `ExperimentList` constructor is homonymous
 * `ExperimentList` accessor now called `experiments`
 * `ExperimentList` replacement method is now `experiments<-`
 * Updated vignettes to reflect change of names
-
-## Changes in version 0.101.34
-
 * `assay` method for `RangedRaggedAssay` works on inner metadata columns now
 * vignette examples available for `HDF5Array` package
 * Improved outline for main vignette
-
-## Changes in version 0.99.202
-
-### New features
-
-* `assay` method available for `RangedRaggedAssay` and other classes.
-Created to obtain raw data from certain classes (see `?assay,(class),ANY-method`).
-
-## Changes in version 0.99.194
-
-### New features
-
+* `assay` method available for `RangedRaggedAssay` and other classes. Created
+to obtain raw data from certain classes (see `?assay,(class),ANY-method`).
 * Subsetting by non-character i (#108)
 * `PrepMultiAssay` helper function now available to aid in creating object (#122)
 * Vignette now building (#125)
 * Preliminary assay method for RangedRaggedAssay
+* Replacement method for `colnames` now available for the `RangedRaggedAssay`
+class.
 
 ### Bug fixes and minor improvements
 
-* superflous `subset` function removed
-* `sampleMap` uses character vectors instead of Rle
-* Elist order consistent when subsetting
-* mapToList preserves list order
+* Documentation updated with new roxygen version
+* Improved `RangedRaggedAssay` rowname construction
+* Improved `show` method for the `RangedRaggedAssay` class
+* Improved `MultiAssayExperiment` constructor now handles stray assays,
+colnames, pData rownames, and `sampleMap` rows
+* `metadata` argument available in the `MultiAssayExperiment` constructor
+function
+* Fix bug when subsetting for unmatched samples/colnames (drop = FALSE) in
+constructor
+* `drop` argument now works as intended when using `List` inherited objects
+* A proper `dimnames` method added to `MultiAssayExperiment`
+* Added informative error to `MultiAssayExperiment` constructor
+* Improved `show` method display
+* Removed warning message when only `ExperimentList` argument provided
+* Superfluous `subset` function removed
+* `sampleMap` uses character vectors instead of `Rle`
+* `Elist` order consistent when subsetting
+* `mapToList` preserves list order
 
-## Changes in version 0.99.14
-
-* NEWS file is now live!
-* Package now in `Bioc-devel`!
-* More to come!
-
-### New features
-
-* Replacement method for `colnames` now available for the `RangedRaggedAssay` class.
-
-### Bug fixes and minor improvements
-
-* Documentation additions
