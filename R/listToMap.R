@@ -19,7 +19,14 @@ listToMap <- function(listmap, fill = TRUE) {
     if (length(elementClass) != 1L)
         stop("All 'listmap' elements must be of the same class")
 
-    if (!(is(listmap[[1]], "DataFrame") || is.data.frame(listmap[[1]])))
+    alldfs <- all(
+        vapply(
+            listmap,
+            function(m) { is(m, "DataFrame") || is.data.frame(m) },
+            logical(1L)
+        )
+    )
+    if (!alldfs)
         stop("'listmap' elements are not all 'DataFrame' or 'data.frame'")
 
     if (!is(listmap, "SplitDataFrameList"))
