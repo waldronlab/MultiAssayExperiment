@@ -173,3 +173,21 @@ test_that("replace methods are using rebliss and replace", {
         colnames(mae0), as(cc, "CompressedCharacterList")
     )
 })
+
+test_that("re-ordering is working properly", {
+    mae0 <- mae
+    mae0 <- mae0[, , c(2, 3, 1, 4)]
+    newnameorder <- names(mae)[c(2, 3, 1, 4)]
+    expect_identical(
+        names(mae0), newnameorder
+    )
+    expect_identical(
+        levels(sampleMap(mae0)[["assay"]]), newnameorder
+    )
+    map <- sampleMap(mae)
+    smap <- mapToList(map)
+    nmap <- listToMap(smap[newnameorder])
+    expect_identical(
+        sampleMap(mae0), nmap
+    )
+})

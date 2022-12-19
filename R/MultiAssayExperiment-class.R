@@ -611,14 +611,20 @@ setReplaceMethod("experiments", c("MultiAssayExperiment", "ExperimentList"),
         }
         o_cnames <- colnames(object)
         v_cnames <- colnames(value)
-        if (identical(o_cnames, v_cnames))
+        if (identical(o_cnames, v_cnames)) {
             BiocBaseUtils::setSlots(
                 object = object,
                 ExperimentList = value,
                 check = FALSE
             )
-        else {
-            rebliss <- .harmonize(value, colData(object), sampleMap(object))
+        } else {
+
+            samplemap <- sampleMap(object)
+
+            if (all(names(o_cnames) %in% names(v_cnames)))
+                samplemap <- listToMap(mapToList(samplemap)[names(v_cnames)])
+
+            rebliss <- .harmonize(value, colData(object), samplemap)
 
             BiocBaseUtils::setSlots(
                 object = object,
