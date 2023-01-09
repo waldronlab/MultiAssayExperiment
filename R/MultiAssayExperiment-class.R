@@ -561,9 +561,8 @@ setMethod("names", "MultiAssayExperiment", function(x)
 ###
 
 #' @export
-setGeneric("sampleMap<-", function(object, value) {
-    standardGeneric("sampleMap<-")
-})
+setGeneric("sampleMap<-", function(object, value)
+    standardGeneric("sampleMap<-"))
 
 #' @exportMethod sampleMap<-
 #' @rdname MultiAssayExperiment-methods

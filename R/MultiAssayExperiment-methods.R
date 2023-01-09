@@ -262,11 +262,12 @@ setMethod("c", "MultiAssayExperiment",
 
 
 #' @export
-setGeneric("exportClass",
-    function(object, dir = tempdir(), fmt, ext, match = FALSE,
-        verbose = TRUE, ...) {
+setGeneric(
+    "exportClass",
+    function(
+        object, dir = tempdir(), fmt, ext, match = FALSE, verbose = TRUE, ...
+    )
         standardGeneric("exportClass")
-    }
 )
 
 #' @describeIn MultiAssayExperiment Export data from class to a series
