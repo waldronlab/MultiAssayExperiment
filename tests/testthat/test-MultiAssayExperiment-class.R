@@ -190,4 +190,18 @@ test_that("re-ordering is working properly", {
     expect_identical(
         sampleMap(mae0), nmap
     )
+
+    m1 <- matrix(0, 3, 3, dimnames=list(letters[1:3], letters[1:3]))
+    m2 <- matrix(0, 0, 0)
+    m3 <- matrix(0, 1, 1, dimnames=list("d", "d"))
+    obs <- MultiAssayExperiment(list(m1=m1, m2=m2, m3=m3))
+    obs[["m1"]] <- obs[["m1"]][, c("a", "b")]
+    ## expect no assay drops
+    expect_identical(
+        names(obs), paste0("m", 1:3)
+    )
+    ## levels should be preserved
+    expect_identical(
+        levels(sampleMap(obs)[["assay"]]), paste0("m", 1:3)
+    )
 })

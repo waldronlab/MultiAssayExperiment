@@ -620,8 +620,13 @@ setReplaceMethod("experiments", c("MultiAssayExperiment", "ExperimentList"),
 
             samplemap <- sampleMap(object)
 
-            if (all(names(o_cnames) %in% names(v_cnames)))
-                samplemap <- listToMap(mapToList(samplemap)[names(v_cnames)])
+            if (all(names(o_cnames) %in% names(v_cnames))) {
+                levels <- names(v_cnames)
+                ordernames <- names(Filter(length, v_cnames))
+                samplemap <- listToMap(mapToList(samplemap)[ordernames])
+                samplemap[["assay"]] <-
+                    factor(samplemap[["assay"]], levels = levels)
+            }
 
             rebliss <- .harmonize(value, colData(object), samplemap)
 
