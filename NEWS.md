@@ -6,6 +6,12 @@
 replaces the names with those from the right-hand side of the operation, if
 any (@DarioS, #319)
 
+### Bug fixes and minor improvements
+
+* During single assay replacement `[[<-`, the re-ordering of assays
+based on the value input was invalid when empty assays present
+(@danielinteractive, #322).
+
 ## Changes in version 1.24.0
 
 ### New features
