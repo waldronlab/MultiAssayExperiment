@@ -27,7 +27,10 @@ NULL
 #'     originate from a single biological unit within each assay
 #'     \item replicates: Provides the replicate \code{colname}s found with
 #'     the \code{replicated} function by their name, empty list if none
-#'     \item anyReplicated: Displays which assays have replicate measurements
+#'     \item anyReplicated: Whether the assay has replicate measurements
+#'     \item showReplicated: Displays the actual columns that are replicated per
+#'     assay and biological unit, i.e., \code{primary} value (\code{colData}
+#'     rowname) in the \code{sampleMap}
 #'     \item mergeReplicates: A function that combines replicated / repeated
 #'     measurements across all experiments and is guided by the replicated
 #'     return value
@@ -128,6 +131,10 @@ setGeneric("replicated", function(x) standardGeneric("replicated"))
 #' replicate. \emph{Note}. These methods are not available for the
 #' \code{ExperimentList} class due to a missing \code{sampleMap} structure
 #' (by design).
+#' \code{showReplicated} returns a list of \linkS4class{CharacterList}s where
+#' each element corresponds to the the biological or \emph{primary} units that
+#' are replicated in that assay element. The values in the inner list are
+#' the \code{colnames} in the assay that are technical replicates.
 #'
 #' @export
 setMethod("replicated", "MultiAssayExperiment", function(x) {
@@ -155,6 +162,24 @@ setGeneric("anyReplicated", function(x) standardGeneric("anyReplicated"))
 setMethod("anyReplicated", "MultiAssayExperiment", function(x) {
     reps <- replicated(x)
     vapply(reps, function(x) any(as.matrix(x)), logical(1L))
+})
+
+#' @rdname MultiAssayExperiment-helpers
+#' @export
+setGeneric("showReplicated", function(x) standardGeneric("showReplicated"))
+
+#' @rdname MultiAssayExperiment-helpers
+#' @exportMethod showReplicated
+setMethod("showReplicated", "MultiAssayExperiment", function(x) {
+    Map(
+        function(y, z) {
+            IRanges::CharacterList(
+                Filter(length, lapply(z, function(g) y[g]))
+            )
+        },
+        y = colnames(x),
+        z = replicated(x)
+    )
 })
 
 #' @rdname MultiAssayExperiment-helpers

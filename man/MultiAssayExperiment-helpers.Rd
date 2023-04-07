@@ -11,6 +11,8 @@
 \alias{replicated,MultiAssayExperiment-method}
 \alias{anyReplicated}
 \alias{anyReplicated,MultiAssayExperiment-method}
+\alias{showReplicated}
+\alias{showReplicated,MultiAssayExperiment-method}
 \alias{replicates}
 \alias{replicates,MultiAssayExperiment-method}
 \alias{mergeReplicates,MultiAssayExperiment-method}
@@ -45,6 +47,10 @@ replicated(x)
 anyReplicated(x)
 
 \S4method{anyReplicated}{MultiAssayExperiment}(x)
+
+showReplicated(x)
+
+\S4method{showReplicated}{MultiAssayExperiment}(x)
 
 replicates(x, ...)
 
@@ -162,7 +168,10 @@ measurements across all experiments
 originate from a single biological unit within each assay
 \item replicates: Provides the replicate \code{colname}s found with
 the \code{replicated} function by their name, empty list if none
-\item anyReplicated: Displays which assays have replicate measurements
+\item anyReplicated: Whether the assay has replicate measurements
+\item showReplicated: Displays the actual columns that are replicated per
+assay and biological unit, i.e., \code{primary} value (\code{colData}
+rowname) in the \code{sampleMap}
 \item mergeReplicates: A function that combines replicated / repeated
 measurements across all experiments and is guided by the replicated
 return value
@@ -205,6 +214,10 @@ assay:
 replicate. \emph{Note}. These methods are not available for the
 \code{ExperimentList} class due to a missing \code{sampleMap} structure
 (by design).
+\code{showReplicated} returns a list of \linkS4class{CharacterList}s where
+each element corresponds to the the biological or \emph{primary} units that
+are replicated in that assay element. The values in the inner list are
+the \code{colnames} in the assay that are technical replicates.
 
 The \code{replicates} function (noun) returns the \code{colname}s
   from the \code{sampleMap} that were identified as replicates. It returns a
