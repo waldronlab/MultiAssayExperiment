@@ -2,6 +2,8 @@
 
 ### New features
 
+* `showReplicated` displays the actual `colnames` of technical replicates by
+assay and biological unit.
 * The bracket replacement method `[<-` for `MultiAssayExperiment` now also
 replaces the names with those from the right-hand side of the operation, if
 any (@DarioS, #319)
