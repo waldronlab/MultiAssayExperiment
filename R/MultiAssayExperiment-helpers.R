@@ -171,14 +171,16 @@ setGeneric("showReplicated", function(x) standardGeneric("showReplicated"))
 #' @rdname MultiAssayExperiment-helpers
 #' @exportMethod showReplicated
 setMethod("showReplicated", "MultiAssayExperiment", function(x) {
+    clnames <- Filter(length, colnames(x))
+    replicates <- replicated(x)[names(clnames)]
     Map(
         function(y, z) {
             IRanges::CharacterList(
                 Filter(length, lapply(z, function(g) y[g]))
             )
         },
-        y = colnames(x),
-        z = replicated(x)
+        y = clnames,
+        z = replicates
     )
 })
 

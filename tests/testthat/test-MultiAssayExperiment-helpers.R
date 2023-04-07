@@ -19,6 +19,14 @@ test_that("MultiAssayExperiment anyReplicated returns same order", {
         lengths(Filter(length, colnames(obs2)))
         )
     )
+    expect_identical(
+        showReplicated(obs2),
+        list(
+            m = CharacterList(structure(list(), .Names = character(0L))),
+            m3 = CharacterList(structure(list(), .Names = character(0L))),
+            m4 = CharacterList(a = c("A", "B"))
+        )
+    )
 
     expect_identical(
         lapply(replicated(obs), names),
