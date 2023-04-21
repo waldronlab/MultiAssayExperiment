@@ -13,6 +13,7 @@ any (@DarioS, #319)
 * During single assay replacement `[[<-`, the re-ordering of assays
 based on the value input was invalid when empty assays present
 (@danielinteractive, #322).
+* Permuting `assays` also updates the order of assays in the `sampleMap`
 
 ## Changes in version 1.24.0
 
