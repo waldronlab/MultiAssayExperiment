@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MultiAssayExperiment</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.24.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.26.0</span>
       </span>
     </div>
 
@@ -73,6 +73,21 @@
       <small>Source: <a href="https://github.com/waldronlab/MultiAssayExperiment/blob/HEAD/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="1.26.0" id="changes-in-version-1260">Changes in version 1.26.0<a class="anchor" aria-label="anchor" href="#changes-in-version-1260"></a></h2>
+<div class="section level3">
+<h3 id="new-features-1-26-0">New features<a class="anchor" aria-label="anchor" href="#new-features-1-26-0"></a></h3>
+<ul><li>
+<code>showReplicated</code> displays the actual <code>colnames</code> of technical replicates by assay and biological unit.</li>
+<li>The bracket replacement method <code>[&lt;-</code> for <code>MultiAssayExperiment</code> now also replaces the names with those from the right-hand side of the operation, if any (<a href="https://github.com/DarioS" class="external-link">@DarioS</a>, <a href="https://github.com/waldronlab/MultiAssayExperiment/issues/319" class="external-link">#319</a>)</li>
+</ul></div>
+<div class="section level3">
+<h3 id="bug-fixes-and-minor-improvements-1-26-0">Bug fixes and minor improvements<a class="anchor" aria-label="anchor" href="#bug-fixes-and-minor-improvements-1-26-0"></a></h3>
+<ul><li>During single assay replacement <code>[[&lt;-</code>, the re-ordering of assays based on the value input was invalid when empty assays present (<a href="https://github.com/danielinteractive" class="external-link">@danielinteractive</a>, <a href="https://github.com/waldronlab/MultiAssayExperiment/issues/322" class="external-link">#322</a>).</li>
+<li>Permuting <code>assays</code> also updates the order of names in the <code>MultiAssayExperiment</code> and assays in the <code>sampleMap</code>
+</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.24.0" id="changes-in-version-1240">Changes in version 1.24.0<a class="anchor" aria-label="anchor" href="#changes-in-version-1240"></a></h2>
 <div class="section level3">
@@ -640,7 +655,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

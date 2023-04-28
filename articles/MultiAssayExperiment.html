@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MultiAssayExperiment</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.24.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.26.0</span>
       </span>
     </div>
 
@@ -101,7 +101,7 @@ Bioconductor Container</h1>
                         <h4 data-toc-skip class="author">MultiAssay
 Special Interest Group</h4>
             
-            <h4 data-toc-skip class="date">December 01, 2022</h4>
+            <h4 data-toc-skip class="date">April 28, 2023</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/waldronlab/MultiAssayExperiment/blob/HEAD/vignettes/MultiAssayExperiment.Rmd" class="external-link"><code>vignettes/MultiAssayExperiment.Rmd</code></a></small>
       <div class="hidden name"><code>MultiAssayExperiment.Rmd</code></div>
@@ -1514,7 +1514,7 @@ types of subsetting by range. The first three arguments here are for
 <span><span class="co">##  [3] Mirna: matrix with 0 rows and 3 columns</span></span>
 <span><span class="co">##  [4] CNV gistic: RangedSummarizedExperiment with 0 rows and 4 columns</span></span></code></pre>
 <div class="sourceCode" id="cb178"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/MatrixGenerics/man/rowRanges.html" class="external-link">rowRanges</a></span><span class="op">(</span><span class="va">subsetted</span><span class="op">[[</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">rowRanges</span><span class="op">(</span><span class="va">subsetted</span><span class="op">[[</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## GRanges object with 0 ranges and 1 metadata column:</span></span>
 <span><span class="co">##    seqnames    ranges strand |  feature_id</span></span>
 <span><span class="co">##       &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt; | &lt;character&gt;</span></span>
@@ -1816,12 +1816,12 @@ while keeping the assay class constant.</p>
 <div class="sourceCode" id="cb215"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">colData</a></span><span class="op">(</span><span class="va">affex</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## DataFrame with 4 rows and 3 columns</span></span>
-<span><span class="co">##          slope53         sex       age</span></span>
-<span><span class="co">##        &lt;numeric&gt; &lt;character&gt; &lt;integer&gt;</span></span>
-<span><span class="co">## array1  -1.41348           M        38</span></span>
-<span><span class="co">## array2   1.35343           F        39</span></span>
-<span><span class="co">## array3   1.64242           F        41</span></span>
-<span><span class="co">## array4  -2.11852           M        40</span></span></code></pre>
+<span><span class="co">##           slope53         sex       age</span></span>
+<span><span class="co">##         &lt;numeric&gt; &lt;character&gt; &lt;integer&gt;</span></span>
+<span><span class="co">## array1 -0.4780168           M        38</span></span>
+<span><span class="co">## array2 -0.0997548           F        39</span></span>
+<span><span class="co">## array3  1.2418972           F        41</span></span>
+<span><span class="co">## array4 -0.7127357           M        40</span></span></code></pre>
 <div class="sourceCode" id="cb217"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">affex</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] "SummarizedExperiment"</span></span>
@@ -2013,8 +2013,8 @@ provides visual exploration of available methods in
 <span><span class="co">## [21] isEmpty         length          mergeReplicates metadata       </span></span>
 <span><span class="co">## [25] metadata&lt;-      names           names&lt;-         replicated     </span></span>
 <span><span class="co">## [29] replicates      sampleMap       sampleMap&lt;-     show           </span></span>
-<span><span class="co">## [33] splitAssays     subsetByAssay   subsetByColData subsetByColumn </span></span>
-<span><span class="co">## [37] subsetByRow     updateObject   </span></span>
+<span><span class="co">## [33] showReplicated  splitAssays     subsetByAssay   subsetByColData</span></span>
+<span><span class="co">## [37] subsetByColumn  subsetByRow     updateObject   </span></span>
 <span><span class="co">## see '?methods' for accessing help and source code</span></span></code></pre>
 </div>
 <div class="section level2">
@@ -2024,8 +2024,7 @@ provides visual exploration of available methods in
 MultiAssayExperiment in <em>Cancer Research</em>.</p>
 <div class="sourceCode" id="cb244"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation</a></span><span class="op">(</span><span class="st">"MultiAssayExperiment"</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## </span></span>
-<span><span class="co">## To cite MultiAssayExperiment in publications use:</span></span>
+<pre><code><span><span class="co">## To cite MultiAssayExperiment in publications use:</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">##   Marcel Ramos et al. Software For The Integration Of Multiomics</span></span>
 <span><span class="co">##   Experiments In Bioconductor. Cancer Research, 2017 November 1;</span></span>
@@ -2046,13 +2045,13 @@ MultiAssayExperiment in <em>Cancer Research</em>.</p>
 </h2>
 <div class="sourceCode" id="cb246"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## R version 4.2.2 (2022-10-31)</span></span>
+<pre><code><span><span class="co">## R version 4.3.0 (2023-04-21)</span></span>
 <span><span class="co">## Platform: x86_64-pc-linux-gnu (64-bit)</span></span>
-<span><span class="co">## Running under: Ubuntu 22.04.1 LTS</span></span>
+<span><span class="co">## Running under: Ubuntu 22.04.2 LTS</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Matrix products: default</span></span>
-<span><span class="co">## BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3</span></span>
-<span><span class="co">## LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.20.so</span></span>
+<span><span class="co">## BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 </span></span>
+<span><span class="co">## LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.20.so;  LAPACK version 3.10.0</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## locale:</span></span>
 <span><span class="co">##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              </span></span>
@@ -2062,38 +2061,41 @@ MultiAssayExperiment in <em>Cancer Research</em>.</p>
 <span><span class="co">##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            </span></span>
 <span><span class="co">## [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       </span></span>
 <span><span class="co">## </span></span>
+<span><span class="co">## time zone: Etc/UTC</span></span>
+<span><span class="co">## tzcode source: system (glibc)</span></span>
+<span><span class="co">## </span></span>
 <span><span class="co">## attached base packages:</span></span>
 <span><span class="co">## [1] stats4    stats     graphics  grDevices utils     datasets  methods  </span></span>
 <span><span class="co">## [8] base     </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## other attached packages:</span></span>
-<span><span class="co">##  [1] RaggedExperiment_1.22.0     MultiAssayExperiment_1.24.1</span></span>
-<span><span class="co">##  [3] SummarizedExperiment_1.28.0 Biobase_2.58.0             </span></span>
-<span><span class="co">##  [5] GenomicRanges_1.50.1        GenomeInfoDb_1.34.3        </span></span>
-<span><span class="co">##  [7] IRanges_2.32.0              S4Vectors_0.36.0           </span></span>
-<span><span class="co">##  [9] BiocGenerics_0.44.0         MatrixGenerics_1.10.0      </span></span>
-<span><span class="co">## [11] matrixStats_0.63.0          BiocStyle_2.26.0           </span></span>
+<span><span class="co">##  [1] RaggedExperiment_1.24.0     MultiAssayExperiment_1.26.0</span></span>
+<span><span class="co">##  [3] SummarizedExperiment_1.30.0 Biobase_2.60.0             </span></span>
+<span><span class="co">##  [5] GenomicRanges_1.52.0        GenomeInfoDb_1.36.0        </span></span>
+<span><span class="co">##  [7] IRanges_2.34.0              S4Vectors_0.38.0           </span></span>
+<span><span class="co">##  [9] BiocGenerics_0.46.0         MatrixGenerics_1.12.0      </span></span>
+<span><span class="co">## [11] matrixStats_0.63.0          BiocStyle_2.28.0           </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
-<span><span class="co">##  [1] tidyselect_1.2.0       xfun_0.35              bslib_0.4.1           </span></span>
-<span><span class="co">##  [4] purrr_0.3.5            lattice_0.20-45        vctrs_0.5.1           </span></span>
-<span><span class="co">##  [7] generics_0.1.3         htmltools_0.5.3        yaml_2.3.6            </span></span>
-<span><span class="co">## [10] utf8_1.2.2             rlang_1.0.6            pillar_1.8.1          </span></span>
-<span><span class="co">## [13] pkgdown_2.0.6          jquerylib_0.1.4        withr_2.5.0           </span></span>
-<span><span class="co">## [16] glue_1.6.2             lifecycle_1.0.3        GenomeInfoDbData_1.2.9</span></span>
-<span><span class="co">## [19] stringr_1.4.1          zlibbioc_1.44.0        ragg_1.2.4            </span></span>
-<span><span class="co">## [22] memoise_2.0.1          evaluate_0.18          knitr_1.41            </span></span>
-<span><span class="co">## [25] fastmap_1.1.0          fansi_1.0.3            highr_0.9             </span></span>
-<span><span class="co">## [28] BiocManager_1.30.19    cachem_1.0.6           DelayedArray_0.24.0   </span></span>
-<span><span class="co">## [31] desc_1.4.2             jsonlite_1.8.3         XVector_0.38.0        </span></span>
-<span><span class="co">## [34] systemfonts_1.0.4      fs_1.5.2               textshaping_0.3.6     </span></span>
-<span><span class="co">## [37] digest_0.6.30          stringi_1.7.8          bookdown_0.30         </span></span>
-<span><span class="co">## [40] dplyr_1.0.10           rprojroot_2.0.3        grid_4.2.2            </span></span>
-<span><span class="co">## [43] cli_3.4.1              tools_4.2.2            bitops_1.0-7          </span></span>
-<span><span class="co">## [46] magrittr_2.0.3         sass_0.4.4             tibble_3.1.8          </span></span>
-<span><span class="co">## [49] RCurl_1.98-1.9         pkgconfig_2.0.3        tidyr_1.2.1           </span></span>
-<span><span class="co">## [52] BiocBaseUtils_1.0.0    ellipsis_0.3.2         Matrix_1.5-3          </span></span>
-<span><span class="co">## [55] rmarkdown_2.18         R6_2.5.1               compiler_4.2.2</span></span></code></pre>
+<span><span class="co">##  [1] utf8_1.2.3              generics_0.1.3          tidyr_1.3.0            </span></span>
+<span><span class="co">##  [4] sass_0.4.5              bitops_1.0-7            stringi_1.7.12         </span></span>
+<span><span class="co">##  [7] lattice_0.21-8          digest_0.6.31           magrittr_2.0.3         </span></span>
+<span><span class="co">## [10] evaluate_0.20           grid_4.3.0              bookdown_0.33          </span></span>
+<span><span class="co">## [13] fastmap_1.1.1           rprojroot_2.0.3         jsonlite_1.8.4         </span></span>
+<span><span class="co">## [16] Matrix_1.5-4            BiocManager_1.30.20     fansi_1.0.4            </span></span>
+<span><span class="co">## [19] purrr_1.0.1             textshaping_0.3.6       jquerylib_0.1.4        </span></span>
+<span><span class="co">## [22] cli_3.6.1               rlang_1.1.0             XVector_0.40.0         </span></span>
+<span><span class="co">## [25] withr_2.5.0             cachem_1.0.7            DelayedArray_0.25.0    </span></span>
+<span><span class="co">## [28] yaml_2.3.7              BiocBaseUtils_1.2.0     tools_4.3.0            </span></span>
+<span><span class="co">## [31] memoise_2.0.1           dplyr_1.1.2             GenomeInfoDbData_1.2.10</span></span>
+<span><span class="co">## [34] vctrs_0.6.2             R6_2.5.1                lifecycle_1.0.3        </span></span>
+<span><span class="co">## [37] zlibbioc_1.46.0         stringr_1.5.0           fs_1.6.2               </span></span>
+<span><span class="co">## [40] ragg_1.2.5              pkgconfig_2.0.3         desc_1.4.2             </span></span>
+<span><span class="co">## [43] pillar_1.9.0            pkgdown_2.0.7           bslib_0.4.2            </span></span>
+<span><span class="co">## [46] glue_1.6.2              systemfonts_1.0.4       tidyselect_1.2.0       </span></span>
+<span><span class="co">## [49] tibble_3.2.1            xfun_0.39               highr_0.10             </span></span>
+<span><span class="co">## [52] knitr_1.42              htmltools_0.5.5         rmarkdown_2.21         </span></span>
+<span><span class="co">## [55] compiler_4.3.0          RCurl_1.98-1.12</span></span></code></pre>
 <p style="text-align: right;">
 <a href="#header">back to top</a>
 </p>
@@ -2117,7 +2119,7 @@ MultiAssayExperiment in <em>Cancer Research</em>.</p>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>

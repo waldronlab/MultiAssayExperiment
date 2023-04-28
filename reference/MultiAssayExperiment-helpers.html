@@ -18,7 +18,10 @@ replicated: Identifies, via logical vectors, colnames that
 originate from a single biological unit within each assay
 replicates: Provides the replicate colnames found with
 the replicated function by their name, empty list if none
-anyReplicated: Displays which assays have replicate measurements
+anyReplicated: Whether the assay has replicate measurements
+showReplicated: Displays the actual columns that are replicated per
+assay and biological unit, i.e., primary value (colData
+rowname) in the sampleMap
 mergeReplicates: A function that combines replicated / repeated
 measurements across all experiments and is guided by the replicated
 return value
@@ -60,7 +63,7 @@ of a particular assay
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MultiAssayExperiment</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.24.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.26.0</span>
       </span>
     </div>
 
@@ -135,7 +138,10 @@ measurements across all experiments</p></li>
 originate from a single biological unit within each assay</p></li>
 <li><p>replicates: Provides the replicate <code>colname</code>s found with
 the <code>replicated</code> function by their name, empty list if none</p></li>
-<li><p>anyReplicated: Displays which assays have replicate measurements</p></li>
+<li><p>anyReplicated: Whether the assay has replicate measurements</p></li>
+<li><p>showReplicated: Displays the actual columns that are replicated per
+assay and biological unit, i.e., <code>primary</code> value (<code>colData</code>
+rowname) in the <code>sampleMap</code></p></li>
 <li><p>mergeReplicates: A function that combines replicated / repeated
 measurements across all experiments and is guided by the replicated
 return value</p></li>
@@ -180,6 +186,11 @@ of a particular assay</p></li>
 <span></span>
 <span><span class="co"># S4 method for MultiAssayExperiment</span></span>
 <span><span class="fu">anyReplicated</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">showReplicated</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for MultiAssayExperiment</span></span>
+<span><span class="fu">showReplicated</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">replicates</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
@@ -333,7 +344,11 @@ assay:</p><div class="sourceCode"><pre><code>
 </code></pre></div><p><code>anyReplicated</code> determines if any of the assays have at least one
 replicate. <em>Note</em>. These methods are not available for the
 <code>ExperimentList</code> class due to a missing <code>sampleMap</code> structure
-(by design).</p>
+(by design).
+<code>showReplicated</code> returns a list of CharacterLists where
+each element corresponds to the the biological or <em>primary</em> units that
+are replicated in that assay element. The values in the inner list are
+the <code>colnames</code> in the assay that are technical replicates.</p>
 <p>The <code>replicates</code> function (noun) returns the <code>colname</code>s
   from the <code>sampleMap</code> that were identified as replicates. It returns a
   list of CharacterLists for each assay present in the
@@ -653,7 +668,7 @@ to avoid repetition of columns across assays. See the examples section.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

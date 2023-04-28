@@ -1,10 +1,10 @@
 pandoc: 2.19.2
-pkgdown: 2.0.6
+pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
   MultiAssayExperiment: MultiAssayExperiment.html
   QuickStartMultiAssay: QuickStartMultiAssay.html
   UsingHDF5Array: UsingHDF5Array.html
   MAE-curatedMetagenomicData: extras/MAE-curatedMetagenomicData.html
-last_built: 2022-12-01T15:48Z
+last_built: 2023-04-28T19:47Z
 
