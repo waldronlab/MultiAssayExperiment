@@ -451,7 +451,7 @@ setMethod("show", "MultiAssayExperiment", function(object) {
     o_class <- class(object)
     o_len <- length(object)
     o_names <- names(object)
-    if (length(o_names) == 0L) {
+    if (!length(o_names)) {
         o_names <- "none"
     }
     c_elist <- class(experiments(object))
@@ -461,7 +461,7 @@ setMethod("show", "MultiAssayExperiment", function(object) {
         "object of", o_len, "listed\n",
         ifelse(o_len == 1L, "experiment", "experiments"),
         "with",
-        ifelse(all(o_names == "none"), "no user-defined names",
+        ifelse(identical(o_names, "none"), "no user-defined names",
                ifelse(length(o_names) == 1L, "a user-defined name",
                       "user-defined names")),
         ifelse(length(o_len) == 0L, "or", "and"),
