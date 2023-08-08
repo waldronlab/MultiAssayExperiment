@@ -205,3 +205,83 @@ test_that("re-ordering is working properly", {
         levels(sampleMap(obs)[["assay"]]), paste0("m", 1:3)
     )
 })
+
+test_that("unique sort identical operation works", {
+    c1 <- letters[1:3]
+    c2 <- rev(c1)
+    expect_true(
+        .uniqueSortIdentical(c1, c2)
+    )
+    setClass("oldMAE", slots = c(Elist = "list", pData = "data.frame"))
+    expect_true(
+        .hasSlot(new("oldMAE"), "Elist")
+    )
+    expect_true(
+        .hasSlot(new("oldMAE"), "pData")
+    )
+    setClass(
+        "testMAE", slots = c(Elist = "list"), contains = "MultiAssayExperiment"
+    )
+    expect_error(
+        show(new("testMAE"))
+    )
+})
+
+test_that("show method of MultiAssayExperiment works correctly", {
+    # Create a simple example MultiAssayExperiment object
+    assay_data <- list(
+        a = matrix(
+            1:2, ncol = 2, dimnames = list(NULL, c("acol1", "bcol1"))
+        )
+    )
+    col_data <- data.frame(
+        score = 1:2, row.names = LETTERS[1:2]
+    )
+    sample_map <- DataFrame(
+        assay = factor("a"),
+        primary = LETTERS[1:2],
+        colname = c("acol1", "bcol1")
+    )
+    mae <- MultiAssayExperiment(
+        experiments = assay_data,
+        colData = col_data,
+        sampleMap = sample_map
+    )
+    output <- capture_output(show(mae))
+    expected_output <- paste(
+        "A MultiAssayExperiment object of",
+        length(assay_data), "listed",
+        sep = " "
+    )
+
+    expect_match(output, expected_output)
+
+    mae <- MultiAssayExperiment()
+    output <- capture_output(show(mae))
+
+    expect_match(output, "no user-defined names")
+})
+
+test_that(".DollarNames replacement works", {
+    env <- new.env(parent = emptyenv())
+    data("miniACC",  envir = env)
+    miniACC <- env[["miniACC"]]
+    newIDs <- seq_len(nrow(colData(miniACC)))
+    miniACC$patientID <- newIDs
+    expect_identical(
+        miniACC$patientID,
+        newIDs
+    )
+})
+
+test_that("MultiAssayExperiment,names<- replacement works", {
+    env <- new.env(parent = emptyenv())
+    data("miniACC",  envir = env)
+    miniACC <- env[["miniACC"]]
+    expect_error(
+        names(miniACC) <- 1:5
+    )
+    expect_error(
+        names(miniACC) <- LETTERS
+    )
+})
