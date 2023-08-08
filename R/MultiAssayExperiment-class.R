@@ -205,6 +205,28 @@ setClass(
     list(experiments=experiments, sampleMap=sampleMap, colData=colData)
 }
 
+.smapColumnCoerce <- function(samplemap) {
+    isfuns <- list(is.factor, is.character, is.character)
+    asfuns <- list(as.factor, as.character, as.character)
+    samplemap[] <- Map(
+        function(cName, isFun, coerceFun) {
+            smapCol <- samplemap[[cName]]
+            if (!isFun(smapCol))
+                warning(
+                    "sampleMap[['", cName, "']] coerced with",
+                    as.character(substitute(coerceFun), "()"),
+                    call. = FALSE
+                )
+            samplemap[[cName]] <- coerceFun(samplemap[[cName]])
+        },
+        cName = names(samplemap),
+        isFun = isfuns,
+        coerceFun = asfuns
+    )
+
+    samplemap
+}
+
 #' Construct an integrative representation of multi-omic data with
 #' \code{MultiAssayExperiment}
 #'
@@ -296,19 +318,8 @@ MultiAssayExperiment <-
 
     if (!all(c("assay", "primary", "colname") %in% colnames(sampleMap)))
         stop("'sampleMap' does not have required columns")
-    if (!is.factor(sampleMap[["assay"]]))
-        sampleMap[["assay"]] <- as.factor(sampleMap[["assay"]])
-    if (!is.character(sampleMap[["primary"]])) {
-        warning("sampleMap[['primary']] coerced to character()")
-        sampleMap[["primary"]] <- as.character(sampleMap[["primary"]])
-    }
-    if (!is.character(sampleMap[["colname"]])) {
-        warning("sampleMap[['colname']] coerced to character()")
-        sampleMap[["colname"]] <- as.character(sampleMap[["colname"]])
-    }
 
-    if ((isEmpty(sampleMap) && !missing(sampleMap)) & !isEmpty(experiments))
-        warning("An empty 'sampleMap' may cause unexpected behavior")
+    sampleMap <- .smapColumnCoerce(sampleMap)
 
     bliss <- .harmonize(experiments, colData, sampleMap)
 
