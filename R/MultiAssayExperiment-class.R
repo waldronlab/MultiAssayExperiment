@@ -353,7 +353,18 @@ MultiAssayExperiment <-
                       " the sampleMap assay column")
         errors <- c(errors, msg)
     }
-    if (length(errors)) NULL else errors
+
+## 1.iii. ExperimentList cannot have any non-empty elements when the sampleMap
+## is empty.
+    if (isEmpty(sampleMap(object)) && !isEmpty(experiments(object))) {
+        msg <- paste0(
+            "All non-empty elements in the ExperimentList must have",
+            " names in the sampleMap assay column"
+        )
+        errors <- c(errors, msg)
+    }
+
+    if (!length(errors)) NULL else errors
 }
 
 ## 1.iii. For each ExperimentList element, colnames must be found in the
