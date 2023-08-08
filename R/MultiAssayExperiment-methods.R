@@ -201,21 +201,17 @@ setMethod("c", "MultiAssayExperiment",
             sampleMap <- mapply(function(x, y) {
                 x[["colname"]] <- colnames(y)
                 x
-            }, addMaps, exps)
+            }, x = addMaps, y = exps)
         } else if (is.null(sampleMap) || isEmpty(sampleMap)) {
             sampleMap <- lapply(colnames(exps), .sampleMapFromExisting,
                 colData = cdata, sampleMap = xmap)
-            sampleMap <- listToMap(sampleMap)
         }
-        if (is(sampleMap, "DataFrame") || is.data.frame(sampleMap))
-            sampleMap <- mapToList(sampleMap)
-        else if (!is.list(sampleMap))
-            stop("'sampleMap' must be a 'DataFrame', 'data.frame', or 'list'")
-        newListMap <- c(mapToList(xmap),
-            IRanges::SplitDataFrameList(sampleMap))
+        if (!is(sampleMap, "DataFrame"))
+            sampleMap <- listToMap(sampleMap)
+        newListMap <- rbind(xmap, sampleMap)
         x <- BiocBaseUtils::setSlots(x,
             ExperimentList = c(experiments(x), exps),
-            sampleMap = listToMap(newListMap)
+            sampleMap = newListMap
         )
     }
     return(x)
