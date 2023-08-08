@@ -344,7 +344,8 @@ MultiAssayExperiment <-
 .checkExperimentList <- function(object) {
     errors <- character()
     assays <- levels(sampleMap(object)[["assay"]])
-    if (length(experiments(object)) != length(assays)) {
+    if (!is.null(assays) &&
+        !identical(length(experiments(object)), length(assays))) {
         msg <- paste0("ExperimentList must be the same length as",
                       " the sampleMap assay column")
         errors <- c(errors, msg)
@@ -352,7 +353,7 @@ MultiAssayExperiment <-
 
 ## 1.ii. Element names of the ExperimentList should be found in the
 ## sampleMap "assay" column.
-    if (!all(names(experiments(object)) %in% assays)) {
+    if (!is.null(assays) && !all(names(experiments(object)) %in% assays)) {
         msg <- paste0("All ExperimentList names were not found in",
                       " the sampleMap assay column")
         errors <- c(errors, msg)
