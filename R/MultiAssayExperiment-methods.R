@@ -170,6 +170,14 @@ setMethod("c", "MultiAssayExperiment",
     if (!length(args))
         stop("Provide experiments or a 'MultiAssayExperiment' to concatenate")
 
+    if (
+        !is.null(sampleMap) && !is.list(sampleMap) &&
+        !is(sampleMap, "DataFrame")
+    )
+        stop(
+            "'sampleMap' must be a 'DataFrame', 'data.frame', 'list' or 'NULL'"
+        )
+
     if (identical(length(args), 1L)) {
         input <- args[[1L]]
         if (is(input, "MultiAssayExperiment"))
