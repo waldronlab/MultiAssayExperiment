@@ -207,21 +207,25 @@ setClass(
 
 .smapColumnCoerce <- function(samplemap) {
     isfuns <- list(is.factor, is.character, is.character)
-    asfuns <- list(as.factor, as.character, as.character)
+    asfuns <- list(
+        as.factor = as.factor,
+        as.character = as.character,
+        as.character = as.character
+    )
     samplemap[] <- Map(
-        function(cName, isFun, coerceFun) {
+        function(cName, isFun, coerceFun, funname) {
             smapCol <- samplemap[[cName]]
             if (!isFun(smapCol))
                 warning(
-                    "sampleMap[['", cName, "']] coerced with",
-                    as.character(substitute(coerceFun), "()"),
+                    "sampleMap[['", cName, "']] coerced with ", funname, "()",
                     call. = FALSE
                 )
             samplemap[[cName]] <- coerceFun(samplemap[[cName]])
         },
         cName = names(samplemap),
         isFun = isfuns,
-        coerceFun = asfuns
+        coerceFun = asfuns,
+        funname = names(asfuns)
     )
 
     samplemap
