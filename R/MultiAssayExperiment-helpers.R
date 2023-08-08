@@ -824,6 +824,7 @@ setMethod("splitAssays", "MultiAssayExperiment",
         })
         sublist <- unlist(sublist, recursive = FALSE)
         names(sublist) <- gsub("\\.", "_", names(sublist))
+        names(x) <- names(sublist)
 
         BiocBaseUtils::setSlots(
             object = x,
