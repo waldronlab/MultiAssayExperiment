@@ -373,16 +373,15 @@ MultiAssayExperiment <-
     sampMap <- sampleMap(object)
     assayCols <- mapToList(sampMap[, c("assay", "colname")])
     colNams <- Filter(function(x) !isEmpty(x), colnames(object))
+    msg <- NULL
     if (length(colNams)) {
         logicResult <- mapply(function(x, y) {
             identical(sort(x), sort(y))
         }, x = colNams, y = assayCols)
-    if (all(logicResult))
-        NULL
-    else
-        "not all samples in the ExperimentList are found in the sampleMap"
+        if (!all(logicResult))
+            msg <- "not all ExperimentList samples are found in the sampleMap"
     }
-    NULL
+    msg
 }
 
 ## COLDATA
