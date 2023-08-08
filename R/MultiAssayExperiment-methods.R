@@ -202,7 +202,7 @@ setMethod("c", "MultiAssayExperiment",
                 x[["colname"]] <- colnames(y)
                 x
             }, addMaps, exps)
-        } else if (is.null(sampleMap)) {
+        } else if (is.null(sampleMap) || isEmpty(sampleMap)) {
             sampleMap <- lapply(colnames(exps), .sampleMapFromExisting,
                 colData = cdata, sampleMap = xmap)
             sampleMap <- listToMap(sampleMap)
