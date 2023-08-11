@@ -381,7 +381,7 @@ MultiAssayExperiment <-
     msg <- NULL
     if (length(colNams)) {
         logicResult <- mapply(function(x, y, nm) {
-            identical(x[nm], y[nm])
+            identical(sort(x), sort(y))
         }, x = colNams, y = assayCols, nm = names(colNams))
         if (!all(logicResult))
             msg <- "not all ExperimentList samples are found in the sampleMap"
