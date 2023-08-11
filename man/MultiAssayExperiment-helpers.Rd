@@ -360,14 +360,15 @@ sampleMap(mae2)
 
 
 patts <- list(
-    normals = "TCGA-OR-[A-Z0-9]{4}-11",
-    tumors = "TCGA-OR-[A-Z0-9]{4}-01"
+    normals = "TCGA-[A-Z0-9]{2}-[A-Z0-9]{4}-11",
+    tumors = "TCGA-[A-Z0-9]{2}-[A-Z0-9]{4}-01"
 )
 
 data("miniACC")
 
 hits <- makeHitList(miniACC, patts)
 
+## only turmors present
 splitAssays(miniACC, hits)
 
 }
