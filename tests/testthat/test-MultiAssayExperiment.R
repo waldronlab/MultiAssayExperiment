@@ -182,10 +182,12 @@ test_that("sampleMap inputs are checked in MultiAssayExperiment constructor", {
     )
     se <- matrix(runif(12), 3, 4, dimnames = list(letters[1:3], NULL))
     asamp <- DataFrame(a = "a", b = "b", c = "c")
+    ## sampleMap is missing required columns
     expect_error(
         MultiAssayExperiment(list(foo=se), sampleMap = asamp)
     )
     asamp <- DataFrame(assay = factor("foo"), primary = "p1", colname = "col1")
+    ## ExperimentList must be same length / ExperimentList names in sampleMap
     expect_error(
         new(
             "MultiAssayExperiment",
@@ -194,6 +196,7 @@ test_that("sampleMap inputs are checked in MultiAssayExperiment constructor", {
         )
     )
     se <- matrix(runif(100), 10, 10)
+    ## All non-empty ExperimentList elements must be documented in sampleMap
     expect_error(
         new(
             "MultiAssayExperiment",
@@ -205,9 +208,25 @@ test_that("sampleMap inputs are checked in MultiAssayExperiment constructor", {
             )
         )
     )
-    se <- matrix(runif(2), 1, 2, dimnames = list(letters[1], LETTERS[1:2]))
+    se0 <- matrix(runif(2), 1, 2, dimnames = list(letters[1], LETTERS[1:2]))
+    cd <- DataFrame(score = 1, row.names = paste0("pat", LETTERS[1]))
+    asamp <- DataFrame(assay = factor("bar"), primary = "patA", colname = "B")
+    ## 1.iii. For each ExperimentList element, colnames must be found in the
+    ## "assay" column of the sampleMap
+    expect_error(
+        new(
+            "MultiAssayExperiment",
+            ExperimentList = ExperimentList(list(bar = se0)),
+            colData = cd,
+            sampleMap = asamp
+        )
+    )
+    se <- matrix(runif(2), 1, 2, dimnames = list(letters[1], c("A", "A")))
     cd <- DataFrame(score = 1, row.names = "patA")
-    asamp <- DataFrame(assay = factor("foo"), primary = "patA", colname = "A")
+    asamp <- DataFrame(
+        assay = factor("foo"), primary = "patA", colname = "A"
+    )
+    ## No duplicate colname identifiers within one assay
     expect_error(
         new(
             "MultiAssayExperiment",
@@ -216,9 +235,11 @@ test_that("sampleMap inputs are checked in MultiAssayExperiment constructor", {
             sampleMap = asamp
         )
     )
+
     se <- matrix(runif(2), 1, 2, dimnames = list(letters[1], LETTERS[1:2]))
     cd <- DataFrame(score = 1, row.names = "patA")
     asamp <- DataFrame(assay = "foo", primary = "patA", colname = LETTERS[1:2])
+    ## sampleMap assay column not a factor
     expect_error(
         new(
             "MultiAssayExperiment",
