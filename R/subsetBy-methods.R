@@ -333,8 +333,9 @@ setMethod("subsetByAssay", c("MultiAssayExperiment", "ANY"), function(x, y) {
     subexp <- experiments(x)[y]
     dropnames <- setdiff(names(experiments(x)), names(subexp))
     if (length(dropnames)) {
+        if (isEmpty(drops(x)))
+            warning("'experiments' dropped; see 'drops()'", call. = FALSE)
         drops(x) <- list(experiments = dropnames)
-        warning("'experiments' dropped; see 'metadata'", call. = FALSE)
     }
     experiments(x) <- subexp
     return(x)

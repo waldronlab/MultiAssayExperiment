@@ -573,12 +573,6 @@ setMethod("colData", "MultiAssayExperiment", function(x, ...) {
     getElement(x, "colData")
 })
 
-#' @exportMethod metadata
-#' @rdname MultiAssayExperiment-methods
-setMethod("metadata", "MultiAssayExperiment", function(x)
-    c(getElement(x, "metadata"), drops = getElement(x, "drops"))
-)
-
 ### - - - - - - - - - - - - - - - - - - - - - - - -
 ### Getters
 ###
@@ -594,6 +588,15 @@ setMethod("length", "MultiAssayExperiment", function(x)
 setMethod("names", "MultiAssayExperiment", function(x)
     names(experiments(x))
 )
+
+#' @export
+setGeneric("drops", function(x) standardGeneric("drops"))
+
+#' @exportMethod drops
+#' @describeIn MultiAssayExperiment Get information about dropped experiments
+setMethod("drops", "MultiAssayExperiment", function(x) {
+    getElement(x, "drops")
+})
 
 ### - - - - - - - - - - - - - - - - - - - - - - - -
 ### Replacers
@@ -636,6 +639,7 @@ setReplaceMethod("sampleMap", c("MultiAssayExperiment", "ANY"),
 setGeneric("experiments<-", function(object, value)
     standardGeneric("experiments<-"))
 
+#' @export
 setGeneric("drops<-", function(x, ..., value) standardGeneric("drops<-"))
 
 #' @exportMethod experiments<-
@@ -643,9 +647,10 @@ setGeneric("drops<-", function(x, ..., value) standardGeneric("drops<-"))
 setReplaceMethod("experiments", c("MultiAssayExperiment", "ExperimentList"),
     function(object, value) {
         if (!any(names(object) %in% names(value)) && !isEmpty(object)) {
+            if (isEmpty(drops(x)))
+                warning("'experiments' dropped; see 'drops()'", call. = FALSE)
             drops(object) <-
                 list(experiments = setdiff(names(object), names(value)))
-            warning("'experiments' dropped; see 'metadata'", call. = FALSE)
         }
         o_cnames <- colnames(object)
         v_cnames <- colnames(value)
@@ -732,13 +737,6 @@ setReplaceMethod("colData", c("MultiAssayExperiment", "ANY"),
     }
 )
 
-#' @exportMethod metadata<-
-#' @rdname MultiAssayExperiment-methods
-setReplaceMethod("metadata", c("MultiAssayExperiment", "ANY"),
-    function(x, ..., value) {
-        slot(x, "metadata") <- value
-        return(x)
-})
 
 setReplaceMethod("drops", c("MultiAssayExperiment", "ANY"),
     function(x, ..., value) {

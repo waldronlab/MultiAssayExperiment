@@ -7,6 +7,7 @@
 \alias{show,MultiAssayExperiment-method}
 \alias{length,MultiAssayExperiment-method}
 \alias{names,MultiAssayExperiment-method}
+\alias{drops,MultiAssayExperiment-method}
 \alias{updateObject,MultiAssayExperiment-method}
 \alias{coerce-MultiAssayExperiment}
 \alias{coerce,list,MultiAssayExperiment-method}
@@ -26,6 +27,8 @@
 \S4method{length}{MultiAssayExperiment}(x)
 
 \S4method{names}{MultiAssayExperiment}(x)
+
+\S4method{drops}{MultiAssayExperiment}(x)
 
 \S4method{updateObject}{MultiAssayExperiment}(object, ..., verbose = FALSE)
 
@@ -123,6 +126,8 @@ named arguments. See the examples below.
 \item \code{length(MultiAssayExperiment)}: Get the length of ExperimentList
 
 \item \code{names(MultiAssayExperiment)}: Get the names of the ExperimentList
+
+\item \code{drops(MultiAssayExperiment)}: Get information about dropped experiments
 
 \item \code{updateObject(MultiAssayExperiment)}: Update old serialized MultiAssayExperiment
 objects to new API
