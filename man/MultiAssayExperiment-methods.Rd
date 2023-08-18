@@ -7,15 +7,19 @@
 \alias{sampleMap}
 \alias{experiments<-}
 \alias{sampleMap<-}
+\alias{drops}
+\alias{drops<-}
 \alias{sampleMap,MultiAssayExperiment-method}
 \alias{experiments,MultiAssayExperiment-method}
 \alias{colData,MultiAssayExperiment-method}
+\alias{drops,MultiAssayExperiment-method}
 \alias{sampleMap<-,MultiAssayExperiment,DataFrame-method}
 \alias{sampleMap<-,MultiAssayExperiment,ANY-method}
 \alias{experiments<-,MultiAssayExperiment,ExperimentList-method}
 \alias{experiments<-,MultiAssayExperiment,List-method}
 \alias{colData<-,MultiAssayExperiment,DataFrame-method}
 \alias{colData<-,MultiAssayExperiment,ANY-method}
+\alias{drops<-,MultiAssayExperiment-method}
 \alias{$<-,MultiAssayExperiment-method}
 \alias{names<-,MultiAssayExperiment-method}
 \alias{colnames<-,MultiAssayExperiment,List-method}
@@ -29,9 +33,13 @@
 
 \S4method{colData}{MultiAssayExperiment}(x, ...)
 
+\S4method{drops}{MultiAssayExperiment}(x)
+
 \S4method{sampleMap}{MultiAssayExperiment,DataFrame}(object) <- value
 
 \S4method{sampleMap}{MultiAssayExperiment,ANY}(object) <- value
+
+drops(x, ...) <- value
 
 \S4method{experiments}{MultiAssayExperiment,ExperimentList}(object) <- value
 
@@ -40,6 +48,8 @@
 \S4method{colData}{MultiAssayExperiment,DataFrame}(x) <- value
 
 \S4method{colData}{MultiAssayExperiment,ANY}(x) <- value
+
+\S4method{drops}{MultiAssayExperiment}(x, ...) <- value
 
 \S4method{$}{MultiAssayExperiment}(x, name) <- value
 
@@ -82,6 +92,7 @@ exception of the \link{ExperimentList} accessor named \code{experiments}.
    \item experiments: Access the \link{ExperimentList} slot
    \item `[[`: Access the \link{ExperimentList} slot
    \item `$`: Access a column in \code{colData}
+   \item `drops`: Get a vector of dropped \link{ExperimentList} names
 }
 }
 
@@ -99,6 +110,8 @@ Setter method values (i.e., '\code{function(x) <- value}'):
     \item `[[<-`: Equivalent to the \code{experiments<-} setter method for
     convenience
     \item `$<-`: A vector to replace the indicated column in \code{colData}
+    \item `drops<-`: Trace \link{ExperimentList} names that have been
+    removed
 }
 }
 

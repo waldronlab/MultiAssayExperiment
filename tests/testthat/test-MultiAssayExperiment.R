@@ -124,23 +124,23 @@ test_that("dropping experiments is noisy and traced", {
     mae <- MultiAssayExperiment(list(m=m, m2=m2, m3=m3))
     ## check warning about experiments
     expect_warning( dp <- mae[, list(m = 1:3, m2 = 0, m3 = 1), , drop = TRUE] )
-    ## check drops in metadata
-    expect_identical(metadata(dp)[["drops.experiments"]], "m2")
+    ## check drops in mae
+    expect_identical(drops(dp)[["experiments"]], "m2")
 
     ## check warning about experiments
     expect_warning( dp <- mae[character(0L), , drop = TRUE] )
     ## check drops in metadata
-    expect_identical(metadata(dp)[["drops.experiments"]], names(mae))
+    expect_identical(drops(dp)[["experiments"]], names(mae))
 
     ## check warning about experiments
     expect_warning( dp <- mae[, , 0, drop = TRUE] )
     ## check drops in metadata
-    expect_identical(metadata(dp)[["drops.experiments"]], names(mae))
+    expect_identical(drops(dp)[["experiments"]], names(mae))
 
     ## check warning about experiments
     expect_warning( dp <- mae[, , c(TRUE, FALSE), drop = TRUE] )
     ## check drops in metadata
-    expect_identical(metadata(dp)[["drops.experiments"]], "m2")
+    expect_identical(drops(dp)[["experiments"]], "m2")
 })
 
 test_that("MultiAssayExperiment replacements work", {

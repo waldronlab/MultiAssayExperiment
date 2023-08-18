@@ -512,6 +512,7 @@ setMethod("show", "MultiAssayExperiment", function(object) {
 #'    \item experiments: Access the \link{ExperimentList} slot
 #'    \item `[[`: Access the \link{ExperimentList} slot
 #'    \item `$`: Access a column in \code{colData}
+#'    \item `drops`: Get a vector of dropped \link{ExperimentList} names
 #' }
 #'
 #' @section Setters:
@@ -527,6 +528,8 @@ setMethod("show", "MultiAssayExperiment", function(object) {
 #'     \item `[[<-`: Equivalent to the \code{experiments<-} setter method for
 #'     convenience
 #'     \item `$<-`: A vector to replace the indicated column in \code{colData}
+#'     \item `drops<-`: Trace \link{ExperimentList} names that have been
+#'     removed
 #' }
 #'
 #' @param object,x A \code{MultiAssayExperiment} object
@@ -543,7 +546,7 @@ setMethod("show", "MultiAssayExperiment", function(object) {
 #'
 #' @example inst/scripts/MultiAssayExperiment-methods-Ex.R
 #'
-#' @aliases experiments sampleMap experiments<- sampleMap<-
+#' @aliases experiments sampleMap experiments<- sampleMap<- drops drops<-
 NULL
 
 ### - - - - - - - - - - - - - - - - - - - - - - -
@@ -573,6 +576,15 @@ setMethod("colData", "MultiAssayExperiment", function(x, ...) {
     getElement(x, "colData")
 })
 
+#' @export
+setGeneric("drops", function(x) standardGeneric("drops"))
+
+#' @exportMethod drops
+#' @rdname MultiAssayExperiment-methods
+setMethod("drops", "MultiAssayExperiment", function(x) {
+    getElement(x, "drops")
+})
+
 ### - - - - - - - - - - - - - - - - - - - - - - - -
 ### Getters
 ###
@@ -588,15 +600,6 @@ setMethod("length", "MultiAssayExperiment", function(x)
 setMethod("names", "MultiAssayExperiment", function(x)
     names(experiments(x))
 )
-
-#' @export
-setGeneric("drops", function(x) standardGeneric("drops"))
-
-#' @exportMethod drops
-#' @describeIn MultiAssayExperiment Get information about dropped experiments
-setMethod("drops", "MultiAssayExperiment", function(x) {
-    getElement(x, "drops")
-})
 
 ### - - - - - - - - - - - - - - - - - - - - - - - -
 ### Replacers
@@ -640,6 +643,7 @@ setGeneric("experiments<-", function(object, value)
     standardGeneric("experiments<-"))
 
 #' @export
+#' @rdname MultiAssayExperiment-methods
 setGeneric("drops<-", function(x, ..., value) standardGeneric("drops<-"))
 
 #' @exportMethod experiments<-
@@ -647,7 +651,7 @@ setGeneric("drops<-", function(x, ..., value) standardGeneric("drops<-"))
 setReplaceMethod("experiments", c("MultiAssayExperiment", "ExperimentList"),
     function(object, value) {
         if (!any(names(object) %in% names(value)) && !isEmpty(object)) {
-            if (isEmpty(drops(x)))
+            if (isEmpty(drops(object)))
                 warning("'experiments' dropped; see 'drops()'", call. = FALSE)
             drops(object) <-
                 list(experiments = setdiff(names(object), names(value)))
@@ -737,7 +741,8 @@ setReplaceMethod("colData", c("MultiAssayExperiment", "ANY"),
     }
 )
 
-
+#' @exportMethod drops<-
+#' @rdname MultiAssayExperiment-methods
 setReplaceMethod("drops", c("MultiAssayExperiment", "ANY"),
     function(x, ..., value) {
         anydrops <- getElement(x, "drops")[["experiments"]]

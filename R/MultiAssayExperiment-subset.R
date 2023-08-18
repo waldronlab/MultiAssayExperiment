@@ -17,13 +17,15 @@ NULL
     isEmptyAssay <- .emptyAssays(experiments(object))
     if (all(isEmptyAssay)) {
         drops(object) <- list(experiments = names(object))
+        if (warn)
+            warning("'experiments' dropped; see 'drops()'", call. = FALSE)
         experiments(object) <- ExperimentList()
     } else if (any(isEmptyAssay)) {
         empties <- vapply(isEmptyAssay, isTRUE, logical(1L))
         keeps <- names(isEmptyAssay)[!empties]
         drops(object) <- list(experiments = names(isEmptyAssay)[empties])
         if (warn)
-            warning("'experiments' dropped; see 'metadata'", call. = FALSE)
+            warning("'experiments' dropped; see 'drops()'", call. = FALSE)
         FUN <- if (warn) force else suppressWarnings
         object <- FUN(subsetByAssay(object, keeps))
     }
@@ -47,7 +49,7 @@ NULL
         x <- subsetByRow(x, i, ...)
     }
     if (drop) {
-        x <- .dropEmpty(x)
+        x <- .dropEmpty(x, warn = TRUE)
     }
     return(x)
 }
