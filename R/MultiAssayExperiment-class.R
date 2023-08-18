@@ -205,8 +205,25 @@ setClass(
     list(experiments=experiments, sampleMap=sampleMap, colData=colData)
 }
 
+.checkFixSampleMap <- function(samplemap) {
+    samplemap <- as(samplemap, "DataFrame")
+    smapnames <- c("assay", "primary", "colname")
+    if (!all(smapnames %in% colnames(samplemap)))
+        stop("'sampleMap' does not have required columns")
+
+    if (!identical(colnames(samplemap), smapnames))
+        samplemap <- samplemap[, smapnames]
+
+    .smapColumnCoerce(samplemap)
+}
+
 .smapColumnCoerce <- function(samplemap) {
     isfuns <- list(is.factor, is.character, is.character)
+    colsOK <- mapply(
+        FUN = function(fun, X) { fun(X) },  fun = isfuns, X = samplemap
+    )
+    if (all(colsOK))
+        return(samplemap)
     asfuns <- list(
         as.factor = as.factor,
         as.character = as.character,
@@ -317,13 +334,9 @@ MultiAssayExperiment <-
             )
     }
 
+    sampleMap <- .checkFixSampleMap(sampleMap)
+
     colData <- as(colData, "DataFrame")
-    sampleMap <- as(sampleMap, "DataFrame")
-
-    if (!all(c("assay", "primary", "colname") %in% colnames(sampleMap)))
-        stop("'sampleMap' does not have required columns")
-
-    sampleMap <- .smapColumnCoerce(sampleMap)
 
     bliss <- .harmonize(experiments, colData, sampleMap)
 
@@ -719,12 +732,6 @@ setReplaceMethod("colData", c("MultiAssayExperiment", "ANY"),
     }
 )
 
-.rearrangeMap <- function(sampMap) {
-    return(DataFrame(assay = factor(sampMap[["assayname"]]),
-                     primary = sampMap[["primary"]],
-                     colname = sampMap[["assay"]]))
-}
-
 #' @exportMethod metadata<-
 #' @rdname MultiAssayExperiment-methods
 setReplaceMethod("metadata", c("MultiAssayExperiment", "ANY"),
@@ -832,7 +839,7 @@ setMethod("updateObject", "MultiAssayExperiment",
         oldEL <- try(object@ExperimentList, silent = TRUE)
         if (is(oldEL, "try-error")) {
             explist <- ExperimentList(object@Elist@listData)
-            samplemap <- .rearrangeMap(object@sampleMap)
+            samplemap <- .checkFixSampleMap(object@sampleMap)
         } else {
             explist <- experiments(object)
             samplemap <- sampleMap(object)

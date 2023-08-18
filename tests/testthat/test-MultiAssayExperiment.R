@@ -174,7 +174,7 @@ test_that("ExperimentList metadata and mcols are preserved", {
     expect_identical(metadata(experiments(mae0)), metalist)
 })
 
-test_that("sampleMap inputs are checked in MultiAssayExperiment constructor", {
+test_that("sampleMap is checked in MultiAssayExperiment constructor", {
     se <- matrix(runif(100), 10, 10)
     ## empty sampleMap
     expect_error(
@@ -186,6 +186,20 @@ test_that("sampleMap inputs are checked in MultiAssayExperiment constructor", {
     expect_error(
         MultiAssayExperiment(list(foo=se), sampleMap = asamp)
     )
+
+    asamp <- DataFrame(
+        primary = "patA", assay = factor("foo"), colname = LETTERS[1:2]
+    )
+    expect_identical(
+        .checkFixSampleMap(asamp),
+        DataFrame(
+            assay = factor("foo"), primary = "patA", colname = LETTERS[1:2]
+        )
+    )
+})
+
+test_that("sampleMap is checked in MultiAssayExperiment validator", {
+    se <- matrix(runif(12), 3, 4, dimnames = list(letters[1:3], NULL))
     asamp <- DataFrame(assay = factor("foo"), primary = "p1", colname = "col1")
     ## ExperimentList must be same length / ExperimentList names in sampleMap
     expect_error(
