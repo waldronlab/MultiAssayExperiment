@@ -1,3 +1,10 @@
+## Changes in version 1.28.0
+
+### New features
+
+* Dropped experiments are no longer kept in the `metadata` slot. They can
+be seen with `drops()` (@LTLA, #323).
+
 ## Changes in version 1.26.0
 
 ### New features
