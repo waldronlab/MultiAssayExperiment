@@ -25,6 +25,8 @@
 \alias{colnames<-,MultiAssayExperiment,List-method}
 \alias{colnames<-,MultiAssayExperiment,list-method}
 \alias{$,MultiAssayExperiment-method}
+\alias{metadata,MultiAssayExperiment-method}
+\alias{metadata<-,MultiAssayExperiment-method}
 \title{Accessing and modifying information in MultiAssayExperiment}
 \usage{
 \S4method{sampleMap}{MultiAssayExperiment}(x)
@@ -60,6 +62,10 @@ drops(x, ...) <- value
 \S4method{colnames}{MultiAssayExperiment,list}(x) <- value
 
 \S4method{$}{MultiAssayExperiment}(x, name)
+
+\S4method{metadata}{MultiAssayExperiment}(x, ...)
+
+\S4method{metadata}{MultiAssayExperiment}(x, ...) <- value
 }
 \arguments{
 \item{...}{Argument not in use}

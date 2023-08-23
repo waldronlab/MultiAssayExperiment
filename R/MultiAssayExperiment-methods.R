@@ -107,6 +107,21 @@ setMethod("$", "MultiAssayExperiment", function(x, name) {
     colData(x)[[name]]
 })
 
+#' @importFrom S4Vectors metadata
+#' @rdname MultiAssayExperiment-methods
+#' @exportMethod metadata
+setMethod("metadata", "MultiAssayExperiment", function(x, ...) {
+    callNextMethod()
+})
+
+#' @importFrom S4Vectors metadata<-
+#' @rdname MultiAssayExperiment-methods
+#' @exportMethod metadata<-
+setReplaceMethod("metadata", c("MultiAssayExperiment", "ANY"),
+    function(x, ..., value) {
+        callNextMethod()
+    }
+)
 
 .splitArgs <- function(args) {
     assayArgNames <- c("mcolname", "background", "type",
