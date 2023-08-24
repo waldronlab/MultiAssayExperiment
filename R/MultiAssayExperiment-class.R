@@ -385,6 +385,12 @@ MultiAssayExperiment <-
     if (!length(errors)) NULL else errors
 }
 
+.id_sort_uniq <- function(x, y) {
+    identical(
+        sort(unique(x)), sort(unique(y))
+    )
+}
+
 ## 1.iii. For each ExperimentList element, colnames must be found in the
 ## "assay" column of the sampleMap
 .checkSampleNames <- function(object) {
@@ -394,7 +400,7 @@ MultiAssayExperiment <-
     msg <- NULL
     if (length(colNams)) {
         logicResult <- mapply(function(x, y) {
-            identical(sort(x), sort(y))
+            .id_sort_uniq(x = x, y = y)
         }, x = colNams, y = assayCols[names(colNams)])
         if (!all(logicResult))
             msg <- "not all ExperimentList samples are found in the sampleMap"
