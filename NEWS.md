@@ -5,6 +5,11 @@
 * Dropped experiments are no longer kept in the `metadata` slot. They can
 be seen with `drops()` (@LTLA, #323).
 
+### Bug fixes and minor improvements
+
+* Checking `colnames` in `sampleMap` vs `ExperimentList` is more robust by only
+comparing unique and sorted values in each.
+
 ## Changes in version 1.26.0
 
 ### New features
