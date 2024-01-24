@@ -152,18 +152,18 @@ create a <code>DelayedMatrix</code> object.</p>
 <code class="sourceCode R"><span><span class="co"># show method</span></span>
 <span><span class="va">smallMatrix</span></span></code></pre></div>
 <pre><code><span><span class="co">## &lt;50000 x 20&gt; DelayedMatrix object of type "double":</span></span>
-<span><span class="co">##             SampleID1   SampleID2   SampleID3 ... SampleID19 SampleID20</span></span>
-<span><span class="co">##     GENE1 -1.12995855  1.07016100  1.18207091   . -0.8056074  0.3898959</span></span>
-<span><span class="co">##     GENE2  1.25713269 -0.04564006  2.07984141   . -2.3927740 -0.2773274</span></span>
-<span><span class="co">##     GENE3 -0.47135062 -0.23636680 -0.46048454   .  1.4651289 -0.6169085</span></span>
-<span><span class="co">##     GENE4  1.05173529  1.66467851 -0.18970897   .  1.4320157  0.9532493</span></span>
-<span><span class="co">##     GENE5 -1.45267077  1.92366774  0.79038028   .  0.5811330 -0.9606137</span></span>
-<span><span class="co">##       ...           .           .           .   .          .          .</span></span>
-<span><span class="co">## GENE49996  0.81559712  1.16387664  0.63323368   . -1.0619715  0.2273378</span></span>
-<span><span class="co">## GENE49997 -0.18344528  1.54027577 -0.63497221   .  1.2899695  0.6164438</span></span>
-<span><span class="co">## GENE49998 -0.01776370 -0.54005098 -0.07304742   .  0.8952674 -0.3235521</span></span>
-<span><span class="co">## GENE49999  1.62407432  0.66979502 -1.08509447   . -1.2832653 -0.6926807</span></span>
-<span><span class="co">## GENE50000  0.08414138 -0.20345723  0.35214303   .  1.5959696  0.6651309</span></span></code></pre>
+<span><span class="co">##             SampleID1   SampleID2   SampleID3 ...  SampleID19  SampleID20</span></span>
+<span><span class="co">##     GENE1  -0.3875569  -0.9245979  -0.4860061   .  0.88458768 -1.61563992</span></span>
+<span><span class="co">##     GENE2  -0.2644658   0.3048011  -0.9763176   .  0.62873303  0.11844208</span></span>
+<span><span class="co">##     GENE3  -1.0037401  -0.6172604   0.2084938   . -1.03015889 -1.61369308</span></span>
+<span><span class="co">##     GENE4  -1.1815745  -1.5556907   0.6032805   . -1.30802616  0.07655268</span></span>
+<span><span class="co">##     GENE5  -2.9104018   2.4867479   3.2304527   . -0.39682861  2.10575923</span></span>
+<span><span class="co">##       ...           .           .           .   .           .           .</span></span>
+<span><span class="co">## GENE49996  0.08974065  0.65075160 -0.07995008   .   0.5827023   0.1526415</span></span>
+<span><span class="co">## GENE49997  0.70751975  1.37734494 -2.00313995   .   0.6547790   1.4318531</span></span>
+<span><span class="co">## GENE49998  0.74370046 -0.04946058 -0.31213299   .  -2.4141129  -1.5732835</span></span>
+<span><span class="co">## GENE49999 -2.61420539 -1.09089104  0.91170686   .   1.0285334  -0.3192227</span></span>
+<span><span class="co">## GENE50000  0.42807965 -0.71061527  0.39352464   .   0.2416611  -0.7500389</span></span></code></pre>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">smallMatrix</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 50000    20</span></span></code></pre>
@@ -181,18 +181,18 @@ argument:</p>
 <span><span class="fu"><a href="https://rdrr.io/pkg/HDF5Array/man/writeHDF5Array.html" class="external-link">writeHDF5Array</a></span><span class="op">(</span><span class="va">smallMatrix</span>, filepath <span class="op">=</span> <span class="va">testh5</span>, name <span class="op">=</span> <span class="st">"smallMatrix"</span>,</span>
 <span>    with.dimnames <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## &lt;50000 x 20&gt; HDF5Matrix object of type "double":</span></span>
-<span><span class="co">##             SampleID1   SampleID2   SampleID3 ... SampleID19 SampleID20</span></span>
-<span><span class="co">##     GENE1 -1.12995855  1.07016100  1.18207091   . -0.8056074  0.3898959</span></span>
-<span><span class="co">##     GENE2  1.25713269 -0.04564006  2.07984141   . -2.3927740 -0.2773274</span></span>
-<span><span class="co">##     GENE3 -0.47135062 -0.23636680 -0.46048454   .  1.4651289 -0.6169085</span></span>
-<span><span class="co">##     GENE4  1.05173529  1.66467851 -0.18970897   .  1.4320157  0.9532493</span></span>
-<span><span class="co">##     GENE5 -1.45267077  1.92366774  0.79038028   .  0.5811330 -0.9606137</span></span>
-<span><span class="co">##       ...           .           .           .   .          .          .</span></span>
-<span><span class="co">## GENE49996  0.81559712  1.16387664  0.63323368   . -1.0619715  0.2273378</span></span>
-<span><span class="co">## GENE49997 -0.18344528  1.54027577 -0.63497221   .  1.2899695  0.6164438</span></span>
-<span><span class="co">## GENE49998 -0.01776370 -0.54005098 -0.07304742   .  0.8952674 -0.3235521</span></span>
-<span><span class="co">## GENE49999  1.62407432  0.66979502 -1.08509447   . -1.2832653 -0.6926807</span></span>
-<span><span class="co">## GENE50000  0.08414138 -0.20345723  0.35214303   .  1.5959696  0.6651309</span></span></code></pre>
+<span><span class="co">##             SampleID1   SampleID2   SampleID3 ...  SampleID19  SampleID20</span></span>
+<span><span class="co">##     GENE1  -0.3875569  -0.9245979  -0.4860061   .  0.88458768 -1.61563992</span></span>
+<span><span class="co">##     GENE2  -0.2644658   0.3048011  -0.9763176   .  0.62873303  0.11844208</span></span>
+<span><span class="co">##     GENE3  -1.0037401  -0.6172604   0.2084938   . -1.03015889 -1.61369308</span></span>
+<span><span class="co">##     GENE4  -1.1815745  -1.5556907   0.6032805   . -1.30802616  0.07655268</span></span>
+<span><span class="co">##     GENE5  -2.9104018   2.4867479   3.2304527   . -0.39682861  2.10575923</span></span>
+<span><span class="co">##       ...           .           .           .   .           .           .</span></span>
+<span><span class="co">## GENE49996  0.08974065  0.65075160 -0.07995008   .   0.5827023   0.1526415</span></span>
+<span><span class="co">## GENE49997  0.70751975  1.37734494 -2.00313995   .   0.6547790   1.4318531</span></span>
+<span><span class="co">## GENE49998  0.74370046 -0.04946058 -0.31213299   .  -2.4141129  -1.5732835</span></span>
+<span><span class="co">## GENE49999 -2.61420539 -1.09089104  0.91170686   .   1.0285334  -0.3192227</span></span>
+<span><span class="co">## GENE50000  0.42807965 -0.71061527  0.39352464   .   0.2416611  -0.7500389</span></span></code></pre>
 <p>To see the file structure we use <code>h5ls</code>:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">h5ls</span><span class="op">(</span><span class="va">testh5</span><span class="op">)</span></span></code></pre></div>
@@ -218,18 +218,18 @@ functions.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">newDelayedMatrix</span></span></code></pre></div>
 <pre><code><span><span class="co">## &lt;50000 x 20&gt; HDF5Matrix object of type "double":</span></span>
-<span><span class="co">##             SampleID1   SampleID2   SampleID3 ... SampleID19 SampleID20</span></span>
-<span><span class="co">##     GENE1 -1.12995855  1.07016100  1.18207091   . -0.8056074  0.3898959</span></span>
-<span><span class="co">##     GENE2  1.25713269 -0.04564006  2.07984141   . -2.3927740 -0.2773274</span></span>
-<span><span class="co">##     GENE3 -0.47135062 -0.23636680 -0.46048454   .  1.4651289 -0.6169085</span></span>
-<span><span class="co">##     GENE4  1.05173529  1.66467851 -0.18970897   .  1.4320157  0.9532493</span></span>
-<span><span class="co">##     GENE5 -1.45267077  1.92366774  0.79038028   .  0.5811330 -0.9606137</span></span>
-<span><span class="co">##       ...           .           .           .   .          .          .</span></span>
-<span><span class="co">## GENE49996  0.81559712  1.16387664  0.63323368   . -1.0619715  0.2273378</span></span>
-<span><span class="co">## GENE49997 -0.18344528  1.54027577 -0.63497221   .  1.2899695  0.6164438</span></span>
-<span><span class="co">## GENE49998 -0.01776370 -0.54005098 -0.07304742   .  0.8952674 -0.3235521</span></span>
-<span><span class="co">## GENE49999  1.62407432  0.66979502 -1.08509447   . -1.2832653 -0.6926807</span></span>
-<span><span class="co">## GENE50000  0.08414138 -0.20345723  0.35214303   .  1.5959696  0.6651309</span></span></code></pre>
+<span><span class="co">##             SampleID1   SampleID2   SampleID3 ...  SampleID19  SampleID20</span></span>
+<span><span class="co">##     GENE1  -0.3875569  -0.9245979  -0.4860061   .  0.88458768 -1.61563992</span></span>
+<span><span class="co">##     GENE2  -0.2644658   0.3048011  -0.9763176   .  0.62873303  0.11844208</span></span>
+<span><span class="co">##     GENE3  -1.0037401  -0.6172604   0.2084938   . -1.03015889 -1.61369308</span></span>
+<span><span class="co">##     GENE4  -1.1815745  -1.5556907   0.6032805   . -1.30802616  0.07655268</span></span>
+<span><span class="co">##     GENE5  -2.9104018   2.4867479   3.2304527   . -0.39682861  2.10575923</span></span>
+<span><span class="co">##       ...           .           .           .   .           .           .</span></span>
+<span><span class="co">## GENE49996  0.08974065  0.65075160 -0.07995008   .   0.5827023   0.1526415</span></span>
+<span><span class="co">## GENE49997  0.70751975  1.37734494 -2.00313995   .   0.6547790   1.4318531</span></span>
+<span><span class="co">## GENE49998  0.74370046 -0.04946058 -0.31213299   .  -2.4141129  -1.5732835</span></span>
+<span><span class="co">## GENE49999 -2.61420539 -1.09089104  0.91170686   .   1.0285334  -0.3192227</span></span>
+<span><span class="co">## GENE50000  0.42807965 -0.71061527  0.39352464   .   0.2416611  -0.7500389</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="using-a-delayedmatrix-with-multiassayexperiment">Using a <code>DelayedMatrix</code> with
@@ -277,18 +277,18 @@ how this would work:</p>
 <code class="sourceCode R"><span><span class="va">HDF5SE</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/RangedSummarizedExperiment-class.html" class="external-link">SummarizedExperiment</a></span><span class="op">(</span>assays <span class="op">=</span> <span class="va">smallMatrix</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">assay</a></span><span class="op">(</span><span class="va">HDF5SE</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## &lt;50000 x 20&gt; DelayedMatrix object of type "double":</span></span>
-<span><span class="co">##             SampleID1   SampleID2   SampleID3 ... SampleID19 SampleID20</span></span>
-<span><span class="co">##     GENE1 -1.12995855  1.07016100  1.18207091   . -0.8056074  0.3898959</span></span>
-<span><span class="co">##     GENE2  1.25713269 -0.04564006  2.07984141   . -2.3927740 -0.2773274</span></span>
-<span><span class="co">##     GENE3 -0.47135062 -0.23636680 -0.46048454   .  1.4651289 -0.6169085</span></span>
-<span><span class="co">##     GENE4  1.05173529  1.66467851 -0.18970897   .  1.4320157  0.9532493</span></span>
-<span><span class="co">##     GENE5 -1.45267077  1.92366774  0.79038028   .  0.5811330 -0.9606137</span></span>
-<span><span class="co">##       ...           .           .           .   .          .          .</span></span>
-<span><span class="co">## GENE49996  0.81559712  1.16387664  0.63323368   . -1.0619715  0.2273378</span></span>
-<span><span class="co">## GENE49997 -0.18344528  1.54027577 -0.63497221   .  1.2899695  0.6164438</span></span>
-<span><span class="co">## GENE49998 -0.01776370 -0.54005098 -0.07304742   .  0.8952674 -0.3235521</span></span>
-<span><span class="co">## GENE49999  1.62407432  0.66979502 -1.08509447   . -1.2832653 -0.6926807</span></span>
-<span><span class="co">## GENE50000  0.08414138 -0.20345723  0.35214303   .  1.5959696  0.6651309</span></span></code></pre>
+<span><span class="co">##             SampleID1   SampleID2   SampleID3 ...  SampleID19  SampleID20</span></span>
+<span><span class="co">##     GENE1  -0.3875569  -0.9245979  -0.4860061   .  0.88458768 -1.61563992</span></span>
+<span><span class="co">##     GENE2  -0.2644658   0.3048011  -0.9763176   .  0.62873303  0.11844208</span></span>
+<span><span class="co">##     GENE3  -1.0037401  -0.6172604   0.2084938   . -1.03015889 -1.61369308</span></span>
+<span><span class="co">##     GENE4  -1.1815745  -1.5556907   0.6032805   . -1.30802616  0.07655268</span></span>
+<span><span class="co">##     GENE5  -2.9104018   2.4867479   3.2304527   . -0.39682861  2.10575923</span></span>
+<span><span class="co">##       ...           .           .           .   .           .           .</span></span>
+<span><span class="co">## GENE49996  0.08974065  0.65075160 -0.07995008   .   0.5827023   0.1526415</span></span>
+<span><span class="co">## GENE49997  0.70751975  1.37734494 -2.00313995   .   0.6547790   1.4318531</span></span>
+<span><span class="co">## GENE49998  0.74370046 -0.04946058 -0.31213299   .  -2.4141129  -1.5732835</span></span>
+<span><span class="co">## GENE49999 -2.61420539 -1.09089104  0.91170686   .   1.0285334  -0.3192227</span></span>
+<span><span class="co">## GENE50000  0.42807965 -0.71061527  0.39352464   .   0.2416611  -0.7500389</span></span></code></pre>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/MultiAssayExperiment.html">MultiAssayExperiment</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>HDF5SE <span class="op">=</span> <span class="va">HDF5SE</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## A MultiAssayExperiment object of 1 listed</span></span>
