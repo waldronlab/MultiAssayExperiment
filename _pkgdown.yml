@@ -32,12 +32,17 @@ reference:
       - upsetSamples
       - listToMap
       - prepMultiAssay
+  - title: External Formats
+    desc: Compatibility with other Bioconductor packages
+    contents:
+      - saveHDF5MultiAssayExperiment
+      - MultiAssayExperimentToMAF
   - title: Misc. Package Docs
     desc: Other package information and data
     contents:
       - MultiAssayExperiment-package
       - hasAssay
-      - reexports 
+      - reexports
       - miniACC
 
 navbar:
