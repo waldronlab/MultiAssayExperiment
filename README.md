@@ -6,7 +6,7 @@ https://doi.org/10.1158/0008-5472.CAN-17-0344
 
 [![BioC status](http://www.bioconductor.org/shields/build/release/bioc/MultiAssayExperiment.svg)](https://bioconductor.org/checkResults/release/bioc-LATEST/MultiAssayExperiment)
 [![Platforms](http://www.bioconductor.org/shields/availability/release/MultiAssayExperiment.svg)](https://www.bioconductor.org/packages/release/bioc/html/MultiAssayExperiment.html#archives)
-[![Coverage Status](https://codecov.io/github/waldronlab/MultiAssayExperiment/coverage.svg?branch=devel)](https://codecov.io/github/waldronlab/MultiAssayExperiment?branch=devel)
+[![codecov](https://codecov.io/gh/waldronlab/MultiAssayExperiment/graph/badge.svg?token=MjYxSY7TGt)](https://codecov.io/gh/waldronlab/MultiAssayExperiment)
 [![Downloads](http://www.bioconductor.org/shields/downloads/release/MultiAssayExperiment.svg)](https://bioconductor.org/packages/stats/bioc/MultiAssayExperiment)
 
 ## Installation
