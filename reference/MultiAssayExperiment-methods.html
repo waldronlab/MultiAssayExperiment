@@ -20,7 +20,7 @@ MultiAssayExperiment object"><!-- mathjax --><script src="https://cdnjs.cloudfla
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MultiAssayExperiment</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.26.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.28.0</span>
       </span>
     </div>
 
@@ -95,13 +95,15 @@ experiments(x)
 colData(x, ...)
 
 # S4 method for MultiAssayExperiment
-metadata(x)
+drops(x)
 
 # S4 method for MultiAssayExperiment,DataFrame
 sampleMap(object) &lt;- value
 
 # S4 method for MultiAssayExperiment,ANY
 sampleMap(object) &lt;- value
+
+drops(x, ...) &lt;- value
 
 # S4 method for MultiAssayExperiment,ExperimentList
 experiments(object) &lt;- value
@@ -116,7 +118,7 @@ colData(x) &lt;- value
 colData(x) &lt;- value
 
 # S4 method for MultiAssayExperiment
-metadata(x, ...) &lt;- value
+drops(x, ...) &lt;- value
 
 # S4 method for MultiAssayExperiment
 $(x, name) &lt;- value
@@ -131,7 +133,13 @@ colnames(x) &lt;- value
 colnames(x) &lt;- value
 
 # S4 method for MultiAssayExperiment
-$(x, name)</code></pre></div>
+$(x, name)
+
+# S4 method for MultiAssayExperiment
+metadata(x, ...)
+
+# S4 method for MultiAssayExperiment
+metadata(x, ...) &lt;- value</code></pre></div>
     </div>
 
     <div id="arguments">
@@ -172,6 +180,7 @@ exception of the <a href="ExperimentList.html">ExperimentList</a> accessor named
 <li><p>experiments: Access the <a href="ExperimentList.html">ExperimentList</a> slot</p></li>
 <li><p>`[[`: Access the <a href="ExperimentList.html">ExperimentList</a> slot</p></li>
 <li><p>`$`: Access a column in <code>colData</code></p></li>
+<li><p>`drops`: Get a vector of dropped <a href="ExperimentList.html">ExperimentList</a> names</p></li>
 </ul></div>
     <div id="setters">
     <h2>Setters</h2>
@@ -187,6 +196,8 @@ exception of the <a href="ExperimentList.html">ExperimentList</a> accessor named
 <li><p>`[[&lt;-`: Equivalent to the <code>experiments&lt;-</code> setter method for
     convenience</p></li>
 <li><p>`$&lt;-`: A vector to replace the indicated column in <code>colData</code></p></li>
+<li><p>`drops&lt;-`: Trace <a href="ExperimentList.html">ExperimentList</a> names that have been
+    removed</p></li>
 </ul></div>
 
     <div id="ref-examples">

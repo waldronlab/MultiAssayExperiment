@@ -63,7 +63,7 @@ of a particular assay
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MultiAssayExperiment</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.26.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.28.0</span>
       </span>
     </div>
 
@@ -628,23 +628,24 @@ to avoid repetition of columns across assays. See the examples section.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">patts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>    normals <span class="op">=</span> <span class="st">"TCGA-OR-[A-Z0-9]{4}-11"</span>,</span></span>
-<span class="r-in"><span>    tumors <span class="op">=</span> <span class="st">"TCGA-OR-[A-Z0-9]{4}-01"</span></span></span>
+<span class="r-in"><span>    normals <span class="op">=</span> <span class="st">"TCGA-[A-Z0-9]{2}-[A-Z0-9]{4}-11"</span>,</span></span>
+<span class="r-in"><span>    tumors <span class="op">=</span> <span class="st">"TCGA-[A-Z0-9]{2}-[A-Z0-9]{4}-01"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"miniACC"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">hits</span> <span class="op">&lt;-</span> <span class="fu">makeHitList</span><span class="op">(</span><span class="va">miniACC</span>, <span class="va">patts</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## only turmors present</span></span></span>
 <span class="r-in"><span><span class="fu">splitAssays</span><span class="op">(</span><span class="va">miniACC</span>, <span class="va">hits</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> A MultiAssayExperiment object of 5 listed</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  experiments with user-defined names and respective classes.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Containing an ExperimentList class object of length 5:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] tumors_RNASeq2GeneNorm: SummarizedExperiment with 198 rows and 71 columns</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [2] tumors_gistict: SummarizedExperiment with 198 rows and 82 columns</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [3] tumors_RPPAArray: SummarizedExperiment with 33 rows and 40 columns</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [4] tumors_Mutations: matrix with 97 rows and 81 columns</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [5] tumors_miRNASeqGene: SummarizedExperiment with 471 rows and 72 columns</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] tumors_RNASeq2GeneNorm: SummarizedExperiment with 198 rows and 79 columns</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [2] tumors_gistict: SummarizedExperiment with 198 rows and 90 columns</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [3] tumors_RPPAArray: SummarizedExperiment with 33 rows and 46 columns</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [4] tumors_Mutations: matrix with 97 rows and 90 columns</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [5] tumors_miRNASeqGene: SummarizedExperiment with 471 rows and 80 columns</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Functionality:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  experiments() - obtain the ExperimentList instance</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  colData() - the primary/phenotype DataFrame</span>

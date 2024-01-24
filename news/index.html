@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MultiAssayExperiment</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.26.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.28.0</span>
       </span>
     </div>
 
@@ -73,6 +73,17 @@
       <small>Source: <a href="https://github.com/waldronlab/MultiAssayExperiment/blob/HEAD/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="1.28.0" id="changes-in-version-1280">Changes in version 1.28.0<a class="anchor" aria-label="anchor" href="#changes-in-version-1280"></a></h2>
+<div class="section level3">
+<h3 id="new-features-1-28-0">New features<a class="anchor" aria-label="anchor" href="#new-features-1-28-0"></a></h3>
+<ul><li>Dropped experiments are no longer kept in the <code>metadata</code> slot. They can be seen with <code><a href="../reference/MultiAssayExperiment-methods.html">drops()</a></code> (<a href="https://github.com/LTLA" class="external-link">@LTLA</a>, <a href="https://github.com/waldronlab/MultiAssayExperiment/issues/323" class="external-link">#323</a>).</li>
+</ul></div>
+<div class="section level3">
+<h3 id="bug-fixes-and-minor-improvements-1-28-0">Bug fixes and minor improvements<a class="anchor" aria-label="anchor" href="#bug-fixes-and-minor-improvements-1-28-0"></a></h3>
+<ul><li>Checking <code>colnames</code> in <code>sampleMap</code> vs <code>ExperimentList</code> is more robust by only comparing unique and sorted values in each.</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.26.0" id="changes-in-version-1260">Changes in version 1.26.0<a class="anchor" aria-label="anchor" href="#changes-in-version-1260"></a></h2>
 <div class="section level3">

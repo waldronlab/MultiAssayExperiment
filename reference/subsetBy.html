@@ -18,7 +18,7 @@ MultiAssayExperiment"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MultiAssayExperiment</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.26.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.28.0</span>
       </span>
     </div>
 
@@ -303,7 +303,7 @@ The order of the subsetting elements in the
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Using experiment names</span></span></span>
 <span class="r-in"><span><span class="fu">subsetByAssay</span><span class="op">(</span><span class="va">mae</span>, <span class="st">"Affy"</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>'experiments' dropped; see 'metadata'</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>'experiments' dropped; see 'drops()'</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> harmonizing input:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   removing 12 sampleMap rows not in names(experiments)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> A MultiAssayExperiment object of 1 listed</span>
@@ -321,7 +321,7 @@ The order of the subsetting elements in the
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Using numeric indices</span></span></span>
 <span class="r-in"><span><span class="fu">subsetByAssay</span><span class="op">(</span><span class="va">mae</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>'experiments' dropped; see 'metadata'</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>'experiments' dropped; see 'drops()'</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> harmonizing input:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   removing 7 sampleMap rows not in names(experiments)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> A MultiAssayExperiment object of 2 listed</span>
@@ -340,7 +340,7 @@ The order of the subsetting elements in the
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Using a logical vector</span></span></span>
 <span class="r-in"><span><span class="fu">subsetByAssay</span><span class="op">(</span><span class="va">mae</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>'experiments' dropped; see 'metadata'</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>'experiments' dropped; see 'drops()'</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> harmonizing input:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   removing 5 sampleMap rows not in names(experiments)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> A MultiAssayExperiment object of 3 listed</span>

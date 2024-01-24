@@ -39,7 +39,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">MultiAssayExperiment</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.26.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.28.0</span>
       </span>
     </div>
 
@@ -109,18 +109,18 @@
 <h2 id="software-for-the-integration-of-multi-omics-experiments-in-bioconductor">Software For The Integration Of Multi-Omics Experiments In Bioconductor<a class="anchor" aria-label="anchor" href="#software-for-the-integration-of-multi-omics-experiments-in-bioconductor"></a>
 </h2>
 <p><a href="https://doi.org/10.1158/0008-5472.CAN-17-0344" class="external-link uri">https://doi.org/10.1158/0008-5472.CAN-17-0344</a></p>
-<p><a href="https://bioconductor.org/checkResults/release/bioc-LATEST/MultiAssayExperiment" class="external-link"><img src="http://www.bioconductor.org/shields/build/release/bioc/MultiAssayExperiment.svg" alt="BioC status"></a> <a href="https://www.bioconductor.org/packages/release/bioc/html/MultiAssayExperiment.html#archives" class="external-link"><img src="http://www.bioconductor.org/shields/availability/release/MultiAssayExperiment.svg" alt="Platforms"></a> <a href="https://codecov.io/github/waldronlab/MultiAssayExperiment?branch=devel" class="external-link"><img src="https://codecov.io/github/waldronlab/MultiAssayExperiment/coverage.svg?branch=devel" alt="Coverage Status"></a> <a href="https://bioconductor.org/packages/stats/bioc/MultiAssayExperiment" class="external-link"><img src="http://www.bioconductor.org/shields/downloads/release/MultiAssayExperiment.svg" alt="Downloads"></a></p>
+<!-- badges: start -->
+
 </div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
 <p>We recommend installing the stable release version of MultiAssayExperiment in Bioconductor. This can be done using <code>BiocManager</code>:</p>
-<pre><code><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://bioconductor.github.io/BiocManager/" class="external-link">"BiocManager"</a></span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">BiocManager</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html" class="external-link">install</a></span><span class="op">(</span><span class="st">"MultiAssayExperiment"</span><span class="op">)</span></span></code></pre>
+<span><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://bioconductor.github.io/BiocManager/reference/install.html" class="external-link">install</a></span><span class="op">(</span><span class="st">"MultiAssayExperiment"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="schematic">Schematic<a class="anchor" aria-label="anchor" href="#schematic"></a>
@@ -135,7 +135,11 @@
 <code>sampleMap</code> - a graph representation of ‘samples’ and ‘participants’</li>
 </ul>
 <p><em>Note</em>. For simplicity, we use the terms ‘samples’ and ‘participants’ to elucidate the relationship although <code>MultiAssayExperiment</code> can work on other biological specimens.</p>
-<p><img src="articles/MultiAssayExperiment.png" alt="MultiAssayExperiment schematic"></p>
+<div class="figure">
+<img src="articles/MultiAssayExperiment.png" alt="MultiAssayExperiment schematic" width="384px" height="354px"><p class="caption">
+MultiAssayExperiment schematic
+</p>
+</div>
 </div>
 <div class="section level2">
 <h2 id="cheatsheet">Cheatsheet<a class="anchor" aria-label="anchor" href="#cheatsheet"></a>
@@ -146,13 +150,15 @@
 <h2 id="ready-to-use-multiassayexperiment-objects">Ready-to-use <code>MultiAssayExperiment</code> objects<a class="anchor" aria-label="anchor" href="#ready-to-use-multiassayexperiment-objects"></a>
 </h2>
 <p>For easy-to-use and ready-made MultiAssayExperiment objects, use the <code>curatedTCGAData</code> experiment data package.</p>
-<pre><code><span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html" class="external-link">install</a></span><span class="op">(</span><span class="st">"curatedTCGAData"</span><span class="op">)</span></span></code></pre>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://bioconductor.github.io/BiocManager/reference/install.html" class="external-link">install</a></span><span class="op">(</span><span class="st">"curatedTCGAData"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="companion-package-for-working-with-tcga-data">Companion package for working with TCGA data<a class="anchor" aria-label="anchor" href="#companion-package-for-working-with-tcga-data"></a>
 </h2>
 <p>TCGAutils is a handy package for working with <code>MultiAssayExperiment</code> data objects from <code>curatedTCGAData</code>. It is highly recommended to use <code>TCGAutils</code> for identifier manipulation, sample identification and more.</p>
-<pre><code><span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html" class="external-link">install</a></span><span class="op">(</span><span class="st">"TCGAutils"</span><span class="op">)</span></span></code></pre>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://bioconductor.github.io/BiocManager/reference/install.html" class="external-link">install</a></span><span class="op">(</span><span class="st">"TCGAutils"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="documentation">Documentation<a class="anchor" aria-label="anchor" href="#documentation"></a>
@@ -172,7 +178,7 @@
 <p>Examples of unacceptable behavior by participants include the use of sexual language or imagery, derogatory comments or personal attacks, trolling, public or private harassment, insults, or other disrespectful conduct.</p>
 <p>Project maintainers have the right and responsibility to remove, edit, or reject comments, commits, code, wiki edits, issues, and other contributions that are not aligned to this Code of Conduct. Project maintainers who do not follow the Code of Conduct may be removed from the project team.</p>
 <p>Instances of abusive, harassing, or otherwise unacceptable behavior may be reported by opening an issue or contacting one or more of the project maintainers.</p>
-<p>This Code of Conduct is adapted from the <a href="http://contributor-covenant.org" class="external-link">Contributor Covenant</a>, version 1.0.0, available at <a href="http://contributor-covenant.org/version/1/0/0/" class="external-link">http://contributor-covenant.org/version/1/0/0/</a></p>
+<p>This Code of Conduct is adapted from the <a href="http://contributor-covenant.org" class="external-link">Contributor Covenant</a>, version 1.0.0, available at <a href="http://contributor-covenant.org/version/1/0/0/" class="external-link uri">http://contributor-covenant.org/version/1/0/0/</a></p>
 </div>
 </div>
   </div>
@@ -211,7 +217,15 @@
 </ul>
 </div>
 
-
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://bioconductor.org/checkResults/release/bioc-LATEST/MultiAssayExperiment" class="external-link"><img src="http://www.bioconductor.org/shields/build/release/bioc/MultiAssayExperiment.svg" alt="BioC status"></a></li>
+<li><a href="https://www.bioconductor.org/packages/release/bioc/html/MultiAssayExperiment.html#archives" class="external-link"><img src="http://www.bioconductor.org/shields/availability/release/MultiAssayExperiment.svg" alt="Platforms"></a></li>
+<li><a href="https://codecov.io/github/waldronlab/MultiAssayExperiment?branch=devel" class="external-link"><img src="https://codecov.io/github/waldronlab/MultiAssayExperiment/coverage.svg?branch=devel" alt="Coverage Status"></a></li>
+<li><a href="https://bioconductor.org/packages/stats/bioc/MultiAssayExperiment" class="external-link"><img src="http://www.bioconductor.org/shields/downloads/release/MultiAssayExperiment.svg" alt="Downloads"></a></li>
+</ul>
+</div>
 
   </div>
 </div>
