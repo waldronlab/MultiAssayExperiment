@@ -62,11 +62,6 @@ jobs:
           )
         shell: Rscript {0}
 
-      - name: Codecov
-        uses: codecov/codecov-action@v3.1.4
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-
       - name: Build pkgdown
         run: |
            PATH=$PATH:$HOME/bin/ Rscript -e 'pkgdown::build_site()'
