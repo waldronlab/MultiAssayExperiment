@@ -2,6 +2,7 @@
 % Please edit documentation in R/MultiAssayExperiment-pkg.R
 \docType{package}
 \name{MultiAssayExperiment-package}
+\alias{MultiAssayExperiment-package}
 \title{MultiAssayExperiment: Build an integrative multi-assay container}
 \description{
 MultiAssayExperiment allows the manipulation of related multiassay
@@ -30,11 +31,15 @@ Useful links:
 
 Authors:
 \itemize{
+  \item Martin Morgan [contributor]
+  \item Vincent J Carey [contributor]
   \item Levi Waldron \email{lwaldron.research@gmail.com}
 }
 
 Other contributors:
 \itemize{
+  \item Lori Shepherd [contributor]
+  \item Hervé Pagès [contributor]
   \item MultiAssay SIG \email{biocmultiassay@googlegroups.com} [contributor]
 }
 

@@ -1,31 +1,38 @@
 Package: MultiAssayExperiment
-Title: Software for the integration of multi-omics experiments in Bioconductor
+Title: Software for the integration of multi-omics experiments in
+    Bioconductor
 Version: 1.29.0
-Authors@R: c(person("Marcel", "Ramos", email = "marcel.ramos@roswellpark.org",
-    role = c("aut", "cre"), comment = c(ORCID = "0000-0002-3242-0582")),
-    person("Levi", "Waldron", email = "lwaldron.research@gmail.com",
-    role = "aut"),
-    person("MultiAssay", "SIG", email = "biocmultiassay@googlegroups.com",
-    role = "ctb"))
-Description: MultiAssayExperiment harmonizes data management of
-    multiple experimental assays performed on an overlapping set of specimens.
-    It provides a familiar Bioconductor user experience by extending concepts
-    from SummarizedExperiment, supporting an open-ended mix of standard data
-    classes for individual assays, and allowing subsetting by genomic ranges
-    or rownames. Facilities are provided for reshaping data into wide and
-    long formats for adaptability to graphing and downstream analysis.
+Authors@R: c(
+    person("Marcel", "Ramos", , "marcel.ramos@roswellpark.org",
+        c("aut", "cre"), c(ORCID = "0000-0002-3242-0582")),
+    person("Martin", "Morgan", , , c("aut", "ctb")),
+    person("Lori", "Shepherd", , , "ctb"),
+    person("Hervé", "Pagès", , , "ctb"),
+    person("Vincent J", "Carey", , , c("aut", "ctb")),
+    person("Levi", "Waldron", , "lwaldron.research@gmail.com", "aut"),
+    person("MultiAssay", "SIG", , "biocmultiassay@googlegroups.com", "ctb"))
+Description: MultiAssayExperiment harmonizes data management of multiple
+    experimental assays performed on an overlapping set of specimens.  It
+    provides a familiar Bioconductor user experience by extending concepts
+    from SummarizedExperiment, supporting an open-ended mix of standard
+    data classes for individual assays, and allowing subsetting by genomic
+    ranges or rownames. Facilities are provided for reshaping data into
+    wide and long formats for adaptability to graphing and downstream
+    analysis.
+License: Artistic-2.0
+URL: http://waldronlab.io/MultiAssayExperiment/
+BugReports: https://github.com/waldronlab/MultiAssayExperiment/issues
 Depends:
-    R (>= 4.2.0),
     SummarizedExperiment (>= 1.3.81)
 Imports:
-    methods,
-    GenomicRanges (>= 1.25.93),
+    Biobase,
     BiocBaseUtils,
     BiocGenerics,
     DelayedArray,
-    S4Vectors (>= 0.23.19),
+    GenomicRanges (>= 1.25.93),
     IRanges,
-    Biobase,
+    methods,
+    S4Vectors (>= 0.23.19),
     stats,
     tidyr,
     utils
@@ -34,20 +41,20 @@ Suggests:
     HDF5Array (>= 1.19.17),
     knitr,
     maftools (>= 2.7.10),
-    rmarkdown,
     R.rsp,
     RaggedExperiment,
-    UpSetR,
+    rmarkdown,
     survival,
     survminer,
-    testthat
+    testthat,
+    UpSetR
+VignetteBuilder: 
+    knitr,
+    R.rsp
 biocViews: Infrastructure, DataRepresentation
-License: Artistic-2.0
 Encoding: UTF-8
-VignetteBuilder: knitr, R.rsp
-URL: http://waldronlab.io/MultiAssayExperiment/
+RoxygenNote: 7.3.1
 Video: https://youtu.be/w6HWAHaDpyk, https://youtu.be/Vh0hVVUKKFM
-BugReports: https://github.com/waldronlab/MultiAssayExperiment/issues
 Collate: 
     'ExperimentList-class.R'
     'MultiAssayExperiment-class.R'
@@ -68,4 +75,3 @@ Collate:
     'saveHDF5MultiAssayExperiment.R'
     'upsetSamples.R'
     'utilities.R'
-RoxygenNote: 7.3.1
