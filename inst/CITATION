@@ -1,23 +1,35 @@
 citHeader("To cite MultiAssayExperiment in publications use:")
 
-citEntry(entry = "Article",
+bibentry(
+    bibtype = "Article",
     title = "Software For The Integration Of Multi-Omics Experiments In Bioconductor",
-    author = personList(as.person("Marcel Ramos"), as.person("Lucas Schiffer"),
-        as.person("Angela Re"), as.person("Rimsha Azhar"), as.person("Azfar Basunia"),
-        as.person("Carmen Rodriguez Cabrera"), as.person("Tiffany Chan"),
-        as.person("Philip Chapman"), as.person("Sean Davis"),
-        as.person("David Gomez-Cabrero"), as.person("Aedin C. Culhane"),
-        as.person("Benjamin Haibe-Kains"), as.person("Kasper Hansen"),
-        as.person("Hanish Kodali"), as.person("Marie Stephie Louis"),
-        as.person("Arvind Singh Mer"), as.person("Markus Reister"),
-        as.person("Martin Morgan"), as.person("Vincent Carey"),
-        as.person("Levi Waldron")),
+    author = c(
+        person("Marcel", "Ramos"),
+        person("Lucas", "Schiffer"),
+        person("Angela", "Re"),
+        person("Rimsha", "Azhar"),
+        person("Azfar", "Basunia"),
+        person("Carmen", "Rodriguez Cabrera"),
+        person("Tiffany", "Chan"),
+        person("Philip", "Chapman"),
+        person("Sean", "Davis"),
+        person("David", "Gomez-Cabrero"),
+        person("Aedin C.", "Culhane"),
+        person("Benjamin", "Haibe-Kains"),
+        person("Kasper", "Hansen"),
+        person("Hanish", "Kodali"),
+        person("Marie S", "Louis"),
+        person("Arvind S", "Mer"),
+        person("Markus", "Reister"),
+        person("Martin", "Morgan"),
+        person("Vincent J", "Carey"),
+        person("Levi", "Waldron")
+    ),
     journal = "Cancer Research",
     year = "2017",
-    volume = "77(21); e39-42",
-    textVersion =
-    paste("Marcel Ramos et al.",
-        "Software For The Integration Of Multiomics Experiments In Bioconductor.",
-        "Cancer Research, 2017 November 1; 77(21); e39-42.",
-        "DOI: 10.1158/0008-5472.CAN-17-0344")
+    volume = "77",
+    number = "21",
+    pages = "e39-42",
+    doi = "10.1158/0008-5472.CAN-17-0344",
+    url = "https://cancerres.aacrjournals.org/content/77/21/e39"
 )

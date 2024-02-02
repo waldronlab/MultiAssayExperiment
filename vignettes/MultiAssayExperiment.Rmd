@@ -10,6 +10,7 @@ output:
   BiocStyle::html_document:
     number_sections: yes
     toc: true
+bibliography: ../inst/REFERENCES.bib
 ---
 
 # Installation
@@ -28,6 +29,14 @@ library(GenomicRanges)
 library(SummarizedExperiment)
 library(RaggedExperiment)
 ```
+
+# Citing MultiAssayExperiment
+
+Without your citations our free and open-source software would not be possible.
+Please cite `MultiAssayExperiment` as shown in the
+[References section](#references) (@Ramos2017-og). You may also refer to the
+Cancer Research publication at the AACR Journals link
+[here](https://cancerres.aacrjournals.org/content/77/21/e39).
 
 # A Brief Description
 
@@ -1044,14 +1053,6 @@ The following methods are defined for `MultiAssayExperiment`:
 ```{r}
 methods(class="MultiAssayExperiment")
 ```
-# Citing MultiAssayExperiment
-
-We are excited to announce the official citation for MultiAssayExperiment
-in *Cancer Research*.
-
-```{r}
-citation("MultiAssayExperiment")
-```
 
 # sessionInfo()
 
@@ -1062,3 +1063,6 @@ sessionInfo()
 <p style="text-align: right;"> <a href="#header">back to top</a> </p>
 
 [API wiki]: https://github.com/waldronlab/MultiAssayExperiment/wiki/MultiAssayExperiment-API
+
+# References
+
