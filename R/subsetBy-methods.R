@@ -210,13 +210,13 @@ setMethod("subsetByRow", c("ExperimentList", "ANY"), function(x, y, ...) {
 })
 
 #' @rdname subsetBy
-setMethod("subsetByRow", c("ExperimentList", "list"), function(x, y) {
+setMethod("subsetByRow", c("ExperimentList", "list"), function(x, y, ...) {
     y <- .fillEmptyExps(x, y)
     .subsetROWS(x, y)
 })
 
 #' @rdname subsetBy
-setMethod("subsetByRow", c("ExperimentList", "List"), function(x, y) {
+setMethod("subsetByRow", c("ExperimentList", "List"), function(x, y, ...) {
     if (is(y, "DataFrame") || is(y, "GRangesList"))
         stop("Provide a list of indices for subsetting")
     if (is(y, "GRanges"))
@@ -226,7 +226,7 @@ setMethod("subsetByRow", c("ExperimentList", "List"), function(x, y) {
 })
 
 #' @rdname subsetBy
-setMethod("subsetByRow", c("ExperimentList", "logical"), function(x, y) {
+setMethod("subsetByRow", c("ExperimentList", "logical"), function(x, y, ...) {
     logi <- LogicalList(rep(list(y), length(x)))
     x[logi]
 })

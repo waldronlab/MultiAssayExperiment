@@ -38,11 +38,11 @@ subsetByAssay(x, y)
 
 \S4method{subsetByRow}{ExperimentList,ANY}(x, y, ...)
 
-\S4method{subsetByRow}{ExperimentList,list}(x, y)
+\S4method{subsetByRow}{ExperimentList,list}(x, y, ...)
 
-\S4method{subsetByRow}{ExperimentList,List}(x, y)
+\S4method{subsetByRow}{ExperimentList,List}(x, y, ...)
 
-\S4method{subsetByRow}{ExperimentList,logical}(x, y)
+\S4method{subsetByRow}{ExperimentList,logical}(x, y, ...)
 
 \S4method{subsetByColumn}{ExperimentList,list}(x, y)
 
