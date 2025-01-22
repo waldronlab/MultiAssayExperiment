@@ -46,7 +46,7 @@ NULL
         x <- subsetByAssay(x, k)
     }
     if (!missing(i)) {
-        x <- subsetByRow(x, i, ...)
+        x <- subsetByRow(x, y = i, ...)
     }
     if (drop) {
         x <- .dropEmpty(x, warn = TRUE)

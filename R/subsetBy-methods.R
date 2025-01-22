@@ -64,8 +64,13 @@ NULL
 #'
 #' @param x A `MultiAssayExperiment` or `ExperimentList`
 #'
-#' @param i Either a `character`, `integer`, `logical` or
-#' `GRanges` object for subsetting by rows
+#' @param y Either a `character`, `integer`, `logical`, `list`, `List`,
+#' or `GRanges` object for subsetting by rows _within the experiments_
+#'
+#' @param i For the `subsetByRow` `MultiAssayExperiment` method,
+#' either a `character`, `logical`, or `numeric` vector to selectively
+#' subset experiments with `y` (default is `TRUE`). For **bracket** (`[`)
+#' methods, see `y` input.
 #'
 #' @param j Either a `character`, `logical`, or `numeric` vector
 #' for subsetting by `colData` rows. See details for more information.
@@ -158,8 +163,6 @@ setGeneric("subsetByColumn", function(x, y) standardGeneric("subsetByColumn"))
 
 #' @rdname subsetBy
 #' @export subsetByAssay
-#' @param y Any argument used for subsetting, can be a `character`,
-#' `logical`, `integer`, `list` or `List` vector
 setGeneric("subsetByAssay", function(x, y) standardGeneric("subsetByAssay"))
 
 .subsetCOLS <- function(object, cutter) {
@@ -312,10 +315,17 @@ setMethod("subsetByColData", c("MultiAssayExperiment", "character"),
 # subsetByRow,MultiAssayExperiment-method ---------------------------------
 
 #' @rdname subsetBy
-setMethod("subsetByRow", c("MultiAssayExperiment", "ANY"), function(x, y, ...) {
-    experiments(x) <- subsetByRow(experiments(x), y)
-    return(x)
-})
+setMethod(
+    "subsetByRow", c("MultiAssayExperiment", "ANY"),
+    function(x, y, i = TRUE, ...) {
+        stopifnot(
+            !anyNA(i) &&
+                (is.logical(i) || is.character(i) || is.numeric(i))
+        )
+        experiments(x)[i] <- subsetByRow(experiments(x)[i], y)
+        return(x)
+    }
+)
 
 # subsetByColumn,MultiAssayExperiment-method ------------------------------
 

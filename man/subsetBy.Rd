@@ -56,7 +56,7 @@ subsetByAssay(x, y)
 
 \S4method{subsetByColData}{MultiAssayExperiment,character}(x, y)
 
-\S4method{subsetByRow}{MultiAssayExperiment,ANY}(x, y, ...)
+\S4method{subsetByRow}{MultiAssayExperiment,ANY}(x, y, i = TRUE, ...)
 
 \S4method{subsetByColumn}{MultiAssayExperiment,ANY}(x, y)
 
@@ -73,13 +73,15 @@ subsetByAssay(x, y)
 \arguments{
 \item{x}{A \code{MultiAssayExperiment} or \code{ExperimentList}}
 
-\item{y}{Any argument used for subsetting, can be a \code{character},
-\code{logical}, \code{integer}, \code{list} or \code{List} vector}
+\item{y}{Either a \code{character}, \code{integer}, \code{logical}, \code{list}, \code{List},
+or \code{GRanges} object for subsetting by rows \emph{within the experiments}}
 
 \item{...}{Additional arguments passed on to lower level functions.}
 
-\item{i}{Either a \code{character}, \code{integer}, \code{logical} or
-\code{GRanges} object for subsetting by rows}
+\item{i}{For the \code{subsetByRow} \code{MultiAssayExperiment} method,
+either a \code{character}, \code{logical}, or \code{numeric} vector to selectively
+subset experiments with \code{y} (default is \code{TRUE}). For \strong{bracket} (\code{[})
+methods, see \code{y} input.}
 
 \item{j}{Either a \code{character}, \code{logical}, or \code{numeric} vector
 for subsetting by \code{colData} rows. See details for more information.}
