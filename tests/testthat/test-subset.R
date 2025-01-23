@@ -32,6 +32,35 @@ test_that("subsetByRow keeps assay order in MultiAssayExperiment", {
     expect_identical(names(mae), names(mae[rows, ]))
 })
 
+test_that("subsetByRow works with i index", {
+    expect_identical(
+        vapply(
+            experiments(
+                subsetByRow(
+                    mae, "ENST00000355076", i = c(TRUE, TRUE, FALSE, FALSE)
+                )
+            )[1:2],
+            nrow,
+            integer(1L)
+        ),
+        c(Affy = 1L, Methyl450k = 1L)
+    )
+    expect_identical(
+        list(
+            Affy = 1L, Methyl450k = 5L, RNASeqGene = 5L, GISTIC = 5L
+        ),
+        lapply(
+            experiments(
+                subsetByRowData(
+                    mae, "ENST00000355076", "rownames", i = "Affy"
+                )
+            ),
+            nrow
+        )
+    )
+})
+
+
 test_that("assay subsets work", {
     noAffy <- list(noAffy = 1:5)
     expect_error(experiments(mae)[noAffy])

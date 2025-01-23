@@ -9,6 +9,7 @@
 \alias{subsetByColumn}
 \alias{subsetByAssay}
 \alias{subset}
+\alias{subsetByRowData}
 \alias{subsetByRow,ExperimentList,ANY-method}
 \alias{subsetByRow,ExperimentList,list-method}
 \alias{subsetByRow,ExperimentList,List-method}
@@ -20,8 +21,11 @@
 \alias{subsetByColData,MultiAssayExperiment,ANY-method}
 \alias{subsetByColData,MultiAssayExperiment,character-method}
 \alias{subsetByRow,MultiAssayExperiment,ANY-method}
+\alias{subsetByRow,MultiAssayExperiment,list-method}
+\alias{subsetByRow,MultiAssayExperiment,List-method}
 \alias{subsetByColumn,MultiAssayExperiment,ANY-method}
 \alias{subsetByAssay,MultiAssayExperiment-method}
+\alias{subsetByRowData,MultiAssayExperiment,character,character-method}
 \alias{[,MultiAssayExperiment,ANY,ANY,ANY-method}
 \alias{[[,MultiAssayExperiment,ANY,ANY-method}
 \alias{[[<-,MultiAssayExperiment,ANY,ANY-method}
@@ -29,6 +33,8 @@
 \title{Subsetting a MultiAssayExperiment object}
 \usage{
 subsetByRow(x, y, ...)
+
+subsetByRowData(x, y, rowDataCol, ...)
 
 subsetByColData(x, y)
 
@@ -58,9 +64,15 @@ subsetByAssay(x, y)
 
 \S4method{subsetByRow}{MultiAssayExperiment,ANY}(x, y, i = TRUE, ...)
 
+\S4method{subsetByRow}{MultiAssayExperiment,list}(x, y, ...)
+
+\S4method{subsetByRow}{MultiAssayExperiment,List}(x, y, ...)
+
 \S4method{subsetByColumn}{MultiAssayExperiment,ANY}(x, y)
 
 \S4method{subsetByAssay}{MultiAssayExperiment}(x, y)
+
+\S4method{subsetByRowData}{MultiAssayExperiment,character,character}(x, y, rowDataCol, i = TRUE, ...)
 
 \S4method{[}{MultiAssayExperiment,ANY,ANY,ANY}(x, i, j, k, ..., drop = FALSE)
 
@@ -78,8 +90,13 @@ or \code{GRanges} object for subsetting by rows \emph{within the experiments}}
 
 \item{...}{Additional arguments passed on to lower level functions.}
 
-\item{i}{For the \code{subsetByRow} \code{MultiAssayExperiment} method,
-either a \code{character}, \code{logical}, or \code{numeric} vector to selectively
+\item{rowDataCol}{\code{character(1)} The name of the column in the \code{rowData}.
+If the column is not present, the experiment will be skipped. When
+\code{rowDataCol} is \code{"rownames"} or \code{"row.names"}, the values of \code{y} will
+be matched with the row names in the \code{rowData} of the experiment.}
+
+\item{i}{For the \code{subsetByRow} and \code{subsetByRowData} \code{MultiAssayExperiment}
+methods, either a \code{character}, \code{logical}, or \code{numeric} vector to selectively
 subset experiments with \code{y} (default is \code{TRUE}). For \strong{bracket} (\code{[})
 methods, see \code{y} input.}
 
@@ -159,4 +176,11 @@ subsetByRow(mae, c(TRUE, FALSE))
 ## Use a character vector
 subsetByRow(mae, "ENST00000355076")
 
+## Use i index to selectively subsetByRow
+subsetByRow(mae, "ENST00000355076", i = c(TRUE, TRUE, FALSE, FALSE))
+
+## Use i index to selectively subsetByRowData
+subsetByRowData(
+    mae, "ENST00000355076", "rownames", i = "Affy"
+)
 }
