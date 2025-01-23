@@ -49,6 +49,10 @@ NULL
 #'     that have a
 #'     [`rowRanges`][SummarizedExperiment::RangedSummarizedExperiment-class]
 #'     method
+#' * hasRowData: A function that identifies ExperimentList elements
+#'     that have a
+#'     [`rowData`][SummarizedExperiment::SummarizedExperiment-class]
+#'     method
 #' * getWithColData: A convenience function for extracting an assay
 #'     and associated colData
 #' * renamePrimary: A convenience function to rename the primary
@@ -633,6 +637,44 @@ setMethod("hasRowRanges", "MultiAssayExperiment", function(x) {
 #' @exportMethod hasRowRanges
 setMethod("hasRowRanges", "ExperimentList", function(x) {
     vapply(x, .tryRowRanges, logical(1L))
+})
+
+# hasRowData section ------------------------------------------------------
+
+#' @importFrom SummarizedExperiment rowData
+.tryRowData <- function(obj) {
+    res <- try(rowData(obj), silent = TRUE)
+    if (!is(res, "try-error"))
+        is(res, "DataFrame")
+    else
+        FALSE
+}
+
+#' @rdname MultiAssayExperiment-helpers
+#'
+#' @aliases hasRowData
+#'
+#' @details The `hasRowData` method identifies assays that support a
+#'   [`rowData`][SummarizedExperiment::SummarizedExperiment-class] method _and_
+#'   return a [`DataFrame`][S4Vectors::DataFrame-class] object.
+#'
+#' @export
+setGeneric("hasRowData", function(x) standardGeneric("hasRowData"))
+
+#' @describeIn MultiAssayExperiment-helpers The `hasRowData` method identifies
+#'   experiments that have a `rowData` method via direct testing
+#'
+#' @exportMethod hasRowData
+setMethod("hasRowData", "MultiAssayExperiment", function(x) {
+    hasRowData(experiments(x))
+})
+
+#' @describeIn MultiAssayExperiment-helpers The `hasRowData` method identifies
+#'   experiments that have a `rowData` method via direct testing
+#'
+#' @exportMethod hasRowData
+setMethod("hasRowData", "ExperimentList", function(x) {
+    vapply(x, .tryRowData, logical(1L))
 })
 
 #' @rdname MultiAssayExperiment-helpers

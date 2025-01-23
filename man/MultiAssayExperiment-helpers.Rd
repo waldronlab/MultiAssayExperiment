@@ -24,6 +24,9 @@
 \alias{hasRowRanges}
 \alias{hasRowRanges,MultiAssayExperiment-method}
 \alias{hasRowRanges,ExperimentList-method}
+\alias{hasRowData}
+\alias{hasRowData,MultiAssayExperiment-method}
+\alias{hasRowData,ExperimentList-method}
 \alias{getWithColData}
 \alias{renamePrimary}
 \alias{renameColname}
@@ -88,6 +91,12 @@ hasRowRanges(x)
 \S4method{hasRowRanges}{MultiAssayExperiment}(x)
 
 \S4method{hasRowRanges}{ExperimentList}(x)
+
+hasRowData(x)
+
+\S4method{hasRowData}{MultiAssayExperiment}(x)
+
+\S4method{hasRowData}{ExperimentList}(x)
 
 getWithColData(x, i, mode = c("append", "replace"), verbose = FALSE)
 
@@ -196,6 +205,10 @@ original object is a \code{MultiAssayExperiment}.
 that have a
 \code{\link[SummarizedExperiment:RangedSummarizedExperiment-class]{rowRanges}}
 method
+\item hasRowData: A function that identifies ExperimentList elements
+that have a
+\code{\link[SummarizedExperiment:SummarizedExperiment-class]{rowData}}
+method
 \item getWithColData: A convenience function for extracting an assay
 and associated colData
 \item renamePrimary: A convenience function to rename the primary
@@ -256,7 +269,20 @@ well as \code{matrix} to provide a consistent long and skinny
 The \code{hasRowRanges} method identifies assays that support
 a \code{\link[SummarizedExperiment:RangedSummarizedExperiment-class]{rowRanges}}
 method \emph{and} return a \code{\link[GenomicRanges:GRanges-class]{GRanges}} object.
+
+The \code{hasRowData} method identifies assays that support a
+\code{\link[SummarizedExperiment:SummarizedExperiment-class]{rowData}} method \emph{and}
+return a \code{\link[S4Vectors:DataFrame-class]{DataFrame}} object.
 }
+\section{Functions}{
+\itemize{
+\item \code{hasRowData(MultiAssayExperiment)}: The \code{hasRowData} method identifies
+experiments that have a \code{rowData} method via direct testing
+
+\item \code{hasRowData(ExperimentList)}: The \code{hasRowData} method identifies
+experiments that have a \code{rowData} method via direct testing
+
+}}
 \section{mergeReplicates}{
 
 The \code{mergeReplicates} function makes use of the output from
