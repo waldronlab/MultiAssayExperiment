@@ -603,6 +603,7 @@ wideFormat <- function(object, colDataCols = NULL, check.names = TRUE,
 
 # hasRowRanges section ----------------------------------------------------
 
+#' @importFrom MatrixGenerics rowRanges
 .tryRowRanges <- function(obj) {
     res <- try(rowRanges(obj), silent = TRUE)
     if (!is(res, "try-error"))
@@ -629,6 +630,8 @@ setGeneric("hasRowRanges", function(x) standardGeneric("hasRowRanges"))
 #' @details The `hasRowRanges` method identifies assays that support
 #' a [`rowRanges`][SummarizedExperiment::RangedSummarizedExperiment-class]
 #' method _and_ return a [`GRanges`][GenomicRanges::GRanges-class] object.
+#'
+#' @exportMethod hasRowRanges
 setMethod("hasRowRanges", "MultiAssayExperiment", function(x) {
     hasRowRanges(experiments(x))
 })

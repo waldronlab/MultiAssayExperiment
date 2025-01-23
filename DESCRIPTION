@@ -31,6 +31,7 @@ Imports:
     DelayedArray,
     GenomicRanges,
     IRanges,
+    MatrixGenerics,
     methods,
     S4Vectors,
     tidyr,
