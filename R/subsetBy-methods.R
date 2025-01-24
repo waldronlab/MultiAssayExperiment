@@ -92,7 +92,7 @@ NULL
 #' subsetByColumn subsetByAssay subset subsetBy
 #'
 #' @details
-#' Subsetting a MultiAssayExperiment by the **j** index can yield a call
+#' Subsetting a `MultiAssayExperiment` by the **j** index can yield a call
 #' to either `subsetByColData` or `subsetByColumn`. For vector inputs,
 #' the subset will be applied to the `colData` rows. For `List`-type
 #' inputs, the List will be applied to each of the elements in the
@@ -105,6 +105,31 @@ NULL
 #' * `subsetByColumn`: Select observations by assay or for each assay
 #' * `subsetByRow`: Select rows by assay or for each assay
 #' * `subsetByAssay`: Select experiments
+#' * `subsetByRowData`: Select rows by values in the rowData
+#' * `intersectByRowData`: Intersect with values in the rowData
+#'
+#' @section rowData:
+#'
+#' Some assays may have additional metadata associated with the rows.
+#' This metadata is stored in the `rowData` slot of the object, typically a
+#' `SummarizedExperiment` or `RangedSummarizedExperiment`.
+#'
+#' `subsetByRowData` allows the user to subset the rows of the assays
+#' based on the values in the `rowData`.
+#'
+#' `intersectByRowData` is a special case of `subsetByRowData` where
+#' the `rowData` values are intersected with the `y` values. Naturally,
+#' the `y` values are expected to be of type `character`.
+#'
+#' Note that `rowDataCol` allows the user to specify a particular
+#' column from which to extract the values for subsetting. This column
+#' name must be consistent across assays. If the column is not present
+#' in an assay, the assay will be skipped and considered a no-op. Assays
+#' are also skipped when there are no values in the `rowData` that match
+#' the `y` values.
+#'
+#' Note that the use of `rownames` or `row.names` as the `rowDataCol` requires
+#' that the assay class have a `rownames()` method.
 #'
 #' @return `subsetBy*`: operations are endomorphic and return either
 #' `MultiAssayExperiment` or `ExperimentList` depending on the
@@ -159,6 +184,23 @@ NULL
 #' ## Use i index to selectively subsetByRowData
 #' subsetByRowData(
 #'     mae, "ENST00000355076", "rownames", i = "Affy"
+#' )
+#'
+#' ## use miniACC as example MAE
+#' data("miniACC")
+#'
+#' ## intersect values of y with rownames in rowData
+#' intersectByRowData(
+#'     x = miniACC,
+#'     y = c("G6PD", "PETN"),
+#'     rowDataCol = "rownames",
+#'     i = c("RNASeq2GeneNorm", "gistict")
+#' )
+#'
+#' ## no-op when rowDataCol is not present or there is no data
+#' intersectByRowData(
+#'     x = miniACC, y = c("G6PD", "PETN"), rowDataCol = "Genes",
+#'     i = c("RNASeq2GeneNorm", "gistict")
 #' )
 NULL
 
@@ -431,6 +473,59 @@ setMethod(
                     TRUE
             }
         )
+        subsetByRow(x = x, y = y, i = i)
+    }
+)
+
+
+# intersectByRowData,MultiAssayExperiment-method --------------------------
+
+#' @rdname subsetBy
+#'
+#' @aliases intersectByRowData
+#'
+#' @export
+setGeneric(
+    "intersectByRowData",
+    function(x, y, rowDataCol, i, ...)
+        standardGeneric("intersectByRowData")
+)
+
+#' @rdname subsetBy
+#' @exportMethod intersectByRowData
+setMethod(
+    "intersectByRowData", c("MultiAssayExperiment", "character", "character"),
+    function(x, y, rowDataCol, i = TRUE, ...) {
+        if (is.character(i))
+            logi <- names(x) %in% i
+        else if (is.logical(i) || is.numeric(i))
+            logi <- names(x) %in% names(x)[i]
+        else
+            stop("Invalid experiment subscript type for 'i'")
+        i <- hasRowData(x) & logi
+        if (!any(i))
+            stop("No 'rowData' available for subsetting")
+        y <- lapply(
+            experiments(x)[i],
+            function(exper) {
+                rd <- rowData(exper)
+                if (rowDataCol %in% c("rownames", "row.names"))
+                    intersect(rownames(rd), y)
+                else if (rowDataCol %in% colnames(rd))
+                    intersect(rd[[rowDataCol]], y)
+                else
+                    NULL
+            }
+        )
+        noRowData <-
+            vapply(y, function(z) is.null(z) || !length(z), logical(1))
+        if (any(noRowData)) {
+            noRDnames <- paste(shQuote(names(y)[noRowData]), collapse = ", ")
+            warning(
+                "No 'rowData' intersected for assays:\n  ", noRDnames,
+                call. = FALSE
+            )
+        }
         subsetByRow(x = x, y = y, i = i)
     }
 )
