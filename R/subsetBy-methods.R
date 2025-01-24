@@ -360,6 +360,8 @@ setMethod(
 setMethod(
     "subsetByRow", c("MultiAssayExperiment", "List"),
     function(x, y, ...) {
+        if (is(y, "GRanges"))
+            return(callNextMethod())
         y <- as.list(y)
         subsetByRow(x, y)
     }
