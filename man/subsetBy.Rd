@@ -179,6 +179,9 @@ subsetByRow(mae, "ENST00000355076")
 ## Use i index to selectively subsetByRow
 subsetByRow(mae, "ENST00000355076", i = c(TRUE, TRUE, FALSE, FALSE))
 
+## only subset assays with rowRanges with GRanges input
+subsetByRow(mae, egr, i = hasRowRanges(mae))
+
 ## Use i index to selectively subsetByRowData
 subsetByRowData(
     mae, "ENST00000355076", "rownames", i = "Affy"
