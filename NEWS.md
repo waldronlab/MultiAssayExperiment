@@ -1,3 +1,20 @@
+## Changes in version 1.34.0
+
+### New features
+
+* Replace `longFormat` generic and methods with `longForm` (@lgatto, #333)
+* Use `h5mread::h5writeDimnames` instead of `HDF5Array::h5writeDimnames`
+* Add note to warning message in `saveHDF5MultiAssayExperiment` to use
+`loadHDF5MultiAssayExperiment` to reliably load data
+
+### Bug fixes and minor improvements
+
+* Add package anchors to links in documentation
+* Optimize subsetByColData (@leopoldguyot, #334)
+* Use `BiocBaseUtils::checkInstalled` to check for `Suggests` packages
+* Additional checks for `j` and `...` in double bracket `[[`
+`MultiAssayExperiment` method
+
 ## Changes in version 1.32.0
 
 ### Bug fixes and minor improvements
