@@ -1,3 +1,10 @@
+## Changes in version 1.36.0
+
+### Bug fixes and minor improvements
+
+* Properly document `i` `subsetByRow` and `[` bracket methods.
+* Match `subsetByRow` method signatures to generic.
+
 ## Changes in version 1.34.0
 
 ### New features
