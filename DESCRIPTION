@@ -41,7 +41,6 @@ Suggests:
     h5mread,
     knitr,
     maftools,
-    R.rsp,
     RaggedExperiment,
     reshape2,
     rmarkdown,
@@ -49,9 +48,7 @@ Suggests:
     survminer,
     testthat,
     UpSetR
-VignetteBuilder: 
-    knitr,
-    R.rsp
+VignetteBuilder: knitr
 biocViews: Infrastructure, DataRepresentation
 Encoding: UTF-8
 RoxygenNote: 7.3.2

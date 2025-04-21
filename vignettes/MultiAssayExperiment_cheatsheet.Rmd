@@ -1,0 +1,110 @@
+---
+title: "MultiAssayExperiment Cheatsheet"
+author: "MultiAssay Special Interest Group"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{MultiAssayExperiment Cheatsheet}
+  %\VignetteEncoding{UTF-8}
+output:
+  BiocStyle::html_document:
+    number_sections: false
+    toc: false
+---
+
+# Summary of the MultiAssayExperiment API
+
+Updated from Ramos et al., *Cancer Research* 2017; DOI:
+[10.1158/0008-5472.CAN-17-0344](https://doi.org/10.1158/0008-5472.CAN-17-0344)
+
+## API Overview
+
+### Constructors
+
+| Function               | Description                                   | Returned Class         |
+|:-----------------------|:----------------------------------------------|:-----------------------|
+| `MultiAssayExperiment` | Create a MultiAssayExperiment object          | MultiAssayExperiment   |
+| `ExperimentList`       | Create an ExperimentList from a List or list  | ExperimentList         |
+
+### Accessors
+
+| Function         | Description                                               | Returned Class   |
+|:-----------------|:----------------------------------------------------------|:-----------------|
+| `colData`        | Get or set data that describe patients / biological units | DataFrame        |
+| `experiments`    | Get or set the list of experimental data objects          | ExperimentList   |
+| `assays`         | Get the list of experimental numeric matrices             | SimpleList       |
+| `assay`          | Get the first experimental numeric matrix                 | matrix, matrix-like |
+| `sampleMap`      | Get or set the map relating observations to subjects      | DataFrame        |
+| `metadata`       | Get or set additional data descriptions                   | list             |
+| `rownames`       | Get row names for all experiments                         | CharacterList    |
+| `colnames`       | Get column names for all experiments                      | CharacterList    |
+| `getWithColData` | Extract a single assay with whole or assay colData        | (varies)         |
+
+### Subsetting
+
+| Syntax           | Description                                | Returned Class         |
+|:-----------------|:-------------------------------------------|:-----------------------|
+| `mae[i, j, k]`   | Get rows, columns, and/or experiments      | MultiAssayExperiment   |
+| `mae[i,,]`       |  -- `i:` GRanges, character, integer, etc. | MultiAssayExperiment   |
+| `mae[,j,]`       |  -- `j:` character, integer, logical, etc. | MultiAssayExperiment   |
+| `mae[,,k]`       |  -- `k:` character, integer, logical       | MultiAssayExperiment   |
+| `mae[[n]]`       | Get/set object from experiments            | (varies)               |
+| `mae$column`     | Get/set `colData` column vector            | (varies)               |
+| `getWithColData(mae, k)` | Extract a single assay with colData; k: char, int | (varies) |
+| `subsetByColData(mae, ..)` | Select rows from colData and re-harmonize data | MultiAssayExperiment |
+
+### Management
+
+| Function             | Description                                                  | Returned Class         |
+|:---------------------|:-------------------------------------------------------------|:-----------------------|
+| `prepMultiAssay`     | Troubleshoot constructor problems constructing class         | list                   |
+| `complete.cases`     | Identify subjects with complete data                         | logical vector         |
+| `replicated`         | Identify replicate observations per experiment               | list of LogicalLists   |
+| `anyReplicated`      | Whether any replicate observations exist                     | logical vector         |
+| `showReplicated`     | Show actual technical replicate obs. in assay                | list of CharacterLists |
+| `mergeReplicates`    | Merge replicate observations within each experiment          | MultiAssayExperiment   |
+| `intersectRows`      | Features present in all experiments                          | MultiAssayExperiment   |
+| `intersectColumns`   | Subjects with data in all experiments                        | MultiAssayExperiment   |
+| `renameColname`      | Rename the assay column names for a single assay             | MultiAssayExperiment   |
+| `renamePrimary`      | Rename the colData rownames                                  | MultiAssayExperiment   |
+| `splitAssay`    | Separate columns from assays using a 'hitList' of logical vectors | MultiAssayExperiment   |
+| `makeHitList` | Create a 'hitList' list based on patterns for matching assay colnames | list  |
+
+### Reshaping
+
+| Function         | Description                                          | Returned Class   |
+|:-----------------|:-----------------------------------------------------|:-----------------|
+| `longFormat`     | Long tidy DataFrame with optional `colData` columns  | DataFrame        |
+| `wideFormat`     | Wide format, one row per subject                     | DataFrame        |
+
+### Combining
+
+| Function | Description                                      | Returned Class         |
+|:---------|:-------------------------------------------------|:-----------------------|
+| `c`      | Concatenate experiment to MAE | MultiAssayExperiment   |
+
+### Coercion
+
+| Function | Description                                      | Returned Class         |
+|:---------|:-------------------------------------------------|:-----------------------|
+| `MultiAssayExperimentToMAF` | Convert MAE to `MAF` using 'non_syn' and 'syn' assays | maftools::MAF |
+
+### Export
+
+| Function | Description                                      | Returned Class         |
+|:---------|:-------------------------------------------------|:-----------------------|
+| `exportClass` | Save all data from a MAE to a series of text files ('.csv') | (files) |
+| `saveHDF5MultiAssayExperiment` | Save a MAE in '.h5' and '.rds' formats similar to `HDF5Array::saveHDF5SummarizedExperiment` | (files) |
+
+---
+
+## Notes
+
+- **assay**: Procedure for measuring biological activity (e.g., RNA-seq).
+- **experiment**: Application of an assay to a sample set.
+- **mae**: A `MultiAssayExperiment` object.
+- **subject**: Patient, cell line, or other biological unit.
+- **observation**: Results of an assay (e.g., gene expression).
+- **features**: Measurement units labeled by row names or genomic ranges.
+- `duplicated()` was deprecated in Bioconductor 3.7 and replaced by `replicated()`.
+
