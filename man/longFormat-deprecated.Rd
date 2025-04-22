@@ -37,7 +37,7 @@ future release. Please use the \code{longForm} method instead.
 }
 \details{
 The \code{longFormat} "ANY" class method, works with classes such as
-\code{\link[Biobase:class.ExpressionSet]{ExpressionSet}} and
+\code{\link[Biobase:ExpressionSet-class]{ExpressionSet}} and
 \code{\link[SummarizedExperiment:SummarizedExperiment-class]{SummarizedExperiment}} as
 well as \code{matrix} to provide a consistent long and skinny
 \code{\link[S4Vectors:DataFrame-class]{DataFrame}}.

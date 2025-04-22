@@ -367,7 +367,7 @@ setMethod("mergeReplicates", "ANY",
 #' @rdname MultiAssayExperiment-helpers
 #'
 #' @details The `longForm` "ANY" class method, works with classes such as
-#' [`ExpressionSet`][Biobase::ExpressionSet] and
+#' \code{\link[Biobase:ExpressionSet-class]{ExpressionSet}} and
 #' [`SummarizedExperiment`][SummarizedExperiment::SummarizedExperiment-class] as
 #' well as `matrix` to provide a consistent long and skinny
 #' [`DataFrame`][S4Vectors::DataFrame-class].

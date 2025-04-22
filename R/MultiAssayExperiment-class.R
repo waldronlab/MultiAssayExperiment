@@ -24,7 +24,8 @@ NULL
 #' diverse assays on a collection of specimen. Currently,  the class can handle
 #' assays that are organized instances of
 #' [`SummarizedExperiment`][SummarizedExperiment::SummarizedExperiment-class],
-#' [ExpressionSet][Biobase::ExpressionSet], `matrix`, `RaggedExperiment`
+#' \code{\link[Biobase:ExpressionSet-class]{ExpressionSet}},
+#' `matrix`, `RaggedExperiment`
 #' (inherits from [`GRangesList`][GenomicRanges::GRangesList-class]), and
 #' `RangedVcfStack`. Create new `MultiAssayExperiment` instances with the
 #' homonymous constructor, minimally with the argument [`ExperimentList`],

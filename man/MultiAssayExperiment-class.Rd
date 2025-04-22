@@ -92,7 +92,8 @@ The \code{MultiAssayExperiment} class can be used to manage results of
 diverse assays on a collection of specimen. Currently,  the class can handle
 assays that are organized instances of
 \code{\link[SummarizedExperiment:SummarizedExperiment-class]{SummarizedExperiment}},
-\link[Biobase:class.ExpressionSet]{ExpressionSet}, \code{matrix}, \code{RaggedExperiment}
+\code{\link[Biobase:ExpressionSet-class]{ExpressionSet}},
+\code{matrix}, \code{RaggedExperiment}
 (inherits from \code{\link[GenomicRanges:GRangesList-class]{GRangesList}}), and
 \code{RangedVcfStack}. Create new \code{MultiAssayExperiment} instances with the
 homonymous constructor, minimally with the argument \code{\link{ExperimentList}},
