@@ -53,7 +53,6 @@ jobs:
         shell: Rscript {0}
 
       - name: Cache R packages
-        if: runner.os != 'Windows'
         uses: actions/cache@v4
         with:
           path: /usr/local/lib/R/site-library
