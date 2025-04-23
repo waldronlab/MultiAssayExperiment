@@ -60,6 +60,7 @@ jobs:
           restore-keys: ${{ runner.os }}-r-${{ matrix.bioc_version }}-
 
       - name: Install GPG
+        if: ${{ github.ref == 'refs/heads/devel' && github.event_name != 'pull_request' }}
         run: sudo apt-get update && sudo apt-get install -y gpg
 
       - name: Install Dependencies
