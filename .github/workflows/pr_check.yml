@@ -25,7 +25,12 @@ jobs:
       - name: Set Matrix Bioconductor Version
         id: set
         run: |
-          MATRIX="{\"include\":[{\"bioc_version\":\"$GITHUB_REF_NAME\"}]}"
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            bioc_version="devel"
+          else
+            bioc_version="${GITHUB_REF_NAME}"
+          fi
+          MATRIX="{\"include\":[{\"bioc_version\":\"$bioc_version\"}]}"
           echo "matrix=$MATRIX" >> $GITHUB_OUTPUT
 
   check:
