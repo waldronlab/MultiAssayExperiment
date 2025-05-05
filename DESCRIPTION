@@ -23,11 +23,11 @@ License: Artistic-2.0
 URL: http://waldronlab.io/MultiAssayExperiment/
 BugReports: https://github.com/waldronlab/MultiAssayExperiment/issues
 Depends:
-    SummarizedExperiment (>= 1.3.81), R (>= 3.5.0)
+    SummarizedExperiment, R (>= 4.5.0)
 Imports:
     Biobase,
     BiocBaseUtils,
-    BiocGenerics (>= 0.53.4),
+    BiocGenerics,
     DelayedArray,
     GenomicRanges,
     IRanges,
