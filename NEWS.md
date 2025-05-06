@@ -2,6 +2,7 @@
 
 ### New features
 
+* Defunct `longFormat` generic and methods replaced with `longForm`
 * Added `hasRowData` method check for assays
 * `subsetByRowData` and `intersectByRowData` allow filtering of rows based
 on values in assay `rowData` (#228)
