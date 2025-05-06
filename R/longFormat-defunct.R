@@ -1,9 +1,9 @@
-#' @name longFormat-deprecated
+#' @name longFormat-defunct
 #'
-#' @title Deprecated longFormat method
+#' @title Defunct longFormat method
 #'
-#' @description The `longFormat` method is deprecated and will be removed in a
-#'   future release. Please use the `longForm` method instead.
+#' @description The `longFormat` method is defunct and will be removed in the
+#'   next release. Please use the `longForm` method instead.
 #'
 #' @details The `longFormat` "ANY" class method, works with classes such as
 #' \code{\link[Biobase:ExpressionSet-class]{ExpressionSet}} and
@@ -45,7 +45,7 @@ setGeneric(
         standardGeneric("longFormat")
 )
 
-#' @rdname longFormat-deprecated
+#' @rdname longFormat-defunct
 #' @exportMethod longFormat
 setMethod(
     "longFormat", "MultiAssayExperiment",
@@ -65,7 +65,7 @@ setMethod(
     }
 )
 
-#' @rdname longFormat-deprecated
+#' @rdname longFormat-defunct
 #' @exportMethod longFormat
 setMethod("longFormat", "ANY", function(object, colDataCols, i = 1L, ...) {
     rowNAMES <- rownames(object)
@@ -86,13 +86,14 @@ setMethod("longFormat", "ANY", function(object, colDataCols, i = 1L, ...) {
     res
 })
 
-#' @rdname longFormat-deprecated
+#' @rdname longFormat-defunct
 #' @exportMethod longFormat
 setMethod(
     "longFormat", "ExperimentList",
     function(object, colDataCols, i = 1L, ...) {
         lifeCycle(
-            "longForm", package = "MultiAssayExperiment", title = "longFormat"
+            "longForm", package = "MultiAssayExperiment", title = "longFormat",
+            cycle = "defunct"
         )
         samelength <- identical(length(object), length(i))
         if (!samelength && identical(length(i), 1L))
