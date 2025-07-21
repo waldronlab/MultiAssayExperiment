@@ -1,7 +1,7 @@
 Package: MultiAssayExperiment
 Title: Software for the integration of multi-omics experiments in
     Bioconductor
-Version: 1.35.3
+Version: 1.35.4
 Authors@R: c(
     person("Marcel", "Ramos", , "marcel.ramos@sph.cuny.edu",
         c("aut", "cre"), c(ORCID = "0000-0002-3242-0582")),
@@ -76,4 +76,4 @@ Collate:
     'saveHDF5MultiAssayExperiment.R'
     'upsetSamples.R'
     'utilities.R'
-Date: 2025-05-06
+Date: 2025-07-21
