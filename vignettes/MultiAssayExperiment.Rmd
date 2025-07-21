@@ -1040,7 +1040,7 @@ methods:
 * `[`
 * `dim()`
 
-Here is what happens if one of the methods doesn't:
+Here is what happens if one of the methods does not:
 
 ```{r mae_api_err, error = TRUE}
 objlist2 <- objlist
