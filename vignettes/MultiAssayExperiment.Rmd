@@ -23,7 +23,7 @@ BiocManager::install("MultiAssayExperiment")
 
 Loading the packages:
 
-```{r,include=TRUE,results="hide",message=FALSE,warning=FALSE}
+```{r load_packages, include=TRUE, results="hide", message=FALSE, warning=FALSE}
 library(MultiAssayExperiment)
 library(GenomicRanges)
 library(SummarizedExperiment)
@@ -56,7 +56,7 @@ information across all rows (e.g., genes or genomic ranges),
 
 Here is an overview of the class and its constructors and extractors:
 
-```{r}
+```{r empty_mae_creation}
 empty <- MultiAssayExperiment()
 empty
 slotNames(empty)
@@ -69,7 +69,23 @@ functions can be seen below. There are three main components:
 2) `colData`
 3) `sampleMap`
 
-```{r, echo = FALSE, fig.cap = "MultiAssayExperiment object schematic shows the design of the infrastructure class. The colData provides data about the patients, cell lines, or other biological units, with one row per unit and one column per variable. The experiments are a list of assay datasets of arbitrary class, with one column per observation. The sampleMap links a single table of patient data (colData) to a list of experiments via a simple but powerful table of experiment:patient edges (relationships), that can be created automatically in simple cases or in a spreadsheet if assay-specific sample identifiers are used. sampleMap relates each column (observation) in the assays (experiments) to exactly one row (biological unit) in colData; however, one row of colData may map to zero, one, or more columns per assay, allowing for missing and replicate assays. Green stripes indicate a mapping of one subject to multiple observations across experiments.", out.width = "\\maxwidth"}
+```{r include_graphics}
+#| echo = FALSE, fig.cap = paste(
+#| "MultiAssayExperiment object schematic shows the design of the",
+#| "infrastructure class. The colData provides data about the patients, cell",
+#| "lines, or other biological units, with one row per unit and one column per",
+#| "variable. The experiments are a list of assay datasets of arbitrary class,",
+#| "with one column per observation. The sampleMap links a single table of",
+#| "patient data (colData) to a list of experiments via a simple but powerful",
+#| "table of experiment:patient edges (relationships), that can be created",
+#| "automatically in simple cases or in a spreadsheet if assay-specific",
+#| "sample identifiers are used. sampleMap relates each column (observation)",
+#| "in the assays (experiments) to exactly one row (biological unit) in",
+#| "colData; however, one row of colData may map to zero, one, or more",
+#| "columns per assay, allowing for missing and replicate assays. Green",
+#| "stripes indicate a mapping of one subject to multiple observations",
+#| "across experiments."), out.width = "\\maxwidth"
+
 knitr::include_graphics("MultiAssayExperiment.png")
 ```
 
@@ -81,7 +97,7 @@ The `ExperimentList` slot and class is the container workhorse for the
 `MultiAssayExperiment` class. It contains all the experimental data. It inherits
 from class `S4Vectors::SimpleList` with one element/component per data type.
 
-```{r}
+```{r experiment_list_class}
 class(experiments(empty)) # ExperimentList
 ```
 
@@ -157,7 +173,7 @@ The `colData` dataset should be of class `DataFrame` but can accept a
 In order to relate metadata of the biological unit, the row names of the
 `colData` dataset must contain patient identifiers.
 
-```{r}
+```{r patient_data_creation}
 patient.data <- data.frame(sex=c("M", "F", "M", "F"),
     age=38:41,
     row.names=c("Jack", "Jill", "Bob", "Barbara"))
@@ -189,7 +205,7 @@ each cell line.
 The `sampleMap` is a `DataFrame` that relates the "primary" data
 (`colData`) to the experimental assays:
 
-```{r}
+```{r sample_map_dataframe}
 is(sampleMap(empty), "DataFrame") # TRUE
 ```
 
@@ -278,7 +294,7 @@ Metadata can be added at different levels of the `MultiAssayExperiment`.
 Can be of *ANY* class, for storing study-wide metadata, such as citation
 information. For an empty `MultiAssayExperiment` object, it is NULL.
 
-```{r}
+```{r empty_metadata}
 class(metadata(empty)) # NULL (class "ANY")
 ```
 
