@@ -13,7 +13,7 @@ output:
     toc_depth: 4
 ---
 
-```{r,include=TRUE,results="hide",message=FALSE,warning=FALSE}
+```{r load_packages, include=TRUE, results="hide", message=FALSE, warning=FALSE}
 library(MultiAssayExperiment)
 library(S4Vectors)
 ```
@@ -29,7 +29,7 @@ performed for every patient:
 4. **Mutations**: non-silent somatic mutations by gene
 5. **miRNASeqGene**: microRNA abundance by microRNA-seq.
 
-```{r}
+```{r load_miniacc}
 data(miniACC)
 miniACC
 ```
@@ -45,7 +45,7 @@ clinical, pathological, subtype, or other variable. The `$` function provides
 a shortcut for accessing or setting `colData` columns.
 
 
-```{r}
+```{r coldata_access}
 colData(miniACC)[1:4, 1:4]
 table(miniACC$race)
 ```
@@ -61,7 +61,7 @@ A base `list` or `ExperimentList` object containing the experimental datasets
 for the set of samples collected. This gets converted into a class
 `ExperimentList` during construction.
 
-```{r}
+```{r experiments_access}
 experiments(miniACC)
 ```
 
@@ -100,7 +100,7 @@ the row names of `colData`
 names of `ExperimentList` elements
 Helper functions are available for creating a map from a list. See `?listToMap`
 
-```{r}
+```{r sample_map_access}
 sampleMap(miniACC)
 ```
 
@@ -119,7 +119,7 @@ proteins, and genomic ranges. There are many options available for storing
 metadata. First, `MultiAssayExperiment` has its own metadata for describing the
 entire experiment:
 
-```{r}
+```{r metadata_access}
 metadata(miniACC)
 ```
 
@@ -147,14 +147,14 @@ Subsetting operations always return another `MultiAssayExperiment`. For example,
 the following will return any rows named "MAPK14" or "IGFBP2", and remove any
 assays where no rows match:
 
-```{r, results='hide'}
+```{r subset_by_rownames, results='hide'}
 miniACC[c("MAPK14", "IGFBP2"), , ]
 ```
 
 The following will keep only patients of pathological stage iv, and all their
 associated assays:
 
-```{r, results='hide'}
+```{r subset_by_stage, results='hide'}
 stg4 <- miniACC$pathologic_stage == "stage iv"
 # remove NA values from vector
 miniACC[, stg4 & !is.na(stg4), ]
@@ -162,7 +162,7 @@ miniACC[, stg4 & !is.na(stg4), ]
 
 And the following will keep only the RNA-seq dataset, and only patients for
 which this assay is available:
-```{r, results='hide'}
+```{r subset_by_assay_name, results='hide'}
 miniACC[, , "RNASeq2GeneNorm"]
 ```
 
@@ -181,7 +181,7 @@ a single element of the `MultiAssayExperiment` `ExperimentList`. It avoids
 the use of `experiments(mae)[[1L]]`. For example, both of the following extract
 the `ExpressionSet` object containing RNA-seq data:
 
-```{r}
+```{r double_bracket_subsetting}
 miniACC[[1L]]  #or equivalently, miniACC[["RNASeq2GeneNorm"]]
 ```
 
@@ -189,7 +189,7 @@ miniACC[[1L]]  #or equivalently, miniACC[["RNASeq2GeneNorm"]]
 
 `complete.cases()` shows which patients have complete data for all assays:
 
-```{r}
+```{r complete_cases_summary}
 summary(complete.cases(miniACC))
 ```
 
@@ -198,7 +198,7 @@ The above logical vector could be used for patient subsetting. More simply,
 `ExperimentList` element so its columns correspond exactly to rows of
 `colData` in the same order:
 
-```{r}
+```{r intersect_columns}
 accmatched = intersectColumns(miniACC)
 ```
 
@@ -208,7 +208,7 @@ correspond to the same patients. In these TCGA assays, the first three `-`
 delimited positions correspond to patient, ie the first patient is
 *TCGA-OR-A5J2*:
 
-```{r}
+```{r accmatched_colnames}
 colnames(accmatched)
 ```
 
@@ -218,7 +218,7 @@ colnames(accmatched)
 them in identical order. For example, to keep only genes where data are
 available for RNA-seq, GISTIC copy number, and somatic mutations:
 
-```{r}
+```{r intersect_rows}
 accmatched2 <- intersectRows(miniACC[, , c("RNASeq2GeneNorm",
                                            "gistict",
                                            "Mutations")])
@@ -235,14 +235,14 @@ The `assay` and `assays` methods follow `SummarizedExperiment` convention.
 The `assay` (singular) method will extract the first element of the
 `ExperimentList` and will return a `matrix`.
 
-```{r}
+```{r assay_singular}
 class(assay(miniACC))
 ```
 
 The `assays` (plural) method will return a `SimpleList` of the data with each
 element being a `matrix`.
 
-```{r}
+```{r assays_plural}
 assays(miniACC)
 ```
 
@@ -285,7 +285,7 @@ numeric measurement (gene expression, copy number, presence of a non-silent
 mutation, etc), and following these are the *vital_status* and *days_to_death*
 colData columns that have been added:
 
-```{r}
+```{r longform_example}
 longForm(
     miniACC[c("TP53", "CTNNB1"), , ],
     colDataCols = c("vital_status", "days_to_death")
@@ -298,7 +298,7 @@ In _wide_ format, each feature from each assay goes in a separate column, with
 one row per primary identifier (patient). Here, each variable becomes a new
 column:
 
-```{r}
+```{r wideform_example}
 wideFormat(
     miniACC[c("TP53", "CTNNB1"), , ],
     colDataCols = c("vital_status", "days_to_death")
@@ -316,7 +316,7 @@ biological units)
 3. `sampleMap` - A `DataFrame` of `assay`, `primary`, and `colname` identifiers
 
 The miniACC object can be reconstructed as follows:
-```{r}
+```{r mae_constructor}
 MultiAssayExperiment(
     experiments=experiments(miniACC),
     colData=colData(miniACC),
@@ -343,7 +343,7 @@ the **same**. A `warning` will be issued to make the user aware of this
 assumption. For example, to concatenate a matrix of log2-transformed RNA-seq
 results:
 
-```{r}
+```{r concatenate_mae}
 miniACC2 <- c(
     miniACC,
     log2rnaseq = log2(assays(miniACC)$RNASeq2GeneNorm),
@@ -362,7 +362,7 @@ We see that 43 samples have all 5 assays, 32 are missing reverse-phase protein
 (RPPAArray), 2 are missing Mutations, 1 is missing gistict, 12 have only
 mutations and gistict, etc:
 
-```{r}
+```{r upset_samples}
 library(UpSetR)
 upsetSamples(miniACC)
 ```
@@ -376,7 +376,7 @@ column to the colData, containing the `Surv` object for survival analysis:
 _**Note**_: `survfit` method does not work well with `DataFrame`. To bypass
 the error, here we covert `colData` to a `data.frame`.
 
-```{r,message=FALSE}
+```{r kaplan_meier_plot_setup,message=FALSE}
 library(survival)
 library(survminer)
 
@@ -386,12 +386,12 @@ colData(miniACC) <- DataFrame(coldat)
 ```
 
 And remove any patients missing overall survival information:
-```{r}
+```{r remove_missing_survival_data}
 miniACC <- miniACC[, complete.cases(coldat$y), ]
 coldat <- as(colData(miniACC), "data.frame")
 ```
 
-```{r}
+```{r kaplan_meier_plot}
 fit <- survfit(y ~ pathology_N_stage, data = coldat)
 ggsurvplot(fit, data = coldat, risk.table = TRUE)
 ```
@@ -401,7 +401,7 @@ ggsurvplot(fit, data = coldat, risk.table = TRUE)
 Choose the *EZH2* gene for demonstration. This subsetting will drop assays with
 no row named EZH2:
 
-```{r}
+```{r prepare_cox_regression_data}
 wideacc <- wideFormat(
     miniACC["EZH2", , ],
     colDataCols = c("vital_status", "days_to_death", "pathology_N_stage")
@@ -414,7 +414,7 @@ Perform a multivariate Cox regression with *EZH2* copy number (gistict),
 log2-transformed *EZH2* expression (RNASeq2GeneNorm), and nodal status
 (pathology_N_stage) as predictors:
 
-```{r}
+```{r cox_regression_model}
 coxph(
     Surv(days_to_death, vital_status) ~
         gistict_EZH2 + log2(RNASeq2GeneNorm_EZH2) + pathology_N_stage,
@@ -432,7 +432,7 @@ For further detail, see the main MultiAssayExperiment vignette.
 
 # Session info
 
-```{r}
+```{r sessioninfo}
 sessionInfo()
 ```
 

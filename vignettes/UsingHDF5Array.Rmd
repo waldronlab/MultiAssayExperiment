@@ -16,7 +16,7 @@ output:
 
 ## Dependencies
 
-```{r,include=TRUE,results="hide",message=FALSE,warning=FALSE}
+```{r load_packages, include=TRUE, results="hide", message=FALSE, warning=FALSE}
 library(MultiAssayExperiment)
 library(HDF5Array)
 library(SummarizedExperiment)
@@ -32,14 +32,14 @@ way to connect to a large matrix that is stored on disk.
 
 First, we create a small matrix for constructing the `DelayedMatrix` class.
 
-```{r}
+```{r create_small_matrix}
 smallMatrix <- matrix(rnorm(10e5), ncol = 20)
 ```
 
 We add rownames and column names to the matrix object for compatibility with
 the `MultiAssayExperiment` representation.
 
-```{r}
+```{r add_dimnames}
 rownames(smallMatrix) <- paste0("GENE", seq_len(nrow(smallMatrix)))
 colnames(smallMatrix) <- paste0("SampleID", seq_len(ncol(smallMatrix)))
 ```
@@ -47,7 +47,7 @@ colnames(smallMatrix) <- paste0("SampleID", seq_len(ncol(smallMatrix)))
 Here we use the `DelayedArray` constructor function to create a
 `DelayedMatrix` object.
 
-```{r}
+```{r delayed_array_constructor}
 smallMatrix <- DelayedArray(smallMatrix)
 class(smallMatrix)
 # show method
@@ -63,7 +63,7 @@ Finally, the `rhdf5` package stores `dimnames` in a standard location.
 In order to make use of this functionality, we would use `writeHDF5Array`
 with the `with.dimnames` argument:
 
-```{r}
+```{r write_hdf5_array}
 testh5 <- tempfile(fileext = ".h5")
 writeHDF5Array(smallMatrix, filepath = testh5, name = "smallMatrix",
     with.dimnames = TRUE)
@@ -71,7 +71,7 @@ writeHDF5Array(smallMatrix, filepath = testh5, name = "smallMatrix",
 
 To see the file structure we use `h5ls`:
 
-```{r}
+```{r h5ls_output}
 h5ls(testh5)
 ```
 
@@ -80,7 +80,7 @@ h5ls(testh5)
 Note that a large matrix from an HDF5 file can also be loaded using the
 `HDF5ArraySeed` and `DelayedArray` functions.
 
-```{r}
+```{r import_hdf5_files}
 hdf5Data <- HDF5ArraySeed(file = testh5, name = "smallMatrix")
 newDelayedMatrix <- DelayedArray(hdf5Data)
 class(newDelayedMatrix)
@@ -93,7 +93,7 @@ A `DelayedMatrix` alone conforms to the `MultiAssayExperiment` API requirements.
 Shown below, the `DelayedMatrix` can be put into a named `list` and passed into
 the `MultiAssayExperiment` constructor function.
 
-```{r}
+```{r delayed_matrix_with_mae}
 HDF5MAE <- MultiAssayExperiment(experiments = list(smallMatrix = smallMatrix))
 sampleMap(HDF5MAE)
 colData(HDF5MAE)
@@ -108,7 +108,7 @@ minimal requirements. Additionally, this `SummarizedExperiment` with the
 `DelayedMatrix` backend can be part of a bigger `MultiAssayExperiment` object.
 Below is a minimal example of how this would work:
 
-```{r}
+```{r se_with_delayed_matrix}
 HDF5SE <- SummarizedExperiment(assays = smallMatrix)
 assay(HDF5SE)
 MultiAssayExperiment(list(HDF5SE = HDF5SE))
@@ -120,6 +120,6 @@ representations of data with `MultiAssayExperiment`.
 
 # Session info
 
-```{r}
+```{r sessioninfo}
 sessionInfo()
 ```
