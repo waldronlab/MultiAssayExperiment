@@ -96,7 +96,7 @@ Updated from Ramos et al., *Cancer Research* 2017; DOI:
 | `exportClass` | Save all data from a MAE to a series of text files ('.csv') | (files) |
 | `saveHDF5MultiAssayExperiment` | Save a MAE in '.h5' and '.rds' formats similar to `HDF5Array::saveHDF5SummarizedExperiment` | (files) |
 
----
+----
 
 ## Notes
 
