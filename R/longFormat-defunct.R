@@ -37,6 +37,8 @@
 #'
 #' @importFrom BiocBaseUtils lifeCycle
 #'
+#' @return A `DataFrame` with selected `colDataCols`, if any.
+#'
 #' @aliases longFormat
 #' @export
 setGeneric(

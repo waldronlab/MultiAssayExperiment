@@ -31,6 +31,9 @@ indicating the assay whose colnames are to be renamed}
 
 \item{...}{Additional arguments. See details for more information.}
 }
+\value{
+A \code{DataFrame} with selected \code{colDataCols}, if any.
+}
 \description{
 The \code{longFormat} method is defunct and will be removed in the
 next release. Please use the \code{longForm} method instead.
