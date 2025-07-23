@@ -52,40 +52,20 @@ setGeneric(
 setMethod(
     "longFormat", "MultiAssayExperiment",
     function(object, colDataCols = NULL, i = 1L, ...) {
-        if (any(.emptyAssays(experiments(object))))
-            object <- .dropEmpty(object, warn = FALSE)
-
-        longDataFrame <- longFormat(experiments(object), i = i)
-
-        longDataFrame <- .mapOrderPrimary(longDataFrame, sampleMap(object))
-
-        if (!is.null(colDataCols))
-            longDataFrame <-
-                .matchAddColData(longDataFrame, colData(object), colDataCols)
-
-        as(longDataFrame, "DataFrame")
+        lifeCycle(
+            "longForm", package = "MultiAssayExperiment", title = "longFormat",
+            cycle = "defunct"
+        )
     }
 )
 
 #' @rdname longFormat-defunct
 #' @exportMethod longFormat
 setMethod("longFormat", "ANY", function(object, colDataCols, i = 1L, ...) {
-    rowNAMES <- rownames(object)
-    if (is.null(rowNAMES)) rowNames <- as.character(seq_len(nrow(object)))
-
-    if (is(object, "ExpressionSet"))
-        object <- Biobase::exprs(object)
-    if (is(object, "SummarizedExperiment") || is(object, "RaggedExperiment"))
-        object <- assay(object, i = i)
-
-    BiocBaseUtils::checkInstalled("reshape2")
-
-    res <- reshape2::melt(
-        object, varnames = c("rowname", "colname"), value.name = "value"
+    lifeCycle(
+        "longForm", package = "MultiAssayExperiment", title = "longFormat",
+        cycle = "defunct"
     )
-    if (!is.character(res[["rowname"]]))
-        res[["rowname"]] <- as.character(res[["rowname"]])
-    res
 })
 
 #' @rdname longFormat-defunct
@@ -96,23 +76,6 @@ setMethod(
         lifeCycle(
             "longForm", package = "MultiAssayExperiment", title = "longFormat",
             cycle = "defunct"
-        )
-        samelength <- identical(length(object), length(i))
-        if (!samelength && identical(length(i), 1L))
-            i <- rep(i, length(object))
-        res <- mapply(
-            function(obj, obname, idx) {
-                data.frame(
-                    assay = obname,
-                    longFormat(obj, i = idx),
-                    stringsAsFactors = FALSE
-                )
-            }, obj = object, obname = names(object), idx = i, SIMPLIFY = FALSE
-        )
-
-        do.call(
-            function(...) rbind(..., make.row.names = FALSE),
-            res
         )
     }
 )
