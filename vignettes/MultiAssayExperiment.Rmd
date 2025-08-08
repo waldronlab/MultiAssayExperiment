@@ -518,7 +518,7 @@ prepMultiAssay(doubleExp, patient.data, exampleMap)$metadata$drops
 ```
 
 A similar operation is performed for checking "primary" `sampleMap` names and
-`colData` rownames. In this example, we add a row corresponding to "Joe" that
+`colData` row names. In this example, we add a row corresponding to "Joe" that
 does not have a match in the experimental data.
 
 ```{r add_row_to_sampleMap}
@@ -539,8 +539,8 @@ preppedMulti <- MultiAssayExperiment(prepped$experiments, prepped$colData,
 preppedMulti
 ```
 
-Alternatively, use the `do.call` function to easily create a `MultiAssayExperiment`
-from the output of `prepMultiAssay` function:
+Alternatively, use the `do.call` function to easily create a
+`MultiAssayExperiment` from the output of `prepMultiAssay` function:
 
 ```{r prepMultiAssay_do_call}
 do.call(MultiAssayExperiment, prepped)
