@@ -2,17 +2,13 @@
 # Git
 #----------------------------
 ^\.git$
-^\.github$
 ^\.gitignore$
 ^\.gitattributes$
 
 #----------------------------
 # Continuous Integration
 #----------------------------
-^\.travis\.yml$
-^appveyor\.yml$
-^wercker\.yml$
-^\.wercker$
+^\.github$
 
 #----------------------------
 # RStudio and R
@@ -26,9 +22,6 @@
 #----------------------------
 ^.*\.rda$
 ^.*\.tar\.gz$
-^\.lintr$
-^README\.md$
-^docs$
 
 #----------------------------
 # Docs

@@ -1,37 +1,15 @@
-# Backup Files
-*~
-*.bak
-*.swp
-*.Rhistory
-*.vim
-*.swo
-
 # RStudio Files
 .Rproj.user
+.Rhistory
 *.Rproj
 
 # Data Files
 .RData
-/vignettes/cache/
-*.[Rr][Dd][SsAa]
-*.txt
 *.html
-docs/
 
 # Caches
 *_cache/
 
-# News Files
-NEWS
-*.md
-
 # Merge residuals
 *.orig
 
-# Cont. Integration
-.wercker/
-
-# Don't ignore
-!NEWS.md
-!README.md
-!inst/extdata/hnscSample.rds
