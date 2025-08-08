@@ -632,7 +632,8 @@ the bracket method `[`, the drop argument is *TRUE* by default.
 You can subset by rows, columns, and assays in a single bracket operation,
 and they will be performed in that order (rows, then columns, then assays).
 The following selects the `ENST00000355076` gene across all samples, then the
-first two samples of each assay, and finally the Affy and Methyl 450k assays:
+corresponding samples for the first two biological specimens in the `colData`,
+and finally the Affy and Methyl 450k assays:
 
 ```{r subset_by_rows_columns_assays}
 myMultiAssay["ENST00000355076", 1:2, c("Affy", "Methyl 450k")]
