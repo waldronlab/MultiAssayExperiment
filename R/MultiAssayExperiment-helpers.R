@@ -527,13 +527,12 @@ setMethod("longForm", "ANY", function(object, colDataCols, i = 1L, ...) {
 #' See the `wideFormat` section for description of the `colDataCols` and
 #' `i` arguments.
 #'
-#' @param check.names (logical default TRUE) Column names of the output
-#' `DataFrame` will be checked for syntactic validity and made unique,
-#' if necessary
+#' @param check.names `logical(1)` Column names of the output `DataFrame` will
+#'   be run through `make.names` to ensure syntactic validity (default `TRUE`).
 #'
-#' @param collapse (character default "_") A single string delimiter for output
-#' column names. In `wideFormat`, experiments and rownames (and when
-#' replicate samples are present, colnames) are seperated by this delimiter
+#' @param collapse `character(1)` A single string delimiter (default "_") for
+#'   output column names. In `wideFormat`, experiments and `rownames` (and when
+#'   replicate samples are present, `colnames`) are separated by this delimiter
 #'
 #' @export wideFormat
 wideFormat <- function(object, colDataCols = NULL, check.names = TRUE,

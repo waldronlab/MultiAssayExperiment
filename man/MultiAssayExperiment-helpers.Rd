@@ -134,13 +134,12 @@ than one assay (default 1L),
 renameColname: Either a \code{numeric} or \code{character} index
 indicating the assay whose colnames are to be renamed}
 
-\item{check.names}{(logical default TRUE) Column names of the output
-\code{DataFrame} will be checked for syntactic validity and made unique,
-if necessary}
+\item{check.names}{\code{logical(1)} Column names of the output \code{DataFrame} will
+be run through \code{make.names} to ensure syntactic validity (default \code{TRUE}).}
 
-\item{collapse}{(character default "_") A single string delimiter for output
-column names. In \code{wideFormat}, experiments and rownames (and when
-replicate samples are present, colnames) are seperated by this delimiter}
+\item{collapse}{\code{character(1)} A single string delimiter (default "_") for
+output column names. In \code{wideFormat}, experiments and \code{rownames} (and when
+replicate samples are present, \code{colnames}) are separated by this delimiter}
 
 \item{mode}{String indicating how \code{MultiAssayExperiment}
 column-level metadata should be added to the
