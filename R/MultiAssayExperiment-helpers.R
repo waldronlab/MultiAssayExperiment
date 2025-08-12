@@ -343,8 +343,11 @@ setMethod("mergeReplicates", "ANY",
         return(object)
 })
 
-.matchAddColData <- function(reshaped, colData, colDataCols) {
-    extraColumns <- as.data.frame(colData[, colDataCols, drop = FALSE])
+.matchAddColData <- function(reshaped, colData, colDataCols, check.names) {
+    optional <- !check.names
+    extraColumns <- as.data.frame(
+        colData[, colDataCols, drop = FALSE], optional = optional
+    )
     rowNameValues <- rownames(extraColumns)
     rownames(extraColumns) <- NULL
     matchIdx <- match(reshaped[["primary"]], rowNameValues)
@@ -588,7 +591,9 @@ wideFormat <- function(object, colDataCols = NULL, check.names = TRUE,
 
     wideData <- lapply(wideData, function(flox) {
         flox <- tidyr::pivot_wider(flox, names_from = key)
-        .matchAddColData(flox, colData(object), colDataCols)
+        .matchAddColData(
+            flox, colData(object), colDataCols, check.names = check.names
+        )
     })
     wideDF <- Reduce(function(x, y)
         merge(x, y, by = intersect(names(x), names(y)), all = TRUE), wideData)
