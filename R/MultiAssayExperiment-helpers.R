@@ -412,8 +412,9 @@ setMethod(
         longDataFrame <- .mapOrderPrimary(longDataFrame, sampleMap(object))
 
         if (!is.null(colDataCols))
-            longDataFrame <-
-                .matchAddColData(longDataFrame, colData(object), colDataCols)
+            longDataFrame <- .matchAddColData(
+                longDataFrame, colData(object), colDataCols, TRUE
+            )
 
         as(longDataFrame, "DataFrame")
     }
@@ -591,7 +592,7 @@ wideFormat <- function(object, colDataCols = NULL, check.names = TRUE,
     wideData <- lapply(wideData, function(flox) {
         flox <- tidyr::pivot_wider(flox, names_from = key)
         .matchAddColData(
-            flox, colData(object), colDataCols, check.names = check.names
+            flox, colData(object), colDataCols, check.names
         )
     })
     wideDF <- Reduce(function(x, y)
