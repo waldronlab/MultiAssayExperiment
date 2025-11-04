@@ -69,7 +69,6 @@ Collate:
     'data.R'
     'hasAssay.R'
     'listToMap.R'
-    'longFormat-defunct.R'
     'mapToList.R'
     'prepMultiAssay.R'
     'reexports.R'

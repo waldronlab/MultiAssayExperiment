@@ -74,7 +74,7 @@ Updated from Ramos et al., *Cancer Research* 2017; DOI:
 
 | Function         | Description                                          | Returned Class   |
 |:-----------------|:-----------------------------------------------------|:-----------------|
-| `longFormat`     | Long tidy DataFrame with optional `colData` columns  | DataFrame        |
+| `longForm`       | Long tidy DataFrame with optional `colData` columns  | DataFrame        |
 | `wideFormat`     | Wide format, one row per subject                     | DataFrame        |
 
 ### Combining

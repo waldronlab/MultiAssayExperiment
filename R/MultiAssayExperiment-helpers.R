@@ -397,7 +397,6 @@ setMethod("mergeReplicates", "ANY",
 #'     renameColname: Either a `numeric` or `character` index
 #'     indicating the assay whose colnames are to be renamed
 #'
-#' @importFrom BiocBaseUtils lifeCycle
 #' @importFrom BiocGenerics longForm
 #'
 #' @exportMethod longForm
