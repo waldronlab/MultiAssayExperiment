@@ -52,7 +52,7 @@ Suggests:
 VignetteBuilder: knitr
 biocViews: Infrastructure, DataRepresentation
 Encoding: UTF-8
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Roxygen: list(markdown = TRUE)
 Video: https://youtu.be/w6HWAHaDpyk, https://youtu.be/Vh0hVVUKKFM
 Collate: 
