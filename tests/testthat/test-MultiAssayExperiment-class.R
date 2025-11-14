@@ -11,26 +11,32 @@ test_that("exportClass on a MultiAssayExperiment works", {
         return(..2)
     }
 
-    with_mock(write.table = .write.table, {
-        filenames <- basename(
-            exportClass(miniACC, dir = tempdir(), fmt = "csv", ext = ".csv",
-                verbose = FALSE)
-        )
-        expect_match(
-            filenames, "miniACC_.*"
-        )
-    })
-
-    with_mock(write.table = .write.table, {
-        filenames <- basename(
-            .sortMetadata(
-                miniACC, "miniACC", dir = tempdir(), fmt = "csv", ext = ".csv"
+    with_mocked_bindings(
+        .mae_write_table = .write.table,
+        {
+            filenames <- basename(
+                exportClass(miniACC, dir = tempdir(), fmt = "csv", ext = ".csv",
+                    verbose = FALSE)
             )
-        )
-        expect_match(
-            filenames, "miniACC_META_.*"
-        )
-    })
+            expect_match(
+                filenames, "miniACC_.*"
+            )
+        }
+    )
+
+    with_mocked_bindings(
+        .mae_write_table = .write.table,
+        {
+            filenames <- basename(
+                .sortMetadata(
+                    miniACC, "miniACC", dir = tempdir(), fmt = "csv", ext = ".csv"
+                )
+            )
+            expect_match(
+                filenames, "miniACC_META_.*"
+            )
+        }
+    )
 })
 
 test_that("constructors work", {
