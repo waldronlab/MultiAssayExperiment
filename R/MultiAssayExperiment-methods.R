@@ -242,12 +242,19 @@ setMethod("c", "MultiAssayExperiment",
     sum(any(atmos), !atmos)
 }
 
+## utils::write.table wrapper for unit tests
+.mae_write_table <- function(...) {
+    utils::write.table(...)
+}
+
 .chr2fxn <- function(fmt) {
     sep <- switch(fmt, csv = ",", "\t")
     cols <- switch(fmt, csv = NA, TRUE)
     qme <- switch(fmt, csv = "double", "escape")
-    function(...) utils::write.table(..., sep = sep,
-        col.names = cols, qmethod = qme)
+    function(...)
+        .mae_write_table(
+            ..., sep = sep, col.names = cols, qmethod = qme
+        )
 }
 
 .sortMetadata <- function(object, objname, dir, fmt, ext, ...) {
