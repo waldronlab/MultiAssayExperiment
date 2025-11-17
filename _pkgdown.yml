@@ -39,6 +39,10 @@ reference:
     contents:
       - saveHDF5MultiAssayExperiment
       - MultiAssayExperimentToMAF
+  - title: Defunct and Deprecated
+    desc: Functions that are defunct or deprecated
+    contents:
+      - longFormat-defunct
   - title: Misc. Package Docs
     desc: Other package information and data
     contents:
