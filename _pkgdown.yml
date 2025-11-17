@@ -70,4 +70,4 @@ navbar:
   right:
   - icon: fa-github fa-lg
     href: https://github.com/waldronlab/MultiAssayExperiment
-
+    aria-label: "View GitHub repository"
