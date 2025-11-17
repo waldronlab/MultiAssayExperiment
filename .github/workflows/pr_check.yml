@@ -8,13 +8,13 @@ on:
       - '**.yml'
     branches:
       - devel
-      - RELEASE_3_21
+      - RELEASE_3_22
 
 env:
   R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
   GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
   CRAN: https://p3m.dev/cran/__linux__/noble/latest
-  BIOC_RELEASE: RELEASE_3_21
+  BIOC_RELEASE: RELEASE_3_22
 
 jobs:
   set-matrix:
