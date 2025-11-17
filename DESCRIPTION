@@ -20,7 +20,8 @@ Description: Harmonize data management of multiple experimental assays
     wide and long formats for adaptability to graphing and downstream
     analysis.
 License: Artistic-2.0
-URL: http://waldronlab.io/MultiAssayExperiment/
+URL: http://waldronlab.io/MultiAssayExperiment/,
+    https://github.com/waldornlab/MultiAssayExperiment
 BugReports: https://github.com/waldronlab/MultiAssayExperiment/issues
 Depends:
     SummarizedExperiment, R (>= 4.5.0)
