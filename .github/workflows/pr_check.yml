@@ -14,7 +14,7 @@ env:
   R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
   GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
   CRAN: https://p3m.dev/cran/__linux__/noble/latest
-  BIOC_RELEASE: RELEASE_3_21
+  BIOC_RELEASE: RELEASE_3_22
 
 jobs:
   set-matrix:
@@ -48,7 +48,7 @@ jobs:
 
       - name: Query dependencies
         run: |
-          BiocManager::install(c("covr", "BiocCheck"))
+          BiocManager::install(c("remotes", "rcmdcheck", "BiocCheck", "covr"))
           saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
         shell: Rscript {0}
 
@@ -66,7 +66,7 @@ jobs:
       - name: Install Dependencies
         run: |
           remotes::install_deps(dependencies = TRUE, repos = BiocManager::repositories())
-          BiocManager::install(c("rcmdcheck", "BiocCheck"), ask = FALSE, update = TRUE)
+          BiocManager::install(ask = FALSE, update = TRUE)
         shell: Rscript {0}
 
       - name: Check Package
