@@ -3,8 +3,8 @@ Title: Software for the integration of multi-omics experiments in
     Bioconductor
 Version: 1.37.2
 Authors@R: c(
-    person("Marcel", "Ramos", , "marcel.ramos@sph.cuny.edu", c("aut", "cre"),
-           c(ORCID = "0000-0002-3242-0582")),
+    person("Marcel", "Ramos", , "marcel.ramos@sph.cuny.edu",
+        c("aut", "cre"), c(ORCID = "0000-0002-3242-0582")),
     person("Martin", "Morgan", role = c("aut", "ctb")),
     person("Lori", "Shepherd", role = "ctb"),
     person("Hervé", "Pagès", role = "ctb"),
