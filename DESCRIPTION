@@ -10,7 +10,9 @@ Authors@R: c(
     person("Hervé", "Pagès", , , "ctb"),
     person("Vincent J", "Carey", , , c("aut", "ctb")),
     person("Levi", "Waldron", , "lwaldron.research@gmail.com", "aut"),
-    person("MultiAssay", "SIG", , "biocmultiassay@googlegroups.com", "ctb"))
+    person("MultiAssay", "SIG", , "biocmultiassay@googlegroups.com", "ctb"),
+    person("NCI", role = "fnd", comment = c(GrantNo. = "U24CA289073"))
+    )
 Description: Harmonize data management of multiple experimental assays
     performed on an overlapping set of specimens.  It provides a familiar
     Bioconductor user experience by extending concepts from
