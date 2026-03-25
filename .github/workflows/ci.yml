@@ -1,0 +1,21 @@
+name: PR CMD check & build site
+
+on:
+  pull_request:
+  push:
+    paths:
+      - 'DESCRIPTION'
+      - '**.yml'
+    branches:
+      - devel
+      - 'RELEASE_*'
+
+jobs:
+  ci:
+    uses: waldronlab/.github/.github/workflows/bioc-pr-cmdcheck-pkgdown.yml@devel
+    secrets: inherit
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
+
