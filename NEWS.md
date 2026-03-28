@@ -1,4 +1,4 @@
-## Changes in version 1.36.0
+## Changes in version 1.36.2
 
 ### New features
 
@@ -9,8 +9,11 @@ on values in assay `rowData` (#228)
 
 ### Bug fixes and minor improvements
 
+* Fixed bug in `getWithColData` when `colData` from `i` object did not align
+with `sampleMap(mae)` colname order (@aboyoun / James Bonaffini, #346)
 * Properly document `i` `subsetByRow` and `[` bracket methods.
 * Match `subsetByRow` method signatures to generic.
+* Use `with_mocked_bindings` in unit tests
 
 ## Changes in version 1.34.0
 
