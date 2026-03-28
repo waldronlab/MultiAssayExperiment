@@ -216,6 +216,66 @@ test_that("getWithColData works", {
             rownames(colData)), ,
         drop = FALSE]
     expect_identical(cData, matchedData)
+
+    ## Test for row order mismatch bug (Issue: James Bonaffini)
+    ## When experiment colData row order differs from sampleMap order,
+    ## appended MAE colData should still be correctly matched
+    Y3 <- matrix(rnorm(40), ncol=4)
+    colnames(Y3) <- c("S001", "S002", "S003", "S004")
+
+    # Experiment colData with specific row order and a common column
+    exp_df <- DataFrame(PATNUM=c("P3", "P1", "P4", "P2"),
+                        SAMPLE_TYPE=c("tumor", "normal", "tumor", "normal"),
+                        row.names = colnames(Y3))
+    se3 <- SummarizedExperiment(list(counts=Y3), colData=exp_df)
+
+    # MAE colData with patient-level metadata
+    mae_colData <- DataFrame(PATNUM=c("P1", "P2", "P3", "P4"),
+                             AGE=c(45, 67, 52, 38),
+                             TREATMENT=c("A", "B", "C", "D"),
+                             row.names=c("P1", "P2", "P3", "P4"))
+
+    # SampleMap with different order than experiment colData
+    smap <- DataFrame(assay="exp3",
+                      primary=c("P1", "P2", "P3", "P4"),
+                      colname=c("S002", "S004", "S001", "S003"))
+
+    MAE_test <- MultiAssayExperiment(list(exp3=se3),
+                                     sampleMap=smap,
+                                     colData=mae_colData)
+
+    result <- getWithColData(MAE_test, 1L, "append")
+    resultData <- colData(result)
+
+    # Verify each sample has correct patient's metadata
+    expect_identical(resultData["S001", "PATNUM"], "P3")
+    expect_identical(resultData["S001", "AGE"], 52)
+    expect_identical(resultData["S001", "TREATMENT"], "C")
+
+    expect_identical(resultData["S002", "PATNUM"], "P1")
+    expect_identical(resultData["S002", "AGE"], 45)
+    expect_identical(resultData["S002", "TREATMENT"], "A")
+
+    expect_identical(resultData["S003", "PATNUM"], "P4")
+    expect_identical(resultData["S003", "AGE"], 38)
+    expect_identical(resultData["S003", "TREATMENT"], "D")
+
+    expect_identical(resultData["S004", "PATNUM"], "P2")
+    expect_identical(resultData["S004", "AGE"], 67)
+    expect_identical(resultData["S004", "TREATMENT"], "B")
+
+    # Verify MAE-only columns match correctly for all rows
+    mae_only_cols <- c("AGE", "TREATMENT")
+    for (i in seq_len(nrow(resultData))) {
+        sample_id <- rownames(resultData)[i]
+        patient_id <- resultData[i, "PATNUM"]
+        expected_data <- mae_colData[patient_id, mae_only_cols, drop = FALSE]
+        actual_data <- resultData[i, mae_only_cols, drop = FALSE]
+        testres <- unlist(
+            Map(function(x, y) { identical(x, y) }, x=actual_data, y=expected_data)
+        )
+        expect_true(all(testres))
+    }
 })
 
 test_that("renaming helpers work", {

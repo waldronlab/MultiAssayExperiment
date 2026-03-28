@@ -758,6 +758,10 @@ getWithColData <- function(x, i, mode=c("append", "replace"), verbose = FALSE) {
             )
         }
         leftovers <- expanded[, setdiff(colnames(expanded), common), drop=FALSE]
+        # handle row order mismatch bug (Issue: James Bonaffini)
+        # when experiment colData row order differs from sampleMap order
+        append_idx <- match(rownames(existing), sampleMap(mae)[["colname"]])
+        leftovers <- leftovers[append_idx, , drop = FALSE]
         colData(exObj) <- cbind(existing, leftovers)
     }
 
