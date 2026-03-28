@@ -236,7 +236,7 @@ test_that("getWithColData works", {
                              row.names=c("P1", "P2", "P3", "P4"))
 
     # SampleMap with different order than experiment colData
-    smap <- DataFrame(assay="exp3",
+    smap <- DataFrame(assay=factor("exp3"),
                       primary=c("P1", "P2", "P3", "P4"),
                       colname=c("S002", "S004", "S001", "S003"))
 
