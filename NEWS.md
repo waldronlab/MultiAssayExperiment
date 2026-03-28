@@ -3,7 +3,7 @@
 ### Bug fixes and minor improvements
 
 * Fixed bug in `getWithColData` when `colData` from `i` object did not align
-with `sampleMap(mae)` colname order (@aboyun / James Bonaffini, #346)
+with `sampleMap(mae)` colname order (@aboyoun / James Bonaffini, #346)
 
 ## Changes in version 1.36.0
 
