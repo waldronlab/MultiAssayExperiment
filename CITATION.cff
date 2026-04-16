@@ -1,0 +1,122 @@
+# --------------------------------------------
+# CITATION file created with {cffr} R package
+# See also: https://docs.ropensci.org/cffr/
+# --------------------------------------------
+ 
+cff-version: 1.2.0
+message: 'To cite package "MultiAssayExperiment" in publications use:'
+type: software
+license: Artistic-2.0
+title: 'MultiAssayExperiment: Software for the integration of multi-omics experiments
+  in Bioconductor'
+version: 1.37.4
+doi: 10.1158/0008-5472.CAN-17-0344
+abstract: Harmonize data management of multiple experimental assays performed on an
+  overlapping set of specimens. It provides a familiar Bioconductor user experience
+  by extending concepts from SummarizedExperiment, supporting an open-ended mix of
+  standard data classes for individual assays, and allowing subsetting by genomic
+  ranges or rownames. Facilities are provided for reshaping data into wide and long
+  formats for adaptability to graphing and downstream analysis.
+authors:
+- family-names: Ramos
+  given-names: Marcel
+  email: marcel.ramos@sph.cuny.edu
+  orcid: https://orcid.org/0000-0002-3242-0582
+- family-names: Morgan
+  given-names: Martin
+- family-names: Carey
+  given-names: Vincent J
+- family-names: Waldron
+  given-names: Levi
+  email: lwaldron.research@gmail.com
+preferred-citation:
+  type: article
+  title: Software For The Integration Of Multi-Omics Experiments In Bioconductor
+  authors:
+  - family-names: Ramos
+    given-names: Marcel
+    email: marcel.ramos@sph.cuny.edu
+    orcid: https://orcid.org/0000-0002-3242-0582
+  - family-names: Schiffer
+    given-names: Lucas
+  - family-names: Re
+    given-names: Angela
+  - family-names: Azhar
+    given-names: Rimsha
+  - family-names: Basunia
+    given-names: Azfar
+  - family-names: Rodriguez Cabrera
+    given-names: Carmen
+  - family-names: Chan
+    given-names: Tiffany
+  - family-names: Chapman
+    given-names: Philip
+  - family-names: Davis
+    given-names: Sean
+  - family-names: Gomez-Cabrero
+    given-names: David
+  - family-names: Culhane
+    given-names: Aedin C.
+  - family-names: Haibe-Kains
+    given-names: Benjamin
+  - family-names: Hansen
+    given-names: Kasper
+  - family-names: Kodali
+    given-names: Hanish
+  - family-names: Louis
+    given-names: Marie S
+  - family-names: Mer
+    given-names: Arvind S
+  - family-names: Reister
+    given-names: Markus
+  - family-names: Morgan
+    given-names: Martin
+  - family-names: Carey
+    given-names: Vincent J
+  - family-names: Waldron
+    given-names: Levi
+    email: lwaldron.research@gmail.com
+  journal: Cancer Research
+  year: '2017'
+  volume: '77'
+  issue: '21'
+  doi: 10.1158/0008-5472.CAN-17-0344
+  url: https://cancerres.aacrjournals.org/content/77/21/e39
+  start: e39-42
+repository: https://bioconductor.org/
+repository-code: https://github.com/waldronlab/MultiAssayExperiment
+url: http://waldronlab.io/MultiAssayExperiment/
+date-released: '2026-03-28'
+contact:
+- family-names: Ramos
+  given-names: Marcel
+  email: marcel.ramos@sph.cuny.edu
+  orcid: https://orcid.org/0000-0002-3242-0582
+keywords:
+- bioconductor
+- bioconductor-package
+- genomics
+- nci-itcr
+- r
+- tcga
+- u24ca289073
+references:
+- type: manual
+  title: 'MultiAssayExperiment: Software for the integration of multi-omics experiments
+    in Bioconductor'
+  authors:
+  - family-names: Ramos
+    given-names: Marcel
+    email: marcel.ramos@sph.cuny.edu
+    orcid: https://orcid.org/0000-0002-3242-0582
+  - family-names: Morgan
+    given-names: Martin
+  - family-names: Carey
+    given-names: Vincent J
+  - family-names: Waldron
+    given-names: Levi
+    email: lwaldron.research@gmail.com
+  year: '2026'
+  notes: R package version 1.37.4
+  url: http://waldronlab.io/MultiAssayExperiment/
+
