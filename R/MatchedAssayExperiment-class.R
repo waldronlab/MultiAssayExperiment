@@ -76,7 +76,7 @@ S4Vectors::setValidity2("MatchedAssayExperiment", .validMatchedAssayExperiment)
 #' acc
 #'
 #' @aliases MatchedAssayExperiment
-#' coerce,MultiAssayExperiment,MatchedAssayExperiment-method
+#' @aliases coerce,MultiAssayExperiment,MatchedAssayExperiment-method
 #'
 #' @export MatchedAssayExperiment
 MatchedAssayExperiment <- function(...) {

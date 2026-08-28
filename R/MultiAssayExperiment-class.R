@@ -1,5 +1,5 @@
 #' @import BiocGenerics SummarizedExperiment S4Vectors GenomicRanges methods
-#' IRanges
+#' @import IRanges
 NULL
 
 ## Helper function for validity checks
@@ -901,7 +901,7 @@ setMethod("updateObject", "MultiAssayExperiment",
 #' @name coerce-MultiAssayExperiment
 #'
 #' @aliases coerce,list,MultiAssayExperiment-method
-#'     coerce,List,MultiAssayExperiment-method
+#' @aliases coerce,List,MultiAssayExperiment-method
 #'
 #' @section
 #' coercion:

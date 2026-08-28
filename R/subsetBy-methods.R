@@ -89,7 +89,7 @@ NULL
 #' be matched with the row names in the `rowData` of the experiment.
 #'
 #' @aliases [,MultiAssayExperiment,ANY-method subsetByColData subsetByRow
-#' subsetByColumn subsetByAssay subset subsetBy
+#' @aliases subsetByColumn subsetByAssay subset subsetBy
 #'
 #' @details
 #' Subsetting a `MultiAssayExperiment` by the **j** index can yield a call
