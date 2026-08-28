@@ -115,7 +115,7 @@ makeHitList(x, patternList)
 
 \item{x}{A MultiAssayExperiment or ExperimentList}
 
-\item{replicates}{A list of \code{\link[IRanges:AtomicList-class]{LogicalList}}s
+\item{replicates}{A list of \code{\link[IRanges:AtomicList]{LogicalList}}s
 indicating multiple / duplicate entries for each biological unit per assay,
 see \code{replicated} (default \code{replicated(x)}).}
 
@@ -218,8 +218,8 @@ of a particular assay
 }
 \details{
 The \code{replicated} function finds replicate measurements in each
-assay and returns a list of \code{\link[IRanges:AtomicList-class]{LogicalList}}s.
-Each element in a single \code{\link[IRanges:AtomicList-class]{LogicalList}} corresponds to
+assay and returns a list of \code{\link[IRanges:AtomicList]{LogicalList}}s.
+Each element in a single \code{\link[IRanges:AtomicList]{LogicalList}} corresponds to
 a biological or \emph{primary} unit as in the \code{sampleMap}. Below is a
 small graphic for one particular biological unit in one assay, where the
 logical vector corresponds to the number of measurements/samples in the
@@ -234,14 +234,14 @@ assay:
 replicate. \emph{Note}. These methods are not available for the
 \code{ExperimentList} class due to a missing \code{sampleMap} structure
 (by design).
-\code{showReplicated} returns a list of \code{\link[IRanges:AtomicList-class]{CharacterList}}s
+\code{showReplicated} returns a list of \code{\link[IRanges:AtomicList]{CharacterList}}s
 where each element corresponds to the the biological or \emph{primary} units that
 are replicated in that assay element. The values in the inner list are
 the \code{colnames} in the assay that are technical replicates.
 
 The \code{replicates} function (noun) returns the \code{colname}s
 from the \code{sampleMap} that were identified as replicates. It returns a
-list of \code{\link[IRanges:AtomicList-class]{CharacterList}}s for each assay present in
+list of \code{\link[IRanges:AtomicList]{CharacterList}}s for each assay present in
 the \code{MultiAssayExperiment} and an inner entry for each biological unit that
 has replicate observations in that assay.
 

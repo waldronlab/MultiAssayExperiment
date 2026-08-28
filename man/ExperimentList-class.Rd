@@ -52,7 +52,7 @@
   }
 
 \item{replicates}{mergeReplicates: A \code{list} or
-\code{\link[IRanges:AtomicList-class]{LogicalList}} where each element represents a
+\code{\link[IRanges:AtomicList]{LogicalList}} where each element represents a
 sample and a vector of repeated measurements for the sample}
 
 \item{simplify}{A function for merging columns where duplicates are indicated
@@ -86,13 +86,13 @@ arguments are passed to the given \code{simplify} function argument (e.g.,
 experiments
 
 \item \code{dimnames(ExperimentList)}: Get the dimension names for an \code{ExperimentList}
-using \code{\link[IRanges:AtomicList-class]{CharacterList}}
+using \code{\link[IRanges:AtomicList]{CharacterList}}
 
 \item \code{colnames(ExperimentList)}: Get the column names for an \code{ExperimentList}
-as a \code{\link[IRanges:AtomicList-class]{CharacterList}} slightly more efficiently
+as a \code{\link[IRanges:AtomicList]{CharacterList}} slightly more efficiently
 
 \item \code{rownames(ExperimentList)}: Get the row names for an \code{ExperimentList}
-as a \code{\link[IRanges:AtomicList-class]{CharacterList}} slightly more efficiently
+as a \code{\link[IRanges:AtomicList]{CharacterList}} slightly more efficiently
 
 \item \code{mergeReplicates(ExperimentList)}: Apply the mergeReplicates method on the
 ExperimentList elements

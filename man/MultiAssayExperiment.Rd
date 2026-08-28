@@ -35,7 +35,7 @@ A \code{MultiAssayExperiment} object that can store
 experiment and phenotype data
 }
 \description{
-The constructor function for the \linkS4class{MultiAssayExperiment} combines
+The constructor function for the \link[=MultiAssayExperiment-class]{MultiAssayExperiment} combines
 multiple data elements from the different hierarchies of data
 (study, experiments, and samples). It can create instances where neither
 a \code{sampleMap} or a \code{colData} set is provided. Please see the
@@ -115,5 +115,5 @@ mae <- MultiAssayExperiment(experiments = ExpList, colData = colDat,
     sampleMap = sampMap)
 }
 \seealso{
-\linkS4class{MultiAssayExperiment}
+\link[=MultiAssayExperiment-class]{MultiAssayExperiment}
 }
