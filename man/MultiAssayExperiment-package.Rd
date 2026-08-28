@@ -31,6 +31,7 @@ Useful links:
 
 Authors:
 \itemize{
+  \item Marcel Ramos \email{marcel.ramos@sph.cuny.edu} (\href{https://orcid.org/0000-0002-3242-0582}{ORCID})
   \item Martin Morgan [contributor]
   \item Vincent J Carey [contributor]
   \item Levi Waldron \email{lwaldron.research@gmail.com}
@@ -41,6 +42,7 @@ Other contributors:
   \item Lori Shepherd [contributor]
   \item Hervé Pagès [contributor]
   \item MultiAssay SIG \email{biocmultiassay@googlegroups.com} [contributor]
+  \item NCI (GrantNo.: U24CA289073) [funder]
 }
 
 }
