@@ -90,12 +90,16 @@ import(IRanges)
 import(S4Vectors)
 import(SummarizedExperiment)
 import(methods)
-importFrom(BiocGenerics,colnames)
-importFrom(BiocGenerics,longForm)
-importFrom(BiocGenerics,rownames)
+importFrom(BiocGenerics,
+  colnames,
+  longForm,
+  rownames
+)
 importFrom(MatrixGenerics,rowRanges)
-importFrom(S4Vectors,"metadata<-")
-importFrom(S4Vectors,metadata)
+importFrom(S4Vectors,
+  "metadata<-",
+  metadata
+)
 importFrom(SummarizedExperiment,rowData)
 importFrom(methods,as)
 importFrom(utils,.DollarNames)
