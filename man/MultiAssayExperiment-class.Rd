@@ -29,6 +29,8 @@
 
 \S4method{updateObject}{MultiAssayExperiment}(object, ..., verbose = FALSE)
 
+\S4method{coerce}{list,MultiAssayExperiment}(from, to = "MultiAssayExperiment", strict = TRUE)
+
 \S4method{dimnames}{MultiAssayExperiment}(x)
 
 \S4method{c}{MultiAssayExperiment}(x, ..., sampleMap = NULL, mapFrom = NULL)

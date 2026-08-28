@@ -23,6 +23,8 @@
 \usage{
 \S4method{show}{ExperimentList}(object)
 
+\S4method{coerce}{list,ExperimentList}(from, to = "ExperimentList", strict = TRUE)
+
 \S4method{isEmpty}{ExperimentList}(x)
 
 \S4method{dimnames}{ExperimentList}(x)
