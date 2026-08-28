@@ -54,7 +54,6 @@ Suggests:
 VignetteBuilder: knitr
 biocViews: Infrastructure, DataRepresentation
 Encoding: UTF-8
-RoxygenNote: 7.3.3
 Roxygen: list(markdown = TRUE)
 Video: https://youtu.be/w6HWAHaDpyk, https://youtu.be/Vh0hVVUKKFM
 Collate: 
@@ -78,3 +77,4 @@ Collate:
     'upsetSamples.R'
     'utilities.R'
 Date: 2026-03-28
+Config/roxygen2/version: 8.1.0
