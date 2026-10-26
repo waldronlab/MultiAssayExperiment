@@ -61,6 +61,20 @@
 \item{verbose}{\code{logical(1)} Whether to print additional information (default
 TRUE)}
 
+\item{from}{An object of class \code{list} or S4 \code{List}}
+
+\item{to}{An object of class \code{MultiAssayExperiment}}
+
+\item{strict}{logical flag.  If \code{TRUE}, the returned object
+    must be strictly from the target class (unless that class is a
+    virtual class, in which case the object will be from the closest
+    actual class, in particular the original object, if that class extends the
+    virtual class directly).
+
+    If \code{strict = FALSE}, any simple extension of the target class
+    will be returned, without further change.  A simple extension is,
+    roughly, one that just adds slots to an existing class.}
+
 \item{sampleMap}{\code{c} method: a \code{sampleMap} \code{list} or
 \code{DataFrame} to guide merge}
 

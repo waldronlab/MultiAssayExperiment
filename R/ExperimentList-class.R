@@ -195,6 +195,12 @@ coerceToExperimentList <- function(from) {
 #'
 #' @aliases coerce,list,ExperimentList-method coerce,List,ExperimentList-method
 #'
+#' @param from A `list` or S4 `List` object
+#'
+#' @param to An object of class `ExperimentList`
+#'
+#' @inheritParams methods::as strict
+#'
 #' @section
 #' coercion:
 #'  Convert a `list` or S4 `List` to an ExperimentList using the

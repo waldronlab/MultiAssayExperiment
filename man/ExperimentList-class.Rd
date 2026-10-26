@@ -48,6 +48,20 @@
 \arguments{
 \item{object, x}{An \code{\link{ExperimentList}} object}
 
+\item{from}{A \code{list} or S4 \code{List} object}
+
+\item{to}{An object of class \code{ExperimentList}}
+
+\item{strict}{logical flag.  If \code{TRUE}, the returned object
+    must be strictly from the target class (unless that class is a
+    virtual class, in which case the object will be from the closest
+    actual class, in particular the original object, if that class extends the
+    virtual class directly).
+
+    If \code{strict = FALSE}, any simple extension of the target class
+    will be returned, without further change.  A simple extension is,
+    roughly, one that just adds slots to an existing class.}
+
 \item{do.NULL, prefix}{
     See \code{?base::\link[base]{rownames}} for a description of
     these arguments.

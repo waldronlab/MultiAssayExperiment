@@ -903,6 +903,12 @@ setMethod("updateObject", "MultiAssayExperiment",
 #' @aliases coerce,list,MultiAssayExperiment-method
 #' @aliases coerce,List,MultiAssayExperiment-method
 #'
+#' @param from An object of class `list` or S4 `List`
+#'
+#' @param to An object of class `MultiAssayExperiment`
+#'
+#' @inheritParams methods::as strict
+#'
 #' @section
 #' coercion:
 #'   Convert a `list` or S4 `List` to a MultiAssayExperiment object using the
